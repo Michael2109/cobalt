@@ -1,0 +1,44 @@
+import iostream;
+class Test:
+    int x = 10;
+
+    //test(int arg):
+    //print ("Constructor Test");
+
+
+    //This is a comment block
+    void method1(int number):
+        int x = 2;
+        double y = 0.0;
+        char letter = 'a';
+        print ("test");
+        print ("other");
+        while (x < 10):
+            x += 1;
+            print(x);
+        char letter2 = 'a';
+        print("Say something");
+
+        if (booleanTest):
+            float test = 0.2f;
+            double fdsfs = 20.0;
+
+    void method2(String line):
+        float test = 0.1f;
+        char letter2 = 'b';
+        print("Test");
+
+    void method3(float x):
+        boolean name = true;
+        print("Method 3 stuffs");
+
+    void method4(double y):
+        double x = 0.1;
+
+
+    void main(int number):
+        double y = 0.5;
+        print ("Working!!!");
+        method2();
+        method1();
+        method3();
