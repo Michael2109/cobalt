@@ -9,7 +9,7 @@ public class MethodCallParser extends Parser<MethodCallBlock> {
     @Override
     public boolean shouldParse(String line) {
 
-        return line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*\\(\\)[ ]*;");
+        return line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*\\(\\)[ ]*");
     }
 
 

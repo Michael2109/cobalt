@@ -11,12 +11,12 @@ public class Compile {
 
     PrintWriter w = null;
 
-    public Compile(Block block) {
+    public Compile(File outputFile, Block block) {
 
         try {
-            File file = new File("src/main/java/javassist_test/" + Constants.FILENAME + ".java");
-            file.createNewFile();
-            w = new PrintWriter(file);
+            outputFile.createNewFile();
+            w = new PrintWriter(outputFile);
+            System.out.println("Output File: " + outputFile.getAbsolutePath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -37,10 +37,8 @@ public class Compile {
     /**
      * Converts the block structure into ASM and saves as a .java file
      */
-
     public void convertToJavassistRec(Block block) {
 
-        System.out.println(block.getClass());
         if (block instanceof MethodBlock) {
             MethodBlock b = (MethodBlock) block;
 

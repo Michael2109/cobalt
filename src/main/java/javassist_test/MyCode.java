@@ -16,12 +16,19 @@ cc.addMethod(CtNewMethod.make("public static void method1(){ "+
 "char letter = 'a';"+
 "System.out.println(\"test\");"+
 "System.out.println(\"other\");"+
-"System.out.println(x);"+
-"char letter2 = 'a';"+
+"while(x){"+
+"System.out.println(\"Do something\");"+
+"x += 1;"+
+"}"+
 "System.out.println(\"Say something\");"+
-"if(true){"+
+"boolean booleanTest = true;"+
+"if(booleanTest){"+
 "float test = 0.2;"+
 "double fdsfs = 20.0;"+
+"}"+
+"boolean something = true;"+
+"if(something){"+
+"System.out.println(\"something is true\");"+
 "}"+
 "}", cc));
 cc.addMethod(CtNewMethod.make("public static void method2(){ "+

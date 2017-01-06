@@ -54,7 +54,10 @@ public enum TokenType {
 	LARGER_THAN_EQUAL,
 
 	/** Equal to **/
-	EQUAL_TO
+	EQUAL_TO,
+
+	/* Statements for  while loop */
+	WHILE_STATEMENT
 
 
 }

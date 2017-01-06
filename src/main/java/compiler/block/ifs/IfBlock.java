@@ -5,14 +5,13 @@ import compiler.block.Block;
 
 public class IfBlock extends Block {
 
-    private String type = "ifs";
+    private String type = "if";
     private Parameter[] params;
     String name;
 
     public IfBlock(Block superBlock, String name) {
         super(superBlock, true, false);
         this.name = name;
-
     }
 
     public String getName() {
@@ -30,7 +29,7 @@ public class IfBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return "\"if(true){\"+";
+        return "\"if("+name+"){\"+";
     }
 
     @Override

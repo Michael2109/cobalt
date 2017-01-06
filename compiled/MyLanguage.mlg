@@ -18,7 +18,6 @@ class Test:
             print(x);
         char letter2 = 'a';
         print("Say something");
-
         if (booleanTest):
             float test = 0.2f;
             double fdsfs = 20.0;

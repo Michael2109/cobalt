@@ -13,7 +13,7 @@ need to make parameter single variable names instead as cant define a variable i
 public class IfParser extends Parser<IfBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("if \\(([a-zA-Z][a-zA-Z0-9]*)*\\):");
+        return line.matches("if \\((.*)*\\):");
     }
 
     @Override

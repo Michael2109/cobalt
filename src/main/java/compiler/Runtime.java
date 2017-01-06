@@ -25,10 +25,7 @@ import compiler.symbol_table.Row;
 import compiler.symbol_table.SymbolTable;
 import compiler.tokenizer.Tokenizer;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Runtime {
 
@@ -67,23 +64,24 @@ public class Runtime {
     //start at 1 to ignore class declaration line
     int lineNumber = 0;
     boolean noParse = false;
-    public Runtime() {
+
+    public Runtime(File sourceFile, File outputFile) {
 
         BufferedReader br = null;
         try {
 
             // create a buffered reader
-            br = new BufferedReader(new FileReader(Constants.FILE_LOCATIONS + Constants.FILENAME + ".mlg"));
+            br = new BufferedReader(new FileReader(sourceFile));
             String line;
             while ((line = br.readLine()) != null) {
                 for (Parser parser : parsers) {
                     if (parser.shouldParse(line.trim())) {
-                            block = new FileBlock();
-                            createBlock(block, br, -1);
+                        block = new FileBlock();
+                        createBlock(block, br, -1);
                     }
-               }
+                }
 
-                if(noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
+                if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
 
             }
 
@@ -92,52 +90,51 @@ public class Runtime {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try{
-                if( br != null) br.close();
+            try {
+                if (br != null) br.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-    //    System.out.println(((ClassBlock)block).getName());
+        //    System.out.println(((ClassBlock)block).getName());
         printBlockInfo(block, 0);
 //printBlocks(block,0);
 
 
-symbolTable.printSymbols();
+        symbolTable.printSymbols();
 
-       new Compile(block);
+        new Compile(outputFile, block);
 
     }
 
 
-
-    public Block createBlock(Block currentBlock, BufferedReader br, int indentation){
+    public Block createBlock(Block currentBlock, BufferedReader br, int indentation) {
         String line = "";
         try {
-            if((line = br.readLine()) != null){
+            if ((line = br.readLine()) != null) {
                 lineNumber++;
-                if(line.trim().equals("")){
+                if (line.trim().equals("")) {
                     createBlock(currentBlock, br, indentation);
                     return null;
                 }
                 int currentIndentation = getIndentation(line);
-                if(currentIndentation - indentation > 1){
+                if (currentIndentation - indentation > 1) {
 
-                    System.out.println("Line: " + line);
+                    System.out.println("Line: " + line + " Current Indentation: " + currentIndentation + " : Indentation: " + indentation);
                     throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation));
                 }
                 line = line.trim();
                 tokenizer = new Tokenizer(line);
 
-                if(currentBlock instanceof MethodBlock){
+                if (currentBlock instanceof MethodBlock) {
                     methodName = currentBlock.getName();
                 }
-                if(currentBlock instanceof ClassBlock){
+                if (currentBlock instanceof ClassBlock) {
                     className = currentBlock.getName();
                 }
-                // Check ifs the next symbol exists. If so then throw and error. If not then add to the symbol table.
-                if(!(currentBlock instanceof Add)) {
+                // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
+                if (!(currentBlock instanceof Add) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock)) {
                     if (symbolTable.exists(currentBlock.getName(), methodName, className)) {
                         System.out.println(currentBlock.getName() + " " + methodName + " " + className);
                         throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName() + " has already been defined.");
@@ -147,47 +144,48 @@ symbolTable.printSymbols();
                     }
                 }
                 // Indented out one
-                if(currentIndentation == indentation + 1){
-                    if(!currentBlock.isContainer){
-                        throw new ContainerException("Line: " + lineNumber + "    Indentation: " +indentation+ " "+currentBlock+ " Block cannot store other blocks.");
+                if (currentIndentation == indentation + 1) {
+
+                    if (!currentBlock.isContainer) {
+                        throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Block cannot store other blocks.");
                     }
-                    for(Parser parser : parsers){
-                        if(parser.shouldParse(line)){
+                    for (Parser parser : parsers) {
+                        if (parser.shouldParse(line)) {
                             Block nextBlock = parser.parse(currentBlock, tokenizer);
                             currentBlock.addBlock(nextBlock);
-                            createBlock(nextBlock,br, currentIndentation);
+                            createBlock(nextBlock, br, currentIndentation);
                         }
                     }
                 }
                 // Indentation the same
-                else if(indentation == currentIndentation){
-                    if(currentBlock.isContainer) {
+                else if (indentation == currentIndentation) {
+                    if (currentBlock.isContainer) {
                         throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.");
                     }
-                    for(Parser parser : parsers){
-                        if(parser.shouldParse(line)){
+                    for (Parser parser : parsers) {
+                        if (parser.shouldParse(line)) {
                             Block nextBlock = parser.parse(currentBlock.getSuperBlock(), tokenizer);
                             currentBlock.getSuperBlock().addBlock(nextBlock);
-                            createBlock(nextBlock,br, currentIndentation);
+                            createBlock(nextBlock, br, currentIndentation);
                         }
                     }
                 }
                 // Indentation decreases by any amount
                 else {
-                    for(Parser parser : parsers){
-                        if(parser.shouldParse(line)){
+                    for (Parser parser : parsers) {
+                        if (parser.shouldParse(line)) {
                             currentBlock = currentBlock.getSuperBlock();
-                            for(int i = 0; i < indentation - currentIndentation; i++){
+                            for (int i = 0; i < indentation - currentIndentation; i++) {
                                 currentBlock = currentBlock.getSuperBlock();
                             }
                             Block nextBlock = parser.parse(currentBlock, tokenizer);
                             currentBlock.addBlock(nextBlock);
-                            createBlock(nextBlock,br, currentIndentation);
+                            createBlock(nextBlock, br, currentIndentation);
                         }
                     }
                 }
 
-                if(noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
+                if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -196,82 +194,76 @@ symbolTable.printSymbols();
     }
 
 
-
-
-
-
-
     String methodName = null;
     String className = null;
+
     // Prints block information
-    public void printBlockInfo(Block block, int indentation){
+    public void printBlockInfo(Block block, int indentation) {
         String indentationString = "";
-        for(int i = 0; i < indentation; i++){
+        for (int i = 0; i < indentation; i++) {
             indentationString += "    ";
         }
         Row row = new Row();
-        if(block instanceof ClassBlock) {
+        if (block instanceof ClassBlock) {
             ClassBlock b = (ClassBlock) block;
             System.out.println(indentationString + b.getName());
             className = b.getName();
         }
-        if(block instanceof ConstructorBlock){
-            ConstructorBlock b = (ConstructorBlock)block;
+        if (block instanceof ConstructorBlock) {
+            ConstructorBlock b = (ConstructorBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName());
         }
-        if(block instanceof MethodBlock) {
+        if (block instanceof MethodBlock) {
             MethodBlock b = (MethodBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName());
             methodName = b.getName();
         }
-        if(block instanceof IntegerBlock) {
+        if (block instanceof IntegerBlock) {
             IntegerBlock b = (IntegerBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
         }
-        if(block instanceof FloatBlock) {
+        if (block instanceof FloatBlock) {
             FloatBlock b = (FloatBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
         }
-        if(block instanceof DoubleBlock) {
+        if (block instanceof DoubleBlock) {
             DoubleBlock b = (DoubleBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
         }
-        if(block instanceof BooleanBlock) {
+        if (block instanceof BooleanBlock) {
             BooleanBlock b = (BooleanBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
         }
-        if(block instanceof CharacterBlock) {
+        if (block instanceof CharacterBlock) {
             CharacterBlock b = (CharacterBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
         }
-        if(block instanceof PrintBlock) {
+        if (block instanceof PrintBlock) {
             PrintBlock b = (PrintBlock) block;
-            System.out.println(indentationString +b.getType() + " " + b.getValue());
+            System.out.println(indentationString + b.getType() + " " + b.getValue());
         }
-        if(block instanceof IfBlock) {
+        if (block instanceof IfBlock) {
             IfBlock b = (IfBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName());
         }
-        if(block instanceof ForBlock) {
+        if (block instanceof ForBlock) {
             ForBlock b = (ForBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName());
         }
-        if(block instanceof WhileBlock) {
+        if (block instanceof WhileBlock) {
             WhileBlock b = (WhileBlock) block;
             System.out.println(indentationString + b.getType() + " " + b.getName());
         }
-        if(block instanceof CommentBlock){
-            CommentBlock b = (CommentBlock)block;
+        if (block instanceof CommentBlock) {
+            CommentBlock b = (CommentBlock) block;
             System.out.println(indentationString + b.getType());
         }
 
         //System.out.println(indentationString + block.getClass());
-        for(Block sub : block.getSubBlocks()){
+        for (Block sub : block.getSubBlocks()) {
             printBlockInfo(sub, indentation + 1);
         }
     }
-
-
 
     public int getIndentation(String line) {
         int amount = 0;
@@ -290,7 +282,7 @@ symbolTable.printSymbols();
     }
 
     public static void main(String args[]) {
-        Runtime runtime = new Runtime();
+        new Runtime(new File(args[0]), new File(args[1]));
     }
 
 }

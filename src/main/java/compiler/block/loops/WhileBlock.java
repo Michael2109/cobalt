@@ -6,14 +6,11 @@ import compiler.block.Block;
 public class WhileBlock extends Block {
 
     private String type = "while";
-    private Parameter[] params;
-    public String variable, conditional, number, name = "";
+    String name;
 
-    public WhileBlock(Block superBlock, String variable, String conditional, String number) {
+    public WhileBlock(Block superBlock, String name) {
         super(superBlock, true, false);
-        this.variable = variable;
-        this.conditional = conditional;
-        this.number = number;
+        this.name = name;
     }
 
     public String getName() {
@@ -31,23 +28,18 @@ public class WhileBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return null;
+        return "\"while(" + name + "){\"+";
     }
 
     @Override
     public String getClosingCode() {
-        return null;
+        return "\"}\"+";
     }
 
     @Override
     public String getBodyCode() {
-        return null;
+        return "";
     }
-
-    public Parameter[] getParameters() {
-        return params;
-    }
-
 
     @Override
     public void run() {

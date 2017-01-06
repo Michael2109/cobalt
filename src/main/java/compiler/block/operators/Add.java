@@ -25,17 +25,17 @@ public class Add extends Block {
 
     @Override
     public String getOpeningCode() {
-        return null;
+        return "";
     }
 
     @Override
     public String getClosingCode() {
-        return null;
+        return "";
     }
 
     @Override
     public String getBodyCode() {
-        return null;
+        return "\""+name + " += " + value + ";\"+";
     }
 
     public void setType(String type) {
