@@ -58,8 +58,8 @@ public abstract class Block {
 	public abstract String getType();
 
 	public abstract String getOpeningCode();
-	public abstract String getClosingCode();
 	public abstract String getBodyCode();
+	public abstract String getClosingCode();
 
 	@Override
 	public String toString(){

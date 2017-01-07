@@ -35,7 +35,7 @@ public class FloatBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\"float "+name+" = "+value+";\"+";
+        return "float "+name+" = "+value+"f;";
     }
 
     public void setType(String type) {

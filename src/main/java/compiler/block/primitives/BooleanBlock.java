@@ -35,7 +35,7 @@ public class BooleanBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\"boolean " + name + " = " + value + ";\"+";
+        return "boolean " + name + " = " + value + ";";
     }
 
     public void setType(String type) {

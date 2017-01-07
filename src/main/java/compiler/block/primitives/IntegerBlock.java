@@ -35,7 +35,7 @@ public class IntegerBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\"int " + name + " = " + value + ";\"+";
+        return "int " + name + " = " + value + ";";
     }
 
     public void setType(String type) {

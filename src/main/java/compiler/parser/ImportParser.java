@@ -9,7 +9,7 @@ public class ImportParser extends Parser<ImportBlock> {
     @Override
     public boolean shouldParse(String line) {
 
-        return line.matches("import [a-zA-Z][a-zA-Z0-9]*[ ]*;");
+        return line.matches("import [a-zA-Z][a-zA-Z0-9]*[ ]*");
     }
 
 

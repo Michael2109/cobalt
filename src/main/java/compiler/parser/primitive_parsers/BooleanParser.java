@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class BooleanParser extends Parser<BooleanBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("boolean [a-zA-Z][a-zA-Z0-9]* [=] true;");
+        return line.matches("boolean[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*(true|false)");
     }
 
     @Override

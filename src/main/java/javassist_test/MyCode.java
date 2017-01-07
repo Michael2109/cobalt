@@ -1,61 +1,54 @@
 package javassist_test;
-import javassist.*;
-import java.io.IOException;
 
 public class MyCode {
+    public void method1() {
 
-    public static void main(String args[]) throws CannotCompileException, NotFoundException, IOException {
+        int x = 2;
+        double y = 0.0;
+        char letter = 'a';
+        System.out.println("test");
+        System.out.println("other");
+        while (x < 10) {
+            System.out.println("Do something");
+            System.out.println(x);
+            x += 1;
+        }
+        System.out.println("Say something");
+        boolean booleanTest = false;
+        if (x > 5) {
+            float test = 0.2f;
+            double fdsfs = 20.0;
+        }
+        boolean something = true;
+        if (something) {
+            System.out.println("something is true");
+        }
+        System.out.println("Method 1 called");
+    }
 
-        ClassPool pool = ClassPool.getDefault();
-        CtClass cc = pool.makeClass("MyCode");
+    public void method2() {
 
-cc.addMethod(CtNewMethod.make("public static void method1(){ "+
+        float test = 0.1f;
+        char letter2 = 'b';
+        System.out.println("Test");
+    }
 
-"int x = 2;"+
-"double y = 0.0;"+
-"char letter = 'a';"+
-"System.out.println(\"test\");"+
-"System.out.println(\"other\");"+
-"while(x){"+
-"System.out.println(\"Do something\");"+
-"x += 1;"+
-"}"+
-"System.out.println(\"Say something\");"+
-"boolean booleanTest = true;"+
-"if(booleanTest){"+
-"float test = 0.2;"+
-"double fdsfs = 20.0;"+
-"}"+
-"boolean something = true;"+
-"if(something){"+
-"System.out.println(\"something is true\");"+
-"}"+
-"}", cc));
-cc.addMethod(CtNewMethod.make("public static void method2(){ "+
+    public void method3() {
 
-"float test = 0.1;"+
-"char letter2 = 'b';"+
-"System.out.println(\"Test\");"+
-"}", cc));
-cc.addMethod(CtNewMethod.make("public static void method3(){ "+
+        boolean name = true;
+        System.out.println("Method 3 stuffs");
+    }
 
-"boolean name = true;"+
-"System.out.println(\"Method 3 stuffs\");"+
-"}", cc));
-cc.addMethod(CtNewMethod.make("public static void method4(){ "+
+    public void method4() {
 
-"double x = 0.1;"+
-"}", cc));
+        double x = 0.1;
+    }
 
- cc.addMethod(CtNewMethod.make(
-                        "public static void main(String args[]){ "+
+    public static void main(String args[]) {
 
-"double y = 0.5;"+
-"System.out.println(\"Working!!!\");"+
-"method2();"+
-"method1();"+
-"method3();"+
-"}", cc));
-    cc.writeFile("build/classes/main");
-
-        cc.detach();}}
+        double y = 0.5;
+        System.out.println("Working!!!");
+        MyCode name = new MyCode();
+        name.method1();
+    }
+}

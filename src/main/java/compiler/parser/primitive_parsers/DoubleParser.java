@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class DoubleParser extends Parser<DoubleBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("double [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*;");
+        return line.matches("double [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*");
     }
 
     @Override

@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class FloatParser extends Parser<FloatBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("float [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*f;");
+        return line.matches("float [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*f");
     }
 
     @Override

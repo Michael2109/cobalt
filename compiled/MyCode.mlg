@@ -1,47 +1,48 @@
-import iostream;
+import iostream
 class MyCode:
 
 
     //test(int arg):
-    //print ("Constructor Test");
+    //print ("Constructor Test")
 
 
     //This is a comment block
     void method1(int number):
-        int x = 2;
-        double y = 0.0;
-        char letter = 'a';
-        print ("test");
-        print ("other");
+        int x = 2
+        double y = 0.0
+        char letter = 'a'
+        print ("test")
+        print ("other")
         while (x < 10):
-            print ("Do something");
-            x += 1;
-        print("Say something");
-        boolean booleanTest = true;
-        if (booleanTest):
-            float test = 0.2f;
-            double fdsfs = 20.0;
+            print ("Do something")
+            print(x)
+            x += 1
+        print("Say something")
+        boolean booleanTest = false
+        if (x > 5):
+            float test = 0.2f
+            double fdsfs = 20.0
 
-        boolean something = true;
+        boolean something = true
         if (something):
-            print("something is true");
+            print("something is true")
+        print ("Method 1 called")
 
     void method2(String line):
-        float test = 0.1f;
-        char letter2 = 'b';
-        print("Test");
+        float test = 0.1f
+        char letter2 = 'b'
+        print("Test")
 
     void method3(float x):
-        boolean name = true;
-        print("Method 3 stuffs");
+        boolean name = true
+        print("Method 3 stuffs")
 
     void method4(double y):
-        double x = 0.1;
+        double x = 0.1
 
 
     void main(int number):
-        double y = 0.5;
-        print ("Working!!!");
-        method2()
-        method1()
-        method3()
+        double y = 0.5
+        print ("Working!!!")
+        MyCode name = new MyCode()
+        name.method1()

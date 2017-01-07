@@ -31,18 +31,19 @@ public class MethodBlock extends Block {
 
 	@Override
 	public String getOpeningCode() {
-		return "cc.addMethod(CtNewMethod.make(\"public static void "+name+"(){ \"+" ;
-	}
-
-	@Override
-	public String getClosingCode() {
-		return "\"}\", cc));";
+		return "public void "+name+"(){ " ;
 	}
 
 	@Override
 	public String getBodyCode() {
 		return "";
 	}
+
+	@Override
+	public String getClosingCode() {
+		return "}";
+	}
+
 
 	public Parameter[] getParameters() {
 		return params;

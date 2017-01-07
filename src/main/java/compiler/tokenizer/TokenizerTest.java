@@ -4,7 +4,7 @@ public class TokenizerTest {
 
 	public static void main(String[] args) {
 		String code =
-				"ifs(test):"
+				"MyCode myCode = new MyCode()"
 		;
 		
 		Tokenizer tokenizer = new Tokenizer(code);

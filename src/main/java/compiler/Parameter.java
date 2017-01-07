@@ -4,10 +4,10 @@ import compiler.block.Type;
 
 public class Parameter {
 
+	private String type;
 	private String name;
-	private Type type;
 
-	public Parameter(Type type, String name) {
+	public Parameter(String type, String name) {
 		this.type = type;
 		this.name = name;
 	}
@@ -16,7 +16,7 @@ public class Parameter {
 		return name;
 	}
 	
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
 }

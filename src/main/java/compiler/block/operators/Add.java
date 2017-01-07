@@ -35,7 +35,7 @@ public class Add extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\""+name + " += " + value + ";\"+";
+        return name + " += " + value + ";";
     }
 
     public void setType(String type) {

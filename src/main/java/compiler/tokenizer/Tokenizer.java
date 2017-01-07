@@ -17,7 +17,7 @@ public class Tokenizer {
 		this.tokenDatas = new ArrayList<TokenData>();
 		this.str = str;
 		
-		tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-Z][a-zA-Z0-9]*)"), TokenType.IDENTIFIER));
+
 		tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL));
 		tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+[.][0-9])"), TokenType.DOUBLE_LITERAL));
 		tokenDatas.add(new TokenData(Pattern.compile("^([+][=])"), TokenType.ADD_OPERATOR));
@@ -27,11 +27,12 @@ public class Tokenizer {
 		tokenDatas.add(new TokenData(Pattern.compile("^(\".*\")"), TokenType.STRING_LITERAL));
 		tokenDatas.add(new TokenData(Pattern.compile("^([;])"), TokenType.END_STATEMENT));
 		tokenDatas.add(new TokenData(Pattern.compile("^([:])"), TokenType.COLON));
+		tokenDatas.add(new TokenData(Pattern.compile("^([==])"), TokenType.EQUAL_TO));
 		tokenDatas.add(new TokenData(Pattern.compile("^([<])"), TokenType.SMALLER_THAN));
 		tokenDatas.add(new TokenData(Pattern.compile("^([<=])"), TokenType.SMALLER_THAN_EQUAL));
 		tokenDatas.add(new TokenData(Pattern.compile("^([>])"), TokenType.LARGER_THAN));
 		tokenDatas.add(new TokenData(Pattern.compile("^([>=])"), TokenType.LARGER_THAN_EQUAL));
-		tokenDatas.add(new TokenData(Pattern.compile("^([==])"), TokenType.EQUAL_TO));
+		tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-Z][a-zA-Z0-9]*)"), TokenType.IDENTIFIER));
 
 
 		for (String t : new String[] { "=", "\\(", "\\)", "\\.", "\\,", "\\'" }) {

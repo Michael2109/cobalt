@@ -35,7 +35,7 @@ public class DoubleBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\"double "+name+" = "+value+";\"+";
+        return "double "+name+" = "+value+";";
     }
 
     public void setType(String type) {

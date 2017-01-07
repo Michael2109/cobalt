@@ -1,7 +1,6 @@
 package compiler;
 
 import compiler.block.Block;
-import compiler.block.method.ConstructorBlock;
 import compiler.block.method.MethodBlock;
 
 import java.io.*;
@@ -31,6 +30,8 @@ public class Compile {
         w.close();
 
         execute();
+
+       // MyCode.main(new String[0]);
     }
 
 
@@ -43,8 +44,7 @@ public class Compile {
             MethodBlock b = (MethodBlock) block;
 
             if (b.getName().equals("main")) {
-                p("\n cc.addMethod(CtNewMethod.make(\n" +
-                        "                        \"public static void main(String args[]){ \"+\n");
+                p("public static void main(String args[]){ \n");
             } else {
                 p(b.getOpeningCode());
                 p(b.getBodyCode());

@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class MultiplyParser extends Parser<Multiply> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("[a-zA-Z][a-zA-Z0-9]* [*][=] [0-9]+;");
+        return line.matches("[a-zA-Z][a-zA-Z0-9]* [*][=] [0-9]+");
     }
 
     @Override

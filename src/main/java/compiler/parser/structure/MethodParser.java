@@ -1,20 +1,20 @@
-package compiler.parser;
+package compiler.parser.structure;
 
+import compiler.Parameter;
 import compiler.block.Block;
 import compiler.block.method.MethodBlock;
+import compiler.parser.Parser;
 import compiler.tokenizer.Tokenizer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MethodParser extends Parser<MethodBlock> {
 
 	@Override
 	public boolean shouldParse(String line) {
-
-
-
 		return line.matches("void [a-zA-Z][a-zA-Z0-9]*[ ]*\\([a-zA-Z][a-zA-Z0-9]*[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\)[ ]*:");
 	}
-
-
 
 	@Override
 	public MethodBlock parse(Block superBlock, Tokenizer tokenizer) {
@@ -22,7 +22,10 @@ public class MethodParser extends Parser<MethodBlock> {
 		String type = tokenizer.nextToken().getToken();
 		
 		String name = tokenizer.nextToken().getToken(); // Get the string value of the next token.
+
+		// Get the parameters
+		List<Parameter> parameters = new ArrayList<>();
 		
-		return new MethodBlock(superBlock, name, type, null);
+		return new MethodBlock(superBlock, name, type, parameters.toArray(new Parameter[parameters.size()]));
 	}
 }

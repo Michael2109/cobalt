@@ -32,9 +32,9 @@ public class PrintBlock extends Block {
     public String getBodyCode() {
 
         if(isVariable){
-            return "\"System.out.println("+value+");\"+";
+            return "System.out.println("+value+");";
         }else{
-            return "\"System.out.println(\\\""+value+"\\\");\"+";
+            return "System.out.println(\""+value+"\");";
         }
 
 

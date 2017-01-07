@@ -38,9 +38,6 @@ public enum TokenType {
 	/** Colon **/
 	COLON,
 
-	/** IfBlock statement **/
-	IF_STATEMENT,
-
 	/** Smaller than **/
 	SMALLER_THAN,
 
@@ -54,10 +51,5 @@ public enum TokenType {
 	LARGER_THAN_EQUAL,
 
 	/** Equal to **/
-	EQUAL_TO,
-
-	/* Statements for  while loop */
-	WHILE_STATEMENT
-
-
+	EQUAL_TO
 }

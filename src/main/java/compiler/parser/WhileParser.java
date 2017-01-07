@@ -23,6 +23,9 @@ public class WhileParser extends Parser<WhileBlock> {
         tokenizer.nextToken();  // skip (
 
         Token condition = tokenizer.nextToken();
-        return new WhileBlock(superBlock, condition.getToken());
+        Token operator = tokenizer.nextToken();
+        Token value = tokenizer.nextToken();
+
+        return new WhileBlock(superBlock, condition.getToken() + operator.getToken() + value.getToken());
     }
 }

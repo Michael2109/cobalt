@@ -11,10 +11,10 @@ public class PrintParser extends Parser<PrintBlock> {
     @Override
     public boolean shouldParse(String line) {
 
-        if(line.matches("print[ ]*\\([\"].*[\"]\\);")){
+        if(line.matches("print[ ]*\\([\"].*[\"]\\)")){
             printVariable = false;
             return true;
-        }else if(line.matches("print[ ]*\\([\"]?.*[\"]?\\);")){
+        }else if(line.matches("print[ ]*\\([\"]?.*[\"]?\\)")){
             printVariable = true;
             return true;
         }

@@ -21,6 +21,10 @@ import compiler.parser.operator_parsers.DivideParser;
 import compiler.parser.operator_parsers.MultiplyParser;
 import compiler.parser.operator_parsers.SubtractParser;
 import compiler.parser.primitive_parsers.*;
+import compiler.parser.structure.ObjectMethodCallParser;
+import compiler.parser.structure.StaticMethodCallParser;
+import compiler.parser.structure.MethodParser;
+import compiler.parser.structure.ObjectParser;
 import compiler.symbol_table.Row;
 import compiler.symbol_table.SymbolTable;
 import compiler.tokenizer.Tokenizer;
@@ -52,9 +56,11 @@ public class Runtime {
             new ForParser(),
             new CommentParser(),
             new ConstructorParser(),
-            new MethodCallParser(),
+            new StaticMethodCallParser(),
             new ImportParser(),
-            new WhileParser()
+            new WhileParser(),
+            new ObjectParser(),
+            new ObjectMethodCallParser()
     };
 
     Block block;

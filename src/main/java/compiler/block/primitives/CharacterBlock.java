@@ -35,7 +35,7 @@ public class CharacterBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\"char "+name+" = '"+value+"';\"+";
+        return "char "+name+" = '"+value+"';";
     }
 
     public void setType(String type) {

@@ -31,24 +31,13 @@ public class ClassBlock extends Block {
 
 	@Override
 	public String getOpeningCode() {
-		return   "import javassist.*;\n" +
-				"import java.io.IOException;\n" +
-				"\n" +
-				"public class "+name+" {\n" +
-				"\n" +
-				"    public static void main(String args[]) throws CannotCompileException, NotFoundException, IOException {\n" +
-				"\n" +
-				"        ClassPool pool = ClassPool.getDefault();\n" +
-				"        CtClass cc = pool.makeClass(\""+name+"\");\n"
-			;
+		return   "public class " + name + " {";
 
 	}
 
 	@Override
 	public String getClosingCode() {
-		return "    cc.writeFile(\"build/classes/main\");\n" +
-				"\n" +
-				"        cc.detach();}}";
+		return "}";
 	}
 
 	@Override

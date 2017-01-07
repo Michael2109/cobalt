@@ -1,23 +1,19 @@
-package compiler.block;
+package compiler.block.structure;
 
 import compiler.Parameter;
+import compiler.block.Block;
 
-public class MethodCallBlock extends Block {
+public class ObjectMethodCallBlock extends Block {
 
-    private String name, type;
+    private String className, methodName, type;
     private Parameter[] params;
 
-    public MethodCallBlock(Block superBlock, String name, String type, Parameter[] params) {
-        super(superBlock, false, false);
+    public ObjectMethodCallBlock(Block superBlock, String className, String methodName,Parameter[] params) {
+        super(superBlock, false, true);
 
-        this.name = name;
-        this.type = type;
-        this.params = params;
+        this.className = className;
+        this.methodName = methodName;
 
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -41,7 +37,7 @@ public class MethodCallBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "\""+name+"();\"+";
+        return className + "." + methodName+"();";
     }
 
     public Parameter[] getParameters() {
@@ -51,6 +47,11 @@ public class MethodCallBlock extends Block {
     @Override
     public void run() {
 
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 
 }

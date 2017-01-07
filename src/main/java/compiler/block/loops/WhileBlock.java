@@ -28,12 +28,12 @@ public class WhileBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return "\"while(" + name + "){\"+";
+        return "while(" + name + "){";
     }
 
     @Override
     public String getClosingCode() {
-        return "\"}\"+";
+        return "}";
     }
 
     @Override

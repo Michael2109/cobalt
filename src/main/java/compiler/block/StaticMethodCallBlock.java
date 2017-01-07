@@ -1,17 +1,19 @@
-package compiler.block.ifs;
+package compiler.block;
 
 import compiler.Parameter;
-import compiler.block.Block;
 
-public class IfBlock extends Block {
+public class StaticMethodCallBlock extends Block {
 
-    private String type = "if";
+    private String name, type;
     private Parameter[] params;
-    String name;
 
-    public IfBlock(Block superBlock, String name) {
-        super(superBlock, true, false);
+    public StaticMethodCallBlock(Block superBlock, String name, String type, Parameter[] params) {
+        super(superBlock, false, true);
+
         this.name = name;
+        this.type = type;
+        this.params = params;
+
     }
 
     public String getName() {
@@ -29,26 +31,26 @@ public class IfBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return "if("+name+"){";
+        return "";
     }
 
     @Override
     public String getClosingCode() {
-        return "}";
+        return "";
     }
 
     @Override
     public String getBodyCode() {
-        return "";
+        return name+"();";
     }
 
     public Parameter[] getParameters() {
         return params;
     }
 
-
     @Override
     public void run() {
 
     }
+
 }

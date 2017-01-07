@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class CharacterParser extends Parser<CharacterBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("char [a-zA-Z][a-zA-Z0-9]* [=] '[a-zA-Z0-9]';");
+        return line.matches("char [a-zA-Z][a-zA-Z0-9]* [=] '[a-zA-Z0-9]'");
     }
 
     @Override
