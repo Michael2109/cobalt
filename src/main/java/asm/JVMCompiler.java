@@ -10,7 +10,7 @@ public class JVMCompiler {
 
     public static byte[] dump() throws Exception {
 
-        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 
         // Visit the class itself
         {
@@ -19,7 +19,7 @@ public class JVMCompiler {
                     "asm/Test",    // package and name
                     null,                               // signature (null means not generic)
                     "java/lang/Object",                 // superclass
-                    new String[]{"asm/GeneratedInterface"}); // interfaces
+                    new String[]{}); // interfaces
         }
 
         // Build the constructor
@@ -55,35 +55,37 @@ public class JVMCompiler {
 
             mv.visitCode();
 
-            Label l0 = new Label();
-            mv.visitLabel(l0);
 
-          //  mv.visitVarInsn(ILOAD, 1);
-          //  mv.visitVarInsn(DCONST_1, 3);                  // Load int value onto stack
-           // mv.visitVarInsn(ILOAD, 2);                  // Load int value onto stack
-          //  mv.visitVarInsn(ILOAD, 5);
-            //mv.visitInsn(IADD);                         // Integer add from stack and push to stack
 
-       //     mv.visitIntInsn(SIPUSH, 200);
-        //    mv.visitVarInsn(ISTORE,3);
-
-        //    mv.visitVarInsn(BIPUSH,0);
-            mv.visitLdcInsn(2);
-
-         //   mv.visitVarInsn(BIPUSH,0);
             mv.visitLdcInsn(5);
-
-            mv.visitInsn(IADD);
+            mv.visitVarInsn(ISTORE, 1);
 
             mv.visitLdcInsn(10);
+            mv.visitVarInsn(ISTORE, 2);
+
+            mv.visitLdcInsn(15);
+
+            mv.visitVarInsn(ILOAD, 1);
+            mv.visitVarInsn(ILOAD, 2);
 
             mv.visitInsn(IADD);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Hello World");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-
 
          //   mv.visitIntInsn(SIPUSH, 400);
        //     mv.visitVarInsn(ISTORE,4);
@@ -97,16 +99,16 @@ public class JVMCompiler {
          //   mv.visitVarInsn(ISTORE, 3);
            // mv.visitLocalVariable("x", "I", null, l1, l2, 1);
             mv.visitInsn(RETURN);                      // Return integer from top of stack
-            mv.visitMaxs(3, 4);                         // Specify max stack and local vars
+          //  mv.visitMaxs(3, 4);                         // Specify max stack and local vars
         }
 
-        DynamicClassLoader loader = new DynamicClassLoader();
-        Class<?> clazz = loader.defineClass("asm.Test", cw.toByteArray());
-        System.out.println(clazz.getName());
-        GeneratedInterface calc = (GeneratedInterface)clazz.newInstance();
+       // DynamicClassLoader loader = new DynamicClassLoader();
+       // Class<?> clazz = loader.defineClass("asm.Test", cw.toByteArray());
+    //    System.out.println(clazz.getName());
+      //  GeneratedInterface calc = (GeneratedInterface)clazz.newInstance();
 
       //  calc.add();
-        System.out.println("2 + 2 = ");
+       // System.out.println("2 + 2 = ");
 
         return cw.toByteArray();
     }

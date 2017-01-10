@@ -78,6 +78,12 @@ mv.visitLdcInsn(10);
 
 mv.visitLdcInsn(5);
 mv.visitInsn(IADD);
+mv.visitLdcInsn(20);
+
+mv.visitLdcInsn(100);
+mv.visitInsn(IADD);
+mv.visitLdcInsn(10);
+mv.visitInsn(IADD);
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Hello World");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");

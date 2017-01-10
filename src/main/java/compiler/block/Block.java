@@ -16,11 +16,17 @@ public abstract class Block {
 
 	public boolean isVariable = false;
 
+	public static int TOTAL_BLOCKS = 0;
+
+	// Block ID used for reference when storing in local variable table
+	public int id;
+
 
 	public Block(Block superBlock, boolean isContainer, boolean isVariable) {
 		this.superBlock = superBlock;
 		this.subBlocks = new ArrayList<>();
 		this.isContainer = isContainer;
+		id = TOTAL_BLOCKS++;
 
 	}
 	

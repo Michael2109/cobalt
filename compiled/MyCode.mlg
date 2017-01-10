@@ -7,5 +7,8 @@ class GeneratedAsmCode:
     void otherMethod(int number):
         int x = 10
         x += 5
+        int y = 20
+        y += 100
+        x += 10
         print("Hello World")
 

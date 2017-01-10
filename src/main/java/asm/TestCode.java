@@ -2,8 +2,9 @@ package asm;
 
 public class TestCode {
 
-    public void doSomething(){
-        int x = 200;
+    public static void main(String[] args) {
+        int x = 10;
+        System.out.println(x);
     }
 
 }
