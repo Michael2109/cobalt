@@ -31,7 +31,15 @@ public class MethodBlock extends Block {
 
 	@Override
 	public String getOpeningCode() {
-		return "public void "+name+"(){ " ;
+		return "   {\n" +
+				"            /* Build 'add' method */\n" +
+				"            MethodVisitor mv = cw.visitMethod(\n" +
+				"                    ACC_PUBLIC,                         // public method\n" +
+				"                    \""+name+"\",                              // name\n" +
+				"                    \"()V\",                            // descriptor\n" +
+				"                    null,                               // signature (null means not generic)\n" +
+				"                    null);                              // exceptions (array of strings)\n" +
+				"\n";
 	}
 
 	@Override
@@ -41,7 +49,9 @@ public class MethodBlock extends Block {
 
 	@Override
 	public String getClosingCode() {
-		return "}";
+		return "       mv.visitInsn(RETURN);                      // Return integer from top of stack\n" +
+				"            mv.visitMaxs(0, 0);                         // Specify max stack and local vars\n" +
+				"        }";
 	}
 
 

@@ -34,7 +34,10 @@ public class PrintBlock extends Block {
         if(isVariable){
             return "System.out.println("+value+");";
         }else{
-            return "System.out.println(\""+value+"\");";
+            //return "System.out.println(\""+value+"\");";
+            return "     mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
+                    "            mv.visitLdcInsn(\""+value+"\");\n" +
+                    "            mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");";
         }
 
 

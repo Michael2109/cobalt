@@ -2,6 +2,7 @@ group 'group_id'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'scala'
 
 sourceCompatibility = 1.8
 
@@ -15,4 +16,7 @@ dependencies {
 // https://mvnrepository.com/artifact/javassist/javassist
     compile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
 
+    // Scala
+    compile "org.scala-lang:scala-library:2.10.4"
+    compile "org.scala-lang:scala-compiler:2.10.4"
 }

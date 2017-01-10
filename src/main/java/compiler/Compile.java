@@ -22,7 +22,8 @@ public class Compile {
             e.printStackTrace();
         }
 
-        p("package javassist_test;");
+
+
 
         convertToJavassistRec(block);
 
@@ -44,7 +45,7 @@ public class Compile {
             MethodBlock b = (MethodBlock) block;
 
             if (b.getName().equals("main")) {
-                p("public static void main(String args[]){ \n");
+                //p("public static void main(String args[]){ \n");
             } else {
                 p(b.getOpeningCode());
                 p(b.getBodyCode());

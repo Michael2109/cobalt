@@ -28,7 +28,7 @@ public class WhileBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return "while(" + name + "){";
+        return "";
     }
 
     @Override

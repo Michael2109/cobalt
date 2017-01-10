@@ -35,7 +35,8 @@ public class Add extends Block {
 
     @Override
     public String getBodyCode() {
-        return name + " += " + value + ";";
+        return "mv.visitLdcInsn(" + value + ");\n" +
+                "mv.visitInsn(IADD);";
     }
 
     public void setType(String type) {

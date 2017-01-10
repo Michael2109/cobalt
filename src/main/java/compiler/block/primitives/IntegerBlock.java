@@ -35,7 +35,7 @@ public class IntegerBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "int " + name + " = " + value + ";";
+        return "mv.visitLdcInsn("+value+");\n";
     }
 
     public void setType(String type) {
