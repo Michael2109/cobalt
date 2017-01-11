@@ -7,6 +7,12 @@ import java.util.List;
 
 public class SymbolTable {
 
+    private static final SymbolTable SYMBOL_TABLE = new SymbolTable();
+
+    public static SymbolTable getInstance(){
+        return SYMBOL_TABLE;
+    }
+
     public List<Row> rows;
 
     public SymbolTable(){
@@ -55,6 +61,15 @@ public class SymbolTable {
             System.out.printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s \n"," ",row.getName()," ", row.getType(), " ",row.getValue()," ", row.getMethodName()," ", row.getClassName()," ");
         }
 
+    }
+
+    public Row getValue(Block method, String variableName){
+        for(Row row : rows){
+            if(row.getMethodName() != null && row.getMethodName().equals(method.getName()) && row.getName() != null && row.getName().equals(variableName)){
+                return row;
+            }
+        }
+        return null;
     }
 
 }

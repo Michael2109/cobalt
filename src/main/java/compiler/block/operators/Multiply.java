@@ -29,14 +29,18 @@ public class Multiply extends Block {
     }
 
     @Override
+    public String getBodyCode() {
+        return "mv.visitLdcInsn("+value+");\n"+
+                "mv.visitVarInsn(ILOAD,"+getId()+");\n" +
+                "mv.visitInsn(IMUL);\n" +
+                "mv.visitVarInsn(ISTORE,"+getId()+");\n";
+    }
+
+    @Override
     public String getClosingCode() {
         return null;
     }
 
-    @Override
-    public String getBodyCode() {
-        return null;
-    }
 
     public void setType(String type) {
         this.type = type;

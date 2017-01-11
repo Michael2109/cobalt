@@ -29,12 +29,15 @@ public class Divide extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return null;
+    public String getBodyCode() {
+        return "mv.visitLdcInsn("+value+");\n"+
+                "mv.visitVarInsn(ILOAD,"+getId()+");\n" +
+                "mv.visitInsn(IDIV);\n" +
+                "mv.visitVarInsn(ISTORE,"+getId()+");\n";
     }
 
     @Override
-    public String getBodyCode() {
+    public String getClosingCode() {
         return null;
     }
 

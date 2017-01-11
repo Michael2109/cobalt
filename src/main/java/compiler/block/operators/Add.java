@@ -1,6 +1,7 @@
 package compiler.block.operators;
 
 import compiler.block.Block;
+import compiler.symbol_table.SymbolTable;
 
 public class Add extends Block {
 
@@ -12,6 +13,8 @@ public class Add extends Block {
         super(superBlock, false, false);
         this.name = name;
         this.value = value;
+        setId(SymbolTable.getInstance().getValue(getSuperBlock(), name).getId());
+        System.out.println("ID: "+ getId());
     }
 
     @Override
@@ -35,8 +38,10 @@ public class Add extends Block {
 
     @Override
     public String getBodyCode() {
-        return "mv.visitLdcInsn(" + value + ");\n" +
-                "mv.visitInsn(IADD);";
+        return "mv.visitLdcInsn("+value+");\n"+
+                "mv.visitVarInsn(ILOAD,"+getId()+");\n" +
+                "mv.visitInsn(IADD);\n" +
+                "mv.visitVarInsn(ISTORE,"+getId()+");\n";
     }
 
     public void setType(String type) {

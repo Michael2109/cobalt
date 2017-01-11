@@ -75,15 +75,26 @@ public class GeneratedAsmCode {
 
 
 mv.visitLdcInsn(10);
+mv.visitVarInsn(ISTORE,5);
 
 mv.visitLdcInsn(5);
+mv.visitVarInsn(ILOAD,5);
 mv.visitInsn(IADD);
+mv.visitVarInsn(ISTORE,5);
+
 mv.visitLdcInsn(20);
+mv.visitVarInsn(ISTORE,7);
 
 mv.visitLdcInsn(100);
+mv.visitVarInsn(ILOAD,7);
 mv.visitInsn(IADD);
+mv.visitVarInsn(ISTORE,7);
+
 mv.visitLdcInsn(10);
+mv.visitVarInsn(ILOAD,5);
 mv.visitInsn(IADD);
+mv.visitVarInsn(ISTORE,5);
+
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Hello World");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");

@@ -35,8 +35,8 @@ public class IntegerBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "  mv.visitVarInsn(ISTORE,"+id+");" +
-                "mv.visitLdcInsn("+value+");\n";
+        return "mv.visitLdcInsn("+value+");\n"+
+                "mv.visitVarInsn(ISTORE,"+ getId() +");\n";
     }
 
     public void setType(String type) {

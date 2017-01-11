@@ -9,6 +9,9 @@ import compiler.block.loops.WhileBlock;
 import compiler.block.method.ConstructorBlock;
 import compiler.block.method.MethodBlock;
 import compiler.block.operators.Add;
+import compiler.block.operators.Divide;
+import compiler.block.operators.Multiply;
+import compiler.block.operators.Subtract;
 import compiler.block.primitives.*;
 import compiler.block.structure.ClassBlock;
 import compiler.block.structure.FileBlock;
@@ -65,7 +68,6 @@ public class Runtime {
 
     Block block;
     Tokenizer tokenizer;
-    SymbolTable symbolTable = new SymbolTable();
 
     //start at 1 to ignore class declaration line
     int lineNumber = 0;
@@ -108,7 +110,7 @@ public class Runtime {
 //printBlocks(block,0);
 
 
-        symbolTable.printSymbols();
+        SymbolTable.getInstance().printSymbols();
 
         new Compile(outputFile, block);
 
@@ -140,12 +142,12 @@ public class Runtime {
                     className = currentBlock.getName();
                 }
                 // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
-                if (!(currentBlock instanceof Add) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock)) {
-                    if (symbolTable.exists(currentBlock.getName(), methodName, className)) {
+                if (!(currentBlock instanceof Add) && !(currentBlock instanceof Subtract) && !(currentBlock instanceof Multiply) && !(currentBlock instanceof Divide) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock)) {
+                    if (SymbolTable.getInstance().exists(currentBlock.getName(), methodName, className)) {
                         System.out.println(currentBlock.getName() + " " + methodName + " " + className);
                         throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName() + " has already been defined.");
                     } else {
-                        symbolTable.addRow(new Row().setName(currentBlock.getName()).setType(currentBlock.getType()).setValue(currentBlock.getValue()).setMethodName(methodName).setClassName(className));
+                        SymbolTable.getInstance().addRow(new Row().setId(currentBlock.getId()).setName(currentBlock.getName()).setType(currentBlock.getType()).setValue(currentBlock.getValue()).setMethodName(methodName).setClassName(className));
 
                     }
                 }

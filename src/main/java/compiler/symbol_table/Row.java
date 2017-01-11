@@ -2,11 +2,21 @@ package compiler.symbol_table;
 
 public class Row {
 
+    private int id;
     private String type;
     private String name;
     private String value;
     private String methodName;
     private String className;
+
+    public int getId() {
+        return id;
+    }
+
+    public Row setId(int id) {
+        this.id = id;
+        return this;
+    }
 
     public String getType() {
         return type;
@@ -52,4 +62,5 @@ public class Row {
         this.className = className;
         return this;
     }
+
 }
