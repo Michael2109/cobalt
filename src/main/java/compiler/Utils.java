@@ -1,6 +1,7 @@
 package compiler;
 
 import compiler.block.Block;
+import compiler.block.structures.methods.MethodBlock;
 
 public class Utils <T>{
 
@@ -19,6 +20,18 @@ public class Utils <T>{
         for(Block sub : block.getSubBlocks()){
             printBlocks(sub, indentation + 1);
         }
+    }
+
+    /* Returns the method a block is within */
+    public static Block getMethod(Block block){
+        Block result = block;
+        while(!(result instanceof MethodBlock)){
+            if(block.getSuperBlock() == null){
+                return null;
+            }
+            result = block.getSuperBlock();
+        }
+        return result;
     }
 
 }

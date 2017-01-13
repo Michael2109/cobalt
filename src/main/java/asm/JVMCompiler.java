@@ -68,9 +68,10 @@ public class JVMCompiler {
             mv.visitVarInsn(ILOAD, 1);
             mv.visitVarInsn(ILOAD, 2);
 
-            mv.visitInsn(IADD);
+        //    mv.visitVarInsn(IF_ICMPLE, );
 
-
+            Label label = new Label();
+            mv.visitLabel(label);
 
 
 

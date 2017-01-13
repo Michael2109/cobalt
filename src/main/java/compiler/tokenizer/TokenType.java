@@ -20,16 +20,16 @@ public enum TokenType {
 	/** Anything enclosed in double quotes. "Hello" "1" */
 	STRING_LITERAL,
 
-	/** Add operator **/
+	/** AddBlock operator **/
 	ADD_OPERATOR,
 
-	/** Subtract operator **/
+	/** SubtractBlock operator **/
 	SUBTRACT_OPERATOR,
 
-	/** Multiply operator **/
+	/** MultiplyBlock operator **/
 	MULTIPLY_OPERATOR,
 
-	/** Divide operator **/
+	/** DivideBlock operator **/
 	DIVIDE_OPERATOR,
 
 	/** End a statement **/

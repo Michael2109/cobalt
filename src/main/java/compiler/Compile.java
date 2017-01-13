@@ -1,10 +1,14 @@
 package compiler;
 
 import compiler.block.Block;
-import compiler.block.method.MethodBlock;
+import compiler.block.structures.methods.MethodBlock;
 
 import java.io.*;
 
+/**
+ * Creates the output file.
+ * Loops through the blocks calling methods to generate the code.
+ */
 public class Compile {
 
 

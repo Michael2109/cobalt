@@ -1,17 +1,21 @@
-package compiler.block.primitives;
+package compiler.block.operators;
 
+import compiler.Utils;
 import compiler.block.Block;
+import compiler.symbol_table.SymbolTable;
 
-public class BooleanBlock extends Block {
+public class AddBlock extends Block {
 
-    private String type = "boolean";
+    private String type = "add";
     private String value;
     private String name;
 
-    public BooleanBlock(Block superBlock, String name, String value) {
-        super(superBlock, false, true);
+    public AddBlock(Block superBlock, String name, String value) {
+        super(superBlock, false, false);
         this.name = name;
         this.value = value;
+        setId(SymbolTable.getInstance().getValue(Utils.getMethod(this), name).getId());
+        System.out.println("ID: "+ getId());
     }
 
     @Override
@@ -28,17 +32,18 @@ public class BooleanBlock extends Block {
         return "";
     }
 
-
-    @Override
-    public String getBodyCode() {
-        return "";
-    }
-
     @Override
     public String getClosingCode() {
         return "";
     }
 
+    @Override
+    public String getBodyCode() {
+        return "mv.visitLdcInsn("+value+");\n"+
+                "mv.visitVarInsn(ILOAD,"+getId()+");\n" +
+                "mv.visitInsn(IADD);\n" +
+                "mv.visitVarInsn(ISTORE,"+getId()+");\n";
+    }
 
     public void setType(String type) {
         this.type = type;

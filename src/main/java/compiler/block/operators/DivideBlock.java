@@ -1,15 +1,15 @@
-package compiler.block.primitives;
+package compiler.block.operators;
 
 import compiler.block.Block;
 
-public class BooleanBlock extends Block {
+public class DivideBlock extends Block {
 
-    private String type = "boolean";
+    private String type = "divide";
     private String value;
     private String name;
 
-    public BooleanBlock(Block superBlock, String name, String value) {
-        super(superBlock, false, true);
+    public DivideBlock(Block superBlock, String name, String value) {
+        super(superBlock, false, false);
         this.name = name;
         this.value = value;
     }
@@ -25,20 +25,21 @@ public class BooleanBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return "";
+        return null;
     }
-
 
     @Override
     public String getBodyCode() {
-        return "";
+        return "mv.visitLdcInsn("+value+");\n"+
+                "mv.visitVarInsn(ILOAD,"+getId()+");\n" +
+                "mv.visitInsn(IDIV);\n" +
+                "mv.visitVarInsn(ISTORE,"+getId()+");\n";
     }
 
     @Override
     public String getClosingCode() {
-        return "";
+        return null;
     }
-
 
     public void setType(String type) {
         this.type = type;

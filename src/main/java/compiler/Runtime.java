@@ -1,39 +1,50 @@
 package compiler;
 
 import compiler.block.Block;
-import compiler.block.PrintBlock;
+import compiler.block.prints.PrintBlock;
 import compiler.block.comments.CommentBlock;
 import compiler.block.ifs.IfBlock;
 import compiler.block.loops.ForBlock;
 import compiler.block.loops.WhileBlock;
-import compiler.block.method.ConstructorBlock;
-import compiler.block.method.MethodBlock;
-import compiler.block.operators.Add;
-import compiler.block.operators.Divide;
-import compiler.block.operators.Multiply;
-import compiler.block.operators.Subtract;
+import compiler.block.structures.methods.ConstructorBlock;
+import compiler.block.structures.methods.MethodBlock;
+import compiler.block.operators.AddBlock;
+import compiler.block.operators.DivideBlock;
+import compiler.block.operators.MultiplyBlock;
+import compiler.block.operators.SubtractBlock;
 import compiler.block.primitives.*;
-import compiler.block.structure.ClassBlock;
-import compiler.block.structure.FileBlock;
+import compiler.block.structures.ClassBlock;
+import compiler.block.structures.FileBlock;
 import compiler.exceptions.ContainerException;
 import compiler.exceptions.DeclarationException;
 import compiler.exceptions.IndentationException;
 import compiler.parser.*;
-import compiler.parser.operator_parsers.AddParser;
-import compiler.parser.operator_parsers.DivideParser;
-import compiler.parser.operator_parsers.MultiplyParser;
-import compiler.parser.operator_parsers.SubtractParser;
-import compiler.parser.primitive_parsers.*;
-import compiler.parser.structure.ObjectMethodCallParser;
-import compiler.parser.structure.StaticMethodCallParser;
-import compiler.parser.structure.MethodParser;
-import compiler.parser.structure.ObjectParser;
+import compiler.parser.comments.CommentParser;
+import compiler.parser.ifs.IfParser;
+import compiler.parser.imports.ImportParser;
+import compiler.parser.loops.ForParser;
+import compiler.parser.loops.WhileParser;
+import compiler.parser.operators.AddParser;
+import compiler.parser.operators.DivideParser;
+import compiler.parser.operators.MultiplyParser;
+import compiler.parser.operators.SubtractParser;
+import compiler.parser.primitives.*;
+import compiler.parser.prints.PrintParser;
+import compiler.parser.structures.*;
+import compiler.parser.structures.classes.ClassParser;
+import compiler.parser.structures.methods.ConstructorParser;
+import compiler.parser.structures.methods.MethodParser;
 import compiler.symbol_table.Row;
 import compiler.symbol_table.SymbolTable;
 import compiler.tokenizer.Tokenizer;
 
 import java.io.*;
 
+/**
+ * Parses the file generating the block structure.
+ * Outputs the block structure.
+ * Compiles the block structure.
+ */
 public class Runtime {
 
     Parser[] parsers = {
@@ -59,7 +70,7 @@ public class Runtime {
             new ForParser(),
             new CommentParser(),
             new ConstructorParser(),
-            new StaticMethodCallParser(),
+            new MethodCallParser(),
             new ImportParser(),
             new WhileParser(),
             new ObjectParser(),
@@ -142,7 +153,7 @@ public class Runtime {
                     className = currentBlock.getName();
                 }
                 // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
-                if (!(currentBlock instanceof Add) && !(currentBlock instanceof Subtract) && !(currentBlock instanceof Multiply) && !(currentBlock instanceof Divide) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock)) {
+                if (!(currentBlock instanceof AddBlock) && !(currentBlock instanceof SubtractBlock) && !(currentBlock instanceof MultiplyBlock) && !(currentBlock instanceof DivideBlock) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock)) {
                     if (SymbolTable.getInstance().exists(currentBlock.getName(), methodName, className)) {
                         System.out.println(currentBlock.getName() + " " + methodName + " " + className);
                         throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName() + " has already been defined.");
