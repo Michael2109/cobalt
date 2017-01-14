@@ -17,7 +17,7 @@ public class WhileBlock extends Block {
     public WhileBlock(Block superBlock, String name) {
         super(superBlock, true, false);
         this.name = name;
-
+        System.out.println(name);
         String[] split = name.split(" ");
 
         //  x == 10

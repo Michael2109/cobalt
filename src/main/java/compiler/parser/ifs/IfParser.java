@@ -9,11 +9,6 @@ import compiler.tokenizer.TokenData;
 import compiler.tokenizer.TokenType;
 import compiler.tokenizer.Tokenizer;
 
-/*
-need to make parameter single variable names instead as cant define a variable in an ifs...
- */
-
-
 public class IfParser extends Parser<IfBlock> {
     @Override
     public boolean shouldParse(String line) {
@@ -36,6 +31,6 @@ public class IfParser extends Parser<IfBlock> {
             nextToken = tokenizer.nextToken().getToken();
         }
 
-        return new IfBlock(superBlock, statement.trim());
+        return new IfBlock(superBlock, statement.trim().replaceAll(" +", " "));
     }
 }

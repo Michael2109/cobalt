@@ -56,21 +56,10 @@ public class JVMCompiler {
             mv.visitCode();
 
 
-            Label start9 = new Label();
-            mv.visitLabel(start9);
-
-            mv.visitLdcInsn(5);
-            mv.visitLdcInsn(10);
-
-            Label l9 = new Label();
-            mv.visitJumpInsn(IF_ICMPGE, l9);
-
-            mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("Something");
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-
-            mv.visitJumpInsn(GOTO, start9);
-            mv.visitLabel(l9);
+            mv.visitTypeInsn(NEW, "java/lang/String");
+            mv.visitInsn(DUP);
+            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/String", "<init>", "()V", false);
+            mv.visitInsn(POP);
 
             mv.visitInsn(RETURN);                      // Return integer from top of stack
         }

@@ -14,9 +14,12 @@ public class IfBlock extends Block {
     String operator;
     String value;
 
+    String byteCodeOp;
+
     public IfBlock(Block superBlock, String name) {
         super(superBlock, true, false);
         this.name = name;
+        System.out.println(name);
 
         String[] split = name.split(" ");
 
@@ -26,6 +29,22 @@ public class IfBlock extends Block {
             pointer = ""+ SymbolTable.getInstance().getValue(Utils.getMethod(this), split[0]).getId();
             operator = split[1];
             value = split[2];
+
+
+            if(operator.equals("==")){
+                byteCodeOp =  "mv.visitJumpInsn(IF_ICMPGE, l"+id+");\n";
+            }else if(operator.equals("<")){
+                byteCodeOp =  "mv.visitJumpInsn(IF_ICMPGE, l"+id+");\n";
+            }else if(operator.equals(">")){
+                byteCodeOp =  "mv.visitJumpInsn(IF_ICMPGE, l"+id+");\n";
+            }else if(operator.equals("<=")){
+                byteCodeOp =  "mv.visitJumpInsn(IF_ICMPGE, l"+id+");\n";
+            }else if(operator.equals(">=")){
+                byteCodeOp =  "mv.visitJumpInsn(IF_ICMPGE, l"+id+");\n";
+            }else{
+                System.out.println("Error: Disallowed Operator" + this.getClass());
+            }
+
         }else{
             //boolean value
             value = name;
@@ -52,7 +71,7 @@ public class IfBlock extends Block {
         return  "mv.visitVarInsn(ILOAD,"+pointer+");" +
                 "mv.visitLdcInsn("+value+");\n" +
                 "Label l"+id+" = new Label();\n" +
-                "mv.visitJumpInsn(IF_ICMPNE, l"+id+");";
+                byteCodeOp;
     }
 
     @Override

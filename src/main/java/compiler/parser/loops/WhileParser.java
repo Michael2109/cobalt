@@ -34,6 +34,6 @@ public class WhileParser extends Parser<WhileBlock> {
             nextToken = tokenizer.nextToken().getToken();
         }
 
-        return new WhileBlock(superBlock, statement.trim());
+        return new WhileBlock(superBlock, statement.trim().replaceAll(" +", " "));
     }
 }

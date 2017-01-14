@@ -88,9 +88,10 @@ mv.visitJumpInsn(IF_ICMPGE, l5);
 mv.visitJumpInsn(GOTO, start5);
 mv.visitLabel(l5);
 
-mv.visitVarInsn(ILOAD,4);mv.visitLdcInsn(<);
+mv.visitVarInsn(ILOAD,4);mv.visitLdcInsn(10);
 Label l7 = new Label();
-mv.visitJumpInsn(IF_ICMPNE, l7);
+mv.visitJumpInsn(IF_ICMPGE, l7);
+
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Something else");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
