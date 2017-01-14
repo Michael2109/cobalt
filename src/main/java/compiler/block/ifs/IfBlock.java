@@ -20,10 +20,10 @@ public class IfBlock extends Block {
 
         String[] split = name.split(" ");
 
-        // E.g. x < 10
+        //  x == 10
         if(split.length > 1) {
             pointer = split[0];
-            pointer = ""+ SymbolTable.getInstance().getValue(Utils.getMethod(this), name).getId();
+            pointer = ""+ SymbolTable.getInstance().getValue(Utils.getMethod(this), split[0]).getId();
             operator = split[1];
             value = split[2];
         }else{
@@ -31,7 +31,7 @@ public class IfBlock extends Block {
             value = name;
 
         }
-        System.out.println("If Value: " + name);
+
     }
 
     public String getName() {
@@ -49,8 +49,10 @@ public class IfBlock extends Block {
 
     @Override
     public String getOpeningCode() {
-        return "Label l2 = new Label();\n" +
-                "mv.visitJumpInsn(IF_ICMPGE, l2);";
+        return  "mv.visitVarInsn(ILOAD,"+pointer+");" +
+                "mv.visitLdcInsn("+value+");\n" +
+                "Label l"+id+" = new Label();\n" +
+                "mv.visitJumpInsn(IF_ICMPNE, l"+id+");";
     }
 
     @Override
@@ -60,7 +62,8 @@ public class IfBlock extends Block {
 
     @Override
     public String getClosingCode() {
-        return "}";
+        return "mv.visitLabel(l"+id+");"
+               ;
     }
 
 

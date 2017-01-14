@@ -14,7 +14,7 @@ need to make parameter single variable names instead as cant define a variable i
 public class WhileParser extends Parser<WhileBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("while[ ]*\\((.*)*\\):");
+        return line.matches("while[ ]+\\((.*)*\\):");
     }
 
     @Override
@@ -23,10 +23,17 @@ public class WhileParser extends Parser<WhileBlock> {
         tokenizer.nextToken();  //skip while
         tokenizer.nextToken();  // skip (
 
-        Token condition = tokenizer.nextToken();
-        Token operator = tokenizer.nextToken();
-        Token value = tokenizer.nextToken();
+        String statement = "";
+        String nextToken = tokenizer.nextToken().getToken();
+        while(!nextToken.equals(")")) {
 
-        return new WhileBlock(superBlock, condition.getToken() + operator.getToken() + value.getToken());
+            if(nextToken.equals("="))
+                statement += nextToken;
+            else
+                statement += " " + nextToken + " ";
+            nextToken = tokenizer.nextToken().getToken();
+        }
+
+        return new WhileBlock(superBlock, statement.trim());
     }
 }

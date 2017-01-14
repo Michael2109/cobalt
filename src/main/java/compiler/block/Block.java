@@ -8,25 +8,25 @@ import java.util.Collections;
  */
 public abstract class Block {
 
-	private Block superBlock;
-	private ArrayList<Block> subBlocks;
+	protected Block superBlock;
+	protected ArrayList<Block> subBlocks;
 
 	// true ifs block can store sub blocks
-	public boolean isContainer = false;
+	protected boolean container = false;
 
-	public boolean isVariable = false;
+	private boolean variable = false;
 
-	public static int TOTAL_BLOCKS = 0;
+	protected static int TOTAL_BLOCKS = 0;
 
 	// Block ID used for reference when storing in local variable table
-	private int id;
+	protected int id;
 
 
-	public Block(Block superBlock, boolean isContainer, boolean isVariable) {
+	public Block(Block superBlock, boolean container, boolean variable) {
 		this.superBlock = superBlock;
 		this.subBlocks = new ArrayList<>();
-		this.isContainer = isContainer;
-		setId(TOTAL_BLOCKS++);
+		this.container = container;
+		id = TOTAL_BLOCKS++;
 
 	}
 	
@@ -72,11 +72,26 @@ public abstract class Block {
 		return getName() + " " + getValue() + " " + getType();
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public boolean isContainer() {
+		return container;
+	}
+
+	public void setContainer(boolean container) {
+		this.container = container;
+	}
+
+	public boolean isVariable() {
+		return variable;
+	}
+
+	public void setVariable(boolean variable) {
+		this.variable = variable;
 	}
 }

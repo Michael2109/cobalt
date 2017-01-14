@@ -13,7 +13,7 @@ import compiler.block.operators.DivideBlock;
 import compiler.block.operators.MultiplyBlock;
 import compiler.block.operators.SubtractBlock;
 import compiler.block.primitives.*;
-import compiler.block.structures.ClassBlock;
+import compiler.block.structures.classes.ClassBlock;
 import compiler.block.structures.FileBlock;
 import compiler.exceptions.ContainerException;
 import compiler.exceptions.DeclarationException;
@@ -95,8 +95,9 @@ public class Runtime {
             while ((line = br.readLine()) != null) {
                 for (Parser parser : parsers) {
                     if (parser.shouldParse(line.trim())) {
-                        block = new FileBlock();
-                        createBlock(block, br, -1);
+                        tokenizer = new Tokenizer(line);
+                        block = parser.parse(null,tokenizer);
+                        createBlock(block, br, 0);
                     }
                 }
 
@@ -130,6 +131,7 @@ public class Runtime {
 
     public Block createBlock(Block currentBlock, BufferedReader br, int indentation) {
         String line = "";
+
         try {
             if ((line = br.readLine()) != null) {
                 lineNumber++;
@@ -165,7 +167,7 @@ public class Runtime {
                 // Indented out one
                 if (currentIndentation == indentation + 1) {
 
-                    if (!currentBlock.isContainer) {
+                    if (!currentBlock.isContainer()) {
                         throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Block cannot store other blocks.");
                     }
                     for (Parser parser : parsers) {
@@ -178,7 +180,7 @@ public class Runtime {
                 }
                 // Indentation the same
                 else if (indentation == currentIndentation) {
-                    if (currentBlock.isContainer) {
+                    if (currentBlock.isContainer()) {
                         throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.");
                     }
                     for (Parser parser : parsers) {
@@ -301,7 +303,12 @@ public class Runtime {
     }
 
     public static void main(String args[]) {
-        new Runtime(new File(args[0]), new File(args[1]));
+
+        if(args.length == 2)
+            new Runtime(new File(args[0]), new File(args[1]));
+        else
+            new Runtime(new File("C:\\Users\\Michael\\Desktop\\JVM Compiler\\compiled\\MyCode.mlg"), new File(
+                    "C:\\Users\\Michael\\Desktop\\JVM Compiler\\src\\main\\java\\asm\\GeneratedAsmCode.java"));
     }
 
 }

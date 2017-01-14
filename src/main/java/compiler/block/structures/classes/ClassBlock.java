@@ -1,4 +1,4 @@
-package compiler.block.structures;
+package compiler.block.structures.classes;
 
 import compiler.block.Block;
 
@@ -75,7 +75,6 @@ public class ClassBlock extends Block {
 				"                    false);                             // Is this class an interface?\n" +
 				"\n" +
 				"            con.visitInsn(RETURN);                      // End the constructor method\n" +
-				"            con.visitMaxs(1, 1);                        // Specify max stack and local vars\n" +
 				"        }";
 
 	}

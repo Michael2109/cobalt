@@ -56,51 +56,23 @@ public class JVMCompiler {
             mv.visitCode();
 
 
+            Label start9 = new Label();
+            mv.visitLabel(start9);
 
             mv.visitLdcInsn(5);
-            mv.visitVarInsn(ISTORE, 1);
-
             mv.visitLdcInsn(10);
-            mv.visitVarInsn(ISTORE, 2);
 
-            mv.visitLdcInsn(15);
-
-            mv.visitVarInsn(ILOAD, 1);
-            mv.visitVarInsn(ILOAD, 2);
-
-        //    mv.visitVarInsn(IF_ICMPLE, );
-
-            Label label = new Label();
-            mv.visitLabel(label);
-
-
-
-
-
-
-
-
-
-
-
+            Label l9 = new Label();
+            mv.visitJumpInsn(IF_ICMPGE, l9);
 
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("Hello World");
+            mv.visitLdcInsn("Something");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
 
-         //   mv.visitIntInsn(SIPUSH, 400);
-       //     mv.visitVarInsn(ISTORE,4);
+            mv.visitJumpInsn(GOTO, start9);
+            mv.visitLabel(l9);
 
-      //      mv.visitIntInsn(SIPUSH, 600);
-       //     mv.visitVarInsn(ISTORE,5);
-
-           // mv.visitLocalVariable("x", "I", null, l0, l1,1);
-         //   mv.visitLocalVariable("y", "I", null, l1, l2,2);
-          //  mv.visitLocalVariable("z", "I", null, l2, l3,3);
-         //   mv.visitVarInsn(ISTORE, 3);
-           // mv.visitLocalVariable("x", "I", null, l1, l2, 1);
             mv.visitInsn(RETURN);                      // Return integer from top of stack
-          //  mv.visitMaxs(3, 4);                         // Specify max stack and local vars
         }
 
        // DynamicClassLoader loader = new DynamicClassLoader();

@@ -2,6 +2,7 @@ package compiler.parser.ifs;
 
 import compiler.block.Block;
 import compiler.block.ifs.IfBlock;
+import compiler.block.loops.WhileBlock;
 import compiler.parser.Parser;
 import compiler.tokenizer.Token;
 import compiler.tokenizer.TokenData;
@@ -24,14 +25,17 @@ public class IfParser extends Parser<IfBlock> {
 
         tokenizer.nextToken();  //skip if
         tokenizer.nextToken();  // skip (
-        Token first = tokenizer.nextToken();
-        Token operator = tokenizer.nextToken();
+        String statement = "";
+        String nextToken = tokenizer.nextToken().getToken();
+        while (!nextToken.equals(")")) {
 
-        if (operator.getToken().equals(")")) {
-            return new IfBlock(superBlock, first.getToken());
-        } else {
-            Token value = tokenizer.nextToken();
-            return new IfBlock(superBlock, first.getToken() + " " + operator.getToken() + " " + value.getToken());
+            if (nextToken.equals("="))
+                statement += nextToken;
+            else
+                statement += " " + nextToken + " ";
+            nextToken = tokenizer.nextToken().getToken();
         }
+
+        return new IfBlock(superBlock, statement.trim());
     }
 }

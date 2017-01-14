@@ -9,7 +9,7 @@ public class ObjectMethodCallBlock extends Block {
     private Parameter[] params;
 
     public ObjectMethodCallBlock(Block superBlock, String className, String methodName,Parameter[] params) {
-        super(superBlock, false, true);
+        super(superBlock, false, false);
 
         this.className = className;
         this.methodName = methodName;

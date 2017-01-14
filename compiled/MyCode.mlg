@@ -1,14 +1,12 @@
-import iostream
-class GeneratedAsmCode:
+class GeneratedAsmCode():
 
     void method1(int number):
         print ("Other test")
 
     void otherMethod(int number):
         int x = 10
-        x += 5
-        int y = 20
-        y += 100
-        x += 10
-        print("Hello World")
+        while (x == 20):
+            print("Something")
+        if (x < 10):
+            print("Something else")
 

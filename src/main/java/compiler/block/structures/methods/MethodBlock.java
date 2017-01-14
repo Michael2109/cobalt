@@ -50,7 +50,7 @@ public class MethodBlock extends Block {
 	@Override
 	public String getClosingCode() {
 		return "       mv.visitInsn(RETURN);                      // Return integer from top of stack\n" +
-				"            mv.visitMaxs(0, 0);                         // Specify max stack and local vars\n" +
+
 				"        }";
 	}
 

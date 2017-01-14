@@ -1,7 +1,7 @@
 package compiler.parser.structures.classes;
 
 import compiler.block.Block;
-import compiler.block.structures.ClassBlock;
+import compiler.block.structures.classes.ClassBlock;
 import compiler.parser.Parser;
 import compiler.tokenizer.Tokenizer;
 
@@ -9,7 +9,7 @@ public class ClassParser extends Parser<ClassBlock> {
 
 	@Override
 	public boolean shouldParse(String line) {
-		return line.matches("class [a-zA-Z][a-zA-Z0-9]*:");
+		return line.matches("class[ ]+[a-zA-Z][a-zA-Z0-9]*\\(\\):");
 	}
 
 
@@ -19,7 +19,7 @@ public class ClassParser extends Parser<ClassBlock> {
 
 		tokenizer.nextToken();
 		String className = tokenizer.nextToken().getToken();
-		
+
 		return new ClassBlock(superBlock, className);
 	}
 }

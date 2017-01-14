@@ -44,7 +44,6 @@ public class GeneratedAsmCode {
                     false);                             // Is this class an interface?
 
             con.visitInsn(RETURN);                      // End the constructor method
-            con.visitMaxs(1, 1);                        // Specify max stack and local vars
         }
    {
             /* Build 'add' method */
@@ -61,7 +60,6 @@ public class GeneratedAsmCode {
             mv.visitLdcInsn("Other test");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
        mv.visitInsn(RETURN);                      // Return integer from top of stack
-            mv.visitMaxs(0, 0);                         // Specify max stack and local vars
         }
    {
             /* Build 'add' method */
@@ -75,31 +73,29 @@ public class GeneratedAsmCode {
 
 
 mv.visitLdcInsn(10);
-mv.visitVarInsn(ISTORE,5);
+mv.visitVarInsn(ISTORE,4);
 
-mv.visitLdcInsn(5);
-mv.visitVarInsn(ILOAD,5);
-mv.visitInsn(IADD);
-mv.visitVarInsn(ISTORE,5);
-
+Label start5 = new Label();
+mv.visitLabel(start5);
+mv.visitVarInsn(ILOAD,4);
 mv.visitLdcInsn(20);
-mv.visitVarInsn(ISTORE,7);
-
-mv.visitLdcInsn(100);
-mv.visitVarInsn(ILOAD,7);
-mv.visitInsn(IADD);
-mv.visitVarInsn(ISTORE,7);
-
-mv.visitLdcInsn(10);
-mv.visitVarInsn(ILOAD,5);
-mv.visitInsn(IADD);
-mv.visitVarInsn(ISTORE,5);
+Label l5 = new Label();
+mv.visitJumpInsn(IF_ICMPGE, l5);
 
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("Hello World");
+            mv.visitLdcInsn("Something");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+mv.visitJumpInsn(GOTO, start5);
+mv.visitLabel(l5);
+
+mv.visitVarInsn(ILOAD,4);mv.visitLdcInsn(<);
+Label l7 = new Label();
+mv.visitJumpInsn(IF_ICMPNE, l7);
+     mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            mv.visitLdcInsn("Something else");
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+mv.visitLabel(l7);
        mv.visitInsn(RETURN);                      // Return integer from top of stack
-            mv.visitMaxs(0, 0);                         // Specify max stack and local vars
         }
 return cw.toByteArray();}
     public static void main(String [] args){

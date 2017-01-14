@@ -15,7 +15,6 @@ public class AddBlock extends Block {
         this.name = name;
         this.value = value;
         setId(SymbolTable.getInstance().getValue(Utils.getMethod(this), name).getId());
-        System.out.println("ID: "+ getId());
     }
 
     @Override

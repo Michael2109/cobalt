@@ -9,7 +9,7 @@ public class MethodCallBlock extends Block {
     private Parameter[] params;
 
     public MethodCallBlock(Block superBlock, String name, String type, Parameter[] params) {
-        super(superBlock, false, true);
+        super(superBlock, false, false);
 
         this.name = name;
         this.type = type;
