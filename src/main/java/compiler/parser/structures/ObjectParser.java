@@ -1,11 +1,14 @@
 package compiler.parser.structures;
 
 import compiler.block.Block;
-import compiler.block.structures.ObjectBlock;
+import compiler.block.structures.objects.ObjectBlock;
 import compiler.parser.Parser;
 import compiler.tokenizer.Token;
 import compiler.tokenizer.Tokenizer;
 
+/**
+ * Creation of a new instance of a class
+ */
 public class ObjectParser extends Parser<ObjectBlock> {
     @Override
     public boolean shouldParse(String line) {

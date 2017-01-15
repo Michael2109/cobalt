@@ -2,8 +2,13 @@ package asm;
 
 public class TestCode {
 
+    public void add(){
+
+    }
+
     public static void main(String[] args) {
-        new String();
+        TestCode test = new TestCode();
+        test.add();
     }
 
 }

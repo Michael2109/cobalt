@@ -1,8 +1,11 @@
-package compiler.block.structures;
+package compiler.block.structures.objects;
 
 import compiler.Parameter;
 import compiler.block.Block;
 
+/**
+ * Calling of a method within the class
+ */
 public class MethodCallBlock extends Block {
 
     private String name, type;

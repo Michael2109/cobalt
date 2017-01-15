@@ -1,8 +1,9 @@
-package compiler.block.structures;
+package compiler.block.structures.objects;
 
 import compiler.block.Block;
 import compiler.tokenizer.Token;
 
+// Creation of a new object and storing to a variable
 public class ObjectBlock extends Block {
 
     Token className;
@@ -27,7 +28,7 @@ public class ObjectBlock extends Block {
 
     @Override
     public String getName() {
-        return null;
+        return variableName.getToken();
     }
 
     @Override
@@ -47,7 +48,10 @@ public class ObjectBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return className.getToken() + " " + variableName.getToken() + " " + operator.getToken() + " " + newKeyword.getToken() + " " + initClassName.getToken() + "();";
+        return "mv.visitTypeInsn(NEW, \"asm/"+className+"\");\n" +
+                "mv.visitInsn(DUP);\n" +
+                "mv.visitMethodInsn(INVOKESPECIAL, \"asm/"+className+"\", \"<init>\", \"()V\", false);\n" +
+                "mv.visitVarInsn(ASTORE,"+ getId() +");\n";
     }
 
     @Override

@@ -9,4 +9,6 @@ class GeneratedAsmCode():
             print("Something")
         if (x < 10):
             print("Something else")
+        TestCode test = new TestCode()
+        test.add()
 

@@ -1,8 +1,13 @@
-package compiler.block.structures;
+package compiler.block.structures.objects;
 
 import compiler.Parameter;
+import compiler.Utils;
 import compiler.block.Block;
+import compiler.symbol_table.SymbolTable;
 
+/**
+ * Calling a method of an object
+ */
 public class ObjectMethodCallBlock extends Block {
 
     private String className, methodName, type;
@@ -10,11 +15,12 @@ public class ObjectMethodCallBlock extends Block {
 
     public ObjectMethodCallBlock(Block superBlock, String className, String methodName,Parameter[] params) {
         super(superBlock, false, false);
+        id = SymbolTable.getInstance().getValue(Utils.getMethod(this), className).getId();
 
         this.className = className;
         this.methodName = methodName;
-
     }
+
 
     @Override
     public String getValue() {
@@ -37,7 +43,8 @@ public class ObjectMethodCallBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return className + "." + methodName+"();";
+        return "mv.visitVarInsn(ALOAD, "+id+");\n" +
+                "mv.visitMethodInsn(INVOKEVIRTUAL, \"asm/"+className+"\", \""+methodName+"\", \"()V\", false);\n";
     }
 
     public Parameter[] getParameters() {
@@ -51,7 +58,7 @@ public class ObjectMethodCallBlock extends Block {
 
     @Override
     public String getName() {
-        return null;
+        return className;
     }
 
 }

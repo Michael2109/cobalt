@@ -53,7 +53,7 @@ public static byte[] dump() throws Exception {
     }
 
     public static void main(String [] args) throws Exception{
-        DataOutputStream dout=new DataOutputStream(new FileOutputStream("asm/Test.class"));
+        DataOutputStream dout=new DataOutputStream(new FileOutputStream("asm/est.class"));
         dout.write(dump());
         dout.flush();
         dout.close();

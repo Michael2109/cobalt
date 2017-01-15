@@ -1,7 +1,7 @@
 package compiler.parser.structures;
 
 import compiler.block.Block;
-import compiler.block.structures.ObjectMethodCallBlock;
+import compiler.block.structures.objects.ObjectMethodCallBlock;
 import compiler.parser.Parser;
 import compiler.tokenizer.Tokenizer;
 

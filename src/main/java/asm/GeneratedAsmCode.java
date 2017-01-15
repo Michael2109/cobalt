@@ -96,6 +96,13 @@ mv.visitJumpInsn(IF_ICMPGE, l7);
             mv.visitLdcInsn("Something else");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
 mv.visitLabel(l7);
+mv.visitTypeInsn(NEW, "asm/TestCode");
+mv.visitInsn(DUP);
+mv.visitMethodInsn(INVOKESPECIAL, "asm/TestCode", "<init>", "()V", false);
+mv.visitVarInsn(ASTORE,9);
+
+mv.visitVarInsn(ALOAD, 9);
+mv.visitMethodInsn(INVOKEVIRTUAL, "asm/test", "add", "()V", false);
        mv.visitInsn(RETURN);                      // Return integer from top of stack
         }
 return cw.toByteArray();}
