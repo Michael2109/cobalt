@@ -32,6 +32,11 @@ public class CommentBlock extends Block {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

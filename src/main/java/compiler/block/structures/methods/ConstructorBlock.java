@@ -3,22 +3,17 @@ package compiler.block.structures.methods;
 import compiler.Parameter;
 import compiler.block.Block;
 
+import java.util.List;
+
 public class ConstructorBlock extends Block {
 
-	private String name, type;
-	private Parameter[] params;
+	private List<Parameter> parameters;
 
-	public ConstructorBlock(Block superBlock, String name, String type, Parameter[] params) {
+	public ConstructorBlock(Block superBlock, List<Parameter> parameters) {
 		super(superBlock, true, false);
-		
-		this.name = name;
-		this.type = type;
-		this.params = params;
+		this.parameters = parameters;
 
-	}
-	
-	public String getName() {
-		return name;
+
 	}
 
 	@Override
@@ -26,32 +21,42 @@ public class ConstructorBlock extends Block {
 		return null;
 	}
 
+	@Override
 	public String getType() {
-		return type;
+		return null;
 	}
+
 
 	@Override
 	public String getOpeningCode() {
-		return null;
+		return "";
 	}
 
 	@Override
 	public String getClosingCode() {
-		return null;
+		return  "mv.visitInsn(RETURN);                      // End the constructor method\n" +
+				"}";
 	}
 
 	@Override
 	public String getBodyCode() {
-		return null;
+		return "";
 	}
 
-	public Parameter[] getParameters() {
-		return params;
+
+	@Override
+	public void init() {
+
 	}
 
 	@Override
 	public void run() {
 
+	}
+
+	@Override
+	public String getName() {
+		return null;
 	}
 
 }

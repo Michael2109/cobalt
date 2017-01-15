@@ -9,6 +9,11 @@ public class Package extends Block{
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

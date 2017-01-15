@@ -49,6 +49,11 @@ public class ForBlock extends Block {
 
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

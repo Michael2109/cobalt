@@ -15,6 +15,11 @@ public class DivideBlock extends Block {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

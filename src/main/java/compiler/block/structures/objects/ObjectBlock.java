@@ -22,6 +22,11 @@ public class ObjectBlock extends Block {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

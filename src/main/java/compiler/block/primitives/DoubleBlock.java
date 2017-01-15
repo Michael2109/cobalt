@@ -15,6 +15,11 @@ public class DoubleBlock extends Block {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

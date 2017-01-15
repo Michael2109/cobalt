@@ -27,24 +27,39 @@ public class GeneratedAsmCode {
 
 // Build the constructor
         {
-            MethodVisitor con = cw.visitMethod(
+            MethodVisitor mv = cw.visitMethod(
                     ACC_PUBLIC,                         // public method
                     "<init>",                           // method name
-                    "()V",                              // descriptor
+                    "(II)V",                              // descriptor
                     null,                               // signature (null means not generic)
                     null);                              // exceptions (array of strings)
 
-            con.visitCode();                            // Start the code for this method
-            con.visitVarInsn(ALOAD, 0);                 // Load "this" onto the stack
+            mv.visitCode();                            // Start the code for this method
+ Label l0 = new Label();
+mv.visitLabel(l0);
+            mv.visitVarInsn(ALOAD, 0);                 // Load "this" onto the stack
 
-            con.visitMethodInsn(INVOKESPECIAL,          // Invoke an instance method (non-virtual)
+            mv.visitMethodInsn(INVOKESPECIAL,          // Invoke an instance method (non-virtual)
                     "java/lang/Object",                 // Class on which the method is defined
                     "<init>",                           // Name of the method
                     "()V",                              // Descriptor
                     false);                             // Is this class an interface?
 
-            con.visitInsn(RETURN);                      // End the constructor method
-        }
+Label l2 = new Label();
+mv.visitLabel(l2);
+mv.visitLocalVariable("this", "Lasm/GeneratedAsmCode;", null, l0, l2, 0);
+mv.visitLocalVariable("x", "I", null, l0, l2, 2);
+mv.visitLocalVariable("y", "I", null, l0, l2, 3);
+
+       
+     mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            mv.visitLdcInsn("Hello World!");
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+mv.visitLdcInsn(2);
+mv.visitVarInsn(ISTORE,5);
+
+mv.visitInsn(RETURN);                      // End the constructor method
+}
    {
             /* Build 'add' method */
             MethodVisitor mv = cw.visitMethod(
@@ -73,38 +88,40 @@ public class GeneratedAsmCode {
 
 
 mv.visitLdcInsn(10);
-mv.visitVarInsn(ISTORE,4);
+mv.visitVarInsn(ISTORE,9);
 
-Label start5 = new Label();
-mv.visitLabel(start5);
-mv.visitVarInsn(ILOAD,4);
+Label start10 = new Label();
+mv.visitLabel(start10);
+mv.visitVarInsn(ILOAD,9);
 mv.visitLdcInsn(20);
-Label l5 = new Label();
-mv.visitJumpInsn(IF_ICMPGE, l5);
+Label l10 = new Label();
+mv.visitJumpInsn(IF_ICMPGE, l10);
 
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Something");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-mv.visitJumpInsn(GOTO, start5);
-mv.visitLabel(l5);
+mv.visitJumpInsn(GOTO, start10);
+mv.visitLabel(l10);
 
-mv.visitVarInsn(ILOAD,4);mv.visitLdcInsn(10);
-Label l7 = new Label();
-mv.visitJumpInsn(IF_ICMPGE, l7);
+mv.visitVarInsn(ILOAD,9);mv.visitLdcInsn(10);
+Label l12 = new Label();
+mv.visitJumpInsn(IF_ICMPGE, l12);
 
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Something else");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-mv.visitLabel(l7);
+mv.visitLabel(l12);
 mv.visitTypeInsn(NEW, "asm/TestCode");
 mv.visitInsn(DUP);
 mv.visitMethodInsn(INVOKESPECIAL, "asm/TestCode", "<init>", "()V", false);
-mv.visitVarInsn(ASTORE,9);
+mv.visitVarInsn(ASTORE,14);
 
-mv.visitVarInsn(ALOAD, 9);
+mv.visitVarInsn(ALOAD, 14);
 mv.visitMethodInsn(INVOKEVIRTUAL, "asm/test", "add", "()V", false);
+
        mv.visitInsn(RETURN);                      // Return integer from top of stack
         }
+
 return cw.toByteArray();}
     public static void main(String [] args){
      DataOutputStream dout = null;

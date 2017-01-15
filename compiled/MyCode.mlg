@@ -1,4 +1,7 @@
-class GeneratedAsmCode():
+class GeneratedAsmCode(int x, int y):
+
+    print("Hello World!")
+    int z = 2
 
     void method1(int number):
         print ("Other test")

@@ -8,7 +8,7 @@ import java.util.Collections;
  */
 public abstract class Block {
 
-	protected Block superBlock;
+	private Block superBlock;
 	protected ArrayList<Block> subBlocks;
 
 	// true ifs block can store sub blocks
@@ -23,7 +23,7 @@ public abstract class Block {
 
 
 	public Block(Block superBlock, boolean container, boolean variable) {
-		this.superBlock = superBlock;
+		this.setSuperBlock(superBlock);
 		this.subBlocks = new ArrayList<>();
 		this.container = container;
 		id = TOTAL_BLOCKS++;
@@ -57,6 +57,15 @@ public abstract class Block {
 		subBlocks.add(block);
 	}
 
+	// Removes a block
+	public void removeBlock(Block block){
+		subBlocks.remove(block);
+	}
+
+
+	// Called before looping through blocks to generate code. Allows for method to be called when all blocks are loaded
+	public abstract void init();
+
 	public abstract void run();
 
     public abstract String getName();
@@ -67,10 +76,6 @@ public abstract class Block {
 	public abstract String getBodyCode();
 	public abstract String getClosingCode();
 
-	@Override
-	public String toString(){
-		return getName() + " " + getValue() + " " + getType();
-	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -93,5 +98,14 @@ public abstract class Block {
 
 	public void setVariable(boolean variable) {
 		this.variable = variable;
+	}
+
+	@Override
+	public String toString(){
+		return getName() + " " + getValue() + " " + getType();
+	}
+
+	public void setSuperBlock(Block superBlock) {
+		this.superBlock = superBlock;
 	}
 }

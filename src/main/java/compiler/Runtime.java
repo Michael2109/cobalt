@@ -1,20 +1,14 @@
 package compiler;
 
 import compiler.block.Block;
-import compiler.block.prints.PrintBlock;
-import compiler.block.comments.CommentBlock;
 import compiler.block.ifs.IfBlock;
-import compiler.block.loops.ForBlock;
 import compiler.block.loops.WhileBlock;
-import compiler.block.structures.methods.ConstructorBlock;
 import compiler.block.structures.methods.MethodBlock;
 import compiler.block.operators.AddBlock;
 import compiler.block.operators.DivideBlock;
 import compiler.block.operators.MultiplyBlock;
 import compiler.block.operators.SubtractBlock;
-import compiler.block.primitives.*;
 import compiler.block.structures.classes.ClassBlock;
-import compiler.block.structures.FileBlock;
 import compiler.exceptions.ContainerException;
 import compiler.exceptions.DeclarationException;
 import compiler.exceptions.IndentationException;
@@ -32,7 +26,6 @@ import compiler.parser.primitives.*;
 import compiler.parser.prints.PrintParser;
 import compiler.parser.structures.*;
 import compiler.parser.structures.classes.ClassParser;
-import compiler.parser.structures.methods.ConstructorParser;
 import compiler.parser.structures.methods.MethodParser;
 import compiler.symbol_table.Row;
 import compiler.symbol_table.SymbolTable;
@@ -69,7 +62,6 @@ public class Runtime {
             new PrintParser(),
             new ForParser(),
             new CommentParser(),
-            new ConstructorParser(),
             new MethodCallParser(),
             new ImportParser(),
             new WhileParser(),
@@ -129,6 +121,8 @@ public class Runtime {
     }
 
 
+    String methodName = null;
+    String className = null;
     public Block createBlock(Block currentBlock, BufferedReader br, int indentation) {
         String line = "";
 
@@ -215,72 +209,15 @@ public class Runtime {
     }
 
 
-    String methodName = null;
-    String className = null;
-
     // Prints block information
     public void printBlockInfo(Block block, int indentation) {
         String indentationString = "";
         for (int i = 0; i < indentation; i++) {
             indentationString += "    ";
         }
-        Row row = new Row();
-        if (block instanceof ClassBlock) {
-            ClassBlock b = (ClassBlock) block;
-            System.out.println(indentationString + b.getName());
-            className = b.getName();
-        }
-        if (block instanceof ConstructorBlock) {
-            ConstructorBlock b = (ConstructorBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName());
-        }
-        if (block instanceof MethodBlock) {
-            MethodBlock b = (MethodBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName());
-            methodName = b.getName();
-        }
-        if (block instanceof IntegerBlock) {
-            IntegerBlock b = (IntegerBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
-        }
-        if (block instanceof FloatBlock) {
-            FloatBlock b = (FloatBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
-        }
-        if (block instanceof DoubleBlock) {
-            DoubleBlock b = (DoubleBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
-        }
-        if (block instanceof BooleanBlock) {
-            BooleanBlock b = (BooleanBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
-        }
-        if (block instanceof CharacterBlock) {
-            CharacterBlock b = (CharacterBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName() + " " + b.getValue());
-        }
-        if (block instanceof PrintBlock) {
-            PrintBlock b = (PrintBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getValue());
-        }
-        if (block instanceof IfBlock) {
-            IfBlock b = (IfBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName());
-        }
-        if (block instanceof ForBlock) {
-            ForBlock b = (ForBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName());
-        }
-        if (block instanceof WhileBlock) {
-            WhileBlock b = (WhileBlock) block;
-            System.out.println(indentationString + b.getType() + " " + b.getName());
-        }
-        if (block instanceof CommentBlock) {
-            CommentBlock b = (CommentBlock) block;
-            System.out.println(indentationString + b.getType());
-        }
 
-        //System.out.println(indentationString + block.getClass());
+        System.out.println(indentationString + block.toString());
+
         for (Block sub : block.getSubBlocks()) {
             printBlockInfo(sub, indentation + 1);
         }
@@ -303,12 +240,14 @@ public class Runtime {
     }
 
     public static void main(String args[]) {
-
-        if(args.length == 2)
-            new Runtime(new File(args[0]), new File(args[1]));
-        else
-            new Runtime(new File("C:\\Users\\Michael\\Desktop\\JVM Compiler\\compiled\\MyCode.mlg"), new File(
-                    "C:\\Users\\Michael\\Desktop\\JVM Compiler\\src\\main\\java\\asm\\GeneratedAsmCode.java"));
+        final Object LOCK = new Object();
+        synchronized (LOCK) {
+            if (args.length == 2)
+                new Runtime(new File(args[0]), new File(args[1]));
+            else
+                new Runtime(new File("C:\\Users\\Michael\\Desktop\\JVM Compiler\\compiled\\MyCode.mlg"), new File(
+                        "C:\\Users\\Michael\\Desktop\\JVM Compiler\\src\\main\\java\\asm\\GeneratedAsmCode.java"));
+        }
     }
 
 }

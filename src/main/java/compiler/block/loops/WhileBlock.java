@@ -84,6 +84,11 @@ public class WhileBlock extends Block {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void run() {
 
     }

@@ -1,6 +1,7 @@
 package compiler;
 
 import compiler.block.Block;
+import compiler.block.structures.classes.ClassBlock;
 import compiler.block.structures.methods.MethodBlock;
 
 import java.io.*;
@@ -28,8 +29,8 @@ public class Compile {
 
 
 
-
-        convertToJavassistRec(block);
+        initBlocks(block);
+        generateASM(block);
 
 
         w.close();
@@ -39,11 +40,21 @@ public class Compile {
        // MyCode.main(new String[0]);
     }
 
+    // Initialises all blocks.
+    // Allows for initialisation when all blocks have been loaded.
+    public void initBlocks(Block block){
+            block.init();
+            for (Block sub : block.getSubBlocks()) {
+                initBlocks(sub);
+            }
+    }
+
 
     /**
      * Converts the block structure into ASM and saves as a .java file
      */
-    public void convertToJavassistRec(Block block) {
+    public void generateASM(Block block) {
+
 
         if (block instanceof MethodBlock) {
             MethodBlock b = (MethodBlock) block;
@@ -63,7 +74,7 @@ public class Compile {
         }
 
         for (Block sub : block.getSubBlocks()) {
-            convertToJavassistRec(sub);
+            generateASM(sub);
         }
         if(block.getClosingCode() != null && !block.getClosingCode().equals(""))
             p(block.getClosingCode());
