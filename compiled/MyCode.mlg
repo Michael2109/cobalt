@@ -1,3 +1,6 @@
+package asm
+import asm.TestCode
+import test.afoiadsfhjaisdo.ifdiojhd
 class GeneratedAsmCode(int x, int y):
 
     print("Hello World!")
@@ -6,6 +9,7 @@ class GeneratedAsmCode(int x, int y):
     void method1(int number):
         print ("Other test")
 
+    print("Test")
     void otherMethod(int number):
         int x = 10
         while (x == 20):

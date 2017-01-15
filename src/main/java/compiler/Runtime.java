@@ -2,7 +2,10 @@ package compiler;
 
 import compiler.block.Block;
 import compiler.block.ifs.IfBlock;
+import compiler.block.imports.ImportBlock;
 import compiler.block.loops.WhileBlock;
+import compiler.block.packages.PackageBlock;
+import compiler.block.structures.FileBlock;
 import compiler.block.structures.methods.MethodBlock;
 import compiler.block.operators.AddBlock;
 import compiler.block.operators.DivideBlock;
@@ -22,6 +25,7 @@ import compiler.parser.operators.AddParser;
 import compiler.parser.operators.DivideParser;
 import compiler.parser.operators.MultiplyParser;
 import compiler.parser.operators.SubtractParser;
+import compiler.parser.packages.PackageParser;
 import compiler.parser.primitives.*;
 import compiler.parser.prints.PrintParser;
 import compiler.parser.structures.*;
@@ -32,6 +36,8 @@ import compiler.symbol_table.SymbolTable;
 import compiler.tokenizer.Tokenizer;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parses the file generating the block structure.
@@ -66,7 +72,8 @@ public class Runtime {
             new ImportParser(),
             new WhileParser(),
             new ObjectParser(),
-            new ObjectMethodCallParser()
+            new ObjectMethodCallParser(),
+            new PackageParser()
     };
 
     Block block;
@@ -78,6 +85,8 @@ public class Runtime {
 
     public Runtime(File sourceFile, File outputFile) {
 
+        PackageBlock packageBlock = null;
+        List<ImportBlock> imports = new ArrayList<>();
         BufferedReader br = null;
         try {
 
@@ -85,13 +94,27 @@ public class Runtime {
             br = new BufferedReader(new FileReader(sourceFile));
             String line;
             while ((line = br.readLine()) != null) {
+
+
                 for (Parser parser : parsers) {
                     if (parser.shouldParse(line.trim())) {
                         tokenizer = new Tokenizer(line);
-                        block = parser.parse(null,tokenizer);
-                        createBlock(block, br, 0);
+                        block = parser.parse(null, tokenizer);
+                        if (block instanceof PackageBlock) {
+                            packageBlock = (PackageBlock)block;
+                        }else if (block instanceof ImportBlock) {
+                            imports.add((ImportBlock)block);
+                        } else {
+                            createBlock(block, br, 0);
+                        }
                     }
                 }
+
+                block.setSuperBlock(new FileBlock());
+                Block fileBlock = new FileBlock();
+                fileBlock.addBlock(block);
+                block = fileBlock;
+
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
 
@@ -116,13 +139,14 @@ public class Runtime {
 
         SymbolTable.getInstance().printSymbols();
 
-        new Compile(outputFile, block);
+        new Compile(outputFile, packageBlock,  imports,block);
 
     }
 
 
     String methodName = null;
     String className = null;
+
     public Block createBlock(Block currentBlock, BufferedReader br, int indentation) {
         String line = "";
 

@@ -24,8 +24,6 @@ public class ObjectParser extends Parser<ObjectBlock> {
         Token newKeyword = tokenizer.nextToken();
         Token initClassName = tokenizer.nextToken();
 
-        System.out.println(className + " " + variableName + " " + operator + " " + newKeyword + " " + initClassName);
-
         return new ObjectBlock(superBlock, className, variableName , operator, newKeyword , initClassName);
     }
 }

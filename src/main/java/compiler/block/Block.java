@@ -100,11 +100,6 @@ public abstract class Block {
 		this.variable = variable;
 	}
 
-	@Override
-	public String toString(){
-		return getName() + " " + getValue() + " " + getType();
-	}
-
 	public void setSuperBlock(Block superBlock) {
 		this.superBlock = superBlock;
 	}

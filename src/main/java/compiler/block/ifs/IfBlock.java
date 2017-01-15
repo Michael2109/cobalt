@@ -19,7 +19,6 @@ public class IfBlock extends Block {
     public IfBlock(Block superBlock, String name) {
         super(superBlock, true, false);
         this.name = name;
-        System.out.println(name);
 
         String[] split = name.split(" ");
 

@@ -36,8 +36,7 @@ public class ClassBlock extends Block {
 			parameterString += parameter.getAsmType();
 
 			Block.TOTAL_BLOCKS++;
-			localVariableString += "mv.visitLocalVariable(\""+parameter.getName()+"\", \""+parameter.getAsmType()+"\", null, l0, l2, "+Block.TOTAL_BLOCKS+");\n";
-			System.out.println(localVariableString);
+			localVariableString += "mv.visitLocalVariable(\""+parameter.getName()+"\", \""+parameter.getAsmType()+"\", null, lConstructor0, lConstructor2, "+Block.TOTAL_BLOCKS+");\n";
 		}
 		constructorBlock = new ConstructorBlock(this, parameters);
 
@@ -100,8 +99,8 @@ public class ClassBlock extends Block {
 				"                    null);                              // exceptions (array of strings)\n" +
 				"\n" +
 				"            mv.visitCode();                            // Start the code for this method\n" +
-				" Label l0 = new Label();\n" +
-				"mv.visitLabel(l0);\n" +
+				" Label lConstructor0 = new Label();\n" +
+				"mv.visitLabel(lConstructor0);\n" +
 				"            mv.visitVarInsn(ALOAD, 0);                 // Load \"this\" onto the stack\n" +
 				"\n" +
 				"            mv.visitMethodInsn(INVOKESPECIAL,          // Invoke an instance method (non-virtual)\n" +
@@ -111,9 +110,9 @@ public class ClassBlock extends Block {
 				"                    false);                             // Is this class an interface?\n" +
 				"\n" +
 
-				"Label l2 = new Label();\n" +
-				"mv.visitLabel(l2);\n" +
-				"mv.visitLocalVariable(\"this\", \"Lasm/"+name+";\", null, l0, l2, "+id+");\n" +
+				"Label lConstructor2 = new Label();\n" +
+				"mv.visitLabel(lConstructor2);\n" +
+				"mv.visitLocalVariable(\"this\", \"Lasm/"+name+";\", null, lConstructor0, lConstructor2, "+id+");\n" +
 				localVariableString + "\n"+
 				"       ";
 
@@ -153,11 +152,6 @@ public class ClassBlock extends Block {
         for (Block sub : getSubBlocks()) {
             moveToConstructor(sub);
         }
-        System.out.println("HERE");
-        for (Block sub : constructorBlock.getSubBlocks()) {
-            System.out.println(sub);
-        }
-        System.out.println("HERE!");
     }
 
     @Override

@@ -1,16 +1,15 @@
-package compiler.block.imports;
+package compiler.block.packages;
 
 import compiler.Parameter;
 import compiler.block.Block;
 
-public class ImportBlock extends Block {
+public class PackageBlock extends Block {
 
-    String directory, fileName;
+    public String directory;
 
-    public ImportBlock(String directory, String fileName) {
+    public PackageBlock(String directory) {
         super(null, false, false);
         this.directory = directory;
-        this.fileName = fileName;
     }
 
     public String getName() {
