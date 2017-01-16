@@ -7,4 +7,6 @@ The language syntax is similar to that of Java and Scala and uses indentation in
 The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. 
 
 
-'Code'
+...
+TEST
+...
