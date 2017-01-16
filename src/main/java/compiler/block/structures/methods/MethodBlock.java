@@ -14,8 +14,21 @@ public class MethodBlock extends Block {
 		this.name = name;
 		this.type = type;
 		this.params = params;
+
+		for (Parameter param : params) {
+			System.out.println(param);
+		}
 	}
-	
+
+	public Parameter[] getParameters() {
+		return params;
+	}
+
+	@Override
+	public void init() {
+
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -66,16 +79,6 @@ public class MethodBlock extends Block {
 				"mv.visitMaxs(0, 0);\n" +
 				"mv.visitEnd();\n" +
 				"}\n";
-	}
-
-
-	public Parameter[] getParameters() {
-		return params;
-	}
-
-	@Override
-	public void init() {
-
 	}
 
 }

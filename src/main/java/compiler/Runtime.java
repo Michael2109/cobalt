@@ -50,8 +50,7 @@ import java.util.List;
 public class Runtime {
 
     Parser[] parsers = {
-            // ClassBlock Parser
-            new ClassParser(),
+
             // MethodBlock Parser
             new MethodParser(),
             // Operator Parsers
@@ -76,7 +75,9 @@ public class Runtime {
             new WhileParser(),
             new ObjectParser(),
             new ObjectMethodCallParser(),
-            new PackageParser()
+            new PackageParser(),
+            // ClassBlock Parser
+            new ClassParser()
     };
 
     Block block;
@@ -148,10 +149,7 @@ public class Runtime {
             }
         }
 
-        //    System.out.println(((ClassBlock)block).getName());
         printBlockInfo(block, 0);
-//printBlocks(block,0);
-
 
         SymbolTable.getInstance().printSymbols();
 
@@ -176,14 +174,14 @@ public class Runtime {
         try {
 
             if (br.ready()) {
-                line = br.readLine();     System.out.println(line);
+                line = br.readLine();
                 lineNumber++;
                 if (line.trim().equals("")) {
                     createBlock(currentBlock, br, indentation);
                     return null;
                 }
                 int currentIndentation = getIndentation(line);
-                System.out.println(currentIndentation + " : " + indentation);
+
                 if (currentIndentation - indentation > 1) {
                     throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation));
                 }
@@ -234,13 +232,8 @@ public class Runtime {
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
                             parsable = true;
-                            System.out.println(line);
-                            System.out.println("Parsing");
-                            System.out.println(parser);
                             Block nextBlock = parser.parse(currentBlock.getSuperBlock(), tokenizer);
-                            System.out.println("Parsed");
                             currentBlock.getSuperBlock().addBlock(nextBlock);
-                            System.out.println("3");
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
