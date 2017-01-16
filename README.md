@@ -15,13 +15,13 @@ package asm
 
 import compiler.block.ifs.IfBlock
 
-class MyCode(int x, int y):
+class MyCode():
 
     // Constructor Calls
     print("Hello World!")
     int z = 2
 
-    void method(int number):
+    void method():
         int x = 10
         while (x < 20):
             print("Something")
@@ -30,4 +30,8 @@ class MyCode(int x, int y):
             print("Something else")
         ExampleClass test = new ExampleClass()
         test.add()
+        
+    void main():
+        MyCode myCodeTest = new MyCode()
+        myCodeTest.method()
 ```
