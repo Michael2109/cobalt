@@ -17,19 +17,17 @@ import compiler.block.ifs.IfBlock
 
 class MyCode(int x, int y):
 
+    // Constructor Calls
     print("Hello World!")
     int z = 2
 
-    void method1(int number):
-        print ("Other test")
-
-    print("Test")
-    void otherMethod(int number):
+    void method(int number):
         int x = 10
-        while (x == 20):
+        while (x < 20):
             print("Something")
+            x += 1
         if (x < 10):
             print("Something else")
-        IfBlock test = new IfBlock()
+        ExampleClass test = new ExampleClass()
         test.add()
 ```
