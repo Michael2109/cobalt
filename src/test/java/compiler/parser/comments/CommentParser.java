@@ -9,14 +9,11 @@ public class CommentParser extends Parser<CommentBlock> {
 
     @Override
     public boolean shouldParse(String line) {
-
         return line.matches("//.*");
     }
 
-
     @Override
     public CommentBlock parse(Block superBlock, Tokenizer tokenizer) {
-
         return new CommentBlock(superBlock);
     }
 }

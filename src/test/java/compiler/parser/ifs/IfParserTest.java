@@ -1,6 +1,5 @@
 package compiler.parser.ifs;
 
-import compiler.parser.comments.CommentParser;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -15,7 +14,7 @@ public class IfParserTest extends TestCase {
     }
 
     @Test
-    public void testCommentParsing() {
+    public void testCommentParser() {
         assertEquals(ifParser.shouldParse("if(x < 10):"), true);
         assertEquals(ifParser.shouldParse("if(x):"), true);
         assertEquals(ifParser.shouldParse("if (x) :"), true);

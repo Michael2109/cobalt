@@ -1,6 +1,7 @@
 package asm
 import compiler.block.ifs.IfBlock
 import asm.MyCode
+
 class MyCode():
 
     print("Hello World!")

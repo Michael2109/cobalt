@@ -17,6 +17,7 @@ import compiler.block.structures.objects.ObjectMethodCallBlock;
 import compiler.exceptions.ContainerException;
 import compiler.exceptions.DeclarationException;
 import compiler.exceptions.IndentationException;
+import compiler.exceptions.ParseException;
 import compiler.parser.*;
 import compiler.parser.comments.CommentParser;
 import compiler.parser.ifs.IfParser;
@@ -84,7 +85,8 @@ public class Runtime {
     //start at 1 to ignore class declaration line
     int lineNumber = 0;
     boolean noParse = false;
-
+    String methodName = null;
+    String className = null;
     public Runtime(File sourceFile, File outputFile) {
 
         PackageBlock packageBlock = null;
@@ -157,20 +159,24 @@ public class Runtime {
 
     }
 
-
-    String methodName = null;
-    String className = null;
+    public static void main(String args[]) {
+        final Object LOCK = new Object();
+        synchronized (LOCK) {
+            if (args.length == 2)
+                new Runtime(new File(args[0]), new File(args[1]));
+            else
+                new Runtime(new File("C:\\Users\\Michael\\Desktop\\JVM Compiler\\compiled\\MyCode.mlg"), new File(
+                        "C:\\Users\\Michael\\Desktop\\JVM Compiler\\src\\main\\java\\asm\\GeneratedAsmCode.java"));
+        }
+    }
 
     public Block createBlock(Block currentBlock, BufferedReader br, int indentation) {
         String line = "";
-        System.out.println("1");
 
         try {
-            System.out.println("something elkse");
+
             if (br.ready()) {
-                System.out.println("HERE");
                 line = br.readLine();     System.out.println(line);
-                System.out.println("FROZEN");
                 lineNumber++;
                 if (line.trim().equals("")) {
                     createBlock(currentBlock, br, indentation);
@@ -179,7 +185,6 @@ public class Runtime {
                 int currentIndentation = getIndentation(line);
                 System.out.println(currentIndentation + " : " + indentation);
                 if (currentIndentation - indentation > 1) {
-                    System.out.println("Line: " + line + " Current Indentation: " + currentIndentation + " : Indentation: " + indentation);
                     throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation));
                 }
                 line = line.trim();
@@ -207,24 +212,28 @@ public class Runtime {
                     if (!currentBlock.isContainer()) {
                         throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Block cannot store other blocks.");
                     }
+                    boolean parsable = false;
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
+                            parsable = true;
                             Block nextBlock = parser.parse(currentBlock, tokenizer);
                             currentBlock.addBlock(nextBlock);
-                            System.out.println("2");
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
+                    if (!parsable)
+                        throw new ParseException("Line: " + lineNumber);
+
                 }
                 // Indentation the same
                 else if (indentation == currentIndentation) {
-                    System.out.println("HERe1");
                     if (currentBlock.isContainer()) {
-
                         throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.");
                     }
+                    boolean parsable = false;
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
+                            parsable = true;
                             System.out.println(line);
                             System.out.println("Parsing");
                             System.out.println(parser);
@@ -235,12 +244,16 @@ public class Runtime {
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
+                    if (!parsable)
+                        throw new ParseException("Line: " + lineNumber);
                 }
                 // Indentation decreases by any amount
                 else {
-                    System.out.println("4");
+
+                    boolean parsable = false;
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
+                            parsable = true;
                             currentBlock = currentBlock.getSuperBlock();
                             for (int i = 0; i < indentation - currentIndentation; i++) {
                                 currentBlock = currentBlock.getSuperBlock();
@@ -250,6 +263,8 @@ public class Runtime {
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
+                    if (!parsable)
+                        throw new ParseException("Line: " + lineNumber);
                 }
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
@@ -259,7 +274,6 @@ public class Runtime {
         }
         return null;
     }
-
 
     // Prints block information
     public void printBlockInfo(Block block, int indentation) {
@@ -289,17 +303,6 @@ public class Runtime {
             }
         }
         return indentation;
-    }
-
-    public static void main(String args[]) {
-        final Object LOCK = new Object();
-        synchronized (LOCK) {
-            if (args.length == 2)
-                new Runtime(new File(args[0]), new File(args[1]));
-            else
-                new Runtime(new File("C:\\Users\\Michael\\Desktop\\JVM Compiler\\compiled\\MyCode.mlg"), new File(
-                        "C:\\Users\\Michael\\Desktop\\JVM Compiler\\src\\main\\java\\asm\\GeneratedAsmCode.java"));
-        }
     }
 
 }
