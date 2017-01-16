@@ -14,9 +14,8 @@ public class Tokenizer {
 	private boolean pushBack;
 	
 	public Tokenizer(String str) {
-		this.tokenDatas = new ArrayList<TokenData>();
+		this.tokenDatas = new ArrayList<>();
 		this.str = str;
-		
 
 		tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL));
 		tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+[.][0-9])"), TokenType.DOUBLE_LITERAL));
@@ -33,7 +32,6 @@ public class Tokenizer {
 		tokenDatas.add(new TokenData(Pattern.compile("^([>])"), TokenType.LARGER_THAN));
 		tokenDatas.add(new TokenData(Pattern.compile("^([>=])"), TokenType.LARGER_THAN_EQUAL));
 		tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-Z][a-zA-Z0-9]*)"), TokenType.IDENTIFIER));
-
 
 		for (String t : new String[] { "=", "\\(", "\\)", "\\.", "\\,", "\\'" }) {
 			tokenDatas.add(new TokenData(Pattern.compile("^(" + t + ")"), TokenType.TOKEN));

@@ -26,7 +26,6 @@ public class ConstructorBlock extends Block {
 		return null;
 	}
 
-
 	@Override
 	public String getOpeningCode() {
 		return "";

@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class IntegerParser extends Parser<IntegerBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("int [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+");
+        return line.matches("int[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]+[=][ ]+[0-9]+");
     }
 
     @Override
@@ -21,6 +21,7 @@ public class IntegerParser extends Parser<IntegerBlock> {
         tokenizer.nextToken();
 
         String value = tokenizer.nextToken().getToken();
+
 
         return new IntegerBlock(superBlock,name,value);
     }

@@ -8,7 +8,7 @@ import compiler.tokenizer.Tokenizer;
 public class AddParser extends Parser<AddBlock> {
     @Override
     public boolean shouldParse(String line) {
-        return line.matches("[a-zA-Z][a-zA-Z0-9]* [+][=] [0-9]+");
+        return line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*[+][=][ ]*[0-9]+");
     }
 
     @Override
@@ -19,6 +19,7 @@ public class AddParser extends Parser<AddBlock> {
         tokenizer.nextToken().getToken();
 
         String value = tokenizer.nextToken().getToken();
+
 
         return new AddBlock(superBlock,name,value);
     }

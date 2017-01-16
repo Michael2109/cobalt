@@ -105,11 +105,14 @@ public class Runtime {
                         if (block instanceof PackageBlock) {
                             packageBlock = (PackageBlock)block;
                             System.out.println(packageBlock);
+                            continue;
                         }else if (block instanceof ImportBlock) {
                             imports.add((ImportBlock)block);
                             System.out.println(block);
+                            continue;
                         } else {
                             createBlock(block, br, 0);
+                            System.out.println("Complete...");
                         }
                     }
                 }
@@ -125,7 +128,6 @@ public class Runtime {
 
                 for(ImportBlock importBlock : imports)
                     block.addBlock(importBlock);
-
 
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
@@ -161,17 +163,22 @@ public class Runtime {
 
     public Block createBlock(Block currentBlock, BufferedReader br, int indentation) {
         String line = "";
+        System.out.println("1");
 
         try {
-            if ((line = br.readLine()) != null) {
+            System.out.println("something elkse");
+            if (br.ready()) {
+                System.out.println("HERE");
+                line = br.readLine();     System.out.println(line);
+                System.out.println("FROZEN");
                 lineNumber++;
                 if (line.trim().equals("")) {
                     createBlock(currentBlock, br, indentation);
                     return null;
                 }
                 int currentIndentation = getIndentation(line);
+                System.out.println(currentIndentation + " : " + indentation);
                 if (currentIndentation - indentation > 1) {
-
                     System.out.println("Line: " + line + " Current Indentation: " + currentIndentation + " : Indentation: " + indentation);
                     throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation));
                 }
@@ -191,9 +198,9 @@ public class Runtime {
                         throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName() + " has already been defined.");
                     } else {
                         SymbolTable.getInstance().addRow(new Row().setId(currentBlock.getId()).setName(currentBlock.getName()).setType(currentBlock.getType()).setValue(currentBlock.getValue()).setMethodName(methodName).setClassName(className));
-
                     }
                 }
+
                 // Indented out one
                 if (currentIndentation == indentation + 1) {
 
@@ -204,25 +211,34 @@ public class Runtime {
                         if (parser.shouldParse(line)) {
                             Block nextBlock = parser.parse(currentBlock, tokenizer);
                             currentBlock.addBlock(nextBlock);
+                            System.out.println("2");
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
                 }
                 // Indentation the same
                 else if (indentation == currentIndentation) {
+                    System.out.println("HERe1");
                     if (currentBlock.isContainer()) {
+
                         throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.");
                     }
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
+                            System.out.println(line);
+                            System.out.println("Parsing");
+                            System.out.println(parser);
                             Block nextBlock = parser.parse(currentBlock.getSuperBlock(), tokenizer);
+                            System.out.println("Parsed");
                             currentBlock.getSuperBlock().addBlock(nextBlock);
+                            System.out.println("3");
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
                 }
                 // Indentation decreases by any amount
                 else {
+                    System.out.println("4");
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
                             currentBlock = currentBlock.getSuperBlock();
