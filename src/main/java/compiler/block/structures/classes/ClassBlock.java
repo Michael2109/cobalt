@@ -80,7 +80,7 @@ public class ClassBlock extends Block {
 				"\n" +
 				"    public static byte[] dump() throws Exception {\n" +
 				"\n" +
-				"        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES); \n\n  " +
+				"        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS); \n\n  " +
 				"  // Visit the class itself\n" +
 				"        {\n" +
 				"            cw.visit(V1_7,                              // Java 1.7\n" +
@@ -89,7 +89,8 @@ public class ClassBlock extends Block {
 				"                    null,                               // signature (null means not generic)\n" +
 				"                    \"java/lang/Object\",                 // superclass\n" +
 				"                    new String[]{}); // interfaces\n" +
-				"        }" +
+
+				" }" +
 				"" +
 				"\n\n\n// Build the constructor\n" +
 				"        {\n" +
@@ -114,7 +115,7 @@ public class ClassBlock extends Block {
 
 				"Label lConstructor2 = new Label();\n" +
 				"mv.visitLabel(lConstructor2);\n" +
-				"mv.visitLocalVariable(\"this\", \"L"+packageBlock.directory+"/"+name+";\", null, lConstructor0, lConstructor2, "+id+");\n" +
+				"mv.visitLocalVariable(\"this\", \"L"+packageBlock.directory+"/"+name+";\", null, lConstructor0, lConstructor2, "+0+");\n" +
 				localVariableString + "\n"+
 				"       ";
 
@@ -127,7 +128,7 @@ public class ClassBlock extends Block {
 
 	@Override
 	public String getClosingCode() {
-		return "\n" +
+		return " cw.visitEnd();\n" +
                 "return cw.toByteArray();}\n" +
 				"    public static void main(String [] args){\n   " +
 				"  DataOutputStream dout = null;\n" +

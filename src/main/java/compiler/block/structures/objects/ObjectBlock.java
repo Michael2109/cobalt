@@ -69,9 +69,9 @@ public class ObjectBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "mv.visitTypeInsn(NEW, \""+directory+"/"+className+"\");\n" +
+        return "mv.visitTypeInsn(NEW, \""+directory+(directory.equals("") ? "" : "/")+className+"\");\n" +
                 "mv.visitInsn(DUP);\n" +
-                "mv.visitMethodInsn(INVOKESPECIAL, \""+directory+"/"+className+"\", \"<init>\", \"()V\", false);\n" +
+                "mv.visitMethodInsn(INVOKESPECIAL, \""+directory+ (directory.equals("") ? "" : "/")+className+"\", \"<init>\", \"()V\", false);\n" +
                 "mv.visitVarInsn(ASTORE,"+ getId() +");\n";
     }
 

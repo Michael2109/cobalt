@@ -53,13 +53,8 @@ public class Compile {
 
         if (block instanceof MethodBlock) {
             MethodBlock b = (MethodBlock) block;
-
-            if (b.getName().equals("main")) {
-                //p("public static void main(String args[]){ \n");
-            } else {
                 p(b.getOpeningCode());
                 p(b.getBodyCode());
-            }
 
         }else {
             if(block.getOpeningCode() != null && !block.getOpeningCode().equals(""))

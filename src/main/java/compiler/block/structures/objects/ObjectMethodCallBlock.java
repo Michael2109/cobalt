@@ -48,7 +48,7 @@ public class ObjectMethodCallBlock extends Block {
     @Override
     public String getBodyCode() {
         return "mv.visitVarInsn(ALOAD, "+id+");\n" +
-                "mv.visitMethodInsn(INVOKEVIRTUAL, \""+directory+"/"+ variableName +"\", \""+methodName+"\", \"()V\", false);\n";
+                "mv.visitMethodInsn(INVOKEVIRTUAL, \""+directory+"/"+ className +"\", \""+methodName+"\", \"()V\", false);\n";
     }
 
     public Parameter[] getParameters() {
@@ -57,9 +57,25 @@ public class ObjectMethodCallBlock extends Block {
 
     @Override
     public void init() {
-        directory = getPackage();
+        directory = getDirectory();
     }
 
+    // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
+    public String getDirectory(){
+        // Get the FileBlock to find the imports
+        Block block = this;
+        while(!(block instanceof FileBlock)){
+            block = block.getSuperBlock();
+        }
+
+        // Get the directory of the Object
+        for(Block sub : block.getSubBlocks()){
+            if(sub instanceof ImportBlock && ((ImportBlock)sub).fileName.equals(className)){
+                return ((ImportBlock)sub).directory;
+            }
+        }
+        return "";
+    }
 
     // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
     public String getPackage(){

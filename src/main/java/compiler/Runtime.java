@@ -5,6 +5,7 @@ import compiler.block.ifs.IfBlock;
 import compiler.block.imports.ImportBlock;
 import compiler.block.loops.WhileBlock;
 import compiler.block.packages.PackageBlock;
+import compiler.block.prints.PrintBlock;
 import compiler.block.structures.FileBlock;
 import compiler.block.structures.methods.MethodBlock;
 import compiler.block.operators.AddBlock;
@@ -12,6 +13,7 @@ import compiler.block.operators.DivideBlock;
 import compiler.block.operators.MultiplyBlock;
 import compiler.block.operators.SubtractBlock;
 import compiler.block.structures.classes.ClassBlock;
+import compiler.block.structures.objects.ObjectMethodCallBlock;
 import compiler.exceptions.ContainerException;
 import compiler.exceptions.DeclarationException;
 import compiler.exceptions.IndentationException;
@@ -183,7 +185,7 @@ public class Runtime {
                     className = currentBlock.getName();
                 }
                 // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
-                if (!(currentBlock instanceof AddBlock) && !(currentBlock instanceof SubtractBlock) && !(currentBlock instanceof MultiplyBlock) && !(currentBlock instanceof DivideBlock) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock)) {
+                if (!(currentBlock instanceof AddBlock) && !(currentBlock instanceof SubtractBlock) && !(currentBlock instanceof MultiplyBlock) && !(currentBlock instanceof DivideBlock) && !(currentBlock instanceof IfBlock) && !(currentBlock instanceof WhileBlock) && !(currentBlock instanceof PrintBlock) &&  !(currentBlock instanceof ObjectMethodCallBlock)) {
                     if (SymbolTable.getInstance().exists(currentBlock.getName(), methodName, className)) {
                         System.out.println(currentBlock.getName() + " " + methodName + " " + className);
                         throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName() + " has already been defined.");

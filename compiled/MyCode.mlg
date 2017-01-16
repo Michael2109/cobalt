@@ -1,7 +1,7 @@
 package asm
 import compiler.block.ifs.IfBlock
-import test.afoiadsfhjaisdo.ifdiojhd
-class MyCode(int x, int y):
+import asm.MyCode
+class MyCode():
 
     print("Hello World!")
     int z = 2
@@ -9,7 +9,6 @@ class MyCode(int x, int y):
     void method1(int number):
         print ("Other test")
 
-    print("Test")
     void otherMethod(int number):
         int x = 10
         while (x == 20):
@@ -18,4 +17,10 @@ class MyCode(int x, int y):
             print("Something else")
         IfBlock test = new IfBlock()
         test.add()
+
+    void main(int other):
+        print ("Hello again")
+        MyCode myCodeTest = new MyCode()
+        myCodeTest.method1()
+
 

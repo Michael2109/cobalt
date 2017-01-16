@@ -35,6 +35,8 @@ public class ConstructorBlock extends Block {
 	@Override
 	public String getClosingCode() {
 		return  "mv.visitInsn(RETURN);                      // End the constructor method\n" +
+				"mv.visitMaxs(0, 0);\n" +
+				"mv.visitEnd();\n" +
 				"}";
 	}
 
