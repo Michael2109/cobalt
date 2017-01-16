@@ -37,11 +37,6 @@ public class CommentBlock extends Block {
     }
 
     @Override
-    public void run() {
-
-    }
-
-    @Override
     public String getName() {
         return null;
     }

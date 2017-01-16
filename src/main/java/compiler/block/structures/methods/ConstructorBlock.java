@@ -49,12 +49,7 @@ public class ConstructorBlock extends Block {
 
 	}
 
-	@Override
-	public void run() {
-
-	}
-
-	@Override
+    @Override
 	public String getName() {
 		return null;
 	}

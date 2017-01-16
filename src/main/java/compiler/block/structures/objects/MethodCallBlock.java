@@ -57,9 +57,4 @@ public class MethodCallBlock extends Block {
 
     }
 
-    @Override
-    public void run() {
-
-    }
-
 }

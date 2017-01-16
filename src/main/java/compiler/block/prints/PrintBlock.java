@@ -61,13 +61,6 @@ public class PrintBlock extends Block {
     }
 
     @Override
-    public void run() {
-
-
-       // getSuperBlock().addVariable(new Variable(getSuperBlock(), t, name, value));
-    }
-
-    @Override
     public String getName() {
         return null;
     }

@@ -64,9 +64,4 @@ public class MethodBlock extends Block {
 
 	}
 
-	@Override
-	public void run() {
-
-	}
-
 }

@@ -47,16 +47,16 @@ mv.visitLabel(lConstructor0);
 
 Label lConstructor2 = new Label();
 mv.visitLabel(lConstructor2);
-mv.visitLocalVariable("this", "Lasm/GeneratedAsmCode;", null, lConstructor0, lConstructor2, 9);
-mv.visitLocalVariable("x", "I", null, lConstructor0, lConstructor2, 11);
-mv.visitLocalVariable("y", "I", null, lConstructor0, lConstructor2, 12);
+mv.visitLocalVariable("this", "Lasm/GeneratedAsmCode;", null, lConstructor0, lConstructor2, 6);
+mv.visitLocalVariable("x", "I", null, lConstructor0, lConstructor2, 9);
+mv.visitLocalVariable("y", "I", null, lConstructor0, lConstructor2, 10);
 
        
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Hello World!");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
 mv.visitLdcInsn(2);
-mv.visitVarInsn(ISTORE,14);
+mv.visitVarInsn(ISTORE,12);
 
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Test");
@@ -91,35 +91,35 @@ mv.visitInsn(RETURN);                      // End the constructor method
 
 
 mv.visitLdcInsn(10);
-mv.visitVarInsn(ISTORE,19);
+mv.visitVarInsn(ISTORE,17);
 
-Label start20 = new Label();
-mv.visitLabel(start20);
-mv.visitVarInsn(ILOAD,19);
+Label start18 = new Label();
+mv.visitLabel(start18);
+mv.visitVarInsn(ILOAD,17);
 mv.visitLdcInsn(20);
-Label l20 = new Label();
-mv.visitJumpInsn(IF_ICMPGE, l20);
+Label l18 = new Label();
+mv.visitJumpInsn(IF_ICMPGE, l18);
 
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Something");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-mv.visitJumpInsn(GOTO, start20);
-mv.visitLabel(l20);
+mv.visitJumpInsn(GOTO, start18);
+mv.visitLabel(l18);
 
-mv.visitVarInsn(ILOAD,19);mv.visitLdcInsn(10);
-Label l22 = new Label();
-mv.visitJumpInsn(IF_ICMPGE, l22);
+mv.visitVarInsn(ILOAD,17);mv.visitLdcInsn(10);
+Label l20 = new Label();
+mv.visitJumpInsn(IF_ICMPGE, l20);
 
      mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Something else");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-mv.visitLabel(l22);
+mv.visitLabel(l20);
 mv.visitTypeInsn(NEW, "asm/TestCode");
 mv.visitInsn(DUP);
 mv.visitMethodInsn(INVOKESPECIAL, "asm/TestCode", "<init>", "()V", false);
-mv.visitVarInsn(ASTORE,24);
+mv.visitVarInsn(ASTORE,22);
 
-mv.visitVarInsn(ALOAD, 24);
+mv.visitVarInsn(ALOAD, 22);
 mv.visitMethodInsn(INVOKEVIRTUAL, "asm/test", "add", "()V", false);
 
        mv.visitInsn(RETURN);                      // Return integer from top of stack

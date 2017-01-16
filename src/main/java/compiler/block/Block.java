@@ -66,9 +66,7 @@ public abstract class Block {
 	// Called before looping through blocks to generate code. Allows for method to be called when all blocks are loaded
 	public abstract void init();
 
-	public abstract void run();
-
-    public abstract String getName();
+	public abstract String getName();
 	public abstract String getValue();
 	public abstract String getType();
 

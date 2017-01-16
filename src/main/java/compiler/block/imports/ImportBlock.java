@@ -1,11 +1,10 @@
 package compiler.block.imports;
 
-import compiler.Parameter;
 import compiler.block.Block;
 
 public class ImportBlock extends Block {
 
-    String directory, fileName;
+    public String directory, fileName;
 
     public ImportBlock(String directory, String fileName) {
         super(null, false, false);
@@ -44,11 +43,6 @@ public class ImportBlock extends Block {
 
     @Override
     public void init() {
-
-    }
-
-    @Override
-    public void run() {
 
     }
 

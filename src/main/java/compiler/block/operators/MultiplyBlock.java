@@ -19,11 +19,6 @@ public class MultiplyBlock extends Block {
 
     }
 
-    @Override
-    public void run() {
-
-    }
-
     public String getType() {
         return type;
     }

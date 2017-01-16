@@ -30,16 +30,9 @@ public class Compile {
             e.printStackTrace();
         }
 
-
-
         initBlocks(block);
         generateASM(block);
-
-
         w.close();
-
-
-       // MyCode.main(new String[0]);
     }
 
     // Initialises all blocks.

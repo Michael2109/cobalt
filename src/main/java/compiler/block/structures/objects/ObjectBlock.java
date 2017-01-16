@@ -1,6 +1,8 @@
 package compiler.block.structures.objects;
 
 import compiler.block.Block;
+import compiler.block.imports.ImportBlock;
+import compiler.block.structures.FileBlock;
 import compiler.tokenizer.Token;
 
 // Creation of a new object and storing to a variable
@@ -11,6 +13,8 @@ public class ObjectBlock extends Block {
     Token operator;
     Token newKeyword;
     Token initClassName;
+
+    String directory = "";
 
     public ObjectBlock(Block superBlock, Token className, Token variableName , Token operator, Token newKeyword , Token initClassName) {
         super(superBlock, false, true);
@@ -23,12 +27,24 @@ public class ObjectBlock extends Block {
 
     @Override
     public void init() {
-
+        directory = getDirectory();
     }
 
-    @Override
-    public void run() {
+    // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
+    public String getDirectory(){
+        // Get the FileBlock to find the imports
+        Block block = this;
+        while(!(block instanceof FileBlock)){
+            block = block.getSuperBlock();
+        }
 
+        // Get the directory of the Object
+        for(Block sub : block.getSubBlocks()){
+            if(sub instanceof ImportBlock && ((ImportBlock)sub).fileName.equals(className.getToken())){
+                return ((ImportBlock)sub).directory;
+            }
+        }
+        return "";
     }
 
     @Override
@@ -43,7 +59,7 @@ public class ObjectBlock extends Block {
 
     @Override
     public String getType() {
-        return null;
+        return className.getToken();
     }
 
     @Override
@@ -53,9 +69,9 @@ public class ObjectBlock extends Block {
 
     @Override
     public String getBodyCode() {
-        return "mv.visitTypeInsn(NEW, \"asm/"+className+"\");\n" +
+        return "mv.visitTypeInsn(NEW, \""+directory+"/"+className+"\");\n" +
                 "mv.visitInsn(DUP);\n" +
-                "mv.visitMethodInsn(INVOKESPECIAL, \"asm/"+className+"\", \"<init>\", \"()V\", false);\n" +
+                "mv.visitMethodInsn(INVOKESPECIAL, \""+directory+"/"+className+"\", \"<init>\", \"()V\", false);\n" +
                 "mv.visitVarInsn(ASTORE,"+ getId() +");\n";
     }
 

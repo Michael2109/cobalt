@@ -14,11 +14,6 @@ public class Package extends Block{
     }
 
     @Override
-    public void run() {
-
-    }
-
-    @Override
     public String getName() {
         return null;
     }

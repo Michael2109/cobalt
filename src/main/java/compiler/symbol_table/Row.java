@@ -63,4 +63,9 @@ public class Row {
         return this;
     }
 
+    @Override
+    public String toString(){
+        return id + " : " + name + " : " + type + " : " + value + " " + methodName + " " + className;
+    }
+
 }

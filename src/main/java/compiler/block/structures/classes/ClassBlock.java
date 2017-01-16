@@ -2,10 +2,9 @@ package compiler.block.structures.classes;
 
 import compiler.Parameter;
 import compiler.block.Block;
+import compiler.block.packages.PackageBlock;
 import compiler.block.structures.methods.ConstructorBlock;
 import compiler.block.structures.methods.MethodBlock;
-import scala.collection.immutable.Stream;
-import scala.xml.PrettyPrinter;
 
 import java.util.List;
 
@@ -23,6 +22,9 @@ public class ClassBlock extends Block {
 
 	// Local variables from the parameters
 	String localVariableString = "";
+
+	// Package the class is within
+	PackageBlock packageBlock = new PackageBlock("");
 
     Block constructorBlock;
 
@@ -64,7 +66,7 @@ public class ClassBlock extends Block {
 
 	@Override
 	public String getOpeningCode() {
-		return   "package asm;\n" +
+		return   "package "+packageBlock.directory+";\n" +
 				"\n" +
 				"import java.io.DataOutputStream;\n" +
 				"import java.io.FileNotFoundException;\n" +
@@ -83,7 +85,7 @@ public class ClassBlock extends Block {
 				"        {\n" +
 				"            cw.visit(V1_7,                              // Java 1.7\n" +
 				"                    ACC_PUBLIC,                         // public class\n" +
-				"                    \"asm/"+name+"\",    // package and name\n" +
+				"                    \""+packageBlock.directory+"/"+name+"\",    // package and name\n" +
 				"                    null,                               // signature (null means not generic)\n" +
 				"                    \"java/lang/Object\",                 // superclass\n" +
 				"                    new String[]{}); // interfaces\n" +
@@ -112,7 +114,7 @@ public class ClassBlock extends Block {
 
 				"Label lConstructor2 = new Label();\n" +
 				"mv.visitLabel(lConstructor2);\n" +
-				"mv.visitLocalVariable(\"this\", \"Lasm/"+name+";\", null, lConstructor0, lConstructor2, "+id+");\n" +
+				"mv.visitLocalVariable(\"this\", \"L"+packageBlock.directory+"/"+name+";\", null, lConstructor0, lConstructor2, "+id+");\n" +
 				localVariableString + "\n"+
 				"       ";
 
@@ -130,7 +132,7 @@ public class ClassBlock extends Block {
 				"    public static void main(String [] args){\n   " +
 				"  DataOutputStream dout = null;\n" +
 				"        try {\n" +
-				"            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/asm/GeneratedAsmCode.class\"));\n" +
+				"            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/"+packageBlock.directory+"/"+name+".class\"));\n" +
 				"\n" +
 				"        dout.write(dump());\n" +
 				"        dout.flush();\n" +
@@ -147,17 +149,25 @@ public class ClassBlock extends Block {
 				"}";
 	}
 
+	/**
+	 * Performed just before compiling blocks to allow for action when all blocks parsed
+	 */
     @Override
     public void init() {
+		// Move anything outside a method and within the class to a constructor block
         for (Block sub : getSubBlocks()) {
             moveToConstructor(sub);
         }
+
+		Block block = getSuperBlock();
+		// Get the package the class is within
+		for(Block fileSub : block.getSubBlocks()){
+
+			if(fileSub instanceof PackageBlock){
+				packageBlock = (PackageBlock) fileSub;
+			}
+		}
     }
-
-    @Override
-	public void run() {
-
-	}
 
 	// Moves all blocks that are inside the class and outside methods into the constructor block
 	public void moveToConstructor(Block block){

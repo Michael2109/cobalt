@@ -21,10 +21,10 @@ public class ObjectMethodCallParser extends Parser<ObjectMethodCallBlock> {
     @Override
     public ObjectMethodCallBlock parse(Block superBlock, Tokenizer tokenizer) {
 
-        String className = tokenizer.nextToken().getToken(); // Get the string value of the next token.
+        String variableName = tokenizer.nextToken().getToken(); // Get the string value of the next token.
         tokenizer.nextToken();
         String methodName = tokenizer.nextToken().getToken();
 
-        return new ObjectMethodCallBlock(superBlock, className, methodName, null);
+        return new ObjectMethodCallBlock(superBlock, variableName, methodName, null);
     }
 }

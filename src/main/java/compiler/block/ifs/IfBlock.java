@@ -96,8 +96,4 @@ public class IfBlock extends Block {
 
     }
 
-    @Override
-    public void run() {
-
-    }
 }

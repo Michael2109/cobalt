@@ -102,18 +102,28 @@ public class Runtime {
                         block = parser.parse(null, tokenizer);
                         if (block instanceof PackageBlock) {
                             packageBlock = (PackageBlock)block;
+                            System.out.println(packageBlock);
                         }else if (block instanceof ImportBlock) {
                             imports.add((ImportBlock)block);
+                            System.out.println(block);
                         } else {
                             createBlock(block, br, 0);
                         }
                     }
                 }
 
-                block.setSuperBlock(new FileBlock());
+
                 Block fileBlock = new FileBlock();
+                block.setSuperBlock(fileBlock);
                 fileBlock.addBlock(block);
                 block = fileBlock;
+
+                if(packageBlock != null)
+                    block.addBlock(packageBlock);
+
+                for(ImportBlock importBlock : imports)
+                    block.addBlock(importBlock);
+
 
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);

@@ -1,6 +1,5 @@
 package compiler.block.packages;
 
-import compiler.Parameter;
 import compiler.block.Block;
 
 public class PackageBlock extends Block {
@@ -43,11 +42,6 @@ public class PackageBlock extends Block {
 
     @Override
     public void init() {
-
-    }
-
-    @Override
-    public void run() {
 
     }
 
