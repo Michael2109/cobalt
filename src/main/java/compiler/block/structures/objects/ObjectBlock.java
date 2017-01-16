@@ -2,21 +2,23 @@ package compiler.block.structures.objects;
 
 import compiler.block.Block;
 import compiler.block.imports.ImportBlock;
+import compiler.block.packages.PackageBlock;
 import compiler.block.structures.FileBlock;
+import compiler.block.structures.classes.ClassBlock;
 import compiler.tokenizer.Token;
 
 // Creation of a new object and storing to a variable
 public class ObjectBlock extends Block {
 
-    Token className;
-    Token variableName;
-    Token operator;
-    Token newKeyword;
-    Token initClassName;
+    String className;
+    String variableName;
+    String operator;
+    String newKeyword;
+    String initClassName;
 
     String directory = "";
 
-    public ObjectBlock(Block superBlock, Token className, Token variableName , Token operator, Token newKeyword , Token initClassName) {
+    public ObjectBlock(Block superBlock, String className, String variableName , String operator, String newKeyword , String initClassName) {
         super(superBlock, false, true);
         this.className = className;
         this.variableName = variableName;
@@ -24,10 +26,14 @@ public class ObjectBlock extends Block {
         this.newKeyword = newKeyword;
         this.initClassName = initClassName;
     }
-
     @Override
     public void init() {
-        directory = getDirectory();
+        System.out.println("ClassName:" + className + "getClassName:" + getClassName() + ":");
+        if(className.equals(getClassName())){
+            directory = getPackage();
+        }else {
+            directory = getDirectory();
+        }
     }
 
     // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -40,16 +46,44 @@ public class ObjectBlock extends Block {
 
         // Get the directory of the Object
         for(Block sub : block.getSubBlocks()){
-            if(sub instanceof ImportBlock && ((ImportBlock)sub).fileName.equals(className.getToken())){
+            if(sub instanceof ImportBlock && ((ImportBlock)sub).fileName.equals(className)){
                 return ((ImportBlock)sub).directory;
             }
         }
         return "";
     }
 
+    // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
+    public String getPackage(){
+        // Get the FileBlock to find the imports
+        Block block = this;
+        while(!(block instanceof FileBlock)){
+            block = block.getSuperBlock();
+        }
+
+        // Get the directory of the Object
+        for(Block sub : block.getSubBlocks()){
+            if(sub instanceof PackageBlock){
+                return ((PackageBlock)sub).directory;
+            }
+        }
+        return "";
+    }
+
+    // Returns the main class name for the file
+    public String getClassName(){
+        // Get the FileBlock to find the imports
+        Block block = this;
+        while(!(block instanceof ClassBlock)){
+            block = block.getSuperBlock();
+        }
+
+        // Get the directory of the Object
+        return block.getName();
+    }
     @Override
     public String getName() {
-        return variableName.getToken();
+        return variableName;
     }
 
     @Override
@@ -59,7 +93,7 @@ public class ObjectBlock extends Block {
 
     @Override
     public String getType() {
-        return className.getToken();
+        return className;
     }
 
     @Override

@@ -18,11 +18,11 @@ public class ObjectParser extends Parser<ObjectBlock> {
     @Override
     public ObjectBlock parse(Block superBlock, Tokenizer tokenizer) {
 
-        Token className = tokenizer.nextToken();
-        Token variableName = tokenizer.nextToken();
-        Token operator = tokenizer.nextToken();
-        Token newKeyword = tokenizer.nextToken();
-        Token initClassName = tokenizer.nextToken();
+        String className = tokenizer.nextToken().getToken();
+        String variableName = tokenizer.nextToken().getToken();
+        String operator = tokenizer.nextToken().getToken();
+        String newKeyword = tokenizer.nextToken().getToken();
+        String initClassName = tokenizer.nextToken().getToken();
 
         return new ObjectBlock(superBlock, className, variableName , operator, newKeyword , initClassName);
     }

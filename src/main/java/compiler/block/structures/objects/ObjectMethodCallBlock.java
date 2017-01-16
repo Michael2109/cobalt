@@ -6,6 +6,7 @@ import compiler.block.Block;
 import compiler.block.imports.ImportBlock;
 import compiler.block.packages.PackageBlock;
 import compiler.block.structures.FileBlock;
+import compiler.block.structures.classes.ClassBlock;
 import compiler.symbol_table.SymbolTable;
 
 /**
@@ -57,7 +58,11 @@ public class ObjectMethodCallBlock extends Block {
 
     @Override
     public void init() {
-        directory = getDirectory();
+        if(className.equals(getClassName())){
+            directory = getPackage();
+        }else {
+            directory = getDirectory();
+        }
     }
 
     // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -92,6 +97,18 @@ public class ObjectMethodCallBlock extends Block {
             }
         }
         return "";
+    }
+
+    // Returns the main class name for the file
+    public String getClassName(){
+        // Get the FileBlock to find the imports
+        Block block = this;
+        while(!(block instanceof ClassBlock)){
+            block = block.getSuperBlock();
+        }
+
+        // Get the directory of the Object
+        return block.getName();
     }
 
     @Override

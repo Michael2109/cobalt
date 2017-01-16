@@ -2,29 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Compile.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/Compile.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Runtime.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/Runtime.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/comments/CommentBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/comments/CommentBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/ifs/IfBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/ifs/IfBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/imports/ImportBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/imports/ImportBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/loops/ForBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/loops/ForBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/loops/WhileBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/loops/WhileBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/BooleanBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/BooleanBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/CharacterBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/CharacterBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/DoubleBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/DoubleBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/FloatBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/FloatBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/IntegerBlock.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/IntegerBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/compiler/symbol_table/Row.class" afterPath="$PROJECT_DIR$/build/classes/main/compiler/symbol_table/Row.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/compiled/MyCode.mlg" afterPath="$PROJECT_DIR$/compiled/MyCode.mlg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/asm/TestCode.java" afterPath="$PROJECT_DIR$/src/main/java/asm/TestCode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/Compile.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/Compile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java" />
     </list>
     <ignored path="JVM Compiler.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,8 +30,8 @@
             <file leaf-file-name="MyCode.mlg" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/compiled/MyCode.mlg">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="598">
-                    <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+                  <state relative-caret-position="52">
+                    <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
                     <folding />
                   </state>
                 </provider>
@@ -81,16 +62,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Compile.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/Compile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Runtime.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/compiler/Runtime.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -103,11 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyCode.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MyCode.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCode.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
-              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+              <caret line="117" column="18" selection-start-line="117" selection-start-column="18" selection-end-line="117" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -138,11 +109,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyCode.class" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MyCode.class" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build/classes/main/asm/MyCode.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state relative-caret-position="364">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -174,12 +145,19 @@
       <file leaf-file-name="ObjectBlock.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="27" column="3" selection-start-line="27" selection-start-column="3" selection-end-line="47" selection-end-column="5" />
-              <folding>
-                <element signature="e#846#847#0" expanded="true" />
-                <element signature="e#888#889#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="899">
+              <caret line="108" column="59" selection-start-line="108" selection-start-column="59" selection-end-line="108" selection-end-column="59" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectParser.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -187,12 +165,9 @@
       <file leaf-file-name="ObjectMethodCallBlock.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-              <folding>
-                <element signature="e#1588#1589#0" expanded="true" />
-                <element signature="e#1630#1631#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="230">
+              <caret line="60" column="44" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -598,7 +573,6 @@
         <option value="$PROJECT_DIR$/src/main/java/compiler/parser/packages/PackageParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/loops/WhileBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/ifs/IfBlock.java" />
-        <option value="$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/asm/GeneratedAsmCode.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/imports/ImportBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/Block.java" />
@@ -606,15 +580,16 @@
         <option value="$PROJECT_DIR$/src/main/java/compiler/symbol_table/Row.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/Compile.java" />
-        <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" />
         <option value="$PROJECT_DIR$/build/classes/main/asm/MyCode.class" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/asm/TestCode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" />
         <option value="$PROJECT_DIR$/compiled/MyCode.mlg" />
         <option value="$PROJECT_DIR$/src/main/java/asm/MyCode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java" />
       </list>
     </option>
   </component>
@@ -2236,12 +2211,19 @@
       <option name="project" value="LOCAL" />
       <updated>1484585517374</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added main method generation.">
+      <created>1484592514021</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1484592514021</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2251,7 +2233,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23772408" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23772408" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2299,7 +2281,8 @@
     <MESSAGE value="Added constructor parameters to class block and a constructor block that has all blocks added that are within a class but not a method/within a method." />
     <MESSAGE value="Cleaned up code and removed unneeded output and execute method. Added package parser and block." />
     <MESSAGE value="Added importing of classes when creating instances. Also added using of package when calling instance methods." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added importing of classes when creating instances. Also added using of package when calling instance methods." />
+    <MESSAGE value="Added main method generation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added main method generation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2543,14 +2526,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="23" column="49" selection-start-line="23" selection-start-column="49" selection-end-line="23" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/Block.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -2661,36 +2636,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="27" column="3" selection-start-line="27" selection-start-column="3" selection-end-line="47" selection-end-column="5" />
-          <folding>
-            <element signature="e#846#847#0" expanded="true" />
-            <element signature="e#888#889#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding>
-            <element signature="e#1588#1589#0" expanded="true" />
-            <element signature="e#1630#1631#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/asm/TestCode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -2702,10 +2647,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/classes/main/asm/MyCode.class">
+    <entry file="file://$PROJECT_DIR$/compiled/MyCode.mlg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="52">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -2729,21 +2674,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/compiled/MyCode.mlg">
+    <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+        <state relative-caret-position="323">
+          <caret line="117" column="18" selection-start-line="117" selection-start-column="18" selection-end-line="117" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCode.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="230">
+          <caret line="60" column="44" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="899">
+          <caret line="108" column="59" selection-start-line="108" selection-start-column="59" selection-end-line="108" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/classes/main/asm/MyCode.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
