@@ -10,7 +10,7 @@ class MyCode():
     void method1(int number):
         print ("Other test")
 
-    void otherMethod(int number):
+    void otherMethod(int x):
         int x = 10
         while (x == 20):
             print("Something")
@@ -22,6 +22,7 @@ class MyCode():
     void main(int other):
         print ("Hello again")
         MyCode myCodeTest = new MyCode()
-        myCodeTest.method1()
+        int x = 5
+        myCodeTest.method1(x)
 
 

@@ -109,15 +109,12 @@ public class Runtime {
                         block = parser.parse(null, tokenizer);
                         if (block instanceof PackageBlock) {
                             packageBlock = (PackageBlock) block;
-                            System.out.println(packageBlock);
                             continue;
                         } else if (block instanceof ImportBlock) {
                             imports.add((ImportBlock) block);
-                            System.out.println(block);
                             continue;
                         } else {
                             createBlock(block, br, 0);
-                            System.out.println("Complete...");
                         }
                     }
                 }

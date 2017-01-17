@@ -13,7 +13,8 @@ public class MethodParser extends Parser<MethodBlock> {
 
 	@Override
 	public boolean shouldParse(String line) {
-		return line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*:");
+
+		return line.matches("void[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*:");
 	}
 
 	@Override
@@ -31,7 +32,6 @@ public class MethodParser extends Parser<MethodBlock> {
 		String paramName = "";
 		List<Parameter> parameters = new ArrayList<>();
 		while (!nextToken.equals(")")) {
-			//	parameters += " " + nextToken + " ";
 			if (nextToken.equals(",")) {
 				nextToken = tokenizer.nextToken().getToken();
 				continue;

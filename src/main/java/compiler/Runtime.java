@@ -100,38 +100,33 @@ public class Runtime {
             String line;
             while ((line = br.readLine()) != null) {
 
-
                 for (Parser parser : parsers) {
                     if (parser.shouldParse(line.trim())) {
                         tokenizer = new Tokenizer(line);
                         block = parser.parse(null, tokenizer);
                         if (block instanceof PackageBlock) {
                             packageBlock = (PackageBlock)block;
-                            System.out.println(packageBlock);
                             continue;
                         }else if (block instanceof ImportBlock) {
                             imports.add((ImportBlock)block);
-                            System.out.println(block);
                             continue;
                         } else {
                             createBlock(block, br, 0);
-                            System.out.println("Complete...");
                         }
                     }
                 }
 
-
                 Block fileBlock = new FileBlock();
                 block.setSuperBlock(fileBlock);
-                fileBlock.addBlock(block);
-                block = fileBlock;
 
                 if(packageBlock != null)
-                    block.addBlock(packageBlock);
+                    fileBlock.addBlock(packageBlock);
 
                 for(ImportBlock importBlock : imports)
-                    block.addBlock(importBlock);
+                    fileBlock.addBlock(importBlock);
 
+                fileBlock.addBlock(block);
+                block = fileBlock;
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
 
@@ -153,7 +148,7 @@ public class Runtime {
 
         SymbolTable.getInstance().printSymbols();
 
-        new Compile(outputFile, packageBlock,  imports,block);
+        new Compile(outputFile, block);
 
     }
 

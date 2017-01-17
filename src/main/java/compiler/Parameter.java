@@ -9,7 +9,7 @@ public class Parameter {
 	private String asmType;
 
 	public Parameter(String type, String name) {
-		this.type = type;
+		this.setType(type);
 		this.name = name;
 
 
@@ -23,23 +23,23 @@ public class Parameter {
 		return type;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString(){
-		return type + " : " + name;
+		return getType() + " : " + name;
 	}
 
 	public String getAsmType() {
 
-		if(type.equals("int")){
+		if (getType().equals("int")) {
 			return  "I";
 		}
-		if(type.equals("String")){
+		if (getType().equals("String")) {
 			return "Ljava/lang/String;";
 		}
 		return null;
-	}
-
-	public void setAsmType(String asmType) {
-		this.asmType = asmType;
 	}
 }

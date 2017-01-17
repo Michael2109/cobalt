@@ -18,7 +18,7 @@ public class Compile {
 
     PrintWriter w = null;
 
-    public Compile(File outputFile, PackageBlock packageBlock, List<ImportBlock> imports, Block block) {
+    public Compile(File outputFile, Block block) {
 
         try {
             outputFile.createNewFile();

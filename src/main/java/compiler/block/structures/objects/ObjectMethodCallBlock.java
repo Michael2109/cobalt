@@ -14,6 +14,8 @@ import compiler.symbol_table.SymbolTable;
  */
 public class ObjectMethodCallBlock extends Block {
 
+    String parameterString = "";
+    String argumentString = "";
     private String className, variableName, methodName, type;
     private Parameter[] params;
     private String directory = "";
@@ -24,8 +26,40 @@ public class ObjectMethodCallBlock extends Block {
         className = SymbolTable.getInstance().getValue(Utils.getMethod(this), variableName).getType();
         this.variableName = variableName;
         this.methodName = methodName;
+
+        this.params = params;
+
+
     }
 
+    public Parameter[] getParameters() {
+        return params;
+    }
+
+    @Override
+    public void init() {
+        if (className.equals(getClassName())) {
+            directory = getPackage();
+        } else {
+            directory = getDirectory();
+        }
+
+
+        // Get the type of the parameters
+        for (Parameter param : params) {
+            param.setType(SymbolTable.getInstance().getValue(Utils.getMethod(this), param.getName()).getType());
+
+            parameterString += param.getAsmType();
+
+            argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance().getValue(Utils.getMethod(this), param.getName()).getId() + ");";
+            System.out.println(param);
+        }
+    }
+
+    @Override
+    public String getName() {
+        return variableName;
+    }
 
     @Override
     public String getValue() {
@@ -42,27 +76,22 @@ public class ObjectMethodCallBlock extends Block {
     }
 
     @Override
+    public String getBodyCode() {
+
+        // Push all arguments to the top of the stack
+
+
+        //
+
+
+        return "mv.visitVarInsn(ALOAD, "+id+");\n" +
+                argumentString +
+                "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n";
+    }
+
+    @Override
     public String getClosingCode() {
         return "";
-    }
-
-    @Override
-    public String getBodyCode() {
-        return "mv.visitVarInsn(ALOAD, "+id+");\n" +
-                "mv.visitMethodInsn(INVOKEVIRTUAL, \""+directory+"/"+ className +"\", \""+methodName+"\", \"()V\", false);\n";
-    }
-
-    public Parameter[] getParameters() {
-        return params;
-    }
-
-    @Override
-    public void init() {
-        if(className.equals(getClassName())){
-            directory = getPackage();
-        }else {
-            directory = getDirectory();
-        }
     }
 
     // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -109,11 +138,6 @@ public class ObjectMethodCallBlock extends Block {
 
         // Get the directory of the Object
         return block.getName();
-    }
-
-    @Override
-    public String getName() {
-        return variableName;
     }
 
 }

@@ -4,7 +4,9 @@ import compiler.Parameter;
 import compiler.block.Block;
 
 public class MethodBlock extends Block {
-	
+
+	String parameterString = "";
+	String localVariableString = "";
 	private String name, type;
 	private Parameter[] params;
 
@@ -15,8 +17,13 @@ public class MethodBlock extends Block {
 		this.type = type;
 		this.params = params;
 
-		for (Parameter param : params) {
-			System.out.println(param);
+
+		for (Parameter parameter : params) {
+
+			parameterString += parameter.getAsmType();
+
+			Block.TOTAL_BLOCKS++;
+			localVariableString += "mv.visitLocalVariable(\"" + parameter.getName() + "\", \"" + parameter.getAsmType() + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n";
 		}
 	}
 
@@ -51,7 +58,7 @@ public class MethodBlock extends Block {
 					"            MethodVisitor mv = cw.visitMethod(\n" +
 					"                    ACC_PUBLIC,                         // public method\n" +
 					"                    \"" + name + "\",                              // name\n" +
-					"                    \"()V\",                            // descriptor\n" +
+					"                    \"(" + parameterString + ")V\",                            // descriptor\n" +
 					"                    null,                               // signature (null means not generic)\n" +
 					"                    null);                              // exceptions (array of strings)\n" +
 					"\n";
