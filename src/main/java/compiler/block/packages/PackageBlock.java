@@ -11,6 +11,11 @@ public class PackageBlock extends Block {
         this.directory = directory;
     }
 
+    @Override
+    public void init() {
+
+    }
+
     public String getName() {
         return null;
     }
@@ -30,19 +35,18 @@ public class PackageBlock extends Block {
     }
 
     @Override
+    public String getBodyCode() {
+        return null;
+    }
+
+    @Override
     public String getClosingCode() {
         return null;
     }
 
     @Override
-    public String getBodyCode() {
-        return null;
-    }
-
-
-    @Override
-    public void init() {
-
+    public String toString() {
+        return "package: " + directory;
     }
 
 }

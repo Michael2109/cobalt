@@ -1,6 +1,8 @@
 package compiler.block.prints;
 
+import compiler.Utils;
 import compiler.block.Block;
+import compiler.symbol_table.SymbolTable;
 
 public class PrintBlock extends Block {
 
@@ -16,6 +18,20 @@ public class PrintBlock extends Block {
 
     }
 
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
     public String getType(){
         return type;
     }
@@ -26,17 +42,13 @@ public class PrintBlock extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return "";
-    }
-
-    @Override
     public String getBodyCode() {
 
         if(isVariable){
+
             return "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
-                    "mv.visitLdcInsn(\""+value+"\");\n" +
-                    "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");";
+                    "mv.visitVarInsn(ILOAD, " + SymbolTable.getInstance().getValue(Utils.getMethod(this), value).getId() + ");" +
+                    "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(I)V\");";
         }else{
             //return "System.out.println(\""+value+"\");";
             return "     mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
@@ -47,8 +59,9 @@ public class PrintBlock extends Block {
 
     }
 
-    public String getValue(){
-        return value;
+    @Override
+    public String getClosingCode() {
+        return "";
     }
 
     public boolean isVariable(){
@@ -56,12 +69,7 @@ public class PrintBlock extends Block {
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
-    public String getName() {
-        return null;
+    public String toString() {
+        return "print: " + value;
     }
 }

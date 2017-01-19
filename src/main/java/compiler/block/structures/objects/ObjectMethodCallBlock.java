@@ -140,4 +140,13 @@ public class ObjectMethodCallBlock extends Block {
         return block.getName();
     }
 
+
+    public String toString() {
+        String paramString = "";
+        for (Parameter parameter : params) {
+            paramString += parameter.getType() + ":" + parameter.getName() + "; ";
+        }
+        return "object method call: " + variableName + " ( " + paramString + ")";
+    }
+
 }

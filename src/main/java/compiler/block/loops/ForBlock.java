@@ -5,13 +5,22 @@ import compiler.block.Block;
 
 public class ForBlock extends Block {
 
+    String name;
     private String type = "for";
     private Parameter[] params;
-    String name;
 
     public ForBlock(Block superBlock, String name) {
         super(superBlock, true, false);
         this.name = name;
+
+    }
+
+    public Parameter[] getParameters() {
+        return params;
+    }
+
+    @Override
+    public void init() {
 
     }
 
@@ -34,23 +43,19 @@ public class ForBlock extends Block {
     }
 
     @Override
+    public String getBodyCode() {
+        return null;
+    }
+
+    @Override
     public String getClosingCode() {
         return null;
     }
 
     @Override
-    public String getBodyCode() {
-        return null;
+    public String toString() {
+        return "for: " + name;
     }
 
-    public Parameter[] getParameters() {
-        return params;
-    }
-
-
-    @Override
-    public void init() {
-
-    }
 
 }

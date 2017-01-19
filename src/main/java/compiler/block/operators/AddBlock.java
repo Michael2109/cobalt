@@ -14,12 +14,20 @@ public class AddBlock extends Block {
         super(superBlock, false, false);
         this.name = name;
         this.value = value;
-        setId(SymbolTable.getInstance().getValue(Utils.getMethod(this), name).getId());
+
     }
 
     @Override
     public void init() {
+        setId(SymbolTable.getInstance().getValue(Utils.getMethod(this), name).getId());
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public String getType() {
@@ -32,11 +40,6 @@ public class AddBlock extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return "";
-    }
-
-    @Override
     public String getBodyCode() {
         return "mv.visitLdcInsn("+value+");\n"+
                 "mv.visitVarInsn(ILOAD,"+getId()+");\n" +
@@ -44,23 +47,25 @@ public class AddBlock extends Block {
                 "mv.visitVarInsn(ISTORE,"+getId()+");\n";
     }
 
-    public void setType(String type) {
-        this.type = type;
+    @Override
+    public String getClosingCode() {
+        return "";
     }
 
-    public String getValue() {
-        return value;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setValue(String value) {
         this.value = value;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "add: " + name;
     }
 }

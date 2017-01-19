@@ -8,21 +8,19 @@ class MyCode():
     int z = 2
 
     void method1(int number):
+
         print ("Other test")
 
-    void otherMethod(int x):
-        int x = 10
-        while (x == 20):
-            print("Something")
-        if (x < 10):
-            print("Something else")
-        IfBlock test = new IfBlock()
-        test.add()
+    void otherMethod(int x1):
+        print("HELLO WORLD")
+
 
     void main(int other):
         print ("Hello again")
         MyCode myCodeTest = new MyCode()
         int x = 5
+        int y = 10
         myCodeTest.method1(x)
+        myCodeTest.otherMethod(x)
 
 

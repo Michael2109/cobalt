@@ -17,6 +17,16 @@ public class ConstructorBlock extends Block {
 	}
 
 	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
 	public String getValue() {
 		return null;
 	}
@@ -32,6 +42,11 @@ public class ConstructorBlock extends Block {
 	}
 
 	@Override
+	public String getBodyCode() {
+		return "";
+	}
+
+	@Override
 	public String getClosingCode() {
 		return  "mv.visitInsn(RETURN);                      // End the constructor method\n" +
 				"mv.visitMaxs(0, 0);\n" +
@@ -39,20 +54,11 @@ public class ConstructorBlock extends Block {
 				"}";
 	}
 
-	@Override
-	public String getBodyCode() {
-		return "";
+	public String toString() {
+		String paramString = "";
+		for (Parameter parameter : parameters) {
+			paramString += parameter.getType() + ":" + parameter.getName() + "; ";
+		}
+		return "constructor: ( " + paramString + ")";
 	}
-
-
-	@Override
-	public void init() {
-
-	}
-
-    @Override
-	public String getName() {
-		return null;
-	}
-
 }

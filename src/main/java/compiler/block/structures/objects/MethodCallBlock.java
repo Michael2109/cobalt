@@ -20,6 +20,15 @@ public class MethodCallBlock extends Block {
 
     }
 
+    public Parameter[] getParameters() {
+        return params;
+    }
+
+    @Override
+    public void init() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -39,22 +48,21 @@ public class MethodCallBlock extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return "";
-    }
-
-    @Override
     public String getBodyCode() {
         return name+"();";
     }
 
-    public Parameter[] getParameters() {
-        return params;
+    @Override
+    public String getClosingCode() {
+        return "";
     }
 
-    @Override
-    public void init() {
-
+    public String toString() {
+        String paramString = "";
+        for (Parameter parameter : params) {
+            paramString += parameter.getType() + ":" + parameter.getName() + "; ";
+        }
+        return "method call: " + name + " ( " + paramString + ")";
     }
 
 }

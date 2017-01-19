@@ -19,6 +19,14 @@ public class CharacterBlock extends Block {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
     public String getType() {
         return type;
     }
@@ -29,32 +37,29 @@ public class CharacterBlock extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return "";
+    public String getBodyCode() {
+        return "char " + name + " = '" + value + "';";
     }
 
     @Override
-    public String getBodyCode() {
-        return "char "+name+" = '"+value+"';";
+    public String getClosingCode() {
+        return "";
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public void setValue(String value) {
         this.value = value;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "char: " + name + " = " + value;
     }
 }

@@ -13,6 +13,11 @@ public class FileBlock extends Block {
         super(null, true, false);
     }
 
+    @Override
+    public void init() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -33,19 +38,17 @@ public class FileBlock extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return "";
-    }
-
-    @Override
     public String getBodyCode() {
         return "";
     }
 
-
     @Override
-    public void init() {
+    public String getClosingCode() {
+        return "";
+    }
 
+    public String toString() {
+        return "file: " + name;
     }
 
 }

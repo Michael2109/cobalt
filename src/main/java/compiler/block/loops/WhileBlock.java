@@ -6,13 +6,12 @@ import compiler.symbol_table.SymbolTable;
 
 public class WhileBlock extends Block {
 
-    private String type = "while";
     String name;
     String pointer;
     String operator;
     String value;
-
     String byteCodeOp;
+    private String type = "while";
 
     public WhileBlock(Block superBlock, String name) {
         super(superBlock, true, false);
@@ -45,6 +44,11 @@ public class WhileBlock extends Block {
             value = name;
 
         }
+    }
+
+    @Override
+    public void init() {
+
     }
 
     public String getName() {
@@ -83,8 +87,7 @@ public class WhileBlock extends Block {
     }
 
     @Override
-    public void init() {
-
+    public String toString() {
+        return "while: " + name;
     }
-
 }

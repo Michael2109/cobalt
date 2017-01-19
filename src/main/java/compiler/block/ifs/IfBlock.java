@@ -7,14 +7,13 @@ import compiler.symbol_table.SymbolTable;
 
 public class IfBlock extends Block {
 
-    private String type = "if";
-    private Parameter[] params;
     String name;
     String pointer;
     String operator;
     String value;
-
     String byteCodeOp;
+    private String type = "if";
+    private Parameter[] params;
 
     public IfBlock(Block superBlock, String name) {
         super(superBlock, true, false);
@@ -52,6 +51,15 @@ public class IfBlock extends Block {
 
     }
 
+    public Parameter[] getParameters() {
+        return params;
+    }
+
+    @Override
+    public void init() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -84,16 +92,9 @@ public class IfBlock extends Block {
                ;
     }
 
-
-
-    public Parameter[] getParameters() {
-        return params;
-    }
-
-
     @Override
-    public void init() {
-
+    public String toString() {
+        return "if " + name;
     }
 
 }

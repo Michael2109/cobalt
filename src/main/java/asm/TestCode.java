@@ -7,8 +7,8 @@ public class TestCode {
         new TestCode().add(new Integer(10));
     }
 
-    public void add(Integer x) {
-
+    public void add(int x) {
+        x += 5;
     }
 
 }

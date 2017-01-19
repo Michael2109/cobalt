@@ -19,6 +19,14 @@ public class IntegerBlock extends Block {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
     public String getType() {
         return type;
     }
@@ -29,33 +37,30 @@ public class IntegerBlock extends Block {
     }
 
     @Override
-    public String getClosingCode() {
-        return "";
-    }
-
-    @Override
     public String getBodyCode() {
         return "mv.visitLdcInsn("+value+");\n"+
                 "mv.visitVarInsn(ISTORE,"+ getId() +");\n";
+    }
+
+    @Override
+    public String getClosingCode() {
+        return "";
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public void setValue(String value) {
         this.value = value;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "int: " + name + " = " + value;
     }
 }

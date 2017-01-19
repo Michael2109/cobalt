@@ -1,5 +1,6 @@
 package compiler.block.structures.objects;
 
+import compiler.Parameter;
 import compiler.block.Block;
 import compiler.block.imports.ImportBlock;
 import compiler.block.packages.PackageBlock;
@@ -34,6 +35,39 @@ public class ObjectBlock extends Block {
         }else {
             directory = getDirectory();
         }
+    }
+
+    @Override
+    public String getName() {
+        return variableName;
+    }
+
+    @Override
+    public String getValue() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return className;
+    }
+
+    @Override
+    public String getOpeningCode() {
+        return "";
+    }
+
+    @Override
+    public String getBodyCode() {
+        return "mv.visitTypeInsn(NEW, \"" + directory + (directory.equals("") ? "" : "/") + className + "\");\n" +
+                "mv.visitInsn(DUP);\n" +
+                "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (directory.equals("") ? "" : "/") + className + "\", \"<init>\", \"()V\", false);\n" +
+                "mv.visitVarInsn(ASTORE," + getId() + ");\n";
+    }
+
+    @Override
+    public String getClosingCode() {
+        return "";
     }
 
     // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -81,36 +115,8 @@ public class ObjectBlock extends Block {
         // Get the directory of the Object
         return block.getName();
     }
-    @Override
-    public String getName() {
-        return variableName;
-    }
 
-    @Override
-    public String getValue() {
-        return null;
-    }
-
-    @Override
-    public String getType() {
-        return className;
-    }
-
-    @Override
-    public String getOpeningCode() {
-        return "";
-    }
-
-    @Override
-    public String getBodyCode() {
-        return "mv.visitTypeInsn(NEW, \""+directory+(directory.equals("") ? "" : "/")+className+"\");\n" +
-                "mv.visitInsn(DUP);\n" +
-                "mv.visitMethodInsn(INVOKESPECIAL, \""+directory+ (directory.equals("") ? "" : "/")+className+"\", \"<init>\", \"()V\", false);\n" +
-                "mv.visitVarInsn(ASTORE,"+ getId() +");\n";
-    }
-
-    @Override
-    public String getClosingCode() {
-        return "";
+    public String toString() {
+        return "object: " + className + " " + variableName + " = new " + initClassName + "()";
     }
 }

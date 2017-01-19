@@ -12,6 +12,11 @@ public class ImportBlock extends Block {
         this.fileName = fileName;
     }
 
+    @Override
+    public void init() {
+
+    }
+
     public String getName() {
         return null;
     }
@@ -31,19 +36,17 @@ public class ImportBlock extends Block {
     }
 
     @Override
+    public String getBodyCode() {
+        return null;
+    }
+
+    @Override
     public String getClosingCode() {
         return null;
     }
 
     @Override
-    public String getBodyCode() {
-        return null;
+    public String toString() {
+        return "import: " + directory + " : " + fileName;
     }
-
-
-    @Override
-    public void init() {
-
-    }
-
 }
