@@ -5,10 +5,10 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.block.structures.objects.ObjectMethodCallBlock
 import compiler.parser.Parser
-import compiler.symbol_table.SymbolTable
-import compiler.tokenizer.Tokenizer
 import java.util.ArrayList
 import java.util.List
+
+import compiler.tokenizer.Tokenizer
 
 /**
   * Parses calling of an objects method

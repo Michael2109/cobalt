@@ -3,8 +3,9 @@ package compiler.parser.imports
 import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.parser.Parser
-import compiler.tokenizer.Tokenizer
 import java.io.File
+
+import compiler.tokenizer.Tokenizer
 
 class ImportParser extends Parser[ImportBlock] {
   def shouldParse(line: String): Boolean = {

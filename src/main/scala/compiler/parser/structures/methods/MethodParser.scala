@@ -4,9 +4,10 @@ import compiler.Parameter
 import compiler.block.Block
 import compiler.block.structures.methods.MethodBlock
 import compiler.parser.Parser
-import compiler.tokenizer.Tokenizer
 import java.util.ArrayList
 import java.util.List
+
+import compiler.tokenizer.Tokenizer
 
 class MethodParser extends Parser[MethodBlock] {
   def shouldParse(line: String): Boolean = {

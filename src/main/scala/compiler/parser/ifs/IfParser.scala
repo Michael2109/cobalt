@@ -4,9 +4,6 @@ import compiler.block.Block
 import compiler.block.ifs.IfBlock
 import compiler.block.loops.WhileBlock
 import compiler.parser.Parser
-import compiler.tokenizer.Token
-import compiler.tokenizer.TokenData
-import compiler.tokenizer.TokenType
 import compiler.tokenizer.Tokenizer
 
 class IfParser extends Parser[IfBlock] {
