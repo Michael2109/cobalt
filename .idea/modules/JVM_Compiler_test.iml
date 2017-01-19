@@ -10,7 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="JVM_Compiler_main" />
     <orderEntry type="library" name="Gradle: org.ow2.asm:asm:5.0.3" level="project" />
     <orderEntry type="library" name="Gradle: javassist:javassist:3.12.1.GA" level="project" />
     <orderEntry type="library" name="Gradle: org.scala-lang:scala-library:2.10.4" level="project" />

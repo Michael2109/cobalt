@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/JVM Compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/JVM Compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JVM_Compiler_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JVM_Compiler_main.iml" group="JVM Compiler" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/JVM_Compiler_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JVM_Compiler_test.iml" group="JVM Compiler" />
     </modules>
   </component>

@@ -1,131 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="Added method parameters and object method call arguments. Need to store parameters in a block to generate local variable code to store  in the variable table.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/Parser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/comments/CommentParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/ifs/IfParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/imports/ImportParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/ForParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/WhileParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/AddParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/DivideParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/MultiplyParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/SubtractParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/packages/PackageParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/BooleanParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/CharacterParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/DoubleParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/FloatParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/IntegerParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/prints/PrintParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/MethodCallParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectMethodCallParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/classes/ClassParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Compile.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Constants.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Parameter.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Runtime.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/Utils.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/Block.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/comments/CommentBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/ifs/IfBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/imports/ImportBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/loops/ForBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/loops/WhileBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/BooleanBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/CharacterBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/DoubleBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/FloatBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/IntegerBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/block/primitives/StringBlock.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/exceptions/ContainerException.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/exceptions/DeclarationException.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/exceptions/IndentationException.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/exceptions/ParseException.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/parser/Parser.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/symbol_table/Row.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/symbol_table/SymbolTable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/tokenizer/Token.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/tokenizer/TokenData.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/tokenizer/TokenType.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/compiler/tokenizer/Tokenizer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/Package.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/Parser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/comments/CommentParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/ifs/IfParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/imports/ImportParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/loops/ForParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/loops/WhileParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/operators/AddParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/operators/DivideParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/operators/MultiplyParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/operators/SubtractParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/packages/PackageParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/primitives/BooleanParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/primitives/CharacterParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/primitives/DoubleParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/primitives/FloatParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/primitives/IntegerParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/prints/PrintParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/MethodCallParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectMethodCallParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/ObjectParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/classes/ClassParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/parser/structures/methods/MethodParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/Parser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/comments/CommentParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/comments/CommentParserTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/ifs/IfParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/ifs/IfParserTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/imports/ImportParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/imports/ImportParserTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/loops/ForParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/loops/ForParserTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/loops/WhileParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/operators/AddParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/operators/DivideParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/operators/MultiplyParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/operators/SubtractParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/packages/PackageParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/primitives/BooleanParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/primitives/CharacterParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/primitives/DoubleParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/primitives/FloatParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/primitives/IntegerParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/prints/PrintParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/structures/MethodCallParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/structures/ObjectMethodCallParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/structures/ObjectParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/structures/classes/ClassParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/compiler/parser/structures/methods/MethodParser.java" afterPath="" />
+    <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/asm/DynamicClassLoader.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/asm/GeneratedAsmCode.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/asm/GeneratedInterface.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/asm/JVMCompiler.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/asm/TestCode.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/Compile.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/Constants.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/Parameter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/Utils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/Block.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/comments/CommentBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/ifs/IfBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/imports/ImportBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/loops/ForBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/loops/WhileBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/AddBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/DivideBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/MultiplyBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/SubtractBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/packages/PackageBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/BooleanBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/CharacterBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/DoubleBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/FloatBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/IntegerBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/StringBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/prints/PrintBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/FileBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/MethodCallBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/exceptions/ContainerException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/exceptions/DeclarationException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/exceptions/IndentationException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/exceptions/ParseException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/symbol_table/Row.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/symbol_table/SymbolTable.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/tokenizer/Token.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/tokenizer/TokenData.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/tokenizer/TokenType.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/compiler/tokenizer/Tokenizer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/Parser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/comments/CommentParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/ifs/IfParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/imports/ImportParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/ForParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/WhileParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/AddParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/DivideParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/MultiplyParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/SubtractParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/packages/PackageParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/BooleanParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/CharacterParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/DoubleParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/FloatParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/IntegerParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/prints/PrintParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/MethodCallParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectMethodCallParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/classes/ClassParser.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/compiled/MyCode.mlg" afterPath="$PROJECT_DIR$/compiled/MyCode.mlg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/asm/TestCode.java" afterPath="$PROJECT_DIR$/src/main/java/asm/TestCode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/comments/CommentBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/comments/CommentBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/ifs/IfBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/ifs/IfBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/imports/ImportBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/imports/ImportBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/loops/ForBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/loops/ForBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/loops/WhileBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/loops/WhileBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/AddBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/operators/AddBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/DivideBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/operators/DivideBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/MultiplyBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/operators/MultiplyBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/operators/SubtractBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/operators/SubtractBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/packages/PackageBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/packages/PackageBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/BooleanBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/BooleanBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/CharacterBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/CharacterBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/DoubleBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/DoubleBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/FloatBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/FloatBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/IntegerBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/primitives/IntegerBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/prints/PrintBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/prints/PrintBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/FileBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/FileBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/MethodCallBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/MethodCallBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java" />
     </list>
     <ignored path="JVM Compiler.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -184,116 +128,7 @@
     <favorites_list name="JVM Compiler" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ConstructorBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="815">
-              <caret line="63" column="28" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MethodBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="764">
-              <caret line="115" column="40" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/FileBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="738">
-              <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
-              <folding>
-                <element signature="e#744#745#0" expanded="true" />
-                <element signature="e#782#783#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Block.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/Block.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="809">
-              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MethodCallBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/MethodCallBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="842">
-              <caret line="65" column="33" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjectBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="965">
-              <caret line="118" column="29" selection-start-line="118" selection-start-column="29" selection-end-line="118" selection-end-column="29" />
-              <folding>
-                <element signature="e#3658#3659#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjectMethodCallBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectMethodCallBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="471">
-              <caret line="128" column="5" selection-start-line="128" selection-start-column="5" selection-end-line="128" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommentParser.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/comments/CommentParser.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PrintBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/prints/PrintBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="790">
-              <caret line="71" column="29" selection-start-line="71" selection-start-column="29" selection-end-line="71" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1816#1817#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClassBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="738">
-              <caret line="196" column="5" selection-start-line="189" selection-start-column="0" selection-end-line="196" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -1440,7 +1275,14 @@
       <option name="project" value="LOCAL" />
       <updated>1484693930307</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Deleted all files.">
+      <created>1484856343722</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1484856343722</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1542,7 +1384,8 @@
     <MESSAGE value="Added parse exception for any incorrect syntax in the class block." />
     <MESSAGE value="Added parsing of method parameters." />
     <MESSAGE value="Added method parameters and object method call arguments. Need to store parameters in a block to generate local variable code to store  in the variable table." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added method parameters and object method call arguments. Need to store parameters in a block to generate local variable code to store  in the variable table." />
+    <MESSAGE value="Deleted all files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Deleted all files." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1672,9 +1515,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#36#63#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1754,10 +1595,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="988">
           <caret line="50" column="25" selection-start-line="50" selection-start-column="25" selection-end-line="50" selection-end-column="25" />
-          <folding>
-            <element signature="e#765#766#0" expanded="true" />
-            <element signature="e#797#798#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1765,10 +1603,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="712">
           <caret line="102" column="5" selection-start-line="99" selection-start-column="2" selection-end-line="102" selection-end-column="5" />
-          <folding>
-            <element signature="e#2341#2342#0" expanded="true" />
-            <element signature="e#2376#2377#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1776,10 +1611,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
           <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
-          <folding>
-            <element signature="e#920#921#0" expanded="true" />
-            <element signature="e#957#958#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1787,10 +1619,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="712">
           <caret line="91" column="22" selection-start-line="91" selection-start-column="22" selection-end-line="91" selection-end-column="22" />
-          <folding>
-            <element signature="e#2367#2368#0" expanded="true" />
-            <element signature="e#2406#2407#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1798,10 +1627,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
-          <folding>
-            <element signature="e#1280#1281#0" expanded="true" />
-            <element signature="e#1322#1323#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1809,10 +1635,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="712">
           <caret line="66" column="25" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
-          <folding>
-            <element signature="e#1278#1279#0" expanded="true" />
-            <element signature="e#1320#1321#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1820,10 +1643,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
           <caret line="65" column="23" selection-start-line="65" selection-start-column="23" selection-end-line="65" selection-end-column="23" />
-          <folding>
-            <element signature="e#1271#1272#0" expanded="true" />
-            <element signature="e#1311#1312#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1831,10 +1651,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="68" column="29" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
-          <folding>
-            <element signature="e#1411#1412#0" expanded="true" />
-            <element signature="e#1448#1449#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1842,10 +1659,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="686">
           <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
-          <folding>
-            <element signature="e#772#773#0" expanded="true" />
-            <element signature="e#818#819#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1853,10 +1667,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="712">
           <caret line="50" column="56" selection-start-line="50" selection-start-column="56" selection-end-line="50" selection-end-column="56" />
-          <folding>
-            <element signature="e#830#831#0" expanded="true" />
-            <element signature="e#894#895#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1872,10 +1683,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="62" column="20" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
-          <folding>
-            <element signature="e#1112#1113#0" expanded="true" />
-            <element signature="e#1166#1167#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1883,10 +1691,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="738">
           <caret line="65" column="5" selection-start-line="62" selection-start-column="4" selection-end-line="65" selection-end-column="5" />
-          <folding>
-            <element signature="e#1085#1086#0" expanded="true" />
-            <element signature="e#1142#1143#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1894,10 +1699,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="62" column="22" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
-          <folding>
-            <element signature="e#1080#1081#0" expanded="true" />
-            <element signature="e#1136#1137#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1905,10 +1707,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="686">
           <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
-          <folding>
-            <element signature="e#1077#1078#0" expanded="true" />
-            <element signature="e#1132#1133#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1916,10 +1715,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
           <caret line="63" column="19" selection-start-line="63" selection-start-column="19" selection-end-line="63" selection-end-column="19" />
-          <folding>
-            <element signature="e#1168#1169#0" expanded="true" />
-            <element signature="e#1221#1222#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1934,11 +1730,8 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/prints/PrintBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="790">
-          <caret line="71" column="29" selection-start-line="71" selection-start-column="29" selection-end-line="71" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1816#1817#0" expanded="true" />
-          </folding>
+          <caret line="71" column="30" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1953,7 +1746,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/ConstructorBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="815">
-          <caret line="63" column="28" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
+          <caret line="61" column="28" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -1961,7 +1754,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/methods/MethodBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="764">
-          <caret line="115" column="40" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
+          <caret line="114" column="41" selection-start-line="114" selection-start-column="41" selection-end-line="114" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -1969,11 +1762,8 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/FileBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="738">
-          <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
-          <folding>
-            <element signature="e#744#745#0" expanded="true" />
-            <element signature="e#782#783#0" expanded="true" />
-          </folding>
+          <caret line="50" column="30" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1996,7 +1786,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/MethodCallBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="842">
-          <caret line="65" column="33" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
+          <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -2004,10 +1794,8 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/compiler/block/structures/objects/ObjectBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="965">
-          <caret line="118" column="29" selection-start-line="118" selection-start-column="29" selection-end-line="118" selection-end-column="29" />
-          <folding>
-            <element signature="e#3658#3659#0" expanded="true" />
-          </folding>
+          <caret line="118" column="30" selection-start-line="118" selection-start-column="30" selection-end-line="118" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2022,7 +1810,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/comments/CommentParser.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
-          <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
+          <caret line="13" column="39" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
           <folding />
         </state>
       </provider>
