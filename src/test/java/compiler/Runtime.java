@@ -36,8 +36,6 @@ import compiler.parser.structures.ObjectMethodCallParser;
 import compiler.parser.structures.ObjectParser;
 import compiler.parser.structures.classes.ClassParser;
 import compiler.parser.structures.methods.MethodParser;
-import compiler.symbol_table.Row;
-import compiler.symbol_table.SymbolTable;
 
 import java.io.*;
 import java.util.ArrayList;

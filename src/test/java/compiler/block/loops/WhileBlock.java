@@ -1,7 +1,6 @@
 package compiler.block.loops;
 
 import compiler.block.Block;
-import compiler.symbol_table.SymbolTable;
 
 public class WhileBlock extends Block {
 

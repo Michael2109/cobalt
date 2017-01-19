@@ -1,7 +1,6 @@
 package compiler.block.operators;
 
 import compiler.block.Block;
-import compiler.symbol_table.SymbolTable;
 
 public class AddBlock extends Block {
 

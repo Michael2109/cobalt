@@ -1,7 +1,6 @@
 package compiler.block.ifs;
 
 import compiler.block.Block;
-import compiler.symbol_table.SymbolTable;
 
 public class IfBlock extends Block {
 

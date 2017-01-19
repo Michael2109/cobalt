@@ -5,7 +5,6 @@ import compiler.block.imports.ImportBlock;
 import compiler.block.packages.PackageBlock;
 import compiler.block.structures.FileBlock;
 import compiler.block.structures.classes.ClassBlock;
-import compiler.symbol_table.SymbolTable;
 
 /**
  * Calling a method of an object
