@@ -1,7 +1,5 @@
 package compiler.symbol_table;
 
-import compiler.block.Block;
-
 import java.util.ArrayList;
 import java.util.List;
 

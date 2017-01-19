@@ -26,15 +26,32 @@ public class MethodBlock extends Block {
 
             parameterString += parameter.getAsmType();
 
-            Block.TOTAL_BLOCKS++;
-            localVariableString += "mv.visitLocalVariable(\"" + parameter.getName() + "\", \"" + parameter.getAsmType() + "\", null, lMethod0, lMethod1, " + Block.TOTAL_BLOCKS + ");\n";
-            SymbolTable.getInstance().addRow(new Row().setMethodName(name).setId(Block.TOTAL_BLOCKS).setName(parameter.getName()));
+            Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS() + 1);
+            localVariableString += "mv.visitLocalVariable(\"" + parameter.getName() + "\", \"" + parameter.getAsmType() + "\", null, lMethod0, lMethod1, " + Block.TOTAL_BLOCKS() + ");\n";
+            SymbolTable.getInstance().addRow(new Row().setMethodName(name).setId(Block.TOTAL_BLOCKS()).setName(parameter.getName()));
         }
 
     }
 
     public Parameter[] getParameters() {
         return params;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getClosingCode() {
+        return "mv.visitInsn(RETURN);                      // Return integer from top of stack\n" +
+                "mv.visitMaxs(0, 0);\n" +
+                "mv.visitEnd();\n" +
+                "}\n";
+    }
+
+    @Override
+    public String getValue() {
+        return null;
     }
 
     @Override
@@ -51,15 +68,6 @@ public class MethodBlock extends Block {
 
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getValue() {
-        return null;
-    }
-
-    public String getType() {
-        return type;
     }
 
     @Override
@@ -99,14 +107,6 @@ public class MethodBlock extends Block {
     @Override
     public String getBodyCode() {
         return "";
-    }
-
-    @Override
-    public String getClosingCode() {
-        return "mv.visitInsn(RETURN);                      // Return integer from top of stack\n" +
-                "mv.visitMaxs(0, 0);\n" +
-                "mv.visitEnd();\n" +
-                "}\n";
     }
 
     public String toString() {

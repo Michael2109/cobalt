@@ -26,15 +26,15 @@ public class WhileBlock extends Block {
             value = split[2];
 
             if (operator.equals("==")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals("<")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals(">")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals("<=")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals(">=")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else {
                 System.out.println("Error: Disallowed Operator" + this.getClass());
             }
@@ -44,6 +44,21 @@ public class WhileBlock extends Block {
             value = name;
 
         }
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getClosingCode() {
+        return "mv.visitJumpInsn(GOTO, start" + getId() + ");\n" +
+                "mv.visitLabel(l" + getId() + ");\n";
+    }
+
+    @Override
+    public String getValue() {
+        return null;
     }
 
     @Override
@@ -56,21 +71,12 @@ public class WhileBlock extends Block {
     }
 
     @Override
-    public String getValue() {
-        return null;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @Override
     public String getOpeningCode() {
-        return "Label start" + id + " = new Label();\n" +
-                "mv.visitLabel(start" + id + ");\n" +
+        return "Label start" + getId() + " = new Label();\n" +
+                "mv.visitLabel(start" + getId() + ");\n" +
                 "mv.visitVarInsn(ILOAD," + pointer + ");\n" +
                 "mv.visitLdcInsn(" + value + ");\n" +
-                "Label l" + id + " = new Label();\n" +
+                "Label l" + getId() + " = new Label();\n" +
                 byteCodeOp;
     }
 
@@ -78,12 +84,6 @@ public class WhileBlock extends Block {
     public String getBodyCode() {
 
         return "";
-    }
-
-    @Override
-    public String getClosingCode() {
-        return "mv.visitJumpInsn(GOTO, start" + id + ");\n" +
-                "mv.visitLabel(l" + id + ");\n";
     }
 
     @Override

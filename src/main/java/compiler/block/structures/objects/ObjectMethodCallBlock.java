@@ -22,7 +22,7 @@ public class ObjectMethodCallBlock extends Block {
 
     public ObjectMethodCallBlock(Block superBlock, String variableName, String methodName, Parameter[] params) {
         super(superBlock, false, false);
-        id = SymbolTable.getInstance().getValue(Utils.getMethod(this), variableName).getId();
+        setId(SymbolTable.getInstance().getValue(Utils.getMethod(this), variableName).getId());
         className = SymbolTable.getInstance().getValue(Utils.getMethod(this), variableName).getType();
         this.variableName = variableName;
         this.methodName = methodName;
@@ -34,6 +34,20 @@ public class ObjectMethodCallBlock extends Block {
 
     public Parameter[] getParameters() {
         return params;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getClosingCode() {
+        return "";
+    }
+
+    @Override
+    public String getValue() {
+        return null;
     }
 
     @Override
@@ -62,15 +76,6 @@ public class ObjectMethodCallBlock extends Block {
     }
 
     @Override
-    public String getValue() {
-        return null;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @Override
     public String getOpeningCode() {
         return "";
     }
@@ -84,14 +89,9 @@ public class ObjectMethodCallBlock extends Block {
         //
 
 
-        return "mv.visitVarInsn(ALOAD, " + id + ");\n" +
+        return "mv.visitVarInsn(ALOAD, " + getId() + ");\n" +
                 argumentString +
                 "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n";
-    }
-
-    @Override
-    public String getClosingCode() {
-        return "";
     }
 
     // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package

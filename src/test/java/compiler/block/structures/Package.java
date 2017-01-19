@@ -1,7 +1,5 @@
 package compiler.block.structures;
 
-import compiler.block.Block;
-
 public class Package extends Block {
 
     public Package(Block superBlock, boolean container, boolean variable) {

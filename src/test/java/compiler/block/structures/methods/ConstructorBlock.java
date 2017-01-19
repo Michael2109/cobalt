@@ -1,7 +1,5 @@
 package compiler.block.structures.methods;
 
-import compiler.block.Block;
-
 import java.util.List;
 
 public class ConstructorBlock extends Block {

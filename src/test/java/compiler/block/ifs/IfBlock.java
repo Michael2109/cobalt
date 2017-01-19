@@ -1,7 +1,5 @@
 package compiler.block.ifs;
 
-import compiler.block.Block;
-
 public class IfBlock extends Block {
 
     String name;

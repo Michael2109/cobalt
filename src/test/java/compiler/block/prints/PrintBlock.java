@@ -1,7 +1,5 @@
 package compiler.block.prints;
 
-import compiler.block.Block;
-
 public class PrintBlock extends Block {
 
     String type = "print";

@@ -30,15 +30,15 @@ public class IfBlock extends Block {
 
 
             if (operator.equals("==")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals("<")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals(">")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals("<=")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else if (operator.equals(">=")) {
-                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n";
+                byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId() + ");\n";
             } else {
                 System.out.println("Error: Disallowed Operator" + this.getClass());
             }
@@ -55,6 +55,21 @@ public class IfBlock extends Block {
         return params;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getClosingCode() {
+        return "mv.visitLabel(l" + getId() + ");"
+                ;
+    }
+
+    @Override
+    public String getValue() {
+        return null;
+    }
+
     @Override
     public void init() {
 
@@ -65,31 +80,16 @@ public class IfBlock extends Block {
     }
 
     @Override
-    public String getValue() {
-        return null;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @Override
     public String getOpeningCode() {
         return "mv.visitVarInsn(ILOAD," + pointer + ");" +
                 "mv.visitLdcInsn(" + value + ");\n" +
-                "Label l" + id + " = new Label();\n" +
+                "Label l" + getId() + " = new Label();\n" +
                 byteCodeOp;
     }
 
     @Override
     public String getBodyCode() {
         return "";
-    }
-
-    @Override
-    public String getClosingCode() {
-        return "mv.visitLabel(l" + id + ");"
-                ;
     }
 
     @Override

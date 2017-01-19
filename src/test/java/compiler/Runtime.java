@@ -1,6 +1,5 @@
 package compiler;
 
-import compiler.block.Block;
 import compiler.block.ifs.IfBlock;
 import compiler.block.imports.ImportBlock;
 import compiler.block.loops.WhileBlock;

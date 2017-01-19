@@ -1,6 +1,5 @@
 package compiler;
 
-import compiler.block.Block;
 import compiler.block.structures.methods.MethodBlock;
 
 public class Utils<T> {

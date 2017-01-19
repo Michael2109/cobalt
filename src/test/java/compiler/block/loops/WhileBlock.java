@@ -1,7 +1,5 @@
 package compiler.block.loops;
 
-import compiler.block.Block;
-
 public class WhileBlock extends Block {
 
     String name;

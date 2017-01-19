@@ -1,7 +1,5 @@
 package compiler.block.loops;
 
-import compiler.block.Block;
-
 public class ForBlock extends Block {
 
     String name;

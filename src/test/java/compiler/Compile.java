@@ -1,6 +1,5 @@
 package compiler;
 
-import compiler.block.Block;
 import compiler.block.imports.ImportBlock;
 import compiler.block.packages.PackageBlock;
 import compiler.block.structures.methods.MethodBlock;

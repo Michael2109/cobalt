@@ -1,7 +1,5 @@
 package compiler.block.structures.objects;
 
-import compiler.block.Block;
-
 /**
  * Calling of a method within the class
  */

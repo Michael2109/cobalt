@@ -1,7 +1,5 @@
 package compiler.block.structures;
 
-import compiler.block.Block;
-
 /**
  * Represents the whole file.
  */

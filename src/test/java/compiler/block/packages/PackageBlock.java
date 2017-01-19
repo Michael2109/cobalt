@@ -1,7 +1,5 @@
 package compiler.block.packages;
 
-import compiler.block.Block;
-
 public class PackageBlock extends Block {
 
     public String directory;

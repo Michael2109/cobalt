@@ -1,7 +1,5 @@
 package compiler.block.structures.methods;
 
-import compiler.block.Block;
-
 public class MethodBlock extends Block {
 
     private String name, type;

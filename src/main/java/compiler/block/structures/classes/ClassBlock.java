@@ -33,8 +33,8 @@ public class ClassBlock extends Block {
 
             parameterString += parameter.getAsmType();
 
-            Block.TOTAL_BLOCKS++;
-            localVariableString += "mv.visitLocalVariable(\"" + parameter.getName() + "\", \"" + parameter.getAsmType() + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n";
+            Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS() + 1);
+            localVariableString += "mv.visitLocalVariable(\"" + parameter.getName() + "\", \"" + parameter.getAsmType() + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS() + ");\n";
         }
         constructorBlock = new ConstructorBlock(this, parameters);
 
@@ -43,6 +43,40 @@ public class ClassBlock extends Block {
 
 
         // todo Add local variables to the symbol table
+    }
+
+    @Override
+    public String getType() {
+        return null;
+    }
+
+    @Override
+    public String getClosingCode() {
+        return " cw.visitEnd();\n" +
+                "return cw.toByteArray();}\n" +
+                "    public static void main(String [] args){\n   " +
+                "  DataOutputStream dout = null;\n" +
+                "        try {\n" +
+                "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" +
+                "\n" +
+                "        dout.write(dump());\n" +
+                "        dout.flush();\n" +
+                "        dout.close();\n" +
+                "        } catch (FileNotFoundException e) {\n" +
+                "        e.printStackTrace();\n" +
+                "    } catch (IOException e) {\n" +
+                "            e.printStackTrace();\n" +
+                "        } catch (Exception e) {\n" +
+                "            e.printStackTrace();\n" +
+                "        " +
+
+                "   } }\n" +
+                "}";
+    }
+
+    @Override
+    public String getValue() {
+        return null;
     }
 
     /**
@@ -67,16 +101,6 @@ public class ClassBlock extends Block {
 
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getValue() {
-        return null;
-    }
-
-    @Override
-    public String getType() {
-        return null;
     }
 
     @Override
@@ -139,30 +163,6 @@ public class ClassBlock extends Block {
     @Override
     public String getBodyCode() {
         return "";
-    }
-
-    @Override
-    public String getClosingCode() {
-        return " cw.visitEnd();\n" +
-                "return cw.toByteArray();}\n" +
-                "    public static void main(String [] args){\n   " +
-                "  DataOutputStream dout = null;\n" +
-                "        try {\n" +
-                "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" +
-                "\n" +
-                "        dout.write(dump());\n" +
-                "        dout.flush();\n" +
-                "        dout.close();\n" +
-                "        } catch (FileNotFoundException e) {\n" +
-                "        e.printStackTrace();\n" +
-                "    } catch (IOException e) {\n" +
-                "            e.printStackTrace();\n" +
-                "        } catch (Exception e) {\n" +
-                "            e.printStackTrace();\n" +
-                "        " +
-
-                "   } }\n" +
-                "}";
     }
 
     // Moves all blocks that are inside the class and outside methods into the constructor block

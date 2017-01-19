@@ -1,7 +1,5 @@
 package compiler.block.imports;
 
-import compiler.block.Block;
-
 public class ImportBlock extends Block {
 
     public String directory, fileName;
