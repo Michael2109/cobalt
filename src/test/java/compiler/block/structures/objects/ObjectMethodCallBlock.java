@@ -1,6 +1,5 @@
 package compiler.block.structures.objects;
 
-import compiler.Parameter;
 import compiler.block.Block;
 import compiler.block.imports.ImportBlock;
 import compiler.block.packages.PackageBlock;

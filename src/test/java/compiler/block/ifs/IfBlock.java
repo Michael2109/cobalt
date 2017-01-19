@@ -1,6 +1,5 @@
 package compiler.block.ifs;
 
-import compiler.Parameter;
 import compiler.block.Block;
 import compiler.symbol_table.SymbolTable;
 

@@ -12,5 +12,5 @@ abstract class Parser[T <: Block] {
   /**
     * Take the superBlock and the tokenizer for the line and return a block of this parser's type.
     */
-  def parse(superBlock: Block, tokenizer: Tokenizer): T
+  def parse(superBlock: Block, tokenizer: Tokenizer): Block
 }

@@ -1,6 +1,5 @@
 package compiler.block.loops;
 
-import compiler.Parameter;
 import compiler.block.Block;
 
 public class ForBlock extends Block {

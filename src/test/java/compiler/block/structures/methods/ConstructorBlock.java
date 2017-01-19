@@ -1,6 +1,5 @@
 package compiler.block.structures.methods;
 
-import compiler.Parameter;
 import compiler.block.Block;
 
 import java.util.List;

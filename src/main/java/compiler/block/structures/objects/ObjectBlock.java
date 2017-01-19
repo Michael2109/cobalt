@@ -1,12 +1,10 @@
 package compiler.block.structures.objects;
 
-import compiler.Parameter;
 import compiler.block.Block;
 import compiler.block.imports.ImportBlock;
 import compiler.block.packages.PackageBlock;
 import compiler.block.structures.FileBlock;
 import compiler.block.structures.classes.ClassBlock;
-import compiler.tokenizer.Token;
 
 // Creation of a new object and storing to a variable
 public class ObjectBlock extends Block {

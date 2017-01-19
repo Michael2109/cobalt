@@ -1,5 +1,6 @@
 package compiler.block.prints;
 
+import compiler.Utils;
 import compiler.block.Block;
 import compiler.symbol_table.SymbolTable;
 
