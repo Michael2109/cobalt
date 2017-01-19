@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static org.objectweb.asm.Opcodes.*;
-
 import org.objectweb.asm.*;
 
 public class MyCode {
