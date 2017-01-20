@@ -1,9 +1,5 @@
 package compiler.block.structures.classes;
 
-import compiler.block.packages.PackageBlock;
-import compiler.block.structures.methods.ConstructorBlock;
-import compiler.block.structures.methods.MethodBlock;
-
 import java.util.List;
 
 /**

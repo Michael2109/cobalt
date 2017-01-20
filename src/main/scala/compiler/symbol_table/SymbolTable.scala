@@ -3,6 +3,7 @@ package compiler.symbol_table
 import compiler.block.Block
 import java.util.ArrayList
 import java.util.List
+import scala.collection.JavaConversions._
 
 object SymbolTable {
   private val SYMBOL_TABLE: SymbolTable = new SymbolTable
@@ -50,11 +51,11 @@ class SymbolTable() {
   }
 
   def printSymbols() {
-    System.out.printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "|", "Name", "|", "Type", "|", "Value", "|", "Method", "|", "Class")
-    System.out.printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----")
-    import scala.collection.JavaConversions._
+    printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "|", "Name", "|", "Name", "|", "Type", "|", "Value", "|", "Method", "|", "Class")
+    printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----")
+
     for (row <- rows) {
-      System.out.printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s \n", " ", row.getName, " ", row.getType, " ", row.getValue, " ", row.getMethodName, " ", row.getClassName, " ")
+      printf("%-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s \n", " ", row.getId, " ", row.getName, " ", row.getType, " ", row.getValue, " ", row.getMethodName, " ", row.getClassName, " ")
     }
   }
 

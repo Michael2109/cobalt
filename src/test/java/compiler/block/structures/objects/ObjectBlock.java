@@ -1,10 +1,5 @@
 package compiler.block.structures.objects;
 
-import compiler.block.imports.ImportBlock;
-import compiler.block.packages.PackageBlock;
-import compiler.block.structures.FileBlock;
-import compiler.block.structures.classes.ClassBlock;
-
 // Creation of a new object and storing to a variable
 public class ObjectBlock extends Block {
 

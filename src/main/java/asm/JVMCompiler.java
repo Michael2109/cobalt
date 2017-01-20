@@ -7,6 +7,9 @@ import org.objectweb.asm.*;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 
+/**
+ * Test ASM code
+ */
 public class JVMCompiler {
 
     public static byte[] dump() throws Exception {

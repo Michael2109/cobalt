@@ -1,7 +1,5 @@
 package compiler;
 
-import compiler.block.structures.methods.MethodBlock;
-
 public class Utils<T> {
 
     /* Returns the method a block is within */

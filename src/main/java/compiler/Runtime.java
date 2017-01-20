@@ -4,15 +4,15 @@ import compiler.block.Block;
 import compiler.block.ifs.IfBlock;
 import compiler.block.imports.ImportBlock;
 import compiler.block.loops.WhileBlock;
-import compiler.block.packages.PackageBlock;
-import compiler.block.prints.PrintBlock;
-import compiler.block.structures.FileBlock;
-import compiler.block.structures.methods.MethodBlock;
 import compiler.block.operators.AddBlock;
 import compiler.block.operators.DivideBlock;
 import compiler.block.operators.MultiplyBlock;
 import compiler.block.operators.SubtractBlock;
+import compiler.block.packages.PackageBlock;
+import compiler.block.prints.PrintBlock;
+import compiler.block.structures.FileBlock;
 import compiler.block.structures.classes.ClassBlock;
+import compiler.block.structures.methods.MethodBlock;
 import compiler.block.structures.objects.ObjectMethodCallBlock;
 import compiler.exceptions.ContainerException;
 import compiler.exceptions.DeclarationException;
@@ -117,7 +117,7 @@ public class Runtime {
                     }
                 }
 
-                Block fileBlock = new FileBlock();
+                Block fileBlock = new FileBlock(sourceFile.getName());
                 block.setSuperBlock(fileBlock);
 
                 if (packageBlock != null)
@@ -130,9 +130,7 @@ public class Runtime {
                 block = fileBlock;
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
-
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -150,17 +148,16 @@ public class Runtime {
         SymbolTable.getInstance().printSymbols();
 
         new Compile(outputFile, block);
-
     }
 
     public static void main(String args[]) {
-        final Object LOCK = new Object();
-        synchronized (LOCK) {
-            if (args.length == 2)
-                new Runtime(new File(args[0]), new File(args[1]));
-            else
-                new Runtime(new File("C:\\Users\\Michael\\Desktop\\JVM Compiler\\compiled\\MyCode.mlg"), new File(
-                        "C:\\Users\\Michael\\Desktop\\JVM Compiler\\src\\main\\java\\asm\\GeneratedAsmCode.java"));
+        if (args.length == 2) {
+            File input = new File(args[0] + ".mlg");
+            File output = new File(args[1] + "ASM.java");
+            new Runtime(input, output);
+        } else {
+            System.out.println("Error: Input and Output file args required.");
+            return;
         }
     }
 

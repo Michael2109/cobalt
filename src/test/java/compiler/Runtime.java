@@ -1,18 +1,5 @@
 package compiler;
 
-import compiler.block.ifs.IfBlock;
-import compiler.block.imports.ImportBlock;
-import compiler.block.loops.WhileBlock;
-import compiler.block.operators.AddBlock;
-import compiler.block.operators.DivideBlock;
-import compiler.block.operators.MultiplyBlock;
-import compiler.block.operators.SubtractBlock;
-import compiler.block.packages.PackageBlock;
-import compiler.block.prints.PrintBlock;
-import compiler.block.structures.FileBlock;
-import compiler.block.structures.classes.ClassBlock;
-import compiler.block.structures.methods.MethodBlock;
-import compiler.block.structures.objects.ObjectMethodCallBlock;
 import compiler.parser.Parser;
 import compiler.parser.comments.CommentParser;
 import compiler.parser.ifs.IfParser;

@@ -1,9 +1,5 @@
 package compiler;
 
-import compiler.block.imports.ImportBlock;
-import compiler.block.packages.PackageBlock;
-import compiler.block.structures.methods.MethodBlock;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

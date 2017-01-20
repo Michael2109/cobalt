@@ -2,21 +2,15 @@ package asm
 import compiler.block.ifs.IfBlock
 import asm.MyCode
 
-class MyCode():
+class MyCode(int x, int y):
 
-    print("Hello World!")
     int z = 2
 
-    void method1(int number):
-
+    void method1(int x):
         print ("Other test")
 
-    void otherMethod(int x1):
-        print("HELLO WORLD")
-
-
     void main(int other):
-        print ("Hello again")
+        print ("Hello World!")
         MyCode myCodeTest = new MyCode()
         int x = 5
         int y = 10
