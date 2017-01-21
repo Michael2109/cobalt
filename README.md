@@ -2,14 +2,9 @@
 
 An object oriented and functional language that runs on the JVM.
 
-The language syntax is similar to that of Java and Scala and uses indentation instead of curly braces for defining blocks of code.
-
-The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. 
-
-The compiler parses the file and splits it into a tree structure containing blocks. This structure is then converted into byte code.
+The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
 
 ### Example Code
-
 ```
 package asm
 
@@ -35,7 +30,7 @@ class MyCode():
         MyCode myCodeTest = new MyCode()
         myCodeTest.method()
 ```
-### How it works
+## How it works
 
 ####Tokenization
 The tokenizer takes a String and converts it into tokens depending on a set of rules.
