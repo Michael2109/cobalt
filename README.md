@@ -4,7 +4,7 @@ An object oriented and functional language that runs on the JVM.
 
 The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
 
-### Example Code
+### Example Code (So Far)
 ```
 package asm
 
