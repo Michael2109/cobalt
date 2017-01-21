@@ -151,9 +151,23 @@ The tree structure is looped through calling the getOpeningCode(), getBodyCode()
     if (block.getClosingCode != null && block.getClosingCode != "") p(block.getClosingCode)
   }
 ```
-###Running the application. As program arguments you need the input file and the output file location. Remove the file extension like so. 
+##Bytecode
+Bytecode is generated using ASM.
+
+##Opening the project
+#####IntelliJ
+File->New->Project from version control->GitHub
+Git Repository URL (The project repository URL)
+Parent Directory (Where you would like to store the project)
+Click OK
+Select Gradle on the right panel. 
+Press the refresh all Gradle projects button.
+
+##Running the application. 
+As program arguments you need the input file and the output file location. Remove the file extension like so. 
 ```
 "C:\Users\Michael\Desktop\JVM Compiler\compiled\MyCode" "C:\Users\Michael\Desktop\JVM Compiler\src\main\java\asm\MyCode"
 ```
 
-####Bytecode
+
+
