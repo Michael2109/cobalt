@@ -2,7 +2,7 @@ package compiler.block.operators
 
 import compiler.block.Block
 
-class DivideBlock(val superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
+class DivideBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
   private var `type`: String = "divide"
 
   def init() {

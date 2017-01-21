@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class WhileBlock(val superBlock: Block, var name: String) extends Block(superBlock, true, false) {
+class WhileBlock(var superBlock: Block, var name: String) extends Block(superBlock, true, false) {
   val split: Array[String] = name.split(" ")
   //  x == 10
   if (split.length > 1) {

@@ -5,7 +5,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class IfBlock(val superBlock: Block, var name: String) extends Block(superBlock, true, false) {
+class IfBlock(var superBlock: Block, var name: String) extends Block(superBlock, true, false) {
   val split: Array[String] = name.split(" ")
   //  x == 10
   if (split.length > 1) {

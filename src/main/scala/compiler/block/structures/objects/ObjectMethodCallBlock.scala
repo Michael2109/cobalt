@@ -12,7 +12,7 @@ import compiler.symbol_table.SymbolTable
 /**
   * Calling a method of an object
   */
-class ObjectMethodCallBlock(val superBlock: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlock, false, false) {
+class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlock, false, false) {
   setId(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
   className = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
   private val `type`: String = null

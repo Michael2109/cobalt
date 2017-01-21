@@ -2,7 +2,7 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class DoubleBlock(val superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
+class DoubleBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
   private var `type`: String = "double"
 
   def init() {

@@ -11,7 +11,7 @@ import java.util.List
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(val superBlock: Block, var name: String, var parameters: List[Parameter]) // todo Add local variables to the symbol table
+class ClassBlock(var superBlock: Block, var name: String, var parameters: List[Parameter]) // todo Add local variables to the symbol table
   extends Block(superBlock, true, false) {
 
   import scala.collection.JavaConversions._

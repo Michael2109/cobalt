@@ -6,7 +6,7 @@ import compiler.block.packages.PackageBlock
 import compiler.symbol_table.Row
 import compiler.symbol_table.SymbolTable
 
-class MethodBlock(val superBlock: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlock, true, false) {
+class MethodBlock(var superBlock: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlock, true, false) {
   for (parameter <- params) {
     parameterString += parameter.getAsmType
     Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)

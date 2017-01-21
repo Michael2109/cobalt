@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class PrintBlock(val superBlock: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlock, false, false) {
+class PrintBlock(var superBlock: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlock, false, false) {
 
   private[prints] val `type`: String = "print"
   private[prints] val _isVariable: Boolean = isVariableInit

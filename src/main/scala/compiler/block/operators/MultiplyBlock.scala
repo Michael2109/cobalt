@@ -2,7 +2,7 @@ package compiler.block.operators
 
 import compiler.block.Block
 
-class MultiplyBlock(val superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
+class MultiplyBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
   private var `type`: String = "multiply"
 
   def init() {

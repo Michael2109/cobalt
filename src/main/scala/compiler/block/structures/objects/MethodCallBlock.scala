@@ -6,7 +6,7 @@ import compiler.block.Block
 /**
   * Calling of a method within the class
   */
-class MethodCallBlock(val superBlock: Block, var nameInit: String, var typeInit: String, var paramsInit: Array[Parameter]) extends Block(superBlock, false, false) {
+class MethodCallBlock(var superBlock: Block, var nameInit: String, var typeInit: String, var paramsInit: Array[Parameter]) extends Block(superBlock, false, false) {
 
   val name = nameInit
   val `type` = typeInit

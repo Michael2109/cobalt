@@ -3,7 +3,7 @@ package compiler.block.loops
 import compiler.Parameter
 import compiler.block.Block
 
-class ForBlock(val superBlock: Block, var name: String) extends Block(superBlock, true, false) {
+class ForBlock(var superBlock: Block, var name: String) extends Block(superBlock, true, false) {
   private val `type`: String = "for"
   private val params: Array[Parameter] = null
 

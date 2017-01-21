@@ -2,7 +2,7 @@ package compiler.block.comments
 
 import compiler.block.Block
 
-class CommentBlock(val superBlock: Block) extends Block(superBlock, false, false) {
+class CommentBlock(var superBlock: Block) extends Block(superBlock, false, false) {
   private val `type`: String = "comment"
 
   def init() {

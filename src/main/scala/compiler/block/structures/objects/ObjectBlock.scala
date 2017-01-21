@@ -7,7 +7,7 @@ import compiler.block.structures.FileBlock
 import compiler.block.structures.classes.ClassBlock
 
 // Creation of a new object and storing to a variable
-class ObjectBlock(val superBlock: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String) extends Block(superBlock, false, true) {
+class ObjectBlock(var superBlock: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String) extends Block(superBlock, false, true) {
 
   private[objects] var directory: String = ""
 

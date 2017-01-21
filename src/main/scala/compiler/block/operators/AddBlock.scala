@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class AddBlock(val superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
+class AddBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
   private var `type`: String = "add"
 
   def init() {

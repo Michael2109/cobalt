@@ -10,7 +10,7 @@ object Block {
   var TOTAL_BLOCKS: Int = 0
 }
 
-abstract class Block(val superBlockInit: Block, val containerInit: Boolean, val variableInit: Boolean) {
+abstract class Block(var superBlockInit: Block, val containerInit: Boolean, val variableInit: Boolean) {
 
   protected var subBlocks: ArrayList[Block] = new ArrayList[Block]
   // true ifs block can store sub blocks

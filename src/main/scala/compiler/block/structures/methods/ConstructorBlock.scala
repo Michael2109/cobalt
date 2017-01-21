@@ -4,7 +4,7 @@ import compiler.Parameter
 import compiler.block.Block
 import java.util.List
 
-class ConstructorBlock(val superBlock: Block, var parameters: List[Parameter]) extends Block(superBlock, true, false) {
+class ConstructorBlock(var superBlock: Block, var parameters: List[Parameter]) extends Block(superBlock, true, false) {
   def init() {
   }
 
