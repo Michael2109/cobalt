@@ -77,11 +77,11 @@ class IntegerParser extends Parser[IntegerBlock] {
 }
 ```
 ####Block Creation
-Blocks are used to represent pieces of code in the memory. 
-For every parser there is a block. 
-E.g. An IntegerParser has an IntegerBlock. If the IntegerParser finds an integer definition it would create an IntegerBlock object and add it to a tree structure. 
-A block uses the arguments input from the parser to generate the ASM code. 
-A getOpeningCode(), getBodyCode() and getClosingCode() method is in each Block. This is called when the code is looped through to generate the ASM code.
+Blocks are used to represent pieces of code in the memory.  
+For every parser there is a block.  
+E.g. An IntegerParser has an IntegerBlock. If the IntegerParser finds an integer definition it would create an IntegerBlock object and add it to a tree structure.  
+A block uses the arguments input from the parser to generate the ASM code.  
+A getOpeningCode(), getBodyCode() and getClosingCode() method is in each Block. This is called when the code is looped through to generate the ASM code.  
 ```
 
 class IntegerBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
@@ -133,7 +133,7 @@ class IntegerBlock(var superBlock: Block, var name: String, var value: String) e
 ```
 
 ####ASM Code Generation
-The tree structure is looped through calling the getOpeningCode(), getBodyCode() and getClosingCode() methods to recursively generate the file. 
+The tree structure is looped through calling the getOpeningCode(), getBodyCode() and getClosingCode() methods to recursively generate the file.  
 ```
  def generateASM(block: Block) {
     if (block.isInstanceOf[MethodBlock]) {
@@ -152,19 +152,19 @@ The tree structure is looped through calling the getOpeningCode(), getBodyCode()
   }
 ```
 ##Bytecode
-Bytecode is generated using ASM.
+Bytecode is generated using ASM.  
 
 ##Opening the project
 #####IntelliJ
-File->New->Project from version control->GitHub
-Git Repository URL (The project repository URL)
-Parent Directory (Where you would like to store the project)
-Click OK
-Select Gradle on the right panel. 
-Press the refresh all Gradle projects button.
+File->New->Project from version control->GitHub  
+Git Repository URL (The project repository URL)  
+Parent Directory (Where you would like to store the project)  
+Click OK  
+Select Gradle on the right panel.   
+Press the refresh all Gradle projects button.  
 
 ##Running the application. 
-As program arguments you need the input file and the output file location. Remove the file extension like so. 
+As program arguments you need the input file and the output file location. Remove the file extension like so.   
 ```
 "C:\Users\Michael\Desktop\JVM Compiler\compiled\MyCode" "C:\Users\Michael\Desktop\JVM Compiler\src\main\java\asm\MyCode"
 ```
