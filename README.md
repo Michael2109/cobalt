@@ -64,10 +64,10 @@ class IntegerParser extends Parser[IntegerBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IntegerBlock = {
     tokenizer.nextToken // skip int
-    val name: String = tokenizer.nextToken.getToken
-    tokenizer.nextToken
-    val value: String = tokenizer.nextToken.getToken
-    return new IntegerBlock(superBlock, name, value)
+    val name: String = tokenizer.nextToken.getToken // get the variable name
+    tokenizer.nextToken // skip the "="
+    val value: String = tokenizer.nextToken.getToken // get the value assigned
+    return new IntegerBlock(superBlock, name, value) // return an IntegerBlock with the arguments entered
   }
 }
 ```
