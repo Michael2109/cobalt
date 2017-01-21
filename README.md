@@ -160,10 +160,13 @@ Press the refresh all Gradle projects button.
 
 ##Running the application. 
 As program arguments you need the input file and the output file location. Remove the file extension like so.   
+The input file needs to be a .mlg file.  
+The output file generated should be placed in "build/classes/main/asm/fileName".
 ```
 "C:\Users\Michael\Desktop\JVM Compiler\compiled\MyCode" "C:\Users\Michael\Desktop\JVM Compiler\src\main\java\asm\MyCode"
 ```
 Run the "Runtime.java" file to execute the application. (Currently converting Runtime.java to Runtime.scala)
 
-
+##Debugging
+Open the generated class file to decompile the code and check the code was generated correctly. 
 
