@@ -1,30 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/compiled/MyCode.mlg" afterPath="$PROJECT_DIR$/language/MyCode.mlg" />
+    <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="Updated directory name for .mlg files.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/asm/ASMGenerator.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/comments/CommentBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/comments/CommentBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/ifs/IfBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/ifs/IfBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/loops/ForBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/loops/ForBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/loops/WhileBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/loops/WhileBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/AddBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/AddBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/DivideBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/DivideBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/MultiplyBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/MultiplyBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/SubtractBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/operators/SubtractBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/BooleanBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/BooleanBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/CharacterBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/CharacterBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/DoubleBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/DoubleBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/FloatBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/FloatBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/IntegerBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/IntegerBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/prints/PrintBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/prints/PrintBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/methods/ConstructorBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/methods/ConstructorBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/methods/MethodBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/methods/MethodBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/MethodCallBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/MethodCallBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectMethodCallBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectMethodCallBlock.scala" />
     </list>
     <ignored path="JVM Compiler.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,6 +19,26 @@
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="MyCodeASM.java" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCodeASM.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="442">
+                    <caret line="48" column="46" selection-start-line="48" selection-start-column="46" selection-end-line="48" selection-end-column="46" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="ExternalProjectsData">
@@ -75,20 +74,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CommentBlock.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/comments/CommentBlock.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Block.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2054">
+            <state relative-caret-position="549">
               <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
               <folding />
             </state>
@@ -108,30 +97,28 @@
       <file leaf-file-name="Compile.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Compile.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="676">
+            <state relative-caret-position="1248">
               <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
-              <folding>
-                <element signature="e#18#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MyCode.mlg" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/language/MyCode.mlg">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TokenData.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala">
+      <file leaf-file-name="MyCode.mlg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/language/MyCode.mlg">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+            <state relative-caret-position="364">
+              <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ASMGenerator.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/asm/ASMGenerator.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -172,9 +159,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
               <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-              <folding>
-                <element signature="e#36#63#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -196,6 +181,11 @@
       </list>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="development" />
+      </map>
+    </option>
   </component>
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
@@ -546,7 +536,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/structures/classes/ClassBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/prints/PrintBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/primitives/BooleanBlock.scala" />
@@ -571,7 +560,6 @@
         <option value="$PROJECT_DIR$/src/main/java/compiler/block/comments/CommentBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/Compile.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/Utils.scala" />
-        <option value="$PROJECT_DIR$/src/main/java/asm/MyCodeASM.java" />
         <option value="$PROJECT_DIR$/src/main/java/asm/TestCode.java" />
         <option value="$PROJECT_DIR$/src/main/java/asm/JVMCompiler.java" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" />
@@ -597,6 +585,8 @@
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/comments/CommentBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/Runtime.scala" />
+        <option value="$PROJECT_DIR$/src/main/java/asm/MyCodeASM.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/asm/ASMGenerator.scala" />
       </list>
     </option>
   </component>
@@ -638,7 +628,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1242,6 +1232,32 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="asm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JVM Compiler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JVM Compiler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1391,8 +1407,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2069,7 +2085,14 @@
       <option name="project" value="LOCAL" />
       <updated>1484948305279</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Updated directory name for .mlg files.">
+      <created>1485024898648</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1485024898648</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -2106,7 +2129,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2123,7 +2146,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3001988" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="ANTLR Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4055666" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18210736" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18210736" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2150,7 +2173,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added storing of  variables to JVMCompiler for testing." />
     <MESSAGE value="Added storing of variable IDs to reference variables to perform operations to." />
     <MESSAGE value="Project structure tidied up and unused code removed." />
     <MESSAGE value="Generate bytecode for while loops and if statements." />
@@ -2175,7 +2197,8 @@
     <MESSAGE value="Converted exception java classes to scala classes and moved to scala directory." />
     <MESSAGE value="Converted Block java class to scala class and moved to scala directory." />
     <MESSAGE value="Converted all Java block classes to Scala. Removed unused classes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Converted all Java block classes to Scala. Removed unused classes." />
+    <MESSAGE value="Updated directory name for .mlg files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated directory name for .mlg files." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -2190,13 +2213,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/compiler/Runtime.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="162" column="13" selection-start-line="162" selection-start-column="13" selection-end-line="162" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/loops/WhileParser.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
@@ -2233,13 +2249,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build/classes/main/asm/MyCode.class" />
     <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCode.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCodeASM.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/asm/TestCode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="78">
@@ -2412,7 +2421,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2428,7 +2436,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2468,16 +2475,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-          <folding>
-            <element signature="e#36#63#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2054">
-          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2492,18 +2489,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Compile.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
+        <state relative-caret-position="1248">
           <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
-          <folding>
-            <element signature="e#18#34#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/language/MyCode.mlg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
+        <state relative-caret-position="364">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asm/MyCodeASM.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="48" column="46" selection-start-line="48" selection-start-column="46" selection-end-line="48" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/asm/ASMGenerator.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
           <folding />
         </state>
       </provider>
