@@ -20,6 +20,4 @@ class MyCode(int x, int y):
         int x = 5
         int y = 10
         myCodeTest.method1(x)
-        myCodeTest.otherMethod(x)
-
 

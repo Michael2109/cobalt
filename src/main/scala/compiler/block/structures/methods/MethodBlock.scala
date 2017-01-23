@@ -7,15 +7,17 @@ import compiler.symbol_table.Row
 import compiler.symbol_table.SymbolTable
 
 class MethodBlock(var superBlock: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlock, true, false) {
+
+  private var parameterString: String = ""
+  private var localVariableString: String = ""
+  private var packageBlock: PackageBlock = null
+
   for (parameter <- params) {
     parameterString += parameter.getAsmType
     Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
     localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + Block.TOTAL_BLOCKS + ");\n"
     SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(Block.TOTAL_BLOCKS).setName(parameter.getName))
   }
-  private[methods] var parameterString: String = ""
-  private[methods] var localVariableString: String = ""
-  private[methods] var packageBlock: PackageBlock = null
 
   def getParameters: Array[Parameter] = {
     return params

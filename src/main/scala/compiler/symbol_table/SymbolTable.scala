@@ -60,10 +60,8 @@ class SymbolTable() {
   }
 
   def getValue(method: Block, variableName: String): Row = {
-    println("Looping rows")
 
     for (row <- rows) {
-
       if (row.getMethodName != null && row.getMethodName == method.getName && row.getName != null && row.getName == variableName) {
         return row
       }
