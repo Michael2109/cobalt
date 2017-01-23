@@ -4,11 +4,16 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class AddBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
+class AddBlock(var superBlock: Block, var name: String, var valueInit: String) extends Block(superBlock, false, false) {
   private var `type`: String = "add"
+  private var value: String = valueInit
 
   def init() {
-    setId(SymbolTable.getInstance.getValue(Utils.getMethod(this), name).getId)
+    println("Getting variable.")
+
+    println(Utils.getMethod(this) + " : " + name)
+    setId(new Integer(SymbolTable.getInstance.getValue(Utils.getMethod(this), name).getId))
+    println("Variable retrieved")
   }
 
   def getName: String = {
@@ -40,7 +45,10 @@ class AddBlock(var superBlock: Block, var name: String, var value: String) exten
   }
 
   def getBodyCode: String = {
-    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + getId + ");\n" + "mv.visitInsn(IADD);\n" + "mv.visitVarInsn(ISTORE," + getId + ");\n"
+    return "mv.visitLdcInsn(" + value + ");\n" +
+      "mv.visitVarInsn(ILOAD," + getId + ");\n" +
+      "mv.visitInsn(IADD);\n" +
+      "mv.visitVarInsn(ISTORE," + getId + ");\n"
   }
 
   def getClosingCode: String = {

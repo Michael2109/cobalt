@@ -1,5 +1,7 @@
 package compiler.block.operators;
 
+import compiler.block.Block;
+
 public class MultiplyBlock extends Block {
 
     private String type = "multiply";

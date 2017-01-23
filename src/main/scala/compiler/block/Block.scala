@@ -16,7 +16,7 @@ abstract class Block(var superBlockInit: Block, val containerInit: Boolean, val 
   // true ifs block can store sub blocks
 
   // Block ID used for reference when storing in local variable table
-  private var id: Int = {
+  private var id: Integer = {
     Block.TOTAL_BLOCKS += 1
     Block.TOTAL_BLOCKS - 1
   }
@@ -75,11 +75,11 @@ abstract class Block(var superBlockInit: Block, val containerInit: Boolean, val 
 
   def getClosingCode: String
 
-  def getId: Int = {
+  def getId: Integer = {
     return id
   }
 
-  def setId(id: Int) {
+  def setId(id: Integer) {
     this.id = id
   }
 

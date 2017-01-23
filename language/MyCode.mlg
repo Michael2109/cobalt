@@ -8,6 +8,11 @@ class MyCode(int x, int y):
 
     void method1(int x):
         print ("Other test")
+        int y = 10
+        while (y < 20):
+            print("Looping")
+            y += 1
+
 
     void main(int other):
         print ("Hello World!")

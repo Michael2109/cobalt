@@ -12,7 +12,8 @@ object Utils {
         if (block.getSuperBlock == null) {
           return null
         }
-        result = block.getSuperBlock
+        result = result.getSuperBlock
+
       }
     }
     return result
