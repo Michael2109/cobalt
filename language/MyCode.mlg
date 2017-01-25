@@ -2,22 +2,16 @@ package asm
 import compiler.block.ifs.IfBlock
 import asm.MyCode
 
-class MyCode(int x, int y):
-
-    int z = 2
-
-    void method1(int x):
-        print ("Other test")
-        int y = 10
-        while (y < 20):
-            print("Looping")
-            y += 1
+class MyCode():
 
 
-    void main(int other):
-        print ("Hello World!")
-        MyCode myCodeTest = new MyCode()
-        int x = 5
-        int y = 10
-        myCodeTest.method1(x)
+    void method1(x : int):
+        while (x < 10):
+            print("Hello World!")
+            x += 1
 
+    void main():
+        MyCode myCode = new MyCode()
+        int y = 1
+        myCode.method1(y)
+        print("Hello World")

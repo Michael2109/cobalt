@@ -153,7 +153,7 @@ public class Runtime {
     public static void main(String args[]) {
         if (args.length == 2) {
             File input = new File(args[0] + ".mlg");
-            File output = new File(args[1] + "ASM.java");
+            File output = new File(args[1] + ".java");
             new Runtime(input, output);
         } else {
             System.out.println("Error: Input and Output file args required.");
@@ -213,7 +213,7 @@ public class Runtime {
                         }
                     }
                     if (!parsable)
-                        throw new ParseException("Line: " + lineNumber);
+                        throw new ParseException("Line: " + lineNumber + " " + line);
 
                 }
                 // Indentation the same

@@ -13,7 +13,8 @@ object Utils {
           return null
         }
         result = result.getSuperBlock
-
+        if (result == null)
+          return result
       }
     }
     return result

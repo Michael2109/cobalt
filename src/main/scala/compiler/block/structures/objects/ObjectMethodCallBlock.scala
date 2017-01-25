@@ -14,12 +14,12 @@ import compiler.symbol_table.SymbolTable
   */
 class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlock, false, false) {
   setId(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
-  className = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
   private val `type`: String = null
   private[objects] var parameterString: String = ""
   private[objects] var argumentString: String = ""
-  private var className: String = null
+  private var className: String = ""
   private var directory: String = ""
+  className = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
 
   def getParameters: Array[Parameter] = {
     return params
@@ -40,10 +40,13 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
   def init() {
     if (className == getClassName) {
       directory = getPackage
+
     }
     else {
+
       directory = getDirectory
     }
+    println(className)
     // Get the type of the parameters
     for (param <- params) {
       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
@@ -96,8 +99,10 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     while (!(block.isInstanceOf[ClassBlock])) {
       {
         block = block.getSuperBlock
+
       }
     }
+
     // Get the directory of the Object
     return block.getName
   }

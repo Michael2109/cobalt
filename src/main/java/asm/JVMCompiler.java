@@ -53,20 +53,26 @@ public class JVMCompiler {
             MethodVisitor mv = cw.visitMethod(
                     ACC_PUBLIC,                         // public method
                     "add",                              // name
-                    "()V",                            // descriptor
+                    "(I)V",                            // descriptor
                     null,                               // signature (null means not generic)
                     null);                              // exceptions (array of strings)
 
             mv.visitCode();
 
+            Label lMethod0 = new Label();
+            mv.visitLabel(lMethod0);
 
-            mv.visitTypeInsn(NEW, "java/lang/String");
-            mv.visitInsn(DUP);
-            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/String", "<init>", "()V", false);
-            mv.visitInsn(POP);
-
+            mv.visitIincInsn(1, 5);
             mv.visitInsn(RETURN);                      // Return integer from top of stack
+            Label lmethod2 = new Label();
+            mv.visitLabel(lmethod2);
+            mv.visitLocalVariable("this", "Lasm/TestCode;", null, lMethod0, lmethod2, 0);
+            mv.visitLocalVariable("x", "I", null, lMethod0, lmethod2, 1);
+            mv.visitMaxs(0, 0);
+            mv.visitEnd();
         }
+
+        cw.visitEnd();
 
         // DynamicClassLoader loader = new DynamicClassLoader();
         // Class<?> clazz = loader.defineClass("asm.Test", cw.toByteArray());

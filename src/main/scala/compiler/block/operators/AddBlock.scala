@@ -24,14 +24,6 @@ class AddBlock(var superBlock: Block, var name: String, var valueInit: String) e
     this.name = name
   }
 
-  def getValue: String = {
-    return value
-  }
-
-  def setValue(value: String) {
-    this.value = value
-  }
-
   def getType: String = {
     return `type`
   }
@@ -45,10 +37,15 @@ class AddBlock(var superBlock: Block, var name: String, var valueInit: String) e
   }
 
   def getBodyCode: String = {
-    return "mv.visitLdcInsn(" + value + ");\n" +
-      "mv.visitVarInsn(ILOAD," + getId + ");\n" +
-      "mv.visitInsn(IADD);\n" +
-      "mv.visitVarInsn(ISTORE," + getId + ");\n"
+    return "mv.visitIincInsn(" + this.getId + ", " + this.getValue + ");"
+  }
+
+  def getValue: String = {
+    return value
+  }
+
+  def setValue(value: String) {
+    this.value = value
   }
 
   def getClosingCode: String = {

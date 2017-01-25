@@ -12,36 +12,7 @@ class WhileBlock(var superBlock: Block, var name: String) extends Block(superBlo
   private var operator: String = null
   private var value: String = null
   private var byteCodeOp: String = ""
-  //  x == 10
-  if (split.length > 1) {
-    pointer = split(0)
-    pointer = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this), split(0)).getId
-    operator = split(1)
-    value = split(2)
 
-    if (operator == "==") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
-    }
-    else if (operator == "<") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
-    }
-    else if (operator == ">") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
-    }
-    else if (operator == "<=") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
-    }
-    else if (operator == ">=") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
-    }
-    else {
-      System.out.println("Error: Disallowed Operator" + this.getClass)
-    }
-  }
-  else {
-    //boolean value
-    value = name
-  }
 
   def getType: String = {
     return `type`
@@ -52,7 +23,36 @@ class WhileBlock(var superBlock: Block, var name: String) extends Block(superBlo
   }
 
   def init(): Unit = {
+    //  x == 10
+    if (split.length > 1) {
+      pointer = split(0)
+      pointer = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this), split(0)).getId
+      operator = split(1)
+      value = split(2)
 
+      if (operator == "==") {
+        byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      }
+      else if (operator == "<") {
+        byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      }
+      else if (operator == ">") {
+        byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      }
+      else if (operator == "<=") {
+        byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      }
+      else if (operator == ">=") {
+        byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      }
+      else {
+        System.out.println("Error: Disallowed Operator" + this.getClass)
+      }
+    }
+    else {
+      //boolean value
+      value = name
+    }
   }
 
   def getName: String = {

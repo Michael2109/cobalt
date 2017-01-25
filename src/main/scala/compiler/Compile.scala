@@ -57,12 +57,9 @@ class Compile(val outputFile: File, val block: Block) {
     else {
       if (block.getOpeningCode != null && block.getOpeningCode != "") {
         p(block.getOpeningCode)
-        println(block)
-        println(block.getOpeningCode)
       }
       if (block.getBodyCode != null && block.getBodyCode != "") {
         p(block.getBodyCode)
-        println(block.getBodyCode)
       }
 
 

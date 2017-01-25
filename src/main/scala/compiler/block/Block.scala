@@ -7,7 +7,7 @@ import java.util.Collections
   * Represents a block of code.
   */
 object Block {
-  var TOTAL_BLOCKS: Int = 0
+  var TOTAL_BLOCKS: Int = 50
 }
 
 abstract class Block(var superBlockInit: Block, val containerInit: Boolean, val variableInit: Boolean) {
