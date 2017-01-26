@@ -2,33 +2,31 @@ package compiler.block.comments
 
 import compiler.block.Block
 
+/**
+  * Represents a code comment
+  * E.g. "// This is a comment"
+  *
+  * @param superBlockInit
+  */
 class CommentBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
-  private val `type`: String = "comment"
+  private val _type: String = "comment"
 
-  def init() {
-  }
+  // Called after file is parsed
+  override def init() {}
 
-  def getName: String = {
-    return null
-  }
+  /* Symbol table information */
+  override def getName: String = ""
 
-  def getValue: String = {
-    return null
-  }
+  override def getValue: String = ""
 
-  def getType: String = {
-    return `type`
-  }
+  override def getType: String = _type
 
-  def getOpeningCode: String = {
-    return null
-  }
+  /* Opening and closing byte code */
+  def getOpeningCode: String = ""
 
-  def getClosingCode: String = {
-    return null
-  }
+  def getClosingCode: String = ""
 
-  override def toString: String = {
-    return "Comment"
-  }
+  /* toString method */
+  override def toString: String = "Comment"
+
 }

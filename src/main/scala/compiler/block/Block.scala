@@ -5,12 +5,19 @@ import java.util.ArrayList
 import java.util.Collections
 
 /**
-  * Represents a block of code.
+  *
   */
 object Block {
   var TOTAL_BLOCKS: Int = 50
 }
 
+/**
+  * Represents a block of code.
+  *
+  * @param superBlockInitTest The superBlock of this block
+  * @param containerInit      Whether the block contains other blocks
+  * @param variableInit       Whether the block is a variable
+  */
 abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean) {
 
   Block.TOTAL_BLOCKS += 1
@@ -38,16 +45,19 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
 
   def removeBlock_=(value: Block) = _subBlocks.remove(value)
 
-  // Called before looping through blocks to generate code. Allows for method to be called when all blocks are loaded
+  // Called after file is parsed
   def init()
 
   /* Symbol table information */
   def getName: String
+
   def getValue: String
+
   def getType: String
 
   /* Bytecode for the opening and closing of the block */
   def getOpeningCode: String
+
   def getClosingCode: String
 
   /* Whether the block contains other blocks */
