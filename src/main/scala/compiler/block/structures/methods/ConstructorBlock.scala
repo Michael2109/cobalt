@@ -14,11 +14,9 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
   def init(): Unit = {
 
-    var classBlock = superBlock
+    val classBlock = superBlock
 
     var i = 1
-
-
 
     val block: Block = superBlock.superBlock
     // Get the package the class is within
@@ -46,7 +44,7 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
   }
 
   def getType: String = {
-    return null
+    return "constructor"
   }
 
   def getOpeningCode: String = {

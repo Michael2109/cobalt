@@ -6,23 +6,14 @@ import compiler.symbol_table.SymbolTable
 
 class PrintBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
-  private[prints] val `type`: String = "print"
-  private[prints] val _isVariable: Boolean = isVariableInit
-
   def init() {
   }
 
-  def getName: String = {
-    return null
-  }
+  def getName: String = null
 
-  def getValue: String = {
-    return value
-  }
+  def getValue: String = value
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = "print"
 
   def getOpeningCode: String = {
     if (isVariable) {
@@ -34,15 +25,9 @@ class PrintBlock(var superBlockInit: Block, var value: String, val isVariableIni
     }
   }
 
-  override def isVariable: Boolean = {
-    return _isVariable
-  }
-
   def getClosingCode: String = {
     return ""
   }
 
-  override def toString: String = {
-    return "print: " + value
-  }
+  override def toString: String = "print: " + value
 }

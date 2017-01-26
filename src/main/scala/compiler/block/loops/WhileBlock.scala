@@ -7,20 +7,16 @@ import compiler.symbol_table.SymbolTable
 class WhileBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
 
   val split: Array[String] = name.split(" ")
-  private val `type`: String = "while"
   private var pointer: String = null
   private var operator: String = null
   private var value: String = null
   private var byteCodeOp: String = ""
 
+  def getName: String = name
 
-  def getType: String = {
-    return `type`
-  }
+  def getValue: String = null
 
-  def getValue: String = {
-    return null
-  }
+  def getType: String = "while"
 
   def init(): Unit = {
 
@@ -57,10 +53,6 @@ class WhileBlock(var superBlockInit: Block, var name: String) extends Block(supe
     }
   }
 
-  def getName: String = {
-    return name
-  }
-
   def getOpeningCode: String = {
     return "Label start" + id + " = new Label();\n" +
       "mv.visitLabel(start" + id + ");\n" +
@@ -74,7 +66,6 @@ class WhileBlock(var superBlockInit: Block, var name: String) extends Block(supe
     return "mv.visitJumpInsn(GOTO, start" + id + ");\n" + "mv.visitLabel(l" + id + ");\n"
   }
 
-  override def toString: String = {
-    return "while: " + name
-  }
+  override def toString: String = "while: " + name
+
 }

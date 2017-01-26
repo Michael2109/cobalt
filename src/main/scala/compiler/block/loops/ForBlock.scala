@@ -3,8 +3,14 @@ package compiler.block.loops
 import compiler.Parameter
 import compiler.block.Block
 
+/**
+  * Represents a for loop
+  *
+  * @param superBlockInit
+  * @param name
+  */
 class ForBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
-  private val `type`: String = "for"
+
   private val params: Array[Parameter] = null
 
   def getParameters: Array[Parameter] = {
@@ -22,14 +28,11 @@ class ForBlock(var superBlockInit: Block, var name: String) extends Block(superB
     return null
   }
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = ""
 
   def getOpeningCode: String = {
     return null
   }
-
 
   def getClosingCode: String = {
     return null

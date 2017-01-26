@@ -69,17 +69,11 @@ class ObjectBlock(var superBlockInit: Block, var className: String, var variable
     return block.getName
   }
 
-  def getName: String = {
-    return variableName
-  }
+  def getName: String = variableName
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
 
-  def getType: String = {
-    return className
-  }
+  def getType: String = className
 
   def getOpeningCode: String = {
     return "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
@@ -91,7 +85,5 @@ class ObjectBlock(var superBlockInit: Block, var className: String, var variable
     return ""
   }
 
-  override def toString: String = {
-    return "object: " + className + " " + variableName + " = new " + initClassName + "()"
-  }
+  override def toString: String = "object: " + className + " " + variableName + " = new " + initClassName + "()"
 }

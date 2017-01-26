@@ -11,38 +11,27 @@ import java.util.List
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlockInit: Block, var name: String, var parameters: List[Parameter]) extends Block(superBlockInit, true, false) {
-
-  import scala.collection.JavaConversions._
-
-  // Parameters added to constuctor
-  var parameterString: String = ""
-  // Local variables from the parameters
-  var localVariableString: String = ""
-
-  // Loop through all code that isn't a method or is within a method and move it into the constructor block
+class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter]) extends Block(superBlockInit, true, false) {
 
   // Package the class is within
-  private[classes] var packageBlock: PackageBlock = new PackageBlock("")
-  private[classes] var constructorBlock: Block = new ConstructorBlock(this, parameters.toArray(new Array[Parameter](parameters.size)))
+  private var packageBlock: PackageBlock = new PackageBlock("")
 
+  // Parameters added to constuctor
+  private var parameterString: String = ""
+
+  // Local variables from the parameters
+  private var localVariableString: String = ""
+
+  // Create a constructor block and add it to the class block
+  private var constructorBlock: Block = new ConstructorBlock(this, parameters)
   addBlock_=(constructorBlock)
 
-  def getType: String = {
-    return null
-  }
 
-  def getClosingCode: String = {
-    return " cw.visitEnd();\n" + "return cw.toByteArray();}\n" +
-      "    public static void main(String [] args){\n   " +
-      "  DataOutputStream dout = null;\n" +
-      "        try {\n" +
-      "" + "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(dump());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
-  }
+  def getName: String = name
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
+
+  def getType: String = "class"
 
   /**
     * Performed just before compiling blocks to allow for action when all blocks parsed
@@ -68,8 +57,20 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Li
     }
   }
 
-  def getName: String = {
-    return name
+  // Moves all blocks that are inside the class and outside methods into the constructor block
+  def moveToConstructor(block: Block) {
+    if (block.isInstanceOf[MethodBlock] || block.isInstanceOf[ConstructorBlock]) {
+      return
+    }
+    else {
+      val ref: Block = block
+      constructorBlock.addBlock_=(ref)
+      block.superBlock.removeBlock_=(block)
+      block.superBlock_=(constructorBlock)
+    }
+    for (sub <- block.subBlocks) {
+      moveToConstructor(sub)
+    }
   }
 
   def getOpeningCode: String = {
@@ -92,22 +93,14 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Li
       "                    \"<init>\",                           // method name\n" + "                    \"(" + parameterString + ")V\",                              // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "\n" + "            mv.visitCode();                            // Start the code for this method\n" + " Label lConstructor0 = new Label();\n" + "mv.visitLabel(lConstructor0);\n" + "            mv.visitVarInsn(ALOAD, 0);                 // Load \"this\" onto the stack\n" + "\n" + "            mv.visitMethodInsn(INVOKESPECIAL,          // Invoke an instance method (non-virtual)\n" + "                    \"java/lang/Object\",                 // Class on which the method is defined\n" + "                    \"<init>\",                           // Name of the method\n" + "                    \"()V\",                              // Descriptor\n" + "                    false);                             // Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n" + "       "
   }
 
-
-  // Moves all blocks that are inside the class and outside methods into the constructor block
-  def moveToConstructor(block: Block) {
-    if (block.isInstanceOf[MethodBlock] || block.isInstanceOf[ConstructorBlock]) {
-      return
-    }
-    else {
-      val ref: Block = block
-      constructorBlock.addBlock_=(ref)
-      block.superBlock.removeBlock_=(block)
-      block.superBlock_=(constructorBlock)
-    }
-    for (sub <- block.subBlocks) {
-      moveToConstructor(sub)
-    }
+  def getClosingCode: String = {
+    return " cw.visitEnd();\n" + "return cw.toByteArray();}\n" +
+      "    public static void main(String [] args){\n   " +
+      "  DataOutputStream dout = null;\n" +
+      "        try {\n" +
+      "" + "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(dump());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
   }
+
 
   override def toString: String = {
     var paramString: String = ""

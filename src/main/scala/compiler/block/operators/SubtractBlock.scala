@@ -8,37 +8,21 @@ class SubtractBlock(var superBlockInit: Block, var name: String, var value: Stri
   def init() {
   }
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
-  def setName(name: String) {
-    this.name = name
-  }
 
-  def getValue: String = {
-    return value
-  }
+  def getValue: String = value
 
-  def setValue(value: String) {
-    this.value = value
-  }
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = "subtract"
 
-  def setType(`type`: String) {
-    this.`type` = `type`
-  }
 
   def getOpeningCode: String = {
     return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + id + ");\n" + "mv.visitInsn(ISUB);\n" + "mv.visitVarInsn(ISTORE," + id + ");\n"
   }
 
-
   def getClosingCode: String = {
-    return null
+    return ""
   }
 
   override def toString: String = {

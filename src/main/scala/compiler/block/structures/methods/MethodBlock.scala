@@ -12,22 +12,17 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
   private var localVariableString: String = ""
   private var packageBlock: PackageBlock = null
 
-
   def getParameters: Array[Parameter] = {
     return params
   }
 
-  def getType: String = {
-    return `type`
-  }
+  def getName: String = name
 
+  def getType: String = `type`
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
 
   def init() {
-
 
     val block: Block = superBlock.superBlock
     // Get the package the class is within
@@ -36,7 +31,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }
     }
-
 
     var i = 1
     for (parameter <- params) {
@@ -49,10 +43,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
       i += 1
     }
 
-  }
-
-  def getName: String = {
-    return name
   }
 
   def getOpeningCode: String = {

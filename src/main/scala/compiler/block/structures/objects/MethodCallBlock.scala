@@ -8,43 +8,29 @@ import compiler.block.Block
   */
 class MethodCallBlock(var superBlockInit: Block, var nameInit: String, var typeInit: String, var paramsInit: Array[Parameter]) extends Block(superBlockInit, false, false) {
 
-  val name = nameInit
-  val `type` = typeInit
-  val params = paramsInit
+  private val _name = nameInit
+  private val _type = typeInit
+  private val _params = paramsInit
 
-  def getParameters: Array[Parameter] = {
-    return params
-  }
+  def getParameters: Array[Parameter] = _params
 
-  def init() {
-  }
+  def init() {}
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = _name
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = _type
 
-  def getOpeningCode: String = {
-    return name + "();"
-  }
+  def getOpeningCode: String = _name + "();"
 
-
-  def getClosingCode: String = {
-    return ""
-  }
+  def getClosingCode: String = ""
 
   override def toString: String = {
     var paramString: String = ""
-    for (parameter <- params) {
+    for (parameter <- _params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return "method call: " + name + " ( " + paramString + ")"
+    return "method call: " + _name + " ( " + paramString + ")"
   }
 }

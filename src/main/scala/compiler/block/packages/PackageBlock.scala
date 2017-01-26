@@ -3,31 +3,19 @@ package compiler.block.packages
 import compiler.block.Block
 
 class PackageBlock(var directory: String) extends Block(null, false, false) {
-  def init() {
-  }
 
-  def getName: String = {
-    return null
-  }
+  def init() {}
 
-  def getValue: String = {
-    return null
-  }
+  def getName: String = directory
 
-  def getType: String = {
-    return null
-  }
+  def getValue: String = null
 
-  def getOpeningCode: String = {
-    return null
-  }
+  def getType: String = "package"
 
+  def getOpeningCode: String = ""
 
-  def getClosingCode: String = {
-    return null
-  }
+  def getClosingCode: String = ""
 
-  override def toString: String = {
-    return "package: " + directory
-  }
+  override def toString: String = "package: " + directory
+
 }

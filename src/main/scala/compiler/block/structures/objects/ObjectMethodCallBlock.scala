@@ -13,29 +13,23 @@ import compiler.symbol_table.SymbolTable
   * Calling a method of an object
   */
 class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false) {
+
   id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
   private val `type`: String = null
-  private[objects] var parameterString: String = ""
-  private[objects] var argumentString: String = ""
-  private var className: String = ""
+  private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
+  private var parameterString: String = ""
+  private var argumentString: String = ""
   private var directory: String = ""
-  className = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
 
   def getParameters: Array[Parameter] = {
     return params
   }
 
-  def getType: String = {
-    return `type`
-  }
+  def getName: String = variableName
 
-  def getClosingCode: String = {
-    return ""
-  }
+  def getValue: String = null
 
-  def getValue: String = {
-    return null
-  }
+  def getType: String = `type`
 
   def init() {
     if (className == getClassName) {
@@ -99,7 +93,6 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     while (!(block.isInstanceOf[ClassBlock])) {
       {
         block = block.superBlock
-
       }
     }
 
@@ -107,12 +100,13 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     return block.getName
   }
 
-  def getName: String = {
-    return variableName
-  }
 
   def getOpeningCode: String = {
     return "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+  }
+
+  def getClosingCode: String = {
+    return ""
   }
 
   override def toString: String = {
