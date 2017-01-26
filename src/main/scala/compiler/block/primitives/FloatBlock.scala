@@ -2,7 +2,7 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class FloatBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
+class FloatBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
   private var `type`: String = "float"
 
   def init() {
@@ -36,9 +36,6 @@ class FloatBlock(var superBlock: Block, var name: String, var value: String) ext
     return ""
   }
 
-  def getBodyCode: String = {
-    return ""
-  }
 
   def getClosingCode: String = {
     return ""

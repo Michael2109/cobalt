@@ -2,7 +2,7 @@ package compiler.block.operators
 
 import compiler.block.Block
 
-class MultiplyBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
+class MultiplyBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
   private var `type`: String = "multiply"
 
   def init() {
@@ -33,11 +33,7 @@ class MultiplyBlock(var superBlock: Block, var name: String, var value: String) 
   }
 
   def getOpeningCode: String = {
-    return null
-  }
-
-  def getBodyCode: String = {
-    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + getId + ");\n" + "mv.visitInsn(IMUL);\n" + "mv.visitVarInsn(ISTORE," + getId + ");\n"
+    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + id + ");\n" + "mv.visitInsn(IMUL);\n" + "mv.visitVarInsn(ISTORE," + id + ");\n"
   }
 
   def getClosingCode: String = {

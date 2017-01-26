@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class PrintBlock(var superBlock: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlock, false, false) {
+class PrintBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
   private[prints] val `type`: String = "print"
   private[prints] val _isVariable: Boolean = isVariableInit
@@ -25,10 +25,6 @@ class PrintBlock(var superBlock: Block, var value: String, val isVariableInit: B
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     if (isVariable) {
       return "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" + "mv.visitVarInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), value).getId + ");" + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(I)V\");"
     }

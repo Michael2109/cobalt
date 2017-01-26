@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class AddBlock(var superBlock: Block, var name: String, var valueInit: String) extends Block(superBlock, false, false) {
+class AddBlock(var superBlockInit: Block, var name: String, var valueInit: String) extends Block(superBlockInit, false, false) {
   private var `type`: String = "add"
   private var value: String = valueInit
 
@@ -12,7 +12,7 @@ class AddBlock(var superBlock: Block, var name: String, var valueInit: String) e
     println("Getting variable.")
 
     println(Utils.getMethod(this) + " : " + name)
-    setId(new Integer(SymbolTable.getInstance.getValue(Utils.getMethod(this), name).getId))
+    id = (new Integer(SymbolTable.getInstance.getValue(Utils.getMethod(this), name).getId))
     println("Variable retrieved")
   }
 
@@ -33,11 +33,7 @@ class AddBlock(var superBlock: Block, var name: String, var valueInit: String) e
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
-    return "mv.visitIincInsn(" + this.getId + ", " + this.getValue + ");"
+    return "mv.visitIincInsn(" + id + ", " + this.getValue + ");"
   }
 
   def getValue: String = {

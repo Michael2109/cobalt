@@ -2,7 +2,7 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class CharacterBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
+class CharacterBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
   private var `type`: String = "char"
 
   def init() {
@@ -33,12 +33,9 @@ class CharacterBlock(var superBlock: Block, var name: String, var value: String)
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     return "char " + name + " = '" + value + "';"
   }
+
 
   def getClosingCode: String = {
     return ""

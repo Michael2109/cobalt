@@ -5,7 +5,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class IfBlock(var superBlock: Block, var name: String) extends Block(superBlock, true, false) {
+class IfBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
   val split: Array[String] = name.split(" ")
   //  x == 10
   if (split.length > 1) {
@@ -14,19 +14,19 @@ class IfBlock(var superBlock: Block, var name: String) extends Block(superBlock,
     operator = split(1)
     value = split(2)
     if (operator == "==") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == "<") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == ">") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == "<=") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == ">=") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + getId + ");\n"
+      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else {
       System.out.println("Error: Disallowed Operator" + this.getClass)
@@ -52,7 +52,7 @@ class IfBlock(var superBlock: Block, var name: String) extends Block(superBlock,
   }
 
   def getClosingCode: String = {
-    return "mv.visitLabel(l" + getId + ");"
+    return "mv.visitLabel(l" + id + ");"
   }
 
   def getValue: String = {
@@ -67,11 +67,7 @@ class IfBlock(var superBlock: Block, var name: String) extends Block(superBlock,
   }
 
   def getOpeningCode: String = {
-    return "mv.visitVarInsn(ILOAD," + pointer + ");" + "mv.visitLdcInsn(" + value + ");\n" + "Label l" + getId + " = new Label();\n" + byteCodeOp
-  }
-
-  def getBodyCode: String = {
-    return ""
+    return "mv.visitVarInsn(ILOAD," + pointer + ");" + "mv.visitLdcInsn(" + value + ");\n" + "Label l" + id + " = new Label();\n" + byteCodeOp
   }
 
   override def toString: String = {

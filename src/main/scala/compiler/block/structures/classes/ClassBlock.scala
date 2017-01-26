@@ -11,8 +11,7 @@ import java.util.List
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlock: Block, var name: String, var parameters: List[Parameter]) // todo Add local variables to the symbol table
-  extends Block(superBlock, true, false) {
+class ClassBlock(var superBlockInit: Block, var name: String, var parameters: List[Parameter]) extends Block(superBlockInit, true, false) {
 
   import scala.collection.JavaConversions._
 
@@ -27,7 +26,7 @@ class ClassBlock(var superBlock: Block, var name: String, var parameters: List[P
   private[classes] var packageBlock: PackageBlock = new PackageBlock("")
   private[classes] var constructorBlock: Block = new ConstructorBlock(this, parameters.toArray(new Array[Parameter](parameters.size)))
 
-  addBlock(constructorBlock)
+  addBlock_=(constructorBlock)
 
   def getType: String = {
     return null
@@ -50,12 +49,12 @@ class ClassBlock(var superBlock: Block, var name: String, var parameters: List[P
     */
   def init() {
     // Move anything outside a method and within the class to a constructor block
-    for (sub <- getSubBlocks) {
+    for (sub <- subBlocks) {
       moveToConstructor(sub)
     }
-    val block: Block = getSuperBlock
+    val block: Block = superBlock
     // Get the package the class is within
-    for (fileSub <- block.getSubBlocks) {
+    for (fileSub <- block.subBlocks) {
       if (fileSub.isInstanceOf[PackageBlock]) {
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }
@@ -93,9 +92,6 @@ class ClassBlock(var superBlock: Block, var name: String, var parameters: List[P
       "                    \"<init>\",                           // method name\n" + "                    \"(" + parameterString + ")V\",                              // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "\n" + "            mv.visitCode();                            // Start the code for this method\n" + " Label lConstructor0 = new Label();\n" + "mv.visitLabel(lConstructor0);\n" + "            mv.visitVarInsn(ALOAD, 0);                 // Load \"this\" onto the stack\n" + "\n" + "            mv.visitMethodInsn(INVOKESPECIAL,          // Invoke an instance method (non-virtual)\n" + "                    \"java/lang/Object\",                 // Class on which the method is defined\n" + "                    \"<init>\",                           // Name of the method\n" + "                    \"()V\",                              // Descriptor\n" + "                    false);                             // Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n" + "       "
   }
 
-  def getBodyCode: String = {
-    return ""
-  }
 
   // Moves all blocks that are inside the class and outside methods into the constructor block
   def moveToConstructor(block: Block) {
@@ -104,11 +100,11 @@ class ClassBlock(var superBlock: Block, var name: String, var parameters: List[P
     }
     else {
       val ref: Block = block
-      constructorBlock.addBlock(ref)
-      block.getSuperBlock.removeBlock(block)
-      block.setSuperBlock(constructorBlock)
+      constructorBlock.addBlock_=(ref)
+      block.superBlock.removeBlock_=(block)
+      block.superBlock_=(constructorBlock)
     }
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       moveToConstructor(sub)
     }
   }

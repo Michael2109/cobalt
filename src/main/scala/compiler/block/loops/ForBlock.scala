@@ -3,7 +3,7 @@ package compiler.block.loops
 import compiler.Parameter
 import compiler.block.Block
 
-class ForBlock(var superBlock: Block, var name: String) extends Block(superBlock, true, false) {
+class ForBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
   private val `type`: String = "for"
   private val params: Array[Parameter] = null
 
@@ -30,9 +30,6 @@ class ForBlock(var superBlock: Block, var name: String) extends Block(superBlock
     return null
   }
 
-  def getBodyCode: String = {
-    return null
-  }
 
   def getClosingCode: String = {
     return null

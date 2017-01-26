@@ -12,8 +12,8 @@ import compiler.symbol_table.SymbolTable
 /**
   * Calling a method of an object
   */
-class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlock, false, false) {
-  setId(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
+class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false) {
+  id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
   private val `type`: String = null
   private[objects] var parameterString: String = ""
   private[objects] var argumentString: String = ""
@@ -62,11 +62,11 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     var block: Block = this
     while (!(block.isInstanceOf[FileBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
         return (sub.asInstanceOf[ImportBlock]).directory
       }
@@ -80,11 +80,11 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     var block: Block = this
     while (!(block.isInstanceOf[FileBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       if (sub.isInstanceOf[PackageBlock]) {
         return (sub.asInstanceOf[PackageBlock]).directory
       }
@@ -98,7 +98,7 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     var block: Block = this
     while (!(block.isInstanceOf[ClassBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
 
       }
     }
@@ -112,13 +112,7 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
-    // Push all arguments to the top of the stack
-    //
-    return "mv.visitVarInsn(ALOAD, " + getId + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+    return "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
   }
 
   override def toString: String = {

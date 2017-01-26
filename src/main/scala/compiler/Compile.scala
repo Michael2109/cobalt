@@ -38,7 +38,7 @@ class Compile(val outputFile: File, val block: Block) {
   // Allows for initialisation when all blocks have been loaded.
   def initBlocks(block: Block) {
     block.init()
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       initBlocks(sub)
     }
   }
@@ -51,21 +51,21 @@ class Compile(val outputFile: File, val block: Block) {
     if (block.isInstanceOf[MethodBlock]) {
       val b: MethodBlock = block.asInstanceOf[MethodBlock]
       p(b.getOpeningCode)
-      p(b.getBodyCode)
+
 
     }
     else {
       if (block.getOpeningCode != null && block.getOpeningCode != "") {
         p(block.getOpeningCode)
       }
-      if (block.getBodyCode != null && block.getBodyCode != "") {
-        p(block.getBodyCode)
-      }
+      // if (block.getBodyCode != null && block.getBodyCode != "") {
+      //    p(block.getBodyCode)
+      //  }
 
 
 
     }
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       generateASM(sub)
     }
     if (block.getClosingCode != null && block.getClosingCode != "") p(block.getClosingCode)

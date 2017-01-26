@@ -22,10 +22,6 @@ class ImportBlock(var directory: String, var fileName: String) extends Block(nul
     return null
   }
 
-  def getBodyCode: String = {
-    return null
-  }
-
   def getClosingCode: String = {
     return null
   }

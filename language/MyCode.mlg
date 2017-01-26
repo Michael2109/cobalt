@@ -5,7 +5,7 @@ import asm.MyCode
 class MyCode():
 
 
-    void method1(x : int):
+    void method1(int x):
         while (x < 10):
             print("Hello World!")
             x += 1

@@ -6,7 +6,7 @@ import compiler.block.packages.PackageBlock
 import compiler.symbol_table.Row
 import compiler.symbol_table.SymbolTable
 
-class MethodBlock(var superBlock: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlock, true, false) {
+class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false) {
 
   private var parameterString: String = ""
   private var localVariableString: String = ""
@@ -29,20 +29,23 @@ class MethodBlock(var superBlock: Block, var name: String, var `type`: String, v
   def init() {
 
 
-    val block: Block = getSuperBlock.getSuperBlock
+    val block: Block = superBlock.superBlock
     // Get the package the class is within
-    for (fileSub <- block.getSubBlocks) {
+    for (fileSub <- block.subBlocks) {
       if (fileSub.isInstanceOf[PackageBlock]) {
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }
     }
 
+
     var i = 1
     for (parameter <- params) {
+      println(parameter)
       parameterString += parameter.getAsmType
-      Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
+      Block.TOTAL_BLOCKS += 1
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + i + ");\n"
       SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(i).setName(parameter.getName))
+
       i += 1
     }
 
@@ -80,9 +83,6 @@ class MethodBlock(var superBlock: Block, var name: String, var `type`: String, v
     }
   }
 
-  def getBodyCode: String = {
-    return ""
-  }
 
   override def toString: String = {
     var paramString: String = ""

@@ -9,10 +9,10 @@ object Utils {
     var result: Block = block
     while (!(result.isInstanceOf[MethodBlock])) {
       {
-        if (block.getSuperBlock == null) {
+        if (block.superBlock == null) {
           return null
         }
-        result = result.getSuperBlock
+        result = result.superBlock
         if (result == null)
           return result
       }

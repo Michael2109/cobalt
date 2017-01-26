@@ -27,9 +27,6 @@ class FileBlock(nameInit: String) extends Block(null, true, false) {
     return ""
   }
 
-  def getBodyCode: String = {
-    return ""
-  }
 
   def getClosingCode: String = {
     return ""

@@ -6,7 +6,7 @@ import compiler.block.Block
 import compiler.block.packages.PackageBlock
 import compiler.symbol_table.{Row, SymbolTable}
 
-class ConstructorBlock(var superBlock: Block, var parameters: Array[Parameter]) extends Block(superBlock, true, false) {
+class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter]) extends Block(superBlockInit, true, false) {
 
   var parameterString = ""
   var localVariableString = ""
@@ -14,15 +14,15 @@ class ConstructorBlock(var superBlock: Block, var parameters: Array[Parameter]) 
 
   def init(): Unit = {
 
-    var classBlock = getSuperBlock
+    var classBlock = superBlock
 
     var i = 1
 
 
 
-    val block: Block = getSuperBlock.getSuperBlock
+    val block: Block = superBlock.superBlock
     // Get the package the class is within
-    for (fileSub <- block.getSubBlocks) {
+    for (fileSub <- block.subBlocks) {
       if (fileSub.isInstanceOf[PackageBlock]) {
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }
@@ -50,10 +50,6 @@ class ConstructorBlock(var superBlock: Block, var parameters: Array[Parameter]) 
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     return ""
   }
 

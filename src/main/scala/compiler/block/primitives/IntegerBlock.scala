@@ -3,7 +3,7 @@ package compiler.block.primitives
 import asm.ASMGenerator
 import compiler.block.Block
 
-class IntegerBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
+class IntegerBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
   private var `type`: String = "int"
 
   def init() {
@@ -35,12 +35,9 @@ class IntegerBlock(var superBlock: Block, var name: String, var value: String) e
 
   def getOpeningCode: String = {
     return ASMGenerator.getInstance.visitLdcInsn(value) +
-      ASMGenerator.getInstance.visitVarInsn(getId)
+      ASMGenerator.getInstance.visitVarInsn(id)
   }
 
-  def getBodyCode: String = {
-    return ""
-  }
 
   def getClosingCode: String = {
     return ""

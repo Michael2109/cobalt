@@ -1,5 +1,6 @@
 package compiler.block
 
+import java.util
 import java.util.ArrayList
 import java.util.Collections
 
@@ -10,92 +11,52 @@ object Block {
   var TOTAL_BLOCKS: Int = 50
 }
 
-abstract class Block(var superBlockInit: Block, val containerInit: Boolean, val variableInit: Boolean) {
+abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean) {
 
-  protected var subBlocks: ArrayList[Block] = new ArrayList[Block]
-  // true ifs block can store sub blocks
+  Block.TOTAL_BLOCKS += 1
 
-  // Block ID used for reference when storing in local variable table
-  private var id: Integer = {
-    Block.TOTAL_BLOCKS += 1
-    Block.TOTAL_BLOCKS - 1
-  }
-  private var superBlock: Block = superBlockInit
-  private var container: Boolean = containerInit
-  private var variable: Boolean = variableInit
+  private val _subBlocks: java.util.ArrayList[Block] = new ArrayList[Block]
+  private var _id: Integer = Block.TOTAL_BLOCKS
+  private var _superBlock: Block = superBlockInitTest
+  private var _container: Boolean = containerInit
+  private var _variable: Boolean = variableInit
 
-  def getBlockTree: ArrayList[Block] = {
-    val blocks: ArrayList[Block] = new ArrayList[Block]
-    var block: Block = this
-    do {
-      {
-        {
-          blocks.add(block)
-          block = block.getSuperBlock
-        }
-      }
-    } while (block != null)
-    Collections.reverse(blocks)
-    return blocks
-  }
+  /* id GET and SET */
+  def id = _id
 
-  def getSuperBlock: Block = {
-    return superBlock
-  }
+  def id_=(value: Integer) = _id = value
 
-  def setSuperBlock(superBlock: Block) {
-    this.superBlock = superBlock
-  }
+  /* superBlock GET and SET */
+  def superBlock = _superBlock
 
-  def getSubBlocks: Array[Block] = {
-    return subBlocks.toArray(new Array[Block](subBlocks.size))
-  }
+  def superBlock_=(value: Block) = _superBlock = value
 
-  def addBlock(block: Block) {
-    subBlocks.add(block)
-  }
+  /* subBlocks GET */
+  def subBlocks = _subBlocks.toArray(new Array[Block](_subBlocks.size()))
 
-  // Removes a block
-  def removeBlock(block: Block) {
-    subBlocks.remove(block)
-  }
+  def addBlock_=(value: Block) = _subBlocks.add(value)
+
+  def removeBlock_=(value: Block) = _subBlocks.remove(value)
 
   // Called before looping through blocks to generate code. Allows for method to be called when all blocks are loaded
   def init()
 
+  /* Symbol table information */
   def getName: String
-
   def getValue: String
-
   def getType: String
 
+  /* Bytecode for the opening and closing of the block */
   def getOpeningCode: String
-
-  def getBodyCode: String
-
   def getClosingCode: String
 
-  def getId: Integer = {
-    return id
-  }
+  /* Whether the block contains other blocks */
+  def isContainer: Boolean = _container
 
-  def setId(id: Integer) {
-    this.id = id
-  }
+  def container_=(value: Boolean) = _container = value
 
-  def isContainer: Boolean = {
-    return container
-  }
+  /* Whether the block is  a variable */
+  def isVariable: Boolean = _variable
 
-  def setContainer(container: Boolean) {
-    this.container = container
-  }
-
-  def isVariable: Boolean = {
-    return variable
-  }
-
-  def setVariable(variable: Boolean) {
-    this.variable = variable
-  }
+  def variable_=(value: Boolean) = _variable = value
 }

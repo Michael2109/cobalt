@@ -2,7 +2,7 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class DoubleBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
+class DoubleBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
   private var `type`: String = "double"
 
   def init() {
@@ -33,10 +33,6 @@ class DoubleBlock(var superBlock: Block, var name: String, var value: String) ex
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     return ""
   }
 

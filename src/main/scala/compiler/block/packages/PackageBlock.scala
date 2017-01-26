@@ -22,9 +22,6 @@ class PackageBlock(var directory: String) extends Block(null, false, false) {
     return null
   }
 
-  def getBodyCode: String = {
-    return null
-  }
 
   def getClosingCode: String = {
     return null

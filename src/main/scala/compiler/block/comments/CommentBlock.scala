@@ -2,7 +2,7 @@ package compiler.block.comments
 
 import compiler.block.Block
 
-class CommentBlock(var superBlock: Block) extends Block(superBlock, false, false) {
+class CommentBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
   private val `type`: String = "comment"
 
   def init() {
@@ -21,10 +21,6 @@ class CommentBlock(var superBlock: Block) extends Block(superBlock, false, false
   }
 
   def getOpeningCode: String = {
-    return null
-  }
-
-  def getBodyCode: String = {
     return null
   }
 
