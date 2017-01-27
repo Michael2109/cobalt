@@ -8,15 +8,17 @@ import java.io.File
 import compiler.tokenizer.Tokenizer
 
 class ImportParser extends Parser[ImportBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("import [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
-  }
+
+  def shouldParse(line: String): Boolean = line.matches("import [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ImportBlock = {
-    tokenizer.nextToken // import
+
+    tokenizer.nextToken // "import"
+
     var fileLoc: String = tokenizer.nextToken.getToken // Get the string value of the next token.;
     var nextToken: String = tokenizer.nextToken.getToken
     var fileName: String = nextToken
+
     while (nextToken != "") {
       {
         if (nextToken == ".") {

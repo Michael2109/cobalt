@@ -9,13 +9,14 @@ import compiler.tokenizer.Tokenizer
 need to make parameter single variable names instead as cant define a variable in an ifs...
  */
 class WhileParser extends Parser[WhileBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("while[ ]+\\((.*)*\\):")
-  }
+
+  def shouldParse(line: String): Boolean = line.matches("while[ ]+\\((.*)*\\):")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
-    tokenizer.nextToken //skip while
-    tokenizer.nextToken // skip (
+
+    tokenizer.nextToken //skip "while"
+    tokenizer.nextToken // skip "("
+
     var statement: String = ""
     var nextToken: String = tokenizer.nextToken.getToken
     while (nextToken != ")") {

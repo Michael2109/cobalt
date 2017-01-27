@@ -6,9 +6,7 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class FloatParser extends Parser[FloatBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("float [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*f")
-  }
+  def shouldParse(line: String): Boolean = line.matches("float [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*f"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): FloatBlock = {
     tokenizer.nextToken // skip float

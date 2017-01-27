@@ -14,9 +14,7 @@ import compiler.tokenizer.Tokenizer
   * Parses calling of an objects method
   */
 class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("[a-zA-Z][a-zA-Z0-9]*\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
-  }
+  def shouldParse(line: String): Boolean = line.matches("[a-zA-Z][a-zA-Z0-9]*\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectMethodCallBlock = {
     val variableName: String = tokenizer.nextToken.getToken // Get the string value of the next token.
