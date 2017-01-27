@@ -6,9 +6,7 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class DoubleParser extends Parser[DoubleBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("double [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*")
-  }
+  def shouldParse(line: String): Boolean = line.matches("double [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DoubleBlock = {
     tokenizer.nextToken // skip int
