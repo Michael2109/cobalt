@@ -9,6 +9,7 @@ class PrintParser extends Parser[PrintBlock] {
   var printVariable: Boolean = false
 
   def shouldParse(line: String): Boolean = {
+    // Decide whether printing a variable or a string
     if (line.matches("print[ ]*\\([\"].*[\"]\\)")) {
       printVariable = false
       return true
