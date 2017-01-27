@@ -12,38 +12,35 @@ import compiler.symbol_table.SymbolTable
 /**
   * Calling a method of an object
   */
-class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlock, false, false) {
-  setId(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
-  className = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
+class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false) {
+
+  id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
   private val `type`: String = null
-  private[objects] var parameterString: String = ""
-  private[objects] var argumentString: String = ""
-  private var className: String = null
+  private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
+  private var parameterString: String = ""
+  private var argumentString: String = ""
   private var directory: String = ""
 
   def getParameters: Array[Parameter] = {
     return params
   }
 
-  def getType: String = {
-    return `type`
-  }
+  def getName: String = variableName
 
-  def getClosingCode: String = {
-    return ""
-  }
+  def getValue: String = null
 
-  def getValue: String = {
-    return null
-  }
+  def getType: String = `type`
 
   def init() {
     if (className == getClassName) {
       directory = getPackage
+
     }
     else {
+
       directory = getDirectory
     }
+    println(className)
     // Get the type of the parameters
     for (param <- params) {
       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
@@ -59,11 +56,11 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     var block: Block = this
     while (!(block.isInstanceOf[FileBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
         return (sub.asInstanceOf[ImportBlock]).directory
       }
@@ -77,11 +74,11 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     var block: Block = this
     while (!(block.isInstanceOf[FileBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       if (sub.isInstanceOf[PackageBlock]) {
         return (sub.asInstanceOf[PackageBlock]).directory
       }
@@ -95,25 +92,21 @@ class ObjectMethodCallBlock(var superBlock: Block, var variableName: String, var
     var block: Block = this
     while (!(block.isInstanceOf[ClassBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
+
     // Get the directory of the Object
     return block.getName
   }
 
-  def getName: String = {
-    return variableName
-  }
 
   def getOpeningCode: String = {
-    return ""
+    return "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
   }
 
-  def getBodyCode: String = {
-    // Push all arguments to the top of the stack
-    //
-    return "mv.visitVarInsn(ALOAD, " + getId + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+  def getClosingCode: String = {
+    return ""
   }
 
   override def toString: String = {

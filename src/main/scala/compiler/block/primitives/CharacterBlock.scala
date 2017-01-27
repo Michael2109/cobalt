@@ -2,41 +2,18 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class CharacterBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
-  private var `type`: String = "char"
+class CharacterBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {
-  }
+  def init() {}
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
-  def setName(name: String) {
-    this.name = name
-  }
+  def getValue: String = value
 
-  def getValue: String = {
-    return value
-  }
+  def getType: String = "char"
 
-  def setValue(value: String) {
-    this.value = value
-  }
-
-  def getType: String = {
-    return `type`
-  }
-
-  def setType(`type`: String) {
-    this.`type` = `type`
-  }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     return "char " + name + " = '" + value + "';"
   }
 
@@ -44,7 +21,6 @@ class CharacterBlock(var superBlock: Block, var name: String, var value: String)
     return ""
   }
 
-  override def toString: String = {
-    return "char: " + name + " = " + value
-  }
+  override def toString: String = "char: " + name + " = " + value
+
 }

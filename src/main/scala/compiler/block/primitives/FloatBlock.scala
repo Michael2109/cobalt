@@ -2,41 +2,23 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class FloatBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
-  private var `type`: String = "float"
+class FloatBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {
-  }
+  def init() {}
 
   def getName: String = {
     return name
-  }
-
-  def setName(name: String) {
-    this.name = name
   }
 
   def getValue: String = {
     return value
   }
 
-  def setValue(value: String) {
-    this.value = value
-  }
-
   def getType: String = {
-    return `type`
-  }
-
-  def setType(`type`: String) {
-    this.`type` = `type`
+    return "float"
   }
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     return ""
   }
 
@@ -44,7 +26,6 @@ class FloatBlock(var superBlock: Block, var name: String, var value: String) ext
     return ""
   }
 
-  override def toString: String = {
-    return "float: " + name + " = " + value
-  }
+  override def toString: String = "float: " + name + " = " + value
+
 }

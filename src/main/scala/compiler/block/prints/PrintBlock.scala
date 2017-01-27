@@ -4,31 +4,18 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class PrintBlock(var superBlock: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlock, false, false) {
-
-  private[prints] val `type`: String = "print"
-  private[prints] val _isVariable: Boolean = isVariableInit
+class PrintBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
   def init() {
   }
 
-  def getName: String = {
-    return null
-  }
+  def getName: String = null
 
-  def getValue: String = {
-    return value
-  }
+  def getValue: String = value
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = "print"
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     if (isVariable) {
       return "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" + "mv.visitVarInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), value).getId + ");" + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(I)V\");"
     }
@@ -38,15 +25,9 @@ class PrintBlock(var superBlock: Block, var value: String, val isVariableInit: B
     }
   }
 
-  override def isVariable: Boolean = {
-    return _isVariable
-  }
-
   def getClosingCode: String = {
     return ""
   }
 
-  override def toString: String = {
-    return "print: " + value
-  }
+  override def toString: String = "print: " + value
 }

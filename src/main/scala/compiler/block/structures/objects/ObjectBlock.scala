@@ -7,7 +7,7 @@ import compiler.block.structures.FileBlock
 import compiler.block.structures.classes.ClassBlock
 
 // Creation of a new object and storing to a variable
-class ObjectBlock(var superBlock: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String) extends Block(superBlock, false, true) {
+class ObjectBlock(var superBlockInit: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String) extends Block(superBlockInit, false, true) {
 
   private[objects] var directory: String = ""
 
@@ -26,11 +26,11 @@ class ObjectBlock(var superBlock: Block, var className: String, var variableName
     var block: Block = this
     while (!(block.isInstanceOf[FileBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
         return (sub.asInstanceOf[ImportBlock]).directory
       }
@@ -44,11 +44,11 @@ class ObjectBlock(var superBlock: Block, var className: String, var variableName
     var block: Block = this
     while (!(block.isInstanceOf[FileBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       if (sub.isInstanceOf[PackageBlock]) {
         return (sub.asInstanceOf[PackageBlock]).directory
       }
@@ -62,40 +62,28 @@ class ObjectBlock(var superBlock: Block, var className: String, var variableName
     var block: Block = this
     while (!(block.isInstanceOf[ClassBlock])) {
       {
-        block = block.getSuperBlock
+        block = block.superBlock
       }
     }
     // Get the directory of the Object
     return block.getName
   }
 
-  def getName: String = {
-    return variableName
-  }
+  def getName: String = variableName
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
 
-  def getType: String = {
-    return className
-  }
+  def getType: String = className
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
     return "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
     else "/") + className + "\");\n" + "mv.visitInsn(DUP);\n" + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
-    else "/") + className + "\", \"<init>\", \"()V\", false);\n" + "mv.visitVarInsn(ASTORE," + getId + ");\n"
+    else "/") + className + "\", \"<init>\", \"()V\", false);\n" + "mv.visitVarInsn(ASTORE," + id + ");\n"
   }
 
   def getClosingCode: String = {
     return ""
   }
 
-  override def toString: String = {
-    return "object: " + className + " " + variableName + " = new " + initClassName + "()"
-  }
+  override def toString: String = "object: " + className + " " + variableName + " = new " + initClassName + "()"
 }

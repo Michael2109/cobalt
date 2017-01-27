@@ -2,46 +2,27 @@ package compiler.block.operators
 
 import compiler.block.Block
 
-class SubtractBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, false) {
+class SubtractBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
   private var `type`: String = "subtract"
 
   def init() {
   }
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
-  def setName(name: String) {
-    this.name = name
-  }
 
-  def getValue: String = {
-    return value
-  }
+  def getValue: String = value
 
-  def setValue(value: String) {
-    this.value = value
-  }
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = "subtract"
 
-  def setType(`type`: String) {
-    this.`type` = `type`
-  }
 
   def getOpeningCode: String = {
-    return null
-  }
-
-  def getBodyCode: String = {
-    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + getId + ");\n" + "mv.visitInsn(ISUB);\n" + "mv.visitVarInsn(ISTORE," + getId + ");\n"
+    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + id + ");\n" + "mv.visitInsn(ISUB);\n" + "mv.visitVarInsn(ISTORE," + id + ");\n"
   }
 
   def getClosingCode: String = {
-    return null
+    return ""
   }
 
   override def toString: String = {

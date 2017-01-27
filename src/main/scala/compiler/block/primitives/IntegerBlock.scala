@@ -1,50 +1,27 @@
 package compiler.block.primitives
 
+import asm.ASMGenerator
 import compiler.block.Block
 
-class IntegerBlock(var superBlock: Block, var name: String, var value: String) extends Block(superBlock, false, true) {
-  private var `type`: String = "int"
+class IntegerBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {
-  }
+  def init() {}
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
-  def setName(name: String) {
-    this.name = name
-  }
+  def getValue: String = value
 
-  def getValue: String = {
-    return value
-  }
-
-  def setValue(value: String) {
-    this.value = value
-  }
-
-  def getType: String = {
-    return `type`
-  }
-
-  def setType(`type`: String) {
-    this.`type` = `type`
-  }
+  def getType: String = "int"
 
   def getOpeningCode: String = {
-    return ""
-  }
-
-  def getBodyCode: String = {
-    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ISTORE," + getId + ");\n"
+    return ASMGenerator.getInstance.visitLdcInsn(value) +
+      ASMGenerator.getInstance.visitVarInsn(id)
   }
 
   def getClosingCode: String = {
     return ""
   }
 
-  override def toString: String = {
-    return "int: " + name + " = " + value
-  }
+  override def toString: String = "int: " + name + " = " + value
+
 }

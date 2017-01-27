@@ -118,15 +118,15 @@ public class Runtime {
                 }
 
                 Block fileBlock = new FileBlock(sourceFile.getName());
-                block.setSuperBlock(fileBlock);
+                block.superBlock_$eq(fileBlock);
 
                 if (packageBlock != null)
-                    fileBlock.addBlock(packageBlock);
+                    fileBlock.addBlock_$eq(packageBlock);
 
                 for (ImportBlock importBlock : imports)
-                    fileBlock.addBlock(importBlock);
+                    fileBlock.addBlock_$eq(importBlock);
 
-                fileBlock.addBlock(block);
+                fileBlock.addBlock_$eq(block);
                 block = fileBlock;
 
                 if (noParse) throw new compiler.exceptions.ParseException("Line: " + lineNumber);
@@ -153,7 +153,7 @@ public class Runtime {
     public static void main(String args[]) {
         if (args.length == 2) {
             File input = new File(args[0] + ".mlg");
-            File output = new File(args[1] + "ASM.java");
+            File output = new File(args[1] + ".java");
             new Runtime(input, output);
         } else {
             System.out.println("Error: Input and Output file args required.");
@@ -193,7 +193,7 @@ public class Runtime {
                         System.out.println(currentBlock.getName() + " " + methodName + " " + className);
                         throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName() + " has already been defined.");
                     } else {
-                        SymbolTable.getInstance().addRow(new Row().setId(currentBlock.getId()).setName(currentBlock.getName()).setType(currentBlock.getType()).setValue(currentBlock.getValue()).setMethodName(methodName).setClassName(className));
+                        SymbolTable.getInstance().addRow(new Row().setId(currentBlock.id()).setName(currentBlock.getName()).setType(currentBlock.getType()).setValue(currentBlock.getValue()).setMethodName(methodName).setClassName(className));
                     }
                 }
 
@@ -208,12 +208,12 @@ public class Runtime {
                         if (parser.shouldParse(line)) {
                             parsable = true;
                             Block nextBlock = parser.parse(currentBlock, tokenizer);
-                            currentBlock.addBlock(nextBlock);
+                            currentBlock.addBlock_$eq(nextBlock);
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
                     if (!parsable)
-                        throw new ParseException("Line: " + lineNumber);
+                        throw new ParseException("Line: " + lineNumber + " " + line);
 
                 }
                 // Indentation the same
@@ -225,8 +225,8 @@ public class Runtime {
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
                             parsable = true;
-                            Block nextBlock = parser.parse(currentBlock.getSuperBlock(), tokenizer);
-                            currentBlock.getSuperBlock().addBlock(nextBlock);
+                            Block nextBlock = parser.parse(currentBlock.superBlock(), tokenizer);
+                            currentBlock.superBlock().addBlock_$eq(nextBlock);
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
@@ -240,12 +240,12 @@ public class Runtime {
                     for (Parser parser : parsers) {
                         if (parser.shouldParse(line)) {
                             parsable = true;
-                            currentBlock = currentBlock.getSuperBlock();
+                            currentBlock = currentBlock.superBlock();
                             for (int i = 0; i < indentation - currentIndentation; i++) {
-                                currentBlock = currentBlock.getSuperBlock();
+                                currentBlock = currentBlock.superBlock();
                             }
                             Block nextBlock = parser.parse(currentBlock, tokenizer);
-                            currentBlock.addBlock(nextBlock);
+                            currentBlock.addBlock_$eq(nextBlock);
                             createBlock(nextBlock, br, currentIndentation);
                         }
                     }
@@ -270,7 +270,7 @@ public class Runtime {
 
         System.out.println(indentationString + block.toString());
 
-        for (Block sub : block.getSubBlocks()) {
+        for (Block sub : block.subBlocks()) {
             printBlockInfo(sub, indentation + 1);
         }
     }

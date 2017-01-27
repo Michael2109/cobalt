@@ -23,8 +23,14 @@ class Compile(val outputFile: File, val block: Block) {
       e.printStackTrace()
     }
   }
+
+  println("Initialising blocks...")
   initBlocks(block)
+
+  println("Generating ASM code...")
   generateASM(block)
+
+  println("Complete.")
   w.close()
   private[compiler] var w: PrintWriter = null
 
@@ -32,7 +38,7 @@ class Compile(val outputFile: File, val block: Block) {
   // Allows for initialisation when all blocks have been loaded.
   def initBlocks(block: Block) {
     block.init()
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       initBlocks(sub)
     }
   }
@@ -41,26 +47,37 @@ class Compile(val outputFile: File, val block: Block) {
     * Converts the block structure into ASM and saves as a .java file
     */
   def generateASM(block: Block) {
+
     if (block.isInstanceOf[MethodBlock]) {
       val b: MethodBlock = block.asInstanceOf[MethodBlock]
       p(b.getOpeningCode)
-      p(b.getBodyCode)
+
+
     }
     else {
-      if (block.getOpeningCode != null && block.getOpeningCode != "") p(block.getOpeningCode)
-      if (block.getBodyCode != null && block.getBodyCode != "") p(block.getBodyCode)
+      if (block.getOpeningCode != null && block.getOpeningCode != "") {
+        p(block.getOpeningCode)
+      }
+      // if (block.getBodyCode != null && block.getBodyCode != "") {
+      //    p(block.getBodyCode)
+      //  }
+
+
+
     }
-    for (sub <- block.getSubBlocks) {
+    for (sub <- block.subBlocks) {
       generateASM(sub)
     }
     if (block.getClosingCode != null && block.getClosingCode != "") p(block.getClosingCode)
   }
 
+  // Call to write using the printwriter
   def p(line: String): PrintWriter = {
     w.println(line)
     return w
   }
 
+  // Call to write a newline using the printwriter
   def p: PrintWriter = {
     w.println()
     return w

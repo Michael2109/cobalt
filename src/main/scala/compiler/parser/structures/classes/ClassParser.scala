@@ -41,6 +41,6 @@ class ClassParser extends Parser[ClassBlock] {
         }
       }
     }
-    return new ClassBlock(superBlock, className, parameters)
+    return new ClassBlock(superBlock, className, parameters.toArray(new Array[Parameter](parameters.size)))
   }
 }

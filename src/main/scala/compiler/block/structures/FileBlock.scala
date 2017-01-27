@@ -5,37 +5,19 @@ import compiler.block.Block
 /**
   * Represents the whole file.
   */
-class FileBlock(nameInit: String) extends Block(null, true, false) {
-  private val name: String = nameInit
+class FileBlock(name: String) extends Block(null, true, false) {
 
-  def init() {
-  }
+  def init() {}
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
 
-  def getType: String = {
-    return null
-  }
+  def getType: String = null
 
-  def getOpeningCode: String = {
-    return ""
-  }
+  def getOpeningCode: String = ""
 
-  def getBodyCode: String = {
-    return ""
-  }
+  def getClosingCode: String = ""
 
-  def getClosingCode: String = {
-    return ""
-  }
-
-  override def toString: String = {
-    return "file: " + name
-  }
+  override def toString: String = "file: " + name
 }
