@@ -7,9 +7,8 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class IfParser extends Parser[IfBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("if \\((.*)*\\):")
-  }
+
+  def shouldParse(line: String): Boolean = line.matches("if \\((.*)*\\):")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
     tokenizer.nextToken //skip if
