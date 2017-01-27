@@ -40,13 +40,12 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
 
       directory = getDirectory
     }
-    println(className)
+
     // Get the type of the parameters
     for (param <- params) {
       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
       parameterString += param.getAsmType
       argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"
-
     }
   }
 
