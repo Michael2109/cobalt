@@ -7,9 +7,7 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class PackageParser extends Parser[PackageBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("package [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
-  }
+  def shouldParse(line: String): Boolean = line.matches("package [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PackageBlock = {
     tokenizer.nextToken // import
