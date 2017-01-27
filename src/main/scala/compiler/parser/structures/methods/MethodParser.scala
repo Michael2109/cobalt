@@ -10,9 +10,8 @@ import java.util.List
 import compiler.tokenizer.Tokenizer
 
 class MethodParser extends Parser[MethodBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("void[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*:")
-  }
+
+  def shouldParse(line: String): Boolean = line.matches("void[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*:")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodBlock = {
     val `type`: String = tokenizer.nextToken.getToken // method return type
