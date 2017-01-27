@@ -4,33 +4,6 @@ An object oriented and functional language that runs on the JVM.
 
 The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
 
-## Example Code (So Far)
-```
-package asm
-
-import compiler.block.ifs.IfBlock
-
-class MyCode():
-
-    // Constructor Calls
-    print("Hello World!")
-    int z = 2
-
-    void method():
-        int x = 10
-        while (x < 20):
-            print("Something")
-            x += 1
-        if (x < 10):
-            print("Something else")
-        ExampleClass test = new ExampleClass()
-        test.add()
-        
-    void main():
-        MyCode myCodeTest = new MyCode()
-        myCodeTest.method()
-```
-
 ##Opening the project
 #####IntelliJ
 File->New->Project from version control->GitHub  
@@ -52,3 +25,29 @@ Run the "Runtime.java" file to execute the application. (Currently converting Ru
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
 
+## Example Code (So Far)
+```
+package asm
+
+import compiler.block.ifs.IfBlock
+
+class MyCode():
+
+    // Constructor Calls
+    print("Hello World!")
+    int z = 2
+
+    void method(int x):
+        while (x < 20):
+            x += 1
+        if (x < 10):
+            print("Something else")
+           
+        ExampleClass test = new ExampleClass()
+        test.methodCall()
+        
+    void main():
+        MyCode myCodeTest = new MyCode()
+        int x = 0
+        myCodeTest.method(x)
+```
