@@ -10,9 +10,7 @@ import java.util.List
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {
-  def shouldParse(line: String): Boolean = {
-    return line.matches("class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\):")
-  }
+  def shouldParse(line: String): Boolean = line.matches("class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\):")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
     tokenizer.nextToken
