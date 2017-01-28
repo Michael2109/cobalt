@@ -8,7 +8,7 @@ The target is to create a language that is highly scalable and readable to allow
 If you would like to contribute then please get in contact!
 
 ###Language Specifications
-To view the aims for the language please view the wiki page.
+To view the aims for the language please view the wiki page.  
 https://github.com/Michael2109/JVM-Programming-Language/wiki/Language-Specifications
 
 ##Opening the project
