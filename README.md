@@ -1,4 +1,4 @@
-# JVM-Compiler #
+# JVM-Programming-Language #
 
 An object oriented and functional language that runs on the JVM.
 
