@@ -31,30 +31,3 @@ Run the "Runtime.java" file to execute the application. (Currently converting Ru
 
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
-
-## Example Code (So Far)
-```
-package asm
-
-import compiler.block.ifs.IfBlock
-
-class MyCode():
-
-    // Constructor Calls
-    print("Hello World!")
-    int z = 2
-
-    void method(int x):
-        while (x < 20):
-            x += 1
-        if (x < 10):
-            print("Something else")
-           
-        ExampleClass test = new ExampleClass()
-        test.methodCall()
-        
-    void main():
-        MyCode myCodeTest = new MyCode()
-        int x = 0
-        myCodeTest.method(x)
-```
