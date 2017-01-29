@@ -4,12 +4,12 @@ Cobalt is an object oriented and functional language that runs on the JVM.
 
 The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
 
-###Project Contributions
+##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
-###Language Specifications
+##Language Specifications
 To view the aims for the language features please view the wiki page.  
 https://github.com/Michael2109/JVM-Programming-Language/wiki/Language-Specifications
 
