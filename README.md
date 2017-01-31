@@ -13,7 +13,7 @@ As the project is in the alpha stages please get in contact to discuss any large
 
 ##Language Specifications
 To view the aims for the language features please view the wiki page.  
-https://github.com/Michael2109/JVM-Programming-Language/wiki/Language-Specifications
+https://github.com/Michael2109/Cobalt/wiki
 
 ##Opening the project
 #####IntelliJ
