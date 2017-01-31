@@ -4,7 +4,6 @@ import asm.MyCode
 
 class MyCode():
 
-
     void method1(int x):
         while (x < 10):
             print("Hello World!")
@@ -13,5 +12,7 @@ class MyCode():
     void main():
         MyCode myCode = new MyCode()
         int y = 1
+        float w = 2.0f
+        double doublethingy = 2.0
         myCode.method1(y)
         print("Hello World")

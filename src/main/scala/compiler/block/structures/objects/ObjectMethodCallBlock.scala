@@ -32,14 +32,10 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
   def getType: String = `type`
 
   def init() {
-    if (className == getClassName) {
+    if (className == getClassName)
       directory = getPackage
-
-    }
-    else {
-
+    else
       directory = getDirectory
-    }
 
     // Get the type of the parameters
     for (param <- params) {

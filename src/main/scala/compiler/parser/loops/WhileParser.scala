@@ -10,7 +10,9 @@ need to make parameter single variable names instead as cant define a variable i
  */
 class WhileParser extends Parser[WhileBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("while[ ]+\\((.*)*\\):")
+  def shouldParse(line: String): Boolean = {
+    return line.matches("while[ ]+\\((.*)*\\):")
+  }
 
   def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
 

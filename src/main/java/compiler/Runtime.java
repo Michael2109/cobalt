@@ -91,6 +91,8 @@ public class Runtime {
 
     public Runtime(File sourceFile, File outputFile) {
 
+        Utils.getType("1");
+
         PackageBlock packageBlock = null;
         List<ImportBlock> imports = new ArrayList<>();
         BufferedReader br = null;

@@ -1,6 +1,5 @@
 package compiler.block.primitives
 
-import asm.ASMGenerator
 import compiler.block.Block
 
 class IntegerBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
@@ -14,8 +13,8 @@ class IntegerBlock(var superBlockInit: Block, var name: String, var value: Strin
   def getType: String = "int"
 
   def getOpeningCode: String = {
-    return ASMGenerator.getInstance.visitLdcInsn(value) +
-      ASMGenerator.getInstance.visitVarInsn(id)
+    return asm.visitLdcInsn(value) +
+      asm.visitVarInsn("ISTORE", id)
   }
 
   def getClosingCode: String = {
