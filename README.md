@@ -12,8 +12,8 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
 ##Main Language Features   
-###Object Oriented   
-###Functional  
+###Object Oriented and Functional  
+Similar syntax and features to Scala
 ###Open type System       
 Would allow for objects to be created using XML and JSON formats.  
 
