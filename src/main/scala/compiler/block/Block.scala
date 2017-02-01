@@ -4,6 +4,8 @@ import java.util
 import java.util.ArrayList
 import java.util.Collections
 
+import asm.ASMGenerator
+
 /**
   *
   */
@@ -23,6 +25,7 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   Block.TOTAL_BLOCKS += 1
 
   private val _subBlocks: java.util.ArrayList[Block] = new ArrayList[Block]
+  private val _asm: ASMGenerator = new ASMGenerator;
   private var _id: Integer = Block.TOTAL_BLOCKS
   private var _superBlock: Block = superBlockInitTest
   private var _container: Boolean = containerInit
@@ -69,4 +72,8 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   def isVariable: Boolean = _variable
 
   def variable_=(value: Boolean) = _variable = value
+
+  def error(): Boolean = false
+
+  def asm: ASMGenerator = _asm
 }

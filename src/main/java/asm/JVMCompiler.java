@@ -62,7 +62,8 @@ public class JVMCompiler {
             Label lMethod0 = new Label();
             mv.visitLabel(lMethod0);
 
-            mv.visitIincInsn(1, 5);
+            //   mv.visitLdcInsn();
+
             mv.visitInsn(RETURN);                      // Return integer from top of stack
             Label lmethod2 = new Label();
             mv.visitLabel(lmethod2);

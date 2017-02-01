@@ -91,6 +91,8 @@ public class Runtime {
 
     public Runtime(File sourceFile, File outputFile) {
 
+        Utils.getType("1");
+
         PackageBlock packageBlock = null;
         List<ImportBlock> imports = new ArrayList<>();
         BufferedReader br = null;
@@ -145,9 +147,11 @@ public class Runtime {
 
         printBlockInfo(block, 0);
 
-        SymbolTable.getInstance().printSymbols();
+
 
         new Compile(outputFile, block);
+
+        SymbolTable.getInstance().printSymbols();
     }
 
     public static void main(String args[]) {

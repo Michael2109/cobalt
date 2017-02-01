@@ -2,8 +2,9 @@ package asm
 import compiler.block.ifs.IfBlock
 import asm.MyCode
 
-class MyCode():
+class MyCode(int xx):
 
+    xx += 2
 
     void method1(int x):
         while (x < 10):
@@ -13,5 +14,7 @@ class MyCode():
     void main():
         MyCode myCode = new MyCode()
         int y = 1
+        float w = 2.0f
+        double doublethingy = 2.0
         myCode.method1(y)
         print("Hello World")

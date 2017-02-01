@@ -13,7 +13,8 @@ class DoubleBlock(var superBlockInit: Block, var name: String, var value: String
   def getType: String = "double"
 
   def getOpeningCode: String = {
-    return ""
+    return "mv.visitLdcInsn(new Double(" + value + "));\n" +
+      "mv.visitVarInsn(DSTORE, " + id + ");"
   }
 
   def getClosingCode: String = {

@@ -74,23 +74,33 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
   }
 
   def getOpeningCode: String = {
-    return "package " + packageBlock.directory + ";\n" +
-      "import java.io.DataOutputStream;\n" +
-      "import java.io.FileNotFoundException;\n" +
-      "import java.io.FileOutputStream;\n" +
-      "import java.io.IOException;\n" +
-      "\n" +
-      "import static org.objectweb.asm.Opcodes.*;\n" +
-      "import org.objectweb.asm.*;\n" +
-      "\n" + "public class " + name + " {\n" + "\n" +
-      "    public static byte[] dump() throws Exception {\n" + "\n" +
-      "        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS); \n\n  " +
-      "  // Visit the class itself\n" + "        {\n" + "            cw.visit(V1_7,                              // Java 1.7\n" +
-      "                    ACC_PUBLIC,                         // public class\n" + "                    \"" + packageBlock.directory + "/" + name + "\",    // package and name\n" +
-      "                    null,                               // signature (null means not generic)\n" +
-      "                    \"java/lang/Object\",                 // superclass\n" + "                    new String[]{}); // interfaces\n" +
-      " }" + "" + "\n\n\n// Build the constructor\n" + "        {\n" + "            MethodVisitor mv = cw.visitMethod(\n" + "                    ACC_PUBLIC,                         // public method\n" +
-      "                    \"<init>\",                           // method name\n" + "                    \"(" + parameterString + ")V\",                              // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "\n" + "            mv.visitCode();                            // Start the code for this method\n" + " Label lConstructor0 = new Label();\n" + "mv.visitLabel(lConstructor0);\n" + "            mv.visitVarInsn(ALOAD, 0);                 // Load \"this\" onto the stack\n" + "\n" + "            mv.visitMethodInsn(INVOKESPECIAL,          // Invoke an instance method (non-virtual)\n" + "                    \"java/lang/Object\",                 // Class on which the method is defined\n" + "                    \"<init>\",                           // Name of the method\n" + "                    \"()V\",                              // Descriptor\n" + "                    false);                             // Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n" + "       "
+    return asm.getPackage(packageBlock.directory) +
+      asm.getImport("java.io.DataOutputStream") +
+      asm.getImport("java.io.FileNotFoundException") +
+      asm.getImport("java.io.FileOutputStream") +
+      asm.getImport("java.io.IOException") +
+      asm.getStaticImport("org.objectweb.asm.Opcodes.*") +
+      asm.getImport("org.objectweb.asm.*") +
+      asm.getClassOpening(name) +
+      asm.executeMethodOpening +
+      asm.getClassWriter +
+      asm.visitClassWriter(packageBlock.directory + "/" + name, null, "java/lang/Object", null) +
+      asm.getOpeningBrace() +
+      asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
+      asm.visitCode() +
+      asm.getComment("Constructor") +
+      asm.newLabel("lConstructor0") +
+      asm.visitLabel("lConstructor0") +
+      asm.visitVarInsn("ALOAD", "0") +
+      "// Load \"this\" onto the stack\n" + "\n" +
+      "mv.visitMethodInsn(INVOKESPECIAL," +
+      "// Invoke an instance method (non-virtual)\n" +
+      "\"java/lang/Object\", // Class on which the method is defined\n" +
+      "\"<init>\"," +
+      "// Name of the method\n" +
+      "\"()V\"," +
+      "// Descriptor\n" + "false);" +
+      "// Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n"
   }
 
   def getClosingCode: String = {
@@ -98,7 +108,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
       "    public static void main(String [] args){\n   " +
       "  DataOutputStream dout = null;\n" +
       "        try {\n" +
-      "" + "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(dump());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
+      "" + "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(execute());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
   }
 
 

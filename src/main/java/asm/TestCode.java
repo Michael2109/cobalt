@@ -7,7 +7,9 @@ import scala.tools.nsc.backend.icode.Primitives;
  */
 public class TestCode {
 
-    public TestCode(int x, int y) {
+    public TestCode(int x) {
+
+        x += 5;
 
     }
 }

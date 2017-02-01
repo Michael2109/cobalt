@@ -34,7 +34,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
     var i = 1
     for (parameter <- params) {
-      println(parameter)
       parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS += 1
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + i + ");\n"
@@ -57,7 +56,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def getClosingCode: String = {
     if (name != "main") {
-      print("Isn't a main method")
       return "mv.visitInsn(RETURN);     \n" +
         "Label lMethod1 = new Label();\n" +
         "mv.visitLabel(lMethod1);\n" +
@@ -68,7 +66,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
         "mv.visitEnd();\n" + "}\n"
     }
     else {
-      print("Main method!!!!!!")
       return "mv.visitInsn(RETURN);     \nLabel lMethod1 = new Label();\n" + "mv.visitLabel(lMethod1);\n" + "mv.visitLocalVariable(\"this\", \"L" + packageBlock.directory + "/" + name + ";\", null, lMethod0, lMethod1, " + 0 + ");\n" + "mv.visitLocalVariable(\"args\", \"[Ljava/lang/String;\", null, lMethod0, lMethod1, 0);                // Return integer from top of stack\n" + localVariableString + "  mv.visitMaxs(0, 0);\n" + "mv.visitEnd();\n" + "}\n"
     }
   }

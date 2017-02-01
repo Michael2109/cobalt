@@ -9,6 +9,7 @@ import compiler.block.structures.classes.ClassBlock
 // Creation of a new object and storing to a variable
 class ObjectBlock(var superBlockInit: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String) extends Block(superBlockInit, false, true) {
 
+  private var parameterString: String = ""
   private[objects] var directory: String = ""
 
   def init() {
@@ -86,4 +87,5 @@ class ObjectBlock(var superBlockInit: Block, var className: String, var variable
   }
 
   override def toString: String = "object: " + className + " " + variableName + " = new " + initClassName + "()"
+
 }

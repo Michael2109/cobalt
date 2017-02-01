@@ -63,11 +63,14 @@ class IfBlock(var superBlockInit: Block, var nameInit: String) extends Block(sup
   }
 
   def getOpeningCode: String = {
-    return "mv.visitVarInsn(ILOAD," + pointer + ");" + "mv.visitLdcInsn(" + value + ");\n" + "Label l" + id + " = new Label();\n" + byteCodeOp
+    return asm.visitVarInsn("ILOAD", pointer) +
+      asm.visitLdcInsn(value) +
+      asm.newLabel("l" + id) +
+      byteCodeOp
   }
 
   def getClosingCode: String = {
-    return "mv.visitLabel(l" + id + ");"
+    return asm.visitLabel("l" + id)
   }
 
   override def toString: String = "if " + _name
