@@ -11,9 +11,12 @@ To contribute to the Cobalt project, please send us a pull request from your for
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
-##Language Specifications
-To view the aims for the language features please view the wiki page.  
-https://github.com/Michael2109/Cobalt/wiki
+##Main Language Features   
+**Object Oriented**   
+**Functional**   
+**Open type System**    
+Would allow for objects to be created using XML and JSON formats.  
+
 
 ##Opening the project
 #####IntelliJ
