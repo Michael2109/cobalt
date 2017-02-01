@@ -1,8 +1,22 @@
-# JVM-Compiler #
+# Cobalt #
 
-An object oriented and functional language that runs on the JVM.
+Cobalt is an object oriented and functional language that runs on the JVM.
 
-The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
+The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines.    
+
+This project is new and if it is pointed in the right direction could be a language used in the future! If you are interested then please get in contact as you could join in from the start!   
+
+##Project Contributions
+To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
+Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
+As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
+
+##Main Language Features   
+###Object Oriented and Functional  
+Similar syntax and features to Scala
+###Open type System       
+Would allow for objects to be created using XML and JSON formats.  
+
 
 ##Opening the project
 #####IntelliJ
@@ -18,36 +32,9 @@ As program arguments you need the input file and the output file location. Remov
 The input file needs to be a .mlg file.  
 The output file generated should be placed in "build/classes/main/asm/fileName".
 ```
-"C:\Users\Michael\Desktop\JVM Compiler\compiled\MyCode" "C:\Users\Michael\Desktop\JVM Compiler\src\main\java\asm\MyCode"
+"compiled\MyCode" "src\main\java\asm\MyCode"
 ```
 Run the "Runtime.java" file to execute the application. (Currently converting Runtime.java to Runtime.scala)
 
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
-
-## Example Code (So Far)
-```
-package asm
-
-import compiler.block.ifs.IfBlock
-
-class MyCode():
-
-    // Constructor Calls
-    print("Hello World!")
-    int z = 2
-
-    void method(int x):
-        while (x < 20):
-            x += 1
-        if (x < 10):
-            print("Something else")
-           
-        ExampleClass test = new ExampleClass()
-        test.methodCall()
-        
-    void main():
-        MyCode myCodeTest = new MyCode()
-        int x = 0
-        myCodeTest.method(x)
-```
