@@ -73,5 +73,7 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
 
   def variable_=(value: Boolean) = _variable = value
 
+  def error(): Boolean = false
+
   def asm: ASMGenerator = _asm
 }

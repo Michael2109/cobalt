@@ -2,7 +2,9 @@ package asm
 import compiler.block.ifs.IfBlock
 import asm.MyCode
 
-class MyCode():
+class MyCode(int xx):
+
+    xx += 2
 
     void method1(int x):
         while (x < 10):

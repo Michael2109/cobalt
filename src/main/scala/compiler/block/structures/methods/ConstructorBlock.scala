@@ -30,8 +30,9 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
       parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + i + ");\n"
-      SymbolTable.getInstance.addRow(new Row().setMethodName("constructor").setId(i).setName(parameter.getName))
+      SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName))
       i += 1
+
     }
   }
 

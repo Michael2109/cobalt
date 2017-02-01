@@ -86,7 +86,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
       asm.getClassWriter +
       asm.visitClassWriter(packageBlock.directory + "/" + name, null, "java/lang/Object", null) +
       asm.getOpeningBrace() +
-      asm.getMethodVisitor("<init>", "()V", null, null) +
+      asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
       asm.visitCode() +
       asm.getComment("Constructor") +
       asm.newLabel("lConstructor0") +

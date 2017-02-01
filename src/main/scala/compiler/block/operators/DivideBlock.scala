@@ -23,4 +23,5 @@ class DivideBlock(var superBlockInit: Block, var name: String, var value: String
   override def toString: String = {
     return "divide: " + name
   }
+
 }

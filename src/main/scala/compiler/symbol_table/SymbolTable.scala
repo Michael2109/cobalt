@@ -61,6 +61,13 @@ class SymbolTable() {
 
   def getValue(method: Block, variableName: String): Row = {
 
+    if (method == null) {
+      for (row <- rows) {
+        if (row.getMethodName == null && row.getName == variableName)
+          return row
+      }
+    }
+
     for (row <- rows) {
       if (row.getMethodName != null && row.getMethodName == method.getName && row.getName != null && row.getName == variableName) {
         return row

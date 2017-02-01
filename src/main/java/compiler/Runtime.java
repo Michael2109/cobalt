@@ -147,9 +147,11 @@ public class Runtime {
 
         printBlockInfo(block, 0);
 
-        SymbolTable.getInstance().printSymbols();
+
 
         new Compile(outputFile, block);
+
+        SymbolTable.getInstance().printSymbols();
     }
 
     public static void main(String args[]) {
