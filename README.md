@@ -2,7 +2,7 @@
 
 Cobalt is an object oriented and functional language that runs on the JVM.
 
-The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines.    
+The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
 
 This project is new and if it is pointed in the right direction could be a language used in the future!   
 If you are interested then please get in contact as you could join in from the start!   
@@ -49,7 +49,7 @@ print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
 ```
 
 ##Strings    
-To make the code more readable and require less typing, like php variables could be included inside the string and the compiler do all of the work.    
+To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
 ```
 var x : int = 5
 var y : int = 10
