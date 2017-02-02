@@ -44,7 +44,7 @@ a += b               // Increment by value.
 ###While Loop
 ```
 while (condition):
-   doSomething()
+   doSomething
 ```
 ###For Loop (Including index)
 ```
@@ -54,12 +54,12 @@ for(element <- names index i):
 ###For Each
 ```
 list.foreach:
-    doSomething()
+    doSomething
 ``` 
 ###Do While
 ```
 do:
-   doSomething()
+   doSomething
    while(condition)
 ```
 ###Continue
@@ -72,18 +72,32 @@ Break out of a loop
 ```
 break
 ```
+
+###Methods to convert strings to other types
+Often strings represent other types such as integers or doubles. To convert these in Java you have to use "Integer.parseInt(str);" to convert from a string to an integer. Instead these methods should be parse of the language and the compiler should deal with it. 
+```
+"10".toInt  
+"true".toBoolean  
+"20.5".toDouble  
+"05/15/2017".toDate  
+```
 ###Switch
 In Java a switch statement case can only contain one condition for each case. Instead multiple conditions could be allowed.
 ```
 switch(value):
-    case value.method() == 1 and value.otherMethod == 5:
+    case value.method == 1 and value.otherMethod == 5:
       doSomething()
-    case value.method() == 2:
-      doSomethingElse()
-    default():
-      print("Default Called")
-    
+    case value.method == 2:
+      doSomethingElse
+    default:
+      print("Default Called") 
 ```
+###Arrays
+```
+val example = {1,2,3,4,5}
+print(example[2])           // Outputs 3
+```
+
 ###Strings    
 To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
 ```
@@ -91,18 +105,23 @@ var x : int = 5
 var y : int = 10
 var s : String = "x = $x and y = $y"
 ```
+If outputting a method return
+```
+var obj : Example = new Example
+var s : String = "Hello ${obj.getWorld}"
+```
 
 ###If Statements
 If statement comparisons could be reduced down to much smaller sizes. This would make it less to type and much easier to read.   
 *Before*   
 ```
 if(x < 10 && x > 0):
-   doSomething()
+   doSomething
 ```
 *After*
 ```
 if(0 < x < 10):
-    doSomething()
+    doSomething
 ```
 
 ###Open type System       
