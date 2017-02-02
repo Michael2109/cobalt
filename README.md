@@ -12,7 +12,51 @@ To contribute to the Cobalt project, please send us a pull request from your for
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
-##Desired Features   
+#Desired Features   
+
+##Strings    
+To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
+```
+var x : int = 5
+var y : int = 10
+var s : String = "x = $x and y = $y"
+```
+
+##If Statements
+If statement comparisons could be reduced down to much smaller sizes. This would make it less to type and much easier to read.   
+*Before*   
+```
+if(x < 10 && x > 0):
+   doSomething()
+```
+*After*
+```
+if(0 < x < 10):
+    doSomething()
+```
+##For Loop (Including index)
+```
+for(element <- names index i):
+   doSomething(i)
+```
+##For Each
+```
+list.foreach:
+    doSomething()
+```  
+##Switch
+In Java a switch statement case can only contain one condition for each case. Instead multiple conditions could be allowed.
+```
+switch(value):
+    case 1:
+      doSomething()
+    case 2:
+      doSomethingElse()
+    default():
+      print("Default Called")
+    
+```
+
 ###Open type System       
 When using Java I had to write programs that would return JSON to be decoded by PHP APIs. This would mean that external libraries would have to be used such as GSON etc. With GSON you would have to create a class structure that represents the JSON file you are reading in. This would take time and isn't very tidy if there are multiple nested lists.   
 Instead an Open Type System could be used. This would allow for JSON (and other formats) to be treated as objects. The elements can be converted into variables and then be referenced which would be highly readable and would save generating unneeded classes. 
@@ -49,27 +93,6 @@ var xml = new Book() // Define an xml object
 print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
 ```
 
-##Strings    
-To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
-```
-var x : int = 5
-var y : int = 10
-var s : String = "x = $x and y = $y"
-```
-
-##If Statements
-If statement comparisons could be reduced down to much smaller sizes. This would make it less to type and much easier to read.   
-*Before*   
-```
-if(x < 10 && x > 0):
-   doSomething()
-```
-*After*
-```
-if(0 < x < 10):
-    doSomething
-```
-
 ##Desired Syntax  
 ##Code Example
 ```
@@ -100,6 +123,8 @@ class MyCode(x : int, y : int):   
       x:int = 0        
       myCodeTest.method(x)
 ```
+
+
 ##Opening the project
 #####IntelliJ
 File->New->Project from version control->GitHub  
