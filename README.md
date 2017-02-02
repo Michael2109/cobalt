@@ -71,7 +71,7 @@ if(0 < x < 10):
 ```
 
 ##Desired Syntax  
-##Code Example - Compilable
+##Code Example
 ```
 package asm
 import compiler.block.ifs.IfBlock
