@@ -12,7 +12,7 @@ To contribute to the Cobalt project, please send us a pull request from your for
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
-#Desired Features   
+#Features   
 ###Variable Types
 ```
 byte b = 1           // 8 bit   
@@ -26,8 +26,8 @@ String ss = "Example"
 ClassName obj = new ClassName()  
 ```
 ###Modifiers   
-Default modifier is private
 ```
+private              // Can only be accessed within the class
 protected            // Can be accessed by a child class
 public               // Can be accessed outside the package
 ```
@@ -40,7 +40,13 @@ a / b                // Division
 a % b                // Modulus
 a += b               // Increment by value. 
 ```
- 
+###If Statements
+```
+if (condition):
+    doSomething()
+else:
+    doSomethingElse()
+```
 ###While Loop
 ```
 while (condition):
@@ -71,6 +77,36 @@ continue
 Break out of a loop
 ```
 break
+```
+### Constructor
+The constructor is anything within the class but outside of other methods. Otherwise constructors can be overloaded.   
+Constructors can have default values
+```
+public class MyClass:
+    
+    a:int
+    b:int
+    
+    // Constructor
+    public MyClass() : this(42)
+        print("Constructor")
+    
+    // Overloading a constructor
+    public MyClass(a:int = 5, b:int = 10):
+        this.a = a  //a = 5
+        this.b = b  // b = 10
+```
+###Method definition
+Methods can have default values
+```
+methodName(x : int = 5) : void {
+
+}
+```
+###Closures
+```
+val factor = 5
+val multiplier = (i:int) = i * factor
 ```
 
 ###Methods to convert strings to other types
