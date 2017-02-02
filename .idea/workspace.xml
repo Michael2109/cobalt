@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/language/MyCode.mlg" afterPath="$PROJECT_DIR$/language/MyCode.mlg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" afterPath="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectParser.scala" />
     </list>
     <ignored path="JVM Compiler.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1837,7 +1833,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485989233112</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Constructor parameters can have operations performed to them. When creating an instance of an object arguments can be passed.">
+      <created>1485997115499</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1485997115499</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1874,7 +1877,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1918,7 +1921,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tidied up code by replacing tokens with Strings. Added use of package directory if a variable is the same type  as the class it is defined within. Import directory is used otherwise." />
     <MESSAGE value="Added unit testing. Removed the original TokenizerTest class." />
     <MESSAGE value="Added IfParser test and CommentParser test." />
     <MESSAGE value="Added parse exception for any incorrect syntax in the class block." />
@@ -1943,7 +1945,8 @@
     <MESSAGE value="Fixed syntax error  and removed redundant printlns." />
     <MESSAGE value="Added method to find the type. (value, string literal, or variable ref)" />
     <MESSAGE value="Added asm parameters for constructor and error method for Block class." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added asm parameters for constructor and error method for Block class." />
+    <MESSAGE value="Constructor parameters can have operations performed to them. When creating an instance of an object arguments can be passed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Constructor parameters can have operations performed to them. When creating an instance of an object arguments can be passed." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
