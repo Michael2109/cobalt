@@ -4,18 +4,52 @@ Cobalt is an object oriented and functional language that runs on the JVM.
 
 The target is to create a language that is highly scalable and readable to allow for fast development and easier debugging. Also to combine object oriented and functional aspects to make the language very powerful with few lines.    
 
-This project is new and if it is pointed in the right direction could be a language used in the future! If you are interested then please get in contact as you could join in from the start!   
+This project is new and if it is pointed in the right direction could be a language used in the future!   
+If you are interested then please get in contact as you could join in from the start!   
 
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
-##Main Language Features   
-###Object Oriented and Functional  
-Similar syntax and features to Scala
+##Desired Features   
 ###Open type System       
 Would allow for objects to be created using XML and JSON formats.  
+
+###Example xml
+*xml file -> Book.xml*   
+```xml
+xml<?xml version="1.0"?>
+<catalog>
+   <book id="bk101">
+      <author>Gambardella, Matthew</author>
+      <title>XML Developer's Guide</title>
+      <genre>Computer</genre>
+      <price>44.95</price>
+      <publish_date>2000-10-01</publish_date>
+      <description>An in-depth look at creating applications 
+      with XML.</description>
+   </book>
+   <book id="bk102">
+      <author>Ralls, Kim</author>
+      <title>Midnight Rain</title>
+      <genre>Fantasy</genre>
+      <price>5.95</price>
+      <publish_date>2000-12-16</publish_date>
+      <description>A former architect battles corporate zombies, 
+      an evil sorceress, and her own childhood to become queen 
+      of the world.</description>
+      </book>
+</catalog>
+```
+*Cobalt file -> XML.co*
+```
+class XMLTest:
+    
+    void testXML():
+        var xml = new Book() // Define an xml object
+        print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
+```
 
 
 ##Opening the project
