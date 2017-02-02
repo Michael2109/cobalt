@@ -1,4 +1,4 @@
-# Cobalt #
+# Cobalt
 
 Cobalt is an object oriented and functional language that runs on the JVM.
 
@@ -13,8 +13,78 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
 #Desired Features   
-
-##Strings    
+###Variable Types
+```
+byte b = 1           // 8 bit   
+short s = 2          // 16 bit  
+int i = 3            // 32 bit  
+long l = 4           // 64 bit  
+float f = 5.0f       // 32 bit  
+double d = 6.0       // 64 bit  
+char c = 'g'        
+String ss = "Example"  
+ClassName obj = new ClassName()  
+```
+###Modifiers   
+Default modifier is private
+```
+protected            // Can be accessed by a child class
+public               // Can be accessed outside the package
+```
+###Operators
+```
+a + b                // Addition   
+a - b                // Subtraction
+a * b                // Multiplication
+a / b                // Division
+a % b                // Modulus
+a += b               // Increment by value. 
+```
+ 
+###While Loop
+```
+while (condition):
+   doSomething()
+```
+###For Loop (Including index)
+```
+for(element <- names index i):
+   doSomething(i)
+```
+###For Each
+```
+list.foreach:
+    doSomething()
+``` 
+###Do While
+```
+do:
+   doSomething()
+   while(condition)
+```
+###Continue
+Skip the current iteration
+```
+continue
+```
+###Break
+Break out of a loop
+```
+break
+```
+###Switch
+In Java a switch statement case can only contain one condition for each case. Instead multiple conditions could be allowed.
+```
+switch(value):
+    case value.method() == 1 and value.otherMethod == 5:
+      doSomething()
+    case value.method() == 2:
+      doSomethingElse()
+    default():
+      print("Default Called")
+    
+```
+###Strings    
 To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
 ```
 var x : int = 5
@@ -22,7 +92,7 @@ var y : int = 10
 var s : String = "x = $x and y = $y"
 ```
 
-##If Statements
+###If Statements
 If statement comparisons could be reduced down to much smaller sizes. This would make it less to type and much easier to read.   
 *Before*   
 ```
@@ -33,28 +103,6 @@ if(x < 10 && x > 0):
 ```
 if(0 < x < 10):
     doSomething()
-```
-##For Loop (Including index)
-```
-for(element <- names index i):
-   doSomething(i)
-```
-##For Each
-```
-list.foreach:
-    doSomething()
-```  
-##Switch
-In Java a switch statement case can only contain one condition for each case. Instead multiple conditions could be allowed.
-```
-switch(value):
-    case 1:
-      doSomething()
-    case 2:
-      doSomethingElse()
-    default():
-      print("Default Called")
-    
 ```
 
 ###Open type System       
@@ -117,10 +165,10 @@ class MyCode(x : int, y : int):   
    
    // Main method (Will contain "static" keyword    
    main()<-void:        
-      z :int = 10        
-      zy:int = 15        
-      myCodeTest:MyCode = new MyCode(z, zy)        
-      x:int = 0        
+      val z :int = 10        
+      val zy:int = 15        
+      var myCodeTest:MyCode = new MyCode(z, zy)        
+      val x:int = 0        
       myCodeTest.method(x)
 ```
 
