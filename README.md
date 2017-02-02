@@ -58,7 +58,7 @@ var s : String = "x = $x and y = $y"
 ```
 
 ##If Statements
-If statement comparisons could be reduced down to much smaller sizes.   
+If statement comparisons could be reduced down to much smaller sizes. This would make it less to type and much easier to read.   
 *Before*   
 ```
 if(x < 10 && x > 0):
