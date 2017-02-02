@@ -10,6 +10,16 @@ repositories {
     mavenCentral()
 }
 
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
+
+scaladoc {
+    source = sourceSets.main.allScala
+    classpath = configurations.compile
+}
+//include **/your/directory/structure/*
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'

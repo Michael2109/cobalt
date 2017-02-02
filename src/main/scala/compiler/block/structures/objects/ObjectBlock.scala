@@ -8,6 +8,7 @@ import compiler.block.structures.FileBlock
 import compiler.block.structures.classes.ClassBlock
 import compiler.symbol_table.SymbolTable
 
+
 // Creation of a new object and storing to a variable
 class ObjectBlock(var superBlockInit: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, true) {
 

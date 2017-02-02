@@ -1,12 +1,9 @@
 package asm;
-
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import static org.objectweb.asm.Opcodes.*;
-
 import org.objectweb.asm.*;
 
 public class MyCode {
