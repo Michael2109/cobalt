@@ -14,8 +14,8 @@ As the project is in the alpha stages please get in contact to discuss any large
 
 ##Desired Features   
 ###Open type System       
-When I was using Java I had to write programs that would return JSON to then be decoded by PHP APIs. This would mean that external libraries would have to be used such as GSON etc. With GSON you would have to create a class structure that represents the JSON file you are reading in. This would take time and isn't very tidy if there are multiple nested lists.   
-Instead of all this an Open Type System could be used. This would allow for JSON (and other formats) to be treated as though they are class files. The elements can be converted into variables and then be referenced very easily. 
+When using Java I had to write programs that would return JSON to be decoded by PHP APIs. This would mean that external libraries would have to be used such as GSON etc. With GSON you would have to create a class structure that represents the JSON file you are reading in. This would take time and isn't very tidy if there are multiple nested lists.   
+Instead an Open Type System could be used. This would allow for JSON (and other formats) to be treated as objects. The elements can be converted into variables and then be referenced which would be highly readable and would save generating unneeded classes. 
 
 ####Example xml (json to use the same concept)
 *xml file -> Book.xml*   
