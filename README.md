@@ -16,7 +16,7 @@ As the project is in the alpha stages please get in contact to discuss any large
 ###Open type System       
 Would allow for objects to be created using XML and JSON formats.  
 
-###Example xml
+####Example xml (json to use the same concept)
 *xml file -> Book.xml*   
 ```xml
 xml<?xml version="1.0"?>
@@ -44,13 +44,17 @@ xml<?xml version="1.0"?>
 ```
 *Cobalt file -> XML.co*
 ```
-class XMLTest:
-    
-    void testXML():
-        var xml = new Book() // Define an xml object
-        print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
+var xml = new Book() // Define an xml object
+print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
 ```
 
+##Strings    
+To make the code more readable and require less typing, like php variables could be included inside the string and the compiler do all of the work.    
+```
+var x : int = 5
+var y : int = 10
+var s : String = "x = $x and y = $y"
+```
 
 ##Opening the project
 #####IntelliJ
@@ -73,7 +77,7 @@ Run the "Runtime.java" file to execute the application. (Currently converting Ru
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
 
-##Code Example
+##Code Example (To be updated)
 ```
 package asm
 
