@@ -235,7 +235,7 @@ public class Runtime {
                         }
                     }
                     if (!parsable)
-                        throw new ParseException("Line: " + lineNumber);
+                        throw new ParseException("Line: " + lineNumber + " " + line);
                 }
                 // Indentation decreases by any amount
                 else {
