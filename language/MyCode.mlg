@@ -2,7 +2,7 @@ package asm
 import compiler.block.ifs.IfBlock
 import asm.MyCode
 
-class MyCode(int xx):
+class MyCode(int xx, int yy):
 
     xx += 2
 
@@ -12,7 +12,9 @@ class MyCode(int xx):
             x += 1
 
     void main():
-        MyCode myCode = new MyCode()
+        int z = 10
+        int ty = 15
+        MyCode myCode = new MyCode(z, ty)
         int y = 1
         float w = 2.0f
         double doublethingy = 2.0
