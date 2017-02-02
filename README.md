@@ -43,7 +43,7 @@ Instead an Open Type System could be used. This would allow for JSON (and other 
       </book>
 </catalog>
 ```
-*Cobalt file -> XML.co*
+*Cobalt file*
 ```
 var xml = new Book() // Define an xml object
 print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
