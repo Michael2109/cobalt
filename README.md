@@ -57,6 +57,49 @@ var y : int = 10
 var s : String = "x = $x and y = $y"
 ```
 
+##If Statements
+If statement comparisons could be reduced down to much smaller sizes.   
+*Before*   
+```
+if(x < 10 && x > 0):
+   doSomething()
+```
+*After*
+```
+if(0 < x < 10):
+    doSomething
+```
+
+##Desired Syntax  
+##Code Example - Compilable
+```
+package asm
+import compiler.block.ifs.IfBlock
+
+class MyCode(x : int, y : int):    
+
+   // Constructor Calls    
+   print("Hello World!")    
+   var z : int = 2    
+   x += 5    
+   
+   // Method definition    
+   method(x : int)<-void:        
+      while (x < 20):            
+      x += 1        
+   if (x < 10):            
+      print("Something else")
+   var test : ExampleClass = new ExampleClass()        
+   test.methodCall()        
+   
+   // Main method (Will contain "static" keyword    
+   main()<-void:        
+      z :int = 10        
+      zy:int = 15        
+      myCodeTest:MyCode = new MyCode(z, zy)        
+      x:int = 0        
+      myCodeTest.method(x)
+```
 ##Opening the project
 #####IntelliJ
 File->New->Project from version control->GitHub  
@@ -78,7 +121,7 @@ Run the "Runtime.java" file to execute the application. (Currently converting Ru
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
 
-##Code Example (To be updated)
+##Code Example - Compilable
 ```
 package asm
 
