@@ -91,19 +91,19 @@ do:
    // do something
    while(condition)
 ```
-###Continue (Discussion as to whether required)
+###Continue (Discuss whether required)
 Skip the current iteration
 ```
 continue
 ```
-###Break (Discussion as to whether required)
+###Break (Discuss whether required)
 Break out of a loop
 ```
 break
 ```
 ### Constructor
 The constructor is anything within the class but outside of other methods. Otherwise constructors can be overloaded.   
-Constructors can have default values
+Constructors can have default values.
 ```
 class MyClass:
     
@@ -115,11 +115,11 @@ class MyClass:
     
     // Overloading a constructor
     public MyClass(a:int = 5, b:int = 10):
-        this.a = a  //a = 5
+        this.a = a  //a = 42
         this.b = b  // b = 10
 ```
 ###Method definition
-Methods can have default values
+Methods can have default values.
 ```
 methodName(x : int = 5) : void {
 
