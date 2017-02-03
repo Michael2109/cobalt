@@ -52,34 +52,51 @@ if (condition):
     doSomething
 else:
     doSomethingElse
+    
+// inline
+if (condition) doSomething
 ```
 ###While Loop
 ```
 while (condition):
    doSomething
+   
+// inline
+while (condition) doSomething
 ```
 ###For Loop (Including index)
 ```
-for(element <- names index i):
+for(element <- elements index i):
    doSomething(i)
+   
+// inline
+for(element <- elements index i) doSomething(i)
+```
+###For Loop (Map example)
+```
+for(element <- map):
+    print(element.key + " " + element.value)
 ```
 ###For Each
 ```
-list.foreach:
+list.forEach:
     doSomething
+    
+// inline
+list.forEach doSomething
 ``` 
 ###Do While
 ```
 do:
-   doSomething
+   // do something
    while(condition)
 ```
-###Continue
+###Continue (Discussion as to whether required)
 Skip the current iteration
 ```
 continue
 ```
-###Break
+###Break (Discussion as to whether required)
 Break out of a loop
 ```
 break
@@ -88,10 +105,9 @@ break
 The constructor is anything within the class but outside of other methods. Otherwise constructors can be overloaded.   
 Constructors can have default values
 ```
-public class MyClass:
+class MyClass:
     
-    a:int
-    b:int
+    a, b:int
     
     // Constructor
     public MyClass() : this(42)
@@ -115,11 +131,32 @@ Methods with no parameters don't require parenthesis
 methodName       // No Parameters
 methodName(5)    // int parameter
 ```
-
+###Partial Application
+```
+// undefined syntax
+```
 ###Closures
 ```
 val factor = 5
 val multiplier = (i:int) = i * factor
+```
+```
+power():int 
+  var i:int = 0
+  return 
+    next: function(): 
+      var result:int = Math.pow(i, 2)
+      i++
+      return result
+    
+var gen = power();
+print(gen.next()) // 0
+print(gen.next()) // 1
+```
+###Fat arrows
+```
+var names = ["James", "Andrew", "John"]
+print(names.map((name) => name + ' Smith'))[0]) // James Smith
 ```
 
 ###Methods to convert strings to other types
@@ -135,9 +172,9 @@ In Java a switch statement case can only contain one condition for each case. In
 ```
 switch(value):
     case value.method == 1 and value.otherMethod == 5:
-      doSomething()
+      // do something
     case value.method == 2:
-      doSomethingElse
+      // do something
     default:
       print("Default Called") 
 ```
@@ -147,9 +184,12 @@ val example = {1,2,3,4,5}
 print(example[2])           // Outputs 3
 ```
 
-###Asynchronous Multithreading
+###Asynchronous Multithreading - A similar feature to Javascript
 ```
-
+async:
+    // do something
+    complete:
+        // Code called on completion
 ```
 
 ###Strings    
