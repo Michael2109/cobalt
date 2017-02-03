@@ -7,6 +7,12 @@ The target is to create a language that is highly scalable and readable to allow
 Currently the project is at the initial stages but is built on a very strong structure that should allow for the flexibility to move in any direction we please.  
 If you are interested then please get in contact!   
 
+#Main Features
+*Thread Safe - Automatic Synchronization
+*Simplistic Asynchronous Programming
+*High readability
+*Object oriented and functional
+
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
@@ -132,6 +138,11 @@ switch(value):
 ```
 val example = {1,2,3,4,5}
 print(example[2])           // Outputs 3
+```
+
+###Asynchronous Multithreading
+```
+
 ```
 
 ###Strings    
