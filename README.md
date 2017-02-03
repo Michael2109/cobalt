@@ -183,7 +183,7 @@ val example = {1,2,3,4,5}
 print(example[2])           // Outputs 3
 ```
 
-###Asynchronous Multithreading - A similar feature to Javascript
+###Asynchronous Multithreading
 ```
 async:
     // do something
