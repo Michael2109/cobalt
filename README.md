@@ -21,15 +21,15 @@ As the project is in the alpha stages please get in contact to discuss any large
 #Features   
 ###Variable Types
 ```
-byte b = 1           // 8 bit   
-short s = 2          // 16 bit  
-int i = 3            // 32 bit  
-long l = 4           // 64 bit  
-float f = 5.0f       // 32 bit  
-double d = 6.0       // 64 bit  
-char c = 'g'        
-String ss = "Example"  
-ClassName obj = new ClassName()  
+val b:byte = 1           // 8 bit   
+val s:short = 2          // 16 bit  
+val i:int = 3            // 32 bit  
+val l:long = 4           // 64 bit  
+val f:float = 5.0f       // 32 bit  
+val d:double = 6.0       // 64 bit  
+val c:char = 'g'        
+val ss:String = "Example"  
+val obj:ClassName = new ClassName()  
 ```
 ###Modifiers   
 ```
@@ -49,9 +49,9 @@ a += b               // Increment by value.
 ###If Statements
 ```
 if (condition):
-    doSomething()
+    doSomething
 else:
-    doSomethingElse()
+    doSomethingElse
 ```
 ###While Loop
 ```
@@ -109,6 +109,13 @@ methodName(x : int = 5) : void {
 
 }
 ```
+###Method calls
+Methods with no parameters don't require parenthesis
+```
+methodName       // No Parameters
+methodName(5)    // int parameter
+```
+
 ###Closures
 ```
 val factor = 5
