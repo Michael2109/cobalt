@@ -8,10 +8,10 @@ Currently the project is at the initial stages but is built on a very strong str
 If you are interested then please get in contact!   
 
 #Main Features
-*Thread Safe - Automatic Synchronization
-*Simplistic Asynchronous Programming
-*High readability
-*Object oriented and functional
+*Thread Safe - Automatic Synchronization  
+*Simplistic Asynchronous Programming  
+*High readability  
+*Object oriented and functional  
 
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
