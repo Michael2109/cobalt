@@ -121,9 +121,8 @@ class MyClass:
 ###Method definition
 Methods can have default values.
 ```
-methodName(x : int = 5) : void {
-
-}
+methodName(x : int = 5) <- void:
+    doSomething
 ```
 ###Method calls
 Methods with no parameters don't require parenthesis
@@ -141,7 +140,7 @@ val factor = 5
 val multiplier = (i:int) = i * factor
 ```
 ```
-power():int 
+power()<-int: 
   var i:int = 0
   return 
     next: function(): 
@@ -270,7 +269,7 @@ class MyCode(x : int, y : int):   
    // Method definition    
    method(x : int)<-void:        
       while (x < 20):            
-      x += 1        
+          x += 1        
    if (x < 10):            
       print("Something else")
    var test : ExampleClass = new ExampleClass()        
