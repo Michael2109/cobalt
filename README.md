@@ -78,13 +78,11 @@ for(element <- map):
     print(element.key + " " + element.value)
 ```
 ###Nested For Loop
-Nested for loops can cause code to get quite messy.
 ```
 for(l1Element <- list1 : l2Element <- list2):
     doSomething
 ```
 ###Nested For Loop (Including index)
-Nested for loops can cause code to get quite messy.
 ```
 for(l1Element <- list1 index x: l2Element <- list2 index y):
     doSomething(x,y)
