@@ -77,6 +77,18 @@ for(element <- elements index i) doSomething(i)
 for(element <- map):
     print(element.key + " " + element.value)
 ```
+###Nested For Loop
+Nested for loops can cause code to get quite messy.
+```
+for(l1Element <- list1 : l2Element <- list2):
+    doSomething
+```
+###Nested For Loop (Including index)
+Nested for loops can cause code to get quite messy.
+```
+for(l1Element <- list1 index x: l2Element <- list2 index y):
+    doSomething(x,y)
+```
 ###For Each
 ```
 list.forEach:
@@ -184,11 +196,15 @@ print(example[2])           // Outputs 3
 ```
 
 ###Asynchronous Multithreading
+Would start a new thread possible from a thread pool. This could either use default values or have config parameters for how many threads are in the pool etc.
 ```
+// Default
 async:
     // do something
-    complete:
-        // Code called on completion
+    
+//Configured - Pass a map
+async(configMap):
+    // do something
 ```
 
 ###Strings    
