@@ -10,7 +10,8 @@ If you are interested then please get in contact!
 #Main Features
 *Thread Safe - Automatic Synchronization  
 *Simplistic Asynchronous Programming  
-*High readability  
+*High readability 
+*Condensed down code with the same functionality
 *Object oriented and functional  
 
 ##Project Contributions
