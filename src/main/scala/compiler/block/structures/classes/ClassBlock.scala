@@ -1,11 +1,12 @@
 package compiler.block.structures.classes
 
-import compiler.Parameter
 import compiler.block.Block
 import compiler.block.packages.PackageBlock
 import compiler.block.structures.methods.ConstructorBlock
 import compiler.block.structures.methods.MethodBlock
 import java.util.List
+
+import compiler.structure.parameter.Parameter
 
 /**
   * Represents a class.

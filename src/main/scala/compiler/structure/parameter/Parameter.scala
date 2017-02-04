@@ -1,4 +1,4 @@
-package compiler
+package compiler.structure.parameter
 
 // Represents what is input for ASM. E.g. int = 'I', String = 'Ljava/lang/String;'
 class Parameter(var `type`: String, var name: String) {

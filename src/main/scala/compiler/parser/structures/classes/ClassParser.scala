@@ -1,12 +1,12 @@
 package compiler.parser.structures.classes
 
-import compiler.Parameter
 import compiler.block.Block
 import compiler.block.structures.classes.ClassBlock
 import compiler.parser.Parser
 import java.util.ArrayList
 import java.util.List
 
+import compiler.structure.parameter.Parameter
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {
