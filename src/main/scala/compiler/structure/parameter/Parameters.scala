@@ -1,46 +1,49 @@
 package compiler.structure.parameter
 
-import java.util.{ArrayList, List}
-
 import compiler.tokenizer.Tokenizer
+
+import scala.collection.mutable.ListBuffer
 
 object Test {
   def main(args: Array[String]): Unit = {
-    val parameters = new Parameters("int x, int y")
+    val parameters = new Parameters().getParameters("x:int, y:int")
+
+    parameters.foreach(println)
 
   }
 }
-class Parameters(line: String) {
 
-  getParameters(line)
+class Parameters() {
 
   // Loop through tokens to get each parameter. Add each parameter to a list
-  private def getParameters(line: String): List[Parameter] = {
+  def getParameters(line: String): ListBuffer[Parameter] = {
 
-    val result: List[Parameter] = new ArrayList[Parameter]
+    val result: ListBuffer[Parameter] = new ListBuffer[Parameter]
 
     val tokenizer = new Tokenizer(line)
 
     var nextToken: String = tokenizer.nextToken.getToken
-    var i: Int = 0
     var paramType: String = ""
     var paramName: String = ""
 
-    while (nextToken != ")") {
+    var typeNext = false
+    while (nextToken != "") {
 
-      //	parameters += " " + nextToken + " ";
       if (nextToken == ",") {
         nextToken = tokenizer.nextToken.getToken
       } else {
-        if (i % 2 == 0) {
+        if (nextToken == ":") {
+          typeNext = true
+        }
+        else if (typeNext) {
           paramType = nextToken.trim
+          typeNext = false
+          result += new Parameter(paramType, paramName)
         }
         else {
           paramName = nextToken.trim
-          result.add(new Parameter(paramType, paramName))
         }
         nextToken = tokenizer.nextToken.getToken
-        i += 1
       }
     }
 

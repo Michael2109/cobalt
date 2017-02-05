@@ -25,7 +25,7 @@ class Parameter(var `type`: String, var name: String) {
   }
 
   override def toString: String = {
-    return `type` + " : " + name
+    return name + " : " + `type`
   }
 
 }
