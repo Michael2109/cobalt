@@ -83,10 +83,10 @@ public class MyCode {
             Label lMethod0 = new Label();
             mv.visitLabel(lMethod0);
 
-            mv.visitLdcInsn(10);
+            mv.visitLdcInsn(new Integer(10));
             mv.visitVarInsn(ISTORE, 67);
 
-            mv.visitLdcInsn(15);
+            mv.visitLdcInsn(new Integer(15));
             mv.visitVarInsn(ISTORE, 68);
 
             mv.visitTypeInsn(NEW, "asm/MyCode");
@@ -96,11 +96,12 @@ public class MyCode {
             mv.visitMethodInsn(INVOKESPECIAL, "asm/MyCode", "<init>", "(II)V", false);
             mv.visitVarInsn(ASTORE, 69);
 
-            mv.visitLdcInsn(1);
+            mv.visitLdcInsn(new Integer(1));
             mv.visitVarInsn(ISTORE, 70);
 
             mv.visitLdcInsn(new Float(2.0));
             mv.visitVarInsn(FSTORE, 71);
+
             mv.visitLdcInsn(new Double(2.0));
             mv.visitVarInsn(DSTORE, 72);
             mv.visitVarInsn(ALOAD, 69);

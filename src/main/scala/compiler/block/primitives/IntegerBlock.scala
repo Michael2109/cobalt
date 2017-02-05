@@ -13,7 +13,7 @@ class IntegerBlock(var superBlockInit: Block, var name: String, var value: Strin
   def getType: String = "int"
 
   def getOpeningCode: String = {
-    return asm.visitLdcInsn(value) +
+    return asm.visitLdcInsn("new Integer(" + value + ")") +
       asm.visitVarInsn("ISTORE", id)
   }
 

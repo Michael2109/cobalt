@@ -19,8 +19,8 @@ class FloatBlock(var superBlockInit: Block, var name: String, var value: String)
   }
 
   def getOpeningCode: String = {
-    return "mv.visitLdcInsn(new Float(" + value + "));\n" +
-      "mv.visitVarInsn(FSTORE, " + id + ");"
+    return asm.visitLdcInsn("new Float(" + value + ")") +
+      asm.visitVarInsn("FSTORE", id);
   }
 
   def getClosingCode: String = {
