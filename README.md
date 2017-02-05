@@ -192,6 +192,12 @@ switch(value):
 val example = {1,2,3,4,5}
 print(example[2])           // Outputs 3
 ```
+###Type Of  
+Gets the type of an object. In an if statement it will automatically cast if true.  
+```
+if(obj typeOf ExampleClass):
+    // Automatically cast to Example class if true
+```
 
 ###Asynchronous Multithreading
 Would start a new thread possible from a thread pool. This could either use default values or have config parameters for how many threads are in the pool etc.
