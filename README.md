@@ -267,35 +267,30 @@ var xml = new Book() // Define an xml object
 print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
 ```
 
-##Desired Syntax  
 ##Code Example
 ```
 package asm
 import compiler.block.ifs.IfBlock
 
-class MyCode(x : int, y : int):    
+class MyCode(xx:int, yy:int):
 
-   // Constructor Calls    
-   print("Hello World!")    
-   var z : int = 2    
-   x += 5    
-   
-   // Method definition    
-   method(x : int)<-void:        
-      while (x < 20):            
-          x += 1        
-   if (x < 10):            
-      print("Something else")
-   var test : ExampleClass = new ExampleClass()        
-   test.methodCall()        
-   
-   // Main method (Will contain "static" keyword    
-   main()<-void:        
-      val z :int = 10        
-      val zy:int = 15        
-      var myCodeTest:MyCode = new MyCode(z, zy)        
-      val x:int = 0        
-      myCodeTest.method(x)
+    xx += 2
+
+    method1(x:int) <- void:
+        while (x < 10):
+            print("Hello World!")
+            x += 1
+
+    main() <- void:
+        var z:int = 10
+        var ty:int = 15
+        var myCode:MyCode = new MyCode(z, ty)
+        var y:int = 1
+        var w:float = 2.0f
+        var doublethingy:double = 2.0
+        myCode.method1(y)
+        print("Hello World")
+        var ifBlock:IfBlock = new IfBlock()
 ```
 
 
@@ -320,34 +315,3 @@ Run the "Runtime.java" file to execute the application. (Currently converting Ru
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
 
-##Code Example - Compilable
-```
-package asm
-
-import compiler.block.ifs.IfBlock
-
-class MyCode(int x, int y):
-
-    // Constructor Calls
-    print("Hello World!")
-    int z = 2
-    x += 5
-
-    // Method definition
-    void method(int x):
-        while (x < 20):
-            x += 1
-        if (x < 10):
-            print("Something else")
-           
-        ExampleClass test = new ExampleClass()
-        test.methodCall()
-    
-    // Main method (Will contain "static" keyword
-    void main():
-        int z = 10
-        int zy = 15
-        MyCode myCodeTest = new MyCode(z, zy)
-        int x = 0
-        myCodeTest.method(x)
-```
