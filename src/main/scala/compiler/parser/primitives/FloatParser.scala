@@ -6,12 +6,14 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class FloatParser extends Parser[FloatBlock] {
-  def shouldParse(line: String): Boolean = line.matches("float [a-zA-Z][a-zA-Z0-9]* [=] [0-9]+[.][0-9]*f")
+  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:float[ ]*[=][ ]*[0-9]+[.][0-9]*f[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): FloatBlock = {
-    tokenizer.nextToken // skip float
+    tokenizer.nextToken // skip "var"
     val name: String = tokenizer.nextToken.getToken
-    tokenizer.nextToken
+    tokenizer.nextToken // skip ":"
+    tokenizer.nextToken // skip "float"
+    tokenizer.nextToken // skip "="
     var value: String = tokenizer.nextToken.getToken
     tokenizer.nextToken
     value += "." + tokenizer.nextToken.getToken

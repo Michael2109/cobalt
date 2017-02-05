@@ -6,11 +6,13 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class BooleanParser extends Parser[BooleanBlock] {
-  def shouldParse(line: String): Boolean = line.matches("boolean[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*(true|false)")
+  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:boolean[ ]*[=][ ]*(true|false)")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): BooleanBlock = {
-    tokenizer.nextToken // skip "boolean"
+    tokenizer.nextToken // skip "var"
     val name: String = tokenizer.nextToken.getToken
+    tokenizer.nextToken // skip ":"
+    tokenizer.nextToken // skip "boolean"
     tokenizer.nextToken // skip "="
     val value: String = tokenizer.nextToken.getToken
     return new BooleanBlock(superBlock, name, value)

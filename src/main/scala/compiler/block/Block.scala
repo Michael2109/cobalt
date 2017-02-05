@@ -20,7 +20,7 @@ object Block {
   * @param containerInit      Whether the block contains other blocks
   * @param variableInit       Whether the block is a variable
   */
-abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean) {
+abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean, immutableInit: Boolean = false) {
 
   Block.TOTAL_BLOCKS += 1
 
@@ -30,6 +30,7 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   private var _superBlock: Block = superBlockInitTest
   private var _container: Boolean = containerInit
   private var _variable: Boolean = variableInit
+  private var _immutable: Boolean = immutableInit
 
   /* id GET and SET */
   def id = _id
@@ -73,7 +74,14 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
 
   def variable_=(value: Boolean) = _variable = value
 
+  /* Whether the block is immutable */
+  def isImmutable: Boolean = _immutable
+
+  def immutable_=(value: Boolean) = _immutable = value
+
+  // Error check on the line of code
   def error(): Boolean = false
 
+  // Used to generate ASM code
   def asm: ASMGenerator = _asm
 }

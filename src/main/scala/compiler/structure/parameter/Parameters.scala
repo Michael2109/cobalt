@@ -4,6 +4,12 @@ import java.util.{ArrayList, List}
 
 import compiler.tokenizer.Tokenizer
 
+object Test {
+  def main(args: Array[String]): Unit = {
+    val parameters = new Parameters("int x, int y")
+
+  }
+}
 class Parameters(line: String) {
 
   getParameters(line)
