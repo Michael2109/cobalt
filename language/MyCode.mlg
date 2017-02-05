@@ -1,17 +1,16 @@
 package asm
 import compiler.block.ifs.IfBlock
-import asm.MyCode
 
-class MyCode(int xx, int yy):
+class MyCode(xx:int, yy:int):
 
     xx += 2
 
-    void method1(int x):
+    method1(x:int) <- void:
         while (x < 10):
             print("Hello World!")
             x += 1
 
-    void main():
+    main() <- void:
         var z:int = 10
         var ty:int = 15
         var myCode:MyCode = new MyCode(z, ty)
@@ -20,3 +19,4 @@ class MyCode(int xx, int yy):
         var doublethingy:double = 2.0
         myCode.method1(y)
         print("Hello World")
+        var ifBlock:IfBlock = new IfBlock()

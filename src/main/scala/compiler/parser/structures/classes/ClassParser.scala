@@ -6,7 +6,7 @@ import compiler.parser.Parser
 import java.util.ArrayList
 import java.util.List
 
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameter.{Parameter, Parameters}
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {
@@ -17,28 +17,15 @@ class ClassParser extends Parser[ClassBlock] {
     val className: String = tokenizer.nextToken.getToken
     tokenizer.nextToken // (
     var nextToken: String = tokenizer.nextToken.getToken
-    var i: Int = 0
-    var paramType: String = ""
-    var paramName: String = ""
-    val parameters: List[Parameter] = new ArrayList[Parameter]
+
+    var paramString = ""
     while (nextToken != ")") {
-      {
-        //	parameters += " " + nextToken + " ";
-        if (nextToken == ",") {
-          nextToken = tokenizer.nextToken.getToken
-        } else {
-          if (i % 2 == 0) {
-            paramType = nextToken.trim
-          }
-          else {
-            paramName = nextToken.trim
-            parameters.add(new Parameter(paramType, paramName))
-          }
-          nextToken = tokenizer.nextToken.getToken
-          i += 1
-        }
-      }
+      paramString += nextToken
+      nextToken = tokenizer.nextToken.getToken
     }
-    return new ClassBlock(superBlock, className, parameters.toArray(new Array[Parameter](parameters.size)))
+
+    val parameters = new Parameters().getParameters(paramString)
+
+    return new ClassBlock(superBlock, className, parameters.toArray)
   }
 }

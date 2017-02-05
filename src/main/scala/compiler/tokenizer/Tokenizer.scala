@@ -11,6 +11,7 @@ class Tokenizer(var str: String) {
   private var pushBackBool: Boolean = false
 
   this.tokenDatas = new ArrayList[TokenData]
+  tokenDatas.add(new TokenData(Pattern.compile("^([<-])"), TokenType.RETURN_TYPE))
   tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL))
   tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+[.][0-9])"), TokenType.DOUBLE_LITERAL))
   tokenDatas.add(new TokenData(Pattern.compile("^([+][=])"), TokenType.ADD_OPERATOR))
