@@ -14,7 +14,7 @@ class PrintParser extends Parser[PrintBlock] {
       printVariable = false
       return true
     }
-    else if (line.matches("print[ ]*\\([\"]?.*[\"]?\\)")) {
+    else if (line.matches("print[ ]*\\(.*\\)")) {
       printVariable = true
       return true
     }
@@ -25,6 +25,7 @@ class PrintParser extends Parser[PrintBlock] {
     tokenizer.nextToken // skip print
     tokenizer.nextToken // skip (
     val value: String = tokenizer.nextToken.token
+    println("is variable: " + printVariable)
     return new PrintBlock(superBlock, value, printVariable)
   }
 }

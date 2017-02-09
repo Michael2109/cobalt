@@ -64,6 +64,7 @@ public class Runtime {
             new DoubleParser(),
             new FloatParser(),
             new IntegerParser(),
+            new StringParser(),
             // IfBlock Parser
             new IfParser(),
             // PrintBlock Parser
