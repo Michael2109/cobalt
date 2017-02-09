@@ -162,6 +162,20 @@ var gen = power();
 print(gen.next()) // 0
 print(gen.next()) // 1
 ```
+###Anonymous Functions (Copied from Scala - New syntax to be defined with similar concepts)
+```
+var inc = (x:Int) => x+1   
+var x = inc(7)-1   
+```
+```
+var mul = (x: Int, y: Int) => x*y   
+println(mul(3, 4))
+```
+```
+var userDir = () => { System.getProperty("user.dir") }
+println( userDir )
+```
+
 ###Fat arrows
 ```
 var names = ["James", "Andrew", "John"]
