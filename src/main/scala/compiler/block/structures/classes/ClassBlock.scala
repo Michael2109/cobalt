@@ -12,7 +12,9 @@ import compiler.structure.parameter.Parameter
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter]) extends Block(superBlockInit, true, false) {
+class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
+
+
 
   // Package the class is within
   private var packageBlock: PackageBlock = new PackageBlock("")
@@ -43,13 +45,13 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
       moveToConstructor(sub)
     }
     val block: Block = superBlock
+
     // Get the package the class is within
     for (fileSub <- block.subBlocks) {
       if (fileSub.isInstanceOf[PackageBlock]) {
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }
     }
-
 
     for (parameter <- parameters) {
       parameterString += parameter.getAsmType
@@ -85,7 +87,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
       asm.getClassOpening(name) +
       asm.executeMethodOpening +
       asm.getClassWriter +
-      asm.visitClassWriter(packageBlock.directory + "/" + name, null, "java/lang/Object", null) +
+      asm.visitClassWriter(packageBlock.directory + "/" + name, null, parentClass, null) +
       asm.getOpeningBrace() +
       asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
       asm.visitCode() +
@@ -119,6 +121,6 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return name + " ( " + paramString + ")"
+    return name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses
   }
 }

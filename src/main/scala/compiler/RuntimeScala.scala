@@ -107,9 +107,11 @@ class RuntimeScala {
 
     var line: String = br.readLine()
 
+    lineNumber += 1
+
     if (line != null) {
 
-      lineNumber += 1
+
       if (line.trim() == "") {
         createBlock(currentBlock, br, indentation)
         return null

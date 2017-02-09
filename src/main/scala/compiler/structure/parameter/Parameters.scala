@@ -4,15 +4,6 @@ import compiler.tokenizer.Tokenizer
 
 import scala.collection.mutable.ListBuffer
 
-object Test {
-  def main(args: Array[String]): Unit = {
-    val parameters = new Parameters().getParameters("x:int, y:int")
-
-    parameters.foreach(println)
-
-  }
-}
-
 class Parameters() {
 
   // Loop through tokens to get each parameter. Add each parameter to a list

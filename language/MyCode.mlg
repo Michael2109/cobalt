@@ -16,7 +16,6 @@ class MyCode(xx:int, yy:int):
         var myCode:MyCode = new MyCode(z, ty)
         var y:int = 1
         var w:float = 2.0f
-        var doublethingy:double = 2.0
         myCode.method1(y)
         print("Hello World")
         var ifBlock:IfBlock = new IfBlock()

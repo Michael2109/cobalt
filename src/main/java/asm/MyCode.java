@@ -102,8 +102,6 @@ public class MyCode {
             mv.visitLdcInsn(new Float(2.0));
             mv.visitVarInsn(FSTORE, 69);
 
-            mv.visitLdcInsn(new Double(2.0));
-            mv.visitVarInsn(DSTORE, 70);
             mv.visitVarInsn(ALOAD, 67);
             mv.visitIntInsn(ILOAD, 68);
             mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(I)V", false);
@@ -114,7 +112,7 @@ public class MyCode {
             mv.visitTypeInsn(NEW, "compiler/block/ifs/IfBlock");
             mv.visitInsn(DUP);
             mv.visitMethodInsn(INVOKESPECIAL, "compiler/block/ifs/IfBlock", "<init>", "()V", false);
-            mv.visitVarInsn(ASTORE, 73);
+            mv.visitVarInsn(ASTORE, 72);
 
             mv.visitInsn(RETURN);
             Label lMethod1 = new Label();
