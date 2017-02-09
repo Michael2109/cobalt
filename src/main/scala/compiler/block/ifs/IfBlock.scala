@@ -1,8 +1,8 @@
 package compiler.block.ifs
 
-import compiler.Parameter
 import compiler.Utils
 import compiler.block.Block
+import compiler.structure.parameter.Parameter
 import compiler.symbol_table.SymbolTable
 
 /**

@@ -10,19 +10,11 @@ import compiler.block.structures.methods.MethodBlock
   * Loops through the blocks calling methods to generate the code.
   */
 class Compile(val outputFile: File, val block: Block) {
-  try {
-    outputFile.createNewFile
-    w = new PrintWriter(outputFile)
-    System.out.println("Output File: " + outputFile.getAbsolutePath)
-  }
-  catch {
-    case e: FileNotFoundException => {
-      e.printStackTrace()
-    }
-    case e: IOException => {
-      e.printStackTrace()
-    }
-  }
+
+  outputFile.createNewFile
+  val w: PrintWriter = new PrintWriter(outputFile)
+
+  System.out.println("Output File: " + outputFile.getAbsolutePath)
 
   println("Initialising blocks...")
   initBlocks(block)
@@ -32,7 +24,6 @@ class Compile(val outputFile: File, val block: Block) {
 
   println("Complete.")
   w.close()
-  private[compiler] var w: PrintWriter = null
 
   // Initialises all blocks.
   // Allows for initialisation when all blocks have been loaded.
@@ -51,19 +42,11 @@ class Compile(val outputFile: File, val block: Block) {
     if (block.isInstanceOf[MethodBlock]) {
       val b: MethodBlock = block.asInstanceOf[MethodBlock]
       p(b.getOpeningCode)
-
-
     }
     else {
       if (block.getOpeningCode != null && block.getOpeningCode != "") {
         p(block.getOpeningCode)
       }
-      // if (block.getBodyCode != null && block.getBodyCode != "") {
-      //    p(block.getBodyCode)
-      //  }
-
-
-
     }
     for (sub <- block.subBlocks) {
       generateASM(sub)
@@ -74,12 +57,12 @@ class Compile(val outputFile: File, val block: Block) {
   // Call to write using the printwriter
   def p(line: String): PrintWriter = {
     w.println(line)
-    return w
+    w
   }
 
   // Call to write a newline using the printwriter
   def p: PrintWriter = {
     w.println()
-    return w
+    w
   }
 }

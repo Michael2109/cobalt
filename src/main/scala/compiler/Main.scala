@@ -11,7 +11,7 @@ object Main {
       new RuntimeScala(input, output)
     }
     else {
-      System.out.println("Error: Input and Output file args required.")
+      System.out.println("Error: Input and Output file args required. Enter with file extension removed.")
     }
   }
 }

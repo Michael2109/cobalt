@@ -5,6 +5,7 @@ object TokenType extends Enumeration {
   val EMPTY,
   TOKEN,
   IDENTIFIER,
+  RETURN_TYPE,
   INTEGER_LITERAL,
   DOUBLE_LITERAL,
   STRING_LITERAL,

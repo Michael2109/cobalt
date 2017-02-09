@@ -1,11 +1,12 @@
 package compiler.block.structures.objects
 
-import compiler.{Parameter, Utils}
+import compiler.Utils
 import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.block.packages.PackageBlock
 import compiler.block.structures.FileBlock
 import compiler.block.structures.classes.ClassBlock
+import compiler.structure.parameter.Parameter
 import compiler.symbol_table.SymbolTable
 
 
