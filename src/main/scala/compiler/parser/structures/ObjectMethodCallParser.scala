@@ -17,23 +17,23 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
   def shouldParse(line: String): Boolean = line.matches("[a-zA-Z][a-zA-Z0-9]*\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectMethodCallBlock = {
-    val variableName: String = tokenizer.nextToken.getToken // Get the string value of the next token.
+    val variableName: String = tokenizer.nextToken.token // Get the string value of the next token.
     tokenizer.nextToken
-    val methodName: String = tokenizer.nextToken.getToken
+    val methodName: String = tokenizer.nextToken.token
     tokenizer.nextToken // ")"
-    var nextToken: String = tokenizer.nextToken.getToken
+    var nextToken: String = tokenizer.nextToken.token
     val paramType: String = ""
     var paramName: String = ""
     val parameters: List[Parameter] = new ArrayList[Parameter]
     while (nextToken != ")") {
       {
         if (nextToken == ",") {
-          nextToken = tokenizer.nextToken.getToken
+          nextToken = tokenizer.nextToken.token
         } else {
           // todo find the paramType. Utilities add a method to get the type
           paramName = nextToken.trim
           parameters.add(new Parameter(paramType, paramName))
-          nextToken = tokenizer.nextToken.getToken
+          nextToken = tokenizer.nextToken.token
         }
       }
     }

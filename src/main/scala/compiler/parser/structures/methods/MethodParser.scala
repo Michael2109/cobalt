@@ -15,22 +15,22 @@ class MethodParser extends Parser[MethodBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodBlock = {
 
-    val name: String = tokenizer.nextToken.getToken // method name
+    val name: String = tokenizer.nextToken.token // method name
     tokenizer.nextToken // "("
 
-    var nextToken = tokenizer.nextToken.getToken
+    var nextToken = tokenizer.nextToken.token
     var paramString = ""
     while (nextToken != ")") {
       paramString += nextToken
-      nextToken = tokenizer.nextToken.getToken
+      nextToken = tokenizer.nextToken.token
     }
     val parameters = new Parameters().getParameters(paramString)
 
-    println(tokenizer.nextToken) // skip ")"
+    tokenizer.nextToken // skip "<"
 
-    println(tokenizer.nextToken) // skip "<-"
+    tokenizer.nextToken // skip "-"
 
-    val `type`: String = tokenizer.nextToken.getToken // method return type
+    val `type`: String = tokenizer.nextToken.token // method return type
     return new MethodBlock(superBlock, name, `type`, parameters.toArray)
   }
 }

@@ -30,10 +30,7 @@ class ObjectBlock(var superBlockInit: Block, var className: String, var variable
       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
       parameterString += param.getAsmType
       argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"
-      println("Params" + param)
     }
-    println(parameterString)
-    println(argumentString)
   }
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package

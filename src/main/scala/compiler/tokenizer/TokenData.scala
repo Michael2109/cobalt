@@ -4,7 +4,7 @@ import java.util.regex.Pattern
 
 import compiler.tokenizer.TokenType.TokenType
 
-class TokenData(var pattern: Pattern, var `type`: TokenType) {
+class TokenData(val pattern: Pattern, val `type`: TokenType) {
 
   def getPattern: Pattern =  pattern
 

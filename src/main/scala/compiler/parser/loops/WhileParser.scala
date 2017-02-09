@@ -20,12 +20,12 @@ class WhileParser extends Parser[WhileBlock] {
     tokenizer.nextToken // skip "("
 
     var statement: String = ""
-    var nextToken: String = tokenizer.nextToken.getToken
+    var nextToken: String = tokenizer.nextToken.token
     while (nextToken != ")") {
       {
         if (nextToken == "=") statement += nextToken
         else statement += " " + nextToken + " "
-        nextToken = tokenizer.nextToken.getToken
+        nextToken = tokenizer.nextToken.token
       }
     }
     return new WhileBlock(superBlock, statement.trim.replaceAll(" +", " "))

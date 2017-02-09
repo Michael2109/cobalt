@@ -13,7 +13,7 @@ class Parameters() {
 
     val tokenizer = new Tokenizer(line)
 
-    var nextToken: String = tokenizer.nextToken.getToken
+    var nextToken: String = tokenizer.nextToken.token
     var paramType: String = ""
     var paramName: String = ""
 
@@ -21,7 +21,7 @@ class Parameters() {
     while (nextToken != "") {
 
       if (nextToken == ",") {
-        nextToken = tokenizer.nextToken.getToken
+        nextToken = tokenizer.nextToken.token
       } else {
         if (nextToken == ":") {
           typeNext = true
@@ -34,7 +34,7 @@ class Parameters() {
         else {
           paramName = nextToken.trim
         }
-        nextToken = tokenizer.nextToken.getToken
+        nextToken = tokenizer.nextToken.token
       }
     }
 

@@ -16,7 +16,7 @@ class ForParser extends Parser[ForBlock] {
     tokenizer.nextToken //skip "for"
     tokenizer.nextToken // skip "("
     val first: Token = tokenizer.nextToken
-    return new ForBlock(superBlock, first.getToken)
+    return new ForBlock(superBlock, first.token)
   }
 
 }

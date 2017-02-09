@@ -10,13 +10,13 @@ class FloatParser extends Parser[FloatBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): FloatBlock = {
     tokenizer.nextToken // skip "var"
-    val name: String = tokenizer.nextToken.getToken
+    val name: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip ":"
     tokenizer.nextToken // skip "float"
     tokenizer.nextToken // skip "="
-    var value: String = tokenizer.nextToken.getToken
+    var value: String = tokenizer.nextToken.token
     tokenizer.nextToken
-    value += "." + tokenizer.nextToken.getToken
+    value += "." + tokenizer.nextToken.token
     return new FloatBlock(superBlock, name, value)
   }
 }

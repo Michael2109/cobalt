@@ -15,8 +15,8 @@ class ImportParser extends Parser[ImportBlock] {
 
     tokenizer.nextToken // "import"
 
-    var fileLoc: String = tokenizer.nextToken.getToken // Get the string value of the next token.;
-    var nextToken: String = tokenizer.nextToken.getToken
+    var fileLoc: String = tokenizer.nextToken.token // Get the string value of the next token.;
+    var nextToken: String = tokenizer.nextToken.token
     var fileName: String = nextToken
 
     while (nextToken != "") {
@@ -28,7 +28,7 @@ class ImportParser extends Parser[ImportBlock] {
           fileLoc += nextToken
         }
         fileName = nextToken
-        nextToken = tokenizer.nextToken.getToken
+        nextToken = tokenizer.nextToken.token
       }
     }
     val i: Int = fileLoc.lastIndexOf("/")

@@ -2,12 +2,12 @@ package compiler.tokenizer
 
 import compiler.tokenizer.TokenType.TokenType
 
-class Token(var token: String, var `type`: TokenType) {
+class Token(val _token: String, val _type: TokenType) {
 
-  def getToken: String = token
+  def token: String = _token
 
-  def getType: TokenType = `type`
+  def tokenType: TokenType = _type
 
-  override def toString: String = token
+  override def toString: String = _token
 
 }

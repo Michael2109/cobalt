@@ -11,11 +11,11 @@ class CharacterParser extends Parser[CharacterBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CharacterBlock = {
     tokenizer.nextToken // skip "var"
-    val name: String = tokenizer.nextToken.getToken //get name
+    val name: String = tokenizer.nextToken.token //get name
     tokenizer.nextToken // skip ":"
     tokenizer.nextToken // skip "char"
     tokenizer.nextToken // skip "="
-    val value: String = tokenizer.nextToken.getToken
+    val value: String = tokenizer.nextToken.token
     return new CharacterBlock(superBlock, name, value)
   }
 }
