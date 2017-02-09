@@ -83,36 +83,39 @@ public class MyCode {
             Label lMethod0 = new Label();
             mv.visitLabel(lMethod0);
 
-            mv.visitLdcInsn(new Integer(10));
+            mv.visitLdcInsn(new String("Test"));
             mv.visitVarInsn(ISTORE, 65);
 
-            mv.visitLdcInsn(new Integer(15));
+            mv.visitLdcInsn(new Integer(10));
             mv.visitVarInsn(ISTORE, 66);
+
+            mv.visitLdcInsn(new Integer(15));
+            mv.visitVarInsn(ISTORE, 67);
 
             mv.visitTypeInsn(NEW, "asm/MyCode");
             mv.visitInsn(DUP);
-            mv.visitIntInsn(ILOAD, 65);
             mv.visitIntInsn(ILOAD, 66);
+            mv.visitIntInsn(ILOAD, 67);
             mv.visitMethodInsn(INVOKESPECIAL, "asm/MyCode", "<init>", "(II)V", false);
-            mv.visitVarInsn(ASTORE, 67);
+            mv.visitVarInsn(ASTORE, 68);
 
             mv.visitLdcInsn(new Integer(1));
-            mv.visitVarInsn(ISTORE, 68);
+            mv.visitVarInsn(ISTORE, 69);
 
             mv.visitLdcInsn(new Float(2.0));
-            mv.visitVarInsn(FSTORE, 69);
+            mv.visitVarInsn(FSTORE, 70);
 
-            mv.visitVarInsn(ALOAD, 67);
-            mv.visitIntInsn(ILOAD, 68);
+            mv.visitVarInsn(ALOAD, 68);
+            mv.visitIntInsn(ILOAD, 69);
             mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(I)V", false);
 
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("Hello World");
+            mv.visitVarInsn(ALOAD, 65);
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
             mv.visitTypeInsn(NEW, "compiler/block/ifs/IfBlock");
             mv.visitInsn(DUP);
             mv.visitMethodInsn(INVOKESPECIAL, "compiler/block/ifs/IfBlock", "<init>", "()V", false);
-            mv.visitVarInsn(ASTORE, 72);
+            mv.visitVarInsn(ASTORE, 73);
 
             mv.visitInsn(RETURN);
             Label lMethod1 = new Label();
