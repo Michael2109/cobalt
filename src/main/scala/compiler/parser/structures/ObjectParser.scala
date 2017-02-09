@@ -16,16 +16,16 @@ class ObjectParser extends Parser[ObjectBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectBlock = {
     tokenizer.nextToken // skip "var"
-    val variableName: String = tokenizer.nextToken.getToken
+    val variableName: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip ":"
-    val className: String = tokenizer.nextToken.getToken
-    val operator: String = tokenizer.nextToken.getToken
-    val newKeyword: String = tokenizer.nextToken.getToken
-    val initClassName: String = tokenizer.nextToken.getToken
+    val className: String = tokenizer.nextToken.token
+    val operator: String = tokenizer.nextToken.token
+    val newKeyword: String = tokenizer.nextToken.token
+    val initClassName: String = tokenizer.nextToken.token
 
     tokenizer.nextToken // skip "("
 
-    var nextToken: String = tokenizer.nextToken.getToken
+    var nextToken: String = tokenizer.nextToken.token
     val paramType: String = ""
     var paramName: String = ""
     val parameters: List[Parameter] = new ArrayList[Parameter]
@@ -33,11 +33,11 @@ class ObjectParser extends Parser[ObjectBlock] {
       {
 
         if (nextToken == ",") {
-          nextToken = tokenizer.nextToken.getToken
+          nextToken = tokenizer.nextToken.token
         } else {
           paramName = nextToken.trim
           parameters.add(new Parameter(paramType, paramName))
-          nextToken = tokenizer.nextToken.getToken
+          nextToken = tokenizer.nextToken.token
         }
       }
     }

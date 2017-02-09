@@ -10,13 +10,13 @@ class DoubleParser extends Parser[DoubleBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DoubleBlock = {
     tokenizer.nextToken // skip "var"
-    val name: String = tokenizer.nextToken.getToken
+    val name: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip ":"
     tokenizer.nextToken // skip "double"
     tokenizer.nextToken // skip "="
-    var value: String = tokenizer.nextToken.getToken
+    var value: String = tokenizer.nextToken.token
     tokenizer.nextToken
-    value += "." + tokenizer.nextToken.getToken
+    value += "." + tokenizer.nextToken.token
     return new DoubleBlock(superBlock, name, value)
   }
 }

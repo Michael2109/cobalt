@@ -10,11 +10,11 @@ class BooleanParser extends Parser[BooleanBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): BooleanBlock = {
     tokenizer.nextToken // skip "var"
-    val name: String = tokenizer.nextToken.getToken
+    val name: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip ":"
     tokenizer.nextToken // skip "boolean"
     tokenizer.nextToken // skip "="
-    val value: String = tokenizer.nextToken.getToken
+    val value: String = tokenizer.nextToken.token
     return new BooleanBlock(superBlock, name, value)
   }
 }

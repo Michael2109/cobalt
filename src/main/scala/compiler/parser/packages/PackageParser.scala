@@ -12,8 +12,8 @@ class PackageParser extends Parser[PackageBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PackageBlock = {
     tokenizer.nextToken // skip "package"
-    var directory: String = tokenizer.nextToken.getToken // Get the string value of the next token.;
-    var nextToken: String = tokenizer.nextToken.getToken
+    var directory: String = tokenizer.nextToken.token // Get the string value of the next token.;
+    var nextToken: String = tokenizer.nextToken.token
     while (nextToken != "") {
       {
         if (nextToken == ".") {
@@ -22,7 +22,7 @@ class PackageParser extends Parser[PackageBlock] {
         else {
           directory += nextToken
         }
-        nextToken = tokenizer.nextToken.getToken
+        nextToken = tokenizer.nextToken.token
       }
     }
     return new PackageBlock(directory)

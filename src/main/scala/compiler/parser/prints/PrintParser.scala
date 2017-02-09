@@ -24,7 +24,7 @@ class PrintParser extends Parser[PrintBlock] {
   def parse(superBlock: Block, tokenizer: Tokenizer): PrintBlock = {
     tokenizer.nextToken // skip print
     tokenizer.nextToken // skip (
-    val value: String = tokenizer.nextToken.getToken
+    val value: String = tokenizer.nextToken.token
     return new PrintBlock(superBlock, value, printVariable)
   }
 }

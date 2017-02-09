@@ -12,29 +12,29 @@ class ClassParser extends Parser[ClassBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
     tokenizer.nextToken
-    val className: String = tokenizer.nextToken.getToken
+    val className: String = tokenizer.nextToken.token
     tokenizer.nextToken // (
-    var nextToken: String = tokenizer.nextToken.getToken
+    var nextToken: String = tokenizer.nextToken.token
 
     var paramString = ""
     while (nextToken != ")") {
       paramString += nextToken
-      nextToken = tokenizer.nextToken.getToken
+      nextToken = tokenizer.nextToken.token
     }
 
     val parameters = new Parameters().getParameters(paramString)
 
     var parentClass = ""
 
-    if (tokenizer.nextToken.getToken == "extends") {
-      parentClass = tokenizer.nextToken.getToken
+    if (tokenizer.nextToken.token == "extends") {
+      parentClass = tokenizer.nextToken.token
     } else {
       parentClass = "java/lang/Object"
     }
 
     var implementedClasses = ""
-    if (tokenizer.nextToken.getToken == "implements") {
-      implementedClasses = tokenizer.nextToken.getToken
+    if (tokenizer.nextToken.token == "implements") {
+      implementedClasses = tokenizer.nextToken.token
     }
 
 

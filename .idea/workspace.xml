@@ -6,15 +6,32 @@
   <component name="ChangeListManager">
     <list default="true" id="7e9ff57b-0873-4059-8152-47d7934cc862" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/language/MyCode.mlg" afterPath="$PROJECT_DIR$/language/MyCode.mlg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/asm/MyCode.java" afterPath="$PROJECT_DIR$/src/main/java/asm/MyCode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/Compile.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/Compile.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/Constants.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/Constants.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/Main.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/Main.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/RuntimeScala.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/RuntimeScala.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/ifs/IfParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/ifs/IfParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/imports/ImportParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/imports/ImportParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/ForParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/ForParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/WhileParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/WhileParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/AddParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/AddParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/DivideParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/DivideParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/MultiplyParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/MultiplyParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/SubtractParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/operators/SubtractParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/packages/PackageParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/packages/PackageParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/BooleanParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/BooleanParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/CharacterParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/CharacterParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/DoubleParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/DoubleParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/FloatParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/FloatParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/IntegerParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/primitives/IntegerParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/prints/PrintParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/prints/PrintParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/MethodCallParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/MethodCallParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectMethodCallParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectMethodCallParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/ObjectParser.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/classes/ClassParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/classes/ClassParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/structure/parameter/Parameters.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/structure/parameter/Parameters.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Token.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Token.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala" afterPath="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala" />
     </list>
     <ignored path="JVM Compiler.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,8 +74,8 @@
       <file leaf-file-name="Parser.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/Parser.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+            <state relative-caret-position="312">
+              <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
               <folding>
                 <element signature="e#25#52#0" expanded="false" />
               </folding>
@@ -66,83 +83,73 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Block.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
+      <file leaf-file-name="Token.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Token.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1742">
-              <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
+            <state relative-caret-position="338">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RuntimeScala.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/RuntimeScala.scala">
+      <file leaf-file-name="ObjectBlock.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="189" column="7" selection-start-line="189" selection-start-column="7" selection-end-line="189" selection-end-column="7" />
+            <state relative-caret-position="-1266">
+              <caret line="27" column="12" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyCode.mlg" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/language/MyCode.mlg">
+      <file leaf-file-name="MethodParser.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+            <state relative-caret-position="208">
+              <caret line="15" column="69" selection-start-line="15" selection-start-column="69" selection-end-line="15" selection-end-column="69" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClassBlock.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala">
+      <file leaf-file-name="Tokenizer.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClassParser.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/structures/classes/ClassParser.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Utils.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Utils.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
-              <caret line="28" column="3" selection-start-line="28" selection-start-column="3" selection-end-line="28" selection-end-column="3" />
+            <state relative-caret-position="438">
+              <caret line="49" column="7" selection-start-line="49" selection-start-column="7" selection-end-line="49" selection-end-column="7" />
               <folding>
-                <element signature="e#18#45#0" expanded="false" />
+                <element signature="e#28#54#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Main.scala">
+      <file leaf-file-name="TokenType.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenType.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+            <state relative-caret-position="364">
+              <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Constants.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Constants.scala">
+      <file leaf-file-name="WhileBlock.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/loops/WhileBlock.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="52">
-              <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+            <state relative-caret-position="216">
+              <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Block.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="523">
+              <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -151,9 +158,21 @@
       <file leaf-file-name="Compile.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Compile.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1508">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+            <state relative-caret-position="757">
+              <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TokenData.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="156">
+              <caret line="6" column="41" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
+              <folding>
+                <element signature="e#28#58#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -535,8 +554,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/scala/compiler/block/structures/FileBlock.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/compiler/Parameter.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/structures/methods/MethodBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectMethodCallBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/parser/loops/WhileParser.scala" />
@@ -555,7 +572,6 @@
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/loops/ForBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/loops/WhileBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/java/compiler/Runtime.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/parser/parameter/Parameter.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/parser/parameter/Parameters.java" />
@@ -571,9 +587,7 @@
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/IntegerBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/primitives/FloatBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/structure/parameter/Parameter.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenType.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala" />
         <option value="$PROJECT_DIR$/src/main/java/asm/MyCode.java" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/operators/AddBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/Test.java" />
@@ -586,6 +600,11 @@
         <option value="$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/classes/ClassParser.scala" />
         <option value="$PROJECT_DIR$/language/MyCode.mlg" />
+        <option value="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Token.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala" />
       </list>
     </option>
   </component>
@@ -627,8 +646,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -684,6 +704,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="compiler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JVM Compiler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JVM Compiler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compiler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tokenizer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -897,7 +947,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1705,7 +1754,14 @@
       <option name="project" value="LOCAL" />
       <updated>1486332233370</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Tidied up  Compiler class. In the process of converting all vars to values to make the program completely immutable.">
+      <created>1486600542167</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1486600542167</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1751,7 +1807,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969603" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1878,13 +1934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/loops/WhileBlock.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1742">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/structures/methods/MethodBlock.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="910">
@@ -1896,13 +1945,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="78">
           <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="17" column="39" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -2019,13 +2061,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="65" selection-start-line="13" selection-start-column="65" selection-end-line="13" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/classes/main/asm/MyCode.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -2044,13 +2079,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -2076,29 +2104,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Token.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenType.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/Test.java" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/Test.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/structure/parameter/Parameters.scala">
@@ -2111,38 +2116,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/Parser.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
-          <folding>
-            <element signature="e#25#52#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1742">
-          <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Utils.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
           <caret line="28" column="3" selection-start-line="28" selection-start-column="3" selection-end-line="28" selection-end-column="3" />
-          <folding>
-            <element signature="e#18#45#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Compile.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1508">
-          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2165,7 +2142,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/RuntimeScala.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
+        <state relative-caret-position="4212">
           <caret line="189" column="7" selection-start-line="189" selection-start-column="7" selection-end-line="189" selection-end-column="7" />
           <folding />
         </state>
@@ -2181,16 +2158,104 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/structures/classes/ClassBlock.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
+        <state relative-caret-position="780">
           <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#43#70#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/language/MyCode.mlg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+        <state relative-caret-position="364">
+          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/Block.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="523">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/Parser.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+          <folding>
+            <element signature="e#25#52#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/loops/WhileBlock.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenType.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/Compile.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="757">
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Tokenizer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="49" column="7" selection-start-line="49" selection-start-column="7" selection-end-line="49" selection-end-column="7" />
+          <folding>
+            <element signature="e#28#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/TokenData.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="41" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
+          <folding>
+            <element signature="e#28#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/tokenizer/Token.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/block/structures/objects/ObjectBlock.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1266">
+          <caret line="27" column="12" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/compiler/parser/structures/methods/MethodParser.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="15" column="69" selection-start-line="15" selection-start-column="69" selection-end-line="15" selection-end-column="69" />
           <folding />
         </state>
       </provider>
