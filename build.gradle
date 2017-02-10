@@ -3,7 +3,6 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'scala'
-apply plugin: 'maven'
 
 sourceCompatibility = 1.8
 
@@ -14,18 +13,18 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDirs = ['src/java']
+            srcDirs = ['src/main/java']
         }
         scala {
-            srcDirs = ['src/scala']
+            srcDirs = ['src/main/scala']
         }
     }
     test {
         java {
-            srcDirs = ['test/java']
+            srcDirs = ['test/main/java']
         }
         scala {
-            srcDirs = ['test/scala']
+            srcDirs = ['test/main/scala']
         }
     }
 }
