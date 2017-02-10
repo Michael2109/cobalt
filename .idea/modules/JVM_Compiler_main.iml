@@ -3,14 +3,10 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../build/classes/main" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../src/java">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/java" isTestSource="false" />
-    </content>
     <content url="file://$MODULE_DIR$/../../src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/scala" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
-    </content>
-    <content url="file://$MODULE_DIR$/../../src/scala">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/scala" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

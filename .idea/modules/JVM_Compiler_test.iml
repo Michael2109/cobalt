@@ -7,8 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
     </content>
     <content url="file://$MODULE_DIR$/../../test">
-      <sourceFolder url="file://$MODULE_DIR$/../../test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../test/scala" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../test/main/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../test/main/scala" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
