@@ -4,14 +4,16 @@ Cobalt is an object oriented and functional language that runs on the JVM.
 
 The target is to create a language that is highly scalable, readable and thread safe. Also to combine object oriented and functional aspects to make the language very powerful with few lines. 
 
-Currently the project is at the initial stages but is built on a very strong structure that should allow for the flexibility to move in any direction we please. If you are interested then please get in contact!   
+Currently the project is at the initial stages but is built on a very strong structure that should allow for the flexibility to move in any direction we please. I'm very open to new ideas for the project so if you feel anything should be added/considered then add it as an issue!   
+
+If you are interested then please get in contact!   
 
 #Main Features
-*Thread Safe - Automatic Synchronization  
-*Simplistic Asynchronous Programming  
-*High readability   
-*Condensed down code with the same functionality   
-*Object oriented and functional  
+* Thread Safe - Automatic Synchronization  
+* Simplistic Asynchronous Programming  
+* High readability   
+* Condensed down code with the same functionality   
+* Object oriented and functional  
 
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
@@ -19,6 +21,89 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
 #Features   
+
+###Single line comment
+```
+// This is a single line comment
+```
+###Multiline comment
+```
+/* 
+    This is a multi line comment   
+*/
+```
+###Cobalt documentation comment
+```
+/**
+ * Class Description
+ * @param nameInit The persons name
+ */
+ class Person(nameInit:String):
+    
+    /** The age of the person **/
+    var name:String = nameInit
+    
+    /**
+     * Creates a greeting method for a perso
+     *
+     * @param otherPerson The person to greet
+     * @return the greeting message
+     */
+     greet(otherPerson:String) <- String:
+         "Hello $otherPerson"
+```
+###Triple single quoted String (To be discussed)
+Instead of having to separate a String out like so
+```
+"Multiple lines" +
+"Are split up" +
+"into sections"
+```
+This could be used instead
+```
+'''
+Multiple lines
+are treated 
+as one
+'''
+```
+###Special Characters
+To ascape special characters use "\"   
+```
+"\"Something\""
+```
+| Escape Sequence | Character        |
+| --------------- |:----------------:|
+| \t              | Tabulation       |
+| \b              | Backspace        |
+| \n              | Newline          |
+| \r              | Carriage Return  |
+| \f              | Formfeed         |
+| \\              | Backslash        |
+| \'              | Single Quote     |
+| \"              | Double Quote     |
+
+###Double quoted String  
+```
+"This is a double quoted String"  
+```
+###String interpolation   
+To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
+```
+var x : int = 5
+var y : int = 10
+var s : String = "x = $x and y = $y"
+```
+If outputting a variable within a class
+```
+var y : Example = new Example
+var s : String = "y = ${y.someVar}"
+```
+###Slashy Strings
+Useful for regular expressions instead of having to escape single or double quotes   
+```
+var example:String = /Example String/
+```
 ###Variable Types
 ```
 val b:byte = 1           // 8 bit   
@@ -27,6 +112,7 @@ val i:int = 3            // 32 bit
 val l:long = 4           // 64 bit  
 val f:float = 5.0f       // 32 bit  
 val d:double = 6.0       // 64 bit  
+va; bo:boolean = true 
 val c:char = 'g'        
 val ss:String = "Example"  
 val obj:ClassName = new ClassName()  
@@ -44,7 +130,36 @@ a - b                // Subtraction
 a * b                // Multiplication
 a / b                // Division
 a % b                // Modulus
+a ^^ b               // Power
 a += b               // Increment by value. 
+```
+###Binary
+Allow use of binary values as integers
+```
+var example:int = 0100100101001b   
+```
+###Hexadecimal  
+Allow the use of hexadecimal values as integers
+```
+var example:int = 0xab
+```
+###Arrays - Mutable (To be defined)
+```
+Undefined
+```
+###List - Immutable
+```
+val example:List = List(1,2,3)
+```
+```
+val example:List = List(1,2,3
+                    4,5,6)
+```
+###Maps
+Indentation is ignored  if the map extends past multiple lines.
+```
+val example:Map<String,Integer> = ("One"->1, "two"->2,
+                                   "three"->3, "four"->4)
 ```
 ###If Statements
 ```
@@ -111,6 +226,10 @@ Break out of a loop
 ```
 break
 ```
+###Return
+```
+return
+```
 ### Constructor
 The constructor is anything within the class but outside of other methods. Otherwise constructors can be overloaded.   
 Constructors can have default values.
@@ -162,6 +281,20 @@ var gen = power();
 print(gen.next()) // 0
 print(gen.next()) // 1
 ```
+###Anonymous Functions (Copied from Scala - New syntax to be defined with similar concepts)
+```
+var inc = (x:Int) => x+1   
+var x = inc(7)-1   
+```
+```
+var mul = (x: Int, y: Int) => x*y   
+println(mul(3, 4))
+```
+```
+var userDir = () => { System.getProperty("user.dir") }
+println( userDir )
+```
+
 ###Fat arrows
 ```
 var names = ["James", "Andrew", "John"]
@@ -192,6 +325,12 @@ switch(value):
 val example = {1,2,3,4,5}
 print(example[2])           // Outputs 3
 ```
+###Type Of  
+Gets the type of an object. In an if statement it will automatically cast if true.  
+```
+if(obj typeOf ExampleClass):
+    // Automatically cast to Example class if true
+```
 
 ###Asynchronous Multithreading
 Would start a new thread possible from a thread pool. This could either use default values or have config parameters for how many threads are in the pool etc.
@@ -203,14 +342,6 @@ async:
 //Configured - Pass a map
 async(configMap):
     // do something
-```
-
-###Strings    
-To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
-```
-var x : int = 5
-var y : int = 10
-var s : String = "x = $x and y = $y"
 ```
 If outputting a method return
 ```
@@ -267,35 +398,30 @@ var xml = new Book() // Define an xml object
 print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
 ```
 
-##Desired Syntax  
 ##Code Example
 ```
 package asm
 import compiler.block.ifs.IfBlock
 
-class MyCode(x : int, y : int):    
+class MyCode(xx:int, yy:int):
 
-   // Constructor Calls    
-   print("Hello World!")    
-   var z : int = 2    
-   x += 5    
-   
-   // Method definition    
-   method(x : int)<-void:        
-      while (x < 20):            
-          x += 1        
-   if (x < 10):            
-      print("Something else")
-   var test : ExampleClass = new ExampleClass()        
-   test.methodCall()        
-   
-   // Main method (Will contain "static" keyword    
-   main()<-void:        
-      val z :int = 10        
-      val zy:int = 15        
-      var myCodeTest:MyCode = new MyCode(z, zy)        
-      val x:int = 0        
-      myCodeTest.method(x)
+    xx += 2
+
+    method1(x:int) <- void:
+        while (x < 10):
+            print("Hello World!")
+            x += 1
+
+    main() <- void:
+        var z:int = 10
+        var ty:int = 15
+        var myCode:MyCode = new MyCode(z, ty)
+        var y:int = 1
+        var w:float = 2.0f
+        var doublethingy:double = 2.0
+        myCode.method1(y)
+        print("Hello World")
+        var ifBlock:IfBlock = new IfBlock()
 ```
 
 
@@ -320,34 +446,3 @@ Run the "Runtime.java" file to execute the application. (Currently converting Ru
 ##Debugging
 Open the generated class file to decompile the code and check the code was generated correctly. 
 
-##Code Example - Compilable
-```
-package asm
-
-import compiler.block.ifs.IfBlock
-
-class MyCode(int x, int y):
-
-    // Constructor Calls
-    print("Hello World!")
-    int z = 2
-    x += 5
-
-    // Method definition
-    void method(int x):
-        while (x < 20):
-            x += 1
-        if (x < 10):
-            print("Something else")
-           
-        ExampleClass test = new ExampleClass()
-        test.methodCall()
-    
-    // Main method (Will contain "static" keyword
-    void main():
-        int z = 10
-        int zy = 15
-        MyCode myCodeTest = new MyCode(z, zy)
-        int x = 0
-        myCodeTest.method(x)
-```
