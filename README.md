@@ -226,6 +226,10 @@ Break out of a loop
 ```
 break
 ```
+###Return
+```
+return
+```
 ### Constructor
 The constructor is anything within the class but outside of other methods. Otherwise constructors can be overloaded.   
 Constructors can have default values.
