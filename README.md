@@ -9,11 +9,11 @@ Currently the project is at the initial stages but is built on a very strong str
 If you are interested then please get in contact!   
 
 #Main Features
-*Thread Safe - Automatic Synchronization  
-*Simplistic Asynchronous Programming  
-*High readability   
-*Condensed down code with the same functionality   
-*Object oriented and functional  
+* Thread Safe - Automatic Synchronization  
+* Simplistic Asynchronous Programming  
+* High readability   
+* Condensed down code with the same functionality   
+* Object oriented and functional  
 
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
@@ -29,14 +29,14 @@ As the project is in the alpha stages please get in contact to discuss any large
 ###Multiline comment
 ```
 /* 
-This is a multi line comment   
+    This is a multi line comment   
 */
 ```
 ###Cobalt documentation comment
 ```
 /**
  * Class Description
- @param nameInit The persons name
+ * @param nameInit The persons name
  */
  class Person(nameInit:String):
     
@@ -77,11 +77,35 @@ If outputting a variable within a class
 var y : Example = new Example
 var s : String = "y = ${y.someVar}"
 ```
-Triple single quoted String
+###Triple single quoted String
+Instead of having to separate a String out like so
 ```
-\`\`\`
-\`\`\`
+"Multiple lines" +
+"Are split up" +
+"into sections"
 ```
+This could be used instead
+```
+'''Multiple lines
+   are treated 
+   as one
+'''
+```
+###Special Characters
+To ascape special characters use "\"   
+```
+"\"Something\""
+```
+| Escape Sequence | Character        |
+| --------------- |:----------------:|
+| \t              | Tabulation       |
+| \b              | Backspace        |
+| \n              | Newline          |
+| \r              | Carriage Return  |
+| \f              | Formfeed         |
+| \\              | Backslash        |
+| \'              | Single Quote     |
+| \"              | Double Quote     |
 
 ###Modifiers   
 ```
