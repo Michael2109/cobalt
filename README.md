@@ -21,6 +21,38 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
 #Features   
+
+###Single line comment
+```
+// This is a single line comment
+```
+###Multiline comment
+```
+/* 
+This is a multi line comment   
+*/
+```
+###Cobalt documentation comment
+```
+/**
+ * Class Description
+ @param nameInit The persons name
+ */
+ class Person(nameInit:String):
+    
+    /** The age of the person **/
+    var name:String = nameInit
+    
+    /**
+     * Creates a greeting method for a perso
+     *
+     * @param otherPerson The person to greet
+     * @return the greeting message
+     */
+     greet(otherPerson:String) <- String:
+         "Hello $otherPerson"
+```
+
 ###Variable Types
 ```
 val b:byte = 1           // 8 bit   
@@ -33,6 +65,24 @@ val c:char = 'g'
 val ss:String = "Example"  
 val obj:ClassName = new ClassName()  
 ```
+###Strings    
+To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
+```
+var x : int = 5
+var y : int = 10
+var s : String = "x = $x and y = $y"
+```
+If outputting a variable within a class
+```
+var y : Example = new Example
+var s : String = "y = ${y.someVar}"
+```
+Triple single quoted String
+```
+\`\`\`
+\`\`\`
+```
+
 ###Modifiers   
 ```
 private              // Can only be accessed within the class
@@ -225,14 +275,6 @@ async:
 //Configured - Pass a map
 async(configMap):
     // do something
-```
-
-###Strings    
-To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
-```
-var x : int = 5
-var y : int = 10
-var s : String = "x = $x and y = $y"
 ```
 If outputting a method return
 ```
