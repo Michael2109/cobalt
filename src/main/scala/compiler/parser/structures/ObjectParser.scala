@@ -5,7 +5,7 @@ import java.util.{ArrayList, List}
 import compiler.block.Block
 import compiler.block.structures.objects.ObjectBlock
 import compiler.parser.Parser
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 import compiler.tokenizer.Tokenizer
 
 /**

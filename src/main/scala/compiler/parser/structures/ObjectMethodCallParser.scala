@@ -7,7 +7,7 @@ import compiler.parser.Parser
 import java.util.ArrayList
 import java.util.List
 
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 import compiler.tokenizer.Tokenizer
 
 /**

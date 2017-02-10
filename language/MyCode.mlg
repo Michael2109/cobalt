@@ -14,6 +14,7 @@ class MyCode(xx:int, yy:int):
         var stringTest:String = "Test"
         var z:int = 10
         var ty:int = 15
+
         var myCode:MyCode = new MyCode(z, ty)
         var y:int = 1
         var w:float = 2.0f

@@ -1,7 +1,7 @@
 package compiler.block.loops
 
 import compiler.block.Block
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 
 /**
   * Represents a for loop

@@ -6,7 +6,7 @@ import compiler.parser.Parser
 import java.util.ArrayList
 import java.util.List
 
-import compiler.structure.parameter.{Parameter, Parameters}
+import compiler.structure.parameters.{Parameter, Parameters}
 import compiler.tokenizer.Tokenizer
 
 class MethodParser extends Parser[MethodBlock] {

@@ -2,7 +2,7 @@ package compiler.block.ifs
 
 import compiler.Utils
 import compiler.block.Block
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
 
 /**

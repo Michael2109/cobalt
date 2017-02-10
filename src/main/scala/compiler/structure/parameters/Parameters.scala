@@ -1,10 +1,10 @@
-package compiler.structure.parameter
+package compiler.structure.parameters
 
 import compiler.tokenizer.Tokenizer
 
 import scala.collection.mutable.ListBuffer
 
-class Parameters() {
+class Parameters {
 
   // Loop through tokens to get each parameter. Add each parameter to a list
   def getParameters(line: String): ListBuffer[Parameter] = {

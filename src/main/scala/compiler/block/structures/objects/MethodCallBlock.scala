@@ -1,7 +1,7 @@
 package compiler.block.structures.objects
 
 import compiler.block.Block
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 
 /**
   * Calling of a method within the class
