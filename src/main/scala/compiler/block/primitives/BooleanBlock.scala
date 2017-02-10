@@ -12,7 +12,8 @@ class BooleanBlock(var superBlockInit: Block, var name: String, var value: Strin
 
   def getType: String = "boolean"
 
-  def getOpeningCode: String = ""
+  def getOpeningCode: String = asm.visitLdcInsn("new Boolean(" + value + ")") +
+    asm.visitVarInsn("BASTORE", id)
 
   def getClosingCode: String = ""
 

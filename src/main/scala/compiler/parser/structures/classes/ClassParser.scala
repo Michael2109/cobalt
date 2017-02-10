@@ -4,7 +4,7 @@ import compiler.block.Block
 import compiler.block.structures.classes.ClassBlock
 import compiler.parser.Parser
 
-import compiler.structure.parameter.Parameters
+import compiler.structure.parameters.Parameters
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {

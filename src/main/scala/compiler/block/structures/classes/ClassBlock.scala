@@ -6,7 +6,7 @@ import compiler.block.structures.methods.ConstructorBlock
 import compiler.block.structures.methods.MethodBlock
 import java.util.List
 
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 
 /**
   * Represents a class.

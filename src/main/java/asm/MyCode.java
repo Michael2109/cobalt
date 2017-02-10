@@ -84,7 +84,7 @@ public class MyCode {
             mv.visitLabel(lMethod0);
 
             mv.visitLdcInsn(new String("Test"));
-            mv.visitVarInsn(ISTORE, 65);
+            mv.visitVarInsn(ASTORE, 65);
 
             mv.visitLdcInsn(new Integer(10));
             mv.visitVarInsn(ISTORE, 66);
@@ -97,16 +97,16 @@ public class MyCode {
             mv.visitIntInsn(ILOAD, 66);
             mv.visitIntInsn(ILOAD, 67);
             mv.visitMethodInsn(INVOKESPECIAL, "asm/MyCode", "<init>", "(II)V", false);
-            mv.visitVarInsn(ASTORE, 68);
+            mv.visitVarInsn(ASTORE, 69);
 
             mv.visitLdcInsn(new Integer(1));
-            mv.visitVarInsn(ISTORE, 69);
+            mv.visitVarInsn(ISTORE, 70);
 
             mv.visitLdcInsn(new Float(2.0));
-            mv.visitVarInsn(FSTORE, 70);
+            mv.visitVarInsn(FSTORE, 71);
 
-            mv.visitVarInsn(ALOAD, 68);
-            mv.visitIntInsn(ILOAD, 69);
+            mv.visitVarInsn(ALOAD, 69);
+            mv.visitIntInsn(ILOAD, 70);
             mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(I)V", false);
 
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
@@ -115,7 +115,7 @@ public class MyCode {
             mv.visitTypeInsn(NEW, "compiler/block/ifs/IfBlock");
             mv.visitInsn(DUP);
             mv.visitMethodInsn(INVOKESPECIAL, "compiler/block/ifs/IfBlock", "<init>", "()V", false);
-            mv.visitVarInsn(ASTORE, 73);
+            mv.visitVarInsn(ASTORE, 74);
 
             mv.visitInsn(RETURN);
             Label lMethod1 = new Label();

@@ -14,7 +14,7 @@ class StringBlock(var superBlockInit: Block, var name: String, var value: String
 
   def getOpeningCode: String = {
     return asm.visitLdcInsn("new String(\"" + value + "\")") +
-      asm.visitVarInsn("ISTORE", id)
+      asm.visitVarInsn("ASTORE", id)
   }
 
   def getClosingCode: String = {

@@ -2,7 +2,7 @@ package compiler.block.structures.methods
 
 import compiler.block.Block
 import compiler.block.packages.PackageBlock
-import compiler.structure.parameter.Parameter
+import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 
 class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter]) extends Block(superBlockInit, true, false) {
