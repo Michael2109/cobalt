@@ -1,24 +1,36 @@
 group 'group_id'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
 apply plugin: 'scala'
+apply plugin: 'java'
+
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
-javadoc {
-    source = sourceSets.main.allJava
-    classpath = configurations.compile
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/java']
+        }
+        scala {
+            srcDirs = ['src/scala']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/java']
+        }
+        scala {
+            srcDirs = ['test/scala']
+        }
+    }
 }
 
-scaladoc {
-    source = sourceSets.main.allScala
-    classpath = configurations.compile
-}
 //include **/your/directory/structure/*
 
 dependencies {
