@@ -52,32 +52,7 @@ As the project is in the alpha stages please get in contact to discuss any large
      greet(otherPerson:String) <- String:
          "Hello $otherPerson"
 ```
-
-###Variable Types
-```
-val b:byte = 1           // 8 bit   
-val s:short = 2          // 16 bit  
-val i:int = 3            // 32 bit  
-val l:long = 4           // 64 bit  
-val f:float = 5.0f       // 32 bit  
-val d:double = 6.0       // 64 bit  
-val c:char = 'g'        
-val ss:String = "Example"  
-val obj:ClassName = new ClassName()  
-```
-###Strings    
-To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
-```
-var x : int = 5
-var y : int = 10
-var s : String = "x = $x and y = $y"
-```
-If outputting a variable within a class
-```
-var y : Example = new Example
-var s : String = "y = ${y.someVar}"
-```
-###Triple single quoted String
+###Triple single quoted String (To be discussed)
 Instead of having to separate a String out like so
 ```
 "Multiple lines" +
@@ -86,9 +61,10 @@ Instead of having to separate a String out like so
 ```
 This could be used instead
 ```
-'''Multiple lines
-   are treated 
-   as one
+'''
+Multiple lines
+are treated 
+as one
 '''
 ```
 ###Special Characters
@@ -107,6 +83,40 @@ To ascape special characters use "\"
 | \'              | Single Quote     |
 | \"              | Double Quote     |
 
+###Double quoted String  
+```
+"This is a double quoted String"  
+```
+###String interpolation   
+To make the code more readable and require less typing variables could be included inside the string and the compiler do all of the work.    
+```
+var x : int = 5
+var y : int = 10
+var s : String = "x = $x and y = $y"
+```
+If outputting a variable within a class
+```
+var y : Example = new Example
+var s : String = "y = ${y.someVar}"
+```
+###Slashy Strings
+Useful for regular expressions instead of having to escape single or double quotes   
+```
+var example:String = /Example String/
+```
+###Variable Types
+```
+val b:byte = 1           // 8 bit   
+val s:short = 2          // 16 bit  
+val i:int = 3            // 32 bit  
+val l:long = 4           // 64 bit  
+val f:float = 5.0f       // 32 bit  
+val d:double = 6.0       // 64 bit  
+va; bo:boolean = true 
+val c:char = 'g'        
+val ss:String = "Example"  
+val obj:ClassName = new ClassName()  
+```
 ###Modifiers   
 ```
 private              // Can only be accessed within the class
@@ -120,7 +130,36 @@ a - b                // Subtraction
 a * b                // Multiplication
 a / b                // Division
 a % b                // Modulus
+a ^^ b               // Power
 a += b               // Increment by value. 
+```
+###Binary
+Allow use of binary values as integers
+```
+var example:int = 0100100101001b   
+```
+###Hexadecimal  
+Allow the use of hexadecimal values as integers
+```
+var example:int = 0xab
+```
+###Arrays - Mutable (To be defined)
+```
+Undefined
+```
+###List - Immutable
+```
+val example:List = List(1,2,3)
+```
+```
+val example:List = List(1,2,3
+                    4,5,6)
+```
+###Maps
+Indentation is ignored  if the map extends past multiple lines.
+```
+val example:Map<String,Integer> = ("One"->1, "two"->2,
+                                   "three"->3, "four"->4)
 ```
 ###If Statements
 ```
