@@ -1,5 +1,7 @@
-package compiler;
+package runtime;
 
+import compiler.Compile;
+import compiler.Utils;
 import compiler.block.Block;
 import compiler.block.ifs.IfBlock;
 import compiler.block.imports.ImportBlock;

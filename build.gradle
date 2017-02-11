@@ -1,60 +1,44 @@
 group 'group_id'
 version '1.0-SNAPSHOT'
 
+
+
 apply plugin: 'java'
 apply plugin: 'scala'
+apply plugin: 'maven'
 
 sourceCompatibility = 1.8
 
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.1'
+    gradleVersion = '2.13'
 }
 
 repositories {
     mavenCentral()
 }
 
-
-
 sourceSets {
     main {
-        java {
-            srcDirs = ['src/java']
-        }
         scala {
-            srcDirs = ['src/scala']
+            srcDirs = ['src/main/scala', 'src/main/java']
         }
-    }
-    test {
         java {
-            srcDirs = ['test/java']
-        }
-        scala {
-            srcDirs = ['test/scala']
+            srcDirs = []
         }
     }
 }
 
 
-
-javadoc {
-    source = sourceSets.main.allJava
-    classpath = configurations.compile
-}
-
-scaladoc {
-    source = sourceSets.main.allScala
-    classpath = configurations.compile
-}
-//include **/your/directory/structure/*
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile group: 'org.ow2.asm', name: 'asm', version: '5.0.3'
-// https://mvnrepository.com/artifact/javassist/javassist
-    compile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
 
     // Scala
-    compile "org.scala-lang:scala-library:2.10.4"
-    compile "org.scala-lang:scala-compiler:2.10.4"
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.1'
+    compile group: 'org.scala-lang', name: 'scala-compiler', version: '2.12.1'
+
+    //zinc compiler?
+    zinc 'com.typesafe.zinc:zinc:0.3.9'
 }
