@@ -9,7 +9,6 @@ apply plugin: 'maven'
 
 sourceCompatibility = 1.8
 
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.13'
 }
@@ -27,6 +26,17 @@ sourceSets {
             srcDirs = []
         }
     }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+    destinationDir = reporting.file("../../vendors/docs")
+}
+scaladoc {
+    source = sourceSets.main.allScala
+    classpath = configurations.compile
+    destinationDir = reporting.file("../../vendors/docs")
 }
 
 
