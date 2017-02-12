@@ -280,6 +280,11 @@ public class Runtime {
         }
     }
 
+    /**
+     * Returns the indentation of a string
+     * @param line
+     * @return
+     */
     public int getIndentation(String line) {
         int amount = 0;
         int indentation = 0;
