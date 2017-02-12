@@ -25,7 +25,6 @@ class PrintParser extends Parser[PrintBlock] {
     tokenizer.nextToken // skip print
     tokenizer.nextToken // skip (
     val value: String = tokenizer.nextToken.token
-    println("is variable: " + printVariable)
     return new PrintBlock(superBlock, value, printVariable)
   }
 }

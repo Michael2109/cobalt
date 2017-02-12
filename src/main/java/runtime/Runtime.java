@@ -150,8 +150,6 @@ public class Runtime {
 
         printBlockInfo(block, 0);
 
-
-
         new Compile(outputFile, block);
 
         SymbolTable.getInstance().printSymbols();

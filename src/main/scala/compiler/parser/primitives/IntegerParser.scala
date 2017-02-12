@@ -16,6 +16,6 @@ class IntegerParser extends Parser[IntegerBlock] {
     tokenizer.nextToken // skip "int"
     tokenizer.nextToken // skip "="
     val value: String = tokenizer.nextToken.token
-    return new IntegerBlock(superBlock, name, value)
+    new IntegerBlock(superBlock, name, value)
   }
 }

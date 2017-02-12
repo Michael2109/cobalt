@@ -21,7 +21,7 @@ class WhileParser extends Parser[WhileBlock] {
 
     var statement: String = ""
     var nextToken: String = tokenizer.nextToken.token
-    while (nextToken != ")") {
+    while (!nextToken.equals(")") && nextToken != "") {
       {
         if (nextToken == "=") statement += nextToken
         else statement += " " + nextToken + " "
