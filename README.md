@@ -104,6 +104,12 @@ Useful for regular expressions instead of having to escape single or double quot
 ```
 var example:String = /Example String/
 ```
+###Printing
+```
+print("Hello World")            // No Return
+println("Hello World")          // Return
+printf("Hello %s\n, "world")    // Format
+```
 ###Variable Types
 ```
 val b:byte = 1           // 8 bit   
@@ -229,6 +235,15 @@ break
 ###Return
 ```
 return
+```
+###Package
+```
+package dir/subDir
+```
+###Imports
+```
+import dir.subDir.{ClassName1, ClassName2}
+import dir.ClassName
 ```
 ### Constructor
 The constructor is anything within the class but outside of other methods. Otherwise constructors can be overloaded.   
@@ -396,6 +411,31 @@ Instead an Open Type System could be used. This would allow for JSON (and other 
 ```
 var xml = new Book() // Define an xml object
 print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
+```
+###UTF-8 Encoded   
+The source files should be UTF-8 encoded.
+###Time class
+In Java
+```
+long start = System.currentTimeMillis();
+// Do Something
+System.out.println(System.currentTimeMillis() - start);
+```
+In Cobalt
+```
+var start:long = Time.now   // Call static method in Time class
+// Do Something
+println(Time.since*(start))
+```
+###Reflection
+Allow finding of types at runtime.
+###Structures
+Gets placed on the stack to increase performance.  
+Allows for creating objects as though they are built in types.
+```
+struct ExampleStruct:
+    exampleString:String
+    exampleInt:int
 ```
 
 ##Code Example
