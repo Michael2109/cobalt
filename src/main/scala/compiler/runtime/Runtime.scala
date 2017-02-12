@@ -2,7 +2,7 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.Compile
+import compiler.{Compile, Utils}
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
 import compiler.block.imports.ImportBlock
@@ -149,7 +149,7 @@ class Runtime {
 
       }
 
-      val currentIndentation = getIndentation(line)
+      val currentIndentation = Utils.getIndentation(line)
 
     line = line.trim()
     val splitLine = line.split(";")
@@ -270,23 +270,5 @@ class Runtime {
     }
   }
 
-  // todo Needs to be moved to the Utilities class
-  /**
-    * Returns the indentation of the block
-    * @param line
-    * @return
-    */
-  def getIndentation(line: String): Int = {
-    var amount: Int = 0
-    var indentation: Int = 0
-    for (character <- line.toCharArray) {
-      if (character != ' ') return indentation
-      else {
-        amount += 1
-        if (amount % 4 == 0) indentation += 1
-      }
-    }
-    indentation
-  }
 
 }

@@ -46,4 +46,22 @@ object Utils {
     return 2
   }
 
+  /**
+    * Returns the indentation of the block
+    * @param line
+    * @return
+    */
+  def getIndentation(line: String): Int = {
+    var amount: Int = 0
+    var indentation: Int = 0
+    for (character <- line.toCharArray) {
+      if (character != ' ') return indentation
+      else {
+        amount += 1
+        if (amount % 4 == 0) indentation += 1
+      }
+    }
+    indentation
+  }
+
 }
