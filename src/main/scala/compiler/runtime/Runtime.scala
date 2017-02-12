@@ -1,7 +1,8 @@
-package compiler
+package compiler.runtime
 
 import java.io._
 
+import compiler.Compile
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
 import compiler.block.imports.ImportBlock
@@ -13,7 +14,7 @@ import compiler.block.structures.FileBlock
 import compiler.block.structures.classes.ClassBlock
 import compiler.block.structures.methods.MethodBlock
 import compiler.block.structures.objects.ObjectMethodCallBlock
-import compiler.exceptions.{ContainerException, DeclarationException, IndentationException, ParseException}
+import compiler.exceptions.{ContainerException, DeclarationException, IndentationException}
 import compiler.parser.Parser
 import compiler.parser.comments.CommentParser
 import compiler.parser.ifs.IfParser
@@ -24,14 +25,14 @@ import compiler.parser.packages.PackageParser
 import compiler.parser.primitives._
 import compiler.parser.prints.PrintParser
 import compiler.parser.structures.classes.ClassParser
-import compiler.parser.structures.{MethodCallParser, ObjectMethodCallParser, ObjectParser}
 import compiler.parser.structures.methods.MethodParser
+import compiler.parser.structures.{MethodCallParser, ObjectMethodCallParser, ObjectParser}
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.Tokenizer
 
 import scala.collection.JavaConverters._
 
-class RuntimeScala {
+class Runtime {
   private[compiler] val parsers: Array[Parser[_]] = Array(
     // MethodBlock Parser
     new MethodParser,
@@ -46,6 +47,7 @@ class RuntimeScala {
     new DoubleParser,
     new FloatParser,
     new IntegerParser,
+    new LongParser,
     new StringParser,
     // IfBlock Parser
     new IfParser,
@@ -150,6 +152,32 @@ class RuntimeScala {
       val currentIndentation = getIndentation(line)
 
     line = line.trim()
+    val splitLine = line.split(";")
+    if (splitLine.length > 1){
+
+      val t1 = new Tokenizer(splitLine(0))
+      var nextBlock : Block = null
+      for (parser <- parsers) {
+        if (parser.shouldParse(splitLine(0).trim)) {
+          nextBlock = parser.parse(currentBlock, t1)
+          currentBlock.addBlock_$eq(nextBlock)
+        }
+      }
+
+      val t2 = new Tokenizer(splitLine(1).trim)
+      for (parser <- parsers) {
+        if (parser.shouldParse(splitLine(1).trim)) {
+
+          val inlineBlock = parser.parse(nextBlock, t2)
+          nextBlock.addBlock_$eq(inlineBlock)
+        }
+      }
+
+      createBlock(currentBlock, br, indentation)
+
+      return null
+    }
+
     tokenizer = new Tokenizer(line)
     if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
     if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
@@ -208,6 +236,7 @@ class RuntimeScala {
                 i += 1
               }
               val nextBlock = parser.parse(currentBlock, tokenizer)
+
               currentBlock.addBlock_$eq(nextBlock)
               createBlock(nextBlock, br, currentIndentation)
             }

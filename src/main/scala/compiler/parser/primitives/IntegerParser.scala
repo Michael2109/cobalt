@@ -7,6 +7,7 @@ import compiler.tokenizer.Tokenizer
 
 class IntegerParser extends Parser[IntegerBlock] {
 
+  // todo show how to set default values
   def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:int[ ]*[=][ ]*[0-9]+[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IntegerBlock = {

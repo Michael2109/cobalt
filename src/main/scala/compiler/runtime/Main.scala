@@ -1,4 +1,4 @@
-package compiler
+package compiler.runtime
 
 import java.io.File
 
@@ -9,7 +9,7 @@ object Main {
       val input: File = new File(args(0) + ".mlg")
       val asmFile: File = new File(args(1) + ".java")
      //val generatedFile: File = new File(args(2) + ".class")
-      new RuntimeScala(input, asmFile)
+      new Runtime(input, asmFile)
     }
     else {
       System.out.println("Error: Input and Output file args required. Enter with file extension removed.")
