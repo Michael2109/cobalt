@@ -9,7 +9,6 @@ import compiler.block.Block
   * @param superBlockInit
   */
 class CommentBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
-  private val _type: String = "comment"
 
   // Called after file is parsed
   override def init() {}
@@ -19,7 +18,7 @@ class CommentBlock(var superBlockInit: Block) extends Block(superBlockInit, fals
 
   override def getValue: String = ""
 
-  override def getType: String = _type
+  override def getType: String = "comment"
 
   /* Opening and closing byte code */
   def getOpeningCode: String = ""
