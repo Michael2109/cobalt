@@ -12,10 +12,10 @@ import compiler.tokenizer.Tokenizer
   * Creation of a new instance of a class
   */
 class ObjectParser extends Parser[ObjectBlock] {
-  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
+  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectBlock = {
-    tokenizer.nextToken // skip "var"
+    val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val variableName: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip ":"
     val className: String = tokenizer.nextToken.token
@@ -41,6 +41,6 @@ class ObjectParser extends Parser[ObjectBlock] {
         }
       }
     }
-    return new ObjectBlock(superBlock, className, variableName, operator, newKeyword, initClassName, parameters.toArray(new Array[Parameter](parameters.size)))
+    return new ObjectBlock(superBlock, declaration,className, variableName, operator, newKeyword, initClassName, parameters.toArray(new Array[Parameter](parameters.size)))
   }
 }

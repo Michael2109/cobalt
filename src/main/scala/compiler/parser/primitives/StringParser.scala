@@ -7,11 +7,11 @@ import compiler.tokenizer.Tokenizer
 
 class StringParser extends Parser[StringBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*String[ ]*[=][ ]*\"[a-zA-Z][a-zA-Z0-9]*\"[ ]*")
+  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*String[ ]*[=][ ]*\"[a-zA-Z][a-zA-Z0-9]*\"[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): StringBlock = {
 
-    tokenizer.nextToken // skip "var"
+    val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
 
     val name: String = tokenizer.nextToken.token
 
@@ -21,6 +21,6 @@ class StringParser extends Parser[StringBlock] {
 
     val value: String = tokenizer.nextToken.token
 
-    return new StringBlock(superBlock, name, value)
+    return new StringBlock(superBlock, declaration, name, value)
   }
 }

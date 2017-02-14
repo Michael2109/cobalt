@@ -11,7 +11,7 @@ import compiler.symbol_table.SymbolTable
 
 
 // Creation of a new object and storing to a variable
-class ObjectBlock(var superBlockInit: Block, var className: String, var variableName: String, var operator: String, var newKeyword: String, var initClassName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, true) {
+class ObjectBlock(superBlockInit: Block, declaration : Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: Array[Parameter]) extends Block(superBlockInit, false, true) {
 
   private var parameterString: String = ""
   private var argumentString: String = ""

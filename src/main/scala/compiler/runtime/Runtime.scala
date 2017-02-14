@@ -104,8 +104,6 @@ class Runtime {
             else {
               readImports = true
               createBlock(block, br)
-
-             Utils.printBlockInfo(block)
             }
           }
         }

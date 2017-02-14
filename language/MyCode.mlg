@@ -11,18 +11,18 @@ class MyCode(xx:int, yy:int):
             x += 1
 
         def main() <- void:
-            var z: int = 10
-            var longTest: long
-            var ty: int = 15
-            var stringTest: String = "stringTest"
-            var myCode: MyCode = new MyCode(z, ty)
-            var y: int = 1
-            var w: float = 2.0f
+            val z: int = 10
+            val longTest: long
+            val ty: int = 15
+            val stringTest: String = "stringTest"
+            val myCode: MyCode = new MyCode(z, ty)
+            val y: int = 1
+            val w: float = 2.0f
             myCode.method1(y)
 
     private:
         def privateMethod(y: int) <- void:
-            var yy: int = 10
+            val yy: int = 10
 
     def noModifierMethod(z: int) <- void:
         var test: int = 35

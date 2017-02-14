@@ -8,7 +8,6 @@ import compiler.tokenizer.Tokenizer
 class ModifierParser extends Parser[ModifierBlock] {
 
   def shouldParse(line: String): Boolean = {
-    println(line + ":" + line.matches("(public|private|protected):"))
     line.matches("(public|private|protected):")
   }
   def parse(superBlock: Block, tokenizer: Tokenizer): ModifierBlock = new ModifierBlock(superBlock, tokenizer.nextToken.token)
