@@ -491,7 +491,7 @@ abstract class MyCode(xx:int, yy:int):
             var y:int = 15
             var myCode:MyCode = new MyCode(x, y)
             var w:float = 2.0f
-            var doublethingy:double = 2.0
+            var d:double = 2.0
             myCode.method1(y)
             print("Hello World")
             var ifBlock:IfBlock = new IfBlock()
