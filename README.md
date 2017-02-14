@@ -487,10 +487,9 @@ abstract class MyCode(xx:int, yy:int):
                 x += 1
 
         def main() <- void:
-            var z:int = 10
-            var ty:int = 15
-            var myCode:MyCode = new MyCode(z, ty)
-            var y:int = 1
+            var x:int = 10
+            var y:int = 15
+            var myCode:MyCode = new MyCode(x, y)
             var w:float = 2.0f
             var doublethingy:double = 2.0
             myCode.method1(y)
