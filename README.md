@@ -18,6 +18,9 @@ If you are interested then please get in contact!
 * Not nullable
 * Classes sealed by default
 * Language design pushes for a strong code structure
+##Undecided features
+* Instead of returning "void" return "this" for methods
+* Primitives are wrapper classes
 
 #Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
@@ -26,12 +29,12 @@ As the project is in the alpha stages please get in contact to discuss any large
 
 #Scala main similarities and differences?  
 ###Similarities
-Like Scala it would be frowned upon to use "var" and "null" values as this promotes well written code. Immutability would lower the overall amount of errors in a program as it develops to a larger scale.   
+* Like Scala it would be frowned upon to use "var" and "null" values as this promotes well written code. Immutability would lower the overall amount of errors in a program as it develops to a larger scale.   
 ###Differences
-One issue I've found with Scala is that it there are a variety of ways that the same code can be written. In production this can lead to many different code styles being used that can lower productivity if not controlled correctly. Cobalt will be a language that is focused on having a very strong structure. This will be done by having the syntax written in such ways to allow for high readability and following of particular rules.  
-Classes would be automatically sealed unless the user explicitly changes this. This means that only when the user allows for methods to be inherited when needed.  
-An open type system would allow for other file formats such as XML and JSON to be treated as though they are objects. This would mean that elements within the files would be easily accessible.  
-Automatic synchronization to allow for the user to not worry about concurrency errors.  
+* One issue I've found with Scala is that it there are a variety of ways that the same code can be written. In production this can lead to many different code styles being used that can lower productivity if not controlled correctly. Cobalt will be a language that is focused on having a very strong structure. This will be done by having the syntax written in such ways to allow for high readability and following of particular rules.  
+* Classes would be automatically sealed unless the user explicitly changes this. This means that only when the user allows for methods to be inherited when needed.  
+* An open type system would allow for other file formats such as XML and JSON to be treated as though they are objects. This would mean that elements within the files would be easily accessible.  
+* Automatic synchronization to allow for the user to not worry about concurrency errors.  
 
 #Features   
 
