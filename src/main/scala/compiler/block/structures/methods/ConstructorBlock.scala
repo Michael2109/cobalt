@@ -5,7 +5,7 @@ import compiler.block.packages.PackageBlock
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 
-class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter]) extends Block(superBlockInit, true, false) {
+class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
   var parameterString = ""
   var localVariableString = ""
@@ -29,7 +29,7 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
       parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + i + ");\n"
-      SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName))
+      SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName).setClassName(className))
       i += 1
 
     }

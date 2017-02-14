@@ -33,7 +33,7 @@ import compiler.tokenizer.Tokenizer
 import scala.collection.JavaConverters._
 
 class Runtime {
-  private[compiler] val parsers: Array[Parser[_]] = Array(
+  private val parsers: Array[Parser[_]] = Array(
     // MethodBlock Parser
     new MethodParser,
     // Operator Parsers
@@ -66,9 +66,9 @@ class Runtime {
   )
 
   private var block: Block = null
-  private var tokenizer: Tokenizer = null
+
   //start at 1 to ignore class declaration line
-  private var lineNumber: Int = 0
+
   private var methodName: String = null
   private var className: String = null
 
@@ -90,7 +90,7 @@ class Runtime {
         for (parser <- parsers) {
 
           if (parser.shouldParse(line.trim)) {
-            tokenizer = new Tokenizer(line)
+            val tokenizer:Tokenizer = new Tokenizer(line)
             block = parser.parse(null, tokenizer)
             if (block.isInstanceOf[PackageBlock]) {
               packageBlock = block.asInstanceOf[PackageBlock]
@@ -102,7 +102,7 @@ class Runtime {
               readImports = true
               createBlock(block, br)
 
-              printBlockInfo(block)
+             Utils.printBlockInfo(block)
             }
           }
         }
@@ -127,18 +127,16 @@ class Runtime {
     new Compile(outputFile, block)
 
     // Output generated block structure
-    printBlockInfo(block)
+    Utils.printBlockInfo(block)
 
     // Output the symbol table
     SymbolTable.getInstance.printSymbols()
   }
 
-  def createBlock( currentBlockInit: Block, br: BufferedReader, indentation: Int = 0): Block = {
+  def createBlock( currentBlockInit: Block, br: BufferedReader, indentation: Int = 0, lineNumber : Int = 0): Block = {
    var currentBlock = currentBlockInit
 
     var line: String = br.readLine()
-
-    lineNumber += 1
 
       if(line == null){
         return null
@@ -173,12 +171,12 @@ class Runtime {
         }
       }
 
-      createBlock(currentBlock, br, indentation)
+      createBlock(currentBlock, br, indentation, lineNumber + 1)
 
       return null
     }
 
-    tokenizer = new Tokenizer(line)
+    val tokenizer = new Tokenizer(line)
     if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
     if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
     // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
@@ -211,7 +209,7 @@ class Runtime {
             if (parser.shouldParse(line)) {
               val nextBlock = parser.parse(currentBlock, tokenizer)
               currentBlock.addBlock_$eq(nextBlock)
-              createBlock(nextBlock, br, currentIndentation)
+              createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
             }
           }
         }
@@ -221,7 +219,7 @@ class Runtime {
             if (parser.shouldParse(line)) {
               val nextBlock = parser.parse(currentBlock.superBlock, tokenizer)
               currentBlock.superBlock.addBlock_$eq(nextBlock)
-              createBlock(nextBlock, br, currentIndentation)
+              createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
             }
           }
         }
@@ -238,37 +236,12 @@ class Runtime {
               val nextBlock = parser.parse(currentBlock, tokenizer)
 
               currentBlock.addBlock_$eq(nextBlock)
-              createBlock(nextBlock, br, currentIndentation)
+              createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
             }
           }
         }
 
 
-    return null
+    null
   }
-
-  /**
-    * Prints block information
-    * @param block
-    * @param indentation
-    */
-  def printBlockInfo(block: Block, indentation: Int = 0) {
-    var indentationString: String = ""
-    var i: Int = 0
-    while (i < indentation) {
-      {
-        indentationString += "    "
-      }
-      {
-        i += 1
-        i - 1
-      }
-    }
-    System.out.println(indentationString + block.toString)
-    for (sub <- block.subBlocks) {
-      printBlockInfo(sub, indentation + 1)
-    }
-  }
-
-
 }

@@ -26,7 +26,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
   private var localVariableString: String = ""
 
   // Create a constructor block and add it to the class block
-  private var constructorBlock: Block = new ConstructorBlock(this, parameters)
+  private var constructorBlock: Block = new ConstructorBlock(this, parameters, name)
   addBlock_=(constructorBlock)
 
 

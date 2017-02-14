@@ -64,4 +64,27 @@ object Utils {
     indentation
   }
 
+  /**
+    * Prints block information
+    * @param block
+    * @param indentation
+    */
+  def printBlockInfo(block: Block, indentation: Int = 0) {
+    var indentationString: String = ""
+    var i: Int = 0
+    while (i < indentation) {
+      {
+        indentationString += "    "
+      }
+      {
+        i += 1
+        i - 1
+      }
+    }
+    System.out.println(indentationString + block.toString)
+    for (sub <- block.subBlocks) {
+      printBlockInfo(sub, indentation + 1)
+    }
+  }
+
 }

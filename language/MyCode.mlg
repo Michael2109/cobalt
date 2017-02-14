@@ -5,11 +5,11 @@ class MyCode(xx:int, yy:int):
 
     xx += 2
 
-    method1(x:int) <- void:
+    def method1(x:int) <- void:
         while (x < 10); print("Hello World!!!")
         x += 1
 
-    main() <- void:
+    def main() <- void:
         var z:int = 10
         var longTest:long
         var ty:int = 15
