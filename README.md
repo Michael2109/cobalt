@@ -17,10 +17,10 @@ If you are interested then please get in contact!
 * Focused on immutability
 * Not nullable
 * Classes sealed by default
-* Language design pushes for a strong code structure
-##Undecided features
-* Instead of returning "void" return "this" for methods
-* Primitives are wrapper classes
+* Language design pushes for a strong code structure  
+##Undecided features  
+* Instead of returning "void" return "this" for methods  
+* Primitives are wrapper classes  
 
 #Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
