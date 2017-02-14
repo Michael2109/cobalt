@@ -438,30 +438,40 @@ struct ExampleStruct:
     exampleInt:int
 ```
 
-##Code Example
+##Code Example (Subject to change)
 ```
 package asm
 import compiler.block.ifs.IfBlock
 
-class MyCode(xx:int, yy:int):
+abstract class MyCode(xx:int, yy:int):
 
     xx += 2
 
-    method1(x:int) <- void:
-        while (x < 10):
-            print("Hello World!")
-            x += 1
+    public:
+        def method1(x:int) <- void:
+            while (x < 10):
+                println("Hello World!")
+                x += 1
 
-    main() <- void:
-        var z:int = 10
-        var ty:int = 15
-        var myCode:MyCode = new MyCode(z, ty)
-        var y:int = 1
-        var w:float = 2.0f
-        var doublethingy:double = 2.0
-        myCode.method1(y)
-        print("Hello World")
-        var ifBlock:IfBlock = new IfBlock()
+        def main() <- void:
+            var z:int = 10
+            var ty:int = 15
+            var myCode:MyCode = new MyCode(z, ty)
+            var y:int = 1
+            var w:float = 2.0f
+            var doublethingy:double = 2.0
+            myCode.method1(y)
+            print("Hello World")
+            var ifBlock:IfBlock = new IfBlock()
+            
+        def abstractMethod <- int
+            
+    private:
+        def privateMethod(x:int) <- void:
+            println("Private Method")
+            
+    def method2(y:String):
+        println(y)
 ```
 
 
