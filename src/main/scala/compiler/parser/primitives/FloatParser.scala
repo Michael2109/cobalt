@@ -17,6 +17,6 @@ class FloatParser extends Parser[FloatBlock] {
     var value: String = tokenizer.nextToken.token
     tokenizer.nextToken
     value += "." + tokenizer.nextToken.token
-    return new FloatBlock(superBlock, declaration,name, value)
+    new FloatBlock(superBlock, declaration,name, value)
   }
 }

@@ -21,6 +21,6 @@ class StringParser extends Parser[StringBlock] {
 
     val value: String = tokenizer.nextToken.token
 
-    return new StringBlock(superBlock, declaration, name, value)
+    new StringBlock(superBlock, declaration, name, value)
   }
 }

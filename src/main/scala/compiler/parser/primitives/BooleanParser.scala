@@ -15,6 +15,6 @@ class BooleanParser extends Parser[BooleanBlock] {
     tokenizer.nextToken // skip "boolean"
     tokenizer.nextToken // skip "="
     val value: String = tokenizer.nextToken.token
-    return new BooleanBlock(superBlock, declaration,name, value)
+    new BooleanBlock(superBlock, declaration,name, value)
   }
 }

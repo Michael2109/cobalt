@@ -16,6 +16,6 @@ class CharacterParser extends Parser[CharacterBlock] {
     tokenizer.nextToken // skip "char"
     tokenizer.nextToken // skip "="
     val value: String = tokenizer.nextToken.token
-    return new CharacterBlock(superBlock, declaration,name, value)
+    new CharacterBlock(superBlock, declaration,name, value)
   }
 }

@@ -17,6 +17,6 @@ class DoubleParser extends Parser[DoubleBlock] {
     var value: String = tokenizer.nextToken.token
     tokenizer.nextToken
     value += "." + tokenizer.nextToken.token
-    return new DoubleBlock(superBlock, declaration, name, value)
+    new DoubleBlock(superBlock, declaration, name, value)
   }
 }
