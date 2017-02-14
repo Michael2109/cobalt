@@ -18,6 +18,7 @@ If you are interested then please get in contact!
 * Not nullable
 * Classes sealed by default
 * Language design pushes for a strong code structure  
+
 ##Undecided features  
 * Instead of returning "void" return "this" for methods  
 * Primitives are wrapper classes  
