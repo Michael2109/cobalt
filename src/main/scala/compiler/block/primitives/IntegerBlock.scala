@@ -13,12 +13,12 @@ class IntegerBlock(var superBlockInit: Block, var name: String, var value: Strin
   def getType: String = "int"
 
   def getOpeningCode: String = {
-    return asm.visitLdcInsn("new Integer(" + value + ")") +
+    asm.visitLdcInsn("new Integer(" + value + ")") +
       asm.visitVarInsn("ISTORE", id)
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
   override def toString: String = "int: " + name + " = " + value

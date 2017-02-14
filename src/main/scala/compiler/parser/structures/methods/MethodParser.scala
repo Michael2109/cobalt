@@ -17,13 +17,13 @@ class MethodParser extends Parser[MethodBlock] {
 
     val name: String = tokenizer.nextToken.token // method name
     tokenizer.nextToken // "("
-
     var nextToken = tokenizer.nextToken.token
     var paramString = ""
-    while (nextToken != ")") {
+    while (!nextToken.equals(")")) {
       paramString += nextToken
       nextToken = tokenizer.nextToken.token
     }
+
     val parameters = new Parameters().getParameters(paramString)
 
     tokenizer.nextToken // skip "<"

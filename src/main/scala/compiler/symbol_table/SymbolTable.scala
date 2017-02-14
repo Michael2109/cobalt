@@ -51,12 +51,14 @@ class SymbolTable() {
   }
 
   def printSymbols() {
+
     printf("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "|", "ID", "|", "Name", "|", "Type", "|", "Value", "|", "Method", "|", "Class")
     printf("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----")
 
     for (row <- rows) {
       printf("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s \n", " ", row.getId, " ", row.getName, " ", row.getType, " ", row.getValue, " ", row.getMethodName, " ", row.getClassName, " ")
     }
+
   }
 
   def getValue(method: Block, variableName: String): Row = {

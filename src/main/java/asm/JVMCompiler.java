@@ -64,6 +64,7 @@ public class JVMCompiler {
 
             //   mv.visitLdcInsn();
 
+
             mv.visitInsn(RETURN);                      // Return integer from top of stack
             Label lmethod2 = new Label();
             mv.visitLabel(lmethod2);

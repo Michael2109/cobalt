@@ -22,8 +22,7 @@ class ImportBlock(var directory: String, var fileName: String) extends Block(nul
 
   def getClosingCode: String = ""
 
-  override def toString: String = {
-    return "import: " + directory + " : " + fileName
-  }
+  override def toString: String = "import: " + directory + " : " + fileName
+
 
 }

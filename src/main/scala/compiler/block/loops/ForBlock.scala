@@ -20,26 +20,16 @@ class ForBlock(var superBlockInit: Block, var name: String) extends Block(superB
   def init() {
   }
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
-  def getValue: String = {
-    return null
-  }
+  def getValue: String = null
 
   def getType: String = ""
 
-  def getOpeningCode: String = {
-    return null
-  }
+  def getOpeningCode: String = null
 
-  def getClosingCode: String = {
-    return null
-  }
+  def getClosingCode: String = null
 
-  override def toString: String = {
-    return "for: " + name
-  }
+  override def toString: String = "for: " + name
 
 }
