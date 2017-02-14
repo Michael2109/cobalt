@@ -19,7 +19,7 @@ If you are interested then please get in contact!
 * Classes sealed by default
 * Language design pushes for a strong code structure
 
-##Project Contributions
+#Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
