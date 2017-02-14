@@ -51,18 +51,18 @@ mv.visitCode();
 Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
-Label start60 = new Label();
-mv.visitLabel(start60);
+Label start61 = new Label();
+mv.visitLabel(start61);
 mv.visitVarInsn(ILOAD,1);
 mv.visitLdcInsn(10);
-Label l60 = new Label();
-mv.visitJumpInsn(IF_ICMPGE, l60);
+Label l61 = new Label();
+mv.visitJumpInsn(IF_ICMPGE, l61);
 
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
 mv.visitLdcInsn("Hello World!!!");
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-mv.visitJumpInsn(GOTO, start60);
-mv.visitLabel(l60);
+mv.visitJumpInsn(GOTO, start61);
+mv.visitLabel(l61);
 
 mv.visitIincInsn(1, 1);
 mv.visitInsn(RETURN);     
@@ -83,36 +83,88 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(10));
-mv.visitVarInsn(ISTORE,64);
+mv.visitVarInsn(ISTORE,65);
 
 mv.visitLdcInsn(new Long(0));
-mv.visitVarInsn(LSTORE,65);
+mv.visitVarInsn(LSTORE,66);
 
 mv.visitLdcInsn(new Integer(15));
-mv.visitVarInsn(ISTORE,66);
+mv.visitVarInsn(ISTORE,67);
 
 mv.visitLdcInsn(new String("stringTest"));
-mv.visitVarInsn(ASTORE,67);
+mv.visitVarInsn(ASTORE,68);
 
 mv.visitTypeInsn(NEW, "asm/MyCode");
 mv.visitInsn(DUP);
-mv.visitIntInsn(ILOAD, 64);mv.visitIntInsn(ILOAD, 66);mv.visitMethodInsn(INVOKESPECIAL, "asm/MyCode", "<init>", "(II)V", false);
-mv.visitVarInsn(ASTORE,68);
+mv.visitIntInsn(ILOAD, 65);mv.visitIntInsn(ILOAD, 67);mv.visitMethodInsn(INVOKESPECIAL, "asm/MyCode", "<init>", "(II)V", false);
+mv.visitVarInsn(ASTORE,69);
 
 mv.visitLdcInsn(new Integer(1));
-mv.visitVarInsn(ISTORE,69);
+mv.visitVarInsn(ISTORE,70);
 
 mv.visitLdcInsn(new Float(2.0));
-mv.visitVarInsn(FSTORE,70);
+mv.visitVarInsn(FSTORE,71);
 
-mv.visitVarInsn(ALOAD, 68);
-mv.visitIntInsn(ILOAD, 69);mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(I)V", false);
+mv.visitVarInsn(ALOAD, 69);
+mv.visitIntInsn(ILOAD, 70);mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(I)V", false);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
 mv.visitLabel(lMethod1);
 mv.visitLocalVariable("this", "Lasm/main;", null, lMethod0, lMethod1, 0);
 mv.visitLocalVariable("args", "[Ljava/lang/String;", null, lMethod0, lMethod1, 0);                // Return integer from top of stack
+  mv.visitMaxs(0, 0);
+mv.visitEnd();
+}
+
+   {
+            /* Build 'privateMethod' method */
+            MethodVisitor mv = cw.visitMethod(
+                    ACC_PRIVATE,                         // public method
+                    "privateMethod",                              // name
+                    "(I)V",                            // descriptor
+                    null,                               // signature (null means not generic)
+                    null);                              // exceptions (array of strings)
+mv.visitCode();
+
+Label lMethod0 = new Label();
+mv.visitLabel(lMethod0);
+
+mv.visitLdcInsn(new Integer(10));
+mv.visitVarInsn(ISTORE,75);
+
+mv.visitInsn(RETURN);     
+Label lMethod1 = new Label();
+mv.visitLabel(lMethod1);
+mv.visitLocalVariable("this", "Lasm/privateMethod;", null, lMethod0, lMethod1, 0);
+               // Return integer from top of stack
+mv.visitLocalVariable("y", "I", null, lMethod0, lMethod1, 1);
+  mv.visitMaxs(0, 0);
+mv.visitEnd();
+}
+
+   {
+            /* Build 'noModifierMethod' method */
+            MethodVisitor mv = cw.visitMethod(
+                    0,                         // public method
+                    "noModifierMethod",                              // name
+                    "(I)V",                            // descriptor
+                    null,                               // signature (null means not generic)
+                    null);                              // exceptions (array of strings)
+mv.visitCode();
+
+Label lMethod0 = new Label();
+mv.visitLabel(lMethod0);
+
+mv.visitLdcInsn(new Integer(35));
+mv.visitVarInsn(ISTORE,77);
+
+mv.visitInsn(RETURN);     
+Label lMethod1 = new Label();
+mv.visitLabel(lMethod1);
+mv.visitLocalVariable("this", "Lasm/noModifierMethod;", null, lMethod0, lMethod1, 0);
+               // Return integer from top of stack
+mv.visitLocalVariable("z", "I", null, lMethod0, lMethod1, 1);
   mv.visitMaxs(0, 0);
 mv.visitEnd();
 }

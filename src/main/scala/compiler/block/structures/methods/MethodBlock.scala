@@ -1,6 +1,8 @@
 package compiler.block.structures.methods
 
+import compiler.Utils
 import compiler.block.Block
+import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.Row
@@ -8,6 +10,7 @@ import compiler.symbol_table.SymbolTable
 
 class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false) {
 
+  private var modifier : String = "0"
   private var parameterString: String = ""
   private var localVariableString: String = ""
   private var packageBlock: PackageBlock = null
@@ -24,13 +27,25 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def init() {
 
-    val block: Block = superBlock.superBlock
-    // Get the package the class is within
-    for (fileSub <- block.subBlocks) {
-      if (fileSub.isInstanceOf[PackageBlock]) {
-        packageBlock = fileSub.asInstanceOf[PackageBlock]
+
+      // Get the package the class is within
+      for (fileSub <- Utils.getFileBlock(superBlock).subBlocks) {
+        if (fileSub.isInstanceOf[PackageBlock]) {
+          packageBlock = fileSub.asInstanceOf[PackageBlock]
+        }
+      }
+
+    // Check the modifier if it exists
+    if(superBlock.isInstanceOf[ModifierBlock]){
+      if(superBlock.getValue == "private"){
+        modifier = "ACC_PRIVATE"
+      }else  if(superBlock.getValue == "public"){
+        modifier = "ACC_PUBLIC"
+      }else if(superBlock.getValue == "protected"){
+        modifier = "ACC_PROTECTED"
       }
     }
+
 
     var i = 1
     for (parameter <- params) {
@@ -46,7 +61,7 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def getOpeningCode: String = {
     if (name != "main") {
-      return "   {\n" + "            /* Build '" + name + "' method */\n" + "            MethodVisitor mv = cw.visitMethod(\n" + "                    ACC_PUBLIC,                         // public method\n" + "                    \"" + name + "\",                              // name\n" + "                    \"(" + parameterString + ")V\",                            // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
+      return "   {\n" + "            /* Build '" + name + "' method */\n" + "            MethodVisitor mv = cw.visitMethod(\n" + "                    "+modifier+",                         // public method\n" + "                    \"" + name + "\",                              // name\n" + "                    \"(" + parameterString + ")V\",                            // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
     }
     else {
       return "{\n" + "// Main Method\n" + "MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, \"main\", \"([Ljava/lang/String;)V\", null, null);\n" + "mv.visitCode();\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"

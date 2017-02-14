@@ -6,9 +6,13 @@ package asm;
  */
 public class TestCode {
 
-    public TestCode(int x) {
+    TestCode(int x) {
 
         x += 5;
+
+    }
+
+    void test(){
 
     }
 }

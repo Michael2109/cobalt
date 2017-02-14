@@ -12,7 +12,7 @@ import compiler.tokenizer.Tokenizer
   * Creation of a new instance of a class
   */
 class ObjectParser extends Parser[ObjectBlock] {
-  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
+  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectBlock = {
     tokenizer.nextToken // skip "var"

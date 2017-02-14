@@ -6,6 +6,7 @@ import compiler.block.structures.methods.ConstructorBlock
 import compiler.block.structures.methods.MethodBlock
 import java.util.List
 
+import compiler.block.modifiers.ModifierBlock
 import compiler.structure.parameters.Parameter
 
 /**
@@ -62,7 +63,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
 
   // Moves all blocks that are inside the class and outside methods into the constructor block
   def moveToConstructor(block: Block) {
-    if (block.isInstanceOf[MethodBlock] || block.isInstanceOf[ConstructorBlock]) {
+    if (block.isInstanceOf[MethodBlock] || block.isInstanceOf[ConstructorBlock] || block.isInstanceOf[ModifierBlock]) {
       return
     }
     else {

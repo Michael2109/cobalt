@@ -1,9 +1,8 @@
 package compiler
 
 import compiler.block.Block
+import compiler.block.structures.FileBlock
 import compiler.block.structures.methods.MethodBlock
-import compiler.tokenizer.TokenType.TokenType
-import compiler.tokenizer.Tokenizer
 
 object Utils {
 
@@ -26,6 +25,18 @@ object Utils {
       }
     }
     return result
+  }
+
+  def getFileBlock(blockInit: Block) : Block = {
+
+    val fileBlock:Block = {
+      var block: Block = blockInit
+      while(!block.isInstanceOf[FileBlock]){
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
   }
 
   /**

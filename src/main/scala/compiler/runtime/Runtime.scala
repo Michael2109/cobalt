@@ -20,6 +20,7 @@ import compiler.parser.comments.CommentParser
 import compiler.parser.ifs.IfParser
 import compiler.parser.imports.ImportParser
 import compiler.parser.loops.{ForParser, WhileParser}
+import compiler.parser.modifiers.ModifierParser
 import compiler.parser.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
 import compiler.parser.packages.PackageParser
 import compiler.parser.primitives._
@@ -34,6 +35,8 @@ import scala.collection.JavaConverters._
 
 class Runtime {
   private val parsers: Array[Parser[_]] = Array(
+
+    new ModifierParser,
     // MethodBlock Parser
     new MethodParser,
     // Operator Parsers

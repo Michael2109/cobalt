@@ -13,7 +13,7 @@ class LongParser extends Parser[LongBlock]{
 
   //var longTest:long = 10
   override def shouldParse(line: String): Boolean = {
-    line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:long[ ]*([=][ ]*[0-9]+[ ]*)?")
+    line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*long[ ]*([=][ ]*[0-9]+[ ]*)?")
   }
 
   /**

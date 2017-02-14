@@ -7,7 +7,7 @@ import compiler.tokenizer.Tokenizer
 
 class StringParser extends Parser[StringBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:String[ ]*[=][ ]*\"[a-zA-Z][a-zA-Z0-9]*\"[ ]*")
+  def shouldParse(line: String): Boolean = line.matches("var[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*String[ ]*[=][ ]*\"[a-zA-Z][a-zA-Z0-9]*\"[ ]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): StringBlock = {
 
