@@ -14,6 +14,8 @@ If you are interested then please get in contact!
 * High readability   
 * Condensed down code with the same functionality   
 * Object oriented and functional  
+* Focused on immutability
+* Not nullable
 
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
