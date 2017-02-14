@@ -66,7 +66,7 @@ As the project is in the alpha stages please get in contact to discuss any large
      * @param otherPerson The person to greet
      * @return the greeting message
      */
-     greet(otherPerson:String) <- String:
+     def greet(otherPerson:String) <- String:
          "Hello $otherPerson"
 ```
 ###Triple single quoted String (To be discussed)
@@ -282,25 +282,30 @@ class MyClass:
     a, b:int
     
     // Constructor
-    public MyClass() : this(42)
+    MyClass() : this(42)
         print("Constructor")
     
     // Overloading a constructor
-    public MyClass(a:int = 5, b:int = 10):
+    MyClass(a:int = 5, b:int = 10):
         this.a = a  //a = 42
         this.b = b  // b = 10
 ```
 ###Method definition
 Methods can have default values.
 ```
-methodName(x : int = 5) <- void:
-    doSomething
+def methodName(x : int = 5) <- void:
+    // doSomething
+```
+```
+def methodName(x : int = 5):
+    // doSomething
+    //returns this
 ```
 ###Method calls
 Methods with no parameters don't require parenthesis
 ```
-methodName       // No Parameters
-methodName(5)    // int parameter
+obj.methodName       // No Parameters
+obj.methodName(5)    // int parameter
 ```
 ###Partial Application
 ```
