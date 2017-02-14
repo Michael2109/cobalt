@@ -19,7 +19,7 @@ If you are interested then please get in contact!
 * Classes sealed by default
 * Language design pushes for a strong code structure  
 
-##Undecided features  
+###Possible Features
 * Instead of returning "void" return "this" for methods  
 * Primitives are wrapper classes  
 
