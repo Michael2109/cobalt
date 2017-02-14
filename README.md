@@ -14,11 +14,28 @@ If you are interested then please get in contact!
 * High readability   
 * Condensed down code with the same functionality   
 * Object oriented and functional  
+* Focused on immutability
+* Not nullable
+* Classes sealed by default
+* Language design pushes for a strong code structure  
+* Instead of returning "void" return "this" for methods  
 
-##Project Contributions
+###Possible Features
+* Primitives are wrapper classes  
+
+#Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
+
+#Scala main similarities and differences?  
+###Similarities
+* Like Scala it would be frowned upon to use "var" and "null" values as this promotes well written code. Immutability would lower the overall amount of errors in a program as it develops to a larger scale.   
+###Differences
+* One issue I've found with Scala is that it there are a variety of ways that the same code can be written. In production this can lead to many different code styles being used that can lower productivity if not controlled correctly. Cobalt will be a language that is focused on having a very strong structure. This will be done by having the syntax written in such ways to allow for high readability and following of particular rules.  
+* Classes would be automatically sealed unless the user explicitly changes this. This means that only when the user allows for methods to be inherited when needed.  
+* An open type system would allow for other file formats such as XML and JSON to be treated as though they are objects. This would mean that elements within the files would be easily accessible.  
+* Automatic synchronization to allow for the user to not worry about concurrency errors.  
 
 #Features   
 
@@ -49,7 +66,7 @@ As the project is in the alpha stages please get in contact to discuss any large
      * @param otherPerson The person to greet
      * @return the greeting message
      */
-     greet(otherPerson:String) <- String:
+     def greet(otherPerson:String) <- String:
          "Hello $otherPerson"
 ```
 ###Triple single quoted String (To be discussed)
@@ -222,6 +239,17 @@ do:
    // do something
    while(condition)
 ```
+###Try catch
+```
+try:
+    // do something
+catch:
+    case foo: FooException => handleFooException(foo)
+    case bar: BarException => handleBarException(bar)
+    case _: Throwable => println("Got some other kind of exception")
+finally:
+    // do something
+```
 ###Continue (Discuss whether required)
 Skip the current iteration
 ```
@@ -254,25 +282,30 @@ class MyClass:
     a, b:int
     
     // Constructor
-    public MyClass() : this(42)
+    MyClass() : this(42)
         print("Constructor")
     
     // Overloading a constructor
-    public MyClass(a:int = 5, b:int = 10):
+    MyClass(a:int = 5, b:int = 10):
         this.a = a  //a = 42
         this.b = b  // b = 10
 ```
 ###Method definition
 Methods can have default values.
 ```
-methodName(x : int = 5) <- void:
-    doSomething
+def methodName(x : int = 5) <- void:
+    // doSomething
+```
+```
+def methodName(x : int = 5):
+    // doSomething
+    //returns this
 ```
 ###Method calls
 Methods with no parameters don't require parenthesis
 ```
-methodName       // No Parameters
-methodName(5)    // int parameter
+obj.methodName       // No Parameters
+obj.methodName(5)    // int parameter
 ```
 ###Partial Application
 ```
@@ -438,30 +471,39 @@ struct ExampleStruct:
     exampleInt:int
 ```
 
-##Code Example
+##Code Example (Subject to change)
 ```
 package asm
 import compiler.block.ifs.IfBlock
 
-class MyCode(xx:int, yy:int):
+abstract class MyCode(xx:int, yy:int):
 
     xx += 2
 
-    method1(x:int) <- void:
-        while (x < 10):
-            print("Hello World!")
-            x += 1
+    public:
+        def method1(x:int) <- void:
+            while (x < 10):
+                println("Hello World!")
+                x += 1
 
-    main() <- void:
-        var z:int = 10
-        var ty:int = 15
-        var myCode:MyCode = new MyCode(z, ty)
-        var y:int = 1
-        var w:float = 2.0f
-        var doublethingy:double = 2.0
-        myCode.method1(y)
-        print("Hello World")
-        var ifBlock:IfBlock = new IfBlock()
+        def main() <- void:
+            var x:int = 10
+            var y:int = 15
+            var myCode:MyCode = new MyCode(x, y)
+            var w:float = 2.0f
+            var d:double = 2.0
+            myCode.method1(y)
+            print("Hello World")
+            var ifBlock:IfBlock = new IfBlock()
+            
+        def abstractMethod <- int
+            
+    private:
+        def privateMethod(x:int) <- void:
+            println("Private Method")
+            
+    def method2(y:String):
+        println(y)
 ```
 
 
