@@ -16,6 +16,7 @@ If you are interested then please get in contact!
 * Object oriented and functional  
 * Focused on immutability
 * Not nullable
+* Classes sealed by default
 
 ##Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
@@ -223,6 +224,17 @@ list.forEach doSomething
 do:
    // do something
    while(condition)
+```
+###Try catch
+```
+try:
+    // do something
+catch:
+    case foo: FooException => handleFooException(foo)
+    case bar: BarException => handleBarException(bar)
+    case _: Throwable => println("Got some other kind of exception")
+finally:
+    // do something
 ```
 ###Continue (Discuss whether required)
 Skip the current iteration
