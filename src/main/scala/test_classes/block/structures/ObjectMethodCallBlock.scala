@@ -26,7 +26,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
 
   def getName: String = variableName
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def getType: String = `type`
 

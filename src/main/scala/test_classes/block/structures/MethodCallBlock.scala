@@ -18,7 +18,7 @@ class MethodCallBlock(var superBlockInit: Block, var nameInit: String, var typeI
 
   def getName: String = _name
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def getType: String = _type
 

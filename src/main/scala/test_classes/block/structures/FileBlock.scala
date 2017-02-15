@@ -11,9 +11,9 @@ class FileBlock(name: String) extends Block(null, true, false) {
 
   def getName: String = name
 
-  def getValue: String = null
+  def getValue: String = ""
 
-  def getType: String = null
+  def getType: String = "file"
 
   def getOpeningCode: String = ""
 

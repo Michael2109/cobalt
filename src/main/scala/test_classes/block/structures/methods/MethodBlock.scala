@@ -23,7 +23,7 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def getType: String = `type`
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def init() {
 

@@ -83,7 +83,7 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, classN
 
   def getName: String = variableName
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def getType: String = className
 

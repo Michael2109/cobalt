@@ -15,11 +15,11 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
     val classBlock = superBlock
 
-    var i = 1
+   // var i = 1
 
     val block: Block = superBlock.superBlock
     // Get the package the class is within
-    for (fileSub <- block.subBlocks) {
+    for ((fileSub,i) <- block.subBlocks) {
       if (fileSub.isInstanceOf[PackageBlock]) {
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }
@@ -36,11 +36,11 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
   }
 
   def getName: String = {
-    return null
+    return "<init>"
   }
 
   def getValue: String = {
-    return null
+    return ""
   }
 
   def getType: String = {
