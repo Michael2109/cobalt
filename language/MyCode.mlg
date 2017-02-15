@@ -14,7 +14,7 @@ class MyCode(xx:int, yy:int):
             val z: int = 10
             val longTest: long
             val ty: int = 15
-
+            val shortTest: short
             val stringTest: String = "stringTest"
             val myCode: MyCode = new MyCode(z, ty)
             val y: int = 1

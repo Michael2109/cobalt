@@ -14,11 +14,11 @@ class AssignmentBlock(var superBlockInit: Block, declaration : Boolean, var name
 
   def getType: String = "assignment"
 
+  def getValue: String = value
+
   def getOpeningCode: String = {
     return ""
   }
-
-  def getValue: String = value
 
   def getClosingCode: String = {
     return ""
