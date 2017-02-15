@@ -52,6 +52,7 @@ class Runtime {
     new IntegerParser,
     new LongParser,
     new StringParser,
+    new ShortParser,
     // IfBlock Parser
     new IfParser,
     // PrintBlock Parser
