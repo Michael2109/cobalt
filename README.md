@@ -22,6 +22,7 @@ If you are interested then please get in contact!
 
 ###Possible Features
 * Primitives are wrapper classes  
+* Operator overloading
 
 #Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
