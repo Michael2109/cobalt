@@ -1,7 +1,6 @@
 package compiler.block.modifiers
 
 import compiler.block.Block
-import test_classes.block.Block
 
 class ModifierBlock (var superBlockInit: Block, var value: String) extends Block(superBlockInit, true, false) {
 

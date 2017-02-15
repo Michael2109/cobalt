@@ -6,13 +6,6 @@ import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.block.modifiers.ModifierBlock
-import test_classes.block.packages.PackageBlock
-import test_classes.structure.parameters.Parameter
-import test_classes.symbol_table.Row
-import test_classes.symbol_table.SymbolTable
 
 class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false) {
 
@@ -20,6 +13,7 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
   private var parameterString: String = ""
   private var localVariableString: String = ""
   private var packageBlock: PackageBlock = null
+
 
   def getParameters: Array[Parameter] = {
     return params

@@ -1,9 +1,6 @@
 package compiler.block.assignment
 
 import compiler.block.Block
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.symbol_table.SymbolTable
 
 class AssignmentBlock(var superBlockInit: Block, declaration : Boolean, var name: String, var value: String) extends Block(superBlockInit, false, false) {
 

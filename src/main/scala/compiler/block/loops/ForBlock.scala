@@ -2,8 +2,6 @@ package compiler.block.loops
 
 import compiler.block.Block
 import compiler.structure.parameters.Parameter
-import test_classes.block.Block
-import test_classes.structure.parameters.Parameter
 
 /**
   * Represents a for loop

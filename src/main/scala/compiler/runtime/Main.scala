@@ -1,7 +1,6 @@
 package compiler.runtime
 
 import java.io.File
-import java.lang.Runtime
 
 object Main {
 

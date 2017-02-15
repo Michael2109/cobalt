@@ -5,10 +5,6 @@ import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
 import compiler.block.structures.methods.{ConstructorBlock, MethodBlock}
 import compiler.structure.parameters.Parameter
-import test_classes.block.Block
-import test_classes.block.modifiers.ModifierBlock
-import test_classes.block.packages.PackageBlock
-import test_classes.block.structures.methods.{ConstructorBlock, MethodBlock}
 
 /**
   * Represents a class.
@@ -79,27 +75,12 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
   }
 
   def getOpeningCode: String = {
-    return asm.getPackage(packageBlock.directory) +
-      asm.getImport("java.io.DataOutputStream") +
-      asm.getImport("java.io.FileNotFoundException") +
-      asm.getImport("java.io.FileOutputStream") +
-      asm.getImport("java.io.IOException") +
-      asm.getStaticImport("org.objectweb.asm.Opcodes.*") +
-      asm.getImport("org.objectweb.asm.*") +
-      asm.getClassOpening(name) +
-      asm.executeMethodOpening +
-      asm.getClassWriter +
-      asm.visitClassWriter(packageBlock.directory + "/" + name, null, parentClass, null) +
-      asm.getOpeningBrace()
+    return ""
 
   }
 
   def getClosingCode: String = {
-    return " cw.visitEnd();\n" + "return cw.toByteArray();}\n" +
-      "    public static void main(String [] args){\n   " +
-      "  DataOutputStream dout = null;\n" +
-      "        try {\n" +
-      "" + "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(execute());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
+    return ""
   }
 
 

@@ -3,9 +3,6 @@ package compiler.block.prints
 import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
-import test_classes.Utils
-import test_classes.block.Block
-
 class PrintBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
   def init() {

@@ -5,11 +5,6 @@ import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
 import compiler.block.structures.methods.{ConstructorBlock, MethodBlock}
 import compiler.structure.parameters.Parameter
-import test_classes.block.Block
-import test_classes.block.modifiers.ModifierBlock
-import test_classes.block.packages.PackageBlock
-import test_classes.block.structures.methods.{ConstructorBlock, MethodBlock}
-import test_classes.structure.parameters.Parameter
 
 /**
   * Represents a class.

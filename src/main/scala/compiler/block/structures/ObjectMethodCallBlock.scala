@@ -7,13 +7,6 @@ import compiler.block.packages.PackageBlock
 import compiler.block.structures.kinds.ClassBlock
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.block.imports.ImportBlock
-import test_classes.block.packages.PackageBlock
-import test_classes.block.structures.kinds.ClassBlock
-import test_classes.structure.parameters.Parameter
-import test_classes.symbol_table.SymbolTable
 
 /**
   * Calling a method of an object

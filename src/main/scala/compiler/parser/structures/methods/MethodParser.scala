@@ -1,18 +1,10 @@
 package compiler.parser.structures.methods
 
-import test_classes.block.Block
-import test_classes.block.structures.methods.MethodBlock
-import test_classes.parser.Parser
-import java.util.ArrayList
-import java.util.List
-
 import compiler.block.Block
 import compiler.block.structures.methods.MethodBlock
 import compiler.parser.Parser
 import compiler.structure.parameters.Parameters
 import compiler.tokenizer.Tokenizer
-import test_classes.structure.parameters.{Parameter, Parameters}
-import test_classes.tokenizer.Tokenizer
 
 class MethodParser extends Parser[MethodBlock] {
 

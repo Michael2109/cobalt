@@ -2,8 +2,6 @@ package compiler.block.structures
 
 import compiler.block.Block
 import compiler.structure.parameters.Parameter
-import test_classes.block.Block
-import test_classes.structure.parameters.Parameter
 
 /**
   * Calling of a method within the class

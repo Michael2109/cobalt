@@ -1,15 +1,9 @@
 package compiler.parser.imports
 
-import test_classes.block.Block
-import test_classes.block.imports.ImportBlock
-import test_classes.parser.Parser
-import java.io.File
-
 import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.tokenizer.Tokenizer
 
 class ImportParser extends Parser[ImportBlock] {
 

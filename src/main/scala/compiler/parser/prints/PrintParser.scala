@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.prints.PrintBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.prints.PrintBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class PrintParser extends Parser[PrintBlock] {
   var printVariable: Boolean = false

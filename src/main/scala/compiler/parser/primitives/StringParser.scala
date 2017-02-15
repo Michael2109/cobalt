@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.primitives.StringBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.primitives.StringBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class StringParser extends Parser[StringBlock] {
 

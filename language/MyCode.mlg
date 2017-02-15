@@ -27,3 +27,7 @@ class MyCode(xx:int, yy:int):
 
     def noModifierMethod(z: int) <- void:
         var test: int = 35
+
+object TestObject:
+
+    xx += 2

@@ -1,7 +1,6 @@
 package compiler.block.operators
 
 import compiler.block.Block
-import test_classes.block.Block
 
 class MultiplyBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
 

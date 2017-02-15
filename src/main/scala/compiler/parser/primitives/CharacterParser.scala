@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.primitives.CharacterBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.primitives.CharacterBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class CharacterParser extends Parser[CharacterBlock] {
 

@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.structures.MethodCallBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.structures.MethodCallBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 /**
   * Calls a method inside a class

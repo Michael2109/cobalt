@@ -1,7 +1,6 @@
 package compiler.block.primitives
 
 import compiler.block.Block
-import test_classes.block.Block
 
 class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 

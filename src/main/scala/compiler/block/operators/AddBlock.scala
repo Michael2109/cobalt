@@ -3,9 +3,6 @@ package compiler.block.operators
 import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.symbol_table.SymbolTable
 
 /**
   * Represents adding a value to a primitive

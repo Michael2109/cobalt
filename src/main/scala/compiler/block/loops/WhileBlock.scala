@@ -3,9 +3,6 @@ package compiler.block.loops
 import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.symbol_table.SymbolTable
 
 class WhileBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
 

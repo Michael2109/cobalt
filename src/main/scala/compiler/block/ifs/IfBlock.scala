@@ -4,10 +4,6 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.structure.parameters.Parameter
-import test_classes.symbol_table.SymbolTable
 
 /**
   * Represents an if statement

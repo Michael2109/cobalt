@@ -4,11 +4,6 @@ import compiler.block.Block
 import compiler.block.primitives.DoubleBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.primitives.DoubleBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
-
 class DoubleParser extends Parser[DoubleBlock] {
   def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*double[ ]*[=][ ]*[0-9]+[.][0-9]*[ ]*")
 

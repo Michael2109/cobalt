@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.primitives.BooleanBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.primitives.BooleanBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class BooleanParser extends Parser[BooleanBlock] {
   def shouldParse(line: String): Boolean = line.matches("(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*boolean[ ]*[=][ ]*(true|false)")

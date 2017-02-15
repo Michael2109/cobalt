@@ -29,33 +29,6 @@ import compiler.parser.structures.kinds.{ClassParser, ObjectParser}
 import compiler.parser.structures.methods.MethodParser
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.Tokenizer
-import test_classes.{Compile, Utils}
-import test_classes.block.Block
-import test_classes.block.ifs.IfBlock
-import test_classes.block.imports.ImportBlock
-import test_classes.block.loops.WhileBlock
-import test_classes.block.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
-import test_classes.block.packages.PackageBlock
-import test_classes.block.prints.PrintBlock
-import test_classes.block.structures.kinds.ClassBlock
-import test_classes.block.structures.{FileBlock, ObjectMethodCallBlock}
-import test_classes.block.structures.methods.MethodBlock
-import test_classes.exceptions.{ContainerException, DeclarationException, IndentationException}
-import test_classes.parser.Parser
-import test_classes.parser.comments.CommentParser
-import test_classes.parser.ifs.IfParser
-import test_classes.parser.imports.ImportParser
-import test_classes.parser.loops.{ForParser, WhileParser}
-import test_classes.parser.modifiers.ModifierParser
-import test_classes.parser.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
-import test_classes.parser.packages.PackageParser
-import test_classes.parser.primitives._
-import test_classes.parser.prints.PrintParser
-import test_classes.parser.structures.kinds.{ClassParser, ObjectParser}
-import test_classes.parser.structures.methods.MethodParser
-import test_classes.parser.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
-import test_classes.symbol_table.{Row, SymbolTable}
-import test_classes.tokenizer.Tokenizer
 
 import scala.collection.JavaConverters._
 

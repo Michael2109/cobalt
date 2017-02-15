@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.primitives.LongBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.primitives.LongBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class LongParser extends Parser[LongBlock]{
 

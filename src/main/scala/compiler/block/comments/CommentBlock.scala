@@ -1,7 +1,6 @@
 package compiler.block.comments
 
 import compiler.block.Block
-import test_classes.block.Block
 
 /**
   * Represents a code comment

@@ -3,9 +3,6 @@ package compiler
 import compiler.block.Block
 import compiler.block.structures.FileBlock
 import compiler.block.structures.methods.MethodBlock
-import test_classes.block.Block
-import test_classes.block.structures.FileBlock
-import test_classes.block.structures.methods.MethodBlock
 
 object Utils {
 

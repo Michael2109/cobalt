@@ -2,13 +2,8 @@ package compiler.parser.ifs
 
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
-import compiler.block.loops.WhileBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.ifs.IfBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class IfParser extends Parser[IfBlock] {
 

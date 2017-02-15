@@ -5,11 +5,6 @@ import compiler.block.structures.kinds.ObjectBlock
 import compiler.parser.Parser
 import compiler.structure.parameters.Parameters
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.structures.kinds.{ClassBlock, ObjectBlock}
-import test_classes.parser.Parser
-import test_classes.structure.parameters.Parameters
-import test_classes.tokenizer.Tokenizer
 
 class ObjectParser extends Parser[ObjectBlock] {
   def shouldParse(line: String): Boolean = line.matches("object[ ]+[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)([ ]+extends[ ]+[a-zA-Z][a-zA-Z0-9]*)?:")

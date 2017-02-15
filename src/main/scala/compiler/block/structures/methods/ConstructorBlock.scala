@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.packages.PackageBlock
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
-import test_classes.block.Block
-import test_classes.block.packages.PackageBlock
-import test_classes.structure.parameters.Parameter
-import test_classes.symbol_table.{Row, SymbolTable}
 
 class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
@@ -19,11 +15,11 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
     val classBlock = superBlock
 
-   // var i = 1
+    var i = 1
 
     val block: Block = superBlock.superBlock
     // Get the package the class is within
-    for ((fileSub,i) <- block.subBlocks) {
+    for (fileSub <- block.subBlocks) {
       if (fileSub.isInstanceOf[PackageBlock]) {
         packageBlock = fileSub.asInstanceOf[PackageBlock]
       }

@@ -4,7 +4,7 @@ import java.io._
 
 import compiler.block.Block
 import compiler.block.structures.methods.MethodBlock
-import test_classes.block.Block
+
 
 /**
   * Creates the output file.

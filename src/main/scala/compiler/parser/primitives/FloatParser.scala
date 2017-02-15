@@ -4,10 +4,6 @@ import compiler.block.Block
 import compiler.block.primitives.FloatBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.primitives.FloatBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 class FloatParser extends Parser[FloatBlock] {
   def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*float[ ]*[=][ ]*[0-9]+[.][0-9]*f[ ]*")

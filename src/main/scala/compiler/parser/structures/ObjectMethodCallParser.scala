@@ -1,8 +1,5 @@
 package compiler.parser.structures
 
-import test_classes.Utils
-import test_classes.block.Block
-import test_classes.parser.Parser
 import java.util.ArrayList
 import java.util.List
 
@@ -11,9 +8,6 @@ import compiler.block.structures.ObjectMethodCallBlock
 import compiler.parser.Parser
 import compiler.structure.parameters.Parameter
 import compiler.tokenizer.Tokenizer
-import test_classes.block.structures.ObjectMethodCallBlock
-import test_classes.structure.parameters.Parameter
-import test_classes.tokenizer.Tokenizer
 
 /**
   * Parses calling of an objects method

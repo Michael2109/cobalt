@@ -2,7 +2,6 @@ package compiler.parser
 
 import compiler.block.Block
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
 
 abstract class Parser[T <: Block] {
   /**

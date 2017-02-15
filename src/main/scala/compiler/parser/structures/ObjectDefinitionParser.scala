@@ -7,10 +7,6 @@ import compiler.block.structures.ObjectDefinitionBlock
 import compiler.parser.Parser
 import compiler.structure.parameters.Parameter
 import compiler.tokenizer.Tokenizer
-import test_classes.block.Block
-import test_classes.block.structures.ObjectDefinitionBlock
-import test_classes.parser.Parser
-import test_classes.tokenizer.Tokenizer
 
 /**
   * Creation of a new instance of a class
