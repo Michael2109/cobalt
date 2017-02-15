@@ -1,0 +1,4 @@
+package compiler
+
+object Constants {
+}
