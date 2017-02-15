@@ -1,12 +1,12 @@
 package compiler.parser.primitives
 
 import compiler.block.Block
-import compiler.block.primitives.{IntegerBlock, ShortBlock}
+import compiler.block.primitives.ShortBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 
-class ShortParser extends Parser[ShortParser]{
+class ShortParser extends Parser[ShortBlock]{
 
   //TODO show how to set default values
 
