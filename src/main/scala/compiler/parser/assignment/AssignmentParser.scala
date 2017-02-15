@@ -19,6 +19,6 @@ class AssignmentParser extends Parser[AssignmentBlock] {
     tokenizer.nextToken // skip "int"
     tokenizer.nextToken // skip "="
     val value: String = tokenizer.nextToken.token
-    new AssignmentBlock(superBlock, declaration,name, value)
+    new AssignmentBlock(superBlock, false,name, value)
   }
 }

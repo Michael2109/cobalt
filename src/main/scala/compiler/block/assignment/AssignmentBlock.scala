@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
 
-class AssignmentBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
+class AssignmentBlock(var superBlockInit: Block, declaration : Boolean, var name: String, var value: String) extends Block(superBlockInit, false, false) {
 
   def init() {
 
