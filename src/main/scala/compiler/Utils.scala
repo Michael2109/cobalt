@@ -2,6 +2,7 @@ package compiler
 
 import compiler.block.Block
 import compiler.block.structures.FileBlock
+import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.block.structures.methods.MethodBlock
 
 object Utils {
@@ -96,6 +97,21 @@ object Utils {
     for (sub <- block.subBlocks) {
       printBlockInfo(sub, indentation + 1)
     }
+  }
+
+  def isClass(blockInit : Block) : Boolean = {
+
+      var block: Block = blockInit
+      while (!block.isInstanceOf[ClassBlock] && !block.isInstanceOf[ObjectBlock]) {
+        block = block.superBlock
+      }
+
+      if (block.isInstanceOf[ClassBlock]) {
+        true
+      }else {
+        false
+      }
+
   }
 
 }

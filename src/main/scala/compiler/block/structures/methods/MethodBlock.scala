@@ -14,6 +14,8 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
   private var localVariableString: String = ""
   private var packageBlock: PackageBlock = null
 
+  private var static: String = ""
+
 
   def getParameters: Array[Parameter] = {
     return params
@@ -46,6 +48,10 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
       }
     }
 
+    if(!Utils.isClass(this)){
+      static = "+ACC_STATIC"
+    }
+
 
     var i = 1
     for (parameter <- params) {
@@ -61,7 +67,7 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def getOpeningCode: String = {
     if (name != "main") {
-      return "   {\n" + "            /* Build '" + name + "' method */\n" + "            MethodVisitor mv = cw.visitMethod(\n" + "                    "+modifier+",                         // public method\n" + "                    \"" + name + "\",                              // name\n" + "                    \"(" + parameterString + ")V\",                            // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
+      return "   {\n" + "            /* Build '" + name + "' method */\n" + "            MethodVisitor mv = cw.visitMethod(\n" + "                    "+modifier+" " +static+",                         // public method\n" + "                    \"" + name + "\",                              // name\n" + "                    \"(" + parameterString + ")V\",                            // descriptor\n" + "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
     }
     else {
       return "{\n" + "// Main Method\n" + "MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, \"main\", \"([Ljava/lang/String;)V\", null, null);\n" + "mv.visitCode();\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"

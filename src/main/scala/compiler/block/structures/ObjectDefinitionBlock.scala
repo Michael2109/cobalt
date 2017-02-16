@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.block.packages.PackageBlock
-import compiler.block.structures.kinds.ClassBlock
+import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
 
@@ -17,7 +17,7 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, classN
   private var directory: String = ""
 
   def init() {
-    if (className == getClassName) {
+    if (className == getObjectName) {
       directory = getPackage
     }
     else {
@@ -69,13 +69,11 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, classN
   }
 
   // Returns the main class name for the file
-  def getClassName: String = {
+  def getObjectName: String = {
     // Get the FileBlock to find the imports
     var block: Block = this
-    while (!(block.isInstanceOf[ClassBlock])) {
-      {
+    while (!(block.isInstanceOf[ClassBlock]) && !(block.isInstanceOf[ObjectBlock])) {
         block = block.superBlock
-      }
     }
     // Get the directory of the Object
     return block.getName
