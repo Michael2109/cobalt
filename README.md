@@ -29,7 +29,15 @@ To contribute to the Cobalt project, please send us a pull request from your for
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
 As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
 
-#Scala main similarities and differences?  
+#Language Specifications
+To view all of the language specifications please view our wiki!  
+https://github.com/Michael2109/cobalt/wiki
+
+#Getting Starting
+To view how to get up and running please view  
+https://github.com/Michael2109/cobalt/wiki/Getting-Started
+
+##Scala main similarities and differences?  
 ###Similarities
 * Like Scala it would be frowned upon to use "var" and "null" values as this promotes well written code. Immutability would lower the overall amount of errors in a program as it develops to a larger scale.   
 
@@ -38,12 +46,3 @@ As the project is in the alpha stages please get in contact to discuss any large
 * Classes would be automatically sealed unless the user explicitly changes this. This means that only when the user allows for methods to be inherited when needed.  
 * An open type system would allow for other file formats such as XML and JSON to be treated as though they are objects. This would mean that elements within the files would be easily accessible.  
 * Automatic synchronization to allow for the user to not worry about concurrency errors.  
-
-#Language Specifications
-To view all of the language specifications please view our wiki!  
-https://github.com/Michael2109/cobalt/wiki
-
-
-#Getting Starting
-To view how to get up and running please view  
-https://github.com/Michael2109/cobalt/wiki/Getting-Started
