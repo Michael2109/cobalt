@@ -1,7 +1,6 @@
-import compiler.generators.AbstractGenerator
+package compiler.generators.structures.kinds
 
-class ObjectGen() extends AbstractGenerator() {
-  override def getOpeningCode(): Unit = ???
 
-  override def getClosingCode(): Unit = ???
+class ObjectGen() {
+
 }

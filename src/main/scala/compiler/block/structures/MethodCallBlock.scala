@@ -1,6 +1,7 @@
 package compiler.block.structures
 
 import compiler.block.Block
+import compiler.generators.structures.MethodCallGen
 import compiler.structure.parameters.Parameter
 
 /**

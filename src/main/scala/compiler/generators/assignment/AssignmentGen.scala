@@ -1,9 +1,7 @@
 package compiler.generators.assignment
 
-import compiler.generators.AbstractGenerator
+import compiler.generators.Generator
 
-class AssignmentGen() extends AbstractGenerator() {
-  override def getOpeningCode(): Unit = ???
+class AssignmentGen(){
 
-  override def getClosingCode(): Unit = ???
 }

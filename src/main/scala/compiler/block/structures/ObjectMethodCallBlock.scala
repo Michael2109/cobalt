@@ -5,13 +5,14 @@ import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.block.packages.PackageBlock
 import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
+import compiler.generators.structures.ObjectMethodCallGen
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
 
 /**
   * Calling a method of an object
   */
-class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false) {
+class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false, false) {
 
   id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
   private val `type`: String = null

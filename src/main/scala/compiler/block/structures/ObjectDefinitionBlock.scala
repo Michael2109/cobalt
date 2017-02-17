@@ -5,12 +5,13 @@ import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.block.packages.PackageBlock
 import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
+import compiler.generators.structures.ObjectDefinitionGen
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
 
 
 // Creation of a new object and storing to a variable
-class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: Array[Parameter]) extends Block(superBlockInit, false, true) {
+class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: Array[Parameter]) extends Block(superBlockInit, false, true ,false) {
 
   private var parameterString: String = ""
   private var argumentString: String = ""

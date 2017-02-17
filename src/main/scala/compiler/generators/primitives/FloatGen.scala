@@ -1,9 +1,5 @@
 package compiler.generators.primitives
 
-import compiler.generators.AbstractGenerator
+class FloatGen() {
 
-class FloatGen() extends AbstractGenerator() {
-  override def getOpeningCode(): Unit = ???
-
-  override def getClosingCode(): Unit = ???
 }

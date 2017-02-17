@@ -5,9 +5,10 @@ import java.util.ArrayList
 import java.util.Collections
 
 import asm.ASMGenerator
+import compiler.generators.Generator
 
 /**
-  *
+  * Stores the total amount of blocks to use as a unique identifier
   */
 object Block {
   var TOTAL_BLOCKS: Int = 50
@@ -25,6 +26,7 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   Block.TOTAL_BLOCKS += 1
 
   private val _subBlocks: java.util.ArrayList[Block] = new ArrayList[Block]
+
   private val _asm: ASMGenerator = new ASMGenerator;
   private var _id: Integer = Block.TOTAL_BLOCKS
   private var _superBlock: Block = superBlockInitTest

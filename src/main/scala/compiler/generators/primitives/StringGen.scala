@@ -1,9 +1,5 @@
 package compiler.generators.primitives
 
-import compiler.generators.AbstractGenerator
+class StringGen()  {
 
-class StringGen() extends AbstractGenerator() {
-  override def getOpeningCode(): Unit = ???
-
-  override def getClosingCode(): Unit = ???
 }

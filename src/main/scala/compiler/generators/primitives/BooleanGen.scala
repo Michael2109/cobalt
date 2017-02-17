@@ -1,9 +1,7 @@
 package compiler.generators.primitives
 
-import compiler.generators.AbstractGenerator
+import compiler.generators.Generator
 
-class BooleanGen() extends AbstractGenerator() {
-  override def getOpeningCode(): Unit = ???
+class BooleanGen() {
 
-  override def getClosingCode(): Unit = ???
 }

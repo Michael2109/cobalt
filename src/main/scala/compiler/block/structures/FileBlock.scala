@@ -1,6 +1,7 @@
 package compiler.block.structures
 
 import compiler.block.Block
+import compiler.generators.structures.FileGen
 
 /**
   * Represents the whole file.
