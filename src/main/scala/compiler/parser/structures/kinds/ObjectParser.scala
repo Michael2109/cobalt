@@ -9,7 +9,6 @@ import compiler.tokenizer.Tokenizer
 class ObjectParser extends Parser[ObjectBlock] {
 
   def shouldParse(line: String): Boolean = {
-    println(line + ":" + line.matches("object[ ]+[a-zA-Z][a-zA-Z0-9]*:[ ]*"))
     line.matches("object[ ]+[a-zA-Z][a-zA-Z0-9]*:[ ]*")
   }
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectBlock = {
