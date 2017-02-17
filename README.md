@@ -36,13 +36,3 @@ https://github.com/Michael2109/cobalt/wiki
 #Getting Starting
 To view how to get up and running please view  
 https://github.com/Michael2109/cobalt/wiki/Getting-Started
-
-##Scala main similarities and differences?  
-###Similarities
-* Like Scala it would be frowned upon to use "var" and "null" values as this promotes well written code. Immutability would lower the overall amount of errors in a program as it develops to a larger scale.   
-
-###Differences
-* One issue I've found with Scala is that it there are a variety of ways that the same code can be written. In production this can lead to many different code styles being used that can lower productivity if not controlled correctly. Cobalt will be a language that is focused on having a very strong structure. This will be done by having the syntax written in such ways to allow for high readability and following of particular rules.  
-* Classes would be automatically sealed unless the user explicitly changes this. This means that only when the user allows for methods to be inherited when needed.  
-* An open type system would allow for other file formats such as XML and JSON to be treated as though they are objects. This would mean that elements within the files would be easily accessible.  
-* Automatic synchronization to allow for the user to not worry about concurrency errors.  
