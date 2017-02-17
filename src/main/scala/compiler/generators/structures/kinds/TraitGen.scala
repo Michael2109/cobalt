@@ -1,5 +1,7 @@
-package compiler.block.structures.kinds
+package compiler.generators.structures.kinds
 
-class TraitGen {
+import compiler.generators.AbstractGenerator
+
+class TraitGen() extends AbstractGenerator() {
 
 }

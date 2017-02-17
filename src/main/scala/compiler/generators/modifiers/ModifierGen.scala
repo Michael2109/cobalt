@@ -1,21 +1,7 @@
-package compiler.block.modifiers
+package compiler.generators.modifiers
 
-import compiler.block.Block
+import compiler.generators.AbstractGenerator
 
-class ModifierGen(var superBlockInit: Block, var value: String) extends Block(superBlockInit, true, false) {
+class ModifierGen() extends AbstractGenerator() {
 
-  // Called after file is parsed
-  override def init(): Unit = {}
-
-  /* Symbol table information */
-  override def getName: String = ""
-
-  override def getValue: String = value
-
-  override def getType: String = "modifier"
-
-  /* Bytecode for the opening and closing of the block */
-  override def getOpeningCode: String = ""
-
-  override def getClosingCode: String = ""
 }

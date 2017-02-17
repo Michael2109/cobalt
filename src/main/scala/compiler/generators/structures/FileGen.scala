@@ -1,23 +1,7 @@
-package compiler.block.structures
+package compiler.generators.structures
 
-import compiler.block.Block
+import compiler.generators.AbstractGenerator
 
-/**
-  * Represents the whole file.
-  */
-class FileGen(name: String) extends Block(null, true, false) {
+class FileGen() extends AbstractGenerator() {
 
-  def init() {}
-
-  def getName: String = name
-
-  def getValue: String = ""
-
-  def getType: String = "file"
-
-  def getOpeningCode: String = ""
-
-  def getClosingCode: String = ""
-
-  override def toString: String = "file: " + name
 }

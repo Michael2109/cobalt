@@ -4,24 +4,11 @@ import compiler.block.ifs.IfBlock
 
 object ObjectTest:
      public:
-         def method1(x:int) <- void:
-             while (x < 10); print("Hello World!!!")
-             x += 1
-
-         def main() <- void:
+          def main() <- void:
              val z: int = 10
              val longTest: long
              val ty: int = 15
-             val shortTest: short
-             val stringTest: String = "stringTest"
              val myCode: MyCode = new MyCode(z, ty)
              val y: int = 1
              val w: float = 2.0f
              myCode.method1(y)
-
-         private:
-             def privateMethod(y: int) <- void:
-                 val yy: int = 10
-
-         def noModifierMethod(z: int) <- void:
-             var test: int = 35

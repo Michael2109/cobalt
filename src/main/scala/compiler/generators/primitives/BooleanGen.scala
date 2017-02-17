@@ -1,21 +1,7 @@
-package compiler.block.primitives
+package compiler.generators.primitives
 
-import compiler.block.Block
+import compiler.generators.AbstractGenerator
 
-class BooleanGen(var superBlockInit: Block, declaration: Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
+class BooleanGen() extends AbstractGenerator() {
 
-  def init() {}
-
-  def getName: String = name
-
-  def getValue: String = value
-
-  def getType: String = "boolean"
-
-  def getOpeningCode: String = asm.visitLdcInsn("new Boolean(" + value + ")") +
-    asm.visitVarInsn("BASTORE", id)
-
-  def getClosingCode: String = ""
-
-  override def toString: String = "boolean: " + name + " = " + value
 }
