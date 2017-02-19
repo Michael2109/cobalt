@@ -1,12 +1,12 @@
 package compiler.block.structures.methods
 
-import compiler.Utils
 import compiler.block.Block
 import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
 import compiler.generators.structures.methods.MethodGen
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
+import compiler.utilities.Utils
 
 class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false,false) {
 

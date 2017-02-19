@@ -7,6 +7,7 @@ import java.io.*;
 import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.*;
 
+
 public class ObjectTest{
 public static byte[] execute() throws Exception {
 ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -20,27 +21,27 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(10));
-mv.visitVarInsn(ISTORE,93);
+mv.visitVarInsn(ISTORE,99);
 
 mv.visitLdcInsn(new Long(0));
-mv.visitVarInsn(LSTORE,94);
+mv.visitVarInsn(LSTORE,100);
 
 mv.visitLdcInsn(new Integer(15));
-mv.visitVarInsn(ISTORE,95);
+mv.visitVarInsn(ISTORE,101);
 
 mv.visitTypeInsn(NEW, "MyCode");
 mv.visitInsn(DUP);
-mv.visitIntInsn(ILOAD, 93);mv.visitIntInsn(ILOAD, 95);mv.visitMethodInsn(INVOKESPECIAL, "MyCode", "<init>", "(II)V", false);
-mv.visitVarInsn(ASTORE,96);
+mv.visitIntInsn(ILOAD, 99);mv.visitIntInsn(ILOAD, 101);mv.visitMethodInsn(INVOKESPECIAL, "MyCode", "<init>", "(II)V", false);
+mv.visitVarInsn(ASTORE,102);
 
 mv.visitLdcInsn(new Integer(1));
-mv.visitVarInsn(ISTORE,97);
+mv.visitVarInsn(ISTORE,103);
 
 mv.visitLdcInsn(new Float(2.0));
-mv.visitVarInsn(FSTORE,98);
+mv.visitVarInsn(FSTORE,104);
 
-mv.visitVarInsn(ALOAD, 96);
-mv.visitIntInsn(ILOAD, 97);mv.visitMethodInsn(INVOKEVIRTUAL, "/MyCode", "method1", "(I)V", false);
+mv.visitVarInsn(ALOAD, 102);
+mv.visitIntInsn(ILOAD, 103);mv.visitMethodInsn(INVOKEVIRTUAL, "/MyCode", "method1", "(I)V", false);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
@@ -52,7 +53,10 @@ mv.visitEnd();
 }
 
  cw.visitEnd();
-return cw.toByteArray();}
+return cw.toByteArray();
+
+}
+
     public static void main(String [] args){
    new File(new File("cobalt_build/asm/ObjectTest.class").getParent()).mkdirs();  DataOutputStream dout = null;
         try {

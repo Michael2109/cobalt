@@ -1,4 +1,4 @@
-package asm
+package compiler.utilities
 
 class ASMGenerator {
 

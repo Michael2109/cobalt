@@ -2,10 +2,8 @@ package compiler.runtime
 
 import java.io.File
 
-import compiler.{Constants, Utils}
 import compiler.symbol_table.SymbolTable
-
-import scala.util.matching.Regex
+import compiler.utilities.{Constants, Utils}
 
 object Main {
 
@@ -14,7 +12,6 @@ object Main {
 
       val fileList:Array[File] = Utils.recursiveListFiles(new File(args(0)),"cobalt".r)
 
-      Constants.BUILD_DIR = args(2)
 
       for(file <- fileList){
 
@@ -24,7 +21,8 @@ object Main {
         println(file.getAbsolutePath)
         val input: File = file
         val asmFile: File = new File(file.getPath.replace(args(0),args(1)).replaceAll("(\\.[^\\.]*$)", ".java"))
-        new Runtime(input, asmFile)
+        val buildDir = new File(args(2))
+        new Runtime(input, asmFile, buildDir)
       }
 
 

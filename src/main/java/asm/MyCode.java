@@ -7,6 +7,7 @@ import java.io.*;
 import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.*;
 
+
 public class MyCode{
     public static byte[] execute() throws Exception {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -169,7 +170,10 @@ public class MyCode{
         }
 
         cw.visitEnd();
-        return cw.toByteArray();}
+        return cw.toByteArray();
+
+    }
+
     public static void main(String [] args){
         new File(new File("cobalt_build/asm/MyCode.class").getParent()).mkdirs();  DataOutputStream dout = null;
         try {

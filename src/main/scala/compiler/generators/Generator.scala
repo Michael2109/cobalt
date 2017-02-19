@@ -1,6 +1,6 @@
 package compiler.generators
 
-import asm.ASMGenerator
+import compiler.utilities.ASMGenerator
 
 class Generator {
 

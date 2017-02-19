@@ -2,7 +2,7 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.{Compile, Utils}
+import compiler.Compile
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
 import compiler.block.imports.ImportBlock
@@ -29,6 +29,7 @@ import compiler.parser.structures.kinds.{ClassParser, ObjectParser}
 import compiler.parser.structures.methods.MethodParser
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.Tokenizer
+import compiler.utilities.Utils
 
 import scala.collection.JavaConverters._
 
@@ -76,7 +77,7 @@ class Runtime {
   private var methodName: String = null
   private var className: String = null
 
-  def this(sourceFile: File, outputFile: File) {
+  def this(sourceFile: File, outputFile: File, buildDir: File) {
     this()
     var packageBlock: PackageBlock = null
     val imports: java.util.List[ImportBlock] = new java.util.ArrayList[ImportBlock]
@@ -109,7 +110,7 @@ class Runtime {
           }
         }
 
-        val fileBlock: Block = new FileBlock(sourceFile.getName)
+        val fileBlock: Block = new FileBlock(sourceFile.getName, buildDir)
         block.superBlock_$eq(fileBlock)
         if (packageBlock != null) fileBlock.addBlock_$eq(packageBlock)
 

@@ -7,6 +7,7 @@ import java.io.*;
 import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.*;
 
+
 public class MyCode{
 public static byte[] execute() throws Exception {
 ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -168,8 +169,11 @@ mv.visitLocalVariable("z", "I", null, lMethod0, lMethod1, 1);
 mv.visitEnd();
 }
 
- cw.visitEnd();
-return cw.toByteArray();}
+cw.visitEnd();
+return cw.toByteArray();
+
+}
+
     public static void main(String [] args){
    new File(new File("cobalt_build/asm/MyCode.class").getParent()).mkdirs();  DataOutputStream dout = null;
         try {

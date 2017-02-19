@@ -1,6 +1,5 @@
 package compiler.tokenizer
 
-import java.util.ArrayList
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -27,7 +26,8 @@ class Tokenizer(var str: String) {
     new TokenData(Pattern.compile("^([a-zA-Z][a-zA-Z0-9]*)"), TokenType.IDENTIFIER)
   )
 
-  for (t <- Array[String]("=", "\\(", "\\)", "\\.", "\\,", "\\'")) tokenDatas += new TokenData(Pattern.compile("^(" + t + ")"), TokenType.TOKEN)
+  for (t <- Array[String]("=", "\\(", "\\)", "\\.", "\\,", "\\'"))
+    tokenDatas += new TokenData(Pattern.compile("^(" + t + ")"), TokenType.TOKEN)
 
   def nextToken: Token = {
     str = str.trim

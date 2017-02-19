@@ -1,9 +1,9 @@
 package compiler.block.loops
 
-import compiler.Utils
 import compiler.block.Block
 import compiler.generators.loops.WhileGen
 import compiler.symbol_table.SymbolTable
+import compiler.utilities.Utils
 
 class WhileBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
 

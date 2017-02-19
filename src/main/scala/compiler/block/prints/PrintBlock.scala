@@ -1,8 +1,8 @@
 package compiler.block.prints
 
-import compiler.Utils
 import compiler.block.Block
 import compiler.symbol_table.SymbolTable
+import compiler.utilities.Utils
 class PrintBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
   def init() {

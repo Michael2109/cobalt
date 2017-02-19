@@ -1,6 +1,5 @@
 package compiler.block.structures
 
-import compiler.Utils
 import compiler.block.Block
 import compiler.block.imports.ImportBlock
 import compiler.block.packages.PackageBlock
@@ -8,6 +7,7 @@ import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.generators.structures.ObjectDefinitionGen
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
+import compiler.utilities.Utils
 
 
 // Creation of a new object and storing to a variable

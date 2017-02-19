@@ -1,4 +1,4 @@
-package compiler
+package compiler.utilities
 
 import java.io.File
 
