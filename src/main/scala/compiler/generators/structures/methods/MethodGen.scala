@@ -1,6 +1,6 @@
 package compiler.generators.structures.methods
 
-class MethodGen() {
+object MethodGen {
 
   def getOpeningCode(name: String, modifier: String, static: String, parameterString: String): String = {
     if (name != "main") {

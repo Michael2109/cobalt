@@ -49,7 +49,11 @@ class ASMGenerator {
   // Push a value on top of the stack
   def visitLdcInsn(value: Object): String = "mv.visitLdcInsn(" + value + ");\n"
 
-  // Store an integer in the variable table
+  // Perform an operation
   def visitVarInsn(operation: String, id: Object): String = "mv.visitVarInsn(" + operation + "," + id + ");\n"
+
+  // Visit Jump todo debug this as generated code created an if statement no a while for WhileBlock
+  def visitJumpInsn(operation: String, id: Object): String = "mv.visitJumpInsn(" + operation + "," + id + ");\n"
+
 
 }

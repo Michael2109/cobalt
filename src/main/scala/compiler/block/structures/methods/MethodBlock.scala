@@ -4,7 +4,7 @@ import compiler.Utils
 import compiler.block.Block
 import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
-import compiler.generators.Generator
+import compiler.generators.structures.methods.MethodGen
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 
@@ -52,7 +52,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
       static = "+ACC_STATIC"
     }
 
-
     var i = 1
     for (parameter <- params) {
       parameterString += parameter.getAsmType
@@ -66,12 +65,12 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
   }
 
   def getOpeningCode: String = {
-    Generator.METHOD_GEN.getOpeningCode(name, modifier, static, parameterString)
+    MethodGen.getOpeningCode(name, modifier, static, parameterString)
   }
 
 
   def getClosingCode: String = {
-    Generator.METHOD_GEN.getClosingCode(name, packageBlock.directory, localVariableString)
+    MethodGen.getClosingCode(name, packageBlock.directory, localVariableString)
   }
 
 

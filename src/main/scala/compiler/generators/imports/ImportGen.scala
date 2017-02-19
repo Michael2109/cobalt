@@ -1,5 +1,5 @@
 package compiler.generators.imports
 
-class ImportGen()  {
+object ImportGen {
 
 }

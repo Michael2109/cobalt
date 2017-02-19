@@ -1,5 +1,5 @@
 package compiler.generators.comments
 
 
-class CommentGen() {
+object CommentGen{
 }

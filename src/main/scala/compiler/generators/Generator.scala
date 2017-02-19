@@ -1,10 +1,9 @@
 package compiler.generators
 
-import compiler.generators.structures.methods.MethodGen
+import asm.ASMGenerator
 
-object Generator extends Enumeration {
-  type TokenType = Value
-  val METHOD_GEN = new MethodGen
+class Generator {
 
+  val asm : ASMGenerator = new ASMGenerator
 
 }

@@ -1,5 +1,5 @@
 package compiler.generators.primitives
 
-class IntegerGen() {
+object IntegerGen {
 
 }

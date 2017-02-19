@@ -1,4 +1,4 @@
 package compiler.generators.modifiers
 
-class ModifierGen()  {
+object ModifierGen {
 }

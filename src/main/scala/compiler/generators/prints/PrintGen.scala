@@ -1,5 +1,5 @@
 package compiler.generators.prints
 
-class PrintGen()  {
+object PrintGen  {
 
 }

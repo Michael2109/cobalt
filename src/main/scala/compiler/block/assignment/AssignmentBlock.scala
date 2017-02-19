@@ -1,6 +1,7 @@
 package compiler.block.assignment
 
 import compiler.block.Block
+import compiler.generators.assignment.AssignmentGen
 
 class AssignmentBlock(var superBlockInit: Block, declaration : Boolean, var name: String, var value: String) extends Block(superBlockInit, false, false) {
 

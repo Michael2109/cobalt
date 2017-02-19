@@ -1,5 +1,5 @@
 package compiler.generators.primitives
 
-class DoubleGen() {
+object DoubleGen {
 
 }

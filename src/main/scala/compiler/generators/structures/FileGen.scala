@@ -1,4 +1,4 @@
 package compiler.generators.structures
 
-class FileGen() {
+object FileGen {
 }

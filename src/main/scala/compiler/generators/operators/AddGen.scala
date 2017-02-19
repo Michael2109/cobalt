@@ -1,5 +1,5 @@
 package compiler.generators.operators
 
-class AddGen() {
+object AddGen {
 
 }

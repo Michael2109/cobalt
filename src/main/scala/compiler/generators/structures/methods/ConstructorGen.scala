@@ -1,5 +1,5 @@
 package compiler.generators.structures.methods
 
-class ConstructorGen() {
+object ConstructorGen {
 
 }

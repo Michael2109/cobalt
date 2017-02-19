@@ -2,6 +2,7 @@ package compiler.block.loops
 
 import compiler.Utils
 import compiler.block.Block
+import compiler.generators.loops.WhileGen
 import compiler.symbol_table.SymbolTable
 
 class WhileBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
@@ -54,16 +55,11 @@ class WhileBlock(var superBlockInit: Block, var name: String) extends Block(supe
   }
 
   def getOpeningCode: String = {
-    return "Label start" + id + " = new Label();\n" +
-      "mv.visitLabel(start" + id + ");\n" +
-      "mv.visitVarInsn(ILOAD," + pointer + ");\n" +
-      "mv.visitLdcInsn(" + value + ");\n" +
-      "Label l" + id + " = new Label();\n" +
-      byteCodeOp
+     WhileGen.getOpeningCode(id, pointer, value, byteCodeOp)
   }
 
   def getClosingCode: String = {
-    return "mv.visitJumpInsn(GOTO, start" + id + ");\n" + "mv.visitLabel(l" + id + ");\n"
+    WhileGen.getClosingCode(id)
   }
 
   override def toString: String = "while: " + name

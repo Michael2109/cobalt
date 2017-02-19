@@ -1,5 +1,5 @@
 package compiler.generators.structures
 
-class MethodCallGen() {
+object MethodCallGen {
 
 }

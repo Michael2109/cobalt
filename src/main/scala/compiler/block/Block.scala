@@ -5,7 +5,6 @@ import java.util.ArrayList
 import java.util.Collections
 
 import asm.ASMGenerator
-import compiler.generators.Generator
 
 /**
   * Stores the total amount of blocks to use as a unique identifier
