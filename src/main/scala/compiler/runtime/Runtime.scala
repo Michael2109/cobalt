@@ -184,7 +184,8 @@ class Runtime {
     // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
     if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
       println(currentBlock.getName + " " + methodName + " " + className)
-      throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined.")
+
+      throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined." + line)
     }
     else SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
 

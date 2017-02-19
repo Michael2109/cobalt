@@ -68,7 +68,7 @@ class IfBlock(var superBlockInit: Block, var nameInit: String) extends Block(sup
   }
 
   def getClosingCode: String = {
-    return IfGen.getClosingCode(id)
+    return asm.visitLabel("l" + id)
   }
 
   override def toString: String = "if " + _name

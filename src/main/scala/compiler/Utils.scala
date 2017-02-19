@@ -1,9 +1,13 @@
 package compiler
 
+import java.io.File
+
 import compiler.block.Block
 import compiler.block.structures.FileBlock
 import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.block.structures.methods.MethodBlock
+
+import scala.util.matching.Regex
 
 object Utils {
 
@@ -112,6 +116,17 @@ object Utils {
         false
       }
 
+  }
+
+  /**
+    * Returns a list of all files in the directory
+    * @param dir
+    * @return
+    */
+  def recursiveListFiles(f: File, r: Regex): Array[File] = {
+    val these = f.listFiles
+    val good = these.filter(f => r.findFirstIn(f.getName).isDefined)
+    good ++ these.filter(_.isDirectory).flatMap(recursiveListFiles(_,r))
   }
 
 }

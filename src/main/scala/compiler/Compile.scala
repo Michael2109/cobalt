@@ -13,6 +13,7 @@ import compiler.block.structures.methods.MethodBlock
 class Compile(val outputFile: File, val block: Block) {
 
   println(outputFile.getAbsolutePath)
+  new File(outputFile.getParent).mkdirs()
   outputFile.createNewFile
   val w: PrintWriter = new PrintWriter(outputFile)
 

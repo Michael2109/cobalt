@@ -3,9 +3,9 @@ package asm
 import compiler.block.ifs.IfBlock
 
 object ObjectTest:
-     public:
-          def main() <- void:
-             val z: int = 10
+    public:
+        def main() <- void:
+            val z: int = 10
              val longTest: long
              val ty: int = 15
              val myCode: MyCode = new MyCode(z, ty)

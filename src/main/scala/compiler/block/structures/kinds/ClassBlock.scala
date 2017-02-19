@@ -1,5 +1,8 @@
 package compiler.block.structures.kinds
 
+import java.io.File
+
+import compiler.Constants
 import compiler.block.Block
 import compiler.block.modifiers.ModifierBlock
 import compiler.block.packages.PackageBlock
@@ -80,6 +83,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
       asm.getImport("java.io.FileNotFoundException") +
       asm.getImport("java.io.FileOutputStream") +
       asm.getImport("java.io.IOException") +
+      asm.getImport("java.io.*") +
       asm.getStaticImport("org.objectweb.asm.Opcodes.*") +
       asm.getImport("org.objectweb.asm.*") +
       asm.getClassOpening(name) +
@@ -105,11 +109,13 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
   }
 
   def getClosingCode: String = {
+
     return " cw.visitEnd();\n" + "return cw.toByteArray();}\n" +
       "    public static void main(String [] args){\n   " +
+    "new File(new File(\""+Constants.BUILD_DIR+"/" + packageBlock.directory + "/" + name + ".class\").getParent()).mkdirs();"+
       "  DataOutputStream dout = null;\n" +
       "        try {\n" +
-      "" + "            dout = new DataOutputStream(new FileOutputStream(\"build/classes/main/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(execute());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
+      "" + "            dout = new DataOutputStream(new FileOutputStream(\""+Constants.BUILD_DIR+"/" + packageBlock.directory + "/" + name + ".class\"));\n" + "\n" + "        dout.write(execute());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
   }
 
 
