@@ -12,6 +12,7 @@ public static byte[] execute() throws Exception {
 ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 cw.visit(V1_7, ACC_PUBLIC, "asm/MyCode", null, "java/lang/Object", new String[]{});
 
+
 {
 MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(II)V" ,null, null);
 mv.visitCode();

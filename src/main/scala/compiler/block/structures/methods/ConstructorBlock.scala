@@ -48,7 +48,22 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
   }
 
   def getOpeningCode: String = {
-    return ""
+    return  asm.getOpeningBrace() +
+      asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
+      asm.visitCode() +
+      asm.getComment("Constructor") +
+      asm.newLabel("lConstructor0") +
+      asm.visitLabel("lConstructor0") +
+      asm.visitVarInsn("ALOAD", "0") +
+      "// Load \"this\" onto the stack\n" + "\n" +
+      "mv.visitMethodInsn(INVOKESPECIAL," +
+      "// Invoke an instance method (non-virtual)\n" +
+      "\"java/lang/Object\", // Class on which the method is defined\n" +
+      "\"<init>\"," +
+      "// Name of the method\n" +
+      "\"()V\"," +
+      "// Descriptor\n" + "false);" +
+      "// Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n"
   }
 
   def getClosingCode: String = {
