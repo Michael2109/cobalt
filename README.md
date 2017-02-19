@@ -6,7 +6,7 @@ The target is to create a language that is highly scalable, readable and thread 
 
 Currently the project is at the initial stages but is built on a very strong structure that should allow for the flexibility to move in any direction we please. I'm very open to new ideas for the project so if you feel anything should be added/considered then add it as an issue!   
 
-If you are interested then please get in contact!   
+We're currently looking for contributors so if you are interested then please get in contact!
 
 #Main Features
 * Thread Safe - Automatic Synchronization  
