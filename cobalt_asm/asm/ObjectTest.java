@@ -21,27 +21,27 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(10));
-mv.visitVarInsn(ISTORE,99);
+mv.visitVarInsn(ISTORE,102);
 
 mv.visitLdcInsn(new Long(0));
-mv.visitVarInsn(LSTORE,100);
+mv.visitVarInsn(LSTORE,103);
 
 mv.visitLdcInsn(new Integer(15));
-mv.visitVarInsn(ISTORE,101);
+mv.visitVarInsn(ISTORE,104);
 
 mv.visitTypeInsn(NEW, "MyCode");
 mv.visitInsn(DUP);
-mv.visitIntInsn(ILOAD, 99);mv.visitIntInsn(ILOAD, 101);mv.visitMethodInsn(INVOKESPECIAL, "MyCode", "<init>", "(II)V", false);
-mv.visitVarInsn(ASTORE,102);
+mv.visitIntInsn(ILOAD, 102);mv.visitIntInsn(ILOAD, 104);mv.visitMethodInsn(INVOKESPECIAL, "MyCode", "<init>", "(II)V", false);
+mv.visitVarInsn(ASTORE,105);
 
 mv.visitLdcInsn(new Integer(1));
-mv.visitVarInsn(ISTORE,103);
+mv.visitVarInsn(ISTORE,106);
 
 mv.visitLdcInsn(new Float(2.0));
-mv.visitVarInsn(FSTORE,104);
+mv.visitVarInsn(FSTORE,107);
 
-mv.visitVarInsn(ALOAD, 102);
-mv.visitIntInsn(ILOAD, 103);mv.visitMethodInsn(INVOKEVIRTUAL, "/MyCode", "method1", "(I)V", false);
+mv.visitVarInsn(ALOAD, 105);
+mv.visitIntInsn(ALOAD, 106);mv.visitMethodInsn(INVOKEVIRTUAL, "/MyCode", "method1", "(I)V", false);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();

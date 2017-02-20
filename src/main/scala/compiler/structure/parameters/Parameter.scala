@@ -10,11 +10,11 @@ class Parameter(var `type`: String, var name: String) {
 
   // ASM type. int = "I", String = "java.lang.String", etc
   def getAsmType: String = {
-    if (getType == "int") return "I"
+    if (getType == "int") "I"
 
-    if (getType == "String") return "Ljava/lang/String;"
+    else if (getType == "String") "Ljava/lang/String;"
 
-    return null
+    else null
   }
 
   // Type of the variable

@@ -41,7 +41,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     for (param <- params) {
       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
       parameterString += param.getAsmType
-      argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"
+      argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"
     }
   }
 

@@ -6,7 +6,9 @@ class MyCode(xx:int, yy:int):
     xx += 2
 
     public:
-        def method1(x:int) <- void:
+        def method1(stringTest:String) <- void:
+            print(stringTest)
+            val x: int = 5
             while (x < 10); print("Hello World!!!")
             x += 1
 
@@ -17,7 +19,8 @@ class MyCode(xx:int, yy:int):
             val myCode: MyCode = new MyCode(z, ty)
             val y: int = 1
             val w: float = 2.0f
-            myCode.method1(y)
+            val stringMethodParam:String = "test"
+            myCode.method1(stringMethodParam)
 
     private:
         def privateMethod(y: int) <- void:

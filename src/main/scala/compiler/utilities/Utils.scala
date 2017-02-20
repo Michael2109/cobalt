@@ -3,6 +3,8 @@ package compiler.utilities
 import java.io.File
 
 import compiler.block.Block
+import compiler.block.imports.ImportBlock
+import compiler.block.packages.PackageBlock
 import compiler.block.structures.FileBlock
 import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.block.structures.methods.MethodBlock
@@ -42,6 +44,49 @@ object Utils {
       block
     }
     fileBlock
+  }
+
+  /**
+    * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
+    * @param block
+    * @return
+    */
+  def getDirectory(blockInit: Block, className: String): String = {
+    // Get the FileBlock to find the imports
+    var block = blockInit
+    while (!(block.isInstanceOf[FileBlock])) {
+      {
+        block = block.superBlock
+      }
+    }
+    // Get the directory of the Object
+    for (sub <- block.subBlocks) {
+      if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
+        return (sub.asInstanceOf[ImportBlock]).directory
+      }
+    }
+    return ""
+  }
+
+  /**
+    * Gets the directory of the class using the package. Otherwise assumes class is  in the same package
+    * @return
+    */
+  def getPackage(blockInit: Block): String = {
+    // Get the FileBlock to find the imports
+    var block: Block = blockInit
+    while (!(block.isInstanceOf[FileBlock])) {
+      {
+        block = block.superBlock
+      }
+    }
+    // Get the directory of the Object
+    for (sub <- block.subBlocks) {
+      if (sub.isInstanceOf[PackageBlock]) {
+        return (sub.asInstanceOf[PackageBlock]).directory
+      }
+    }
+    return ""
   }
 
   /**

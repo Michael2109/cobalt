@@ -19,10 +19,10 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, classN
 
   def init() {
     if (className == getObjectName) {
-      directory = getPackage
+      directory = Utils.getPackage(this)
     }
     else {
-      directory = getDirectory
+      directory = Utils.getDirectory(this, className)
     }
 
     // Get the type of the parameters
@@ -33,41 +33,9 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, classN
     }
   }
 
-  // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
-  def getDirectory: String = {
-    // Get the FileBlock to find the imports
-    var block: Block = this
-    while (!(block.isInstanceOf[FileBlock])) {
-      {
-        block = block.superBlock
-      }
-    }
-    // Get the directory of the Object
-    for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
-        return (sub.asInstanceOf[ImportBlock]).directory
-      }
-    }
-    return ""
-  }
 
-  // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
-  def getPackage: String = {
-    // Get the FileBlock to find the imports
-    var block: Block = this
-    while (!(block.isInstanceOf[FileBlock])) {
-      {
-        block = block.superBlock
-      }
-    }
-    // Get the directory of the Object
-    for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[PackageBlock]) {
-        return (sub.asInstanceOf[PackageBlock]).directory
-      }
-    }
-    return ""
-  }
+
+
 
   // Returns the main class name for the file
   def getObjectName: String = {

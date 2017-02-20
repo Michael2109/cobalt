@@ -2,7 +2,6 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.Compile
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
 import compiler.block.imports.ImportBlock

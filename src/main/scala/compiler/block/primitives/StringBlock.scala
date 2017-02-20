@@ -13,14 +13,14 @@ class StringBlock(superBlockInit: Block, declaration : Boolean, name: String, va
   def getType: String = "String"
 
   def getOpeningCode: String = {
-    return asm.visitLdcInsn("new String(\"" + value + "\")") +
+    asm.visitLdcInsn("\"\"")
       asm.visitVarInsn("ASTORE", id)
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
-  override def toString: String = "int: " + name + " = " + value
+  override def toString: String = "string: " + name + " = " + value
 
 }

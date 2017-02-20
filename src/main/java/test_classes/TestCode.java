@@ -7,7 +7,7 @@ package test_classes;
 public class TestCode {
 
     void test() {
-        final int x = 10;
-
+        String stringTest = "trwgfdsgdfgfdsg";
     }
+
 }
