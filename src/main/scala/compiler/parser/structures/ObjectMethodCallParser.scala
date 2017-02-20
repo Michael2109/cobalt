@@ -1,12 +1,11 @@
 package compiler.parser.structures
 
-import compiler.Utils
-import compiler.block.Block
-import compiler.block.structures.objects.ObjectMethodCallBlock
-import compiler.parser.Parser
 import java.util.ArrayList
 import java.util.List
 
+import compiler.block.Block
+import compiler.block.structures.ObjectMethodCallBlock
+import compiler.parser.Parser
 import compiler.structure.parameters.Parameter
 import compiler.tokenizer.Tokenizer
 

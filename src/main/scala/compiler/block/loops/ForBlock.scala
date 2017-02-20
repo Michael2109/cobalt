@@ -22,13 +22,13 @@ class ForBlock(var superBlockInit: Block, var name: String) extends Block(superB
 
   def getName: String = name
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def getType: String = ""
 
-  def getOpeningCode: String = null
+  def getOpeningCode: String = ""
 
-  def getClosingCode: String = null
+  def getClosingCode: String = ""
 
   override def toString: String = "for: " + name
 

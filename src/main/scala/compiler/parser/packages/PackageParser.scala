@@ -1,7 +1,6 @@
 package compiler.parser.packages
 
 import compiler.block.Block
-import compiler.block.imports.ImportBlock
 import compiler.block.packages.PackageBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer

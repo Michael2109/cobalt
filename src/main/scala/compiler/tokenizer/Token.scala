@@ -1,6 +1,6 @@
 package compiler.tokenizer
 
-import compiler.tokenizer.TokenType.TokenType
+import TokenType.TokenType
 
 class Token(val _token: String, val _type: TokenType) {
 

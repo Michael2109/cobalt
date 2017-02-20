@@ -107,6 +107,24 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="compiler">compiler</a></dd></dl></div>
+    </li><li name="compiler.parser.assignment" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="assignment"></a><a id="assignment:assignment"></a>
+      <span class="permalink">
+      <a href="../../compiler/parser/index.html#assignment" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../assignment/index.html">
+              <span class="name">assignment</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="compiler.parser">parser</a></dd></dl></div>
     </li><li name="compiler.parser.comments" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="comments"></a><a id="comments:comments"></a>
       <span class="permalink">
@@ -175,6 +193,24 @@
       <span class="symbol">
         <a title="" href="../loops/index.html">
               <span class="name">loops</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="compiler.parser">parser</a></dd></dl></div>
+    </li><li name="compiler.parser.modifiers" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="modifiers"></a><a id="modifiers:modifiers"></a>
+      <span class="permalink">
+      <a href="../../compiler/parser/index.html#modifiers" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../modifiers/index.html">
+              <span class="name">modifiers</span>
             </a>
       </span>
       
@@ -267,10 +303,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="compiler.parser">parser</a></dd></dl></div>
-    </li><li name="compiler.parser.structures.classes" visbl="pub" class="indented4 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="classes"></a><a id="classes:classes"></a>
+    </li><li name="compiler.parser.structures.kinds" visbl="pub" class="indented4 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="kinds"></a><a id="kinds:kinds"></a>
       <span class="permalink">
-      <a href="../../../compiler/parser/structures/index.html#classes" title="Permalink">
+      <a href="../../../compiler/parser/structures/index.html#kinds" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -279,8 +315,8 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="classes/index.html">
-              <span class="name">classes</span>
+        <a title="" href="kinds/index.html">
+              <span class="name">kinds</span>
             </a>
       </span>
       
@@ -313,19 +349,19 @@
                         </a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="class" href="ObjectDefinitionParser.html" title="Creation of a new instance of a class
+"></a>
+                        <a href="ObjectDefinitionParser.html" title="Creation of a new instance of a class
+">
+                          ObjectDefinitionParser
+                        </a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="class" href="ObjectMethodCallParser.html" title="Parses calling of an objects method
 "></a>
                         <a href="ObjectMethodCallParser.html" title="Parses calling of an objects method
 ">
                           ObjectMethodCallParser
-                        </a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="ObjectParser.html" title="Creation of a new instance of a class
-"></a>
-                        <a href="ObjectParser.html" title="Creation of a new instance of a class
-">
-                          ObjectParser
                         </a>
                       </li>
               </ul>
@@ -367,9 +403,9 @@
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="compiler.parser.structures.MethodCallParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="MethodCallParserextendsParser[compiler.block.structures.objects.MethodCallBlock]"></a><a id="MethodCallParser:MethodCallParser"></a>
+      <a id="MethodCallParserextendsParser[compiler.block.structures.MethodCallBlock]"></a><a id="MethodCallParser:MethodCallParser"></a>
       <span class="permalink">
-      <a href="../../../compiler/parser/structures/index.html#MethodCallParserextendsParser[compiler.block.structures.objects.MethodCallBlock]" title="Permalink">
+      <a href="../../../compiler/parser/structures/index.html#MethodCallParserextendsParser[compiler.block.structures.MethodCallBlock]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -381,15 +417,35 @@
         <a title="Calls a method inside a class
 " href="MethodCallParser.html">
               <span class="name">MethodCallParser</span>
-            </a><span class="result"> extends <a href="../Parser.html" class="extype" name="compiler.parser.Parser">Parser</a>[<a href="../../block/structures/objects/MethodCallBlock.html" class="extype" name="compiler.block.structures.objects.MethodCallBlock">MethodCallBlock</a>]</span>
+            </a><span class="result"> extends <a href="../Parser.html" class="extype" name="compiler.parser.Parser">Parser</a>[<a href="../../block/structures/MethodCallBlock.html" class="extype" name="compiler.block.structures.MethodCallBlock">MethodCallBlock</a>]</span>
       </span>
       
       <p class="shortcomment cmt">Calls a method inside a class
 </p>
-    </li><li name="compiler.parser.structures.ObjectMethodCallParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ObjectMethodCallParserextendsParser[compiler.block.structures.objects.ObjectMethodCallBlock]"></a><a id="ObjectMethodCallParser:ObjectMethodCallParser"></a>
+    </li><li name="compiler.parser.structures.ObjectDefinitionParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ObjectDefinitionParserextendsParser[compiler.block.structures.ObjectDefinitionBlock]"></a><a id="ObjectDefinitionParser:ObjectDefinitionParser"></a>
       <span class="permalink">
-      <a href="../../../compiler/parser/structures/index.html#ObjectMethodCallParserextendsParser[compiler.block.structures.objects.ObjectMethodCallBlock]" title="Permalink">
+      <a href="../../../compiler/parser/structures/index.html#ObjectDefinitionParserextendsParser[compiler.block.structures.ObjectDefinitionBlock]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="Creation of a new instance of a class
+" href="ObjectDefinitionParser.html">
+              <span class="name">ObjectDefinitionParser</span>
+            </a><span class="result"> extends <a href="../Parser.html" class="extype" name="compiler.parser.Parser">Parser</a>[<a href="../../block/structures/ObjectDefinitionBlock.html" class="extype" name="compiler.block.structures.ObjectDefinitionBlock">ObjectDefinitionBlock</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Creation of a new instance of a class
+</p>
+    </li><li name="compiler.parser.structures.ObjectMethodCallParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ObjectMethodCallParserextendsParser[compiler.block.structures.ObjectMethodCallBlock]"></a><a id="ObjectMethodCallParser:ObjectMethodCallParser"></a>
+      <span class="permalink">
+      <a href="../../../compiler/parser/structures/index.html#ObjectMethodCallParserextendsParser[compiler.block.structures.ObjectMethodCallBlock]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -401,30 +457,10 @@
         <a title="Parses calling of an objects method
 " href="ObjectMethodCallParser.html">
               <span class="name">ObjectMethodCallParser</span>
-            </a><span class="result"> extends <a href="../Parser.html" class="extype" name="compiler.parser.Parser">Parser</a>[<a href="../../block/structures/objects/ObjectMethodCallBlock.html" class="extype" name="compiler.block.structures.objects.ObjectMethodCallBlock">ObjectMethodCallBlock</a>]</span>
+            </a><span class="result"> extends <a href="../Parser.html" class="extype" name="compiler.parser.Parser">Parser</a>[<a href="../../block/structures/ObjectMethodCallBlock.html" class="extype" name="compiler.block.structures.ObjectMethodCallBlock">ObjectMethodCallBlock</a>]</span>
       </span>
       
       <p class="shortcomment cmt">Parses calling of an objects method
-</p>
-    </li><li name="compiler.parser.structures.ObjectParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ObjectParserextendsParser[compiler.block.structures.objects.ObjectBlock]"></a><a id="ObjectParser:ObjectParser"></a>
-      <span class="permalink">
-      <a href="../../../compiler/parser/structures/index.html#ObjectParserextendsParser[compiler.block.structures.objects.ObjectBlock]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Creation of a new instance of a class
-" href="ObjectParser.html">
-              <span class="name">ObjectParser</span>
-            </a><span class="result"> extends <a href="../Parser.html" class="extype" name="compiler.parser.Parser">Parser</a>[<a href="../../block/structures/objects/ObjectBlock.html" class="extype" name="compiler.block.structures.objects.ObjectBlock">ObjectBlock</a>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Creation of a new instance of a class
 </p>
     </li></ol>
             </div>

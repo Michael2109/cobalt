@@ -1,8 +1,10 @@
 package compiler.symbol_table
 
-import compiler.block.Block
 import java.util.ArrayList
 import java.util.List
+
+import compiler.block.Block
+
 import scala.collection.JavaConversions._
 
 object SymbolTable {

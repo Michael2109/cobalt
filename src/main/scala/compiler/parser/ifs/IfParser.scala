@@ -2,7 +2,6 @@ package compiler.parser.ifs
 
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
-import compiler.block.loops.WhileBlock
 import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 

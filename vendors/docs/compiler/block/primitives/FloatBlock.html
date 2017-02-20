@@ -157,6 +157,18 @@
                         </a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="class" href="LongBlock.html" title=""></a>
+                        <a href="LongBlock.html" title="">
+                          LongBlock
+                        </a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="ShortBlock.html" title=""></a>
+                        <a href="ShortBlock.html" title="">
+                          ShortBlock
+                        </a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="class" href="StringBlock.html" title=""></a>
                         <a href="StringBlock.html" title="">
                           StringBlock
@@ -240,9 +252,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="compiler.block.primitives.FloatBlock#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(superBlockInit:compiler.block.Block,name:String,value:String):compiler.block.primitives.FloatBlock"></a><a id="&lt;init&gt;:FloatBlock"></a>
+      <a id="&lt;init&gt;(superBlockInit:compiler.block.Block,declaration:Boolean,name:String,value:String):compiler.block.primitives.FloatBlock"></a><a id="&lt;init&gt;:FloatBlock"></a>
       <span class="permalink">
-      <a href="../../../compiler/block/primitives/FloatBlock.html#&lt;init&gt;(superBlockInit:compiler.block.Block,name:String,value:String):compiler.block.primitives.FloatBlock" title="Permalink">
+      <a href="../../../compiler/block/primitives/FloatBlock.html#&lt;init&gt;(superBlockInit:compiler.block.Block,declaration:Boolean,name:String,value:String):compiler.block.primitives.FloatBlock" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -251,7 +263,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">FloatBlock</span><span class="params">(<span name="superBlockInit">superBlockInit: <a href="../Block.html" class="extype" name="compiler.block.Block">Block</a></span>, <span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="value">value: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+        <span class="name">FloatBlock</span><span class="params">(<span name="superBlockInit">superBlockInit: <a href="../Block.html" class="extype" name="compiler.block.Block">Block</a></span>, <span name="declaration">declaration: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="value">value: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
       </span>
       
       
@@ -346,9 +358,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="compiler.block.Block#asm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="asm:asm.ASMGenerator"></a><a id="asm:ASMGenerator"></a>
+      <a id="asm:compiler.utilities.ASMGenerator"></a><a id="asm:ASMGenerator"></a>
       <span class="permalink">
-      <a href="../../../compiler/block/primitives/FloatBlock.html#asm:asm.ASMGenerator" title="Permalink">
+      <a href="../../../compiler/block/primitives/FloatBlock.html#asm:compiler.utilities.ASMGenerator" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -357,7 +369,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">asm</span><span class="result">: <a href="../../../asm/ASMGenerator.html" class="extype" name="asm.ASMGenerator">ASMGenerator</a></span>
+        <span class="name">asm</span><span class="result">: <a href="../../../asm/ASMGenerator.html" class="extype" name="compiler.utilities.ASMGenerator">ASMGenerator</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Block.html" class="extype" name="compiler.block.Block">Block</a></dd></dl></div>
@@ -725,22 +737,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Block.html" class="extype" name="compiler.block.Block">Block</a></dd></dl></div>
-    </li><li name="compiler.block.primitives.FloatBlock#name" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="name:String"></a>
-      <span class="permalink">
-      <a href="../../../compiler/block/primitives/FloatBlock.html#name:String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">name</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -837,22 +833,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Block.html" class="extype" name="compiler.block.Block">Block</a></dd></dl></div>
-    </li><li name="compiler.block.primitives.FloatBlock#superBlockInit" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="superBlockInit:compiler.block.Block"></a><a id="superBlockInit:Block"></a>
-      <span class="permalink">
-      <a href="../../../compiler/block/primitives/FloatBlock.html#superBlockInit:compiler.block.Block" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">superBlockInit</span><span class="result">: <a href="../Block.html" class="extype" name="compiler.block.Block">Block</a></span>
-      </span>
-      
-      
     </li><li name="compiler.block.Block#superBlockInitTest" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="superBlockInitTest:compiler.block.Block"></a><a id="superBlockInitTest:Block"></a>
       <span class="permalink">
@@ -917,22 +897,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="compiler.block.primitives.FloatBlock">FloatBlock</a> → AnyRef → Any</dd></dl></div>
-    </li><li name="compiler.block.primitives.FloatBlock#value" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="value:String"></a>
-      <span class="permalink">
-      <a href="../../../compiler/block/primitives/FloatBlock.html#value:String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      
-      
     </li><li name="compiler.block.Block#variableInit" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="variableInit:Boolean"></a>
       <span class="permalink">

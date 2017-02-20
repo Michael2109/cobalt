@@ -2,7 +2,7 @@ package compiler.block.packages
 
 import compiler.block.Block
 
-class PackageBlock(var directory: String) extends Block(null, false, false) {
+class PackageBlock(var directory: String) extends Block(null, true, false) {
 
   def init() {}
 

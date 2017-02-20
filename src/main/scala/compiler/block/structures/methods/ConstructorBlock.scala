@@ -5,7 +5,7 @@ import compiler.block.packages.PackageBlock
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 
-class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter]) extends Block(superBlockInit, true, false) {
+class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
   var parameterString = ""
   var localVariableString = ""
@@ -29,18 +29,18 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
       parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + i + ");\n"
-      SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName))
+      SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName).setClassName(className))
       i += 1
 
     }
   }
 
   def getName: String = {
-    return null
+    return "<init>"
   }
 
   def getValue: String = {
-    return null
+    return ""
   }
 
   def getType: String = {
@@ -48,7 +48,22 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
   }
 
   def getOpeningCode: String = {
-    return ""
+    return  asm.getOpeningBrace() +
+      asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
+      asm.visitCode() +
+      asm.getComment("Constructor") +
+      asm.newLabel("lConstructor0") +
+      asm.visitLabel("lConstructor0") +
+      asm.visitVarInsn("ALOAD", "0") +
+      "// Load \"this\" onto the stack\n" + "\n" +
+      "mv.visitMethodInsn(INVOKESPECIAL," +
+      "// Invoke an instance method (non-virtual)\n" +
+      "\"java/lang/Object\", // Class on which the method is defined\n" +
+      "\"<init>\"," +
+      "// Name of the method\n" +
+      "\"()V\"," +
+      "// Descriptor\n" + "false);" +
+      "// Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n"
   }
 
   def getClosingCode: String = {

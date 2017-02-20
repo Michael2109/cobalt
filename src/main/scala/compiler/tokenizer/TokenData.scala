@@ -2,7 +2,7 @@ package compiler.tokenizer
 
 import java.util.regex.Pattern
 
-import compiler.tokenizer.TokenType.TokenType
+import TokenType.TokenType
 
 class TokenData(val pattern: Pattern, val `type`: TokenType) {
 

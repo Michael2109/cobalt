@@ -1,9 +1,10 @@
 package compiler.block.ifs
 
-import compiler.Utils
 import compiler.block.Block
+import compiler.generators.ifs.IfGen
 import compiler.structure.parameters.Parameter
 import compiler.symbol_table.SymbolTable
+import compiler.utilities.Utils
 
 /**
   * Represents an if statement
@@ -63,10 +64,7 @@ class IfBlock(var superBlockInit: Block, var nameInit: String) extends Block(sup
   }
 
   def getOpeningCode: String = {
-    return asm.visitVarInsn("ILOAD", pointer) +
-      asm.visitLdcInsn(value) +
-      asm.newLabel("l" + id) +
-      byteCodeOp
+    return IfGen.getOpeningCode(pointer, value, id, byteCodeOp)
   }
 
   def getClosingCode: String = {

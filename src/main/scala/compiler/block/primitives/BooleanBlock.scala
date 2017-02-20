@@ -2,7 +2,7 @@ package compiler.block.primitives
 
 import compiler.block.Block
 
-class BooleanBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, true) {
+class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
   def init() {}
 

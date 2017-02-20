@@ -1,0 +1,1 @@
+Directory contains all generated Java files used to generate class files.

@@ -7,59 +7,55 @@ class Row {
   private var value: String = null
   private var methodName: String = null
   private var className: String = null
+  private var immutable: Boolean = false
 
-  def getId: Int = {
-    return id
-  }
+  def getId: Int = id
 
   def setId(id: Int): Row = {
     this.id = id
     return this
   }
 
-  def getType: String = {
-    return `type`
-  }
+  def getType: String = `type`
 
   def setType(`type`: String): Row = {
     this.`type` = `type`
-    return this
+    this
   }
 
-  def getName: String = {
-    return name
-  }
+  def getName: String = name
 
   def setName(name: String): Row = {
     this.name = name
-    return this
+    this
   }
 
-  def getValue: String = {
-    return value
-  }
+  def getValue: String = value
 
   def setValue(value: String): Row = {
     this.value = value
-    return this
+    this
   }
 
-  def getMethodName: String = {
-    return methodName
-  }
+  def getMethodName: String = methodName
 
   def setMethodName(methodName: String): Row = {
     this.methodName = methodName
-    return this
+    this
   }
 
-  def getClassName: String = {
-    return className
-  }
+  def getClassName: String = className
 
   def setClassName(className: String): Row = {
     this.className = className
-    return this
+    this
+  }
+
+  def getImmutable: Boolean = immutable
+
+  def setImmutable(immutable : Boolean) : Row = {
+    this.immutable = immutable
+    this
   }
 
   override def toString: String = {

@@ -2,7 +2,7 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.{Compile, Utils}
+import compiler.Compile
 import compiler.block.Block
 import compiler.block.ifs.IfBlock
 import compiler.block.imports.ImportBlock
@@ -10,30 +10,33 @@ import compiler.block.loops.WhileBlock
 import compiler.block.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
 import compiler.block.packages.PackageBlock
 import compiler.block.prints.PrintBlock
-import compiler.block.structures.FileBlock
-import compiler.block.structures.classes.ClassBlock
+import compiler.block.structures.{FileBlock, ObjectMethodCallBlock}
+import compiler.block.structures.kinds.ClassBlock
 import compiler.block.structures.methods.MethodBlock
-import compiler.block.structures.objects.ObjectMethodCallBlock
 import compiler.exceptions.{ContainerException, DeclarationException, IndentationException}
 import compiler.parser.Parser
 import compiler.parser.comments.CommentParser
 import compiler.parser.ifs.IfParser
 import compiler.parser.imports.ImportParser
 import compiler.parser.loops.{ForParser, WhileParser}
+import compiler.parser.modifiers.ModifierParser
 import compiler.parser.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
 import compiler.parser.packages.PackageParser
 import compiler.parser.primitives._
 import compiler.parser.prints.PrintParser
-import compiler.parser.structures.classes.ClassParser
+import compiler.parser.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
+import compiler.parser.structures.kinds.{ClassParser, ObjectParser}
 import compiler.parser.structures.methods.MethodParser
-import compiler.parser.structures.{MethodCallParser, ObjectMethodCallParser, ObjectParser}
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.Tokenizer
+import compiler.utilities.Utils
 
 import scala.collection.JavaConverters._
 
 class Runtime {
-  private[compiler] val parsers: Array[Parser[_]] = Array(
+  private val parsers: Array[Parser[_]] = Array(
+
+    new ModifierParser,
     // MethodBlock Parser
     new MethodParser,
     // Operator Parsers
@@ -49,6 +52,7 @@ class Runtime {
     new IntegerParser,
     new LongParser,
     new StringParser,
+    new ShortParser,
     // IfBlock Parser
     new IfParser,
     // PrintBlock Parser
@@ -58,21 +62,22 @@ class Runtime {
     new MethodCallParser,
     new ImportParser,
     new WhileParser,
-    new ObjectParser,
+    new ObjectDefinitionParser,
     new ObjectMethodCallParser,
     new PackageParser,
-    // ClassBlock Parser
+    // Kinds Parsers
+    new ObjectParser,
     new ClassParser
   )
 
   private var block: Block = null
-  private var tokenizer: Tokenizer = null
+
   //start at 1 to ignore class declaration line
-  private var lineNumber: Int = 0
+
   private var methodName: String = null
   private var className: String = null
 
-  def this(sourceFile: File, outputFile: File) {
+  def this(sourceFile: File, outputFile: File, buildDir: File) {
     this()
     var packageBlock: PackageBlock = null
     val imports: java.util.List[ImportBlock] = new java.util.ArrayList[ImportBlock]
@@ -82,15 +87,15 @@ class Runtime {
       br = new BufferedReader(new FileReader(sourceFile))
       var line: String = null
       var readImports = false
-      while ((line = br.readLine) != null  && !readImports) {
+      while ((line = br.readLine) != null && !readImports) {
 
-        if(line.trim == "")
+        if (line.trim == "")
           line = br.readLine()
 
         for (parser <- parsers) {
 
           if (parser.shouldParse(line.trim)) {
-            tokenizer = new Tokenizer(line)
+            val tokenizer: Tokenizer = new Tokenizer(line)
             block = parser.parse(null, tokenizer)
             if (block.isInstanceOf[PackageBlock]) {
               packageBlock = block.asInstanceOf[PackageBlock]
@@ -101,13 +106,11 @@ class Runtime {
             else {
               readImports = true
               createBlock(block, br)
-
-              printBlockInfo(block)
             }
           }
         }
 
-        val fileBlock: Block = new FileBlock(sourceFile.getName)
+        val fileBlock: Block = new FileBlock(sourceFile.getName, buildDir)
         block.superBlock_$eq(fileBlock)
         if (packageBlock != null) fileBlock.addBlock_$eq(packageBlock)
 
@@ -127,36 +130,34 @@ class Runtime {
     new Compile(outputFile, block)
 
     // Output generated block structure
-    printBlockInfo(block)
+    Utils.printBlockInfo(block)
 
     // Output the symbol table
     SymbolTable.getInstance.printSymbols()
   }
 
-  def createBlock( currentBlockInit: Block, br: BufferedReader, indentation: Int = 0): Block = {
-   var currentBlock = currentBlockInit
+  def createBlock(currentBlockInit: Block, br: BufferedReader, indentation: Int = 0, lineNumber: Int = 0): Block = {
+    var currentBlock = currentBlockInit
 
     var line: String = br.readLine()
 
-    lineNumber += 1
+    if (line == null) {
+      return null
+    }
 
-      if(line == null){
-        return null
-      }
+    if (line.trim == "") {
+      line = br.readLine()
 
-      if (line.trim == "" ){
-        line = br.readLine()
+    }
 
-      }
-
-      val currentIndentation = Utils.getIndentation(line)
+    val currentIndentation = Utils.getIndentation(line)
 
     line = line.trim()
     val splitLine = line.split(";")
-    if (splitLine.length > 1){
+    if (splitLine.length > 1) {
 
       val t1 = new Tokenizer(splitLine(0))
-      var nextBlock : Block = null
+      var nextBlock: Block = null
       for (parser <- parsers) {
         if (parser.shouldParse(splitLine(0).trim)) {
           nextBlock = parser.parse(currentBlock, t1)
@@ -173,102 +174,77 @@ class Runtime {
         }
       }
 
-      createBlock(currentBlock, br, indentation)
+      createBlock(currentBlock, br, indentation, lineNumber + 1)
 
       return null
     }
 
-    tokenizer = new Tokenizer(line)
+    val tokenizer = new Tokenizer(line)
     if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
     if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
     // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
     if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
       println(currentBlock.getName + " " + methodName + " " + className)
-      throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined.")
+
+      throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined." + line)
     }
     else SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
 
 
-
     if (currentIndentation - indentation > 1) throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation)) {
 
-        if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
-        if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
-        // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
-        if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
-          println(currentBlock.getName + " " + methodName + " " + className)
-          throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined.")
-        }
-        else {
-          SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
-        }
+      if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
+      if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
+      // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
+      if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
+        println(currentBlock.getName + " " + methodName + " " + className)
+        throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined.")
       }
-        // Indented out one
-      else if (currentIndentation == (indentation + 1)) {
-
-          if (!currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Block cannot store other blocks.")
-          for (parser <- parsers) {
-            if (parser.shouldParse(line)) {
-              val nextBlock = parser.parse(currentBlock, tokenizer)
-              currentBlock.addBlock_$eq(nextBlock)
-              createBlock(nextBlock, br, currentIndentation)
-            }
-          }
-        }
-        else if (currentIndentation == indentation) {
-          // Indentation the same if (indentation == currentIndentation) { if (currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.")
-          for (parser <- parsers) {
-            if (parser.shouldParse(line)) {
-              val nextBlock = parser.parse(currentBlock.superBlock, tokenizer)
-              currentBlock.superBlock.addBlock_$eq(nextBlock)
-              createBlock(nextBlock, br, currentIndentation)
-            }
-          }
-        }
-        else {
-          // Indentation decreases by any amount
-          for (parser <- parsers) {
-            if (parser.shouldParse(line)) {
-              currentBlock = currentBlock.superBlock
-              var i = 0
-              while (i < indentation - currentIndentation) {
-                currentBlock = currentBlock.superBlock
-                i += 1
-              }
-              val nextBlock = parser.parse(currentBlock, tokenizer)
-
-              currentBlock.addBlock_$eq(nextBlock)
-              createBlock(nextBlock, br, currentIndentation)
-            }
-          }
-        }
-
-
-    return null
-  }
-
-  /**
-    * Prints block information
-    * @param block
-    * @param indentation
-    */
-  def printBlockInfo(block: Block, indentation: Int = 0) {
-    var indentationString: String = ""
-    var i: Int = 0
-    while (i < indentation) {
-      {
-        indentationString += "    "
-      }
-      {
-        i += 1
-        i - 1
+      else {
+        SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
       }
     }
-    System.out.println(indentationString + block.toString)
-    for (sub <- block.subBlocks) {
-      printBlockInfo(sub, indentation + 1)
+    // Indented out one
+    else if (currentIndentation == (indentation + 1)) {
+
+      if (!currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Block cannot store other blocks.")
+      for (parser <- parsers) {
+        if (parser.shouldParse(line)) {
+          val nextBlock = parser.parse(currentBlock, tokenizer)
+          currentBlock.addBlock_$eq(nextBlock)
+          createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
+        }
+      }
     }
+    else if (currentIndentation == indentation) {
+      // Indentation the same if (indentation == currentIndentation) { if (currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.")
+      for (parser <- parsers) {
+        if (parser.shouldParse(line)) {
+          val nextBlock = parser.parse(currentBlock.superBlock, tokenizer)
+          currentBlock.superBlock.addBlock_$eq(nextBlock)
+          createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
+        }
+      }
+    }
+    else {
+      // Indentation decreases by any amount
+      for (parser <- parsers) {
+        if (parser.shouldParse(line)) {
+          currentBlock = currentBlock.superBlock
+          var i = 0
+          while (i < indentation - currentIndentation) {
+            currentBlock = currentBlock.superBlock
+            i += 1
+          }
+          val nextBlock = parser.parse(currentBlock, tokenizer)
+
+          currentBlock.addBlock_$eq(nextBlock)
+          createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
+        }
+      }
+    }
+
+
+    null
   }
-
-
 }
