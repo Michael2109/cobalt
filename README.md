@@ -19,6 +19,7 @@ We're currently looking for contributors so if you are interested then please ge
 * Classes sealed by default
 * Language design pushes for a strong code structure  
 * Instead of returning "void" return "this" for methods  
+* Explicit return type must be defined for methods
 
 ###Possible Features
 * Primitives are wrapper classes  
