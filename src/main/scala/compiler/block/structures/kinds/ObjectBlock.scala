@@ -13,10 +13,6 @@ import compiler.utilities.Constants
   */
 class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
 
-
-  // Package the class is within
-  private var packageBlock: PackageBlock = new PackageBlock("")
-
   def getName: String = name
 
   def getValue: String = null
@@ -30,14 +26,12 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
 
     val block: Block = superBlock
 
-    // Get the package the class is within
-    for (fileSub <- block.subBlocks) {
-      if (fileSub.isInstanceOf[PackageBlock]) {
-        packageBlock = fileSub.asInstanceOf[PackageBlock]
-      }
-    }
+    // Package the class is within
 
   }
+
+  def packageBlock: PackageBlock = superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
+
 
   def getOpeningCode: String = {
       asm.getClassOpening(name) +

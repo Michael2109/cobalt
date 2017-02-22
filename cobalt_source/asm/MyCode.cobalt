@@ -19,8 +19,7 @@ class MyCode(xx:int, yy:int):
             val myCode: MyCode = new MyCode(z, ty)
             val y: int = 1
             val w: float = 2.0f
-            val stringMethodParam:String = "test"
-            myCode.method1(stringMethodParam)
+            myCode.method1(y)
 
     private:
         def privateMethod(y: int) <- void:

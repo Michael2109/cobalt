@@ -10,16 +10,27 @@ import compiler.utilities.Utils
 
 class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false,false) {
 
-  private var modifier : String = "0"
-  private var parameterString: String = ""
-  private var localVariableString: String = ""
-  private var packageBlock: PackageBlock = null
-  private var static: String = ""
-
-
-  def getParameters: Array[Parameter] = {
-    return params
+  private val modifier : String = {
+    // Check the modifier if it exists
+    if(superBlock.isInstanceOf[ModifierBlock]){
+      if(superBlock.getValue == "private"){
+        "ACC_PRIVATE"
+      }else  if(superBlock.getValue == "public"){
+        "ACC_PUBLIC"
+      }else if(superBlock.getValue == "protected"){
+        "ACC_PROTECTED"
+      }else {
+        "0"
+      }
+    }else{
+      "0"
+    }
   }
+
+  private var parameterString: String = ""
+
+  private var localVariableString: String = ""
+  private var static: String = ""
 
   def getName: String = name
 
@@ -30,23 +41,6 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
   def init() {
 
 
-      // Get the package the class is within
-      for (fileSub <- Utils.getFileBlock(superBlock).subBlocks) {
-        if (fileSub.isInstanceOf[PackageBlock]) {
-          packageBlock = fileSub.asInstanceOf[PackageBlock]
-        }
-      }
-
-    // Check the modifier if it exists
-    if(superBlock.isInstanceOf[ModifierBlock]){
-      if(superBlock.getValue == "private"){
-        modifier = "ACC_PRIVATE"
-      }else  if(superBlock.getValue == "public"){
-        modifier = "ACC_PUBLIC"
-      }else if(superBlock.getValue == "protected"){
-        modifier = "ACC_PROTECTED"
-      }
-    }
 
     if(!Utils.isClass(this)){
       static = "+ACC_STATIC"
@@ -63,6 +57,10 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
     }
 
   }
+
+  // Package the class is within
+  def packageBlock: PackageBlock = Utils.getFileBlock(this).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
+
 
   def getOpeningCode: String = {
     MethodGen.getOpeningCode(name, modifier, static, parameterString)

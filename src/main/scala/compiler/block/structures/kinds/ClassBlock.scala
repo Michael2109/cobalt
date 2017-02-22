@@ -16,10 +16,6 @@ import compiler.utilities.Constants
 class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
 
 
-
-  // Package the class is within
-  private var packageBlock: PackageBlock = new PackageBlock("")
-
   // Parameters added to constuctor
   private var parameterString: String = ""
 
@@ -45,20 +41,20 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
     for (sub <- subBlocks) {
       moveToConstructor(sub)
     }
-    val block: Block = superBlock
-
-    // Get the package the class is within
-    for (fileSub <- block.subBlocks) {
-      if (fileSub.isInstanceOf[PackageBlock]) {
-        packageBlock = fileSub.asInstanceOf[PackageBlock]
-      }
-    }
 
     for (parameter <- parameters) {
       parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
     }
+  }
+
+  /**
+    * Gets the package block
+    * @return
+    */
+  def packageBlock: PackageBlock ={
+    superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
   }
 
   // Moves all blocks that are inside the class and outside methods into the constructor block

@@ -6,9 +6,9 @@ import TokenType.TokenType
 
 import scala.util.matching.Regex
 
-class TokenData(val pattern: Pattern, val `type`: TokenType) {
+class TokenData(val pattern: Regex, val `type`: TokenType) {
 
-  def getPattern: Pattern =  pattern
+  def getPattern: Regex =  pattern
 
   def getType: TokenType = `type`
   

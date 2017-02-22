@@ -110,10 +110,8 @@ public class MyCode{
             mv.visitLdcInsn(new Float(2.0));
             mv.visitVarInsn(FSTORE,72);
 
-            mv.visitVarInsn(ASTORE,73);
-
             mv.visitVarInsn(ALOAD, 70);
-            mv.visitIntInsn(ALOAD, 73);mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(Ljava/lang/String;)V", false);
+            mv.visitIntInsn(ALOAD, 71);mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(I)V", false);
 
             mv.visitInsn(RETURN);
             Label lMethod1 = new Label();
@@ -138,7 +136,7 @@ public class MyCode{
             mv.visitLabel(lMethod0);
 
             mv.visitLdcInsn(new Integer(10));
-            mv.visitVarInsn(ISTORE,77);
+            mv.visitVarInsn(ISTORE,76);
 
             mv.visitInsn(RETURN);
             Label lMethod1 = new Label();
@@ -164,7 +162,7 @@ public class MyCode{
             mv.visitLabel(lMethod0);
 
             mv.visitLdcInsn(new Integer(35));
-            mv.visitVarInsn(ISTORE,79);
+            mv.visitVarInsn(ISTORE,78);
 
             mv.visitInsn(RETURN);
             Label lMethod1 = new Label();
