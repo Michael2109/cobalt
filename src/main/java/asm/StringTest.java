@@ -1,11 +1,12 @@
 package asm;
-import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+
 import java.io.*;
+
 import static org.objectweb.asm.Opcodes.*;
-import org.objectweb.asm.*;
 
 
 public class StringTest{
@@ -52,10 +53,10 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(5));
-mv.visitVarInsn(ISTORE,111);
+       mv.visitVarInsn(ISTORE, 112);
 
-mv.visitLdcInsn("");
-mv.visitVarInsn(ASTORE,112);
+       mv.visitLdcInsn("test");
+       mv.visitVarInsn(ASTORE, 113);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
@@ -72,9 +73,10 @@ return cw.toByteArray();
 }
 
     public static void main(String [] args){
-   new File(new File("cobalt_build/asm/StringTest.class").getParent()).mkdirs();  DataOutputStream dout = null;
+        new File(new File("build/classes/main/asm/StringTest.class").getParent()).mkdirs();
+        DataOutputStream dout = null;
         try {
-            dout = new DataOutputStream(new FileOutputStream("cobalt_build/asm/StringTest.class"));
+            dout = new DataOutputStream(new FileOutputStream("build/classes/main/asm/StringTest.class"));
 
         dout.write(execute());
         dout.flush();

@@ -1,11 +1,12 @@
 package asm;
-import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+
 import java.io.*;
+
 import static org.objectweb.asm.Opcodes.*;
-import org.objectweb.asm.*;
 
 
 public class MyCode{
@@ -68,10 +69,10 @@ mv.visitJumpInsn(IF_ICMPGE, l62);
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
 mv.visitLdcInsn("Hello World!!!");
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+       mv.visitIincInsn(61, 1);
 mv.visitJumpInsn(GOTO, start62);
 mv.visitLabel(l62);
 
-mv.visitIincInsn(61, 1);
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
 mv.visitLabel(lMethod1);
@@ -89,7 +90,7 @@ mv.visitCode();
 Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
-mv.visitLdcInsn("");
+    mv.visitLdcInsn("Thisisastring");
 mv.visitVarInsn(ASTORE,66);
 
 mv.visitLdcInsn(new Integer(10));
@@ -182,9 +183,10 @@ return cw.toByteArray();
 }
 
     public static void main(String [] args){
-   new File(new File("cobalt_build/asm/MyCode.class").getParent()).mkdirs();  DataOutputStream dout = null;
+        new File(new File("build/classes/main/asm/MyCode.class").getParent()).mkdirs();
+        DataOutputStream dout = null;
         try {
-            dout = new DataOutputStream(new FileOutputStream("cobalt_build/asm/MyCode.class"));
+            dout = new DataOutputStream(new FileOutputStream("build/classes/main/asm/MyCode.class"));
 
         dout.write(execute());
         dout.flush();

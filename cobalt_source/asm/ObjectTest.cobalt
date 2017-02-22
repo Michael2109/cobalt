@@ -1,14 +1,15 @@
 package asm
 
-import compiler.block.ifs.IfBlock
+import asm.MyCode
 
 object ObjectTest:
     public:
         def main() <- void:
+            val stringyThing: String = "Thisisastring"
             val z: int = 10
-             val longTest: long
-             val ty: int = 15
-             val myCode: MyCode = new MyCode(z, ty)
-             val y: int = 1
-             val w: float = 2.0f
-             myCode.method1(y)
+            val longTest: long
+            val ty: int = 15
+            val myCode: MyCode = new MyCode(z, ty)
+            val y: int = 1
+            val w: float = 2.0f
+            myCode.method1(stringyThing)

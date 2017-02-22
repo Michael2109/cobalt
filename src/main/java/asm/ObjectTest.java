@@ -1,11 +1,12 @@
 package asm;
-import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+
 import java.io.*;
+
 import static org.objectweb.asm.Opcodes.*;
-import org.objectweb.asm.*;
 
 
 public class ObjectTest{
@@ -20,28 +21,33 @@ mv.visitCode();
 Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
+    mv.visitLdcInsn("Thisisastring");
+    mv.visitVarInsn(ASTORE, 95);
+
 mv.visitLdcInsn(new Integer(10));
-mv.visitVarInsn(ISTORE,95);
+    mv.visitVarInsn(ISTORE, 96);
 
 mv.visitLdcInsn(new Long(0));
-mv.visitVarInsn(LSTORE,96);
+    mv.visitVarInsn(LSTORE, 97);
 
 mv.visitLdcInsn(new Integer(15));
-mv.visitVarInsn(ISTORE,97);
+    mv.visitVarInsn(ISTORE, 98);
 
-mv.visitTypeInsn(NEW, "MyCode");
+    mv.visitTypeInsn(NEW, "asm/MyCode");
 mv.visitInsn(DUP);
-mv.visitIntInsn(ILOAD, 97);mv.visitMethodInsn(INVOKESPECIAL, "MyCode", "<init>", "(I)V", false);
-mv.visitVarInsn(ASTORE,98);
+    mv.visitIntInsn(ILOAD, 98);
+    mv.visitMethodInsn(INVOKESPECIAL, "asm/MyCode", "<init>", "(I)V", false);
+    mv.visitVarInsn(ASTORE, 99);
 
 mv.visitLdcInsn(new Integer(1));
-mv.visitVarInsn(ISTORE,99);
+    mv.visitVarInsn(ISTORE, 100);
 
 mv.visitLdcInsn(new Float(2.0));
-mv.visitVarInsn(FSTORE,100);
+    mv.visitVarInsn(FSTORE, 101);
 
-mv.visitVarInsn(ALOAD, 98);
-mv.visitIntInsn(ALOAD, 99);mv.visitMethodInsn(INVOKEVIRTUAL, "/MyCode", "method1", "(I)V", false);
+    mv.visitVarInsn(ALOAD, 99);
+    mv.visitIntInsn(ALOAD, 95);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "asm/MyCode", "method1", "(Ljava/lang/String;)V", false);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
@@ -58,9 +64,10 @@ return cw.toByteArray();
 }
 
     public static void main(String [] args){
-   new File(new File("cobalt_build/asm/ObjectTest.class").getParent()).mkdirs();  DataOutputStream dout = null;
+        new File(new File("build/classes/main/asm/ObjectTest.class").getParent()).mkdirs();
+        DataOutputStream dout = null;
         try {
-            dout = new DataOutputStream(new FileOutputStream("cobalt_build/asm/ObjectTest.class"));
+            dout = new DataOutputStream(new FileOutputStream("build/classes/main/asm/ObjectTest.class"));
 
         dout.write(execute());
         dout.flush();

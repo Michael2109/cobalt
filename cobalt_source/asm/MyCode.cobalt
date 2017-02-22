@@ -9,8 +9,9 @@ class MyCode(xx:int, yy:int):
         def method1(stringTest:String) <- void:
             print(stringTest)
             val x: int = 5
-            while (x < 10); print("Hello World!!!")
-            x += 1
+            while (x < 10)
+                print("Hello World!!!")
+                x += 1
 
         def main() <- void:
             val stringyThing: String = "Thisisastring"
