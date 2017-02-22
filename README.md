@@ -19,6 +19,7 @@ We're currently looking for contributors so if you are interested then please ge
 * Classes sealed by default
 * Language design pushes for a strong code structure  
 * Instead of returning "void" return "this" for methods  
+* Explicit return type must be defined for methods
 
 ###Possible Features
 * Primitives are wrapper classes  
@@ -26,8 +27,7 @@ We're currently looking for contributors so if you are interested then please ge
 
 #Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
-Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. 
-As the project is in the alpha stages please get in contact to discuss any larger changes and/or features you think would be interesting to include. 
+Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
 
 #Language Specifications
 To view all of the language specifications please view our wiki!  
