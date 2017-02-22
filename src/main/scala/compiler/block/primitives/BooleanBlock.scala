@@ -4,18 +4,18 @@ import compiler.block.Block
 
 class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = name
+  override def getName: String = name
 
-  def getValue: String = value
+  override def getValue: String = value
 
-  def getType: String = "boolean"
+  override def getType: String = "boolean"
 
-  def getOpeningCode: String = asm.visitLdcInsn("new Boolean(" + value + ")") +
+  override def getOpeningCode: String = asm.visitLdcInsn("new Boolean(" + value + ")") +
     asm.visitVarInsn("BASTORE", id)
 
-  def getClosingCode: String = ""
+  override def getClosingCode: String = ""
 
   override def toString: String = "boolean: " + name + " = " + value
 }

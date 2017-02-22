@@ -22,13 +22,15 @@ class AddBlock(var superBlockInit: Block, var name: String, var value: String) e
   def getType: String = "add"
 
   def getOpeningCode: String = {
-    return "mv.visitIincInsn(" + id + ", " + this.getValue + ");"
+  //  asm.visitLdcInsn("new Integer("+this.getValue+");")
+
+     "mv.visitIincInsn(" + id + ", " + this.getValue + ");"
   }
 
   def getValue: String = value
 
   def getClosingCode: String = {
-    return ""
+     ""
   }
 
   override def toString: String = "add: " + name

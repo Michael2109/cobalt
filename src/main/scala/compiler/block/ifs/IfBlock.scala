@@ -17,39 +17,29 @@ class IfBlock(var superBlockInit: Block, var nameInit: String) extends Block(sup
   private val params: Array[Parameter] = null
   private val _name = nameInit
   private val split: Array[String] = _name.split(" ")
-  private var pointer: String = null
-  private var operator: String = null
-  private var value: String = null
-  private var byteCodeOp: String = null
+  private val pointer: String = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this), split(0)).getId
+  private val operator: String = if(split.length > 1) split(1) else ""
+  private val value: String = if(split.length > 1) split(2) else _name
 
-  //  x == 10
-  if (split.length > 1) {
-    pointer = split(0)
-    pointer = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this), split(0)).getId
-    operator = split(1)
-    value = split(2)
+  private val byteCodeOp: String = {
     if (operator == "==") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
+      "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == "<") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
+      "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == ">") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
+      "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == "<=") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
+      "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else if (operator == ">=") {
-      byteCodeOp = "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
+      "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n"
     }
     else {
-      System.out.println("Error: Disallowed Operator" + this.getClass)
+      throw new RuntimeException("Error: Disallowed Operator")
     }
-  }
-  else {
-    //boolean value
-    value = _name
   }
 
   def getParameters: Array[Parameter] = params

@@ -4,20 +4,20 @@ import compiler.block.Block
 
 class IntegerBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = name
+  override def getName: String = name
 
-  def getValue: String = value
+  override def getValue: String = value
 
-  def getType: String = "int"
+  override  def getType: String = "int"
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     asm.visitLdcInsn("new Integer(" + value + ")") +
       asm.visitVarInsn("ISTORE", id)
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 

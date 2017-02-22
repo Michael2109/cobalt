@@ -4,20 +4,20 @@ import compiler.block.Block
 
 class CharacterBlock( superBlockInit: Block, declaration : Boolean, name: String,  value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = name
+  override def getName: String = name
 
-  def getValue: String = value
+  override def getValue: String = value
 
-  def getType: String = "char"
+  override def getType: String = "char"
 
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     return "char " + name + " = '" + value + "';"
   }
 
-  def getClosingCode: String = {
+  override  def getClosingCode: String = {
     return ""
   }
 

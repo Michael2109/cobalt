@@ -4,21 +4,21 @@ import compiler.block.Block
 
 class DoubleBlock(superBlockInit: Block, declaration : Boolean, name: String,  value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = name
+  override def getName: String = name
 
-  def getValue: String = value
+  override  def getValue: String = value
 
-  def getType: String = "double"
+  override def getType: String = "double"
 
-  def getOpeningCode: String = {
-    return "mv.visitLdcInsn(new Double(" + value + "));\n" +
+  override def getOpeningCode: String = {
+    "mv.visitLdcInsn(new Double(" + value + "));\n" +
       "mv.visitVarInsn(DSTORE, " + id + ");"
   }
 
-  def getClosingCode: String = {
-    return ""
+  override def getClosingCode: String = {
+    ""
   }
 
   override def toString: String = "double: " + name + " = " + value

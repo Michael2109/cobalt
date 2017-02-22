@@ -12,6 +12,6 @@ class AddParser extends Parser[AddBlock] {
     val name: String = tokenizer.nextToken.token
     tokenizer.nextToken
     val value: String = tokenizer.nextToken.token
-    return new AddBlock(superBlock, name, value)
+    new AddBlock(superBlock, name, value)
   }
 }

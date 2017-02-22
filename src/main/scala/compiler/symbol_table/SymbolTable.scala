@@ -1,11 +1,9 @@
 package compiler.symbol_table
 
-import java.util.ArrayList
-import java.util.List
-
 import compiler.block.Block
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
 
 object SymbolTable {
   private val SYMBOL_TABLE: SymbolTable = new SymbolTable
@@ -16,17 +14,15 @@ object SymbolTable {
 }
 
 class SymbolTable() {
-  var rows: List[Row] = new ArrayList[Row]
+  var rows: ListBuffer[Row] = new ListBuffer[Row]
 
-  def addRow(row: Row) {
-    rows.add(row)
-  }
+  def addRow(row: Row) = rows += row
 
   def exists(name: String, methodName: String, className: String): Boolean = {
     if (name == null) {
       return false
     }
-    import scala.collection.JavaConversions._
+
     for (r <- rows) {
       if (r.getName == null || r.getMethodName == null || r.getClassName == null) {
 

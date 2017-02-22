@@ -13,6 +13,6 @@ class MultiplyParser extends Parser[MultiplyBlock] {
     val name: String = tokenizer.nextToken.token
     tokenizer.nextToken
     val value: String = tokenizer.nextToken.token
-    return new MultiplyBlock(superBlock, name, value)
+    new MultiplyBlock(superBlock, name, value)
   }
 }

@@ -7,31 +7,27 @@ import compiler.structure.parameters.Parameter
 /**
   * Calling of a method within the class
   */
-class MethodCallBlock(var superBlockInit: Block, var nameInit: String, var typeInit: String, var paramsInit: Array[Parameter]) extends Block(superBlockInit, false, false) {
+class MethodCallBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false) {
 
-  private val _name = nameInit
-  private val _type = typeInit
-  private val _params = paramsInit
-
-  def getParameters: Array[Parameter] = _params
+  def getParameters: Array[Parameter] = params
 
   def init() {}
 
-  def getName: String = _name
+  def getName: String = name
 
   def getValue: String = ""
 
-  def getType: String = _type
+  def getType: String = `type`
 
-  def getOpeningCode: String = _name + "();"
+  def getOpeningCode: String = name + "();"
 
   def getClosingCode: String = ""
 
   override def toString: String = {
     var paramString: String = ""
-    for (parameter <- _params) {
+    for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return "method call: " + _name + " ( " + paramString + ")"
+    return "method call: " + name + " ( " + paramString + ")"
   }
 }

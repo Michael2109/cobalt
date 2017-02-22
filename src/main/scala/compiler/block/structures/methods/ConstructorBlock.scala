@@ -35,19 +35,13 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
     }
   }
 
-  def getName: String = {
-    return "<init>"
-  }
+  override def getName: String = "<init>"
 
-  def getValue: String = {
-    return ""
-  }
+  override def getValue: String = ""
 
-  def getType: String = {
-    return "constructor"
-  }
+  override def getType: String = "constructor"
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     return  asm.getOpeningBrace() +
       asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
       asm.visitCode() +
@@ -66,7 +60,7 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
       "// Is this class an interface?\n" + "\n" + "Label lConstructor2 = new Label();\n" + "mv.visitLabel(lConstructor2);\n" + "\n"
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     return "mv.visitInsn(RETURN);                     " + localVariableString + " // End the constructor method\n" + "mv.visitMaxs(0, 0);\n" + "mv.visitEnd();\n" + "}"
   }
 

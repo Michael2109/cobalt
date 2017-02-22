@@ -5,7 +5,7 @@ import java.io.File
 import compiler.block.Block
 import compiler.block.packages.PackageBlock
 import compiler.generators.structures.FileGen
-import compiler.utilities.Constants
+import compiler.utilities.{Constants, Utils}
 
 /**
   * Represents the whole file.
@@ -21,14 +21,8 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
   def getType: String = "file"
 
   def getOpeningCode: String = {
-    val packageBlock: PackageBlock = {
-      var result = new PackageBlock("")
-      for (sub <- subBlocks)
-        if (sub.isInstanceOf[PackageBlock])
-          result = sub.asInstanceOf[PackageBlock]
-      result
-    }
-    asm.getPackage(packageBlock.directory) +
+
+    asm.getPackage(Utils.packageBlock(this).directory) +
     asm.getImport("java.io.DataOutputStream") +
     asm.getImport("java.io.FileNotFoundException") +
     asm.getImport("java.io.FileOutputStream") +

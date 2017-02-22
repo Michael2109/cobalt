@@ -47,6 +47,13 @@ object Utils {
   }
 
   /**
+    * Gets the PackageBlock
+    * @param block
+    * @return
+    */
+  def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
+
+  /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
     * @param block
     * @return

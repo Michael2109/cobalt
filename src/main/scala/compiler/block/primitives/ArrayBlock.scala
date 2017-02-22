@@ -4,20 +4,20 @@ import compiler.block.Block
 
 class ArrayBlock( superBlockInit: Block, declaration : Boolean, name: String,  value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = name
+  override def getName: String = name
 
-  def getValue: String = value
+  override def getValue: String = value
 
-  def getType: String = "array"
+  override def getType: String = "array"
 
 
-  def getOpeningCode: String = {
+  override  def getOpeningCode: String = {
     return "array " + name + " = '" + value + "';"
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     return ""
   }
 

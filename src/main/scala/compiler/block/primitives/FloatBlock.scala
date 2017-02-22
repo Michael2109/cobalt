@@ -4,27 +4,27 @@ import compiler.block.Block
 
 class FloatBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = {
-    return name
+  override def getName: String = {
+    name
   }
 
-  def getValue: String = {
-    return value
+  override def getValue: String = {
+    value
   }
 
-  def getType: String = {
-    return "float"
+  override def getType: String = {
+    "float"
   }
 
-  def getOpeningCode: String = {
-    return asm.visitLdcInsn("new Float(" + value + ")") +
+  override def getOpeningCode: String = {
+    asm.visitLdcInsn("new Float(" + value + ")") +
       asm.visitVarInsn("FSTORE", id);
   }
 
-  def getClosingCode: String = {
-    return ""
+  override def getClosingCode: String = {
+    ""
   }
 
   override def toString: String = "float: " + name + " = " + value

@@ -10,7 +10,7 @@ import compiler.utilities.Utils
 
 class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false,false) {
 
-  private val modifier : String = {
+  val modifier : String = {
     // Check the modifier if it exists
     if(superBlock.isInstanceOf[ModifierBlock]){
       if(superBlock.getValue == "private"){
@@ -27,10 +27,9 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
     }
   }
 
-  private var parameterString: String = ""
+  val parameterString: String = params.map(_.getAsmType).mkString("")
 
-  private var localVariableString: String = ""
-  private var static: String = ""
+  var localVariableString: String = ""
 
   def getName: String = name
 
@@ -40,15 +39,8 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def init() {
 
-
-
-    if(!Utils.isClass(this)){
-      static = "+ACC_STATIC"
-    }
-
     var i = 1
     for (parameter <- params) {
-      parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS += 1
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + i + ");\n"
       SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(i).setName(parameter.getName))
@@ -58,17 +50,17 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   }
 
-  // Package the class is within
-  def packageBlock: PackageBlock = Utils.getFileBlock(this).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
+
+  def static: String = if(!Utils.isClass(this))"+ACC_STATIC" else ""
 
   def getOpeningCode: String = {
-    MethodGen.getOpeningCode(name, modifier, static, parameterString)
+    MethodGen.getOpeningCode(this)
   }
 
 
   def getClosingCode: String = {
-    MethodGen.getClosingCode(name, packageBlock.directory, localVariableString)
+    MethodGen.getClosingCode(this)
   }
 
 

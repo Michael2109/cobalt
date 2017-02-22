@@ -4,20 +4,20 @@ import compiler.block.Block
 
 class StringBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
-  def init() {}
+  override def init() {}
 
-  def getName: String = name
+  override def getName: String = name
 
-  def getValue: String = value
+  override def getValue: String = value
 
-  def getType: String = "String"
+  override def getType: String = "String"
 
-  def getOpeningCode: String = {
-    asm.visitLdcInsn("\"\"")
+  override def getOpeningCode: String = {
+    asm.visitLdcInsn("\"\"")+
       asm.visitVarInsn("ASTORE", id)
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
