@@ -5,7 +5,7 @@ import asm.MyCode
 object ObjectTest:
     public:
         def main() <- void:
-            val stringyThing: String = "Thisisastring"
+            val stringyThing: String = "TEST"
             val z: int = 10
             val longTest: long
             val ty: int = 15
