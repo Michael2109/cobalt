@@ -1,3 +1,21 @@
+/*
+ * Cobalt Programming Language Compiler
+ * Copyright (C) 2017  Michael Haywood
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package compiler.runtime
 
 import java.io._
@@ -9,9 +27,9 @@ import compiler.block.loops.WhileBlock
 import compiler.block.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
 import compiler.block.packages.PackageBlock
 import compiler.block.prints.PrintBlock
-import compiler.block.structures.{FileBlock, ObjectMethodCallBlock}
 import compiler.block.structures.kinds.ClassBlock
 import compiler.block.structures.methods.MethodBlock
+import compiler.block.structures.{FileBlock, ObjectMethodCallBlock}
 import compiler.exceptions.{ContainerException, DeclarationException, IndentationException}
 import compiler.parser.Parser
 import compiler.parser.comments.CommentParser
@@ -23,9 +41,9 @@ import compiler.parser.operators.{AddParser, DivideParser, MultiplyParser, Subtr
 import compiler.parser.packages.PackageParser
 import compiler.parser.primitives._
 import compiler.parser.prints.PrintParser
-import compiler.parser.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.parser.structures.kinds.{ClassParser, ObjectParser}
 import compiler.parser.structures.methods.MethodParser
+import compiler.parser.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils
