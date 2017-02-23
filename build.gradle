@@ -27,8 +27,6 @@ sourceSets {
             srcDirs = []
         }
     }
-
-
 }
 
 javadoc {
