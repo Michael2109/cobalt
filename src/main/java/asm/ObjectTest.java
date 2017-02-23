@@ -21,7 +21,7 @@ mv.visitCode();
 Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
-    mv.visitLdcInsn("Thisisastring");
+    mv.visitLdcInsn("TEST");
     mv.visitVarInsn(ASTORE, 95);
 
 mv.visitLdcInsn(new Integer(10));
