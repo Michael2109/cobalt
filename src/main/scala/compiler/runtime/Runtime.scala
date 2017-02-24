@@ -109,6 +109,8 @@ class Runtime {
         if (line.trim == "")
           line = br.readLine()
 
+        val fileBlock: Block = new FileBlock(sourceFile.getName, buildDir)
+
         for (parser <- parsers) {
 
           if (parser.shouldParse(line.trim)) {
@@ -122,13 +124,12 @@ class Runtime {
             }
             else {
               readImports = true
+              block.superBlock_=(fileBlock)
               createBlock(block, br)
             }
           }
         }
 
-        val fileBlock: Block = new FileBlock(sourceFile.getName, buildDir)
-        block.superBlock_$eq(fileBlock)
         if (packageBlock != null) fileBlock.addBlock_$eq(packageBlock)
 
         for (importBlock <- imports.asScala) fileBlock.addBlock_$eq(importBlock)
