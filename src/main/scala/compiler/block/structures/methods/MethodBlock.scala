@@ -25,23 +25,17 @@ import compiler.structure.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
-class MethodBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false,false) {
+class MethodBlock(var superBlockInit: Block, var name: String, var returnType: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
 
   val modifier : String = {
+
     // Check the modifier if it exists
-    if(superBlock.isInstanceOf[ModifierBlock]){
-      if(superBlock.getValue == "private"){
-        "ACC_PRIVATE"
-      }else  if(superBlock.getValue == "public"){
-        "ACC_PUBLIC"
-      }else if(superBlock.getValue == "protected"){
-        "ACC_PROTECTED"
-      }else {
-        "0"
-      }
-    }else{
-      "0"
-    }
+    if (superBlock.isInstanceOf[ModifierBlock]) {
+      if (superBlock.getValue == "private") "ACC_PRIVATE"
+      else if (superBlock.getValue == "public") "ACC_PUBLIC"
+      else if (superBlock.getValue == "protected") "ACC_PROTECTED"
+      else "0"
+    } else "0"
   }
 
   val parameterString: String = params.map(_.getAsmType).mkString("")
@@ -50,7 +44,7 @@ class MethodBlock(var superBlockInit: Block, var name: String, var `type`: Strin
 
   def getName: String = name
 
-  def getType: String = `type`
+  def getType: String = returnType
 
   def getValue: String = ""
 

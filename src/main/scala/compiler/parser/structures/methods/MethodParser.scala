@@ -46,7 +46,7 @@ class MethodParser extends Parser[MethodBlock] {
 
     tokenizer.nextToken // skip "-"
 
-    val `type`: String = tokenizer.nextToken.token // method return type
-    return new MethodBlock(superBlock, name, `type`, parameters.toArray)
+    val returnType: String = tokenizer.nextToken.token // method return type
+    return new MethodBlock(superBlock, name, returnType, parameters.toArray)
   }
 }

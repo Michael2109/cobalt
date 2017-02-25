@@ -41,6 +41,7 @@ import compiler.parser.operators.{AddParser, DivideParser, MultiplyParser, Subtr
 import compiler.parser.packages.PackageParser
 import compiler.parser.primitives._
 import compiler.parser.prints.PrintParser
+import compiler.parser.push.PushParser
 import compiler.parser.structures.kinds.{ClassParser, ObjectParser}
 import compiler.parser.structures.methods.MethodParser
 import compiler.parser.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
@@ -84,7 +85,8 @@ class Runtime {
     new PackageParser,
     // Kinds Parsers
     new ObjectParser,
-    new ClassParser
+    new ClassParser,
+    new PushParser
   )
 
   private var block: Block = null
