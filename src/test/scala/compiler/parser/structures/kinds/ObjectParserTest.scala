@@ -18,30 +18,6 @@
 
 package compiler.parser.structures.kinds
 
-import compiler.block.Block
-import compiler.block.structures.kinds.ObjectBlockTest
-import compiler.parser.ParserTest
-import compiler.structure.parameters.ParametersTest
-import compiler.tokenizer.TokenizerTest
+class ObjectParserTest {
 
-class ObjectParserTest extends ParserTest[ObjectBlockTest] {
-
-  def shouldParse(line: String): Boolean = {
-    line.matches("object[ ]+[a-zA-Z][a-zA-Z0-9]*:[ ]*")
-  }
-
-  def parse(superBlock: Block, tokenizer: TokenizerTest): ObjectBlockTest = {
-    tokenizer.nextToken
-    val objectName: String = tokenizer.nextToken.token
-
-    val parameters = new ParametersTest().getParameters("")
-
-    val parentClass = "java/lang/Object"
-
-
-    val implementedClasses = ""
-
-
-    return new ObjectBlockTest(superBlock, objectName, parameters.toArray, parentClass, implementedClasses)
-  }
 }

@@ -32,6 +32,7 @@ class Tokenizer(var str: String) {
     new TokenData("^([*][=])".r, TokenType.MULTIPLY_OPERATOR),
     new TokenData("^([/][=])".r, TokenType.DIVIDE_OPERATOR),
     new TokenData("^(\".*\")".r, TokenType.STRING_LITERAL),
+    new TokenData("^(\'.\')".r, TokenType.CHARACTER_LITERAL),
     new TokenData("^([;])".r, TokenType.END_STATEMENT),
     new TokenData("^([:])".r, TokenType.COLON),
     new TokenData("^([==])".r, TokenType.EQUAL_TO),
@@ -57,8 +58,12 @@ class Tokenizer(var str: String) {
         if (matched.isDefined) {
           val token: String = matched.getOrElse("")
           str = str.replace(token, "")
-          if (data.getType eq TokenType.STRING_LITERAL) {
+          if (data.getType == TokenType.STRING_LITERAL) {
             return new Token(token.substring(1, token.length - 1), TokenType.STRING_LITERAL)
+          }
+          else if (data.getType == TokenType.CHARACTER_LITERAL) {
+            return new Token(token.substring(1, token.length - 1), TokenType.CHARACTER_LITERAL)
+
           }
           else {
             return new Token(token, data.getType)

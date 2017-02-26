@@ -18,24 +18,56 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.CharacterBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.block.primitives.CharacterBlock
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class CharacterParserTest extends ParserTest[CharacterBlockTest] {
+@RunWith(classOf[JUnitRunner])
+class CharacterParserTest extends FunSuite with BeforeAndAfter {
 
-  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*char[ ]*[=][ ]*'[a-zA-Z0-9]'[ ]*")
+  val parser = new CharacterParser
 
-  def parse(superBlock: Block, tokenizer: TokenizerTest): CharacterBlockTest = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name: String = tokenizer.nextToken.token //get name
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "char"
-    tokenizer.nextToken
-    // skip "="
-    val value: String = tokenizer.nextToken.token
-    new CharacterBlockTest(superBlock, declaration, name, value)
+  val linesInit = List(
+    "val x = \'z\'",
+    "val x:char = \'z\'",
+    "var x = \'z\'",
+    "var x:char = \'z\'"
+  )
+
+  val lines = List(
+    "val x:char",
+    "var x:char"
+  )
+
+  test("Should parse init 'z'") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation init 'z'") {
+
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "z")
+      assert(block.isInstanceOf[CharacterBlock])
+    }
+  }
+  test("Block creation no init") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "a")
+      assert(block.isInstanceOf[CharacterBlock])
+    }
   }
 }

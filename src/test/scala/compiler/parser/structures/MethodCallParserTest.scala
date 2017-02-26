@@ -18,20 +18,9 @@
 
 package compiler.parser.structures
 
-import compiler.block.Block
-import compiler.block.structures.MethodCallBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
-
 /**
   * Calls a method inside a class
   */
-class MethodCallParserTest extends ParserTest[MethodCallBlockTest] {
+class MethodCallParserTest {
 
-  def shouldParse(line: String): Boolean = line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*\\(\\)[ ]*")
-
-  def parse(superBlock: Block, tokenizer: TokenizerTest): MethodCallBlockTest = {
-    val name: String = tokenizer.nextToken.token // Get the string value of the next token.
-    return new MethodCallBlockTest(superBlock, name, "method_call", null)
-  }
 }

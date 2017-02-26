@@ -18,44 +18,6 @@
 
 package compiler.structure.parameters
 
-import compiler.tokenizer.TokenizerTest
-
-import scala.collection.mutable.ListBuffer
-
 class ParametersTest {
 
-  // Loop through tokens to get each parameter. Add each parameter to a list
-  def getParameters(line: String): ListBuffer[ParameterTest] = {
-
-    val result: ListBuffer[ParameterTest] = new ListBuffer[ParameterTest]
-
-    val tokenizer = new TokenizerTest(line)
-
-    var nextToken: String = tokenizer.nextToken.token
-    var paramType: String = ""
-    var paramName: String = ""
-
-    var typeNext = false
-    while (nextToken != "") {
-
-      if (nextToken == ",") {
-        nextToken = tokenizer.nextToken.token
-      } else {
-        if (nextToken == ":") {
-          typeNext = true
-        }
-        else if (typeNext) {
-          paramType = nextToken.trim
-          typeNext = false
-          result += new ParameterTest(paramType, paramName)
-        }
-        else {
-          paramName = nextToken.trim
-        }
-        nextToken = tokenizer.nextToken.token
-      }
-    }
-
-    return result
-  }
 }

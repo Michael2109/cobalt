@@ -18,18 +18,6 @@
 
 package compiler.parser.operators
 
-import compiler.block.Block
-import compiler.block.operators.DivideBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+class DivideParserTest {
 
-class DivideParserTest extends ParserTest[DivideBlockTest] {
-  def shouldParse(line: String): Boolean = line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*[/][=][ ]*[0-9]+")
-
-  def parse(superBlock: Block, tokenizer: TokenizerTest): DivideBlockTest = {
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken
-    val value: String = tokenizer.nextToken.token
-    new DivideBlockTest(superBlock, name, value)
-  }
 }

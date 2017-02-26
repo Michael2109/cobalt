@@ -25,15 +25,27 @@ import compiler.tokenizer.Tokenizer
 
 class CharacterParser extends Parser[CharacterBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*char[ ]*[=][ ]*'[a-zA-Z0-9]'[ ]*")
+  def shouldParse(line: String): Boolean = {
+    (line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*char)?[ ]*[=][ ]*\'[a-zA-Z0-9]\'")
+      ||
+      line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*char[ ]*([=][ ]*\'[a-zA-Z0-9]\')?"))
+  }
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CharacterBlock = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
-    val name: String = tokenizer.nextToken.token //get name
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "char"
-    tokenizer.nextToken // skip "="
-    val value: String = tokenizer.nextToken.token
-    new CharacterBlock(superBlock, declaration,name, value)
+    val declaration: Boolean = tokenizer.nextToken.token == "val"
+    // "val" or "var"
+    val name: String = tokenizer.nextToken.token
+    if (tokenizer.nextToken.token == ":") {
+      // skip ":"
+      tokenizer.nextToken // skip "char"
+      tokenizer.nextToken // skip "="
+    }
+    val value: String = {
+      val t = tokenizer.nextToken.token
+      if (t == "") "a" else t
+    }
+
+    new CharacterBlock(superBlock, declaration, name, value)
   }
+
 }

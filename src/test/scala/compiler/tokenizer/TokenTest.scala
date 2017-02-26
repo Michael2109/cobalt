@@ -18,14 +18,6 @@
 
 package compiler.tokenizer
 
-import compiler.tokenizer.TokenTypeTest.TokenType
-
-class TokenTest(val _token: String, val _type: TokenType) {
-
-  def token: String = _token
-
-  def tokenType: TokenType = _type
-
-  override def toString: String = _token
+class TokenTest() {
 
 }
