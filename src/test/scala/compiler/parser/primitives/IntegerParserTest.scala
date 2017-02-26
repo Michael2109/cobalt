@@ -18,6 +18,7 @@
 
 package compiler.parser.primitives
 
+import compiler.block.primitives.IntegerBlock
 import compiler.tokenizer.Tokenizer
 import org.junit.runner.RunWith
 import org.scalatest._
@@ -36,9 +37,7 @@ class IntegerParserTest extends FunSuite with BeforeAndAfter {
   )
 
   val lines = List(
-    "val x",
     "val x:int",
-    "var x",
     "var x:int"
   )
 
@@ -59,16 +58,16 @@ class IntegerParserTest extends FunSuite with BeforeAndAfter {
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
-      assert(block.getType == "int")
       assert(block.getValue == "10")
+      assert(block.isInstanceOf[IntegerBlock])
     }
   }
   test("Block creation no init") {
     for (line <- lines) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
-      assert(block.getType == "int")
       assert(block.getValue == "0")
+      assert(block.isInstanceOf[IntegerBlock])
     }
   }
 }

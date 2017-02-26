@@ -18,25 +18,56 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.DoubleBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.block.primitives.DoubleBlock
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class DoubleParserTest extends ParserTest[DoubleBlockTest] {
-  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*double[ ]*[=][ ]*[0-9]+[.][0-9]*[ ]*")
+@RunWith(classOf[JUnitRunner])
+class DoubleParserTest extends FunSuite with BeforeAndAfter {
 
-  def parse(superBlock: Block, tokenizer: TokenizerTest): DoubleBlockTest = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "double"
-    tokenizer.nextToken
-    // skip "="
-    var value: String = tokenizer.nextToken.token
-    tokenizer.nextToken
-    value += "." + tokenizer.nextToken.token
-    new DoubleBlockTest(superBlock, declaration, name, value)
+  val parser = new DoubleParser
+
+  val linesInit = List(
+    "val x = 10.0",
+    "val x:double = 10.0",
+    "var x = 10.0",
+    "var x:double = 10.0"
+  )
+
+  val lines = List(
+    "val x:double",
+    "var x:double"
+  )
+
+  test("Should parse init 10") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation init 10") {
+
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "10.0")
+      assert(block.isInstanceOf[DoubleBlock])
+    }
+  }
+  test("Block creation no init") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "0.0")
+      assert(block.isInstanceOf[DoubleBlock])
+    }
   }
 }

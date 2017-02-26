@@ -18,6 +18,7 @@
 
 package compiler.parser.primitives
 
+import compiler.block.primitives.BooleanBlock
 import compiler.tokenizer.Tokenizer
 import org.junit.runner.RunWith
 import org.scalatest._
@@ -43,9 +44,7 @@ class BooleanParserTest extends FunSuite with BeforeAndAfter {
   )
 
   val lines = List(
-    "val x",
     "val x:boolean",
-    "var x",
     "var x:boolean"
   )
 
@@ -71,8 +70,8 @@ class BooleanParserTest extends FunSuite with BeforeAndAfter {
     for (line <- linesInitTrue) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
-      assert(block.getType == "boolean")
       assert(block.getValue == "true")
+      assert(block.isInstanceOf[BooleanBlock])
     }
   }
 
@@ -80,16 +79,16 @@ class BooleanParserTest extends FunSuite with BeforeAndAfter {
     for (line <- linesInitFalse) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
-      assert(block.getType == "boolean")
       assert(block.getValue == "false")
+      assert(block.isInstanceOf[BooleanBlock])
     }
   }
   test("Block creation uninitialized") {
     for (line <- lines) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
-      assert(block.getType == "boolean")
       assert(block.getValue == "false")
+      assert(block.isInstanceOf[BooleanBlock])
     }
   }
 }
