@@ -18,27 +18,56 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.StringBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.block.primitives.StringBlock
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class StringParserTest extends ParserTest[StringBlockTest] {
+@RunWith(classOf[JUnitRunner])
+class StringParserTest extends FunSuite with BeforeAndAfter {
 
-  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*String[ ]*[=][ ]*\"[a-zA-Z0-9]*\"[ ]*")
+  val parser = new StringParser
 
-  def parse(superBlock: Block, tokenizer: TokenizerTest): StringBlockTest = {
+  val linesInit = List(
+    "val x = \"Test\"",
+    "val x:String = \"Test\"",
+    "var x = \"Test\"",
+    "var x:String = \"Test\""
+  )
 
-    val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
+  val lines = List(
+    "val x:String",
+    "var x:String"
+  )
 
-    val name: String = tokenizer.nextToken.token
+  test("Should parse init 10") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
+    }
+  }
 
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "String"
-    tokenizer.nextToken // skip "="
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
 
-    val value: String = tokenizer.nextToken.token
+  test("Block creation init 10") {
 
-    new StringBlockTest(superBlock, declaration, name, value)
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "Test")
+      assert(block.isInstanceOf[StringBlock])
+    }
+  }
+  test("Block creation no init") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "")
+      assert(block.isInstanceOf[StringBlock])
+    }
   }
 }

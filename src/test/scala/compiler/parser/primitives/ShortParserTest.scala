@@ -18,45 +18,58 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.ShortBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.block.primitives.ShortBlock
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
+class ShortParserTest extends FunSuite with BeforeAndAfter {
 
-class ShortParserTest extends ParserTest[ShortBlockTest] {
+  val parser = new ShortParser
 
-  //TODO show how to set default values
+  val linesInit = List(
+    "val x = 10s",
+    "val x = 10S",
+    "val x:short = 10",
+    "var x = 10s",
+    "var x = 10S",
+    "var x:short = 10"
+  )
 
-  /**
-    * Takes a line and checks to see ifs it is for this parser by using regex.
-    */
-  override def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*short[ ]*([=][ ]*[0-9]+[ ]*)?")
+  val lines = List(
+    "val x:short",
+    "var x:short"
+  )
 
-  /**
-    * Take the superBlock and the tokenizer for the line and return a block of this parser's type.
-    */
-  override def parse(superBlock: Block, tokenizer: TokenizerTest): ShortBlockTest = {
-
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "short"
-    tokenizer.nextToken // skip "="
-
-    val value: String = {
-      val t: String = tokenizer.nextToken.token
-      if (t == "") {
-        "0"
-      } else {
-        t
-      }
+  test("Should parse init 10") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
     }
-
-
-    new ShortBlockTest(superBlock, declaration, name, value)
-
   }
 
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation init 10") {
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "10s" || block.getValue == "10S")
+      assert(block.isInstanceOf[ShortBlock])
+    }
+  }
+
+  test("Block creation no init") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "0s" || block.getValue == "0S")
+      assert(block.isInstanceOf[ShortBlock])
+    }
+  }
 }
