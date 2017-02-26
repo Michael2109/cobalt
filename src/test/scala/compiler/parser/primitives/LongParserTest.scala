@@ -18,36 +18,56 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.LongBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.block.primitives.LongBlock
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class LongParserTest extends ParserTest[LongBlockTest] {
+@RunWith(classOf[JUnitRunner])
+class LongParserTest extends FunSuite with BeforeAndAfter {
 
-  /**
-    * Takes a line and checks to see ifs it is for this parser by using regex.
-    */
+  val parser = new LongParser
 
-  //var longTest:long = 10
-  override def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*long[ ]*([=][ ]*[0-9]+[ ]*)?")
+  val linesInit = List(
+    "val x = 10l",
+    "val x:long = 10",
+    "var x = 10l",
+    "var x:long = 10"
+  )
 
-  /**
-    * Take the superBlock and the tokenizer for the line and return a block of this parser's type.
-    */
-  override def parse(superBlock: Block, tokenizer: TokenizerTest): LongBlockTest = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name = tokenizer.nextToken.token // longTest
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "long"
-    tokenizer.nextToken
-    // skip "="
-    var value = tokenizer.nextToken.token // 10
+  val lines = List(
+    "val x:long",
+    "var x:long"
+  )
 
-    if (value.equals(""))
-      value = "0"
+  test("Should parse init 10") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
+    }
+  }
 
-    new LongBlockTest(superBlock, declaration, name, value)
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation init 10") {
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "10l" || block.getValue == "10L")
+      assert(block.isInstanceOf[LongBlock])
+    }
+  }
+
+  test("Block creation no init") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "0l" || block.getValue == "0L")
+      assert(block.isInstanceOf[LongBlock])
+    }
   }
 }

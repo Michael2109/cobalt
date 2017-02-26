@@ -18,25 +18,56 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.FloatBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.block.primitives.FloatBlock
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class FloatParserTest extends ParserTest[FloatBlockTest] {
-  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*float[ ]*[=][ ]*[0-9]+[.][0-9]*f[ ]*")
+@RunWith(classOf[JUnitRunner])
+class FloatParserTest extends FunSuite with BeforeAndAfter {
 
-  def parse(superBlock: Block, tokenizer: TokenizerTest): FloatBlockTest = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "float"
-    tokenizer.nextToken
-    // skip "="
-    var value: String = tokenizer.nextToken.token
-    tokenizer.nextToken
-    value += "." + tokenizer.nextToken.token
-    new FloatBlockTest(superBlock, declaration, name, value)
+  val parser = new FloatParser
+
+  val linesInit = List(
+    "val x = 10.0f",
+    "val x:float = 10.0f",
+    "var x = 10.0f",
+    "var x:float = 10.0f"
+  )
+
+  val lines = List(
+    "val x:float",
+    "var x:float"
+  )
+
+  test("Should parse init 10") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation init 10") {
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "10.0f")
+      assert(block.isInstanceOf[FloatBlock])
+    }
+  }
+
+  test("Block creation no init") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getValue == "0.0f")
+      assert(block.isInstanceOf[FloatBlock])
+    }
   }
 }

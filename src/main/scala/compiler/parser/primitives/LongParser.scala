@@ -30,7 +30,12 @@ class LongParser extends Parser[LongBlock]{
     */
 
   //var longTest:long = 10
-  override def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*long[ ]*([=][ ]*[0-9]+[ ]*)?")
+  override def shouldParse(line: String): Boolean = {
+    (line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[0-9]+(l|L)[ ]*")
+      ||
+      line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*long[ ]*([=][ ]*[0-9]+(l|L)?[ ]*)?"))
+  }
+
 
   /**
     * Take the superBlock and the tokenizer for the line and return a block of this parser's type.
@@ -38,14 +43,17 @@ class LongParser extends Parser[LongBlock]{
   override def parse(superBlock: Block, tokenizer: Tokenizer): LongBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val name = tokenizer.nextToken.token // longTest
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "long"
-    tokenizer.nextToken // skip "="
-    var value = tokenizer.nextToken.token // 10
-
-    if(value.equals(""))
-      value = "0"
-
+    if (tokenizer.nextToken.token == ":") {
+      // skip ":"
+      tokenizer.nextToken // skip "double"
+      tokenizer.nextToken // skip "="
+    }
+    val value: String = {
+      val t = tokenizer.nextToken.token
+      if (t == "") "0L" else {
+        t + "L"
+      }
+    }
     new LongBlock(superBlock, declaration,name, value)
   }
 }
