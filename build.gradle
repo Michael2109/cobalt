@@ -27,6 +27,12 @@ sourceSets {
             srcDirs = []
         }
     }
+
+    test {
+        scala {
+            include "**/*Test.scala"
+        }
+    }
 }
 
 javadoc {

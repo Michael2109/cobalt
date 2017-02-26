@@ -141,7 +141,7 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(10));
-       mv.visitVarInsn(ISTORE, 77);
+       mv.visitVarInsn(ISTORE, 78);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
@@ -167,7 +167,7 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(35));
-       mv.visitVarInsn(ISTORE, 79);
+       mv.visitVarInsn(ISTORE, 80);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();

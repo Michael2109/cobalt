@@ -27,6 +27,7 @@ import compiler.block.loops.WhileBlock
 import compiler.block.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
 import compiler.block.packages.PackageBlock
 import compiler.block.prints.PrintBlock
+import compiler.block.push.PushBlock
 import compiler.block.structures.kinds.ClassBlock
 import compiler.block.structures.methods.MethodBlock
 import compiler.block.structures.{FileBlock, ObjectMethodCallBlock}
@@ -207,7 +208,7 @@ class Runtime {
     if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
     if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
     // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
-    if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
+    if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock] && !currentBlock.isInstanceOf[PushBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
       throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined." + line)
     }
     else {

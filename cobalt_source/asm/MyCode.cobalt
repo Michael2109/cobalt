@@ -22,6 +22,7 @@ class MyCode(xx:int, yy:int):
             val y: int = 1
             val w: float = 2.0f
             myCode.method1(stringyThing)
+            myCode
 
     private:
         def privateMethod(y: int) <- void:

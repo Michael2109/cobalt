@@ -19,8 +19,12 @@
 package compiler.block.push
 
 import compiler.block.Block
+import compiler.symbol_table.SymbolTable
+import compiler.utilities.Utils
 
 class PushBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
+
+  val pushId = SymbolTable.getInstance.getValue(Utils.getMethod(this), value).getId
   // Called after file is parsed
   override def init(): Unit = {}
 
@@ -39,4 +43,6 @@ class PushBlock(var superBlockInit: Block, var value: String, val isVariableInit
   override def getClosingCode: String = {
     ""
   }
+
+  override def toString: String = "push " + value + " " + pushId
 }

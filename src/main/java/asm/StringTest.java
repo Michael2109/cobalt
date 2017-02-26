@@ -53,10 +53,10 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitLdcInsn(new Integer(5));
-       mv.visitVarInsn(ISTORE, 113);
+       mv.visitVarInsn(ISTORE, 114);
 
        mv.visitLdcInsn("test");
-       mv.visitVarInsn(ASTORE, 114);
+       mv.visitVarInsn(ASTORE, 115);
 
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
