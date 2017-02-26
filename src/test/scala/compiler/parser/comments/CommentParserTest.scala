@@ -18,17 +18,6 @@
 
 package compiler.parser.comments
 
-import junit.framework.TestCase
-
-class CommentParserTest extends TestCase {
-
-
-  override def setUp {
-
-  }
-
-  def testOneTopping {
-
-  }
+class CommentParserTest {
 
 }
