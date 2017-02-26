@@ -9,7 +9,7 @@ Currently the project is at the initial stages but is built on a very strong str
 We're currently looking for contributors so if you are interested then please get in contact!
 
 #Main Features
-* Immutable
+* Immutable by default
 * Thread Safe - Automatic Synchronization  
 * Simplistic Asynchronous Programming  
 * High readability   
