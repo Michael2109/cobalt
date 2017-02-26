@@ -18,25 +18,53 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.IntegerBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class IntegerParserTest extends ParserTest[IntegerBlockTest] {
+@RunWith(classOf[JUnitRunner])
+class IntegerParserTest extends FunSuite with BeforeAndAfter {
 
-  // todo show how to set default values
-  def shouldParse(line: String): Boolean = line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*int[ ]*[=][ ]*[0-9]+[ ]*")
+  val parser = new IntegerParser
 
-  def parse(superBlock: Block, tokenizer: TokenizerTest): IntegerBlockTest = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "int"
-    tokenizer.nextToken
-    // skip "="
-    val value: String = tokenizer.nextToken.token
-    new IntegerBlockTest(superBlock, declaration, name, value)
+  val linesInit = List(
+    "val x = 10",
+    "val x:int = 10",
+    "var x = 10",
+    "var x:int = 10"
+  )
+
+  val lines = List(
+    "val x",
+    "val x:int",
+    "var x",
+    "var x:int"
+  )
+
+  test("IntegerParser should parse an Integer definition") {
+    for (line <- linesInit) {
+      assert(parser.shouldParse(line))
+    }
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation test") {
+
+    for (line <- linesInit) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getType == "int")
+      assert(block.getValue == "10")
+    }
+
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getType == "int")
+      assert(block.getValue == "0")
+    }
   }
 }
