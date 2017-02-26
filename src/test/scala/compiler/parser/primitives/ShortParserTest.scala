@@ -43,7 +43,7 @@ class ShortParserTest extends FunSuite with BeforeAndAfter {
     "var x:short"
   )
 
-  test("Should parse init 10") {
+  test("Should parse init 10S") {
     for (line <- linesInit) {
       assert(parser.shouldParse(line))
     }
@@ -55,7 +55,7 @@ class ShortParserTest extends FunSuite with BeforeAndAfter {
     }
   }
 
-  test("Block creation init 10") {
+  test("Block creation init 10S") {
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")

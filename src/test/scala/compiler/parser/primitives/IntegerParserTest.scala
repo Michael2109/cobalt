@@ -54,7 +54,6 @@ class IntegerParserTest extends FunSuite with BeforeAndAfter {
   }
 
   test("Block creation init 10") {
-
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
@@ -62,6 +61,7 @@ class IntegerParserTest extends FunSuite with BeforeAndAfter {
       assert(block.isInstanceOf[IntegerBlock])
     }
   }
+
   test("Block creation no init") {
     for (line <- lines) {
       val block = parser.parse(null, new Tokenizer(line))

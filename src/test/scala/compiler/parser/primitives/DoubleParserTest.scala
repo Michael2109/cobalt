@@ -41,7 +41,7 @@ class DoubleParserTest extends FunSuite with BeforeAndAfter {
     "var x:double"
   )
 
-  test("Should parse init 10") {
+  test("Should parse init 10.0") {
     for (line <- linesInit) {
       assert(parser.shouldParse(line))
     }
@@ -53,7 +53,7 @@ class DoubleParserTest extends FunSuite with BeforeAndAfter {
     }
   }
 
-  test("Block creation init 10") {
+  test("Block creation init 10.0") {
 
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))

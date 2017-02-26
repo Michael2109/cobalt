@@ -54,7 +54,6 @@ class CharacterParserTest extends FunSuite with BeforeAndAfter {
   }
 
   test("Block creation init 'z'") {
-
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
@@ -62,6 +61,7 @@ class CharacterParserTest extends FunSuite with BeforeAndAfter {
       assert(block.isInstanceOf[CharacterBlock])
     }
   }
+
   test("Block creation no init") {
     for (line <- lines) {
       val block = parser.parse(null, new Tokenizer(line))

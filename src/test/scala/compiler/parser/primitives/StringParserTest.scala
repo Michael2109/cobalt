@@ -41,7 +41,7 @@ class StringParserTest extends FunSuite with BeforeAndAfter {
     "var x:String"
   )
 
-  test("Should parse init 10") {
+  test("Should parse init \"Test\"") {
     for (line <- linesInit) {
       assert(parser.shouldParse(line))
     }
@@ -53,7 +53,7 @@ class StringParserTest extends FunSuite with BeforeAndAfter {
     }
   }
 
-  test("Block creation init 10") {
+  test("Block creation init \"Test\"") {
 
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
