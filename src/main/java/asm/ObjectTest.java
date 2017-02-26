@@ -27,7 +27,7 @@ mv.visitLabel(lMethod0);
 mv.visitLdcInsn(new Integer(10));
     mv.visitVarInsn(ISTORE, 98);
 
-mv.visitLdcInsn(new Long(0));
+    mv.visitLdcInsn(new Long(0L));
     mv.visitVarInsn(LSTORE, 99);
 
 mv.visitLdcInsn(new Integer(15));
@@ -42,7 +42,7 @@ mv.visitInsn(DUP);
 mv.visitLdcInsn(new Integer(1));
     mv.visitVarInsn(ISTORE, 102);
 
-mv.visitLdcInsn(new Float(2.0));
+    mv.visitLdcInsn(new Float(2.0f));
     mv.visitVarInsn(FSTORE, 103);
 
     mv.visitVarInsn(ALOAD, 101);

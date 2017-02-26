@@ -20,19 +20,19 @@ package compiler.utilities
 
 import java.io.File
 
-import compiler.block.Block
-import compiler.block.imports.ImportBlock
-import compiler.block.packages.PackageBlock
-import compiler.block.structures.FileBlock
-import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.block.structures.methods.MethodBlock
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.imports.ImportBlock
+import compiler.structure.blocks.packages.PackageBlock
+import compiler.structure.blocks.structures.FileBlock
+import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
+import compiler.structure.blocks.structures.methods.MethodBlock
 
 import scala.util.matching.Regex
 
 object Utils {
 
   /**
-    * Returns the method a block is within
+    * Returns the method a blocks is within
     *
     * @param block
     * @return
@@ -133,7 +133,8 @@ object Utils {
   }
 
   /**
-    * Returns the indentation of the block
+    * Returns the indentation of the blocks
+    *
     * @param line
     * @return
     */
@@ -151,7 +152,8 @@ object Utils {
   }
 
   /**
-    * Prints block information
+    * Prints blocks information
+    *
     * @param block
     * @param indentation
     */

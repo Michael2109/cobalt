@@ -1,5 +1,5 @@
 package asm
-import compiler.block.ifs.IfBlock
+import compiler.structure.blocks.ifs.IfBlock
 
 class MyCode(xx:int, yy:int):
 

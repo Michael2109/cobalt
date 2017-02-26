@@ -20,32 +20,32 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.block.Block
-import compiler.block.ifs.IfBlock
-import compiler.block.imports.ImportBlock
-import compiler.block.loops.WhileBlock
-import compiler.block.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
-import compiler.block.packages.PackageBlock
-import compiler.block.prints.PrintBlock
-import compiler.block.push.PushBlock
-import compiler.block.structures.kinds.ClassBlock
-import compiler.block.structures.methods.MethodBlock
-import compiler.block.structures.{FileBlock, ObjectMethodCallBlock}
 import compiler.exceptions.{ContainerException, DeclarationException, IndentationException}
-import compiler.parser.Parser
-import compiler.parser.comments.CommentParser
-import compiler.parser.ifs.IfParser
-import compiler.parser.imports.ImportParser
-import compiler.parser.loops.{ForParser, WhileParser}
-import compiler.parser.modifiers.ModifierParser
-import compiler.parser.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
-import compiler.parser.packages.PackageParser
-import compiler.parser.primitives._
-import compiler.parser.prints.PrintParser
-import compiler.parser.push.PushParser
-import compiler.parser.structures.kinds.{ClassParser, ObjectParser}
-import compiler.parser.structures.methods.MethodParser
-import compiler.parser.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.ifs.IfBlock
+import compiler.structure.blocks.imports.ImportBlock
+import compiler.structure.blocks.loops.WhileBlock
+import compiler.structure.blocks.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
+import compiler.structure.blocks.packages.PackageBlock
+import compiler.structure.blocks.prints.PrintBlock
+import compiler.structure.blocks.push.PushBlock
+import compiler.structure.blocks.structures.kinds.ClassBlock
+import compiler.structure.blocks.structures.methods.MethodBlock
+import compiler.structure.blocks.structures.{FileBlock, ObjectMethodCallBlock}
+import compiler.structure.parsers.Parser
+import compiler.structure.parsers.comments.CommentParser
+import compiler.structure.parsers.ifs.IfParser
+import compiler.structure.parsers.imports.ImportParser
+import compiler.structure.parsers.loops.{ForParser, WhileParser}
+import compiler.structure.parsers.modifiers.ModifierParser
+import compiler.structure.parsers.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
+import compiler.structure.parsers.packages.PackageParser
+import compiler.structure.parsers.primitives._
+import compiler.structure.parsers.prints.PrintParser
+import compiler.structure.parsers.push.PushParser
+import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
+import compiler.structure.parsers.structures.methods.MethodParser
+import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils
@@ -150,7 +150,7 @@ class Runtime {
     // Compile
     new Compile(outputFile, block)
 
-    // Output generated block structure
+    // Output generated blocks structure
     Utils.printBlockInfo(block)
 
     // Output the symbol table
@@ -230,7 +230,7 @@ class Runtime {
       }
     }
     else if (currentIndentation == indentation) {
-      // Indentation the same if (indentation == currentIndentation) { if (currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one block stored within container.")
+      // Indentation the same if (indentation == currentIndentation) { if (currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one blocks stored within container.")
       for (parser <- parsers) {
         if (parser.shouldParse(line)) {
           val nextBlock = parser.parse(currentBlock.superBlock, tokenizer)

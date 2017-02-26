@@ -18,7 +18,7 @@
 
 package compiler.symbol_table
 
-import compiler.block.Block
+import compiler.structure.blocks.Block
 
 import scala.collection.mutable.ListBuffer
 
