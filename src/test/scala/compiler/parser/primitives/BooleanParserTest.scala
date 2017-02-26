@@ -18,23 +18,78 @@
 
 package compiler.parser.primitives
 
-import compiler.block.Block
-import compiler.block.primitives.BooleanBlockTest
-import compiler.parser.ParserTest
-import compiler.tokenizer.TokenizerTest
+import compiler.tokenizer.Tokenizer
+import org.junit.runner.RunWith
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
-class BooleanParserTest extends ParserTest[BooleanBlockTest] {
-  def shouldParse(line: String): Boolean = line.matches("(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*boolean[ ]*[=][ ]*(true|false)")
+@RunWith(classOf[JUnitRunner])
+class BooleanParserTest extends FunSuite with BeforeAndAfter {
 
-  def parse(superBlock: Block, tokenizer: TokenizerTest): BooleanBlockTest = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "boolean"
-    tokenizer.nextToken
-    // skip "="
-    val value: String = tokenizer.nextToken.token
-    new BooleanBlockTest(superBlock, declaration, name, value)
+  val parser = new BooleanParser
+
+  val linesInitTrue = List(
+    "val x = true",
+    "val x:boolean = true",
+    "var x = true",
+    "var x:boolean = true"
+  )
+
+  val linesInitFalse = List(
+    "val x = false",
+    "val x:boolean = false",
+    "var x = false",
+    "var x:boolean = false"
+  )
+
+  val lines = List(
+    "val x",
+    "val x:boolean",
+    "var x",
+    "var x:boolean"
+  )
+
+  test("Should parse init true") {
+    for (line <- linesInitTrue) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Should parse init false") {
+    for (line <- linesInitFalse) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Should parse no init") {
+    for (line <- lines) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
+  test("Block creation init true") {
+    for (line <- linesInitTrue) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getType == "boolean")
+      assert(block.getValue == "true")
+    }
+  }
+
+  test("Block creation init false") {
+    for (line <- linesInitFalse) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getType == "boolean")
+      assert(block.getValue == "false")
+    }
+  }
+  test("Block creation uninitialized") {
+    for (line <- lines) {
+      val block = parser.parse(null, new Tokenizer(line))
+      assert(block.getName == "x")
+      assert(block.getType == "boolean")
+      assert(block.getValue == "false")
+    }
   }
 }

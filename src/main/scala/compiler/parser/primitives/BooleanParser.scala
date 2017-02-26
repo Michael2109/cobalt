@@ -24,15 +24,20 @@ import compiler.parser.Parser
 import compiler.tokenizer.Tokenizer
 
 class BooleanParser extends Parser[BooleanBlock] {
-  def shouldParse(line: String): Boolean = line.matches("(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*boolean[ ]*[=][ ]*(true|false)")
+  def shouldParse(line: String): Boolean = line.matches("(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*boolean[ ]*)?([=][ ]*(true|false))?")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): BooleanBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    tokenizer.nextToken // skip "boolean"
-    tokenizer.nextToken // skip "="
-    val value: String = tokenizer.nextToken.token
+    if (tokenizer.nextToken.token == ":") {
+      // skip ":"
+      tokenizer.nextToken // skip "boolean"
+      tokenizer.nextToken // skip "="
+    }
+    val value: String = {
+      val t = tokenizer.nextToken.token
+      if (t == "") "false" else t
+    }
     new BooleanBlock(superBlock, declaration,name, value)
   }
 }
