@@ -42,16 +42,19 @@ class IntegerParserTest extends FunSuite with BeforeAndAfter {
     "var x:int"
   )
 
-  test("IntegerParser should parse an Integer definition") {
+  test("Should parse init 10") {
     for (line <- linesInit) {
       assert(parser.shouldParse(line))
     }
+  }
+
+  test("Should parse no init") {
     for (line <- lines) {
       assert(parser.shouldParse(line))
     }
   }
 
-  test("Block creation test") {
+  test("Block creation init 10") {
 
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
@@ -59,7 +62,8 @@ class IntegerParserTest extends FunSuite with BeforeAndAfter {
       assert(block.getType == "int")
       assert(block.getValue == "10")
     }
-
+  }
+  test("Block creation no init") {
     for (line <- lines) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
