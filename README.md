@@ -9,12 +9,12 @@ Currently the project is at the initial stages but is built on a very strong str
 We're currently looking for contributors so if you are interested then please get in contact!
 
 #Main Features
+* Immutable
 * Thread Safe - Automatic Synchronization  
 * Simplistic Asynchronous Programming  
 * High readability   
 * Condensed down code with the same functionality   
 * Object oriented and functional  
-* Focused on immutability
 * Not nullable
 * Classes sealed by default
 * Language design pushes for a strong code structure  
