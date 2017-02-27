@@ -48,7 +48,7 @@ class ASMGenerator {
   def getClassWriter: String = "ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);\n"
 
   // visit class writer
-  def visitClassWriter(classDir: String, signature: String, superClass: String, interfaces: List[String]): String = "cw.visit(V1_7, ACC_PUBLIC, \"" + classDir + "\", " + signature + ", \"" + superClass + "\", new String[]{});\n"
+  def visitClassWriter(modifiers: String, classDir: String, signature: String, superClass: String, interfaces: List[String]): String = "cw.visit(V1_7, ACC_PUBLIC " + modifiers + ", \"" + classDir + "\", " + signature + ", \"" + superClass + "\", new String[]{});\n"
 
 
   // Method Visitor

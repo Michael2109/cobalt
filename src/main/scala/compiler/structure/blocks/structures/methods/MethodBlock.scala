@@ -25,7 +25,7 @@ import compiler.structure.generators.structures.methods.MethodGen
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
-class MethodBlock(var superBlockInit: Block, var name: String, var returnType: String, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
+class MethodBlock(var superBlockInit: Block, val name: String, val returnType: String, val isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
 
   val modifier : String = {
 
@@ -37,6 +37,8 @@ class MethodBlock(var superBlockInit: Block, var name: String, var returnType: S
       else "0"
     } else "0"
   }
+
+  val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
 
   val parameterString: String = params.map(_.getAsmType).mkString("")
 

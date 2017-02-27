@@ -6,7 +6,7 @@ class MyCode(xx:int, yy:int):
     xx += 2
 
     public:
-        def method1(stringTest:String) <- void:
+        open def method1(stringTest:String) <- void:
             print(stringTest)
             val x: int = 5
             while (x < 10)

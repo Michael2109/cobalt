@@ -28,7 +28,7 @@ import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlo
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
+class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
 
 
   // Parameters added to constuctor
@@ -41,6 +41,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
   private var constructorBlock: Block = new ConstructorBlock(this, parameters, name)
   addBlock_=(constructorBlock)
 
+  val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
 
   def getName: String = name
 
@@ -93,7 +94,7 @@ class ClassBlock(var superBlockInit: Block, var name: String, var parameters: Ar
       asm.getClassOpening(name) +
       asm.executeMethodOpening +
       asm.getClassWriter +
-      asm.visitClassWriter(packageBlock.directory + "/" + name, null, parentClass, null)
+        asm.visitClassWriter(`sealed`, packageBlock.directory + "/" + name, null, parentClass, null)
 
   }
 

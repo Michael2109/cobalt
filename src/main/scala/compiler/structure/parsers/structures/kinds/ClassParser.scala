@@ -25,10 +25,15 @@ import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {
-  def shouldParse(line: String): Boolean = line.matches("class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)([ ]+extends[ ]+[a-zA-Z][a-zA-Z0-9]*)?:")
+  def shouldParse(line: String): Boolean = line.matches("(open[ ]+)?class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)([ ]+extends[ ]+[a-zA-Z][a-zA-Z0-9]*)?:")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
-    tokenizer.nextToken
+
+    val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open
+
+    if (!isSealed)
+      tokenizer.nextToken // skip class
+
     val className: String = tokenizer.nextToken.token
     tokenizer.nextToken // (
     var nextToken: String = tokenizer.nextToken.token
@@ -55,6 +60,6 @@ class ClassParser extends Parser[ClassBlock] {
     }
 
 
-    return new ClassBlock(superBlock, className, parameters.toArray, parentClass, implementedClasses)
+    return new ClassBlock(superBlock, isSealed, className, parameters.toArray, parentClass, implementedClasses)
   }
 }

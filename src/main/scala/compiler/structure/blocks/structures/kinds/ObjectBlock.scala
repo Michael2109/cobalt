@@ -52,7 +52,7 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
       asm.getClassOpening(name) +
       asm.executeMethodOpening +
       asm.getClassWriter +
-      asm.visitClassWriter(packageBlock.directory + "/" + name, null, parentClass, null)
+        asm.visitClassWriter("", packageBlock.directory + "/" + name, null, parentClass, null)
   }
 
   def getClosingCode: String = {

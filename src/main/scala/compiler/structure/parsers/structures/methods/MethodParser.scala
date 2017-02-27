@@ -26,12 +26,18 @@ import compiler.tokenizer.Tokenizer
 
 class MethodParser extends Parser[MethodBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("def[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*<-[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:")
+  def shouldParse(line: String): Boolean = line.matches("(open[ ]+)?def[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*<-[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodBlock = {
 
-    tokenizer.nextToken // skip "def"
+    val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open
+
+    if (!isSealed)
+      tokenizer.nextToken // skip def
+
+
     val name: String = tokenizer.nextToken.token // method name
+
     tokenizer.nextToken // "("
     var nextToken = tokenizer.nextToken.token
     var paramString = ""
@@ -47,6 +53,8 @@ class MethodParser extends Parser[MethodBlock] {
     tokenizer.nextToken // skip "-"
 
     val returnType: String = tokenizer.nextToken.token // method return type
-    return new MethodBlock(superBlock, name, returnType, parameters.toArray)
+
+
+    return new MethodBlock(superBlock, name, returnType, isSealed, parameters.toArray)
   }
 }

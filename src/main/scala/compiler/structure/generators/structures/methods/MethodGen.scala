@@ -26,7 +26,7 @@ object MethodGen {
   def getOpeningCode(methodBlock: MethodBlock): String = {
     if (methodBlock.name != "main") {
       "   {\n" + "            /* Build '" + methodBlock.name + "' method */\n" + "            " +
-        "MethodVisitor mv = cw.visitMethod(\n" + "                    " + methodBlock.modifier + " " + methodBlock.static + ",                         // public method\n" +
+        "MethodVisitor mv = cw.visitMethod(\n" + "                    " + methodBlock.modifier + " " + methodBlock.static + " " + methodBlock.`sealed` + ",                         // public method\n" +
         "                    \"" + methodBlock.name + "\",                              // name\n" +
         "                    \"(" + methodBlock.parameterString + ")V\",                            // descriptor\n" +
         "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
