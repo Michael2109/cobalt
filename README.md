@@ -9,17 +9,14 @@ Currently the project is at the initial stages but is built on a very strong str
 We're currently looking for contributors so if you are interested then please get in contact!
 
 #Main Features
-* Immutable
+* Object oriented and functional  
+* Immutable by default
+* Classes and methods Sealed by default
+* Non-nullable
+* High readability   
 * Thread Safe - Automatic Synchronization  
 * Simplistic Asynchronous Programming  
-* High readability   
-* Condensed down code with the same functionality   
-* Object oriented and functional  
-* Not nullable
-* Classes sealed by default
-* Language design pushes for a strong code structure  
-* Instead of returning "void" return "this" for methods  
-* Explicit return type must be defined for methods
+* Methods return "this" if no type specified
 
 ###Possible Features
 * Primitives are wrapper classes  
