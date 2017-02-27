@@ -214,7 +214,7 @@ class Runtime {
     else {
       SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
     }
-    if (currentIndentation - indentation > 1) throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation))
+    if (currentIndentation - indentation > 1) throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation) + " " + line)
 
 
     // Indented out one

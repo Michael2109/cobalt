@@ -26,7 +26,7 @@ import org.apache.log4j.PropertyConfigurator
 
 object Main {
 
-  def main(args: Array[String]) {
+  def start(args: Array[String]) {
 
     PropertyConfigurator.configure("src/log4j.properties");
 
@@ -53,5 +53,9 @@ object Main {
     else {
       System.out.println("Error: Input and Output file args required. Enter with file extension removed.")
     }
+  }
+
+  def main(args: Array[String]) {
+    start(args)
   }
 }

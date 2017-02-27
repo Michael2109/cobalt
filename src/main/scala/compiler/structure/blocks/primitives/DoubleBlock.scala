@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class DoubleBlock(superBlockInit: Block, declaration : Boolean, name: String,  value: String) extends Block(superBlockInit, false, true) {
 
@@ -31,8 +32,12 @@ class DoubleBlock(superBlockInit: Block, declaration : Boolean, name: String,  v
   override def getType: String = "double"
 
   override def getOpeningCode: String = {
-    "mv.visitLdcInsn(new Double(" + value + "));\n" +
-      "mv.visitVarInsn(DSTORE, " + id + ");"
+    if (Utils.getMethod(this) != null) {
+      "mv.visitLdcInsn(new Double(" + value + "));\n" +
+        "mv.visitVarInsn(DSTORE, " + id + ");"
+    } else {
+      ""
+    }
   }
 
   override def getClosingCode: String = {

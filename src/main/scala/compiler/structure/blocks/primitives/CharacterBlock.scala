@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class CharacterBlock( superBlockInit: Block, declaration : Boolean, name: String,  value: String) extends Block(superBlockInit, false, true) {
 
@@ -32,11 +33,15 @@ class CharacterBlock( superBlockInit: Block, declaration : Boolean, name: String
 
 
   override def getOpeningCode: String = {
-    return "char " + name + " = '" + value + "';"
+    if (Utils.getMethod(this) != null) {
+      "char " + name + " = '" + value + "';"
+    } else {
+      ""
+    }
   }
 
   override  def getClosingCode: String = {
-    return ""
+    ""
   }
 
   override def toString: String = "char: " + name + " = " + value

@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class ShortBlock(superBlockShort: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockShort, false, true) {
 
@@ -32,8 +33,12 @@ class ShortBlock(superBlockShort: Block, declaration : Boolean, name: String, va
   override def getType: String = "short"
 
   override def getOpeningCode: String = {
-    asm.visitLdcInsn("new Short((short)" + value + ")") +
-      asm.visitVarInsn("SASTORE", id)
+    if (Utils.getMethod(this) != null) {
+      asm.visitLdcInsn("new Short((short)" + value + ")") +
+        asm.visitVarInsn("SASTORE", id)
+    } else {
+      ""
+    }
   }
 
   override  def getClosingCode: String = {

@@ -26,9 +26,9 @@ class DoubleParser extends Parser[DoubleBlock] {
 
   def shouldParse(line: String): Boolean = {
     (
-      line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*double)?[ ]*[=][ ]*[0-9]+[.][0-9]*")
+      line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*double)?[ ]*[=][ ]*[0-9]+[.][0-9]*(d|D)?")
         ||
-        line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*double[ ]*([=][ ]*[0-9]+[.][0-9]*)?"))
+        line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*double[ ]*([=][ ]*[0-9]+[.][0-9]*)?(d|D)?"))
   }
 
 

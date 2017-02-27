@@ -1,4 +1,4 @@
-package asm
+package test
 import compiler.structure.blocks.ifs.IfBlock
 
 class MyCode(xx:int, yy:int):

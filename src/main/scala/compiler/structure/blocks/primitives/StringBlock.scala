@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class StringBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
@@ -31,8 +32,12 @@ class StringBlock(superBlockInit: Block, declaration : Boolean, name: String, va
   override def getType: String = "String"
 
   override def getOpeningCode: String = {
-    asm.visitLdcInsn("\"" + value + "\"") +
-      asm.visitVarInsn("ASTORE", id)
+    if (Utils.getMethod(this) != null) {
+      asm.visitLdcInsn("\"" + value + "\"") +
+        asm.visitVarInsn("ASTORE", id)
+    } else {
+      ""
+    }
   }
 
   override def getClosingCode: String = {

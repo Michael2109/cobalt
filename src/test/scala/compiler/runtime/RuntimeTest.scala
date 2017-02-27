@@ -18,5 +18,14 @@
 
 package compiler.runtime
 
-class RuntimeTest {
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+class RuntimeTest extends FunSuite with BeforeAndAfter {
+
+  test("Compiling passing files") {
+    for (line <- linesInitTrue) {
+      assert(parser.shouldParse(line))
+    }
+  }
+
 }

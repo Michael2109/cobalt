@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class FloatBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
@@ -37,8 +38,12 @@ class FloatBlock(superBlockInit: Block, declaration : Boolean, name: String, val
   }
 
   override def getOpeningCode: String = {
-    asm.visitLdcInsn("new Float(" + value + ")") +
-      asm.visitVarInsn("FSTORE", id);
+    if (Utils.getMethod(this) != null) {
+      asm.visitLdcInsn("new Float(" + value + ")") +
+        asm.visitVarInsn("FSTORE", id);
+    } else {
+      ""
+    }
   }
 
   override def getClosingCode: String = {

@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
@@ -30,9 +31,14 @@ class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String
 
   override def getType: String = "boolean"
 
-  override def getOpeningCode: String = asm.visitLdcInsn("new Boolean(" + value + ")") +
-    asm.visitVarInsn("BASTORE", id)
-
+  override def getOpeningCode: String = {
+    if (Utils.getMethod(this) != null) {
+      asm.visitLdcInsn("new Boolean(" + value + ")") +
+        asm.visitVarInsn("BASTORE", id)
+    } else {
+      ""
+    }
+  }
   override def getClosingCode: String = ""
 
   override def toString: String = "boolean: " + name + " = " + value

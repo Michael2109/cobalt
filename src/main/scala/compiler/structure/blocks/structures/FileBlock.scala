@@ -39,7 +39,7 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
 
   def getOpeningCode: String = {
 
-    asm.getPackage(Utils.packageBlock(this).directory) +
+    asm.getPackage(Utils.packageBlock(this).directory.replace("/", ".")) +
     asm.getImport("java.io.DataOutputStream") +
     asm.getImport("java.io.FileNotFoundException") +
     asm.getImport("java.io.FileOutputStream") +

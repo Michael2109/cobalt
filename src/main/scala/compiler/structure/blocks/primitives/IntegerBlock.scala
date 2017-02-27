@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class IntegerBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
@@ -31,8 +32,12 @@ class IntegerBlock(superBlockInit: Block, declaration : Boolean, name: String, v
   override  def getType: String = "int"
 
   override def getOpeningCode: String = {
-    asm.visitLdcInsn("new Integer(" + value + ")") +
-      asm.visitVarInsn("ISTORE", id)
+    if (Utils.getMethod(this) != null) {
+      asm.visitLdcInsn("new Integer(" + value + ")") +
+        asm.visitVarInsn("ISTORE", id)
+    } else {
+      ""
+    }
   }
 
   override def getClosingCode: String = {

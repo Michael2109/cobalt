@@ -1,4 +1,4 @@
-package asm
+package test
 
 import asm.MyCode
 

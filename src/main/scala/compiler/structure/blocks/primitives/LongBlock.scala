@@ -19,6 +19,7 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
 class LongBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
 
@@ -31,8 +32,12 @@ class LongBlock(superBlockInit: Block, declaration : Boolean, name: String, valu
   override def getType: String = "long"
 
   override def getOpeningCode: String = {
-    asm.visitLdcInsn("new Long(" + value + ")") +
-      asm.visitVarInsn("LSTORE", id)
+    if (Utils.getMethod(this) != null) {
+      asm.visitLdcInsn("new Long(" + value + ")") +
+        asm.visitVarInsn("LSTORE", id)
+    } else {
+      ""
+    }
   }
 
   override  def getClosingCode: String = {
