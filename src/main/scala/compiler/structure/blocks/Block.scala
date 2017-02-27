@@ -21,6 +21,7 @@ package compiler.structure.blocks
 import java.util.ArrayList
 
 import compiler.utilities.ASMGenerator
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * Stores the total amount of blocks to use as a unique identifier
@@ -47,7 +48,8 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   private var _superBlock: Block = superBlockInitTest
   private var _container: Boolean = containerInit
   private var _variable: Boolean = variableInit
-  private var _immutable: Boolean = immutableInit
+  val immutable: Boolean = immutableInit
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   /* id GET and SET */
   def id = _id
@@ -91,10 +93,6 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
 
   def variable_=(value: Boolean) = _variable = value
 
-  /* Whether the blocks is immutable */
-  def isImmutable: Boolean = _immutable
-
-  def immutable_=(value: Boolean) = _immutable = value
 
   // Error check on the line of code
   def error(): Boolean = false

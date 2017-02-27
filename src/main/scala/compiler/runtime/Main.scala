@@ -22,10 +22,14 @@ import java.io.File
 
 import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
+import org.apache.log4j.PropertyConfigurator
 
 object Main {
 
   def main(args: Array[String]) {
+
+    PropertyConfigurator.configure("src/log4j.properties");
+
     if (args.length == 3) {
 
       val fileList:Array[File] = Utils.recursiveListFiles(new File(args(0)),"cobalt".r)

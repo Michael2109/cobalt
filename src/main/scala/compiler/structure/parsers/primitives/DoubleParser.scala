@@ -23,6 +23,7 @@ import compiler.structure.blocks.primitives.DoubleBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 class DoubleParser extends Parser[DoubleBlock] {
+
   def shouldParse(line: String): Boolean = {
     (
       line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*double)?[ ]*[=][ ]*[0-9]+[.][0-9]*")

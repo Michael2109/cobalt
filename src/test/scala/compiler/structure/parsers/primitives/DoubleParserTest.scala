@@ -41,6 +41,11 @@ class DoubleParserTest extends FunSuite with BeforeAndAfter {
     "var x:double"
   )
 
+  val linesFail = List(
+    "val x = 10"
+
+  )
+
   test("Should parse init 10.0") {
     for (line <- linesInit) {
       assert(parser.shouldParse(line))
@@ -53,8 +58,13 @@ class DoubleParserTest extends FunSuite with BeforeAndAfter {
     }
   }
 
-  test("Block creation init 10.0") {
+  test("Shouldn't parse") {
+    for (line <- linesFail) {
+      assert(!parser.shouldParse(line))
+    }
+  }
 
+  test("Block creation init 10.0") {
     for (line <- linesInit) {
       val block = parser.parse(null, new Tokenizer(line))
       assert(block.getName == "x")
@@ -62,6 +72,7 @@ class DoubleParserTest extends FunSuite with BeforeAndAfter {
       assert(block.isInstanceOf[DoubleBlock])
     }
   }
+
   test("Block creation no init") {
     for (line <- lines) {
       val block = parser.parse(null, new Tokenizer(line))

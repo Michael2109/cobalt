@@ -4,3 +4,6 @@
 .gradle/
 build/
 *.iml
+log4j.log
+out/
+src/test/java/
