@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,13 @@ import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
 class CommentParser extends Parser[CommentBlock] {
+
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs = ???
 
   def shouldParse(line: String): Boolean = line.matches("//.*")
 

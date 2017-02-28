@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,16 +26,19 @@ import compiler.tokenizer.Tokenizer
 class ShortParser extends Parser[LongBlock] {
 
   /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[0-9]+(s|S)[ ]*",
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*short[ ]*([=][ ]*[0-9]+(s|S)?[ ]*)?"
+  )
+
+  /**
     * Takes a line and checks to see ifs it is for this parsers by using regex.
     */
-
-  //var longTest:long = 10
-  override def shouldParse(line: String): Boolean = {
-    (line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[0-9]+(s|S)[ ]*")
-      ||
-      line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*short[ ]*([=][ ]*[0-9]+(s|S)?[ ]*)?"))
-  }
-
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
 
   /**
     * Take the superBlock and the tokenizer for the line and return a blocks of this parsers's type.

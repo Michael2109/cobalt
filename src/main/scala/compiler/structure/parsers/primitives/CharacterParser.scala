@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,17 @@ import compiler.tokenizer.Tokenizer
 
 class CharacterParser extends Parser[CharacterBlock] {
 
-  def shouldParse(line: String): Boolean = {
-    (line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*char)?[ ]*[=][ ]*\'[a-zA-Z0-9]\'")
-      ||
-      line.matches("(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*char[ ]*([=][ ]*\'[a-zA-Z0-9]\')?"))
-  }
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*char)?[ ]*[=][ ]*\'[a-zA-Z0-9]\'",
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*char[ ]*([=][ ]*\'[a-zA-Z0-9]\')?"
+  )
+
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CharacterBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val"

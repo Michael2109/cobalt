@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 package compiler.structure.parsers.structures
 
-import java.util.{ArrayList, List}
 
 import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
@@ -26,11 +25,26 @@ import compiler.structure.blocks.structures.ObjectMethodCallBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
+import scala.collection.mutable.ListBuffer
+
 /**
   * Parses calling of an objects method
   */
 class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
-  def shouldParse(line: String): Boolean = line.matches("[a-zA-Z][a-zA-Z0-9]*\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*")
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "[a-zA-Z][a-zA-Z0-9]*\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*"
+  )
+
+  /**
+    * Takes a line and checks to see ifs it is for this parsers by using regex.
+    */
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectMethodCallBlock = {
     val variableName: String = tokenizer.nextToken.token // Get the string value of the next token.
@@ -40,7 +54,7 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
     var nextToken: String = tokenizer.nextToken.token
     val paramType: String = ""
     var paramName: String = ""
-    val parameters: List[Parameter] = new ArrayList[Parameter]
+    val parameters: ListBuffer[Parameter] = new ListBuffer[Parameter]
     while (nextToken != ")") {
       {
         if (nextToken == ",") {
@@ -48,11 +62,11 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
         } else {
           // todo find the paramType. Utilities add a method to get the type
           paramName = nextToken.trim
-          parameters.add(new Parameter(paramType, paramName))
+          parameters.append(new Parameter(paramType, paramName))
           nextToken = tokenizer.nextToken.token
         }
       }
     }
-    return new ObjectMethodCallBlock(superBlock, variableName, methodName, parameters.toArray(new Array[Parameter](parameters.size)))
+    return new ObjectMethodCallBlock(superBlock, variableName, methodName, parameters)
   }
 }

@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,22 @@ import compiler.tokenizer.Tokenizer
 class PrintParser extends Parser[PrintBlock] {
   var printVariable: Boolean = false
 
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*String)?[ ]*[=][ ]*\"[a-zA-Z0-9]*\"",
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*String[ ]*([=][ ]*\"[a-zA-Z0-9]*\")?"
+  )
+
+  /**
+    * Takes a line and checks to see ifs it is for this parsers by using regex.
+    */
+  // override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+
+  // todo convert shouldparse method
   def shouldParse(line: String): Boolean = {
     // Decide whether printing a variable or a string
     if (line.matches("print[ ]*\\([\"].*[\"]\\)")) {

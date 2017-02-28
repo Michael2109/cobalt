@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,12 @@ import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
 
+import scala.collection.mutable.ListBuffer
+
 /**
   * Calling a method of an object
   */
-class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false, false) {
+class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
 
   id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
   private val `type`: String = null
@@ -38,7 +40,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
   private var argumentString: String = ""
   private var directory: String = ""
 
-  def getParameters: Array[Parameter] = {
+  def getParameters: ListBuffer[Parameter] = {
     return params
   }
 

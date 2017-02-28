@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,17 @@ import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
 class BooleanParser extends Parser[BooleanBlock] {
-  def shouldParse(line: String): Boolean = {
-    (line.matches("(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*boolean)?[ ]*[=][ ]*(true|false)")
-      ||
-      line.matches("(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*boolean[ ]*([=][ ]*(true|false))?"))
-  }
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*boolean)?[ ]*[=][ ]*(true|false)",
+    "(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*boolean[ ]*([=][ ]*(true|false))?"
+  )
+
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
 
   def parse(superBlock: Block, tokenizer: Tokenizer): BooleanBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"

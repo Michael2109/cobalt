@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,19 @@ import compiler.tokenizer.Tokenizer
   */
 class MethodCallParser extends Parser[MethodCallBlock] {
 
-  def shouldParse(line: String): Boolean =  line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*\\(\\)[ ]*")
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "[a-zA-Z][a-zA-Z0-9]*[ ]*\\(\\)[ ]*"
+  )
+
+  /**
+    * Takes a line and checks to see ifs it is for this parsers by using regex.
+    */
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodCallBlock = {
     val name: String = tokenizer.nextToken.token // Get the string value of the next token.

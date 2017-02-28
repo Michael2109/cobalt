@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,11 @@ import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
 
+import scala.collection.mutable.ListBuffer
+
 
 // Creation of a new object and storing to a variable
-class ObjectDefinitionBlock(superBlockInit: Block, declaration : Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: Array[Parameter]) extends Block(superBlockInit, false, true ,false) {
+class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: ListBuffer[Parameter]) extends Block(superBlockInit, false, true, false) {
 
   private var parameterString: String = ""
   private var argumentString: String = ""

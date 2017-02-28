@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,52 @@
 
 package compiler.utilities
 
+import compiler.structure.parsers.Parser
+import compiler.structure.parsers.comments.CommentParser
+import compiler.structure.parsers.ifs.IfParser
+import compiler.structure.parsers.imports.ImportParser
+import compiler.structure.parsers.loops.{ForParser, WhileParser}
+import compiler.structure.parsers.modifiers.ModifierParser
+import compiler.structure.parsers.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
+import compiler.structure.parsers.packages.PackageParser
+import compiler.structure.parsers.primitives._
+import compiler.structure.parsers.prints.PrintParser
+import compiler.structure.parsers.push.PushParser
+import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
+import compiler.structure.parsers.structures.methods.MethodParser
+import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
+
 object Constants {
+
+  /* All available parsers */
+  val parsers: Array[Parser[_]] = Array(
+    new ModifierParser,
+    new MethodParser,
+    new AddParser,
+    new DivideParser,
+    new MultiplyParser,
+    new SubtractParser,
+    new BooleanParser,
+    new CharacterParser,
+    new DoubleParser,
+    new FloatParser,
+    new IntegerParser,
+    new LongParser,
+    new StringParser,
+    new ShortParser,
+    new IfParser,
+    new PrintParser,
+    new ForParser,
+    new CommentParser,
+    new MethodCallParser,
+    new ImportParser,
+    new WhileParser,
+    new ObjectDefinitionParser,
+    new ObjectMethodCallParser,
+    new PackageParser,
+    new ObjectParser,
+    new ClassParser,
+    new PushParser
+  )
 
 }

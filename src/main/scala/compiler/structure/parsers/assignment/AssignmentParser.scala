@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,17 @@ import compiler.tokenizer.Tokenizer
 
 class AssignmentParser extends Parser[AssignmentBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[.]+[ ]*")
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentBlock = {
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[.]+[ ]*")
+
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+
+  override def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentBlock = {
     // get the id of the variable
 
 
@@ -38,4 +46,5 @@ class AssignmentParser extends Parser[AssignmentBlock] {
     val value: String = tokenizer.nextToken.token
     new AssignmentBlock(superBlock,true,name, value)
   }
+
 }

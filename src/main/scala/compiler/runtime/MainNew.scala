@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.structures
+package compiler.runtime
 
-/**
-  * Creation of a new instance of a class
-  */
-class ObjectDefinitionParserTest {
+import java.io.File
 
+object MainNew {
+
+  def main(args: Array[String]): Unit = {
+
+    val input: File = new File("cobalt_source/test/MyCode.cobalt")
+    val asmFile: File = new File("C:\\Users\\Michael\\Desktop\\cobalt\\src\\main\\java\\test\\MyCode.java")
+    val buildDir = new File("C:\\Users\\Michael\\Desktop\\cobalt\\build\\classes\\main\\test\\MyCode.class")
+    new RuntimeNew(input, asmFile, buildDir)
+  }
 }

@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,15 @@ import compiler.tokenizer.Tokenizer
 
 class ModifierParser extends Parser[ModifierBlock] {
 
-  def shouldParse(line: String): Boolean = {
-    line.matches("(public|private|protected):")
-  }
-  def parse(superBlock: Block, tokenizer: Tokenizer): ModifierBlock = new ModifierBlock(superBlock, tokenizer.nextToken.token)
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("(public|private|protected):")
+
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+
+  override def parse(superBlock: Block, tokenizer: Tokenizer): ModifierBlock = new ModifierBlock(superBlock, tokenizer.nextToken.token)
 
 }

@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,16 @@ need to make parameter single variable names instead as cant define a variable i
  */
 class WhileParser extends Parser[WhileBlock] {
 
-  def shouldParse(line: String): Boolean = {
-    return line.matches("while[ ]+\\((.*)*\\)[:]?")
-  }
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("while[ ]+\\((.*)*\\)[:]?")
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+
+  override def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
 
     tokenizer.nextToken //skip "while"
     tokenizer.nextToken // skip "("

@@ -1,11 +1,16 @@
+
 package test
 import compiler.structure.blocks.ifs.IfBlock
 
 open class MyCode(xx:int, yy:int):
-
+    /* Other test */
     xx += 2
 
+    // Test
     public:
+        /*
+        Another test
+        */
         open def method1(stringTest:String) <- void:
             print(stringTest)
             val x: int = 5
@@ -13,6 +18,9 @@ open class MyCode(xx:int, yy:int):
                 print("Hello World!!!")
                 x += 1
 
+        /**
+        *Another test
+        */
         def main() <- void:
             val stringyThing: String = "Thisisastring"
             val z: int = 10

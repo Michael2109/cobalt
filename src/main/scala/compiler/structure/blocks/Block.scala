@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 
 package compiler.structure.blocks
 
-import java.util.ArrayList
-
 import compiler.utilities.ASMGenerator
 import org.slf4j.{Logger, LoggerFactory}
+
+import scala.collection.mutable.ListBuffer
 
 /**
   * Stores the total amount of blocks to use as a unique identifier
@@ -41,7 +41,7 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
 
   Block.TOTAL_BLOCKS += 1
 
-  private val _subBlocks: java.util.ArrayList[Block] = new ArrayList[Block]
+  private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
 
   private val _asm: ASMGenerator = new ASMGenerator;
   private var _id: Integer = Block.TOTAL_BLOCKS
@@ -62,11 +62,13 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   def superBlock_=(value: Block) = _superBlock = value
 
   /* subBlocks GET */
-  def subBlocks = _subBlocks.toArray(new Array[Block](_subBlocks.size()))
+  def subBlocks = _subBlocks
 
-  def addBlock_=(value: Block) = _subBlocks.add(value)
+  def addBlock_=(value: Block) = _subBlocks.append(value)
 
-  def removeBlock_=(value: Block) = _subBlocks.remove(value)
+  def addBlocks_=(value: ListBuffer[Block]) = _subBlocks.appendAll(value)
+
+  def removeBlock_=(value: Block) = _subBlocks.filter(_ != value)
 
   // Called after file is parsed
   def init()

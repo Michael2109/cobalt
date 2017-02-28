@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,15 @@ import compiler.structure.blocks.Block
 import compiler.tokenizer.Tokenizer
 
 abstract class Parser[T <: Block] {
+
+
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  def getRegexs: List[String]
+
   /**
     * Takes a line and checks to see ifs it is for this parsers by using regex.
     */

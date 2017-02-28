@@ -1,6 +1,6 @@
 /*
  * Cobalt Programming Language Compiler
- * Copyright (C) 2017  Michael Haywood
+ * Copyright (C) 2017  Cobalt
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,14 @@ import compiler.tokenizer.Tokenizer
 
 class IfParser extends Parser[IfBlock] {
 
-  def shouldParse(line: String): Boolean = line.matches("if \\((.*)*\\):")
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("if \\((.*)*\\):")
+
+  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
     tokenizer.nextToken //skip if
