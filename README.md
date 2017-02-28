@@ -16,7 +16,6 @@ We're currently looking for contributors so if you are interested then please ge
 * High readability   
 * Thread Safe - Automatic Synchronization  
 * Simplistic Asynchronous Programming  
-* Methods return "this" if no type specified
 
 ###Possible Features
 * Primitives are wrapper classes  
