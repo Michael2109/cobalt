@@ -32,8 +32,6 @@ class ImportParser extends Parser[ImportBlock] {
     */
   override def getRegexs: List[String] = List("import [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): ImportBlock = {
 
     tokenizer.nextToken // "import"

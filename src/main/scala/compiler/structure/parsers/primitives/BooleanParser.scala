@@ -34,8 +34,6 @@ class BooleanParser extends Parser[BooleanBlock] {
     "(var|val)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*boolean[ ]*([=][ ]*(true|false))?"
   )
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): BooleanBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val name: String = tokenizer.nextToken.token

@@ -37,6 +37,27 @@ object Utils {
     * @param block
     * @return
     */
+  def getClass(block: Block): Block = {
+    var result: Block = block
+    while (!(result.isInstanceOf[ClassBlock] || result.isInstanceOf[ObjectBlock])) {
+      {
+        if (block.superBlock == null) {
+          return null
+        }
+        result = result.superBlock
+        if (result == null)
+          return result
+      }
+    }
+    return result
+  }
+
+  /**
+    * Returns the method a blocks is within
+    *
+    * @param block
+    * @return
+    */
   def getMethod(block: Block): Block = {
     var result: Block = block
     while (!(result.isInstanceOf[MethodBlock])) {

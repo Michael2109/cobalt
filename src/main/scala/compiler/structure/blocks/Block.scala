@@ -64,7 +64,10 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   /* subBlocks GET */
   def subBlocks = _subBlocks
 
-  def addBlock_=(value: Block) = _subBlocks.append(value)
+  def addBlock_=(value: Block) = {
+    _subBlocks.append(value)
+    value.superBlock = this
+  }
 
   def addBlocks_=(value: ListBuffer[Block]) = _subBlocks.appendAll(value)
 

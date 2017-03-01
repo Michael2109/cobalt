@@ -1,10 +1,10 @@
 
 package test
+import other
 import compiler.structure.blocks.ifs.IfBlock
 
 open class MyCode(xx:int, yy:int):
     /* Other test */
-    xx += 2
 
     // Test
     public:
@@ -12,25 +12,25 @@ open class MyCode(xx:int, yy:int):
         Another test
         */
         open def method1(stringTest:String) <- void:
-            print(stringTest)
+            //print(stringTest)
             val x: int = 5
-            while (x < 10)
-                print("Hello World!!!")
+            while (x < 10):
                 x += 1
+                //print("Hello World!!!")
 
         /**
         *Another test
         */
         def main() <- void:
-            val stringyThing: String = "Thisisastring"
+            //val stringyThing: String = "Thisisastring"
             val z: int = 10
             val longTest: long
             val ty: int = 15
             val myCode: MyCode = new MyCode(z, ty)
             val y: int = 1
             val w: float = 2.0f
-            myCode.method1(stringyThing)
-            myCode
+            //myCode.method1(stringyThing)
+            //myCode
 
     private:
         def privateMethod(y: int) <- void:

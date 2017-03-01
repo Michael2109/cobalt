@@ -31,10 +31,8 @@ abstract class Parser[T <: Block] {
     */
   def getRegexs: List[String]
 
-  /**
-    * Takes a line and checks to see ifs it is for this parsers by using regex.
-    */
-  def shouldParse(line: String): Boolean
+
+  def shouldParse(line: String): Boolean = (getRegexs.filter(_.r.findFirstIn(line).isDefined).size > 0)
 
   /**
     * Take the superBlock and the tokenizer for the line and return a blocks of this parsers's type.

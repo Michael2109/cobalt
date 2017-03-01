@@ -1,19 +1,7 @@
 package test.primitives
 
 class DoubleTest():
-    val x = 5.0
-    val y = 5.0D
-    val z:double = 5.0
-
-    var xx = 5.0
-    var yy = 5.0D
-    var zz:double = 5.0
 
     def test() <- void:
-        val x = 5.0
-        val y = 5.0D
         val z:double = 5.0
-
-        var xx = 5.0
-        var yy = 5.0D
         var zz:double = 5.0

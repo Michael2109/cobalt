@@ -32,8 +32,6 @@ class IfParser extends Parser[IfBlock] {
     */
   override def getRegexs: List[String] = List("if \\((.*)*\\):")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
     tokenizer.nextToken //skip if
     tokenizer.nextToken // skip (

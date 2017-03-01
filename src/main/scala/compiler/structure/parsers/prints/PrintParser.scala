@@ -23,6 +23,7 @@ import compiler.structure.blocks.prints.PrintBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
+// todo set up print parser
 class PrintParser extends Parser[PrintBlock] {
   var printVariable: Boolean = false
 
@@ -31,18 +32,12 @@ class PrintParser extends Parser[PrintBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*String)?[ ]*[=][ ]*\"[a-zA-Z0-9]*\"",
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*String[ ]*([=][ ]*\"[a-zA-Z0-9]*\")?"
-  )
+  override def getRegexs: List[String] = List()
 
-  /**
-    * Takes a line and checks to see ifs it is for this parsers by using regex.
-    */
-  // override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+  override def shouldParse(line: String): Boolean = {
 
-  // todo convert shouldparse method
-  def shouldParse(line: String): Boolean = {
+    if (true)
+      return false
     // Decide whether printing a variable or a string
     if (line.matches("print[ ]*\\([\"].*[\"]\\)")) {
       printVariable = false
@@ -61,4 +56,5 @@ class PrintParser extends Parser[PrintBlock] {
     val value: String = tokenizer.nextToken.token
     return new PrintBlock(superBlock, value, printVariable)
   }
+
 }

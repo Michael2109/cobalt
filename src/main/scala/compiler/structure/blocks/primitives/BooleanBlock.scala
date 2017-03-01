@@ -19,9 +19,13 @@
 package compiler.structure.blocks.primitives
 
 import compiler.structure.blocks.Block
+import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
 class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
+
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getName).setClassName(Utils.getClass(this).getName))
+
 
   override def init() {}
 

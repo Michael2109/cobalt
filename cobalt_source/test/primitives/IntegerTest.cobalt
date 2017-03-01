@@ -1,7 +1,6 @@
 package test.primitives
 
 class IntegerTest():
-    val x = 5
 
     def test() <- void:
         val y = 10

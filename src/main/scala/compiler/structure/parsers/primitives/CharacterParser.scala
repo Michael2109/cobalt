@@ -35,8 +35,6 @@ class CharacterParser extends Parser[CharacterBlock] {
     "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*char[ ]*([=][ ]*\'[a-zA-Z0-9]\')?"
   )
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): CharacterBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val"
     // "val" or "var"

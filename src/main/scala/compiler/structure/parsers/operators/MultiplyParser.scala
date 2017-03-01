@@ -32,8 +32,6 @@ class MultiplyParser extends Parser[MultiplyBlock] {
     */
   override def getRegexs: List[String] = List("[a-zA-Z][a-zA-Z0-9]* [*][=] [0-9]+")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyBlock = {
     val name: String = tokenizer.nextToken.token
     tokenizer.nextToken

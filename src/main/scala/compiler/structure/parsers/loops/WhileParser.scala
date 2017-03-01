@@ -35,8 +35,6 @@ class WhileParser extends Parser[WhileBlock] {
     */
   override def getRegexs: List[String] = List("while[ ]+\\((.*)*\\)[:]?")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   override def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
 
     tokenizer.nextToken //skip "while"

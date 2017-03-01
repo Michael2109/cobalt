@@ -32,13 +32,8 @@ class PushParser extends Parser[PushBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "([a-z][a-zA-Z0-9]*)|([0-9]+)"
+    // "([a-z][a-zA-Z0-9]*)|([0-9]+)"
   )
-
-  /**
-    * Takes a line and checks to see ifs it is for this parsers by using regex.
-    */
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PushBlock = {
     val value = tokenizer.nextToken.token // skip print

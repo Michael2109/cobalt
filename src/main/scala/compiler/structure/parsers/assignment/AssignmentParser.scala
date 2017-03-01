@@ -31,9 +31,9 @@ class AssignmentParser extends Parser[AssignmentBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[.]+[ ]*")
-
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
+  override def getRegexs: List[String] = List(
+    //"[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*[.]+[ ]*"
+  )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentBlock = {
     // get the id of the variable

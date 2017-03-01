@@ -18,245 +18,201 @@
 
 package compiler.runtime
 
-import java.io._
+import java.io.File
 
-import compiler.exceptions.{ContainerException, DeclarationException, IndentationException}
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.ifs.IfBlock
-import compiler.structure.blocks.imports.ImportBlock
-import compiler.structure.blocks.loops.WhileBlock
-import compiler.structure.blocks.operators.{AddBlock, DivideBlock, MultiplyBlock, SubtractBlock}
 import compiler.structure.blocks.packages.PackageBlock
-import compiler.structure.blocks.prints.PrintBlock
-import compiler.structure.blocks.push.PushBlock
-import compiler.structure.blocks.structures.kinds.ClassBlock
-import compiler.structure.blocks.structures.methods.MethodBlock
-import compiler.structure.blocks.structures.{FileBlock, ObjectMethodCallBlock}
-import compiler.structure.parsers.Parser
-import compiler.structure.parsers.comments.CommentParser
-import compiler.structure.parsers.ifs.IfParser
+import compiler.structure.blocks.structures.FileBlock
 import compiler.structure.parsers.imports.ImportParser
-import compiler.structure.parsers.loops.{ForParser, WhileParser}
-import compiler.structure.parsers.modifiers.ModifierParser
-import compiler.structure.parsers.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
 import compiler.structure.parsers.packages.PackageParser
-import compiler.structure.parsers.primitives._
-import compiler.structure.parsers.prints.PrintParser
-import compiler.structure.parsers.push.PushParser
-import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
-import compiler.structure.parsers.structures.methods.MethodParser
-import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
-import compiler.symbol_table.{Row, SymbolTable}
+import compiler.symbol_table.SymbolTable
 import compiler.tokenizer.Tokenizer
-import compiler.utilities.Utils
+import compiler.utilities.{Constants, Utils}
 
-import scala.collection.JavaConverters._
+import scala.collection.mutable.ListBuffer
+import scala.io.Source
 
-class Runtime {
-  private val parsers: Array[Parser[_]] = Array(
+/**
+  * Parses the code to create the AST structure.
+  */
+class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
-    new ModifierParser,
-    // MethodBlock Parser
-    new MethodParser,
-    // Operator Parsers
-    new AddParser,
-    new DivideParser,
-    new MultiplyParser,
-    new SubtractParser,
-    // Primitive Parsers
-    new BooleanParser,
-    new CharacterParser,
-    new DoubleParser,
-    new FloatParser,
-    new IntegerParser,
-    new LongParser,
-    new StringParser,
-    new ShortParser,
-    // IfBlock Parser
-    new IfParser,
-    // PrintBlock Parser
-    new PrintParser,
-    new ForParser,
-    new CommentParser,
-    new MethodCallParser,
-    new ImportParser,
-    new WhileParser,
-    new ObjectDefinitionParser,
-    new ObjectMethodCallParser,
-    new PackageParser,
-    // Kinds Parsers
-    new ObjectParser,
-    new ClassParser,
-    new PushParser
-  )
+  def parseFile() {
 
-  private var block: Block = null
 
-  //start at 1 to ignore class declaration line
+    // Read all lines from source file
+    val allLines = Source.fromFile(sourceFile).getLines().toList.filter(!_.trim.isEmpty)
 
-  private var methodName: String = null
-  private var className: String = null
+    // get all lines excluding comments
+    val lines = getIgnoreComments(allLines)
 
-  def this(sourceFile: File, outputFile: File, buildDir: File) {
-    this()
-    var packageBlock: PackageBlock = null
-    val imports: java.util.List[ImportBlock] = new java.util.ArrayList[ImportBlock]
-    var br: BufferedReader = null
-    try {
-      // create a buffered reader
-      br = new BufferedReader(new FileReader(sourceFile))
-      var line: String = null
-      var readImports = false
-      while ((line = br.readLine) != null && !readImports) {
+    // get the file
+    val fileBlock: FileBlock = new FileBlock(sourceFile.getName, buildDir)
 
-        if (line.trim == "")
-          line = br.readLine()
+    // Get the package
+    val packageBlock: PackageBlock = getPackage(lines)
+    fileBlock.addBlock_=(packageBlock)
 
-        val fileBlock: Block = new FileBlock(sourceFile.getName, buildDir)
+    // Get the imports
+    val importBlocks: ListBuffer[Block] = getImports(lines).to[ListBuffer]
+    fileBlock.addBlocks_=(importBlocks)
 
-        for (parser <- parsers) {
+    // Create the block structure
+    // todo change to List of blocks
+    // todo if package not found use "0" not "1"
+    val block: Block = getBlocks(fileBlock, lines(1 + importBlocks.size))
+    println("Block:" + block)
 
-          if (parser.shouldParse(line.trim)) {
-            val tokenizer: Tokenizer = new Tokenizer(line)
-            block = parser.parse(null, tokenizer)
-            if (block.isInstanceOf[PackageBlock]) {
-              packageBlock = block.asInstanceOf[PackageBlock]
-            }
-            else if (block.isInstanceOf[ImportBlock]) {
-              imports.add(block.asInstanceOf[ImportBlock])
-            }
-            else {
-              readImports = true
-              block.superBlock_=(fileBlock)
-              createBlock(block, br)
-            }
-          }
-        }
+    println()
+    println("Getting block structure")
+    // todo if package isnt found use "1" not "2"
+    getBlockStructure(lines.drop(2 + importBlocks.size), block, 0)
 
-        if (packageBlock != null) fileBlock.addBlock_$eq(packageBlock)
+    // Add the block to a fileblock and set fileblock as parent
+    fileBlock.addBlock_=(block)
+    block.superBlock_=(fileBlock)
 
-        for (importBlock <- imports.asScala) fileBlock.addBlock_$eq(importBlock)
+    println()
+    println("Print block info")
+    Utils.printBlockInfo(fileBlock, 0)
 
-        fileBlock.addBlock_$eq(block)
-        block = fileBlock
-      }
-      if (br != null) br.close()
-
-    } catch {
-      case e: FileNotFoundException => e.printStackTrace()
-      case e: IOException => e.printStackTrace()
-    }
-
-    // Compile
-    new Compile(outputFile, block)
-
-    // Output generated blocks structure
-    Utils.printBlockInfo(block)
-
-    // Output the symbol table
+    // Print the symbol table
     SymbolTable.getInstance.printSymbols()
+
+    println("Compiling")
+    new Compile(outputFile, fileBlock)
+
   }
 
-  def createBlock(currentBlockInit: Block, br: BufferedReader, indentation: Int = 0, lineNumber: Int = 0): Block = {
-    var currentBlock = currentBlockInit
+  /**
+    * Loops through the lines to get the package block
+    *
+    * @param lines
+    * @return PackageBlock
+    */
+  private def getPackage(lines: List[String]): PackageBlock = {
+    val parser: PackageParser = new PackageParser
+    lines.filter(parser.shouldParse(_)).map((s: String) => parser.parse(null, new Tokenizer(s))).find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock(""))
+  }
 
+  /**
+    * Loops through the lines to get the import blocks
+    *
+    * @param lines
+    * @return List[ImportBlock]
+    */
+  private def getImports(lines: List[String]): List[Block] = {
+    val parser: ImportParser = new ImportParser;
+    lines.filter(parser.shouldParse(_)).map((s: String) => parser.parse(null, new Tokenizer(s)))
+  }
 
-    var line: String = br.readLine()
+  /**
+    * Combines all lines, removes comments, splits into list again
+    *
+    * @param lines
+    * @return
+    */
+  private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("((['\"])(?:(?!\\2|\\\\).|\\\\.)*\\2)|\\/\\/[^\\n]*|\\/\\*(?:[^*]|\\*(?!\\/))*\\*\\/", "").split("\n").filter(_.trim != "").toList
 
-    if (line == null) {
-      return null
-    }
+  /**
+    * Gets an array of blocks from a string and sets the superblock
+    *
+    * @param superBlock
+    * @param line
+    * @return
+    */
+  // todo make return one block instead of list. Add extra blocks to an "expressions" list in the block
+  private def getBlocks(superBlock: Block, line: String): Block = {
 
-    if (line.trim == "") {
-      line = br.readLine()
+    val result: ListBuffer[Block] = ListBuffer[Block]()
 
-    }
+    // var tuple = null
+    var lineLeft: String = line
+    while (lineLeft != "") {
+      for (parser <- Constants.parsers) {
+        lineLeft = lineLeft.trim
+        if (parser.shouldParse(lineLeft)) {
 
-    if (line == null) {
-      return null
-    }
-    val currentIndentation = Utils.getIndentation(line)
+          // Get the regex that matched
+          val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
 
-    line = line.trim()
-    val splitLine = line.split(";")
-    if (splitLine.length > 1) {
+          // Get the section of the line that matched the regex
+          val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
 
-      val t1 = new Tokenizer(splitLine(0))
-      var nextBlock: Block = null
-      for (parser <- parsers) {
-        if (parser.shouldParse(splitLine(0).trim)) {
-          nextBlock = parser.parse(currentBlock, t1)
-          currentBlock.addBlock_$eq(nextBlock)
-        }
-      }
-
-      val t2 = new Tokenizer(splitLine(1).trim)
-      for (parser <- parsers) {
-        if (parser.shouldParse(splitLine(1).trim)) {
-
-          val inlineBlock = parser.parse(nextBlock, t2)
-          nextBlock.addBlock_$eq(inlineBlock)
-        }
-      }
-
-      createBlock(currentBlock, br, indentation, lineNumber + 1)
-
-      return null
-    }
-
-    val tokenizer = new Tokenizer(line)
-    if (currentBlock.isInstanceOf[MethodBlock]) methodName = currentBlock.getName
-    if (currentBlock.isInstanceOf[ClassBlock]) className = currentBlock.getName
-    // Check if the next symbol exists. If so then throw and error. If not then add to the symbol table.
-    if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock] && !currentBlock.isInstanceOf[PushBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
-      throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined." + line)
-    }
-    else {
-      SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
-    }
-    if (currentIndentation - indentation > 1) throw new IndentationException("Line: " + lineNumber + "    Indentation: " + (currentIndentation - indentation) + " " + line)
-
-
-    // Indented out one
-    else if (currentIndentation == (indentation + 1)) {
-
-      if (!currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Block cannot store other blocks.")
-      for (parser <- parsers) {
-        if (parser.shouldParse(line)) {
-          val nextBlock = parser.parse(currentBlock, tokenizer)
-          currentBlock.addBlock_$eq(nextBlock)
-          createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
-        }
-      }
-    }
-    else if (currentIndentation == indentation) {
-      // Indentation the same if (indentation == currentIndentation) { if (currentBlock.isContainer) throw new ContainerException("Line: " + lineNumber + "    Indentation: " + indentation + " " + currentBlock + " Minimum of one blocks stored within container.")
-      for (parser <- parsers) {
-        if (parser.shouldParse(line)) {
-          val nextBlock = parser.parse(currentBlock.superBlock, tokenizer)
-          currentBlock.superBlock.addBlock_$eq(nextBlock)
-          createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
-        }
-      }
-    }
-    else {
-      // Indentation decreases by any amount
-      for (parser <- parsers) {
-        if (parser.shouldParse(line)) {
-          currentBlock = currentBlock.superBlock
-          var i = 0
-          while (i < indentation - currentIndentation) {
-            currentBlock = currentBlock.superBlock
-            i += 1
+          // If the line started with the section then parse it
+          if (lineLeft.trim.startsWith(first)) {
+            result += parser.parse(superBlock, new Tokenizer(first))
+            lineLeft = lineLeft.replace(first, "")
           }
-          val nextBlock = parser.parse(currentBlock, tokenizer)
-
-          currentBlock.addBlock_$eq(nextBlock)
-          createBlock(nextBlock, br, currentIndentation, lineNumber + 1)
         }
       }
     }
 
-    null
+    result(0)
   }
+
+  /**
+    * Recursively gets the class AST structure.
+    */
+  private def getBlockStructure(lines: List[String], block: Block, previousIndentation: Int) {
+    if (lines.size > 0) {
+
+      println(lines(0))
+      val line = lines(0)
+      val nextBlock = getBlocks(block, lines(0))
+      val nextIndentation: Int = Utils.getIndentation(lines(0))
+
+
+      // Indent + 1
+      if (nextIndentation - previousIndentation == 1) {
+        block.addBlock_=(nextBlock)
+
+        System.out.println("    " * previousIndentation + block.toString + " Indentation + 1")
+
+        getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
+      } else if (previousIndentation == nextIndentation) {
+        System.out.println("    " * previousIndentation + block.toString + " Indentation ==")
+
+        block.superBlock.addBlock_=(nextBlock)
+
+        getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
+
+      } else {
+        System.out.println("    " * previousIndentation + block.toString + " Indentation - 1")
+
+        var currentBlock = block.superBlock
+        var i = 0
+        while (i < previousIndentation - nextIndentation) {
+          currentBlock = currentBlock.superBlock
+          i += 1
+        }
+
+        currentBlock.addBlock_=(nextBlock)
+
+        getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
+
+      }
+
+    }
+  }
+
+  /**
+    * Add a row to the symbol table
+    *
+    * @param currentBlock
+    * @param lineNumber
+    */
+  private def addRowSymbolTable(currentBlock: Block, lineNumber: Int): Unit = {
+    // if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock] && !currentBlock.isInstanceOf[PushBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
+    //   throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined." + line)
+    // }
+    //  else {
+    //   SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
+    // }
+  }
+
+
+
+
+
 }

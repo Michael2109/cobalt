@@ -40,11 +40,6 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*"
   )
 
-  /**
-    * Takes a line and checks to see ifs it is for this parsers by using regex.
-    */
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectDefinitionBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"

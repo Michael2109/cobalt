@@ -58,6 +58,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
 
     // Get the type of the parameters
     for (param <- params) {
+      println(Utils.getMethod(this) + " " + param.getName)
       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
       parameterString += param.getAsmType
       argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"

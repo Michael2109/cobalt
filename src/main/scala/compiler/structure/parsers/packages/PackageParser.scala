@@ -32,8 +32,6 @@ class PackageParser extends Parser[PackageBlock] {
     */
   override def getRegexs: List[String] = List("package [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): PackageBlock = {
     tokenizer.nextToken // skip "package"
     var directory: String = tokenizer.nextToken.token // Get the string value of the next token.;

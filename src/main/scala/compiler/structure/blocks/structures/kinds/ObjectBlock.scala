@@ -21,12 +21,15 @@ package compiler.structure.blocks.structures.kinds
 import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.packages.PackageBlock
+import compiler.symbol_table.{Row, SymbolTable}
 
 /**
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
 class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
+
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
   def getName: String = name
 

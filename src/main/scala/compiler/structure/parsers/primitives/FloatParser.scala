@@ -34,8 +34,6 @@ class FloatParser extends Parser[FloatBlock] {
     "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*float[ ]*([=][ ]*[0-9]+[.][0-9]*f)?"
   )
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): FloatBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val name: String = tokenizer.nextToken.token

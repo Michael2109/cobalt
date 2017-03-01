@@ -34,11 +34,6 @@ class ClassParser extends Parser[ClassBlock] {
     "(open[ ]+)?class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)([ ]+extends[ ]+[a-zA-Z][a-zA-Z0-9]*)?:"
   )
 
-  /**
-    * Takes a line and checks to see ifs it is for this parsers by using regex.
-    */
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
 
     val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open

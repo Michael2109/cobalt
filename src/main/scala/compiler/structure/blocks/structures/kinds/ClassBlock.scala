@@ -23,6 +23,7 @@ import compiler.structure.blocks.Block
 import compiler.structure.blocks.modifiers.ModifierBlock
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
+import compiler.symbol_table.{Row, SymbolTable}
 
 /**
   * Represents a class.
@@ -30,6 +31,7 @@ import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlo
   */
 class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
 
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
   // Parameters added to constuctor
   private var parameterString: String = ""

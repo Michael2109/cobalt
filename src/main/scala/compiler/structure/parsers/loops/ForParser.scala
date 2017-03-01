@@ -35,8 +35,6 @@ class ForParser extends Parser[ForBlock] {
     */
   override def getRegexs: List[String] = List("for \\([a-zA-Z][a-zA-Z0-9]* [a-zA-Z][a-zA-Z0-9]* = [0-9]+([.][0-9]*)?; [a-zA-Z][a-zA-Z0-9]* [<|>|<=|>=|==] [0-9]+([.][0-9]*)?; [a-zA-Z][a-zA-Z0-9]*\\+\\+\\):")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): ForBlock = {
     tokenizer.nextToken //skip "for"
     tokenizer.nextToken // skip "("

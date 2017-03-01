@@ -25,6 +25,8 @@ import compiler.symbol_table.{Row, SymbolTable}
 
 class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("<init>").setClassName(className))
+
   var parameterString = ""
   var localVariableString = ""
   private var packageBlock: PackageBlock = null

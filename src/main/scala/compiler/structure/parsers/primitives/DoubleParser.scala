@@ -34,8 +34,6 @@ class DoubleParser extends Parser[DoubleBlock] {
     "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*double[ ]*([=][ ]*[0-9]+[.][0-9]*)?(d|D)?"
   )
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   def parse(superBlock: Block, tokenizer: Tokenizer): DoubleBlock = {
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val name: String = tokenizer.nextToken.token

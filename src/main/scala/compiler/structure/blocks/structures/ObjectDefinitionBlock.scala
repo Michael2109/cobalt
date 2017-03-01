@@ -21,7 +21,7 @@ package compiler.structure.blocks.structures
 import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.symbol_table.SymbolTable
+import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
 import scala.collection.mutable.ListBuffer
@@ -29,6 +29,8 @@ import scala.collection.mutable.ListBuffer
 
 // Creation of a new object and storing to a variable
 class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: ListBuffer[Parameter]) extends Block(superBlockInit, false, true, false) {
+
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getName).setClassName(Utils.getClass(this).getName))
 
   private var parameterString: String = ""
   private var argumentString: String = ""

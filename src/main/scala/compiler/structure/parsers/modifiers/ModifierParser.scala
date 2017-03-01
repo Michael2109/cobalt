@@ -32,8 +32,6 @@ class ModifierParser extends Parser[ModifierBlock] {
     */
   override def getRegexs: List[String] = List("(public|private|protected):")
 
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
   override def parse(superBlock: Block, tokenizer: Tokenizer): ModifierBlock = new ModifierBlock(superBlock, tokenizer.nextToken.token)
 
 }

@@ -30,9 +30,7 @@ class CommentParser extends Parser[CommentBlock] {
     *
     * @return
     */
-  override def getRegexs = ???
-
-  def shouldParse(line: String): Boolean = line.matches("//.*")
+  override def getRegexs = List()
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CommentBlock = new CommentBlock(superBlock)
 

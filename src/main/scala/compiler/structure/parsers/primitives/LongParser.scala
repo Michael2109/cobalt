@@ -36,11 +36,6 @@ class LongParser extends Parser[LongBlock]{
   )
 
   /**
-    * Takes a line and checks to see ifs it is for this parsers by using regex.
-    */
-  override def shouldParse(line: String): Boolean = (getRegexs.filter(line.matches(_)).size > 0)
-
-  /**
     * Take the superBlock and the tokenizer for the line and return a blocks of this parsers's type.
     */
   override def parse(superBlock: Block, tokenizer: Tokenizer): LongBlock = {
