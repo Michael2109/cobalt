@@ -61,10 +61,8 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     // todo change to List of blocks
     // todo if package not found use "0" not "1"
     val block: Block = getBlocks(fileBlock, lines(1 + importBlocks.size))
-    println("Block:" + block)
 
-    println()
-    println("Getting block structure")
+
     // todo if package isnt found use "1" not "2"
     getBlockStructure(lines.drop(2 + importBlocks.size), block, 0)
 
@@ -72,7 +70,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     fileBlock.addBlock_=(block)
     block.superBlock_=(fileBlock)
 
-    println()
     println("Print block info")
     Utils.printBlockInfo(fileBlock, 0)
 
@@ -129,9 +126,12 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     // var tuple = null
     var lineLeft: String = line
     while (lineLeft != "") {
+
       for (parser <- Constants.parsers) {
         lineLeft = lineLeft.trim
+
         if (parser.shouldParse(lineLeft)) {
+
 
           // Get the regex that matched
           val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
@@ -142,7 +142,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
           // If the line started with the section then parse it
           if (lineLeft.trim.startsWith(first)) {
             result += parser.parse(superBlock, new Tokenizer(first))
-            lineLeft = lineLeft.replace(first, "")
+            lineLeft = lineLeft.replace(first, "").trim
           }
         }
       }
@@ -157,38 +157,27 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
   private def getBlockStructure(lines: List[String], block: Block, previousIndentation: Int) {
     if (lines.size > 0) {
 
-      println(lines(0))
       val line = lines(0)
       val nextBlock = getBlocks(block, lines(0))
       val nextIndentation: Int = Utils.getIndentation(lines(0))
 
-
       // Indent + 1
       if (nextIndentation - previousIndentation == 1) {
         block.addBlock_=(nextBlock)
-
-        System.out.println("    " * previousIndentation + block.toString + " Indentation + 1")
-
         getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
+
       } else if (previousIndentation == nextIndentation) {
-        System.out.println("    " * previousIndentation + block.toString + " Indentation ==")
-
         block.superBlock.addBlock_=(nextBlock)
-
         getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
 
       } else {
-        System.out.println("    " * previousIndentation + block.toString + " Indentation - 1")
-
         var currentBlock = block.superBlock
         var i = 0
         while (i < previousIndentation - nextIndentation) {
           currentBlock = currentBlock.superBlock
           i += 1
         }
-
         currentBlock.addBlock_=(nextBlock)
-
         getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
 
       }

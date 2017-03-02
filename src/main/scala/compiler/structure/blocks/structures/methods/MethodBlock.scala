@@ -27,8 +27,6 @@ import compiler.utilities.Utils
 
 class MethodBlock(var superBlockInit: Block, val name: String, val returnType: String, val isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
 
-  println(superBlockInit)
-  println(Utils.getClass(this))
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(name).setClassName(Utils.getClass(this).getName))
 
   val modifier : String = {

@@ -35,7 +35,7 @@ class PrintBlock(var superBlockInit: Block, var value: String, val isVariableIni
   def getOpeningCode: String = {
     if (isVariableInit) {
       return "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
-        "mv.visitVarInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), value).getId + ");" +
+        "mv.visitVarInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId + ");" +
         "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");"
     }
     else {

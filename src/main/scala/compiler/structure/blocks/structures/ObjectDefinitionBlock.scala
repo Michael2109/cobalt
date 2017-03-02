@@ -30,7 +30,7 @@ import scala.collection.mutable.ListBuffer
 // Creation of a new object and storing to a variable
 class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: ListBuffer[Parameter]) extends Block(superBlockInit, false, true, false) {
 
-  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getName).setClassName(Utils.getClass(this).getName))
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
 
   private var parameterString: String = ""
   private var argumentString: String = ""
@@ -46,9 +46,9 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, classNa
 
     // Get the type of the parameters
     for (param <- params) {
-      param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
+      param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
       parameterString += param.getAsmType
-      argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"
+      argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
     }
   }
 

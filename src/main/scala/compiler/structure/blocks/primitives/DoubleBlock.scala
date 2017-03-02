@@ -24,8 +24,9 @@ import compiler.utilities.Utils
 
 class DoubleBlock(superBlockInit: Block, declaration : Boolean, name: String,  value: String) extends Block(superBlockInit, false, true) {
 
+  println("Gettomng ,theopd")
   println(Utils.getMethod(this))
-  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getName).setClassName(Utils.getClass(this).getName))
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
 
   override def init() {}
 

@@ -43,7 +43,7 @@ class WhileBlock(var superBlockInit: Block, var name: String) extends Block(supe
     if (split.length > 1) {
       pointer = split(0)
 
-      pointer = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this), split(0)).getId
+      pointer = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, split(0)).getId
       operator = split(1)
       value = split(2)
 

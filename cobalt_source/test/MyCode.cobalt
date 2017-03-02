@@ -3,7 +3,7 @@ package test
 import other
 import compiler.structure.blocks.ifs.IfBlock
 
-open class MyCode(xx:int, yy:int):
+open class MyCode(xx:int, yy:int): package other package another
     /* Other test */
 
     // Test

@@ -58,19 +58,19 @@ object Utils {
     * @param block
     * @return
     */
-  def getMethod(block: Block): Block = {
+  def getMethod(block: Block): Option[Block] = {
     var result: Block = block
     while (!(result.isInstanceOf[MethodBlock])) {
       {
         if (block.superBlock == null) {
-          return null
+          return Option.empty[Block]
         }
         result = result.superBlock
         if (result == null)
-          return result
+          return Option.apply(result)
       }
     }
-    return result
+    return Option.apply(result)
   }
 
   def getFileBlock(blockInit: Block) : Block = {

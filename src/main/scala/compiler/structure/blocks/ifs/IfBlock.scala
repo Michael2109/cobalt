@@ -35,7 +35,7 @@ class IfBlock(var superBlockInit: Block, var nameInit: String) extends Block(sup
   private val params: Array[Parameter] = null
   private val _name = nameInit
   private val split: Array[String] = _name.split(" ")
-  private val pointer: String = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this), split(0)).getId
+  private val pointer: String = "" + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, split(0)).getId
   private val operator: String = if(split.length > 1) split(1) else ""
   private val value: String = if(split.length > 1) split(2) else _name
 

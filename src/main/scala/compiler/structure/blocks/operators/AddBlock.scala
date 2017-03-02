@@ -32,7 +32,7 @@ import compiler.utilities.Utils
 class AddBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
 
   def init() {
-    id = (new Integer(SymbolTable.getInstance.getValue(Utils.getMethod(this), name).getId))
+    id = (new Integer(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name).getId))
   }
 
   def getName: String = name

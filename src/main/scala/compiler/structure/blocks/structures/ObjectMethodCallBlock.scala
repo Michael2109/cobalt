@@ -33,9 +33,9 @@ import scala.collection.mutable.ListBuffer
   */
 class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
 
-  id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getId)
+  id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getId)
   private val `type`: String = null
-  private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this), variableName).getType
+  private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
   private var parameterString: String = ""
   private var argumentString: String = ""
   private var directory: String = ""
@@ -59,9 +59,9 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     // Get the type of the parameters
     for (param <- params) {
       println(Utils.getMethod(this) + " " + param.getName)
-      param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getType)
+      param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
       parameterString += param.getAsmType
-      argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this), param.getName).getId + ");"
+      argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
     }
   }
 
