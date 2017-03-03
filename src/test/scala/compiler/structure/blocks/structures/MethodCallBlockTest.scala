@@ -34,7 +34,7 @@ class MethodCallBlockTest(var superBlockInit: Block, var name: String, var `type
 
   def getValue: String = ""
 
-  def getType: String = `type`
+  def getType(): BlockType = `type`
 
   def getOpeningCode: String = name + "();"
 

@@ -37,7 +37,7 @@ class AddBlock(var superBlockInit: Block, var name: String, var value: String) e
 
   def getName: String = name
 
-  def getType: String = "add"
+  def getType(): String = "add"
 
   def getOpeningCode: String = {
   //  asm.visitLdcInsn("new Integer("+this.getValue+");")

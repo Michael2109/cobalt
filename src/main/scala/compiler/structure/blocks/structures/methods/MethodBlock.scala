@@ -48,7 +48,7 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
 
   def getName: String = name
 
-  def getType: String = returnType
+  def getType(): String = returnType
 
   def getValue: String = ""
 

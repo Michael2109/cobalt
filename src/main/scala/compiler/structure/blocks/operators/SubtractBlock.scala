@@ -32,7 +32,7 @@ class SubtractBlock(var superBlockInit: Block, var name: String, var value: Stri
   def getValue: String = value
 
 
-  def getType: String = "subtract"
+  def getType(): String = "subtract"
 
 
   def getOpeningCode: String = {

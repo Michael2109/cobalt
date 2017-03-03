@@ -32,7 +32,7 @@ class FloatBlockTest(superBlockInit: Block, declaration: Boolean, name: String, 
     value
   }
 
-  override def getType: String = {
+  override def getType(): BlockType = {
     "float"
   }
 

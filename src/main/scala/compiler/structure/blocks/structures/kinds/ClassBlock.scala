@@ -49,7 +49,7 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
 
   def getValue: String = null
 
-  def getType: String = "class"
+  def getType(): String = "class"
 
   /**
     * Performed just before compiling blocks to allow for action when all blocks parsed

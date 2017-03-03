@@ -34,7 +34,7 @@ class DoubleBlock(superBlockInit: Block, declaration : Boolean, name: String,  v
 
   override  def getValue: String = value
 
-  override def getType: String = "double"
+  override def getType(): String = "double"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

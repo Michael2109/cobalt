@@ -28,7 +28,7 @@ class PackageBlockTest(var directory: String) extends Block(null, true, false) {
 
   def getValue: String = null
 
-  def getType: String = "package"
+  def getType(): BlockType = "package"
 
   def getOpeningCode: String = ""
 

@@ -35,7 +35,7 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
 
   def getValue: String = ""
 
-  def getType: String = "file"
+  def getType(): String = "file"
 
   def getOpeningCode: String = {
 

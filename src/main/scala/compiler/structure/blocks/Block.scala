@@ -83,7 +83,7 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
 
   def getValue: String
 
-  def getType: String
+  def getType(): String
 
   /* Bytecode for the opening and closing of the blocks */
   def getOpeningCode: String

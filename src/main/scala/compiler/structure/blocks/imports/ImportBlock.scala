@@ -34,7 +34,7 @@ class ImportBlock(var directory: String, var fileName: String) extends Block(nul
 
   def getValue: String = ""
 
-  def getType: String = "import"
+  def getType(): String = "import"
 
   def getOpeningCode: String = ""
 

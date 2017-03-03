@@ -36,7 +36,7 @@ class FloatBlock(superBlockInit: Block, declaration : Boolean, name: String, val
     value
   }
 
-  override def getType: String = {
+  override def getType(): String = {
     "float"
   }
 

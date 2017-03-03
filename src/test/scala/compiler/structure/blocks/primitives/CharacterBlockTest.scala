@@ -28,7 +28,7 @@ class CharacterBlockTest(superBlockInit: Block, declaration: Boolean, name: Stri
 
   override def getValue: String = value
 
-  override def getType: String = "char"
+  override def getType(): BlockType = "char"
 
 
   override def getOpeningCode: String = {

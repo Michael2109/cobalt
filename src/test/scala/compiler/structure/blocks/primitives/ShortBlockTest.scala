@@ -29,7 +29,7 @@ class ShortBlockTest(superBlockShort: Block, declaration: Boolean, name: String,
 
   override def getValue: String = value
 
-  override def getType: String = "short"
+  override def getType(): BlockType = "short"
 
   override def getOpeningCode: String = {
     asm.visitLdcInsn("new Short((short)" + value + ")") +

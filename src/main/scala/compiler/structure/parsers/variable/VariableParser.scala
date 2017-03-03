@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.assignment
+package compiler.structure.parsers.variable
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.assignment.AssignmentBlock
+import compiler.structure.blocks.variable.VariableBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class AssignmentParser extends Parser[AssignmentBlock] {
-
+class VariableParser extends Parser[VariableBlock] {
 
   /**
     * A list of all regular expressions
@@ -32,26 +31,19 @@ class AssignmentParser extends Parser[AssignmentBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-
-
-    // float
-    "=[ ]*[0-9]+[.][0-9]*(f|F)?",
-
-    // double
-    "=[ ]*[0-9]+[.][0-9]*(d|D)?",
-
-    // integer
-    "=[ ]*[a-zA-Z0-9]+[ ]*"
+    //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
   )
 
-  override def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentBlock = {
-    // get the id of the variable
+  def parse(superBlock: Block, tokenizer: Tokenizer): VariableBlock = {
+    val declaration: Boolean = tokenizer.nextToken.token == "val"
+    // "val" or "var"
+    val name: String = tokenizer.nextToken.token
 
-    tokenizer.nextToken.token // skip "="
+    // skip ":"
+    var varType = tokenizer.nextToken.token // skip "int"
+    tokenizer.nextToken // skip "="
 
-    val value: String = tokenizer.nextToken.token
-
-    new AssignmentBlock(superBlock, true, value)
+    new VariableBlock(superBlock, declaration, name, varType)
   }
-
 }

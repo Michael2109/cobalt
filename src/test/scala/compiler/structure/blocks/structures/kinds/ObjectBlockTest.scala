@@ -32,7 +32,7 @@ class ObjectBlockTest(var superBlockInit: Block, var name: String, var parameter
 
   def getValue: String = null
 
-  def getType: String = "class"
+  def getType(): BlockType = "class"
 
   /**
     * Performed just before compiling blocks to allow for action when all blocks parsed

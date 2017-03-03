@@ -71,7 +71,7 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, classNa
 
   def getValue: String = ""
 
-  def getType: String = className
+  def getType(): String = className
 
   def getOpeningCode: String = {
     return "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""

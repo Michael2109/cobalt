@@ -28,7 +28,7 @@ class DivideBlockTest(var superBlockInit: Block, var name: String, var value: St
 
   def getValue: String = value
 
-  def getType: String = "divide"
+  def getType(): BlockType = "divide"
 
   def getOpeningCode: String = {
     return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + id + ");\n" + "mv.visitInsn(IDIV);\n" + "mv.visitVarInsn(ISTORE," + id + ");\n"

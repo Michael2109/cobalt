@@ -28,7 +28,7 @@ class LongBlockTest(superBlockInit: Block, declaration: Boolean, name: String, v
 
   override def getValue: String = value
 
-  override def getType: String = "long"
+  override def getType(): BlockType = "long"
 
   override def getOpeningCode: String = {
     asm.visitLdcInsn("new Long(" + value + ")") +

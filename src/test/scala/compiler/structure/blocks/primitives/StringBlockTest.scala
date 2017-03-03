@@ -28,7 +28,7 @@ class StringBlockTest(superBlockInit: Block, declaration: Boolean, name: String,
 
   override def getValue: String = value
 
-  override def getType: String = "String"
+  override def getType(): BlockType = "String"
 
   override def getOpeningCode: String = {
     asm.visitLdcInsn("\"" + value + "\"") +

@@ -48,7 +48,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
 
   def getValue: String = ""
 
-  def getType: String = `type`
+  def getType(): String = `type`
 
   def init() {
     if (className == getClassName)

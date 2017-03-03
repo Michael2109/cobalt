@@ -28,7 +28,7 @@ class MultiplyBlockTest(var superBlockInit: Block, var name: String, var value: 
 
   def getValue: String = value
 
-  def getType: String = "multiply"
+  def getType(): BlockType = "multiply"
 
   def getOpeningCode: String = {
     return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + id + ");\n" + "mv.visitInsn(IMUL);\n" + "mv.visitVarInsn(ISTORE," + id + ");\n"

@@ -32,7 +32,7 @@ class LongBlock(superBlockInit: Block, declaration : Boolean, name: String, valu
 
   override def getValue: String = value
 
-  override def getType: String = "long"
+  override def getType(): String = "long"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

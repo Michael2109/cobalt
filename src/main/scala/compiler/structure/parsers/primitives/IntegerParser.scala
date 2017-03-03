@@ -31,8 +31,8 @@ class IntegerParser extends Parser[IntegerBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*[=][ ]*[0-9]+",
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*int[ ]*([=][ ]*[0-9]+)?"
+    //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*int[ ]*"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IntegerBlock = {

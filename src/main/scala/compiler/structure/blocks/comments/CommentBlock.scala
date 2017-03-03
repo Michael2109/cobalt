@@ -36,7 +36,7 @@ class CommentBlock(var superBlockInit: Block) extends Block(superBlockInit, fals
 
   override def getValue: String = ""
 
-  override def getType: String = "comment"
+  override def getType(): String = "comment"
 
   /* Opening and closing byte code */
   override def getOpeningCode: String = ""

@@ -32,7 +32,7 @@ class StringBlock(superBlockInit: Block, declaration : Boolean, name: String, va
 
   override def getValue: String = value
 
-  override def getType: String = "String"
+  override def getType(): String = "String"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

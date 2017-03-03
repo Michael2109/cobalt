@@ -57,7 +57,7 @@ class ConstructorBlockTest(var superBlockInit: Block, var parameters: Array[Para
 
   override def getValue: String = ""
 
-  override def getType: String = "constructor"
+  override def getType(): BlockType = "constructor"
 
   override def getOpeningCode: String = {
     return asm.getOpeningBrace() +

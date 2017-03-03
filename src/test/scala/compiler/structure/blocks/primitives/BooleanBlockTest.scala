@@ -28,7 +28,7 @@ class BooleanBlockTest(var superBlockInit: Block, declaration: Boolean, name: St
 
   override def getValue: String = value
 
-  override def getType: String = "boolean"
+  override def getType(): BlockType = "boolean"
 
   override def getOpeningCode: String = asm.visitLdcInsn("new Boolean(" + value + ")") +
     asm.visitVarInsn("BASTORE", id)

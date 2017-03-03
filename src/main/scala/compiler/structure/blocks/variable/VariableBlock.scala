@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.primitives
+package compiler.structure.blocks.variable
 
 import compiler.structure.blocks.Block
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
-class IntegerBlock(superBlockInit: Block, declaration : Boolean, name: String, value: String) extends Block(superBlockInit, false, true) {
+class VariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
@@ -31,13 +31,13 @@ class IntegerBlock(superBlockInit: Block, declaration : Boolean, name: String, v
 
   override def getName: String = name
 
-  override def getValue: String = value
+  override def getValue: String = ""
 
-  override def getType(): String = "int"
+  override def getType(): String = varType
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      asm.visitLdcInsn("new Integer(" + value + ")") +
+      asm.visitLdcInsn("new Integer(" + 0 + ")") +
         asm.visitVarInsn("ISTORE", id)
     } else {
       ""
@@ -48,6 +48,6 @@ class IntegerBlock(superBlockInit: Block, declaration : Boolean, name: String, v
     ""
   }
 
-  override def toString: String = "int: " + name + " = " + value + " " + expressions
+  override def toString: String = "variable: " + name + " = " + "unknown!" + " " + expressions
 
 }

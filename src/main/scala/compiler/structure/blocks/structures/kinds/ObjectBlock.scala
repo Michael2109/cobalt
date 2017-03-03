@@ -35,7 +35,7 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
 
   def getValue: String = null
 
-  def getType: String = "class"
+  def getType(): String = "class"
 
   /**
     * Performed just before compiling blocks to allow for action when all blocks parsed

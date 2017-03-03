@@ -28,7 +28,7 @@ class DoubleBlockTest(superBlockInit: Block, declaration: Boolean, name: String,
 
   override def getValue: String = value
 
-  override def getType: String = "double"
+  override def getType(): BlockType = "double"
 
   override def getOpeningCode: String = {
     "mv.visitLdcInsn(new Double(" + value + "));\n" +

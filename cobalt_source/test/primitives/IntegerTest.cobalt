@@ -3,4 +3,4 @@ package test.primitives
 class IntegerTest():
 
     def test() <- void:
-        val y = 10
+        val y:int = 10

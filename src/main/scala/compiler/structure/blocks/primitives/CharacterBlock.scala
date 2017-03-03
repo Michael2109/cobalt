@@ -18,6 +18,7 @@
 
 package compiler.structure.blocks.primitives
 
+
 import compiler.structure.blocks.Block
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
@@ -32,7 +33,7 @@ class CharacterBlock( superBlockInit: Block, declaration : Boolean, name: String
 
   override def getValue: String = value
 
-  override def getType: String = "char"
+  override def getType(): String = "char"
 
 
   override def getOpeningCode: String = {

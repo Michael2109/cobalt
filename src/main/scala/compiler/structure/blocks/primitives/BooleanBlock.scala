@@ -33,7 +33,7 @@ class BooleanBlock(var superBlockInit: Block, declaration: Boolean, name: String
 
   override def getValue: String = value
 
-  override def getType: String = "boolean"
+  override def getType(): String = "boolean"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

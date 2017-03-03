@@ -28,7 +28,7 @@ class ArrayBlock( superBlockInit: Block, declaration : Boolean, name: String,  v
 
   override def getValue: String = value
 
-  override def getType: String = "array"
+  override def getType(): String = "array"
 
 
   override  def getOpeningCode: String = {

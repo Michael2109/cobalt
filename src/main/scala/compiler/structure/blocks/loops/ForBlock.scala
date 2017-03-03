@@ -42,7 +42,7 @@ class ForBlock(var superBlockInit: Block, var name: String) extends Block(superB
 
   def getValue: String = ""
 
-  def getType: String = ""
+  def getType(): String = "for"
 
   def getOpeningCode: String = ""
 

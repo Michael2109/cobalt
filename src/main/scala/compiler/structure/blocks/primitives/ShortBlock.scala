@@ -32,7 +32,7 @@ class ShortBlock(superBlockShort: Block, declaration : Boolean, name: String, va
 
   override  def getValue: String = value
 
-  override def getType: String = "short"
+  override def getType(): String = "short"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

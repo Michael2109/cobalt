@@ -123,10 +123,13 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
     val result: ListBuffer[Block] = ListBuffer[Block]()
 
+    var previousLineLeft = ""
     // var tuple = null
     var lineLeft: String = line
-    while (lineLeft != "") {
 
+    while (lineLeft != "" && lineLeft != previousLineLeft) {
+      var found = false
+      previousLineLeft = lineLeft
       for (parser <- Constants.parsers) {
         lineLeft = lineLeft.trim
 
@@ -141,6 +144,8 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
           // If the line started with the section then parse it
           if (lineLeft.trim.startsWith(first)) {
+            found = true
+
             if (result.size > 0) {
               result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
             } else {
@@ -150,7 +155,11 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
           }
         }
       }
+      if (!found) {
+        throw new RuntimeException("Error parsing: '" + lineLeft + "'")
+      }
     }
+    println(result(0))
     result(0)
 
   }

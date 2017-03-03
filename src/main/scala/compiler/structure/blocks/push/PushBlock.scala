@@ -33,7 +33,7 @@ class PushBlock(var superBlockInit: Block, var value: String, val isVariableInit
 
   override def getValue: String = value
 
-  override def getType: String = "PUSH"
+  override def getType(): String = "PUSH"
 
   /* Bytecode for the opening and closing of the blocks */
   override def getOpeningCode: String = {

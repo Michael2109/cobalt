@@ -20,26 +20,26 @@ package compiler.structure.blocks.assignment
 
 import compiler.structure.blocks.Block
 
-class AssignmentBlock(var superBlockInit: Block, declaration : Boolean, var name: String, var value: String) extends Block(superBlockInit, false, false) {
+class AssignmentBlock(var superBlockInit: Block, declaration: Boolean, var value: String) extends Block(superBlockInit, false, false) {
 
   def init() {
 
   }
 
-  def getName: String = name
+  def getName: String = ""
 
-  def getType: String = "assignment"
+  def getType(): String = "Assignment"
 
   def getValue: String = value
 
   def getOpeningCode: String = {
-    return ""
+    ""
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
-  override def toString: String = "add: " + name
+  override def toString: String = "assignment: '" + value + "'"
 
 }
