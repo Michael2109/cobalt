@@ -151,7 +151,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
         }
       }
     }
-    println(result(0))
     result(0)
 
   }
