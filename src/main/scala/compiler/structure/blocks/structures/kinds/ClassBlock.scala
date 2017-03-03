@@ -112,6 +112,6 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses
+    return name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses + " " + expressions
   }
 }

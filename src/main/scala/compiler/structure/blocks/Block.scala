@@ -51,6 +51,8 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
   val immutable: Boolean = immutableInit
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
+  val expressions: ListBuffer[Block] = ListBuffer[Block]()
+
   /* id GET and SET */
   def id = _id
 

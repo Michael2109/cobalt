@@ -141,14 +141,19 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
           // If the line started with the section then parse it
           if (lineLeft.trim.startsWith(first)) {
-            result += parser.parse(superBlock, new Tokenizer(first))
+            if (result.size > 0) {
+              result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
+            } else {
+              result += parser.parse(superBlock, new Tokenizer(first))
+            }
             lineLeft = lineLeft.replace(first, "").trim
           }
         }
       }
     }
-
+    println(result(0))
     result(0)
+
   }
 
   /**
