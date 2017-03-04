@@ -37,8 +37,14 @@ class VariableBlock(superBlockInit: Block, declaration: Boolean, name: String, v
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      asm.visitLdcInsn("new Integer(" + 0 + ")") +
-        asm.visitVarInsn("ISTORE", id)
+
+      // if integer
+      varType match {
+        case "int" => asm.visitLdcInsn("new Integer(" + expressions(0).getValue + ")") + asm.visitVarInsn("ISTORE", id)
+        case "double" => asm.visitLdcInsn("new Double(" + expressions(0).getValue + ")") + asm.visitVarInsn("DSTORE", id)
+        case default => ""
+      }
+
     } else {
       ""
     }
