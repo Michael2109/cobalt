@@ -20,8 +20,8 @@ package compiler.structure.blocks.structures.methods
 
 import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.packages.PackageBlock
 import compiler.symbol_table.{Row, SymbolTable}
+import compiler.utilities.Utils
 
 class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
@@ -29,30 +29,27 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
   var parameterString = ""
   var localVariableString = ""
-  private var packageBlock: PackageBlock = null
-
-  def init(): Unit = {
+  private var packageDir: String = Utils.getPackage(this)
 
     val classBlock = superBlock
 
     var i = 1
 
-    val block: Block = superBlock.superBlock
-    // Get the package the class is within
-    for (fileSub <- block.subBlocks) {
-      if (fileSub.isInstanceOf[PackageBlock]) {
-        packageBlock = fileSub.asInstanceOf[PackageBlock]
-      }
-    }
-    localVariableString += "mv.visitLocalVariable(\"this\", \"L" + packageBlock.directory + "/" + classBlock.getName + ";\", null, lConstructor0, lConstructor2, " + 0 + ");\n"
+  localVariableString += "mv.visitLocalVariable(\"this\", \"L" + packageDir + "/" + classBlock.getName + ";\", null, lConstructor0, lConstructor2, " + 0 + ");\n"
     for (parameter <- parameters) {
+      // Add to the symbol table
+      SymbolTable.getInstance.addRow(new Row().setId(id).setName(parameter.getName).setType(parameter.getType).setMethodName(getName).setClassName(className))
+
       parameterString += parameter.getAsmType
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + i + ");\n"
-      SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName).setClassName(className))
+      //     SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName).setClassName(className))
       i += 1
 
     }
+
+  def init(): Unit = {
+
   }
 
   override def getName: String = "<init>"

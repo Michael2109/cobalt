@@ -19,8 +19,6 @@
 package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
-import compiler.symbol_table.SymbolTable
-import compiler.utilities.Utils
 
 /**
   * Represents adding a value to a primitive
@@ -29,28 +27,29 @@ import compiler.utilities.Utils
   * @param name
   * @param valueInit
   */
-class AddBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
+class AddBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
 
   def init() {
-    id = (new Integer(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name).getId))
+
   }
 
-  def getName: String = name
+  def getName: String = ""
 
   def getType(): String = "add"
 
-  def getOpeningCode: String = {
-  //  asm.visitLdcInsn("new Integer("+this.getValue+");")
-
-     "mv.visitIincInsn(" + id + ", " + this.getValue + ");"
-  }
 
   def getValue: String = value
+
+  def getOpeningCode: String = {
+    //  asm.visitLdcInsn("new Integer("+this.getValue+");")
+
+    "mv.visitIincInsn(" + id + ", " + this.getValue + ");"
+  }
 
   def getClosingCode: String = {
      ""
   }
 
-  override def toString: String = "add: " + name
+  override def toString: String = "add: " + "unknown"
 
 }

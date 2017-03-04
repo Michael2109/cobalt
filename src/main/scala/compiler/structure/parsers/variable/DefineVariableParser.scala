@@ -16,24 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators
+package compiler.structure.parsers.variable
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.AddBlock
+import compiler.structure.blocks.variable.DefineVariableBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class AddParser extends Parser[AddBlock] {
+class DefineVariableParser extends Parser[DefineVariableBlock] {
+
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[+][=][ ]*[0-9]+")
+  override def getRegexs: List[String] = List(
+    //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
+    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
+  )
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): AddBlock = {
+  def parse(superBlock: Block, tokenizer: Tokenizer): DefineVariableBlock = {
+    val declaration: Boolean = tokenizer.nextToken.token == "val"
+    // "val" or "var"
+    val name: String = tokenizer.nextToken.token
+
+    // skip ":"
     tokenizer.nextToken
-    val value: String = tokenizer.nextToken.token
-    new AddBlock(superBlock, value)
+    val varType = tokenizer.nextToken.token // skip "int"
+    tokenizer.nextToken // skip "="
+
+    new DefineVariableBlock(superBlock, declaration, name, varType)
   }
 }

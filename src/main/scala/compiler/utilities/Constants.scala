@@ -30,7 +30,7 @@ import compiler.structure.parsers.push.PushParser
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
 import compiler.structure.parsers.structures.methods.MethodParser
 import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
-import compiler.structure.parsers.variable.VariableParser
+import compiler.structure.parsers.variable.{DefineVariableParser, VariableParser}
 
 object Constants {
 
@@ -55,6 +55,7 @@ object Constants {
     new ClassParser,
     new PushParser,
     new AssignmentParser,
+    new DefineVariableParser,
     new VariableParser
   )
 

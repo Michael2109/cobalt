@@ -25,7 +25,7 @@ import compiler.structure.blocks.imports.ImportBlock
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.FileBlock
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.structure.blocks.structures.methods.MethodBlock
+import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
 
 import scala.util.matching.Regex
 
@@ -60,7 +60,7 @@ object Utils {
     */
   def getMethod(block: Block): Option[Block] = {
     var result: Block = block
-    while (!(result.isInstanceOf[MethodBlock])) {
+    while (!(result.isInstanceOf[MethodBlock] || result.isInstanceOf[ConstructorBlock])) {
       {
         if (block.superBlock == null) {
           return Option.empty[Block]

@@ -19,13 +19,13 @@
 package compiler.structure.blocks.variable
 
 import compiler.structure.blocks.Block
-import compiler.symbol_table.SymbolTable
+import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
-class VariableBlock(superBlockInit: Block, name: String) extends Block(superBlockInit, false, true) {
+class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
-  println(name)
-  val varType = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name).getType
+
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
 
   override def init() {}
 
@@ -40,11 +40,11 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
       // if integer
       varType match {
-        case "int" => asm.visitVarInsn("ILOAD", id)
-        case "double" => asm.visitVarInsn("DLOAD", id)
-        case "float" => asm.visitVarInsn("FLOAD", id)
-        case "short" => asm.visitVarInsn("SALOAD", id)
-        case "boolean" => asm.visitVarInsn("BALOAD", id)
+        case "int" => asm.visitLdcInsn("new Integer(" + expressions(0).getValue + ")") + asm.visitVarInsn("ISTORE", id)
+        case "double" => asm.visitLdcInsn("new Double(" + expressions(0).getValue + ")") + asm.visitVarInsn("DSTORE", id)
+        case "float" => asm.visitLdcInsn("new Float(" + expressions(0).getValue + ")") + asm.visitVarInsn("FSTORE", id)
+        case "short" => asm.visitLdcInsn("new Short(" + expressions(0).getValue + ")") + asm.visitVarInsn("SASTORE", id)
+        case "boolean" => asm.visitLdcInsn("new Boolean(" + expressions(0).getValue + ")") + asm.visitVarInsn("BASTORE", id)
         case default => ""
       }
 
@@ -57,6 +57,6 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
     ""
   }
 
-  override def toString: String = "variable: " + name + " = " + "unknown!" + " " + expressions
+  override def toString: String = "def variable: " + name + " = " + "unknown!" + " " + expressions
 
 }

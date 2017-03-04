@@ -130,28 +130,32 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     while (lineLeft != "" && lineLeft != previousLineLeft) {
       var found = false
       previousLineLeft = lineLeft
+
       for (parser <- Constants.parsers) {
-        lineLeft = lineLeft.trim
+        if (!found) {
 
-        if (parser.shouldParse(lineLeft)) {
+          lineLeft = lineLeft.trim
+
+          if (parser.shouldParse(lineLeft)) {
 
 
-          // Get the regex that matched
-          val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
+            // Get the regex that matched
+            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
 
-          // Get the section of the line that matched the regex
-          val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
+            // Get the section of the line that matched the regex
+            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
 
-          // If the line started with the section then parse it
-          if (lineLeft.trim.startsWith(first)) {
-            found = true
+            // If the line started with the section then parse it
+            if (lineLeft.trim.startsWith(first)) {
+              found = true
 
-            if (result.size > 0) {
-              result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
-            } else {
-              result += parser.parse(superBlock, new Tokenizer(first))
+              if (result.size > 0) {
+                result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
+              } else {
+                result += parser.parse(superBlock, new Tokenizer(first))
+              }
+              lineLeft = lineLeft.replace(first, "").trim
             }
-            lineLeft = lineLeft.replace(first, "").trim
           }
         }
       }

@@ -19,11 +19,11 @@
 package compiler.structure.parsers.variable
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.variable.VariableBlock
+import compiler.structure.blocks.variable.{DefineVariableBlock, VariableBlock}
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class VariableParser extends Parser[VariableBlock] {
+class VariableParser extends Parser[DefineVariableBlock] {
 
   /**
     * A list of all regular expressions
@@ -31,20 +31,12 @@ class VariableParser extends Parser[VariableBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
+
+    "[a-zA-Z][a-zA-Z0-9]*"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): VariableBlock = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
-    // "val" or "var"
     val name: String = tokenizer.nextToken.token
-
-    // skip ":"
-    tokenizer.nextToken
-    val varType = tokenizer.nextToken.token // skip "int"
-    tokenizer.nextToken // skip "="
-
-    new VariableBlock(superBlock, declaration, name, varType)
+    new VariableBlock(superBlock, name)
   }
 }
