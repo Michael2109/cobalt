@@ -43,7 +43,6 @@ object Constants {
     new DivideParser,
     new MultiplyParser,
     new SubtractParser,
-
     new IfParser,
     new PrintParser,
     new ForParser,

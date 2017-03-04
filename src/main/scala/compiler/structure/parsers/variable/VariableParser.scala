@@ -41,6 +41,7 @@ class VariableParser extends Parser[VariableBlock] {
     val name: String = tokenizer.nextToken.token
 
     // skip ":"
+    tokenizer.nextToken
     val varType = tokenizer.nextToken.token // skip "int"
     tokenizer.nextToken // skip "="
 
