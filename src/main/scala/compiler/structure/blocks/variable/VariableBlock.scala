@@ -42,6 +42,9 @@ class VariableBlock(superBlockInit: Block, declaration: Boolean, name: String, v
       varType match {
         case "int" => asm.visitLdcInsn("new Integer(" + expressions(0).getValue + ")") + asm.visitVarInsn("ISTORE", id)
         case "double" => asm.visitLdcInsn("new Double(" + expressions(0).getValue + ")") + asm.visitVarInsn("DSTORE", id)
+        case "float" => asm.visitLdcInsn("new Float(" + expressions(0).getValue + ")") + asm.visitVarInsn("FSTORE", id)
+        case "short" => asm.visitLdcInsn("new Short(" + expressions(0).getValue + ")") + asm.visitVarInsn("SASTORE", id)
+        case "boolean" => asm.visitLdcInsn("new Boolean(" + expressions(0).getValue + ")") + asm.visitVarInsn("BASTORE", id)
         case default => ""
       }
 

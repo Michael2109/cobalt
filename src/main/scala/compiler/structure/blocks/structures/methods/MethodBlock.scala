@@ -52,19 +52,22 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
 
   def getValue: String = ""
 
-  def init() {
-
-    var i = 1
-    for (parameter <- params) {
-      Block.TOTAL_BLOCKS += 1
-      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + i + ");\n"
-      SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(i).setName(parameter.getName))
-
-      i += 1
-    }
+  override def init(): Unit = {
 
   }
 
+    var i = 1
+    for (parameter <- params) {
+
+      //    println("Adding to symbol table")
+      SymbolTable.getInstance.addRow(new Row().setId(id).setName(parameter.getName).setType(parameter.getType).setMethodName(getName).setClassName(Utils.getClass(this).getName))
+
+      Block.TOTAL_BLOCKS += 1
+      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + i + ");\n"
+      // SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(i).setName(parameter.getName))
+
+      i += 1
+    }
 
 
   def static: String = if(!Utils.isClass(this))"+ACC_STATIC" else ""

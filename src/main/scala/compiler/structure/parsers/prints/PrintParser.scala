@@ -21,40 +21,30 @@ package compiler.structure.parsers.prints
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.prints.PrintBlock
 import compiler.structure.parsers.Parser
-import compiler.tokenizer.Tokenizer
+import compiler.tokenizer.{Token, TokenType, Tokenizer}
 
 // todo set up print parser
 class PrintParser extends Parser[PrintBlock] {
-  var printVariable: Boolean = false
 
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List()
+  override def getRegexs: List[String] = List(
+    "print[ ]*\\([\"].*[\"]\\)",
+    "print[ ]*\\(.*\\)"
+  )
 
-  override def shouldParse(line: String): Boolean = {
-
-    if (true)
-      return false
-    // Decide whether printing a variable or a string
-    if (line.matches("print[ ]*\\([\"].*[\"]\\)")) {
-      printVariable = false
-      return true
-    }
-    else if (line.matches("print[ ]*\\(.*\\)")) {
-      printVariable = true
-      return true
-    }
-    return false
-  }
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PrintBlock = {
     tokenizer.nextToken // skip print
-    tokenizer.nextToken // skip (
-    val value: String = tokenizer.nextToken.token
-    return new PrintBlock(superBlock, value, printVariable)
+    println(tokenizer.nextToken)
+    // skip (
+    val value: Token = tokenizer.nextToken
+    val isVar: Boolean = value.tokenType != TokenType.STRING_LITERAL
+
+    return new PrintBlock(superBlock, value.token, isVar)
   }
 
 }

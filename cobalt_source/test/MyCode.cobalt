@@ -16,7 +16,7 @@ open class MyCode(xx:int, yy:int): package other package another
             val x: int = 5
             while (x < 10):
                 x += 1
-                //print("Hello World!!!")
+                //print("Test")
 
         /**
         *Another test

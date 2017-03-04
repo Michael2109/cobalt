@@ -35,7 +35,6 @@ class DoubleParser extends Parser[DoubleBlock] {
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DoubleBlock = {
-    println("Other here")
     val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
     val name: String = tokenizer.nextToken.token
     if (tokenizer.nextToken.token == ":") {
@@ -50,7 +49,6 @@ class DoubleParser extends Parser[DoubleBlock] {
         t + "." + tokenizer.nextToken.token
       }
     }
-    println("oarsed")
     new DoubleBlock(superBlock, declaration, name, value)
   }
 }

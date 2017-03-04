@@ -34,21 +34,21 @@ class PrintBlock(var superBlockInit: Block, var value: String, val isVariableIni
 
   def getOpeningCode: String = {
     if (isVariableInit) {
-      return "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
+      "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
         "mv.visitVarInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId + ");" +
         "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");"
     }
     else {
       //return "System.out.println(\""+value+"\");";
-      return "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
+      "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
         "mv.visitLdcInsn(\"" + value + "\");\n" +
         "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");"
     }
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
-  override def toString: String = "print: " + value
+  override def toString: String = "print: " + value + " " + expressions
 }
