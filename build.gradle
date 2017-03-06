@@ -76,14 +76,15 @@ dependencies {
     // asm
     compile group: 'org.ow2.asm', name: 'asm', version: '5.2'
 
-    // Scala logging
-    //compile group: 'com.typesafe.scala-logging', name: 'scala-logging_2.11', version: '3.5.0'
+    // apache commons io
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+
+    // apache commons lang
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+
 
     // Scala logging slf4j
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.24'
-
-
 
     // Scala library
     compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.1'

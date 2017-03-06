@@ -2,6 +2,6 @@ package test.primitives
 
 class DoubleTest():
 
-    def test() <- void:
-        val z:double = 5.0
-        var zz:double = 5.0
+   // def test() <- void:
+        //val z:double = 5.0
+        //var zz:double = 5.0

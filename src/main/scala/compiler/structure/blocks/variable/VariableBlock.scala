@@ -59,6 +59,6 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
     ""
   }
 
-  override def toString: String = "variable: " + name + " = " + "unknown!" + " " + expressions
+  override def toString: String = "variable: " + name
 
 }

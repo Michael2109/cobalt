@@ -27,7 +27,7 @@ class Tokenizer(var str: String) {
     new TokenData("^([<-])".r, TokenType.RETURN_TYPE),
     new TokenData("^((-)?[0-9]+)".r, TokenType.INTEGER_LITERAL),
     new TokenData("^((-)?[0-9]+[.][0-9])".r, TokenType.DOUBLE_LITERAL),
-    new TokenData("^([+][=])".r, TokenType.ADD_OPERATOR),
+    new TokenData("^([+])".r, TokenType.ADD_OPERATOR),
     new TokenData("^([-][=])".r, TokenType.SUBTRACT_OPERATOR),
     new TokenData("^([*][=])".r, TokenType.MULTIPLY_OPERATOR),
     new TokenData("^([/][=])".r, TokenType.DIVIDE_OPERATOR),

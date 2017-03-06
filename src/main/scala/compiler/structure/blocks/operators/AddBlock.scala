@@ -51,6 +51,6 @@ class AddBlock(var superBlockInit: Block, var value: String) extends Block(super
      ""
   }
 
-  override def toString: String = "add: " + "unknown"
+  override def toString: String = "<ADD_OP>"
 
 }

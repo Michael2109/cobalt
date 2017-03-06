@@ -29,12 +29,10 @@ class SubtractParser extends Parser[SubtractBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[a-zA-Z][a-zA-Z0-9]*[ ]*[-][=][ ]*[0-9]+")
+  override def getRegexs: List[String] = List("[-]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): SubtractBlock = {
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken
     val value: String = tokenizer.nextToken.token
-    new SubtractBlock(superBlock, name, value)
+    new SubtractBlock(superBlock, value)
   }
 }

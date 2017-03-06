@@ -46,7 +46,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     // get all lines excluding comments
     val lines = getIgnoreComments(allLines)
 
-    lines.foreach(println(_))
+    //  lines.foreach(println(_))
     // get the file
     val fileBlock: FileBlock = new FileBlock(sourceFile.getName, buildDir)
 
@@ -122,7 +122,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
   // todo make return one block instead of list. Add extra blocks to an "expressions" list in the block
   private def getBlocks(superBlock: Block, line: String): Block = {
 
-    println(line)
     val result: ListBuffer[Block] = ListBuffer[Block]()
 
     var previousLineLeft = ""
@@ -156,7 +155,8 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
               } else {
                 result += parser.parse(superBlock, new Tokenizer(first))
               }
-              lineLeft = lineLeft.replace(first, "").trim
+              lineLeft = lineLeft.substring(first.length)
+
             }
           }
         }
@@ -165,7 +165,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
         throw new RuntimeException("Error parsing: '" + lineLeft + "'")
       }
     }
-    println(result(0))
+
     result(0)
 
   }
@@ -203,24 +203,4 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
     }
   }
-
-  /**
-    * Add a row to the symbol table
-    *
-    * @param currentBlock
-    * @param lineNumber
-    */
-  private def addRowSymbolTable(currentBlock: Block, lineNumber: Int): Unit = {
-    // if (!currentBlock.isInstanceOf[AddBlock] && !currentBlock.isInstanceOf[SubtractBlock] && !currentBlock.isInstanceOf[MultiplyBlock] && !currentBlock.isInstanceOf[DivideBlock] && !currentBlock.isInstanceOf[IfBlock] && !currentBlock.isInstanceOf[WhileBlock] && !currentBlock.isInstanceOf[PrintBlock] && !currentBlock.isInstanceOf[ObjectMethodCallBlock] && !currentBlock.isInstanceOf[PushBlock]) if (SymbolTable.getInstance.exists(currentBlock.getName, methodName, className)) {
-    //   throw new DeclarationException("Line: " + lineNumber + " " + currentBlock.getName + " has already been defined." + line)
-    // }
-    //  else {
-    //   SymbolTable.getInstance.addRow(new Row().setId(currentBlock.id).setName(currentBlock.getName).setType(currentBlock.getType).setValue(currentBlock.getValue).setMethodName(methodName).setClassName(className))
-    // }
-  }
-
-
-
-
-
 }

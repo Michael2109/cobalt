@@ -9,7 +9,7 @@ object ObjectTest:
             val z: int = 10
             val longTest: long
             val ty: int = 15
-            val myCode: MyCode = new MyCode(z, ty)
+            //val myCode: MyCode = new MyCode(z, ty)
             val y: int = 1
-            val w: float = 2.0f
+           // val w: float = 2.0f
             //myCode.method1(stringyThing)

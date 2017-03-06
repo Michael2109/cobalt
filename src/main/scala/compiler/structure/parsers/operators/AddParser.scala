@@ -29,10 +29,10 @@ class AddParser extends Parser[AddBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[+][=][ ]*[0-9]+")
+  override def getRegexs: List[String] = List("[+]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): AddBlock = {
-    tokenizer.nextToken
+    //tokenizer.nextToken
     val value: String = tokenizer.nextToken.token
     new AddBlock(superBlock, value)
   }

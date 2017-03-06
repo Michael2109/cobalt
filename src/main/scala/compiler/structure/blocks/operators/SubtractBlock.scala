@@ -20,13 +20,13 @@ package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
-class SubtractBlock(var superBlockInit: Block, var name: String, var value: String) extends Block(superBlockInit, false, false) {
+class SubtractBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
   private var `type`: String = "subtract"
 
   def init() {
   }
 
-  def getName: String = name
+  def getName: String = ""
 
 
   def getValue: String = value
@@ -36,7 +36,7 @@ class SubtractBlock(var superBlockInit: Block, var name: String, var value: Stri
 
 
   def getOpeningCode: String = {
-    return "mv.visitLdcInsn(" + value + ");\n" + "mv.visitVarInsn(ILOAD," + id + ");\n" + "mv.visitInsn(ISUB);\n" + "mv.visitVarInsn(ISTORE," + id + ");\n"
+    ""
   }
 
   def getClosingCode: String = {
@@ -44,6 +44,6 @@ class SubtractBlock(var superBlockInit: Block, var name: String, var value: Stri
   }
 
   override def toString: String = {
-    return "subtract: " + name
+    return "<SUBTRACT>"
   }
 }
