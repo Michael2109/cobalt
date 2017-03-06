@@ -27,6 +27,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
 
+
   override def init() {}
 
   override def getName: String = name
@@ -45,6 +46,8 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
         case "float" => asm.visitLdcInsn("new Float(" + expressions(0).getValue + ")") + asm.visitVarInsn("FSTORE", id)
         case "short" => asm.visitLdcInsn("new Short(" + expressions(0).getValue + ")") + asm.visitVarInsn("SASTORE", id)
         case "boolean" => asm.visitLdcInsn("new Boolean(" + expressions(0).getValue + ")") + asm.visitVarInsn("BASTORE", id)
+        case "String" => asm.visitLdcInsn("new String(\"" + expressions(0).getValue + "\")") + asm.visitVarInsn("ASTORE", id)
+
         case default => ""
       }
 

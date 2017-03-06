@@ -46,6 +46,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     // get all lines excluding comments
     val lines = getIgnoreComments(allLines)
 
+    lines.foreach(println(_))
     // get the file
     val fileBlock: FileBlock = new FileBlock(sourceFile.getName, buildDir)
 
@@ -109,7 +110,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     * @param lines
     * @return
     */
-  private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("((['\"])(?:(?!\\2|\\\\).|\\\\.)*\\2)|\\/\\/[^\\n]*|\\/\\*(?:[^*]|\\*(?!\\/))*\\*\\/", "").split("\n").filter(_.trim != "").toList
+  private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "").split("\n").filter(_.trim != "").toList
 
   /**
     * Gets an array of blocks from a string and sets the superblock
@@ -121,6 +122,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
   // todo make return one block instead of list. Add extra blocks to an "expressions" list in the block
   private def getBlocks(superBlock: Block, line: String): Block = {
 
+    println(line)
     val result: ListBuffer[Block] = ListBuffer[Block]()
 
     var previousLineLeft = ""

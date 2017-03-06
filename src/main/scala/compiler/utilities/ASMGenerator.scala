@@ -67,6 +67,8 @@ class ASMGenerator {
   // Push a value on top of the stack
   def visitLdcInsn(value: Object): String = "mv.visitLdcInsn(" + value + ");\n"
 
+  def visitInsn(value: Object): String = "mv.visitInsn(" + value + ");"
+
   // Perform an operation
   def visitVarInsn(operation: String, id: Object): String = "mv.visitVarInsn(" + operation + "," + id + ");\n"
 

@@ -33,6 +33,8 @@ class AssignmentParser extends Parser[AssignmentBlock] {
     */
   override def getRegexs: List[String] = List(
 
+    // String
+    "=[ ]*\"[a-zA-Z0-9]*\"[ ]*",
 
     // float
     "=[ ]*[0-9]+[.][0-9]*(f|F)?",

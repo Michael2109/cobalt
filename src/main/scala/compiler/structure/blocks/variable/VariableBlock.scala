@@ -38,15 +38,17 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
+
       // if integer
       varType match {
-        case "int" => asm.visitVarInsn("ILOAD", id)
-        case "double" => asm.visitVarInsn("DLOAD", id)
-        case "float" => asm.visitVarInsn("FLOAD", id)
-        case "short" => asm.visitVarInsn("SALOAD", id)
-        case "boolean" => asm.visitVarInsn("BALOAD", id)
+        case "int" => asm.visitVarInsn("ILOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("ISTORE", id)
+        case "double" => asm.visitVarInsn("DLOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("DSTORE", id)
+        case "float" => asm.visitVarInsn("FLOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("FSTORE", id)
+        case "short" => asm.visitVarInsn("SALOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("SASTORE", id)
+        case "boolean" => asm.visitVarInsn("BALOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("BASTORE", id)
         case default => ""
       }
+
 
     } else {
       ""

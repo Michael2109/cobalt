@@ -39,11 +39,8 @@ class DefineVariableParser extends Parser[DefineVariableBlock] {
     val declaration: Boolean = tokenizer.nextToken.token == "val"
     // "val" or "var"
     val name: String = tokenizer.nextToken.token
-
-    // skip ":"
     tokenizer.nextToken
     val varType = tokenizer.nextToken.token // skip "int"
-    tokenizer.nextToken // skip "="
 
     new DefineVariableBlock(superBlock, declaration, name, varType)
   }
