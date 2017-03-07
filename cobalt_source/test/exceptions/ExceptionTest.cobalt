@@ -1,0 +1,10 @@
+package test.exceptions
+
+class ExceptionTest():
+
+    def test() <- void:
+        try:
+
+        catch:
+
+        finally:

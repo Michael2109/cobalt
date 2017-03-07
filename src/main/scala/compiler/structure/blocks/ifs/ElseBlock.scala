@@ -32,7 +32,7 @@ class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
 
   def getType(): String = "else"
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def init() {
   }

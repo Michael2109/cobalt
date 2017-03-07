@@ -16,31 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.operators
+package compiler.structure.parsers.exceptions
 
 import compiler.structure.blocks.Block
+import compiler.structure.blocks.exceptions.TryBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
-  private var `type`: String = "subtract"
+class TryParser extends Parser[TryBlock] {
 
-  def init() {
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("try:")
+
+  def parse(superBlock: Block, tokenizer: Tokenizer): TryBlock = {
+
+    return new TryBlock(superBlock)
   }
-
-  def getName: String = ""
-
-  def getValue: String = value
-
-  def getOpeningCode: String = {
-    ""
-  }
-
-  def getClosingCode: String = {
-    ""
-  }
-
-  override def toString: String = {
-    getType
-  }
-
-  def getType(): String = "<SUBTRACT>"
 }

@@ -66,7 +66,7 @@ class IfBlock(var superBlockInit: Block, var nameInit: String) extends Block(sup
 
   def getType(): String = "if"
 
-  def getValue: String = null
+  def getValue: String = ""
 
   def init() {
   }

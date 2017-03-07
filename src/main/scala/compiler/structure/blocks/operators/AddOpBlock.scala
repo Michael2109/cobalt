@@ -38,9 +38,6 @@ class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(sup
   def getValue: String = value
 
   def getOpeningCode: String = {
-    //  asm.visitLdcInsn("new Integer("+this.getValue+");")
-
-    //"mv.visitIincInsn(" + id + ", " + this.getValue + ");" +
     asm.visitLdcInsn(value) + asm.visitInsn("IADD")
   }
 

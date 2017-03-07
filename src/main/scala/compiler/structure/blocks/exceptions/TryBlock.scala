@@ -16,19 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.operators
+package compiler.structure.blocks.exceptions
 
 import compiler.structure.blocks.Block
 
-class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
-  private var `type`: String = "subtract"
-
-  def init() {
-  }
+/**
+  * Represents an if statement
+  *
+  * @param superBlockInit
+  * @param nameInit
+  */
+class TryBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
   def getName: String = ""
 
-  def getValue: String = value
+  def getValue: String = ""
+
+  def init() {
+  }
 
   def getOpeningCode: String = {
     ""
@@ -38,9 +43,8 @@ class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Bloc
     ""
   }
 
-  override def toString: String = {
-    getType
-  }
+  override def toString: String = getType
 
-  def getType(): String = "<SUBTRACT>"
+  def getType(): String = "<TRY>"
+
 }

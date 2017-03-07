@@ -20,6 +20,7 @@ package compiler.utilities
 
 import compiler.structure.parsers.Parser
 import compiler.structure.parsers.constants._
+import compiler.structure.parsers.exceptions.{CatchParser, FinallyParser, TryParser}
 import compiler.structure.parsers.ifs.{ElseParser, IfParser}
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
@@ -38,17 +39,31 @@ object Constants {
   val parsers: Array[Parser[_]] = Array(
     new ModifierParser,
     new MethodParser,
+
+    /* operators */
     new NotOpParser,
     new EqualsOpParser,
     new AddOpParser,
     new DivideOpParser,
     new MultiplyOpParser,
     new SubtractOpParser,
+
+    /* if, else */
     new IfParser,
     new ElseParser,
+
+    /* try, catch, finally */
+    new TryParser,
+    new CatchParser,
+    new FinallyParser,
+
+    /* printing */
     new PrintParser,
     new PrintlnParser,
+
+    /* loops */
     new ForParser,
+
     new MethodCallParser,
     new ImportParser,
     new WhileParser,
