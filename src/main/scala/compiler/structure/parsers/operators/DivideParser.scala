@@ -29,12 +29,10 @@ class DivideParser extends Parser[DivideBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[a-zA-Z][a-zA-Z0-9]*[ ]*[/][=][ ]*[0-9]+")
+  override def getRegexs: List[String] = List("[-]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DivideBlock = {
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken
     val value: String = tokenizer.nextToken.token
-    new DivideBlock(superBlock, name, value)
+    new DivideBlock(superBlock, value)
   }
 }

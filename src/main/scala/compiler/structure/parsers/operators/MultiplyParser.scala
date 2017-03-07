@@ -30,12 +30,10 @@ class MultiplyParser extends Parser[MultiplyBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[a-zA-Z][a-zA-Z0-9]* [*][=] [0-9]+")
+  override def getRegexs: List[String] = List("[*]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyBlock = {
-    val name: String = tokenizer.nextToken.token
-    tokenizer.nextToken
     val value: String = tokenizer.nextToken.token
-    new MultiplyBlock(superBlock, name, value)
+    new MultiplyBlock(superBlock, value)
   }
 }
