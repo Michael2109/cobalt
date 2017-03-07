@@ -1,6 +1,6 @@
 package test.primitives
 
-class DoubleTest():
+class FloatTest():
 
     def test() <- void:
         val test1:float = 5.0f
