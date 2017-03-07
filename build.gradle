@@ -76,13 +76,6 @@ dependencies {
     // asm
     compile group: 'org.ow2.asm', name: 'asm', version: '5.2'
 
-    // apache commons io
-    compile group: 'commons-io', name: 'commons-io', version: '2.4'
-
-    // apache commons lang
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
-
-
     // Scala logging slf4j
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.24'
 

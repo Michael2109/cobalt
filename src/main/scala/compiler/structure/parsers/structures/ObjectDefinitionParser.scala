@@ -37,16 +37,12 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[=][ ]*new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*"
+    "new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)"
   )
 
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectDefinitionBlock = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val" // "val" or "var"
-    val variableName: String = tokenizer.nextToken.token
-    tokenizer.nextToken // skip ":"
-    val className: String = tokenizer.nextToken.token
-    val operator: String = tokenizer.nextToken.token
+
     val newKeyword: String = tokenizer.nextToken.token
     val initClassName: String = tokenizer.nextToken.token
 
@@ -68,6 +64,6 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
         }
       }
     }
-    return new ObjectDefinitionBlock(superBlock, declaration, className, variableName, operator, newKeyword, initClassName, parameters)
+    return new ObjectDefinitionBlock(superBlock, newKeyword, initClassName, parameters)
   }
 }

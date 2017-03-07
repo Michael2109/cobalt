@@ -39,7 +39,7 @@ class PrintParser extends Parser[PrintBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PrintBlock = {
     tokenizer.nextToken // skip print
-    println(tokenizer.nextToken)
+
     // skip (
     val value: Token = tokenizer.nextToken
     val isVar: Boolean = value.tokenType != TokenType.STRING_LITERAL

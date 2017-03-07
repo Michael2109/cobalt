@@ -27,9 +27,10 @@ import compiler.structure.parsers.loops.{ForParser, WhileParser}
 import compiler.structure.parsers.modifiers.ModifierParser
 import compiler.structure.parsers.operators.{AddParser, DivideParser, MultiplyParser, SubtractParser}
 import compiler.structure.parsers.packages.PackageParser
+import compiler.structure.parsers.prints.PrintParser
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
 import compiler.structure.parsers.structures.methods.MethodParser
-import compiler.structure.parsers.structures.{MethodCallParser, ObjectMethodCallParser}
+import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.structure.parsers.variable.{DefineVariableParser, VariableParser}
 
 object Constants {
@@ -43,12 +44,12 @@ object Constants {
     new MultiplyParser,
     new SubtractParser,
     new IfParser,
-    //  new PrintParser,
+    new PrintParser,
     new ForParser,
     new MethodCallParser,
     new ImportParser,
     new WhileParser,
-    //   new ObjectDefinitionParser,
+    new ObjectDefinitionParser,
     new ObjectMethodCallParser,
     new PackageParser,
     new ObjectParser,

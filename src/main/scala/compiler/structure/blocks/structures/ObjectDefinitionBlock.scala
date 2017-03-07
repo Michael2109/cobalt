@@ -21,28 +21,24 @@ package compiler.structure.blocks.structures
 import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.symbol_table.{Row, SymbolTable}
+import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
 
 import scala.collection.mutable.ListBuffer
 
 
 // Creation of a new object and storing to a variable
-class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, className: String, variableName: String, operator: String, newKeyword: String, initClassName: String, params: ListBuffer[Parameter]) extends Block(superBlockInit, false, true, false) {
-
-  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
+class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String, params: ListBuffer[Parameter]) extends Block(superBlockInit, false, true, false) {
 
   private var parameterString: String = ""
   private var argumentString: String = ""
   private var directory: String = ""
 
   def init() {
-    if (className == getObjectName) {
-      directory = Utils.getPackage(this)
-    }
-    else {
-      directory = Utils.getDirectory(this, className)
-    }
+
+    directory = Utils.getPackage(this)
+
+
 
     // Get the type of the parameters
     for (param <- params) {
@@ -67,22 +63,23 @@ class ObjectDefinitionBlock(superBlockInit: Block, declaration: Boolean, classNa
     return block.getName
   }
 
-  def getName: String = variableName
+  def getName: String = ""
 
   def getValue: String = ""
 
-  def getType(): String = className
+  def getType(): String = initClassName
 
   def getOpeningCode: String = {
-    return "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
-    else "/") + className + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
-    else "/") + className + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n" + "mv.visitVarInsn(ASTORE," + id + ");\n"
+    //  return "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
+    //   else "/") + className + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
+    //   else "/") + className + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n" + "mv.visitVarInsn(ASTORE," + id + ");\n"
+    ""
   }
 
   def getClosingCode: String = {
     return ""
   }
 
-  override def toString: String = "object: " + className + " " + variableName + " = new " + initClassName + "()"
+  override def toString: String = "new " + initClassName + "()"
 
 }
