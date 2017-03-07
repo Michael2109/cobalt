@@ -1,6 +1,6 @@
 package test.primitives
 
-class ByteTest():
+class LongTest():
 
     def test() <- void:
         val test1:long = 5l

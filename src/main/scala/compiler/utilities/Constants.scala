@@ -58,7 +58,9 @@ object Constants {
     new AssignmentParser,
     new DefineVariableParser,
 
+    new BooleanrConstantParser,
     new VariableParser,
+    new CharConstantParser,
     new StringConstantParser,
     new FloatConstantParser,
     new DoubleConstantParser,

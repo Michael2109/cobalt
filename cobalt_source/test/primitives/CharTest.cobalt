@@ -1,0 +1,11 @@
+package test.primitives
+
+class CharTest():
+
+    def test() <- void:
+        val test1:char = 'a'
+        var test2:char = 'z'
+        val test3:char = 'A'
+        var test4:char = 'Z'
+        val test5:char = '0'
+        var test6:char = '9'

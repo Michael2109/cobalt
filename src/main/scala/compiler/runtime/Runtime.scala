@@ -71,13 +71,13 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     fileBlock.addBlock_=(block)
     block.superBlock_=(fileBlock)
 
-    println("Print block info")
+
     Utils.printBlockInfo(fileBlock, 0)
 
     // Print the symbol table
     SymbolTable.getInstance.printSymbols()
 
-    println("Compiling")
+
     new Compile(outputFile, fileBlock)
 
   }

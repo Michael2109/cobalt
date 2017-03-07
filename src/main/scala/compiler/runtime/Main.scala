@@ -40,11 +40,11 @@ object Main {
         SymbolTable.getInstance.rows.clear()
 
 
-        println(file.getAbsolutePath)
         val input: File = file
         val asmFile: File = new File(file.getPath.replace(args(0),args(1)).replaceAll("(\\.[^\\.]*$)", ".java"))
         val buildDir = new File(args(2))
         new Runtime(input, asmFile, buildDir).parseFile()
+        println()
       }
 
 
