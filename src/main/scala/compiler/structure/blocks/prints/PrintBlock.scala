@@ -33,8 +33,6 @@ class PrintBlock(var superBlockInit: Block, var value: String, val isVariableIni
   def getType(): String = "print"
 
   def getOpeningCode: String = {
-
-    println("printing:::" + value + " " + isVariableInit)
     if (isVariableInit) {
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
         "mv.visitVarInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId + ");" +
