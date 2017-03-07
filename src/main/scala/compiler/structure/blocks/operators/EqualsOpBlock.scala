@@ -33,9 +33,6 @@ class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, fal
 
   def getName: String = ""
 
-  def getType(): String = "equals"
-
-
   def getValue: String = ""
 
   def getOpeningCode: String = {
@@ -46,6 +43,8 @@ class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, fal
     ""
   }
 
-  override def toString: String = "<EQUALS_OP>"
+  override def toString: String = getType
+
+  def getType(): String = "<EQUALS_OP>"
 
 }

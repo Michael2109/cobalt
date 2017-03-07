@@ -28,8 +28,6 @@ class MultiplyOpBlock(val superBlockInit: Block, val value: String) extends Bloc
 
   def getValue: String = value
 
-  def getType(): String = "multiply"
-
   def getOpeningCode: String = {
     ""
   }
@@ -39,6 +37,8 @@ class MultiplyOpBlock(val superBlockInit: Block, val value: String) extends Bloc
   }
 
   override def toString: String = {
-    return "<MULTIPLY_OP>"
+    getType()
   }
+
+  def getType(): String = "<MULTIPLY_OP>"
 }

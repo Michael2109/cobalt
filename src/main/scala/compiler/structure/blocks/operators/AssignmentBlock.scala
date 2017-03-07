@@ -28,8 +28,6 @@ class AssignmentBlock(var superBlockInit: Block, declaration: Boolean) extends B
 
   def getName: String = ""
 
-  def getType(): String = "Assignment"
-
   def getValue: String = ""
 
   def getOpeningCode: String = {
@@ -40,6 +38,8 @@ class AssignmentBlock(var superBlockInit: Block, declaration: Boolean) extends B
     ""
   }
 
-  override def toString: String = "<ASSIGNMENT>"
+  override def toString: String = getType
+
+  def getType(): String = "<ASSIGNMENT>"
 
 }

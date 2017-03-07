@@ -33,9 +33,6 @@ class NotOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
 
   def getName: String = ""
 
-  def getType(): String = "NOT_OP"
-
-
   def getValue: String = ""
 
   def getOpeningCode: String = {
@@ -46,6 +43,8 @@ class NotOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
     ""
   }
 
-  override def toString: String = "<NOT_OP>"
+  override def toString: String = getType
+
+  def getType(): String = "<MULTIPLY_OP>"
 
 }

@@ -28,12 +28,7 @@ class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Bloc
 
   def getName: String = ""
 
-
   def getValue: String = value
-
-
-  def getType(): String = "subtract"
-
 
   def getOpeningCode: String = {
     ""
@@ -44,6 +39,8 @@ class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Bloc
   }
 
   override def toString: String = {
-    return "<SUBTRACT>"
+    getType
   }
+
+  def getType(): String = "<SUBTRACT>"
 }

@@ -35,9 +35,6 @@ class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(sup
 
   def getName: String = ""
 
-  def getType(): String = "add"
-
-
   def getValue: String = value
 
   def getOpeningCode: String = {
@@ -51,6 +48,8 @@ class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(sup
      ""
   }
 
-  override def toString: String = "<ADD_OP>"
+  override def toString: String = getType()
+
+  def getType(): String = "<ADD_OP>"
 
 }

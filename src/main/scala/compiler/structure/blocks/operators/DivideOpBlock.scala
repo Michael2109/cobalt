@@ -28,8 +28,6 @@ class DivideOpBlock(val superBlockInit: Block, val value: String) extends Block(
 
   def getValue: String = value
 
-  def getType(): String = "divide"
-
   def getOpeningCode: String = {
     ""
   }
@@ -39,7 +37,9 @@ class DivideOpBlock(val superBlockInit: Block, val value: String) extends Block(
   }
 
   override def toString: String = {
-    return "<DIVIDE_OP>"
+    getType
   }
+
+  def getType(): String = "<DIVIDE_OP>"
 
 }
