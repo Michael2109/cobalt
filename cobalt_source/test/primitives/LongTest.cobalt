@@ -1,0 +1,9 @@
+package test.primitives
+
+class ByteTest():
+
+    def test() <- void:
+        val test1:long = 5l
+        var test2:long = 5l
+        val test3:long = 5L
+        var test4:long = 5L
