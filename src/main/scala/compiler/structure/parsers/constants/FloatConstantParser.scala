@@ -16,30 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.constants
+package compiler.structure.parsers.constants
 
 import compiler.structure.blocks.Block
-import compiler.utilities.Utils
+import compiler.structure.blocks.constants.DoubleConstantBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+class FloatConstantParser extends Parser[DoubleConstantBlock] {
 
-  override def init() {}
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "[0-9]+[.][0-9]*(f|F)"
+  )
 
-  override def getName: String = ""
+  override def parse(superBlock: Block, tokenizer: Tokenizer): DoubleConstantBlock = {
 
-  override def getValue: String = value
-
-  override def getType(): String = "int_const"
-
-  override def getOpeningCode: String = {
-    if (Utils.getMethod(this) != null) {
-      ""
-    } else {
-      ""
-    }
+    val value: String = tokenizer.nextToken.token
+    new DoubleConstantBlock(superBlock, value)
   }
 
-  override def getClosingCode: String = ""
-
-  override def toString: String = "int_constant: " + value
 }

@@ -2,5 +2,6 @@ package test.primitives
 
 class IntegerTest():
 
-  //  def test() <- void:
-     //   val y:int = 10
+    def test() <- void:
+        val test1:int = 10
+        var test2:int = 10

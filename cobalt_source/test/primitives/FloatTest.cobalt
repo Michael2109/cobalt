@@ -3,5 +3,5 @@ package test.primitives
 class DoubleTest():
 
     def test() <- void:
-        val test1:double = 5.0
-        var test2:double = 5.0
+        val test1:float = 5.0f
+        var test2:float = 5.0f

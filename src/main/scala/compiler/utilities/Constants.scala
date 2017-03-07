@@ -20,7 +20,7 @@ package compiler.utilities
 
 import compiler.structure.parsers.Parser
 import compiler.structure.parsers.assignment.AssignmentParser
-import compiler.structure.parsers.constants.IntConstantParser
+import compiler.structure.parsers.constants.{DoubleConstantParser, FloatConstantParser, IntConstantParser}
 import compiler.structure.parsers.ifs.IfParser
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
@@ -58,6 +58,8 @@ object Constants {
     new DefineVariableParser,
 
     new VariableParser,
+    new FloatConstantParser,
+    new DoubleConstantParser,
     new IntConstantParser
   )
 

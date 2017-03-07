@@ -162,7 +162,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
         }
       }
       if (!found) {
-        throw new RuntimeException("Error parsing: '" + lineLeft + "'")
+        throw new RuntimeException("Error parsing: '" + line.trim + " section: '" + lineLeft + "'")
       }
     }
 

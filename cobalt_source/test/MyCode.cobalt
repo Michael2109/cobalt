@@ -14,7 +14,7 @@ open class MyCode(xx:int, yy:int): package other package another
         */
         open def method1(stringTest:String) <- void:
             //print(stringTest)
-            val x: int = 5 + 15 + 4 + 7 - 10 - 25 + stringTest
+            val x: int = 5
             while (x < 10):
                 //x += 1
                 //print("Test")
