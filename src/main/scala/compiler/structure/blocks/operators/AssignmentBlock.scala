@@ -20,12 +20,7 @@ package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
-/**
-  * Represents checking if equal - "=="
-  *
-  * @param superBlockInit
-  */
-class EqualsBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class AssignmentBlock(var superBlockInit: Block, declaration: Boolean) extends Block(superBlockInit, false, false) {
 
   def init() {
 
@@ -33,8 +28,7 @@ class EqualsBlock(var superBlockInit: Block) extends Block(superBlockInit, false
 
   def getName: String = ""
 
-  def getType(): String = "equals"
-
+  def getType(): String = "Assignment"
 
   def getValue: String = ""
 
@@ -46,6 +40,6 @@ class EqualsBlock(var superBlockInit: Block) extends Block(superBlockInit, false
     ""
   }
 
-  override def toString: String = "<EQUALS_OP>"
+  override def toString: String = "<ASSIGNMENT>"
 
 }

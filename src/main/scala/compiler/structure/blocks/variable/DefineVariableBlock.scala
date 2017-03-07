@@ -19,7 +19,7 @@
 package compiler.structure.blocks.variable
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.assignment.AssignmentBlock
+import compiler.structure.blocks.operators.AssignmentBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 

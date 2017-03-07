@@ -19,13 +19,12 @@
 package compiler.utilities
 
 import compiler.structure.parsers.Parser
-import compiler.structure.parsers.assignment.AssignmentParser
 import compiler.structure.parsers.constants._
 import compiler.structure.parsers.ifs.{ElseParser, IfParser}
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
 import compiler.structure.parsers.modifiers.ModifierParser
-import compiler.structure.parsers.operators._
+import compiler.structure.parsers.operators.{AssignmentParser, _}
 import compiler.structure.parsers.packages.PackageParser
 import compiler.structure.parsers.prints.{PrintParser, PrintlnParser}
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
@@ -39,11 +38,12 @@ object Constants {
   val parsers: Array[Parser[_]] = Array(
     new ModifierParser,
     new MethodParser,
-    new EqualsParser,
-    new AddParser,
-    new DivideParser,
-    new MultiplyParser,
-    new SubtractParser,
+    new NotOpParser,
+    new EqualsOpParser,
+    new AddOpParser,
+    new DivideOpParser,
+    new MultiplyOpParser,
+    new SubtractOpParser,
     new IfParser,
     new ElseParser,
     new PrintParser,

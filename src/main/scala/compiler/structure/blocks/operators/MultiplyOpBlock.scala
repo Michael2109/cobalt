@@ -20,30 +20,25 @@ package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
-class SubtractBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
-  private var `type`: String = "subtract"
+class MultiplyOpBlock(val superBlockInit: Block, val value: String) extends Block(superBlockInit, false, false) {
 
-  def init() {
-  }
+  def init() {}
 
   def getName: String = ""
 
-
   def getValue: String = value
 
-
-  def getType(): String = "subtract"
-
+  def getType(): String = "multiply"
 
   def getOpeningCode: String = {
     ""
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
   override def toString: String = {
-    return "<SUBTRACT>"
+    return "<MULTIPLY_OP>"
   }
 }

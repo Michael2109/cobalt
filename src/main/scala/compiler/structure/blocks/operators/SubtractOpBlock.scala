@@ -20,26 +20,30 @@ package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
-class DivideBlock(val superBlockInit: Block, val value: String) extends Block(superBlockInit, false, false) {
+class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
+  private var `type`: String = "subtract"
 
-  def init() {}
+  def init() {
+  }
 
   def getName: String = ""
 
+
   def getValue: String = value
 
-  def getType(): String = "divide"
+
+  def getType(): String = "subtract"
+
 
   def getOpeningCode: String = {
     ""
   }
 
   def getClosingCode: String = {
-    ""
+    return ""
   }
 
   override def toString: String = {
-    return "<DIVIDE_OP>"
+    return "<SUBTRACT>"
   }
-
 }

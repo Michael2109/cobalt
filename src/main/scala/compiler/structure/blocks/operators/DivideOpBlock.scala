@@ -16,24 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators
+package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.MultiplyBlock
-import compiler.structure.parsers.Parser
-import compiler.tokenizer.Tokenizer
 
-class MultiplyParser extends Parser[MultiplyBlock] {
+class DivideOpBlock(val superBlockInit: Block, val value: String) extends Block(superBlockInit, false, false) {
 
-  /**
-    * A list of all regular expressions
-    *
-    * @return
-    */
-  override def getRegexs: List[String] = List("[*]")
+  def init() {}
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyBlock = {
-    val value: String = tokenizer.nextToken.token
-    new MultiplyBlock(superBlock, value)
+  def getName: String = ""
+
+  def getValue: String = value
+
+  def getType(): String = "divide"
+
+  def getOpeningCode: String = {
+    ""
   }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = {
+    return "<DIVIDE_OP>"
+  }
+
 }

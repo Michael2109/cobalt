@@ -16,33 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.assignment
+package compiler.structure.parsers.operators
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.assignment.AssignmentBlock
+import compiler.structure.blocks.operators.EqualsOpBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class AssignmentParser extends Parser[AssignmentBlock] {
-
-
+class EqualsOpParser extends Parser[EqualsOpBlock] {
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "="
-  )
+  override def getRegexs: List[String] = List("[=][=]")
 
-  override def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentBlock = {
-    // get the id of the variable
-
-    tokenizer.nextToken.token // skip "="
-
-    val value: String = tokenizer.nextToken.token
-
-    new AssignmentBlock(superBlock, true, value)
+  def parse(superBlock: Block, tokenizer: Tokenizer): EqualsOpBlock = {
+    new EqualsOpBlock(superBlock)
   }
-
 }

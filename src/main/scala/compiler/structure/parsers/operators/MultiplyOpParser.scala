@@ -19,20 +19,21 @@
 package compiler.structure.parsers.operators
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.SubtractBlock
+import compiler.structure.blocks.operators.MultiplyOpBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class SubtractParser extends Parser[SubtractBlock] {
+class MultiplyOpParser extends Parser[MultiplyOpBlock] {
+
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[-]")
+  override def getRegexs: List[String] = List("[*]")
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): SubtractBlock = {
+  def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyOpBlock = {
     val value: String = tokenizer.nextToken.token
-    new SubtractBlock(superBlock, value)
+    new MultiplyOpBlock(superBlock, value)
   }
 }

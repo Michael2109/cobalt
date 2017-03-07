@@ -27,7 +27,7 @@ import compiler.structure.blocks.Block
   * @param name
   * @param valueInit
   */
-class AddBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
+class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
 
   def init() {
 
