@@ -19,33 +19,21 @@
 package compiler.structure.parsers.ifs
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.ifs.IfBlock
+import compiler.structure.blocks.ifs.ElseBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class IfParser extends Parser[IfBlock] {
+class ElseParser extends Parser[ElseBlock] {
 
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List("if[ ]*\\((.*)*\\):")
+  override def getRegexs: List[String] = List("else:")
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
-    tokenizer.nextToken //skip if
-    tokenizer.nextToken // skip (
+  def parse(superBlock: Block, tokenizer: Tokenizer): ElseBlock = {
 
-    // Loop through getting each parameter and  adding to a String
-    var statement: String = ""
-    var nextToken: String = tokenizer.nextToken.token
-    while (nextToken != ")") {
-      {
-        if (nextToken == "=") statement += nextToken
-        else statement += " " + nextToken + " "
-        nextToken = tokenizer.nextToken.token
-      }
-    }
-    return new IfBlock(superBlock, statement.trim.replaceAll(" +", " "))
+    return new ElseBlock(superBlock)
   }
 }

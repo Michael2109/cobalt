@@ -1,0 +1,9 @@
+package test.primitives
+
+class IfElseTest():
+
+    def test() <- void:
+        val x:int = 5
+        if (x < 10):
+
+        else:

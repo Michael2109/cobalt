@@ -21,7 +21,7 @@ package compiler.utilities
 import compiler.structure.parsers.Parser
 import compiler.structure.parsers.assignment.AssignmentParser
 import compiler.structure.parsers.constants._
-import compiler.structure.parsers.ifs.IfParser
+import compiler.structure.parsers.ifs.{ElseParser, IfParser}
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
 import compiler.structure.parsers.modifiers.ModifierParser
@@ -44,6 +44,7 @@ object Constants {
     new MultiplyParser,
     new SubtractParser,
     new IfParser,
+    new ElseParser,
     new PrintParser,
     new ForParser,
     new MethodCallParser,
