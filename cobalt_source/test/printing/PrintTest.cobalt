@@ -1,0 +1,6 @@
+package test.printing
+
+class PrintTest():
+
+    def test() <- void:
+        print("Hello World")
