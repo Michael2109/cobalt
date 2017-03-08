@@ -65,7 +65,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
 
     // todo if package isnt found use "1" not "2"
-    getBlockStructure(lines.drop(2 + importBlocks.size), block, 0)
+    getBlockStructure(lines, block, 0, 2 + importBlocks.size)
 
     // Add the block to a fileblock and set fileblock as parent
     fileBlock.addBlock_=(block)
@@ -120,7 +120,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     * @return
     */
   // todo make return one block instead of list. Add extra blocks to an "expressions" list in the block
-  private def getBlocks(superBlock: Block, line: String): Block = {
+  private def getBlocks(superBlock: Block, line: String, lineNumber: Int = 0): Block = {
 
     val result: ListBuffer[Block] = ListBuffer[Block]()
 
@@ -162,7 +162,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
         }
       }
       if (!found) {
-        throw new RuntimeException("Error parsing: '" + line.trim + " section: '" + lineLeft + "'")
+        throw new RuntimeException("Error parsing: '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
       }
     }
 
@@ -173,34 +173,38 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
   /**
     * Recursively gets the class AST structure.
     */
-  private def getBlockStructure(lines: List[String], block: Block, previousIndentation: Int) {
+  private def getBlockStructure(lines: List[String], block: Block, previousIndentation: Int, currentLine: Int) {
     if (lines.size > 0) {
 
-      val line = lines(0)
-      val nextBlock = getBlocks(block, lines(0))
-      val nextIndentation: Int = Utils.getIndentation(lines(0))
+      if (currentLine < lines.size) {
 
-      // Indent + 1
-      if (nextIndentation - previousIndentation == 1) {
-        block.addBlock_=(nextBlock)
-        getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
 
-      } else if (previousIndentation == nextIndentation) {
-        block.superBlock.addBlock_=(nextBlock)
-        getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
+        val line = lines(currentLine)
+        val nextBlock = getBlocks(block, line, currentLine)
+        val nextIndentation: Int = Utils.getIndentation(line)
 
-      } else {
-        var currentBlock = block.superBlock
-        var i = 0
-        while (i < previousIndentation - nextIndentation) {
-          currentBlock = currentBlock.superBlock
-          i += 1
+        // Indent + 1
+        if (nextIndentation - previousIndentation == 1) {
+          block.addBlock_=(nextBlock)
+          getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
+
+        } else if (previousIndentation == nextIndentation) {
+          block.superBlock.addBlock_=(nextBlock)
+          getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
+
+        } else {
+          var currentBlock = block.superBlock
+          var i = 0
+          while (i < previousIndentation - nextIndentation) {
+            currentBlock = currentBlock.superBlock
+            i += 1
+          }
+          currentBlock.addBlock_=(nextBlock)
+          getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
+
         }
-        currentBlock.addBlock_=(nextBlock)
-        getBlockStructure(lines.drop(1), nextBlock, Utils.getIndentation(line))
 
       }
-
     }
   }
 }
