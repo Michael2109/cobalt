@@ -41,6 +41,8 @@ object Constants {
     new MethodParser,
 
     /* operators */
+    new OpeningBracketOpParser,
+    new ClosingBracketOpParser,
     new AndOpParser,
     new OrOpParser,
     new NotOpParser,
