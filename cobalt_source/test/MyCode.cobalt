@@ -24,7 +24,7 @@ open class MyCode(xx:int, yy:int): package other package another
         */
         def main() <- void:
             val stringyThing: String = "Thisisastring"
-            val z: int = (10 + 25) * 5 - 3 + (7 * 5)
+            val z: int = (10 + 25) * 5 - 3 + (7 * 5) + 5 + 5
             val longTest: long
             val ty: int = 15
             val myCode: MyCode = new MyCode(z, ty)

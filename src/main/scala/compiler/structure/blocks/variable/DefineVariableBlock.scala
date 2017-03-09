@@ -21,7 +21,7 @@ package compiler.structure.blocks.variable
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.operators.AssignmentBlock
 import compiler.symbol_table.{Row, SymbolTable}
-import compiler.utilities.Utils
+import compiler.utilities.{ReversePolish, Utils}
 
 class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
@@ -38,25 +38,21 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
-      // asm.visitLdcInsn("new Integer(" + expressions(0).getValue + ")") +
+      // Get assigned blocks in reverse polish notation
+      val rpnString: String = if (expressions.size > 0 && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
       // if integer
       varType match {
-        case "int" => asm.visitVarInsn("ISTORE", id)
-        case "double" => asm.visitVarInsn("DSTORE", id)
-        case "float" => asm.visitVarInsn("FSTORE", id)
-        case "short" => asm.visitVarInsn("SASTORE", id)
-        case "boolean" => asm.visitVarInsn("BASTORE", id)
-        case "String" => asm.visitVarInsn("ASTORE", id)
+        case "int" => rpnString + asm.visitVarInsn("ISTORE", id)
+        case "double" => rpnString + asm.visitVarInsn("DSTORE", id)
+        case "float" => rpnString + asm.visitVarInsn("FSTORE", id)
+        case "short" => rpnString + asm.visitVarInsn("SASTORE", id)
+        case "boolean" => rpnString + asm.visitVarInsn("BASTORE", id)
+        case "String" => rpnString + asm.visitVarInsn("ASTORE", id)
 
-        case default => "" //Utils.getDirectory(this, name)
+        case default => ""
       }
 
-      if (expressions.size > 0 && expressions(0).isInstanceOf[AssignmentBlock]) {
-        // todo call Utils method to convert equation into reverse polish notation
-        ""
-      }
-      ""
 
     } else {
       ""
@@ -67,6 +63,6 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     ""
   }
 
-  override def toString: String = "def variable: " + name + " " + expressions
+  override def toString: String = "def variable: " + name + "bewbies " + expressions
 
 }

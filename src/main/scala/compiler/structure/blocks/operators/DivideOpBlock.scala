@@ -29,7 +29,7 @@ class DivideOpBlock(val superBlockInit: Block) extends Block(superBlockInit, fal
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    ""
+    asm.visitInsn("IDIV")
   }
 
   def getClosingCode: String = {

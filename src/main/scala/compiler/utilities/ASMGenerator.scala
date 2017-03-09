@@ -69,6 +69,9 @@ class ASMGenerator {
 
   def visitInsn(value: Object): String = "mv.visitInsn(" + value + ");"
 
+  def visitIntInsn(op: String, value: Object): String = "mv.visitIntInsn(" + op + "," + value + ");"
+
+
   // Perform an operation
   def visitVarInsn(operation: String, id: Object): String = "mv.visitVarInsn(" + operation + "," + id + ");\n"
 

@@ -1,0 +1,7 @@
+package test.assignment
+
+class AssignmentTest():
+
+    def test() <- void:
+        val test1:int = 5 + 5 - 3
+        val test2:int = (5 * 7) - 3/ (4 * 2)

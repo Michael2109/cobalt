@@ -127,13 +127,6 @@ object ReversePolish {
     out.toList
   }
 
-  def toRPN(blocks: List[Block]): List[Block] = {
-
-    println(blocks)
-
-
-    blocks
-  }
 
   /**
     * find whether an operator

@@ -25,7 +25,7 @@ package test_classes;
 public class TestCode {
 
     void test() {
-        int x = 5 + 3 + 1;
+        int x = 100;
     }
 
 }

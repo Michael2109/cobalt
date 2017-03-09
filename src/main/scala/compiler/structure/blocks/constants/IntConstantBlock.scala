@@ -19,7 +19,6 @@
 package compiler.structure.blocks.constants
 
 import compiler.structure.blocks.Block
-import compiler.utilities.Utils
 
 class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
 
@@ -32,11 +31,8 @@ class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(s
   override def getType(): String = "int_const"
 
   override def getOpeningCode: String = {
-    if (Utils.getMethod(this) != null) {
-      ""
-    } else {
-      ""
-    }
+
+    asm.visitIntInsn("BIPUSH", value)
   }
 
   override def getClosingCode: String = ""

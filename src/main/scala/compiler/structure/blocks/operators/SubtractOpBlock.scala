@@ -30,7 +30,7 @@ class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, f
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    ""
+    asm.visitInsn("ISUB")
   }
 
   def getClosingCode: String = {
@@ -42,5 +42,6 @@ class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, f
   }
 
   def getType(): String = "<SUBTRACT_OP>"
+
 
 }
