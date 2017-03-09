@@ -20,13 +20,12 @@ package compiler.structure.blocks.variable
 
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.operators.AssignmentBlock
-import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
 class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
 
-  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
+  //todo add back in before pushing!!!  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
 
 
   override def init() {}

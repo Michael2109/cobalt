@@ -20,13 +20,13 @@ package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
-class DivideOpBlock(val superBlockInit: Block, val value: String) extends Block(superBlockInit, false, false) {
+class DivideOpBlock(val superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   def init() {}
 
   def getName: String = ""
 
-  def getValue: String = value
+  def getValue: String = ""
 
   def getOpeningCode: String = {
     ""
@@ -41,5 +41,6 @@ class DivideOpBlock(val superBlockInit: Block, val value: String) extends Block(
   }
 
   def getType(): String = "<DIVIDE_OP>"
+
 
 }

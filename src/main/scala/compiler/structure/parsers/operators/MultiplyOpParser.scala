@@ -33,7 +33,6 @@ class MultiplyOpParser extends Parser[MultiplyOpBlock] {
   override def getRegexs: List[String] = List("[*]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyOpBlock = {
-    val value: String = tokenizer.nextToken.token
-    new MultiplyOpBlock(superBlock, value)
+    new MultiplyOpBlock(superBlock)
   }
 }

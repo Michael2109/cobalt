@@ -27,7 +27,7 @@ import compiler.structure.blocks.Block
   * @param name
   * @param valueInit
   */
-class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
+class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   def init() {
 
@@ -35,10 +35,10 @@ class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(sup
 
   def getName: String = ""
 
-  def getValue: String = value
+  def getValue: String = ""
 
   def getOpeningCode: String = {
-    asm.visitLdcInsn(value) + asm.visitInsn("IADD")
+    asm.visitInsn("IADD")
   }
 
   def getClosingCode: String = {
@@ -48,5 +48,6 @@ class AddOpBlock(var superBlockInit: Block, var value: String) extends Block(sup
   override def toString: String = getType()
 
   def getType(): String = "<ADD_OP>"
+
 
 }

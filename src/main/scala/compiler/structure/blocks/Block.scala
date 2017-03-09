@@ -37,31 +37,24 @@ object Block {
   * @param containerInit      Whether the blocks contains other blocks
   * @param variableInit       Whether the blocks is a variable
   */
-abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean, immutableInit: Boolean = false) {
+abstract case class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean, immutableInit: Boolean = false) {
 
   Block.TOTAL_BLOCKS += 1
 
+  val immutable: Boolean = immutableInit
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
+  val expressions: ListBuffer[Block] = ListBuffer[Block]()
   private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
-
   private val _asm: ASMGenerator = new ASMGenerator;
   private var _id: Integer = Block.TOTAL_BLOCKS
   private var _superBlock: Block = superBlockInitTest
   private var _container: Boolean = containerInit
   private var _variable: Boolean = variableInit
-  val immutable: Boolean = immutableInit
-  val logger: Logger = LoggerFactory.getLogger(this.getClass)
-
-  val expressions: ListBuffer[Block] = ListBuffer[Block]()
 
   /* id GET and SET */
   def id = _id
 
   def id_=(value: Integer) = _id = value
-
-  /* superBlock GET and SET */
-  def superBlock = _superBlock
-
-  def superBlock_=(value: Block) = _superBlock = value
 
   /* subBlocks GET */
   def subBlocks = _subBlocks
@@ -70,6 +63,11 @@ abstract class Block(var superBlockInitTest: Block, val containerInit: Boolean, 
     _subBlocks.append(value)
     value.superBlock = this
   }
+
+  /* superBlock GET and SET */
+  def superBlock = _superBlock
+
+  def superBlock_=(value: Block) = _superBlock = value
 
   def addBlocks_=(value: ListBuffer[Block]) = _subBlocks.appendAll(value)
 

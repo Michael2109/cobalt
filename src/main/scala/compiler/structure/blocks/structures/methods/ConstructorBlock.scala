@@ -27,12 +27,10 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("<init>").setClassName(className))
 
+  val classBlock = superBlock
+  private val packageDir: String = Utils.getPackage(this)
   var parameterString = ""
   var localVariableString = ""
-  private var packageDir: String = Utils.getPackage(this)
-
-    val classBlock = superBlock
-
     var i = 1
 
   localVariableString += "mv.visitLocalVariable(\"this\", \"L" + packageDir + "/" + classBlock.getName + ";\", null, lConstructor0, lConstructor2, " + 0 + ");\n"

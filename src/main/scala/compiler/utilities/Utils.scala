@@ -21,12 +21,15 @@ package compiler.utilities
 import java.io.File
 
 import compiler.structure.blocks.Block
+import compiler.structure.blocks.empty.EmptyBlock
 import compiler.structure.blocks.imports.ImportBlock
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.FileBlock
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
+import compiler.tokenizer.Tokenizer
 
+import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
 object Utils {
@@ -63,7 +66,7 @@ object Utils {
     while (!(result.isInstanceOf[MethodBlock] || result.isInstanceOf[ConstructorBlock])) {
       {
         if (block.superBlock == null) {
-          return Option.empty[Block]
+          return Option.apply(new EmptyBlock())
         }
         result = result.superBlock
         if (result == null)
@@ -72,6 +75,14 @@ object Utils {
     }
     return Option.apply(result)
   }
+
+  /**
+    * Gets the PackageBlock
+    *
+    * @param block
+    * @return
+    */
+  def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
   def getFileBlock(blockInit: Block) : Block = {
 
@@ -84,13 +95,6 @@ object Utils {
     }
     fileBlock
   }
-
-  /**
-    * Gets the PackageBlock
-    * @param block
-    * @return
-    */
-  def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -220,6 +224,63 @@ object Utils {
     val these = f.listFiles
     val good = these.filter(f => r.findFirstIn(f.getName).isDefined)
     good ++ these.filter(_.isDirectory).flatMap(recursiveListFiles(_,r))
+  }
+
+  /**
+    * Gets an array of blocks from a string and sets the superblock
+    *
+    * @param superBlock
+    * @param line
+    * @return
+    */
+  def getBlocks(superBlock: Block, line: String, lineNumber: Int = 0): Block = {
+
+    val result: ListBuffer[Block] = ListBuffer[Block]()
+
+    var previousLineLeft = ""
+    // var tuple = null
+    var lineLeft: String = line
+
+    while (lineLeft != "" && lineLeft != previousLineLeft) {
+      var found = false
+      previousLineLeft = lineLeft
+
+      for (parser <- Constants.parsers) {
+        if (!found) {
+
+          lineLeft = lineLeft.trim
+
+          if (parser.shouldParse(lineLeft)) {
+
+
+            // Get the regex that matched
+            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
+
+            // Get the section of the line that matched the regex
+            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
+
+            // If the line started with the section then parse it
+            if (lineLeft.trim.startsWith(first)) {
+              found = true
+
+              if (result.size > 0) {
+                result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
+              } else {
+                result += parser.parse(superBlock, new Tokenizer(first))
+              }
+              lineLeft = lineLeft.substring(first.length)
+
+            }
+          }
+        }
+      }
+      if (!found) {
+        throw new RuntimeException("Error parsing: '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
+      }
+    }
+
+    result(0)
+
   }
 
 }

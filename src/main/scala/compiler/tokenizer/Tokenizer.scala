@@ -31,6 +31,7 @@ class Tokenizer(var str: String) {
     new TokenData("^([-])".r, TokenType.SUBTRACT_OPERATOR),
     new TokenData("^([*])".r, TokenType.MULTIPLY_OPERATOR),
     new TokenData("^([/])".r, TokenType.DIVIDE_OPERATOR),
+    new TokenData("^([%])".r, TokenType.MODULUS_OPERATOR),
     new TokenData("^(\".*\")".r, TokenType.STRING_LITERAL),
     new TokenData("^(\'.\')".r, TokenType.CHARACTER_LITERAL),
     new TokenData("^([;])".r, TokenType.END_STATEMENT),

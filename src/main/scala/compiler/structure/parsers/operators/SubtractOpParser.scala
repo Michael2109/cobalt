@@ -29,10 +29,9 @@ class SubtractOpParser extends Parser[SubtractOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[-]")
+  override def getRegexs: List[String] = List("[\\-]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): SubtractOpBlock = {
-    val value: String = tokenizer.nextToken.token
-    new SubtractOpBlock(superBlock, value)
+    new SubtractOpBlock(superBlock)
   }
 }

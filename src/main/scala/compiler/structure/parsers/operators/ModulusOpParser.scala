@@ -16,16 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test_classes;
+package compiler.structure.parsers.operators
 
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.operators.ModulusOpBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-/**
- * Used to view ASM code
- */
-public class TestCode {
+class ModulusOpParser extends Parser[ModulusOpBlock] {
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("[\\%]")
 
-    void test() {
-        int x = 5 + 3 + 1;
-    }
-
+  def parse(superBlock: Block, tokenizer: Tokenizer): ModulusOpBlock = {
+    new ModulusOpBlock(superBlock)
+  }
 }

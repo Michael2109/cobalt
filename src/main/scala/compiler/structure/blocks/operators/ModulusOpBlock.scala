@@ -16,16 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test_classes;
+package compiler.structure.blocks.operators
 
+import compiler.structure.blocks.Block
 
 /**
- * Used to view ASM code
- */
-public class TestCode {
+  * Represents adding a value to a primitive
+  *
+  * @param superBlockInit
+  * @param name
+  * @param valueInit
+  */
+class ModulusOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-    void test() {
-        int x = 5 + 3 + 1;
-    }
+  def init() {
+
+  }
+
+  def getName: String = ""
+
+  def getValue: String = ""
+
+  def getOpeningCode: String = {
+    ""
+  }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType()
+
+  def getType(): String = "<MODULUS_OP>"
+
 
 }

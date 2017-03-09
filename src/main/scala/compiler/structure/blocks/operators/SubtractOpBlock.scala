@@ -20,15 +20,14 @@ package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
-class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Block(superBlockInit, false, false) {
-  private var `type`: String = "subtract"
+class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   def init() {
   }
 
   def getName: String = ""
 
-  def getValue: String = value
+  def getValue: String = ""
 
   def getOpeningCode: String = {
     ""
@@ -42,5 +41,6 @@ class SubtractOpBlock(var superBlockInit: Block, var value: String) extends Bloc
     getType
   }
 
-  def getType(): String = "<SUBTRACT>"
+  def getType(): String = "<SUBTRACT_OP>"
+
 }

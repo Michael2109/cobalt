@@ -51,6 +51,7 @@ object Constants {
     new DivideOpParser,
     new MultiplyOpParser,
     new SubtractOpParser,
+    new ModulusOpParser,
 
     /* if, else */
     new IfParser,

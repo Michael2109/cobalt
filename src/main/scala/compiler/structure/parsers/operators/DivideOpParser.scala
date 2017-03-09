@@ -29,10 +29,9 @@ class DivideOpParser extends Parser[DivideOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[-]")
+  override def getRegexs: List[String] = List("[/]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DivideOpBlock = {
-    val value: String = tokenizer.nextToken.token
-    new DivideOpBlock(superBlock, value)
+    new DivideOpBlock(superBlock)
   }
 }

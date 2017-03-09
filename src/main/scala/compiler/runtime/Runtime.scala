@@ -27,7 +27,7 @@ import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.packages.PackageParser
 import compiler.symbol_table.SymbolTable
 import compiler.tokenizer.Tokenizer
-import compiler.utilities.{Constants, Utils}
+import compiler.utilities.Utils
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -61,7 +61,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     // Create the block structure
     // todo change to List of blocks
     // todo if package not found use "0" not "1"
-    val block: Block = getBlocks(fileBlock, lines(1 + importBlocks.size))
+    val block: Block = Utils.getBlocks(fileBlock, lines(1 + importBlocks.size))
 
 
     // todo if package isnt found use "1" not "2"
@@ -112,63 +112,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     */
   private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "").split("\n").filter(_.trim != "").toList
 
-  /**
-    * Gets an array of blocks from a string and sets the superblock
-    *
-    * @param superBlock
-    * @param line
-    * @return
-    */
-  // todo make return one block instead of list. Add extra blocks to an "expressions" list in the block
-  private def getBlocks(superBlock: Block, line: String, lineNumber: Int = 0): Block = {
 
-    val result: ListBuffer[Block] = ListBuffer[Block]()
-
-    var previousLineLeft = ""
-    // var tuple = null
-    var lineLeft: String = line
-
-    while (lineLeft != "" && lineLeft != previousLineLeft) {
-      var found = false
-      previousLineLeft = lineLeft
-
-      for (parser <- Constants.parsers) {
-        if (!found) {
-
-          lineLeft = lineLeft.trim
-
-          if (parser.shouldParse(lineLeft)) {
-
-
-            // Get the regex that matched
-            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
-
-            // Get the section of the line that matched the regex
-            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
-
-            // If the line started with the section then parse it
-            if (lineLeft.trim.startsWith(first)) {
-              found = true
-
-              if (result.size > 0) {
-                result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
-              } else {
-                result += parser.parse(superBlock, new Tokenizer(first))
-              }
-              lineLeft = lineLeft.substring(first.length)
-
-            }
-          }
-        }
-      }
-      if (!found) {
-        throw new RuntimeException("Error parsing: '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
-      }
-    }
-
-    result(0)
-
-  }
 
   /**
     * Recursively gets the class AST structure.
@@ -180,7 +124,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
 
         val line = lines(currentLine)
-        val nextBlock = getBlocks(block, line, currentLine)
+        val nextBlock = Utils.getBlocks(block, line, currentLine)
         val nextIndentation: Int = Utils.getIndentation(line)
 
         // Indent + 1
