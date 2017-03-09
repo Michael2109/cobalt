@@ -19,13 +19,13 @@
 package compiler.structure.blocks.variable
 
 import compiler.structure.blocks.Block
-import compiler.symbol_table.SymbolTable
-import compiler.utilities.Utils
+import compiler.structure.blocks.operators.AssignmentBlock
+import compiler.symbol_table.{Row, SymbolTable}
+import compiler.utilities.{ReversePolish, Utils}
 
 class VariableBlock(superBlockInit: Block, name: String) extends Block(superBlockInit, false, true) {
 
-  println(name)
-  val varType = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name).getType
+  val row: Row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name)
 
   override def init() {}
 
@@ -33,22 +33,36 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   override def getValue: String = ""
 
-  override def getType(): String = varType
+  override def getType(): String = row.getType
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
+      // Get assigned blocks in reverse polish notation
+      val rpnString: String = if (expressions.size > 0 && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
-      // if integer
-      varType match {
-        case "int" => asm.visitVarInsn("ILOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("ISTORE", id)
-        case "double" => asm.visitVarInsn("DLOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("DSTORE", id)
-        case "float" => asm.visitVarInsn("FLOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("FSTORE", id)
-        case "short" => asm.visitVarInsn("SALOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("SASTORE", id)
-        case "boolean" => asm.visitVarInsn("BALOAD", id) + expressions(0).getOpeningCode + asm.visitVarInsn("BASTORE", id)
-        case default => ""
+      if (expressions.isEmpty) {
+        row.getType match {
+          case "int" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "double" => asm.visitVarInsn("DLOAD", "" + row.getId)
+          case "float" => asm.visitVarInsn("FLOAD", "" + row.getId)
+          case "short" => asm.visitVarInsn("SALOAD", "" + row.getId)
+          case "boolean" => asm.visitVarInsn("BALOAD", "" + row.getId)
+          case default => ""
+        }
       }
+      else {
+        row.getType match {
+          case "int" => rpnString + asm.visitVarInsn("ISTORE", "" + row.getId)
+          case "double" => rpnString + asm.visitVarInsn("DSTORE", "" + row.getId)
+          case "float" => rpnString + asm.visitVarInsn("FSTORE", "" + row.getId)
+          case "short" => rpnString + asm.visitVarInsn("SASTORE", "" + row.getId)
+          case "boolean" => rpnString + asm.visitVarInsn("BASTORE", "" + row.getId)
+          case "String" => rpnString + asm.visitVarInsn("ASTORE", "" + row.getId)
 
+          case default => ""
+        }
+      }
 
     } else {
       ""

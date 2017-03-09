@@ -70,9 +70,9 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
   def getType(): String = initClassName
 
   def getOpeningCode: String = {
-    //  return "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
-    //   else "/") + className + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
-    //   else "/") + className + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n" + "mv.visitVarInsn(ASTORE," + id + ");\n"
+    //"mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
+    //    else "/") + className + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
+    //    else "/") + className + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n" + "mv.visitVarInsn(ASTORE," + id + ");\n"
     ""
   }
 
