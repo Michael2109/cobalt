@@ -18,6 +18,7 @@
 
 package compiler.symbol_table
 
+import compiler.exceptions.UndefinedVarException
 import compiler.structure.blocks.Block
 
 import scala.collection.mutable.ListBuffer
@@ -89,6 +90,6 @@ class SymbolTable() {
         return row
       }
     }
-    return null
+    throw new UndefinedVarException("'" + variableName + "' doesn't exist")
   }
 }

@@ -7,5 +7,6 @@ class AssignmentTest():
         val test2:int = (5 * 7) - 3/ (4 * 2) + test1
         test2 = 7
         val test3:int = 7 + 10 - 5 + test2
+        test2 = test2 + 8
 
 
