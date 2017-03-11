@@ -33,22 +33,9 @@ class WhileParser extends Parser[WhileBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("while[ ]+\\((.*)*\\)[:]?")
+  override def getRegexs: List[String] = List("while")
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
-
-    tokenizer.nextToken //skip "while"
-    tokenizer.nextToken // skip "("
-
-    var statement: String = ""
-    var nextToken: String = tokenizer.nextToken.token
-    while (!nextToken.equals(")") && nextToken != "") {
-      {
-        if (nextToken == "=") statement += nextToken
-        else statement += " " + nextToken + " "
-        nextToken = tokenizer.nextToken.token
-      }
-    }
-    return new WhileBlock(superBlock, statement.trim.replaceAll(" +", " "))
+    new WhileBlock(superBlock)
   }
 }
