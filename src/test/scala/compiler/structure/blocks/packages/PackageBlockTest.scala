@@ -18,22 +18,6 @@
 
 package compiler.structure.blocks.packages
 
-import compiler.structure.blocks.Block
-
-class PackageBlockTest(var directory: String) extends Block(null, true, false) {
-
-  def init() {}
-
-  def getName: String = directory
-
-  def getValue: String = null
-
-  def getType(): BlockType = "package"
-
-  def getOpeningCode: String = ""
-
-  def getClosingCode: String = ""
-
-  override def toString: String = "package: " + directory
+class PackageBlockTest() {
 
 }

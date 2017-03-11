@@ -18,13 +18,6 @@
 
 package compiler.structure.blocks.operators
 
-/**
-  * Represents adding a value to a primitive
-  *
-  * @param superBlockInit
-  * @param name
-  * @param valueInit
-  */
 class AddBlockTest() {
 
 }

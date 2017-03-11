@@ -37,19 +37,17 @@ object Block {
   * @param containerInit      Whether the blocks contains other blocks
   * @param variableInit       Whether the blocks is a variable
   */
-abstract case class Block(var superBlockInitTest: Block, val containerInit: Boolean, val variableInit: Boolean, immutableInit: Boolean = false) {
+abstract case class Block(var superBlockInitTest: Block, val container: Boolean, val variable: Boolean, immutable: Boolean = false) {
 
   Block.TOTAL_BLOCKS += 1
 
-  val immutable: Boolean = immutableInit
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
+
   val expressions: ListBuffer[Block] = ListBuffer[Block]()
   private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
   private val _asm: ASMGenerator = new ASMGenerator;
   private var _id: Integer = Block.TOTAL_BLOCKS
   private var _superBlock: Block = superBlockInitTest
-  private var _container: Boolean = containerInit
-  private var _variable: Boolean = variableInit
 
   /* id GET and SET */
   def id = _id
@@ -87,17 +85,6 @@ abstract case class Block(var superBlockInitTest: Block, val containerInit: Bool
   def getOpeningCode: String
 
   def getClosingCode: String
-
-  /* Whether the blocks contains other blocks */
-  def isContainer: Boolean = _container
-
-  def container_=(value: Boolean) = _container = value
-
-  /* Whether the blocks is  a variable */
-  def isVariable: Boolean = _variable
-
-  def variable_=(value: Boolean) = _variable = value
-
 
   // Error check on the line of code
   def error(): Boolean = false

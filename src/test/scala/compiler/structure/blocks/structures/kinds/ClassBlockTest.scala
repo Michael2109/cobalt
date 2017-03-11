@@ -18,10 +18,6 @@
 
 package compiler.structure.blocks.structures.kinds
 
-/**
-  * Represents a class.
-  * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
-  */
 class ClassBlockTest() {
 
 }

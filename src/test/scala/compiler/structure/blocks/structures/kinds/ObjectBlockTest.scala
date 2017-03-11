@@ -18,48 +18,6 @@
 
 package compiler.structure.blocks.structures.kinds
 
-import compiler.data.parameters.ParameterTest
-import compiler.structure.blocks.Block
-import compiler.structure.blocks.packages.PackageBlockTest
-
-/**
-  * Represents a class.
-  * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
-  */
-class ObjectBlockTest(var superBlockInit: Block, var name: String, var parameters: Array[ParameterTest], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
-
-  def getName: String = name
-
-  def getValue: String = null
-
-  def getType(): BlockType = "class"
-
-  /**
-    * Performed just before compiling blocks to allow for action when all blocks parsed
-    */
-  def init() {
-
-    val block: Block = superBlock
-
-    // Package the class is within
-
-  }
-
-  def packageBlock: PackageBlockTest = superBlock.subBlocks.find(_.isInstanceOf[PackageBlockTest]).getOrElse(new PackageBlockTest("")).asInstanceOf[PackageBlockTest]
-
-
-  def getOpeningCode: String = {
-    asm.getClassOpening(name) +
-      asm.executeMethodOpening +
-      asm.getClassWriter +
-      asm.visitClassWriter(packageBlock.directory + "/" + name, null, parentClass, null)
-  }
-
-  def getClosingCode: String = {
-    " cw.visitEnd();\n" + "return cw.toByteArray();\n" +
-      asm.getClosingBrace()
-  }
-
-  override def toString: String = return "object" + name
+class ObjectBlockTest() {
 
 }

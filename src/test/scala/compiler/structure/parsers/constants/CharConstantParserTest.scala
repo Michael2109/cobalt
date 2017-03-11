@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.operators
+package compiler.structure.parsers.constants
 
-class DivideBlockTest() {
-
+class CharConstantParserTest {
 
 }

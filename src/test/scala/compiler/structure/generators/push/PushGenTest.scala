@@ -18,9 +18,7 @@
 
 package compiler.structure.generators.push
 
-import compiler.structure.generators.GeneratorTest
-
-object PushGenTest extends GeneratorTest {
+object PushGenTest {
 
 
 }

@@ -18,9 +18,6 @@
 
 package compiler.structure.blocks.structures
 
-/**
-  * Calling a method of an object
-  */
 class ObjectMethodCallBlockTest() {
 
 }

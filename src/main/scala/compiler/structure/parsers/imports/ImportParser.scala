@@ -55,6 +55,6 @@ class ImportParser extends Parser[ImportBlock] {
     val i: Int = fileLoc.lastIndexOf("/")
     fileLoc = if ((i > -1)) fileLoc.substring(0, i)
     else fileLoc
-    return new ImportBlock(fileLoc, fileName)
+    new ImportBlock(fileLoc, fileName)
   }
 }

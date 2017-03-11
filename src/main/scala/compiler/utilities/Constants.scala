@@ -31,13 +31,13 @@ import compiler.structure.parsers.prints.{PrintParser, PrintlnParser}
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
 import compiler.structure.parsers.structures.methods.MethodParser
 import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
+import compiler.structure.parsers.syntax.ColonParser
 import compiler.structure.parsers.variable.{DefineVariableParser, VariableParser}
-import compiler.structure.syntax.ColonParser
 
 object Constants {
 
   /* All available parsers */
-  val parsers: Array[Parser[_]] = Array(
+  val parsers: List[Parser[_]] = List(
     new ModifierParser,
     new MethodParser,
 
@@ -84,8 +84,7 @@ object Constants {
     new AssignmentParser,
     new DefineVariableParser,
 
-    new BooleanrConstantParser,
-    new VariableParser,
+    new BooleanConstantParser,
     new CharConstantParser,
     new StringConstantParser,
     new FloatConstantParser,
@@ -93,7 +92,9 @@ object Constants {
     new ShortConstantParser,
     new ByteConstantParser,
     new LongConstantParser,
-    new IntConstantParser
+    new IntConstantParser,
+
+    new VariableParser
   )
 
 }

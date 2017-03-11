@@ -47,6 +47,6 @@ class IfBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fal
     // asm.visitLabel("l" + id)
   }
 
-  override def toString: String = "if " + expressions
+  override def toString: String = "<IF_STATEMENT>" + expressions
 
 }

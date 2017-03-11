@@ -18,19 +18,6 @@
 
 package compiler.structure.generators.ifs
 
-import compiler.structure.generators.GeneratorTest
-
-object IfGenTest extends GeneratorTest {
-
-  def getOpeningCode(pointer: String, value: String, id: Int, byteCodeOp: String): String = {
-    asm.visitVarInsn("ILOAD", pointer) +
-      asm.visitLdcInsn(value) +
-      asm.newLabel("l" + id) +
-      byteCodeOp
-  }
-
-  def getClosingCode(id: Int): String = {
-    asm.visitLabel("l" + id)
-  }
+object IfGenTest {
 
 }

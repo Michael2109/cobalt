@@ -18,8 +18,6 @@
 
 package compiler.structure.blocks.structures
 
-
-// Creation of a new object and storing to a variable
 class ObjectDefinitionBlockTest() {
 
 }

@@ -18,10 +18,7 @@
 
 package compiler.structure.generators
 
-import compiler.utilities.ASMGeneratorTest
-
 class GeneratorTest {
 
-  val asm: ASMGeneratorTest = new ASMGeneratorTest
 
 }

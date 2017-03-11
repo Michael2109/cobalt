@@ -18,33 +18,6 @@
 
 package compiler.structure.blocks.structures
 
-import compiler.data.parameters.ParameterTest
-import compiler.structure.blocks.Block
+class MethodCallBlockTest() {
 
-/**
-  * Calling of a method within the class
-  */
-class MethodCallBlockTest(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[ParameterTest]) extends Block(superBlockInit, false, false) {
-
-  def getParameters: Array[ParameterTest] = params
-
-  def init() {}
-
-  def getName: String = name
-
-  def getValue: String = ""
-
-  def getType(): BlockType = `type`
-
-  def getOpeningCode: String = name + "();"
-
-  def getClosingCode: String = ""
-
-  override def toString: String = {
-    var paramString: String = ""
-    for (parameter <- params) {
-      paramString += parameter.getType + ":" + parameter.getName + "; "
-    }
-    return "method call: " + name + " ( " + paramString + ")"
-  }
 }
