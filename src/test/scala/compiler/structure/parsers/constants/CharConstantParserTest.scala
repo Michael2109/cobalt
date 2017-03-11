@@ -18,6 +18,37 @@
 
 package compiler.structure.parsers.constants
 
-class CharConstantParserTest {
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.constants.CharConstantBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
+@RunWith(classOf[JUnitRunner])
+class CharConstantParserTest extends FunSuite with BeforeAndAfter {
+  val parsers = Constants.parsers
+
+  val lines = List(
+    "'a'",
+    "'0'"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      var found = false
+      for (parser <- parsers) {
+        if (!found) {
+          if (parser.shouldParse(line)) {
+            val block: Block = parser.parse(null, new Tokenizer(line))
+            assert(block.getValue == line.replaceAll("[\\']", ""))
+            assert(block.isInstanceOf[CharConstantBlock])
+            found = true
+          }
+        }
+      }
+      assert(found)
+    }
+  }
 }

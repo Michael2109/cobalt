@@ -26,7 +26,6 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
-
 @RunWith(classOf[JUnitRunner])
 class BooleanConstantParserTest() extends FunSuite with BeforeAndAfter {
 
