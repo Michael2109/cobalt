@@ -84,18 +84,6 @@ object Utils {
     */
   def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
-  def getFileBlock(blockInit: Block) : Block = {
-
-    val fileBlock:Block = {
-      var block: Block = blockInit
-      while(!block.isInstanceOf[FileBlock]){
-        block = block.superBlock
-      }
-      block
-    }
-    fileBlock
-  }
-
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
     * @param block
@@ -275,12 +263,24 @@ object Utils {
         }
       }
       if (!found) {
-        throw new RuntimeException("Error parsing: '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
+        throw new RuntimeException("Error parsing: '" + Utils.getFileBlock(superBlock) + "' '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
       }
     }
 
     result(0)
 
+  }
+
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
+      var block: Block = blockInit
+      while (!block.isInstanceOf[FileBlock]) {
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
   }
 
 }

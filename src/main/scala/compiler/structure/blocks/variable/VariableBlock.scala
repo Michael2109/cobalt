@@ -23,6 +23,7 @@ import compiler.structure.blocks.operators.AssignmentBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.{ReversePolish, Utils}
 
+
 class VariableBlock(superBlockInit: Block, name: String) extends Block(superBlockInit, false, true) {
 
   val row: Row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name)

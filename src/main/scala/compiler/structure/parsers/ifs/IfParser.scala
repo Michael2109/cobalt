@@ -30,22 +30,9 @@ class IfParser extends Parser[IfBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("if[ ]*\\((.*)*\\):")
+  override def getRegexs: List[String] = List("if")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
-    tokenizer.nextToken //skip if
-    tokenizer.nextToken // skip (
-
-    // Loop through getting each parameter and  adding to a String
-    var statement: String = ""
-    var nextToken: String = tokenizer.nextToken.token
-    while (nextToken != ")") {
-      {
-        if (nextToken == "=") statement += nextToken
-        else statement += " " + nextToken + " "
-        nextToken = tokenizer.nextToken.token
-      }
-    }
-    return new IfBlock(superBlock, statement.trim.replaceAll(" +", " "))
+    new IfBlock(superBlock)
   }
 }

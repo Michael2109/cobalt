@@ -20,6 +20,7 @@ package compiler.utilities
 
 class ASMGenerator {
 
+
   // opening brace "{"
   def getOpeningBrace() = "\n{\n"
 

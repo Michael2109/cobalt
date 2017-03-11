@@ -16,37 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.ifs
+package compiler.structure.parsers.operators
 
 import compiler.structure.blocks.Block
+import compiler.structure.blocks.operators.SmallerThanOpBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-/**
-  * Represents an if statement
-  *
-  * @param superBlockInit
-  */
-class IfBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+class SmallerThanOpParser extends Parser[SmallerThanOpBlock] {
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("[<]")
 
-
-  def getName: String = ""
-
-  def getType(): String = "if"
-
-  def getValue: String = ""
-
-  def init() {
+  def parse(superBlock: Block, tokenizer: Tokenizer): SmallerThanOpBlock = {
+    new SmallerThanOpBlock(superBlock)
   }
-
-  def getOpeningCode: String = {
-    // IfGen.getOpeningCode(pointer, value, id,  "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n")
-    ""
-  }
-
-  def getClosingCode: String = {
-    ""
-    // asm.visitLabel("l" + id)
-  }
-
-  override def toString: String = "if " + expressions
-
 }

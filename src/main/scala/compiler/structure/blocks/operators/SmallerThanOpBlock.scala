@@ -16,37 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.ifs
+package compiler.structure.blocks.operators
 
 import compiler.structure.blocks.Block
 
 /**
-  * Represents an if statement
+  * Represents checking if equal - "=="
   *
   * @param superBlockInit
   */
-class IfBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+class SmallerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
+  def init() {
+
+  }
 
   def getName: String = ""
 
-  def getType(): String = "if"
-
   def getValue: String = ""
 
-  def init() {
-  }
-
   def getOpeningCode: String = {
-    // IfGen.getOpeningCode(pointer, value, id,  "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n")
     ""
   }
 
   def getClosingCode: String = {
     ""
-    // asm.visitLabel("l" + id)
   }
 
-  override def toString: String = "if " + expressions
+  override def toString: String = getType
+
+  def getType(): String = "<SMALLER_THAN_OP>"
 
 }

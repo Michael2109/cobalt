@@ -32,6 +32,7 @@ import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
 import compiler.structure.parsers.structures.methods.MethodParser
 import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.structure.parsers.variable.{DefineVariableParser, VariableParser}
+import compiler.structure.syntax.ColonParser
 
 object Constants {
 
@@ -47,11 +48,13 @@ object Constants {
     new OrOpParser,
     new NotOpParser,
     new EqualsOpParser,
+    new SmallerThanOpParser,
     new AddOpParser,
     new DivideOpParser,
     new MultiplyOpParser,
     new SubtractOpParser,
     new ModulusOpParser,
+    new ColonParser,
 
     /* if, else */
     new IfParser,
