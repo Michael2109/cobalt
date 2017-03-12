@@ -16,30 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.constants
+package compiler.structure.blocks.ifs
 
 import compiler.structure.blocks.Block
-import compiler.utilities.Utils
 
-class CharConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+/**
+  * Represents an if statement
+  *
+  * @param superBlockInit The parent block
+  */
+class SwitchBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  override def init() {}
 
-  override def getName: String = ""
+  def getName: String = ""
 
-  override def getValue: String = value
+  def getType: String = "if"
 
-  override def getOpeningCode: String = {
-    if (Utils.getMethod(this) != null) {
-      ""
-    } else {
-      ""
-    }
+  def getValue: String = ""
+
+  def init() {
   }
 
-  override def getClosingCode: String = ""
+  def getOpeningCode: String = {
+    // IfGen.getOpeningCode(pointer, value, id,  "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n")
+    ""
+  }
 
-  override def toString: String = getType + ": " + value
+  def getClosingCode: String = {
+    ""
+    // asm.visitLabel("l" + id)
+  }
 
-  override def getType: String = "char_const"
+  override def toString: String = "<IF_STATEMENT>" + expressions
+
 }

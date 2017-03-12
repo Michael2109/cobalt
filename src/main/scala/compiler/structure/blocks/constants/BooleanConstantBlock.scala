@@ -29,8 +29,6 @@ class BooleanConstantBlock(var superBlockInit: Block, value: String) extends Blo
 
   override def getValue: String = value
 
-  override def getType: String = "boolean_const"
-
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
       ""
@@ -41,5 +39,7 @@ class BooleanConstantBlock(var superBlockInit: Block, value: String) extends Blo
 
   override def getClosingCode: String = ""
 
-  override def toString: String = "boolean_constant: " + value
+  override def toString: String = getType + ": " + value
+
+  override def getType: String = "boolean_const"
 }

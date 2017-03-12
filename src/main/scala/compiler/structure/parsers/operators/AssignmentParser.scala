@@ -19,7 +19,7 @@
 package compiler.structure.parsers.operators
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.AssignmentBlock
+import compiler.structure.blocks.operators.assignment.AssignmentBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 

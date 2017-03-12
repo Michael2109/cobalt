@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.constants
+package compiler.structure.blocks.casting
 
 import compiler.structure.blocks.Block
 import compiler.utilities.Utils
 
-class CharConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+class IsBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
 
   override def init() {}
 
@@ -39,7 +39,7 @@ class CharConstantBlock(var superBlockInit: Block, value: String) extends Block(
 
   override def getClosingCode: String = ""
 
-  override def toString: String = getType + ": " + value
+  override def toString: String = getType + value
 
-  override def getType: String = "char_const"
+  override def getType: String = "<IS>"
 }

@@ -28,8 +28,6 @@ class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(s
 
   override def getValue: String = value
 
-  override def getType: String = "int_const"
-
   override def getOpeningCode: String = {
 
     asm.visitIntInsn("BIPUSH", value)
@@ -37,5 +35,7 @@ class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(s
 
   override def getClosingCode: String = ""
 
-  override def toString: String = "int_constant: " + value
+  override def toString: String = getType + ": " + value
+
+  override def getType: String = "int_const"
 }

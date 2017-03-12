@@ -16,30 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.constants
+package compiler.structure.blocks.operators.bit
 
 import compiler.structure.blocks.Block
-import compiler.utilities.Utils
 
-class CharConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+/**
+  * Represents adding a value to a primitive
+  *
+  * @param superBlockInit The parent block
+  */
+class BitwiseXorOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def init() {}
+  def init() {
 
-  override def getName: String = ""
-
-  override def getValue: String = value
-
-  override def getOpeningCode: String = {
-    if (Utils.getMethod(this) != null) {
-      ""
-    } else {
-      ""
-    }
   }
 
-  override def getClosingCode: String = ""
+  def getName: String = ""
 
-  override def toString: String = getType + ": " + value
+  def getValue: String = ""
 
-  override def getType: String = "char_const"
+  def getOpeningCode: String = {
+    ""
+  }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType()
+
+  def getType(): String = "<BITWISE_XOR_OP>"
+
+
 }

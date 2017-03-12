@@ -29,8 +29,6 @@ class LongConstantBlock(var superBlockInit: Block, value: String) extends Block(
 
   override def getValue: String = value
 
-  override def getType: String = "long_const"
-
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
       ""
@@ -41,5 +39,7 @@ class LongConstantBlock(var superBlockInit: Block, value: String) extends Block(
 
   override def getClosingCode: String = ""
 
-  override def toString: String = "long_constant: " + value
+  override def toString: String = getType + ": " + value
+
+  override def getType: String = "long_const"
 }

@@ -16,11 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.operators
+package compiler.structure.blocks.operators.bit
 
 import compiler.structure.blocks.Block
 
-class AssignmentBlock(var superBlockInit: Block, declaration: Boolean) extends Block(superBlockInit, false, false) {
+/**
+  * Represents adding a value to a primitive
+  *
+  * @param superBlockInit The parent block
+  */
+class BitwiseOrOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   def init() {
 
@@ -38,8 +43,9 @@ class AssignmentBlock(var superBlockInit: Block, declaration: Boolean) extends B
     ""
   }
 
-  override def toString: String = getType
+  override def toString: String = getType()
 
-  def getType: String = "<ASSIGNMENT>"
+  def getType(): String = "<BITWISE_OR_OP>"
+
 
 }
