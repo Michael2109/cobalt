@@ -30,7 +30,7 @@ class ModifierBlock (var superBlockInit: Block, var value: String) extends Block
 
   override def getValue: String = value
 
-  override def getType(): String = "modifier"
+  override def getType: String = "modifier"
 
   /* Bytecode for the opening and closing of the blocks */
   override def getOpeningCode: String = ""

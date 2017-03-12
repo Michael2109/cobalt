@@ -23,14 +23,13 @@ import compiler.structure.blocks.Block
 /**
   * Represents an if statement
   *
-  * @param superBlockInit
-  * @param nameInit
+  * @param superBlockInit The parent block
   */
 class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
   def getName: String = ""
 
-  def getType(): String = "else"
+  def getType: String = "else"
 
   def getValue: String = ""
 

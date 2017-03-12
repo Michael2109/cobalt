@@ -32,9 +32,7 @@ abstract class Parser[T <: Block] {
   def getRegexs: List[String]
 
 
-  def shouldParse(line: String): Boolean = {
-    (getRegexs.filter(_.r.findFirstIn(line).nonEmpty).size > 0)
-  }
+  def shouldParse(line: String): Boolean = getRegexs.exists(_.r.findFirstIn(line).nonEmpty)
 
   /**
     * Take the superBlock and the tokenizer for the line and return a blocks of this parsers's type.

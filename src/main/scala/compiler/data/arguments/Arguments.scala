@@ -20,10 +20,4 @@ package compiler.data.arguments
 
 class Arguments {
 
-  def getArguments(line: String): Unit = {
-
-    // val arguments: ListBuffer[Argument] = line.split(",").toList
-
-  }
-
 }

@@ -62,6 +62,6 @@ class MethodParser extends Parser[MethodBlock] {
     val returnType: String = tokenizer.nextToken.token // method return type
 
 
-    return new MethodBlock(superBlock, name, returnType, isSealed, parameters.toArray)
+    new MethodBlock(superBlock, name, returnType, isSealed, parameters.toArray)
   }
 }

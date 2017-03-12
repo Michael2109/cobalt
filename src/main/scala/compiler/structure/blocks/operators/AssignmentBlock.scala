@@ -40,6 +40,6 @@ class AssignmentBlock(var superBlockInit: Block, declaration: Boolean) extends B
 
   override def toString: String = getType
 
-  def getType(): String = "<ASSIGNMENT>"
+  def getType: String = "<ASSIGNMENT>"
 
 }

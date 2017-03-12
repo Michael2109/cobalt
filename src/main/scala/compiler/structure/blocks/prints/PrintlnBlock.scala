@@ -31,7 +31,7 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
 
   def getValue: String = value
 
-  def getType(): String = "print"
+  def getType: String = "print"
 
   def getOpeningCode: String = {
 

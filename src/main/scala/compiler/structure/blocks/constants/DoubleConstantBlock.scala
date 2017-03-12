@@ -29,7 +29,7 @@ class DoubleConstantBlock(var superBlockInit: Block, value: String) extends Bloc
 
   override def getValue: String = value
 
-  override def getType(): String = "double_const"
+  override def getType: String = "double_const"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

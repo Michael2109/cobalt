@@ -26,7 +26,7 @@ class WhileBlock(var superBlockInit: Block) extends Block(superBlockInit, true, 
 
   def getValue: String = ""
 
-  def getType(): String = "while"
+  def getType: String = "while"
 
   def init(): Unit = {}
 

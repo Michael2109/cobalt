@@ -56,6 +56,6 @@ class Parameters {
       }
     }
 
-    return result
+    result
   }
 }

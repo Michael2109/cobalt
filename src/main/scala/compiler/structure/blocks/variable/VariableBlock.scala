@@ -34,13 +34,13 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   override def getValue: String = ""
 
-  override def getType(): String = row.getType
+  override def getType: String = row.getType
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (expressions.size > 0 && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
+      val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
       if (expressions.isEmpty) {
         row.getType match {
@@ -49,7 +49,7 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
           case "float" => asm.visitVarInsn("FLOAD", "" + row.getId)
           case "short" => asm.visitVarInsn("SALOAD", "" + row.getId)
           case "boolean" => asm.visitVarInsn("BALOAD", "" + row.getId)
-          case default => ""
+          case _ => ""
         }
       }
       else {
@@ -61,7 +61,7 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
           case "boolean" => rpnString + asm.visitVarInsn("BASTORE", "" + row.getId)
           case "String" => rpnString + asm.visitVarInsn("ASTORE", "" + row.getId)
 
-          case default => ""
+          case _ => ""
         }
       }
 

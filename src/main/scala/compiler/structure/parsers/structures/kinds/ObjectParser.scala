@@ -47,7 +47,6 @@ class ObjectParser extends Parser[ObjectBlock] {
     val implementedClasses = ""
 
 
-
-    return new ObjectBlock(superBlock, objectName, parameters.toArray, parentClass, implementedClasses)
+    new ObjectBlock(superBlock, objectName, parameters.toArray, parentClass, implementedClasses)
   }
 }

@@ -28,7 +28,7 @@ class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(s
 
   override def getValue: String = value
 
-  override def getType(): String = "int_const"
+  override def getType: String = "int_const"
 
   override def getOpeningCode: String = {
 

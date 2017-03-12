@@ -22,13 +22,13 @@ class ASMGenerator {
 
 
   // opening brace "{"
-  def getOpeningBrace() = "\n{\n"
+  def getOpeningBrace: String = "\n{\n"
 
   // closing brace "}"
-  def getClosingBrace() = "\n}\n"
+  def getClosingBrace: String = "\n}\n"
 
   // Comments
-  def getComment(comment: String) = "// " + comment + "\n"
+  def getComment(comment: String): String = "// " + comment + "\n"
 
   // package
   def getPackage(name: String): String = "package " + name + ";\n"

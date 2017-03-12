@@ -23,7 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents checking if equal - "=="
   *
-  * @param superBlockInit
+  * @param superBlockInit The parent block
   */
 class ColonBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
@@ -45,7 +45,8 @@ class ColonBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
 
   override def toString: String = getType
 
-  def getType(): String = "<COLON>"
+  def getType: String = "<COLON>"
+
 
 
 }

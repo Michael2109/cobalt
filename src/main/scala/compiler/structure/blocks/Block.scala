@@ -33,11 +33,11 @@ object Block {
 /**
   * Represents a blocks of code.
   *
-  * @param superBlockInitTest The superBlock of this blocks
-  * @param containerInit      Whether the blocks contains other blocks
-  * @param variableInit       Whether the blocks is a variable
+  * @param sBlock    The superBlock of this blocks
+  * @param container Whether the blocks contains other blocks
+  * @param variable  Whether the blocks is a variable
   */
-abstract case class Block(var superBlockInitTest: Block, val container: Boolean, val variable: Boolean, immutable: Boolean = false) {
+abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, immutable: Boolean = false) {
 
   Block.TOTAL_BLOCKS += 1
 
@@ -45,31 +45,31 @@ abstract case class Block(var superBlockInitTest: Block, val container: Boolean,
 
   val expressions: ListBuffer[Block] = ListBuffer[Block]()
   private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
-  private val _asm: ASMGenerator = new ASMGenerator;
+  private val _asm: ASMGenerator = new ASMGenerator
   private var _id: Integer = Block.TOTAL_BLOCKS
-  private var _superBlock: Block = superBlockInitTest
+  private var _superBlock: Block = sBlock
 
   /* id GET and SET */
-  def id = _id
+  def id: Integer = _id
 
-  def id_=(value: Integer) = _id = value
+  def id_=(value: Integer): Unit = _id = value
 
   /* subBlocks GET */
-  def subBlocks = _subBlocks
+  def subBlocks: ListBuffer[Block] = _subBlocks
 
-  def addBlock_=(value: Block) = {
+  def addBlock_=(value: Block): Unit = {
     _subBlocks.append(value)
     value.superBlock = this
   }
 
   /* superBlock GET and SET */
-  def superBlock = _superBlock
+  def superBlock: Block = _superBlock
 
-  def superBlock_=(value: Block) = _superBlock = value
+  def superBlock_=(value: Block): Unit = _superBlock = value
 
-  def addBlocks_=(value: ListBuffer[Block]) = _subBlocks.appendAll(value)
+  def addBlocks_=(value: ListBuffer[Block]): Unit = _subBlocks.appendAll(value)
 
-  def removeBlock_=(value: Block) = _subBlocks.filter(_ != value)
+  def removeBlock_=(value: Block): ListBuffer[Block] = _subBlocks.filter(_ != value)
 
   // Called after file is parsed
   def init()
@@ -79,7 +79,7 @@ abstract case class Block(var superBlockInitTest: Block, val container: Boolean,
 
   def getValue: String
 
-  def getType(): String
+  def getType: String
 
   /* Bytecode for the opening and closing of the blocks */
   def getOpeningCode: String

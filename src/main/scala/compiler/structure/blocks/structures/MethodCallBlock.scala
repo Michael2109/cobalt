@@ -34,7 +34,7 @@ class MethodCallBlock(var superBlockInit: Block, var name: String, var `type`: S
 
   def getValue: String = ""
 
-  def getType(): String = `type`
+  def getType: String = `type`
 
   def getOpeningCode: String = name + "();"
 
@@ -45,6 +45,6 @@ class MethodCallBlock(var superBlockInit: Block, var name: String, var `type`: S
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return "method call: " + name + " ( " + paramString + ")"
+    "method call: " + name + " ( " + paramString + ")"
   }
 }

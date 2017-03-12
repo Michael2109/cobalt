@@ -72,7 +72,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     block.superBlock_=(fileBlock)
 
 
-    Utils.printBlockInfo(fileBlock, 0)
+    Utils.printBlockInfo(fileBlock)
 
     // Print the symbol table
     SymbolTable.getInstance.printSymbols()
@@ -85,29 +85,29 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
   /**
     * Loops through the lines to get the package block
     *
-    * @param lines
+    * @param lines A list of all file lines
     * @return PackageBlock
     */
   private def getPackage(lines: List[String]): PackageBlock = {
     val parser: PackageParser = new PackageParser
-    lines.filter(parser.shouldParse(_)).map((s: String) => parser.parse(null, new Tokenizer(s))).find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock(""))
+    lines.filter(parser.shouldParse).map((s: String) => parser.parse(null, new Tokenizer(s))).find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock(""))
   }
 
   /**
     * Loops through the lines to get the import blocks
     *
-    * @param lines
+    * @param lines A List of all lines
     * @return List[ImportBlock]
     */
   private def getImports(lines: List[String]): List[Block] = {
-    val parser: ImportParser = new ImportParser;
-    lines.filter(parser.shouldParse(_)).map((s: String) => parser.parse(null, new Tokenizer(s)))
+    val parser: ImportParser = new ImportParser
+    lines.filter(parser.shouldParse).map((s: String) => parser.parse(null, new Tokenizer(s)))
   }
 
   /**
     * Combines all lines, removes comments, splits into list again
     *
-    * @param lines
+    * @param lines A List of all file lines
     * @return
     */
   private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "").split("\n").filter(_.trim != "").toList
@@ -118,7 +118,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     * Recursively gets the class AST structure.
     */
   private def getBlockStructure(lines: List[String], block: Block, previousIndentation: Int, currentLine: Int) {
-    if (lines.size > 0) {
+    if (lines.nonEmpty) {
 
       if (currentLine < lines.size) {
 

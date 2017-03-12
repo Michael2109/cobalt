@@ -31,6 +31,6 @@ class DeclarationException() extends RuntimeException {
 
   def this(cause: Throwable) {
     this()
-    cause.getStackTraceString
+    cause.getStackTrace
   }
 }

@@ -34,6 +34,6 @@ class CatchParser extends Parser[CatchBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CatchBlock = {
 
-    return new CatchBlock(superBlock)
+    new CatchBlock(superBlock)
   }
 }

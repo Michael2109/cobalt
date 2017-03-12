@@ -64,6 +64,6 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
         }
       }
     }
-    return new ObjectDefinitionBlock(superBlock, newKeyword, initClassName, parameters)
+    new ObjectDefinitionBlock(superBlock, newKeyword, initClassName, parameters)
   }
 }

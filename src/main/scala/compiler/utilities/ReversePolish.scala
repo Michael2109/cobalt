@@ -43,19 +43,19 @@ object ReversePolish {
     println(infixToRPN(blocks))
   }
 
-  def OPERATORS(b: Block) = b match {
+  def OPERATORS(b: Block): List[Int] = b match {
 
-    case b: AddOpBlock => List(0, LEFT_ASSOC)
+    case _: AddOpBlock => List(0, LEFT_ASSOC)
 
-    case b: SubtractOpBlock => List(0, LEFT_ASSOC)
+    case _: SubtractOpBlock => List(0, LEFT_ASSOC)
 
-    case b: MultiplyOpBlock => List(5, LEFT_ASSOC)
+    case _: MultiplyOpBlock => List(5, LEFT_ASSOC)
 
-    case b: DivideOpBlock => List(5, LEFT_ASSOC)
+    case _: DivideOpBlock => List(5, LEFT_ASSOC)
 
-    case b: ModulusOpBlock => List(5, LEFT_ASSOC)
+    case _: ModulusOpBlock => List(5, LEFT_ASSOC)
 
-    case b: PowerOfOpBlock => List(10, RIGHT_ASSOC)
+    case _: PowerOfOpBlock => List(10, RIGHT_ASSOC)
 
     case _ => List()
 
@@ -73,9 +73,9 @@ object ReversePolish {
   def cmpPrecedence(token1: Block, token2: Block): Int = {
     if (!isOperator(token1) || !isOperator(token2)) {
       throw new IllegalArgumentException("Invalid tokens: " + token1
-        + " " + token2);
+        + " " + token2)
     }
-    OPERATORS(token1)(0) - OPERATORS(token2)(0);
+    OPERATORS(token1).head - OPERATORS(token2).head
   }
 
   def infixToRPN(inputTokens: List[Block]): List[Block] = {
@@ -86,7 +86,7 @@ object ReversePolish {
       if (isOperator(token)) {
         // If token is an operator (x) [S3]
         var found = true
-        while (!stack.isEmpty && isOperator(stack.head) && found) {
+        while (stack.nonEmpty && isOperator(stack.head) && found) {
 
           // [S4]
           if ((isAssociative(token, LEFT_ASSOC) && cmpPrecedence(
@@ -106,22 +106,22 @@ object ReversePolish {
         }
         // Push the new operator on the stack [S7]
         stack.push(token)
-      } else if (token.isInstanceOf[OpeningBracketOpBlock]) {
-        // [S8]
-        stack.push(token)
-      } else if (token.isInstanceOf[ClosingBracketOpBlock]) {
-        // [S9]
-        while (!stack.isEmpty && !stack.head.isInstanceOf[OpeningBracketOpBlock]) // [S10]
-          out += stack.pop()
-        // [S11]
-        stack.pop()
-      }
-      else {
-        // [S12]
-        out += token
+      } else token match {
+        case _: OpeningBracketOpBlock =>
+          // [S8]
+          stack.push(token)
+        case _: ClosingBracketOpBlock =>
+          // [S9]
+          while (!stack.isEmpty && !stack.head.isInstanceOf[OpeningBracketOpBlock]) // [S10]
+            out += stack.pop()
+          // [S11]
+          stack.pop()
+        case _ =>
+          // [S12]
+          out += token
       }
     }
-    while (!stack.isEmpty) // [S13]
+    while (stack.nonEmpty) // [S13]
       out += stack.pop()
     //val output: Array[Block] = Array.ofDim[Block](out.size)
     out.toList
@@ -131,11 +131,11 @@ object ReversePolish {
   /**
     * find whether an operator
     *
-    * @param block
+    * @param block The block to check
     * @return
     */
   // todo Update so map works with class type not comparing like this...
-  private def isOperator(block: Block) = {
+  private def isOperator(block: Block): Boolean = {
     OPERATORS(block).nonEmpty
   }
 
@@ -148,12 +148,12 @@ object ReversePolish {
     */
   private def isAssociative(block: Block, assoc: Int): Boolean = {
     if (!isOperator(block)) {
-      throw new IllegalArgumentException("Invalid token: ");
+      throw new IllegalArgumentException("Invalid token: ")
     }
     if (OPERATORS(block)(1) == assoc) {
-      return true;
+      return true
     }
-    return false;
+    false
   }
 
 }

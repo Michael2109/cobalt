@@ -43,7 +43,7 @@ class Parameter(var `type`: String, var name: String) {
   }
 
   override def toString: String = {
-    return name + " : " + `type`
+    name + " : " + `type`
   }
 
 }

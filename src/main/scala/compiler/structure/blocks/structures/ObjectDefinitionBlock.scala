@@ -56,18 +56,18 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
   def getObjectName: String = {
     // Get the FileBlock to find the imports
     var block: Block = this
-    while (!(block.isInstanceOf[ClassBlock]) && !(block.isInstanceOf[ObjectBlock])) {
+    while (!block.isInstanceOf[ClassBlock] && !block.isInstanceOf[ObjectBlock]) {
         block = block.superBlock
     }
     // Get the directory of the Object
-    return block.getName
+    block.getName
   }
 
   def getName: String = ""
 
   def getValue: String = ""
 
-  def getType(): String = initClassName
+  def getType: String = initClassName
 
   def getOpeningCode: String = {
     //"mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
@@ -77,7 +77,7 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
   override def toString: String = "new " + initClassName + "()"

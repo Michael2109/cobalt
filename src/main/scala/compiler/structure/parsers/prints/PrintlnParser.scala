@@ -45,7 +45,7 @@ class PrintlnParser extends Parser[PrintlnBlock] {
     val isVar: Boolean = value.tokenType != TokenType.STRING_LITERAL
 
     println(value)
-    return new PrintlnBlock(superBlock, value.token, isVar)
+    new PrintlnBlock(superBlock, value.token, isVar)
   }
 
 }

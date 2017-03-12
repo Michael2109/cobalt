@@ -23,7 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents not - "!"
   *
-  * @param superBlockInit
+  * @param superBlockInit The parent block
   */
 class NotOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
@@ -45,6 +45,6 @@ class NotOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
 
   override def toString: String = getType
 
-  def getType(): String = "<MULTIPLY_OP>"
+  def getType: String = "<MULTIPLY_OP>"
 
 }

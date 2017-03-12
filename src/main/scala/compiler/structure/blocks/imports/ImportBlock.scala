@@ -23,8 +23,8 @@ import compiler.structure.blocks.Block
 /**
   * Represents an import
   *
-  * @param directory
-  * @param fileName
+  * @param directory The directory
+  * @param fileName  The class name
   */
 class ImportBlock(var directory: String, var fileName: String) extends Block(null, false, false) {
 
@@ -34,7 +34,7 @@ class ImportBlock(var directory: String, var fileName: String) extends Block(nul
 
   def getValue: String = ""
 
-  def getType(): String = "import"
+  def getType: String = "import"
 
   def getOpeningCode: String = ""
 

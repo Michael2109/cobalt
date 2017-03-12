@@ -41,14 +41,14 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
   private var directory: String = ""
 
   def getParameters: ListBuffer[Parameter] = {
-    return params
+    params
   }
 
   def getName: String = variableName
 
   def getValue: String = ""
 
-  def getType(): String = `type`
+  def getType: String = `type`
 
   def init() {
     if (className == getClassName)
@@ -69,59 +69,63 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
   def getDirectory: String = {
     // Get the FileBlock to find the imports
     var block: Block = this
-    while (!(block.isInstanceOf[FileBlock])) {
+    while (!block.isInstanceOf[FileBlock]) {
       {
         block = block.superBlock
       }
     }
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
-        return (sub.asInstanceOf[ImportBlock]).directory
+      sub match {
+        case block1: ImportBlock if block1.fileName == className =>
+          return block1.directory
+        case _ =>
       }
     }
-    return ""
+    ""
   }
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
   def getPackage: String = {
     // Get the FileBlock to find the imports
     var block: Block = this
-    while (!(block.isInstanceOf[FileBlock])) {
+    while (!block.isInstanceOf[FileBlock]) {
       {
         block = block.superBlock
       }
     }
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[PackageBlock]) {
-        return (sub.asInstanceOf[PackageBlock]).directory
+      sub match {
+        case block1: PackageBlock =>
+          return block1.directory
+        case _ =>
       }
     }
-    return ""
+    ""
   }
 
   // Returns the main class name for the file
   def getClassName: String = {
     // Get the FileBlock to find the imports
     var block: Block = this
-    while (!(block.isInstanceOf[ClassBlock]) && !(block.isInstanceOf[ObjectBlock])) {
+    while (!block.isInstanceOf[ClassBlock] && !block.isInstanceOf[ObjectBlock]) {
       {
         block = block.superBlock
       }
     }
 
     // Get the directory of the Object
-    return block.getName
+    block.getName
   }
 
 
   def getOpeningCode: String = {
-    return "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+    "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
   }
 
   def getClosingCode: String = {
-    return ""
+    ""
   }
 
   override def toString: String = {
@@ -129,6 +133,6 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return "object method call: " + variableName + " ( " + paramString + ")"
+    "object method call: " + variableName + " ( " + paramString + ")"
   }
 }

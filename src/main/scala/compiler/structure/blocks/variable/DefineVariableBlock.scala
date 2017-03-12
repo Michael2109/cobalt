@@ -33,13 +33,13 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
   override def getValue: String = ""
 
-  override def getType(): String = varType
+  override def getType: String = varType
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (expressions.size > 0 && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
+      val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
       // if integer
       varType match {
@@ -50,7 +50,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
         case "boolean" => rpnString + asm.visitVarInsn("BASTORE", id)
         case "String" => rpnString + asm.visitVarInsn("ASTORE", id)
 
-        case default => ""
+        case _ => ""
       }
 
 

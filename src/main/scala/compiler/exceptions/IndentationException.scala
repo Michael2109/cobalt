@@ -31,6 +31,6 @@ class IndentationException() extends RuntimeException {
 
   def this(cause: Throwable) {
     this()
-    cause.getStackTraceString
+    cause.getStackTrace
   }
 }

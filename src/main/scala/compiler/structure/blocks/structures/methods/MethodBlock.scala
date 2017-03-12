@@ -45,18 +45,17 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
   val parameterString: String = params.map(_.getAsmType).mkString("")
 
   var localVariableString: String = ""
+  var i = 1
 
   def getName: String = name
 
-  def getType(): String = returnType
+  def getType: String = returnType
 
   def getValue: String = ""
 
   override def init(): Unit = {
 
   }
-
-    var i = 1
     for (parameter <- params) {
 
       //    println("Adding to symbol table")
@@ -68,7 +67,6 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
 
       i += 1
     }
-
 
   def static: String = if(!Utils.isClass(this))"+ACC_STATIC" else ""
 
@@ -87,6 +85,6 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return name + " ( " + paramString + ")"
+    name + " ( " + paramString + ")"
   }
 }

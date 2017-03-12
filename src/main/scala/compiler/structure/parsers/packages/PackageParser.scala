@@ -47,6 +47,6 @@ class PackageParser extends Parser[PackageBlock] {
         nextToken = tokenizer.nextToken.token
       }
     }
-    return new PackageBlock(directory)
+    new PackageBlock(directory)
   }
 }

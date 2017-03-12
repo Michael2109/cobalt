@@ -23,7 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents checking if equal - "=="
   *
-  * @param superBlockInit
+  * @param superBlockInit The parent block
   */
 class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
@@ -45,6 +45,6 @@ class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, fal
 
   override def toString: String = getType
 
-  def getType(): String = "<EQUALS_OP>"
+  def getType: String = "<EQUALS_OP>"
 
 }

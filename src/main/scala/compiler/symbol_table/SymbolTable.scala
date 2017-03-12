@@ -27,14 +27,14 @@ object SymbolTable {
   private val SYMBOL_TABLE: SymbolTable = new SymbolTable
 
   def getInstance: SymbolTable = {
-    return SYMBOL_TABLE
+    SYMBOL_TABLE
   }
 }
 
 class SymbolTable() {
   var rows: ListBuffer[Row] = new ListBuffer[Row]
 
-  def addRow(row: Row) = rows += row
+  def addRow(row: Row): ListBuffer[Row] = rows += row
 
   def exists(name: String, methodName: String, className: String): Boolean = {
     if (name == null) {
@@ -58,11 +58,11 @@ class SymbolTable() {
         }
       }
     }
-    return false
+    false
   }
 
   def getType(block: Block): String = {
-    return block.getType
+    block.getType
   }
 
   def printSymbols() {

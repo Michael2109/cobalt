@@ -32,8 +32,8 @@ object Main {
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]) {
-    PropertyConfigurator.configure("src/log4j.properties");
-    if (args.size == 3) {
+    PropertyConfigurator.configure("src/log4j.properties")
+    if (args.length == 3) {
       logger.info("Program arguments: $args")
       start(args)
     } else {

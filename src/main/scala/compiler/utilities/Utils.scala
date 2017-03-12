@@ -52,7 +52,7 @@ object Utils {
           return result
       }
     }
-    return result
+    result
   }
 
   /**
@@ -73,7 +73,7 @@ object Utils {
           return Option.apply(result)
       }
     }
-    return Option.apply(result)
+    Option.apply(result)
   }
 
   /**
@@ -84,6 +84,18 @@ object Utils {
     */
   def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
+      var block: Block = blockInit
+      while (!block.isInstanceOf[FileBlock]) {
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
+  }
+
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
     * @param block
@@ -92,18 +104,20 @@ object Utils {
   def getDirectory(blockInit: Block, className: String): String = {
     // Get the FileBlock to find the imports
     var block = blockInit
-    while (!(block.isInstanceOf[FileBlock])) {
+    while (!block.isInstanceOf[FileBlock]) {
       {
         block = block.superBlock
       }
     }
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
-        return (sub.asInstanceOf[ImportBlock]).directory
+      sub match {
+        case block1: ImportBlock if block1.fileName == className =>
+          return block1.directory
+        case _ =>
       }
     }
-    return ""
+    ""
   }
 
   /**
@@ -113,18 +127,20 @@ object Utils {
   def getPackage(blockInit: Block): String = {
     // Get the FileBlock to find the imports
     var block: Block = blockInit
-    while (!(block.isInstanceOf[FileBlock])) {
+    while (!block.isInstanceOf[FileBlock]) {
       {
         block = block.superBlock
       }
     }
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[PackageBlock]) {
-        return (sub.asInstanceOf[PackageBlock]).directory
+      sub match {
+        case block1: PackageBlock =>
+          return block1.directory
+        case _ =>
       }
     }
-    return ""
+    ""
   }
 
   /**
@@ -142,7 +158,7 @@ object Utils {
 
     if (name.startsWith("\"")) return 1
 
-    return 2
+    2
   }
 
   /**
@@ -251,8 +267,8 @@ object Utils {
             if (lineLeft.trim.startsWith(first)) {
               found = true
 
-              if (result.size > 0) {
-                result(0).expressions += parser.parse(superBlock, new Tokenizer(first))
+              if (result.nonEmpty) {
+                result.head.expressions += parser.parse(superBlock, new Tokenizer(first))
               } else {
                 result += parser.parse(superBlock, new Tokenizer(first))
               }
@@ -267,20 +283,8 @@ object Utils {
       }
     }
 
-    result(0)
+    result.head
 
-  }
-
-  def getFileBlock(blockInit: Block): Block = {
-
-    val fileBlock: Block = {
-      var block: Block = blockInit
-      while (!block.isInstanceOf[FileBlock]) {
-        block = block.superBlock
-      }
-      block
-    }
-    fileBlock
   }
 
 }

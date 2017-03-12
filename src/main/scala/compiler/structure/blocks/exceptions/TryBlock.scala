@@ -23,8 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents an if statement
   *
-  * @param superBlockInit
-  * @param nameInit
+  * @param superBlockInit The parent block
   */
 class TryBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
@@ -45,6 +44,6 @@ class TryBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fa
 
   override def toString: String = getType
 
-  def getType(): String = "<TRY>"
+  def getType: String = "<TRY>"
 
 }

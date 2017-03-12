@@ -23,9 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents adding a value to a primitive
   *
-  * @param superBlockInit
-  * @param name
-  * @param valueInit
+  * @param superBlockInit The parent block
   */
 class EmptyBlock(var superBlockInit: Block = null) extends Block(superBlockInit, false, false) {
 
@@ -45,9 +43,9 @@ class EmptyBlock(var superBlockInit: Block = null) extends Block(superBlockInit,
     ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
-  def getType(): String = "<EMPTY>"
+  def getType: String = "<EMPTY>"
 
 
 }

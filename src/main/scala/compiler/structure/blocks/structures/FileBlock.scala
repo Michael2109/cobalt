@@ -35,7 +35,7 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
 
   def getValue: String = ""
 
-  def getType(): String = "file"
+  def getType: String = "file"
 
   def getOpeningCode: String = {
 
@@ -54,8 +54,10 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
 
         var result = new PackageBlock("")
         for (sub <- subBlocks)
-          if (sub.isInstanceOf[PackageBlock])
-             result = sub.asInstanceOf[PackageBlock]
+          sub match {
+            case result1: PackageBlock => result = result1
+            case _ =>
+          }
         result
     }
     "    public static void main(String [] args){\n   " +

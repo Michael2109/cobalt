@@ -62,6 +62,6 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
         }
       }
     }
-    return new ObjectMethodCallBlock(superBlock, variableName, methodName, parameters)
+    new ObjectMethodCallBlock(superBlock, variableName, methodName, parameters)
   }
 }

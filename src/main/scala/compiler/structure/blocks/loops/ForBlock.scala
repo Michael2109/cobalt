@@ -24,15 +24,14 @@ import compiler.structure.blocks.Block
 /**
   * Represents a for loop
   *
-  * @param superBlockInit
-  * @param name
+  * @param superBlockInit The parent block
   */
 class ForBlock(var superBlockInit: Block, var name: String) extends Block(superBlockInit, true, false) {
 
   private val params: Array[Parameter] = null
 
   def getParameters: Array[Parameter] = {
-    return params
+    params
   }
 
   def init() {
@@ -42,7 +41,7 @@ class ForBlock(var superBlockInit: Block, var name: String) extends Block(superB
 
   def getValue: String = ""
 
-  def getType(): String = "for"
+  def getType: String = "for"
 
   def getOpeningCode: String = ""
 

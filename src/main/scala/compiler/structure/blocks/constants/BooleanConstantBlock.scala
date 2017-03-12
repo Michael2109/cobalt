@@ -29,7 +29,7 @@ class BooleanConstantBlock(var superBlockInit: Block, value: String) extends Blo
 
   override def getValue: String = value
 
-  override def getType(): String = "boolean_const"
+  override def getType: String = "boolean_const"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

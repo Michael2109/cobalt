@@ -34,6 +34,6 @@ class ElseParser extends Parser[ElseBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ElseBlock = {
 
-    return new ElseBlock(superBlock)
+    new ElseBlock(superBlock)
   }
 }

@@ -33,23 +33,20 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
+  val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
   // Parameters added to constuctor
   private var parameterString: String = ""
-
   // Local variables from the parameters
   private var localVariableString: String = ""
-
+  addBlock_=(constructorBlock)
   // Create a constructor blocks and add it to the class blocks
   private var constructorBlock: Block = new ConstructorBlock(this, parameters, name)
-  addBlock_=(constructorBlock)
-
-  val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
 
   def getName: String = name
 
   def getValue: String = null
 
-  def getType(): String = "class"
+  def getType: String = "class"
 
   /**
     * Performed just before compiling blocks to allow for action when all blocks parsed
@@ -65,15 +62,6 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
       localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
     }
-  }
-
-  /**
-    * Gets the package blocks
-    *
-    * @return
-    */
-  def packageBlock: PackageBlock ={
-    superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
   }
 
   // Moves all blocks that are inside the class and outside methods into the constructor blocks
@@ -100,10 +88,19 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
 
   }
 
+  /**
+    * Gets the package blocks
+    *
+    * @return
+    */
+  def packageBlock: PackageBlock = {
+    superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
+  }
+
   def getClosingCode: String = {
      "cw.visitEnd();\n" +
        "return cw.toByteArray();\n" +
-    asm.getClosingBrace()
+       asm.getClosingBrace
      }
 
 
@@ -112,6 +109,6 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses + " " + expressions
+    name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses + " " + expressions
   }
 }

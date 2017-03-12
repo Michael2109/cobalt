@@ -23,9 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents adding a value to a primitive
   *
-  * @param superBlockInit
-  * @param name
-  * @param valueInit
+  * @param superBlockInit The parent block
   */
 class OrOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
@@ -45,7 +43,7 @@ class OrOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, 
     ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
   override def getType: String = "<OR_OP>"
 

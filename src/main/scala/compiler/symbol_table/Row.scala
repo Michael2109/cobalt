@@ -21,18 +21,18 @@ package compiler.symbol_table
 
 class Row {
   private var id: Int = 0
-  private var blockType: String = null
-  private var name: String = null
-  private var value: String = null
-  private var methodName: String = null
-  private var className: String = null
+  private var blockType: String = ""
+  private var name: String = ""
+  private var value: String = ""
+  private var methodName: String = ""
+  private var className: String = ""
   private var immutable: Boolean = false
 
   def getId: Int = id
 
   def setId(id: Int): Row = {
     this.id = id
-    return this
+    this
   }
 
   def getType: String = blockType
@@ -78,6 +78,6 @@ class Row {
   }
 
   override def toString: String = {
-    return id + " : " + name + " : " + blockType + " : " + value + " " + methodName + " " + className
+    id + " : " + name + " : " + blockType + " : " + value + " " + methodName + " " + className
   }
 }

@@ -40,7 +40,7 @@ class DivideOpBlock(val superBlockInit: Block) extends Block(superBlockInit, fal
     getType
   }
 
-  def getType(): String = "<DIVIDE_OP>"
+  def getType: String = "<DIVIDE_OP>"
 
 
 }

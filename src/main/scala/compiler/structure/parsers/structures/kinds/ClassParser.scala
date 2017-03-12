@@ -67,6 +67,6 @@ class ClassParser extends Parser[ClassBlock] {
     }
 
 
-    return new ClassBlock(superBlock, isSealed, className, parameters.toArray, parentClass, implementedClasses)
+    new ClassBlock(superBlock, isSealed, className, parameters.toArray, parentClass, implementedClasses)
   }
 }

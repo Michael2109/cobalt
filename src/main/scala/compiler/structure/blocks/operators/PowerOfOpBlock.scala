@@ -23,9 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents adding a value to a primitive
   *
-  * @param superBlockInit
-  * @param name
-  * @param valueInit
+  * @param superBlockInit The parent block
   */
 class PowerOfOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
@@ -38,16 +36,15 @@ class PowerOfOpBlock(var superBlockInit: Block) extends Block(superBlockInit, fa
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    asm.visitInsn("IADD")
+    ""
   }
 
   def getClosingCode: String = {
     ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
-  def getType(): String = "<ADD_OP>"
-
+  def getType: String = "<POWER_OF_OP>"
 
 }

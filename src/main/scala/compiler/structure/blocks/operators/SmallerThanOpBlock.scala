@@ -23,7 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents checking if equal - "=="
   *
-  * @param superBlockInit
+  * @param superBlockInit The parent block
   */
 class SmallerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
@@ -45,6 +45,6 @@ class SmallerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit
 
   override def toString: String = getType
 
-  def getType(): String = "<SMALLER_THAN_OP>"
+  def getType: String = "<SMALLER_THAN_OP>"
 
 }

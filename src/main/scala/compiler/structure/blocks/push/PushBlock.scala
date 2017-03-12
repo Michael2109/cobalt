@@ -24,7 +24,7 @@ import compiler.utilities.Utils
 
 class PushBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
-  val pushId = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId
+  val pushId: Int = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId
   // Called after file is parsed
   override def init(): Unit = {}
 
@@ -33,7 +33,7 @@ class PushBlock(var superBlockInit: Block, var value: String, val isVariableInit
 
   override def getValue: String = value
 
-  override def getType(): String = "PUSH"
+  override def getType: String = "PUSH"
 
   /* Bytecode for the opening and closing of the blocks */
   override def getOpeningCode: String = {

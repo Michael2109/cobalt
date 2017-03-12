@@ -60,14 +60,13 @@ class Compile(val outputFile: File, val block: Block) {
     */
   def generateASM(block: Block) {
 
-    if (block.isInstanceOf[MethodBlock]) {
-      val b: MethodBlock = block.asInstanceOf[MethodBlock]
-      p(b.getOpeningCode)
-    }
-    else {
-      if (block.getOpeningCode != null && block.getOpeningCode != "") {
-        p(block.getOpeningCode)
-      }
+    block match {
+      case b: MethodBlock =>
+        p(b.getOpeningCode)
+      case _ =>
+        if (block.getOpeningCode != null && block.getOpeningCode != "") {
+          p(block.getOpeningCode)
+        }
     }
     for (sub <- block.subBlocks) {
       generateASM(sub)

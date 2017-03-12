@@ -23,8 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents an if statement
   *
-  * @param superBlockInit
-  * @param nameInit
+  * @param superBlockInit The parent block
   */
 class FinallyBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
@@ -45,6 +44,6 @@ class FinallyBlock(var superBlockInit: Block) extends Block(superBlockInit, true
 
   override def toString: String = getType
 
-  def getType(): String = "<FINALLY>"
+  def getType: String = "<FINALLY>"
 
 }

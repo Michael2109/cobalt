@@ -29,7 +29,7 @@ class StringConstantBlock(var superBlockInit: Block, value: String) extends Bloc
 
   override def getValue: String = value
 
-  override def getType(): String = "String_const"
+  override def getType: String = "String_const"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

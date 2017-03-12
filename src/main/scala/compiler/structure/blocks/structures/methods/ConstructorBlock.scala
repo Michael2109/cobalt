@@ -27,7 +27,7 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("<init>").setClassName(className))
 
-  val classBlock = superBlock
+  val classBlock: Block = superBlock
   private val packageDir: String = Utils.getPackage(this)
   var parameterString = ""
   var localVariableString = ""
@@ -54,10 +54,10 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
 
   override def getValue: String = ""
 
-  override def getType(): String = "constructor"
+  override def getType: String = "constructor"
 
   override def getOpeningCode: String = {
-    return  asm.getOpeningBrace() +
+    asm.getOpeningBrace +
       asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
       asm.visitCode() +
       asm.getComment("Constructor") +
@@ -76,7 +76,7 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
   }
 
   override def getClosingCode: String = {
-    return "mv.visitInsn(RETURN);                     " + localVariableString + " // End the constructor method\n" + "mv.visitMaxs(0, 0);\n" + "mv.visitEnd();\n" + "}"
+    "mv.visitInsn(RETURN);                     " + localVariableString + " // End the constructor method\n" + "mv.visitMaxs(0, 0);\n" + "mv.visitEnd();\n" + "}"
   }
 
   override def toString: String = {
@@ -84,6 +84,6 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    return "constructor: ( " + paramString + ")"
+    "constructor: ( " + paramString + ")"
   }
 }

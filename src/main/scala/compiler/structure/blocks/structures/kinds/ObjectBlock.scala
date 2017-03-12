@@ -35,21 +35,7 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
 
   def getValue: String = null
 
-  def getType(): String = "class"
-
-  /**
-    * Performed just before compiling blocks to allow for action when all blocks parsed
-    */
-  def init() {
-
-    val block: Block = superBlock
-
-    // Package the class is within
-
-  }
-
-  def packageBlock: PackageBlock = superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
-
+  def getType: String = "class"
 
   def getOpeningCode: String = {
       asm.getClassOpening(name) +
@@ -58,11 +44,15 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
         asm.visitClassWriter("", packageBlock.directory + "/" + name, null, parentClass, null)
   }
 
+  def packageBlock: PackageBlock = superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
+
   def getClosingCode: String = {
      " cw.visitEnd();\n" + "return cw.toByteArray();\n" +
-    asm.getClosingBrace()
+       asm.getClosingBrace
     }
 
-  override def toString: String = return "object" + name
+  override def toString: String = "object" + name
 
+  // Called after file is parsed
+  override def init(): Unit = {}
 }

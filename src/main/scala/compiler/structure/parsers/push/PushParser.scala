@@ -24,7 +24,7 @@ import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
 class PushParser extends Parser[PushBlock] {
-  var printVariable: Boolean = false
+  val printVariable: Boolean = false
 
   /**
     * A list of all regular expressions
@@ -38,6 +38,6 @@ class PushParser extends Parser[PushBlock] {
   def parse(superBlock: Block, tokenizer: Tokenizer): PushBlock = {
     val value = tokenizer.nextToken.token // skip print
 
-    return new PushBlock(superBlock, value, printVariable)
+    new PushBlock(superBlock, value, printVariable)
   }
 }

@@ -41,7 +41,7 @@ class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, f
     getType
   }
 
-  def getType(): String = "<SUBTRACT_OP>"
+  def getType: String = "<SUBTRACT_OP>"
 
 
 }

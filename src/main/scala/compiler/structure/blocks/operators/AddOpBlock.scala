@@ -23,9 +23,7 @@ import compiler.structure.blocks.Block
 /**
   * Represents adding a value to a primitive
   *
-  * @param superBlockInit
-  * @param name
-  * @param valueInit
+  * @param superBlockInit The parent block
   */
 class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 

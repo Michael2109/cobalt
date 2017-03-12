@@ -34,6 +34,6 @@ class TryParser extends Parser[TryBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): TryBlock = {
 
-    return new TryBlock(superBlock)
+    new TryBlock(superBlock)
   }
 }

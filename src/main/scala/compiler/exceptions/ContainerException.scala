@@ -26,11 +26,11 @@ class ContainerException() extends RuntimeException {
 
   def this(message: String, cause: Throwable) {
     this()
-    println(message + " : " + cause.getStackTraceString)
+    println(message + " : " + cause.getStackTrace)
   }
 
   def this(cause: Throwable) {
     this()
-    cause.getStackTraceString
+    cause.getStackTrace
   }
 }
