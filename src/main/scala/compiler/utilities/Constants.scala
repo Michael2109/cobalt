@@ -25,7 +25,8 @@ import compiler.structure.parsers.ifs.{ElseParser, IfParser}
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
 import compiler.structure.parsers.modifiers.ModifierParser
-import compiler.structure.parsers.operators.{AssignmentParser, _}
+import compiler.structure.parsers.operators._
+import compiler.structure.parsers.operators.assignment.AssignmentParser
 import compiler.structure.parsers.packages.PackageParser
 import compiler.structure.parsers.prints.{PrintParser, PrintlnParser}
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}

@@ -16,31 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.operators.assignment
+package compiler.structure.parsers.casting
 
 import compiler.structure.blocks.Block
+import compiler.structure.blocks.casting.IsBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-class AssignmentBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class IsParser extends Parser[IsBlock] {
 
-  def init() {
 
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List(
+    "is"
+  )
+
+  override def parse(superBlock: Block, tokenizer: Tokenizer): IsBlock = {
+
+    new IsBlock(superBlock)
   }
-
-  def getName: String = ""
-
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
-    ""
-  }
-
-  def getClosingCode: String = {
-    ""
-  }
-
-  override def toString: String = getType
-
-  def getType: String = "<ASSIGNMENT>"
-
 
 }

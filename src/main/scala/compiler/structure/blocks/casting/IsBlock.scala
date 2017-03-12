@@ -21,13 +21,13 @@ package compiler.structure.blocks.casting
 import compiler.structure.blocks.Block
 import compiler.utilities.Utils
 
-class IsBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+class IsBlock(var superBlockInit: Block) extends Block(superBlockInit, false, true) {
 
   override def init() {}
 
   override def getName: String = ""
 
-  override def getValue: String = value
+  override def getValue: String = ""
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
@@ -39,7 +39,7 @@ class IsBlock(var superBlockInit: Block, value: String) extends Block(superBlock
 
   override def getClosingCode: String = ""
 
-  override def toString: String = getType + value
+  override def toString: String = getType + ""
 
   override def getType: String = "<IS>"
 }
