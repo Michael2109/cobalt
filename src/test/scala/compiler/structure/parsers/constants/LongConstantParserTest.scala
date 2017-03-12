@@ -18,6 +18,40 @@
 
 package compiler.structure.parsers.constants
 
-class LongConstantParserTest {
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.constants.LongConstantBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class LongConstantParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers: List[Parser[_]] = Constants.parsers
+
+  val lines: List[String] = List(
+    "10l",
+    "10L"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      var found = false
+      for (parser <- parsers) {
+        if (!found) {
+          if (parser.shouldParse(line)) {
+            val block: Block = parser.parse(null, new Tokenizer(line))
+            assert(block.getValue == line)
+            assert(block.isInstanceOf[LongConstantBlock])
+            found = true
+          }
+        }
+      }
+      assert(found)
+    }
+  }
 
 }

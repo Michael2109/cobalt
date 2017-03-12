@@ -25,24 +25,33 @@ class Tokenizer(var str: String) {
 
   private val tokenDatas: ListBuffer[TokenData] = ListBuffer[TokenData](
     new TokenData("^([<-])".r, TokenType.RETURN_TYPE),
-    new TokenData("^((-)?[0-9]+(([.][0-9](d|D))|([.](d|D))|(d|D)|([.])|([.][0-9])))".r, TokenType.DOUBLE_LITERAL),
-    new TokenData("^((-)?[0-9]+(([.][0-9](f|F))|([.](f|F))|(f|F)))".r, TokenType.FLOAT_LITERAL),
 
+    new TokenData("^((-)?[0-9]+(([.][0-9](f|F))|([.](f|F))|(f|F)))".r, TokenType.FLOAT_LITERAL),
+    new TokenData("^((-)?[0-9]+(([.][0-9](d|D))|([.](d|D))|(d|D)|([.])|([.][0-9])))".r, TokenType.DOUBLE_LITERAL),
+
+    new TokenData("^((-)?[0-9]+(s|S))".r, TokenType.SHORT_LITERAL),
+    new TokenData("^((-)?[0-9]+(l|L))".r, TokenType.LONG_LITERAL),
     new TokenData("^((-)?[0-9]+)".r, TokenType.INTEGER_LITERAL),
+
+    new TokenData("^(\".*\")".r, TokenType.STRING_LITERAL),
+    new TokenData("^(\'.\')".r, TokenType.CHARACTER_LITERAL),
+
     new TokenData("^([+])".r, TokenType.ADD_OPERATOR),
     new TokenData("^([-])".r, TokenType.SUBTRACT_OPERATOR),
     new TokenData("^([*])".r, TokenType.MULTIPLY_OPERATOR),
     new TokenData("^([/])".r, TokenType.DIVIDE_OPERATOR),
     new TokenData("^([%])".r, TokenType.MODULUS_OPERATOR),
-    new TokenData("^(\".*\")".r, TokenType.STRING_LITERAL),
-    new TokenData("^(\'.\')".r, TokenType.CHARACTER_LITERAL),
+
+
     new TokenData("^([;])".r, TokenType.END_STATEMENT),
     new TokenData("^([:])".r, TokenType.COLON),
+
     new TokenData("^([==])".r, TokenType.EQUAL_TO),
     new TokenData("^([<])".r, TokenType.SMALLER_THAN),
     new TokenData("^([<=])".r, TokenType.SMALLER_THAN_EQUAL),
     new TokenData("^([>])".r, TokenType.LARGER_THAN),
     new TokenData("^([>=])".r, TokenType.LARGER_THAN_EQUAL),
+
     new TokenData("^([a-zA-Z][a-zA-Z0-9]*)".r, TokenType.IDENTIFIER)
   )
 

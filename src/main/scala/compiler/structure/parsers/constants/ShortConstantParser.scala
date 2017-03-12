@@ -32,7 +32,7 @@ class ShortConstantParser extends Parser[ShortConstantBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "[0-9]+(s|S)"
+    "^((-)?[0-9]+(s|S))"
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ShortConstantBlock = {

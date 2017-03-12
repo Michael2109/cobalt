@@ -32,7 +32,7 @@ class LongConstantParser extends Parser[LongConstantBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "[0-9]+(l|L)"
+    "^((-)?[0-9]+(l|L))"
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): LongConstantBlock = {
