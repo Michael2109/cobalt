@@ -19,7 +19,7 @@
 package compiler.structure.blocks.variable
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.assignment.AssignmentBlock
+import compiler.structure.blocks.operators.assignment.AssignmentOpBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.{ReversePolish, Utils}
 
@@ -39,7 +39,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
+      val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
       // if integer
       varType match {

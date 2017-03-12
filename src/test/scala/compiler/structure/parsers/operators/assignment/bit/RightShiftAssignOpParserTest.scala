@@ -16,28 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators.assignment
+package compiler.structure.parsers.operators.assignment.bit
 
-import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.assignment.AssignmentBlock
-import compiler.structure.parsers.Parser
+import compiler.structure.blocks.operators.assignment.bit.RightShiftAssignOpBlock
 import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
-class AssignmentParser extends Parser[AssignmentBlock] {
+@RunWith(classOf[JUnitRunner])
+class RightShiftAssignOpParserTest() extends FunSuite with BeforeAndAfter {
 
+  val parsers = Constants.parsers
 
-  /**
-    * A list of all regular expressions
-    *
-    * @return
-    */
-  override def getRegexs: List[String] = List(
-    "="
+  val lines = List(
+    ">>="
   )
 
-  override def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentBlock = {
-
-    new AssignmentBlock(superBlock)
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[RightShiftAssignOpBlock])
+    }
   }
 
 }

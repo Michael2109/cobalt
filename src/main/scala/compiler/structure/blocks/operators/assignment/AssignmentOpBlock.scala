@@ -16,8 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators
+package compiler.structure.blocks.operators.assignment
 
-class SubtractParserTest {
+import compiler.structure.blocks.Block
+
+class AssignmentOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+
+  def init() {
+
+  }
+
+  def getName: String = ""
+
+  def getValue: String = ""
+
+  def getOpeningCode: String = {
+    ""
+  }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType
+
+  def getType: String = "<ASSIGNMENT>"
+
 
 }

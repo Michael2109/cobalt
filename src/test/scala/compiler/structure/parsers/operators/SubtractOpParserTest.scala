@@ -18,6 +18,28 @@
 
 package compiler.structure.parsers.operators
 
-class AddParserTest {
+import compiler.structure.blocks.operators.SubtractOpBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class SubtractOpParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers = Constants.parsers
+
+  val lines = List(
+    "-"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[SubtractOpBlock])
+    }
+  }
 
 }

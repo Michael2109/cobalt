@@ -16,23 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators
+package compiler.structure.parsers.operators.assignment
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators.PowerOfOpBlock
+import compiler.structure.blocks.operators.assignment.AssignmentOpBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class PowerOfOpParser extends Parser[PowerOfOpBlock] {
+class AssignmentOpParser extends Parser[AssignmentOpBlock] {
+
 
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List("\\*\\*")
+  override def getRegexs: List[String] = List(
+    "="
+  )
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): PowerOfOpBlock = {
-    new PowerOfOpBlock(superBlock)
+  override def parse(superBlock: Block, tokenizer: Tokenizer): AssignmentOpBlock = {
+
+    new AssignmentOpBlock(superBlock)
   }
+
 }

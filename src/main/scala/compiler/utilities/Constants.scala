@@ -111,7 +111,7 @@ object Constants {
     new ColonParser,
 
 
-    new AssignmentParser,
+    new AssignmentOpParser,
     new DefineVariableParser,
 
     new BooleanConstantParser,
