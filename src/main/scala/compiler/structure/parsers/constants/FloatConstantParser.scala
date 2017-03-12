@@ -19,11 +19,11 @@
 package compiler.structure.parsers.constants
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.constants.DoubleConstantBlock
+import compiler.structure.blocks.constants.FloatConstantBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class FloatConstantParser extends Parser[DoubleConstantBlock] {
+class FloatConstantParser extends Parser[FloatConstantBlock] {
 
   /**
     * A list of all regular expressions
@@ -31,13 +31,13 @@ class FloatConstantParser extends Parser[DoubleConstantBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "[0-9]+[.][0-9]*(f|F)"
+    "^((-)?[0-9]+(([.][0-9](f|F))|([.](f|F))|(f|F)))"
   )
 
-  override def parse(superBlock: Block, tokenizer: Tokenizer): DoubleConstantBlock = {
+  override def parse(superBlock: Block, tokenizer: Tokenizer): FloatConstantBlock = {
 
     val value: String = tokenizer.nextToken.token
-    new DoubleConstantBlock(superBlock, value)
+    new FloatConstantBlock(superBlock, value)
   }
 
 }

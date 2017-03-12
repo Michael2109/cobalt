@@ -63,6 +63,6 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     ""
   }
 
-  override def toString: String = "def variable: " + name + "bewbies " + expressions
+  override def toString: String = "def variable: " + name + expressions
 
 }

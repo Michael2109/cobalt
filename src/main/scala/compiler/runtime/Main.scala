@@ -23,12 +23,28 @@ import java.io.File
 import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
 import org.apache.log4j.PropertyConfigurator
+import org.slf4j.{Logger, LoggerFactory}
+
+
 
 object Main {
 
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
+
+  def main(args: Array[String]) {
+    PropertyConfigurator.configure("src/log4j.properties");
+    if (args.size == 3) {
+      logger.info("Program arguments: $args")
+      start(args)
+    } else {
+      logger.info("Default program arguments used.")
+      start(Array("cobalt_source", "src/main/java", "build/classes/main"))
+    }
+  }
+
   def start(args: Array[String]) {
 
-    PropertyConfigurator.configure("src/log4j.properties");
+
 
     if (args.length == 3) {
 
@@ -53,9 +69,5 @@ object Main {
     else {
       System.out.println("Error: Input and Output file args required. Enter with file extension removed.")
     }
-  }
-
-  def main(args: Array[String]) {
-    start(args)
   }
 }
