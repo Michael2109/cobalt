@@ -19,6 +19,7 @@
 package compiler.structure.blocks.structures
 
 import compiler.structure.blocks.Block
+import compiler.structure.blocks.imports.ImportBlock
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.utilities.Utils
 
@@ -28,12 +29,18 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
 
   private var parameterString: String = ""
   private var argumentString: String = ""
-  private var directory: String = ""
+  private var directory: String = {
+    var result = ""
+    for (i <- Utils.getFileBlock(this).subBlocks) {
+
+      if (i.isInstanceOf[ImportBlock] && i.asInstanceOf[ImportBlock].fileName == initClassName) {
+        result = i.asInstanceOf[ImportBlock].directory
+      }
+    }
+    result
+  }
 
   def init() {
-
-    directory = Utils.getPackage(this)
-
 
 
     // Get the type of the parameters
@@ -66,10 +73,10 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
   def getType: String = initClassName
 
   def getOpeningCode: String = {
-    //"mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
-    //    else "/") + className + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
-    //    else "/") + className + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n" + "mv.visitVarInsn(ASTORE," + id + ");\n"
-    ""
+    "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
+    else "/") + initClassName + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
+    else "/") + initClassName + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n"
+
   }
 
   def getClosingCode: String = {

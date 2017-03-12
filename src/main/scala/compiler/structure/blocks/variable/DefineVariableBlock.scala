@@ -50,9 +50,8 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
         case "boolean" => rpnString + asm.visitVarInsn("BASTORE", id)
         case "String" => rpnString + asm.visitVarInsn("ASTORE", id)
 
-        case _ => ""
+        case _ => expressions.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
       }
-
 
     } else {
       ""

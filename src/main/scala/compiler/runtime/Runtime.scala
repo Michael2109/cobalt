@@ -108,8 +108,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     */
   private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "").split("\n").filter(_.trim != "").toList
 
-
-
   /**
     * Recursively gets the class AST structure.
     */

@@ -19,14 +19,15 @@
 package test_classes;
 
 
+import test.MyCode;
+
 /**
  * Used to view ASM code
  */
 public class TestCode {
 
     void test() {
-        int x = 100;
-
+        MyCode myCode = new MyCode();
     }
 
 }
