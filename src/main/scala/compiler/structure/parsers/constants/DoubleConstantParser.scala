@@ -32,11 +32,13 @@ class DoubleConstantParser extends Parser[DoubleConstantBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "[0-9]+[.][0-9]*(d|D)?"
+    "^((-)?[0-9]+(([.][0-9](d|D))|([.](d|D))|(d|D)|([.])|([.][0-9])))"
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): DoubleConstantBlock = {
+
     val value: String = tokenizer.nextToken.token
+
     new DoubleConstantBlock(superBlock, value)
   }
 

@@ -25,8 +25,8 @@ class Tokenizer(var str: String) {
 
   private val tokenDatas: ListBuffer[TokenData] = ListBuffer[TokenData](
     new TokenData("^([<-])".r, TokenType.RETURN_TYPE),
+    new TokenData("^((-)?[0-9]+(([.][0-9](d|D))|([.](d|D))|(d|D)|([.])|([.][0-9])))".r, TokenType.DOUBLE_LITERAL),
     new TokenData("^((-)?[0-9]+)".r, TokenType.INTEGER_LITERAL),
-    new TokenData("^((-)?[0-9]+[.][0-9])".r, TokenType.DOUBLE_LITERAL),
     new TokenData("^([+])".r, TokenType.ADD_OPERATOR),
     new TokenData("^([-])".r, TokenType.SUBTRACT_OPERATOR),
     new TokenData("^([*])".r, TokenType.MULTIPLY_OPERATOR),
