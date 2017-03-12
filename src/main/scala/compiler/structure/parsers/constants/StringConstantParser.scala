@@ -37,7 +37,6 @@ class StringConstantParser extends Parser[StringConstantBlock] {
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): StringConstantBlock = {
     val value: String = tokenizer.nextToken.token
-    println("value:" + value)
     new StringConstantBlock(superBlock, value)
   }
 
