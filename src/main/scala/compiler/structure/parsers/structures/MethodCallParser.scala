@@ -39,6 +39,6 @@ class MethodCallParser extends Parser[MethodCallBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodCallBlock = {
     val name: String = tokenizer.nextToken.token // Get the string value of the next token.
-    new MethodCallBlock(superBlock, name, "method_call", null)
+    new MethodCallBlock(superBlock, name, "<METHOD_CALL>", null)
   }
 }

@@ -18,9 +18,28 @@
 
 package compiler.structure.parsers.structures
 
-/**
-  * Parses calling of an objects method
-  */
-class ObjectMethodCallParserTest {
+import compiler.structure.blocks.structures.ObjectMethodCallBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class ObjectMethodCallParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers = Constants.parsers
+
+  val lines = List(
+    ".methodCall()"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[ObjectMethodCallBlock])
+    }
+  }
 
 }

@@ -18,9 +18,28 @@
 
 package compiler.structure.parsers.structures
 
-/**
-  * Creation of a new instance of a class
-  */
-class ObjectDefinitionParserTest {
+import compiler.structure.blocks.structures.ObjectDefinitionBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class ObjectDefinitionParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers = Constants.parsers
+
+  val lines = List(
+    "new Object()"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[ObjectDefinitionBlock])
+    }
+  }
 
 }

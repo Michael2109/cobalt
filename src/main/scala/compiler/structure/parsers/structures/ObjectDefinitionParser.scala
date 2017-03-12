@@ -19,13 +19,10 @@
 package compiler.structure.parsers.structures
 
 
-import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.ObjectDefinitionBlock
 import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
-
-import scala.collection.mutable.ListBuffer
 
 /**
   * Creation of a new instance of a class
@@ -42,28 +39,8 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
 
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectDefinitionBlock = {
-
     val newKeyword: String = tokenizer.nextToken.token
     val initClassName: String = tokenizer.nextToken.token
-
-    tokenizer.nextToken // skip "("
-
-    var nextToken: String = tokenizer.nextToken.token
-    val paramType: String = ""
-    var paramName: String = ""
-    val parameters: ListBuffer[Parameter] = new ListBuffer[Parameter]
-    while (nextToken != ")") {
-      {
-
-        if (nextToken == ",") {
-          nextToken = tokenizer.nextToken.token
-        } else {
-          paramName = nextToken.trim
-          parameters.append(new Parameter(paramType, paramName))
-          nextToken = tokenizer.nextToken.token
-        }
-      }
-    }
-    new ObjectDefinitionBlock(superBlock, newKeyword, initClassName, parameters)
+    new ObjectDefinitionBlock(superBlock, newKeyword, initClassName)
   }
 }

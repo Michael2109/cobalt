@@ -20,22 +20,18 @@ package compiler.structure.blocks.structures
 
 import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.imports.ImportBlock
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.symbol_table.SymbolTable
-import compiler.utilities.Utils
 
 import scala.collection.mutable.ListBuffer
 
 /**
   * Calling a method of an object
   */
-class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
+class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
 
-  id_=(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getId)
   private val `type`: String = null
-  private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
+  // private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
   private var parameterString: String = ""
   private var argumentString: String = ""
   private var directory: String = ""
@@ -44,25 +40,26 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     params
   }
 
-  def getName: String = variableName
+  def getName: String = ""
 
   def getValue: String = ""
 
   def getType: String = `type`
 
   def init() {
-    if (className == getClassName)
-      directory = getPackage
-    else
-      directory = getDirectory
+    /*
+        if (className == getClassName)
+          directory = getPackage
+        else
+          directory = getDirectory
 
-    // Get the type of the parameters
-    for (param <- params) {
-      println(Utils.getMethod(this) + " " + param.getName)
-      param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
-      parameterString += param.getAsmType
-      argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
-    }
+        // Get the type of the parameters
+        for (param <- params) {
+          println(Utils.getMethod(this) + " " + param.getName)
+          param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
+          parameterString += param.getAsmType
+          argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
+        }*/
   }
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -75,6 +72,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
       }
     }
     // Get the directory of the Object
+    /*
     for (sub <- block.subBlocks) {
       sub match {
         case block1: ImportBlock if block1.fileName == className =>
@@ -82,6 +80,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
         case _ =>
       }
     }
+    */
     ""
   }
 
@@ -121,7 +120,8 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
 
 
   def getOpeningCode: String = {
-    "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+    // "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+    ""
   }
 
   def getClosingCode: String = {
@@ -133,6 +133,6 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var variableName: String,
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    "object method call: " + variableName + " ( " + paramString + ")"
+    "object method call: " + methodName + " ( " + paramString + ")"
   }
 }

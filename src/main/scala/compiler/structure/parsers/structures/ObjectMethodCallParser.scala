@@ -37,12 +37,12 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "[a-zA-Z][a-zA-Z0-9]*\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)[ ]*"
+    "\\.[a-zA-Z][a-zA-Z0-9]*\\((.*)*\\)"
   )
 
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectMethodCallBlock = {
-    val variableName: String = tokenizer.nextToken.token // Get the string value of the next token.
+
     tokenizer.nextToken
     val methodName: String = tokenizer.nextToken.token
     tokenizer.nextToken // ")"
@@ -62,6 +62,6 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
         }
       }
     }
-    new ObjectMethodCallBlock(superBlock, variableName, methodName, parameters)
+    new ObjectMethodCallBlock(superBlock, methodName, parameters)
   }
 }

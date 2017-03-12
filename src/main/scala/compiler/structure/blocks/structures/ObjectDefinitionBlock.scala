@@ -18,17 +18,13 @@
 
 package compiler.structure.blocks.structures
 
-import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
-
-import scala.collection.mutable.ListBuffer
 
 
 // Creation of a new object and storing to a variable
-class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String, params: ListBuffer[Parameter]) extends Block(superBlockInit, false, true, false) {
+class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String) extends Block(superBlockInit, false, true, false) {
 
   private var parameterString: String = ""
   private var argumentString: String = ""
@@ -41,11 +37,11 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
 
 
     // Get the type of the parameters
-    for (param <- params) {
-      param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
-      parameterString += param.getAsmType
-      argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
-    }
+    /* for (param <- params) {
+       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
+       parameterString += param.getAsmType
+       argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
+     }*/
   }
 
 

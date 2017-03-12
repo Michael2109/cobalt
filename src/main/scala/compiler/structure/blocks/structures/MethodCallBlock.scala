@@ -42,6 +42,7 @@ class MethodCallBlock(var superBlockInit: Block, var name: String, var `type`: S
 
   override def toString: String = {
     var paramString: String = ""
+    if (params != null)
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }

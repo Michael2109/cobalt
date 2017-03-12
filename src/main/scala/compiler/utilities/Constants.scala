@@ -59,14 +59,15 @@ object Constants {
     /* loops */
     new ForParser,
 
+    new ObjectDefinitionParser,
+    new ObjectMethodCallParser,
     new SwitchParser,
     new ModifierParser,
     new MethodParser,
     new MethodCallParser,
     new ImportParser,
     new WhileParser,
-    new ObjectDefinitionParser,
-    new ObjectMethodCallParser,
+
     new PackageParser,
     new ObjectParser,
     new ClassParser,
