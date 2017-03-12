@@ -32,7 +32,7 @@ class ExclOrAssignOpParser extends Parser[ExclOrAssignOpBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "^="
+    "\\^="
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ExclOrAssignOpBlock = {

@@ -32,7 +32,7 @@ class BitwiseAndOpParser extends Parser[BitwiseAndOpBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "&"
+    "\\&"
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): BitwiseAndOpBlock = {

@@ -32,7 +32,7 @@ class AddAssignOpParser extends Parser[AddAssignOpBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "+="
+    "\\+="
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): AddAssignOpBlock = {

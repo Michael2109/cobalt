@@ -26,7 +26,9 @@ import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
 import compiler.structure.parsers.modifiers.ModifierParser
 import compiler.structure.parsers.operators._
-import compiler.structure.parsers.operators.assignment.AssignmentParser
+import compiler.structure.parsers.operators.assignment._
+import compiler.structure.parsers.operators.assignment.bit._
+import compiler.structure.parsers.operators.bit._
 import compiler.structure.parsers.packages.PackageParser
 import compiler.structure.parsers.prints.{PrintParser, PrintlnParser}
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
@@ -39,23 +41,7 @@ object Constants {
 
   /* All available parsers */
   val parsers: List[Parser[_]] = List(
-    new ModifierParser,
-    new MethodParser,
 
-    /* operators */
-    new OpeningBracketOpParser,
-    new ClosingBracketOpParser,
-    new AndOpParser,
-    new OrOpParser,
-    new NotOpParser,
-    new EqualsOpParser,
-    new SmallerThanOpParser,
-    new AddOpParser,
-    new DivideOpParser,
-    new MultiplyOpParser,
-    new SubtractOpParser,
-    new ModulusOpParser,
-    new ColonParser,
 
     /* if, else */
     new IfParser,
@@ -73,6 +59,8 @@ object Constants {
     /* loops */
     new ForParser,
 
+    new ModifierParser,
+    new MethodParser,
     new MethodCallParser,
     new ImportParser,
     new WhileParser,
@@ -81,6 +69,47 @@ object Constants {
     new PackageParser,
     new ObjectParser,
     new ClassParser,
+
+
+
+    /* bit assignments */
+    new AndAssignOpParser,
+    new ExclOrAssignOpParser,
+    new InclOrAssignOpParser,
+    new LeftShiftAssignOpParser,
+    new RightShiftAssignOpParser,
+
+    /* assignments */
+    new AddAssignOpParser,
+    new ModulusAssignOpParser,
+    new MultiplyAssignOpParser,
+    new SubtractAssignOpParser,
+
+    /* bit */
+    new ZeroRightFillShiftOpParser,
+    new BitwiseAndOpParser,
+    new BitwiseOrOpParser,
+    new BitwiseXorOpParser,
+    new LeftShiftOpParser,
+    new RightShiftOpParser,
+
+
+    /* operators */
+    new OpeningBracketOpParser,
+    new ClosingBracketOpParser,
+    new PowerOfOpParser,
+    new AndOpParser,
+    new OrOpParser,
+    new NotOpParser,
+    new EqualsOpParser,
+    new SmallerThanOpParser,
+    new AddOpParser,
+    new DivideOpParser,
+    new MultiplyOpParser,
+    new SubtractOpParser,
+    new ModulusOpParser,
+    new ColonParser,
+
 
     new AssignmentParser,
     new DefineVariableParser,

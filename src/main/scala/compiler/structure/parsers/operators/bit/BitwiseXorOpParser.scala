@@ -32,7 +32,7 @@ class BitwiseXorOpParser extends Parser[BitwiseXorOpBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "^"
+    "\\^"
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): BitwiseXorOpBlock = {

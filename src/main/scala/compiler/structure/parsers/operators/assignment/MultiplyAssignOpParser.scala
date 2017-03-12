@@ -32,7 +32,7 @@ class MultiplyAssignOpParser extends Parser[MultiplyAssignOpBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "*="
+    "\\*="
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyAssignOpBlock = {
