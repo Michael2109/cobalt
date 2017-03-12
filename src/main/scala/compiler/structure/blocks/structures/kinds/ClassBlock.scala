@@ -38,9 +38,11 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
   private var parameterString: String = ""
   // Local variables from the parameters
   private var localVariableString: String = ""
-  addBlock_=(constructorBlock)
+
   // Create a constructor blocks and add it to the class blocks
   private var constructorBlock: Block = new ConstructorBlock(this, parameters, name)
+
+  addBlock_=(constructorBlock)
 
   def getName: String = name
 

@@ -70,9 +70,11 @@ dependencies {
     // scalatest
     testCompile group: 'org.scalatest', name: 'scalatest_2.12', version: '3.2.0-SNAP3'
 
-
     // junit
     testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    // Scalastyle
+    compile group: 'org.scalastyle', name: 'scalastyle-maven-plugin', version: '0.8.0'
 
     // asm
     compile group: 'org.ow2.asm', name: 'asm', version: '5.2'
