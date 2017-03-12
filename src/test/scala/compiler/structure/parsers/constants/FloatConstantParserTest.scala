@@ -43,18 +43,12 @@ class FloatConstantParserTest() extends FunSuite with BeforeAndAfter {
 
   test("Block creation test") {
     for (line <- lines) {
-      var found = false
-      for (parser <- parsers) {
-        if (!found) {
-          if (parser.shouldParse(line)) {
-            val block: Block = parser.parse(null, new Tokenizer(line))
-            assert(block.getValue == line)
-            assert(block.isInstanceOf[FloatConstantBlock])
-            found = true
-          }
-        }
-      }
-      assert(found)
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+
+      val block: Block = parseable.head.parse(null, new Tokenizer(line))
+      assert(block.getValue == line)
+      assert(block.isInstanceOf[FloatConstantBlock])
     }
   }
 

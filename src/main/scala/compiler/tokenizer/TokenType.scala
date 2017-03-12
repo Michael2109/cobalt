@@ -26,6 +26,7 @@ object TokenType extends Enumeration {
   RETURN_TYPE,
 
   INTEGER_LITERAL,
+  BYTE_LITERAL,
   SHORT_LITERAL,
   LONG_LITERAL,
   DOUBLE_LITERAL,

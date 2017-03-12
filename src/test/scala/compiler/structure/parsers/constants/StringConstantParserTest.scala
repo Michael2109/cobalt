@@ -18,6 +18,33 @@
 
 package compiler.structure.parsers.constants
 
-class StringConstantParserTest {
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.constants.StringConstantBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class StringConstantParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers: List[Parser[_]] = Constants.parsers
+
+  val lines: List[String] = List(
+    "\"Test1\""
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+
+      val block: Block = parseable.head.parse(null, new Tokenizer(line))
+      assert(block.getValue == line)
+      assert(block.isInstanceOf[StringConstantBlock])
+    }
+  }
 
 }
