@@ -25,7 +25,7 @@ import scala.collection.mutable.ListBuffer
 class Parameters {
 
   // Loop through tokens to get each parameter. Add each parameter to a list
-  def getParameters(line: String): ListBuffer[Parameter] = {
+  def getParameters(line: String): List[Parameter] = {
 
     val result: ListBuffer[Parameter] = new ListBuffer[Parameter]
 
@@ -56,6 +56,8 @@ class Parameters {
       }
     }
 
-    result
+    result.toList
   }
+
+  def getCode(parameters: List[Parameter]): String = parameters.map(p => p.getCode()) mkString ("\n")
 }

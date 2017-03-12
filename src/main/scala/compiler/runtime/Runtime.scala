@@ -39,7 +39,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
   def parseFile() {
 
-
     // Read all lines from source file
     val allLines = Source.fromFile(sourceFile).getLines().toList.filter(!_.trim.isEmpty)
 
@@ -58,28 +57,25 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     val importBlocks: ListBuffer[Block] = getImports(lines).to[ListBuffer]
     fileBlock.addBlocks_=(importBlocks)
 
-    // Create the block structure
-    // todo change to List of blocks
-    // todo if package not found use "0" not "1"
-    val block: Block = Utils.getBlocks(fileBlock, lines(1 + importBlocks.size))
+    // Get the Class/Object block
+    println(if (packageBlock.directory != "") 1 else 0)
+    val block: Block = Utils.getBlocks(fileBlock, lines((if (packageBlock.directory != "") 1 else 0) + importBlocks.size))
 
-
-    // todo if package isnt found use "1" not "2"
-    getBlockStructure(lines, block, 0, 2 + importBlocks.size)
+    // get the AST
+    getBlockStructure(lines, block, 0, (if (packageBlock.directory != "") 2 else 1) + importBlocks.size)
 
     // Add the block to a fileblock and set fileblock as parent
     fileBlock.addBlock_=(block)
     block.superBlock_=(fileBlock)
 
-
+    // Output the result
     Utils.printBlockInfo(fileBlock)
 
     // Print the symbol table
     SymbolTable.getInstance.printSymbols()
 
-
+    // Generate the bytecode in the output file
     new Compile(outputFile, fileBlock)
-
   }
 
   /**

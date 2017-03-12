@@ -16,37 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.data.parameters
+package compiler.structure.blocks.container
 
-// Represents what is input for ASM. E.g. int = 'I', String = 'Ljava/lang/String;'
-class Parameter(var `type`: String, var name: String) {
+import compiler.structure.blocks.Block
 
+class ContainerBlock(superBlockInit: Block = null) extends Block(superBlockInit, false, true) {
 
+  override def init() {}
 
-  // Name of the variable
-  def getName: String = name
+  override def getName: String = "container"
 
-  // ASM type. int = "I", String = "java.lang.String", etc
-  def getAsmType: String = {
-    if (getType == "int") "I"
+  override def getValue: String = "container"
 
-    else if (getType == "String") "Ljava/lang/String;"
-
-    else null
-  }
-
-  // Type of the variable
-  def getType: String = `type`
-
-  def setType(`type`: String) {
-    this.`type` = `type`
-  }
-
-  override def toString: String = {
-    name + " : " + `type`
-  }
-
-  def getCode(): String = {
+  override def getOpeningCode: String = {
     ""
   }
+
+  override def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType + expressions
+
+  override def getType: String = "<CONTAINER>"
+
 }

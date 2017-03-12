@@ -28,6 +28,8 @@ import compiler.tokenizer.Tokenizer
   * Creation of a new instance of a class
   */
 class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
+
+
   /**
     * A list of all regular expressions
     *
