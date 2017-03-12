@@ -33,7 +33,6 @@ class FinallyParser extends Parser[FinallyBlock] {
   override def getRegexs: List[String] = List("finally:")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): FinallyBlock = {
-
     new FinallyBlock(superBlock)
   }
 }

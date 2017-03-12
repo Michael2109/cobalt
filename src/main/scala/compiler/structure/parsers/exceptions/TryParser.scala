@@ -33,7 +33,6 @@ class TryParser extends Parser[TryBlock] {
   override def getRegexs: List[String] = List("try:")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): TryBlock = {
-
     new TryBlock(superBlock)
   }
 }

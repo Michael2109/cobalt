@@ -76,6 +76,10 @@ dependencies {
     // Scalastyle
     compile group: 'org.scalastyle', name: 'scalastyle-maven-plugin', version: '0.8.0'
 
+    // janino simple compiler
+    compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.6'
+
+
     // asm
     compile group: 'org.ow2.asm', name: 'asm', version: '5.2'
 

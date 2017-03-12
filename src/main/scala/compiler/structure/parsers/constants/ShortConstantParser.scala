@@ -25,7 +25,6 @@ import compiler.tokenizer.Tokenizer
 
 class ShortConstantParser extends Parser[ShortConstantBlock] {
 
-
   /**
     * A list of all regular expressions
     *

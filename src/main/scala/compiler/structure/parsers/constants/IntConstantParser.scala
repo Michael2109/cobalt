@@ -36,7 +36,6 @@ class IntConstantParser extends Parser[IntConstantBlock] {
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): IntConstantBlock = {
-
     val value: String = tokenizer.nextToken.token
     new IntConstantBlock(superBlock, value)
   }

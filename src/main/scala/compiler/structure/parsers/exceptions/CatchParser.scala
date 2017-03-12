@@ -33,7 +33,6 @@ class CatchParser extends Parser[CatchBlock] {
   override def getRegexs: List[String] = List("catch:")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CatchBlock = {
-
     new CatchBlock(superBlock)
   }
 }

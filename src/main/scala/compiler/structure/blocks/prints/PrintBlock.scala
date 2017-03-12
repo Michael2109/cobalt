@@ -41,7 +41,7 @@ class PrintBlock(var superBlockInit: Block, var value: String, val isVariableIni
     else {
       //return "System.out.println(\""+value+"\");";
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
-        "mv.visitLdcInsn(\"" + value + "\");\n" +
+        "mv.visitLdcInsn(" + value + ");\n" +
         "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");"
     }
   }

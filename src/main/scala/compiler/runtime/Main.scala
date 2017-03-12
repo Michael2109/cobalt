@@ -23,8 +23,8 @@ import java.io.File
 import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
 import org.apache.log4j.PropertyConfigurator
+import org.codehaus.janino.SimpleCompiler
 import org.slf4j.{Logger, LoggerFactory}
-
 
 
 object Main {
@@ -60,6 +60,13 @@ object Main {
         val asmFile: File = new File(file.getPath.replace(args(0),args(1)).replaceAll("(\\.[^\\.]*$)", ".java"))
         val buildDir = new File(args(2))
         new Runtime(input, asmFile, buildDir).parseFile()
+
+        val compiler = new SimpleCompiler(asmFile.getAbsolutePath);
+        val loader = compiler.getClassLoader();
+        val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").replace(args(1).replace("/", ".") + ".", ""));
+        val instance = compClass.newInstance();
+        compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
+
         println()
       }
 

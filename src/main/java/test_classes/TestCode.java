@@ -26,6 +26,7 @@ public class TestCode {
 
     void test() {
         int x = 100;
+
     }
 
 }

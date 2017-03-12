@@ -36,9 +36,7 @@ class DoubleConstantParser extends Parser[DoubleConstantBlock] {
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): DoubleConstantBlock = {
-
     val value: String = tokenizer.nextToken.token
-
     new DoubleConstantBlock(superBlock, value)
   }
 

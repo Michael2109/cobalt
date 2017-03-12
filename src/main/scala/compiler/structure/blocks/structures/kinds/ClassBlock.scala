@@ -87,7 +87,6 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
       asm.executeMethodOpening +
       asm.getClassWriter +
         asm.visitClassWriter(`sealed`, packageBlock.directory + "/" + name, null, parentClass, null)
-
   }
 
   /**
