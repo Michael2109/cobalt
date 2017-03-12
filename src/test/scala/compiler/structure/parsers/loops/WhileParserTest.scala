@@ -18,9 +18,28 @@
 
 package compiler.structure.parsers.loops
 
-/*
-need to make parameter single variable names instead as cant define a variable in an ifs...
- */
-class WhileParserTest {
+import compiler.structure.blocks.loops.WhileBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class WhileParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers = Constants.parsers
+
+  val lines = List(
+    "while"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[WhileBlock])
+    }
+  }
 
 }

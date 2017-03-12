@@ -21,7 +21,7 @@ package compiler.utilities
 import compiler.structure.parsers.Parser
 import compiler.structure.parsers.constants._
 import compiler.structure.parsers.exceptions.{CatchParser, FinallyParser, TryParser}
-import compiler.structure.parsers.ifs.{ElseParser, IfParser}
+import compiler.structure.parsers.ifs.{ElseParser, IfParser, SwitchParser}
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{ForParser, WhileParser}
 import compiler.structure.parsers.modifiers.ModifierParser
@@ -59,6 +59,7 @@ object Constants {
     /* loops */
     new ForParser,
 
+    new SwitchParser,
     new ModifierParser,
     new MethodParser,
     new MethodCallParser,
@@ -69,8 +70,6 @@ object Constants {
     new PackageParser,
     new ObjectParser,
     new ClassParser,
-
-
 
     /* bit assignments */
     new AndAssignOpParser,

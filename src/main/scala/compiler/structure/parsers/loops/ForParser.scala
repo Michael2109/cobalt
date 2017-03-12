@@ -21,7 +21,7 @@ package compiler.structure.parsers.loops
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.loops.ForBlock
 import compiler.structure.parsers.Parser
-import compiler.tokenizer.{Token, Tokenizer}
+import compiler.tokenizer.Tokenizer
 
 /*
 need to make parameter single variable names instead as cant define a variable in an ifs...
@@ -33,13 +33,10 @@ class ForParser extends Parser[ForBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("for \\([a-zA-Z][a-zA-Z0-9]* [a-zA-Z][a-zA-Z0-9]* = [0-9]+([.][0-9]*)?; [a-zA-Z][a-zA-Z0-9]* [<|>|<=|>=|==] [0-9]+([.][0-9]*)?; [a-zA-Z][a-zA-Z0-9]*\\+\\+\\):")
+  override def getRegexs: List[String] = List("for")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ForBlock = {
-    tokenizer.nextToken //skip "for"
-    tokenizer.nextToken // skip "("
-    val first: Token = tokenizer.nextToken
-    new ForBlock(superBlock, first.token)
+    new ForBlock(superBlock)
   }
 
 }

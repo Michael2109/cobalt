@@ -30,7 +30,7 @@ class SwitchParser extends Parser[SwitchBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("switch:")
+  override def getRegexs: List[String] = List("switch")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): SwitchBlock = {
     new SwitchBlock(superBlock)

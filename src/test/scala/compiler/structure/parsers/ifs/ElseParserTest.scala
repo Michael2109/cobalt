@@ -16,37 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.blocks.loops
+package compiler.structure.parsers.ifs
 
-import compiler.data.parameters.Parameter
-import compiler.structure.blocks.Block
+import compiler.structure.blocks.ifs.ElseBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
-/**
-  * Represents a for loop
-  *
-  * @param superBlockInit The parent block
-  */
-class ForBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+@RunWith(classOf[JUnitRunner])
+class ElseParserTest() extends FunSuite with BeforeAndAfter {
 
-  private val params: Array[Parameter] = null
+  val parsers = Constants.parsers
 
-  def getParameters: Array[Parameter] = {
-    params
+  val lines = List(
+    "else",
+    "else:"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[ElseBlock])
+    }
   }
-
-  def init() {
-  }
-
-  def getName: String = ""
-
-  def getValue: String = ""
-
-  def getOpeningCode: String = ""
-
-  def getClosingCode: String = ""
-
-  override def toString: String = getType + ": " + expressions
-
-  def getType: String = "<FOR>"
 
 }

@@ -18,6 +18,28 @@
 
 package compiler.structure.parsers.ifs
 
-class IfParserTest {
+import compiler.structure.blocks.ifs.IfBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class IfParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers = Constants.parsers
+
+  val lines = List(
+    "if"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[IfBlock])
+    }
+  }
 
 }

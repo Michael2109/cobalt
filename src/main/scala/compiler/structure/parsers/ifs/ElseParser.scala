@@ -30,7 +30,7 @@ class ElseParser extends Parser[ElseBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("else:")
+  override def getRegexs: List[String] = List("else(:)?")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ElseBlock = {
 

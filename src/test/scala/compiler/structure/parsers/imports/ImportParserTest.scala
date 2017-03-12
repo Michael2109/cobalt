@@ -18,6 +18,30 @@
 
 package compiler.structure.parsers.imports
 
-class ImportParserTest {
+import compiler.structure.blocks.imports.ImportBlock
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.Constants
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite}
+
+@RunWith(classOf[JUnitRunner])
+class ImportParserTest() extends FunSuite with BeforeAndAfter {
+
+  val parsers = Constants.parsers
+
+  val lines = List(
+    "import ClassName",
+    "import dir.ClassName",
+    "import dir.subdir.ClassName"
+  )
+
+  test("Block creation test") {
+    for (line <- lines) {
+      val parseable = parsers.filter(p => p.shouldParse(line))
+      assert(!parseable.isEmpty)
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[ImportBlock])
+    }
+  }
 
 }

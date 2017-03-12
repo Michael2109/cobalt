@@ -21,8 +21,6 @@ package compiler.structure.blocks.empty
 import compiler.structure.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
-  *
   * @param superBlockInit The parent block
   */
 class EmptyBlock(var superBlockInit: Block = null) extends Block(superBlockInit, false, false) {
