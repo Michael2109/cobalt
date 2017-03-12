@@ -31,7 +31,9 @@ class ObjectDefinitionParserTest() extends FunSuite with BeforeAndAfter {
   val parsers = Constants.parsers
 
   val lines = List(
-    "new Object()"
+    "new Object()",
+    "new Object(10)",
+    "new Object(10,20)"
   )
 
   test("Block creation test") {

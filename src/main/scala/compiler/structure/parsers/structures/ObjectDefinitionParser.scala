@@ -34,7 +34,7 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((([ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[,]?)*)*\\)"
+    "new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((([ ]*([a-zA-Z][a-zA-Z0-9]*|[0-9]+)[ ]*[,]?)*)*\\)"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectDefinitionBlock = {

@@ -31,7 +31,8 @@ class MethodCallParserTest() extends FunSuite with BeforeAndAfter {
   val parsers = Constants.parsers
 
   val lines = List(
-    "methodCall()"
+    "methodCall()",
+    "methodCall(10)"
   )
 
   test("Block creation test") {
