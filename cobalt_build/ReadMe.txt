@@ -1,1 +1,0 @@
-All generated Cobalt class files are placed here.

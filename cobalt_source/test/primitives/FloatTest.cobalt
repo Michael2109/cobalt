@@ -1,0 +1,7 @@
+package test.primitives
+
+class FloatTest():
+
+    def test() <- void:
+        val test1:float = 5.0f
+        var test2:float = 5.0f

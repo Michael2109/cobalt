@@ -1,0 +1,8 @@
+package test.operators
+
+class OperatorTest():
+
+    def test() <- void:
+        ==
+        &&
+        ||

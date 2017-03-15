@@ -1,0 +1,41 @@
+
+package test
+import other
+import compiler.structure.blocks.ifs.IfBlock
+
+open class MyCode(xx:int, yy:int): package other package another
+    /* Other test */
+    //xx += 1
+
+    // Test
+    public:
+        /*
+        Another test
+        */
+        open def method1(stringTest:String) <- void:
+            print(stringTest)
+            val x: int = 5
+            while (x < 10):
+                //x += 1
+                print("Test")
+
+        /**
+        *Another test
+        */
+        def main() <- void:
+            val stringyThing: String = "Thisisastring"
+            val z: int = (10 + 25) * 5 - 3 + (7 * 5) + 5 + 5
+            val longTest: long
+            val ty: int = 15
+            val myCode: MyCode = new MyCode(z, ty)
+            val y: int = 1
+            //val w: float = 2.0f
+            //myCode.method1(stringyThing)
+            //myCode
+
+    private:
+        def privateMethod(y: int) <- void:
+            val yy: int = 10
+
+    def noModifierMethod(z: int) <- void:
+        var test: int = 35

@@ -1,27 +1,48 @@
+/*
+ * Cobalt Programming Language Compiler
+ * Copyright (C) 2017  Cobalt
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package compiler.utilities
 
 import java.io.File
 
-import compiler.block.Block
-import compiler.block.imports.ImportBlock
-import compiler.block.packages.PackageBlock
-import compiler.block.structures.FileBlock
-import compiler.block.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.block.structures.methods.MethodBlock
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.empty.EmptyBlock
+import compiler.structure.blocks.imports.ImportBlock
+import compiler.structure.blocks.packages.PackageBlock
+import compiler.structure.blocks.structures.FileBlock
+import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
+import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
+import compiler.tokenizer.Tokenizer
 
+import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
 object Utils {
 
   /**
-    * Returns the method a block is within
+    * Returns the method a blocks is within
     *
     * @param block
     * @return
     */
-  def getMethod(block: Block): Block = {
+  def getClass(block: Block): Block = {
     var result: Block = block
-    while (!(result.isInstanceOf[MethodBlock])) {
+    while (!(result.isInstanceOf[ClassBlock] || result.isInstanceOf[ObjectBlock])) {
       {
         if (block.superBlock == null) {
           return null
@@ -31,27 +52,49 @@ object Utils {
           return result
       }
     }
-    return result
+    result
   }
 
-  def getFileBlock(blockInit: Block) : Block = {
+  /**
+    * Returns the method a blocks is within
+    *
+    * @param block
+    * @return
+    */
+  def getMethod(block: Block): Option[Block] = {
+    var result: Block = block
+    while (!(result.isInstanceOf[MethodBlock] || result.isInstanceOf[ConstructorBlock])) {
+      {
+        if (block.superBlock == null) {
+          return Option.apply(new EmptyBlock())
+        }
+        result = result.superBlock
+        if (result == null)
+          return Option.apply(result)
+      }
+    }
+    Option.apply(result)
+  }
 
-    val fileBlock:Block = {
+  /**
+    * Gets the PackageBlock
+    *
+    * @param block
+    * @return
+    */
+  def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
+
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
       var block: Block = blockInit
-      while(!block.isInstanceOf[FileBlock]){
+      while (!block.isInstanceOf[FileBlock]) {
         block = block.superBlock
       }
       block
     }
     fileBlock
   }
-
-  /**
-    * Gets the PackageBlock
-    * @param block
-    * @return
-    */
-  def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -61,18 +104,20 @@ object Utils {
   def getDirectory(blockInit: Block, className: String): String = {
     // Get the FileBlock to find the imports
     var block = blockInit
-    while (!(block.isInstanceOf[FileBlock])) {
+    while (!block.isInstanceOf[FileBlock]) {
       {
         block = block.superBlock
       }
     }
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[ImportBlock] && (sub.asInstanceOf[ImportBlock]).fileName == className) {
-        return (sub.asInstanceOf[ImportBlock]).directory
+      sub match {
+        case block1: ImportBlock if block1.fileName == className =>
+          return block1.directory
+        case _ =>
       }
     }
-    return ""
+    ""
   }
 
   /**
@@ -82,18 +127,20 @@ object Utils {
   def getPackage(blockInit: Block): String = {
     // Get the FileBlock to find the imports
     var block: Block = blockInit
-    while (!(block.isInstanceOf[FileBlock])) {
+    while (!block.isInstanceOf[FileBlock]) {
       {
         block = block.superBlock
       }
     }
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
-      if (sub.isInstanceOf[PackageBlock]) {
-        return (sub.asInstanceOf[PackageBlock]).directory
+      sub match {
+        case block1: PackageBlock =>
+          return block1.directory
+        case _ =>
       }
     }
-    return ""
+    ""
   }
 
   /**
@@ -111,11 +158,12 @@ object Utils {
 
     if (name.startsWith("\"")) return 1
 
-    return 2
+    2
   }
 
   /**
-    * Returns the indentation of the block
+    * Returns the indentation of the blocks
+    *
     * @param line
     * @return
     */
@@ -133,7 +181,8 @@ object Utils {
   }
 
   /**
-    * Prints block information
+    * Prints blocks information
+    *
     * @param block
     * @param indentation
     */
@@ -179,6 +228,63 @@ object Utils {
     val these = f.listFiles
     val good = these.filter(f => r.findFirstIn(f.getName).isDefined)
     good ++ these.filter(_.isDirectory).flatMap(recursiveListFiles(_,r))
+  }
+
+  /**
+    * Gets an array of blocks from a string and sets the superblock
+    *
+    * @param superBlock
+    * @param line
+    * @return
+    */
+  def getBlocks(superBlock: Block, line: String, lineNumber: Int = 0): Block = {
+
+    val result: ListBuffer[Block] = ListBuffer[Block]()
+
+    var previousLineLeft = ""
+    // var tuple = null
+    var lineLeft: String = line
+
+    while (lineLeft != "" && lineLeft != previousLineLeft) {
+      var found = false
+      previousLineLeft = lineLeft
+
+      for (parser <- Constants.parsers) {
+        if (!found) {
+
+          lineLeft = lineLeft.trim
+
+          if (parser.shouldParse(lineLeft)) {
+
+
+            // Get the regex that matched
+            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
+
+            // Get the section of the line that matched the regex
+            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
+
+            // If the line started with the section then parse it
+            if (lineLeft.trim.startsWith(first)) {
+              found = true
+
+              if (result.nonEmpty) {
+                result.head.expressions += parser.parse(superBlock, new Tokenizer(first))
+              } else {
+                result += parser.parse(superBlock, new Tokenizer(first))
+              }
+              lineLeft = lineLeft.substring(first.length)
+
+            }
+          }
+        }
+      }
+      if (!found) {
+        throw new RuntimeException("Error parsing: '" + Utils.getFileBlock(superBlock) + "' '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
+      }
+    }
+
+    result.head
+
   }
 
 }

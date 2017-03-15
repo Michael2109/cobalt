@@ -1,3 +1,21 @@
+/*
+ * Cobalt Programming Language Compiler
+ * Copyright (C) 2017  Cobalt
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 group 'group_id'
 version '1.0-SNAPSHOT'
 
@@ -28,7 +46,11 @@ sourceSets {
         }
     }
 
-
+    test {
+        scala {
+            include "**/*Test.scala"
+        }
+    }
 }
 
 javadoc {
@@ -45,17 +67,30 @@ scaladoc {
 
 
 dependencies {
+    // scalatest
+    testCompile group: 'org.scalatest', name: 'scalatest_2.12', version: '3.2.0-SNAP3'
+
+    // junit
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+
+    // Scalastyle
+    compile group: 'org.scalastyle', name: 'scalastyle-maven-plugin', version: '0.8.0'
+
+    // janino simple compiler
+    compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.6'
+
+
+    // asm
     compile group: 'org.ow2.asm', name: 'asm', version: '5.2'
 
+    // Scala logging slf4j
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.24'
 
-
-
-    // Scala
+    // Scala library
     compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.1'
+
+    // Scala compiler
     compile group: 'org.scala-lang', name: 'scala-compiler', version: '2.12.1'
 
-    //zinc compiler?
-    zinc 'com.typesafe.zinc:zinc:0.3.9'
+
 }

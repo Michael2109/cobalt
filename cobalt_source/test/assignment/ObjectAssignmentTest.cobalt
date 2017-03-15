@@ -1,0 +1,11 @@
+package test.assignment
+
+import test.MyCode
+
+class ObjectAssignmentTest():
+
+    def main() <- void:
+        val test1:MyCode = new MyCode()
+
+
+

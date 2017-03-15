@@ -1,25 +1,44 @@
+/*
+ * Cobalt Programming Language Compiler
+ * Copyright (C) 2017  Cobalt
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package compiler.symbol_table
+
 
 class Row {
   private var id: Int = 0
-  private var `type`: String = null
-  private var name: String = null
-  private var value: String = null
-  private var methodName: String = null
-  private var className: String = null
+  private var blockType: String = ""
+  private var name: String = ""
+  private var value: String = ""
+  private var methodName: String = ""
+  private var className: String = ""
   private var immutable: Boolean = false
 
   def getId: Int = id
 
   def setId(id: Int): Row = {
     this.id = id
-    return this
+    this
   }
 
-  def getType: String = `type`
+  def getType: String = blockType
 
-  def setType(`type`: String): Row = {
-    this.`type` = `type`
+  def setType(blockType: String): Row = {
+    this.blockType = blockType
     this
   }
 
@@ -59,6 +78,6 @@ class Row {
   }
 
   override def toString: String = {
-    return id + " : " + name + " : " + `type` + " : " + value + " " + methodName + " " + className
+    id + " : " + name + " : " + blockType + " : " + value + " " + methodName + " " + className
   }
 }

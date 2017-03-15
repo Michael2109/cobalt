@@ -1,15 +1,34 @@
+/*
+ * Cobalt Programming Language Compiler
+ * Copyright (C) 2017  Cobalt
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package compiler.utilities
 
 class ASMGenerator {
 
+
   // opening brace "{"
-  def getOpeningBrace() = "\n{\n"
+  def getOpeningBrace: String = "\n{\n"
 
   // closing brace "}"
-  def getClosingBrace() = "\n}\n"
+  def getClosingBrace: String = "\n}\n"
 
   // Comments
-  def getComment(comment: String) = "// " + comment + "\n"
+  def getComment(comment: String): String = "// " + comment + "\n"
 
   // package
   def getPackage(name: String): String = "package " + name + ";\n"
@@ -30,7 +49,7 @@ class ASMGenerator {
   def getClassWriter: String = "ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);\n"
 
   // visit class writer
-  def visitClassWriter(classDir: String, signature: String, superClass: String, interfaces: List[String]): String = "cw.visit(V1_7, ACC_PUBLIC, \"" + classDir + "\", " + signature + ", \"" + superClass + "\", new String[]{});\n"
+  def visitClassWriter(modifiers: String, classDir: String, signature: String, superClass: String, interfaces: List[String]): String = "cw.visit(V1_7, ACC_PUBLIC " + modifiers + ", \"" + classDir + "\", " + signature + ", \"" + superClass + "\", new String[]{});\n"
 
 
   // Method Visitor
@@ -48,6 +67,11 @@ class ASMGenerator {
 
   // Push a value on top of the stack
   def visitLdcInsn(value: Object): String = "mv.visitLdcInsn(" + value + ");\n"
+
+  def visitInsn(value: Object): String = "mv.visitInsn(" + value + ");"
+
+  def visitIntInsn(op: String, value: Object): String = "mv.visitIntInsn(" + op + "," + value + ");"
+
 
   // Perform an operation
   def visitVarInsn(operation: String, id: Object): String = "mv.visitVarInsn(" + operation + "," + id + ");\n"

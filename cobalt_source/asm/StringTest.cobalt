@@ -1,8 +1,0 @@
-package asm
-
-class StringTest():
-
-    def test() <- void:
-        var intTest:int = 5
-        var stringTestThingey: String = "test"
-
