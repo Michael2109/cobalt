@@ -1,0 +1,11 @@
+package test.cases
+
+class CaseTest():
+
+    def main() <- void:
+
+        // Test parses correctly
+        case test => exampleValue
+        case 50=>exampleValue
+
+

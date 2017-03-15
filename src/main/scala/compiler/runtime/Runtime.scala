@@ -39,11 +39,8 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
   def parseFile() {
 
-    // Read all lines from source file
-    val allLines = Source.fromFile(sourceFile).getLines().toList.filter(!_.trim.isEmpty)
-
     // get all lines excluding comments
-    val lines = getIgnoreComments(allLines)
+    val lines = getIgnoreComments(Source.fromFile(sourceFile).getLines().toList)
 
     //  lines.foreach(println(_))
     // get the file
@@ -58,15 +55,15 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     fileBlock.addBlocks_=(importBlocks)
 
     // Get the Class/Object block
-    println(if (packageBlock.directory != "") 1 else 0)
-    val block: Block = Utils.getBlocks(fileBlock, lines((if (packageBlock.directory != "") 1 else 0) + importBlocks.size))
+    //println(if (packageBlock.directory != "") 1 else 0)
+    //val block: Block = Utils.getBlocks(fileBlock, lines(0))
 
     // get the AST
-    getBlockStructure(lines, block, 0, (if (packageBlock.directory != "") 2 else 1) + importBlocks.size)
+    getBlockStructure(lines, fileBlock, -1, 0)
 
     // Add the block to a fileblock and set fileblock as parent
-    fileBlock.addBlock_=(block)
-    block.superBlock_=(fileBlock)
+    //  fileBlock.addBlock_=(block)
+    //  block.superBlock_=(fileBlock)
 
     // Output the result
     Utils.printBlockInfo(fileBlock)
@@ -116,13 +113,15 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
       if (currentLine < lines.size) {
 
-
         val line = lines(currentLine)
+
         val nextBlock = Utils.getBlocks(block, line, currentLine)
+
         val nextIndentation: Int = Utils.getIndentation(line)
 
         // Indent + 1
         if (nextIndentation - previousIndentation == 1) {
+
           block.addBlock_=(nextBlock)
           getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
 
@@ -130,8 +129,10 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
           block.superBlock.addBlock_=(nextBlock)
           getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
 
+
         } else {
           var currentBlock = block.superBlock
+          println("NextBlock: " + currentBlock)
           var i = 0
           while (i < previousIndentation - nextIndentation) {
             currentBlock = currentBlock.superBlock

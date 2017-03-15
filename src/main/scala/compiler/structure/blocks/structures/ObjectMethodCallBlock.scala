@@ -22,19 +22,24 @@ import compiler.data.parameters.Parameter
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
+import compiler.symbol_table.SymbolTable
+import compiler.utilities.Utils
 
 import scala.collection.mutable.ListBuffer
 
 /**
   * Calling a method of an object
+  * E.g. obj.methodCall(10,20)
   */
 class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
 
   private val `type`: String = null
   // private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
-  private var parameterString: String = ""
+  private var parameterString: String = params.map(p => p.getAsmType).mkString(";")
   private var argumentString: String = ""
   private var directory: String = ""
+
+  params.foreach(p => p.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, p.getName).getType))
 
   def getParameters: ListBuffer[Parameter] = {
     params
@@ -52,14 +57,14 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
           directory = getPackage
         else
           directory = getDirectory
-
+*/
         // Get the type of the parameters
         for (param <- params) {
           println(Utils.getMethod(this) + " " + param.getName)
           param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
           parameterString += param.getAsmType
           argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
-        }*/
+        }
   }
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package

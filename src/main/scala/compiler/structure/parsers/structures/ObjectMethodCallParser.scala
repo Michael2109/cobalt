@@ -29,6 +29,7 @@ import scala.collection.mutable.ListBuffer
 
 /**
   * Parses calling of an objects method
+  * E.g. .methodCall(10,20)
   */
 class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
   /**
@@ -57,7 +58,8 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
         } else {
           // todo find the paramType. Utilities add a method to get the type
           paramName = nextToken.trim
-          parameters.append(new Parameter(paramType, paramName))
+          val parameter = new Parameter(paramType, paramName)
+          parameters.append(parameter)
           nextToken = tokenizer.nextToken.token
         }
       }

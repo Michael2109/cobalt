@@ -16,20 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test_classes;
+package compiler.structure.blocks.cases
 
-/**
- * Used to view ASM code
- */
-public class TestCode {
+import compiler.structure.blocks.Block
+import compiler.utilities.Utils
 
-    void test() {
-        boolean x = true;
-        boolean y = false;
-        boolean z = true;
-        if (x && y || z) {
-            System.out.println("Hello World");
-        }
+class CaseBlock(var superBlockInit: Block) extends Block(superBlockInit, false, true) {
+
+  override def init() {}
+
+  override def getName: String = ""
+
+  override def getValue: String = ""
+
+  override def getOpeningCode: String = {
+    if (Utils.getMethod(this) != null) {
+      ""
+    } else {
+      ""
     }
+  }
 
+  override def getClosingCode: String = ""
+
+  override def toString: String = getType
+
+  override def getType: String = "<CASE>"
 }

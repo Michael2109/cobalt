@@ -25,6 +25,7 @@ import compiler.tokenizer.Tokenizer
 
 /**
   * Calls a method inside a class
+  * E.g. methodCall()
   */
 class MethodCallParser extends Parser[MethodCallBlock] {
 

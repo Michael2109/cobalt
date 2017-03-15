@@ -9,5 +9,6 @@ class AssignmentTest():
         val test3:int = 7 + 10 - 5 + test2
         test2 = test2 + 8
         val test3:int = 10 + 12 - 13 * 14 / 15
+        val test4:float = 10.4f + 11.5f - 7.2f + 10f
 
 

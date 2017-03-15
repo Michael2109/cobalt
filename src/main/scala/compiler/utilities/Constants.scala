@@ -19,6 +19,7 @@
 package compiler.utilities
 
 import compiler.structure.parsers.Parser
+import compiler.structure.parsers.cases.CaseParser
 import compiler.structure.parsers.constants._
 import compiler.structure.parsers.exceptions.{CatchParser, FinallyParser, TryParser}
 import compiler.structure.parsers.ifs.{ElseParser, IfParser, SwitchParser}
@@ -42,6 +43,8 @@ object Constants {
   /* All available parsers */
   val parsers: List[Parser[_]] = List(
 
+    /* case */
+    new CaseParser,
 
     /* if, else */
     new IfParser,
