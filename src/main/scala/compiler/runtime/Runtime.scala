@@ -132,7 +132,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
         } else {
           var currentBlock = block.superBlock
-          println("NextBlock: " + currentBlock)
           var i = 0
           while (i < previousIndentation - nextIndentation) {
             currentBlock = currentBlock.superBlock

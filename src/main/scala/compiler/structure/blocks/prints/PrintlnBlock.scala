@@ -38,7 +38,7 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
     if (isVariableInit) {
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
         "mv.visitVarInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId + ");" +
-        "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");"
+        "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(" + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getType + ")V\");"
     }
     else {
       //return "System.out.println(\""+value+"\");";

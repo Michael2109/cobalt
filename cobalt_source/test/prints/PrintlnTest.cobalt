@@ -1,0 +1,9 @@
+
+package test.prints
+
+open class PrintlnTest():
+
+
+    def method1() <- void:
+        val x: int = 5
+        println(x)

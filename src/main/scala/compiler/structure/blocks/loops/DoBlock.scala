@@ -16,26 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test_classes;
+package compiler.structure.blocks.loops
 
-/**
- * Used to view ASM code
- */
-public class TestCode {
+import compiler.structure.blocks.Block
 
-    void test() {
-        int x = 1;
-        float y = 2;
-        double z = 3;
-        short s = 4;
-        long l = 50000000000000L;
-        byte b = 10;
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(z);
-        System.out.println(s);
-        System.out.println(l);
-        System.out.println(b);
-    }
+class DoBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+
+  def getName: String = ""
+
+  def getValue: String = ""
+
+  def init(): Unit = {}
+
+  def getOpeningCode: String = {
+    ""
+  }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType
+
+  def getType: String = "<DO>"
 
 }

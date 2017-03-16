@@ -4,7 +4,7 @@ import other
 import compiler.structure.blocks.ifs.IfBlock
 import test.MyCode
 
-open class MyCode(xx:int, yy:int): package other package another
+open class MyCode(xx:int, yy:int):
     /* Other test */
     //xx += 1
 

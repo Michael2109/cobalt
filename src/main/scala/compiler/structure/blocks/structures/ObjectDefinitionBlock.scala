@@ -27,9 +27,9 @@ import compiler.utilities.Utils
 // Creation of a new object and storing to a variable
 class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String) extends Block(superBlockInit, false, true, false) {
 
-  private var parameterString: String = ""
-  private var argumentString: String = ""
-  private var directory: String = {
+  private val parameterString: String = ""
+  private val argumentString: String = ""
+  private val directory: String = {
     var result = ""
     for (i <- Utils.getFileBlock(this).subBlocks) {
 

@@ -16,26 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test_classes;
+package compiler.structure.parsers.loops
 
-/**
- * Used to view ASM code
+import compiler.structure.blocks.Block
+import compiler.structure.blocks.loops.DoBlock
+import compiler.structure.parsers.Parser
+import compiler.tokenizer.Tokenizer
+
+/*
+need to make parameter single variable names instead as cant define a variable in an ifs...
  */
-public class TestCode {
+class DoParser extends Parser[DoBlock] {
 
-    void test() {
-        int x = 1;
-        float y = 2;
-        double z = 3;
-        short s = 4;
-        long l = 50000000000000L;
-        byte b = 10;
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(z);
-        System.out.println(s);
-        System.out.println(l);
-        System.out.println(b);
-    }
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("do")
 
+  override def parse(superBlock: Block, tokenizer: Tokenizer): DoBlock = {
+    new DoBlock(superBlock)
+  }
 }
