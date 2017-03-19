@@ -22,8 +22,6 @@ import compiler.structure.blocks.Block
 
 class ThisKeywordBlock(superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def init() {}
-
   override def getName: String = ""
 
   override def getValue: String = ""

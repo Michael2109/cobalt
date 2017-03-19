@@ -23,8 +23,6 @@ import compiler.utilities.Utils
 
 class AsBlock(var superBlockInit: Block) extends Block(superBlockInit, false, true) {
 
-  override def init() {}
-
   override def getName: String = ""
 
   override def getValue: String = ""

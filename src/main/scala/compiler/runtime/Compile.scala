@@ -37,9 +37,6 @@ class Compile(val outputFile: File, val block: Block) {
 
   System.out.println("Output File: " + outputFile.getAbsolutePath)
 
-  println("Initialising blocks...")
-  initBlocks(block)
-
   println("Generating ASM code...")
   generateASM(block)
 
@@ -48,12 +45,13 @@ class Compile(val outputFile: File, val block: Block) {
 
   // Initialises all blocks.
   // Allows for initialisation when all blocks have been loaded.
+  /*
   def initBlocks(block: Block) {
     block.init()
     for (sub <- block.subBlocks) {
       initBlocks(sub)
     }
-  }
+  }*/
 
   /**
     * Converts the blocks structure into ASM and saves as a .java file

@@ -53,6 +53,4 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
 
   override def toString: String = "object" + name
 
-  // Called after file is parsed
-  override def init(): Unit = {}
 }

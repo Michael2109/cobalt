@@ -22,8 +22,6 @@ import compiler.structure.blocks.Block
 
 class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
 
-  override def init() {}
-
   override def getName: String = ""
 
   override def getValue: String = value

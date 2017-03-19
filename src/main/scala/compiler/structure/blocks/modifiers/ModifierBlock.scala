@@ -22,9 +22,6 @@ import compiler.structure.blocks.Block
 
 class ModifierBlock (var superBlockInit: Block, var value: String) extends Block(superBlockInit, true, false) {
 
-  // Called after file is parsed
-  override def init(): Unit = {}
-
   /* Symbol table information */
   override def getName: String = ""
 

@@ -27,8 +27,6 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).getName))
 
-  override def init() {}
-
   override def getName: String = name
 
   override def getValue: String = ""
