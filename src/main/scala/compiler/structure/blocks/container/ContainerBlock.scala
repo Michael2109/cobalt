@@ -22,8 +22,6 @@ import compiler.structure.blocks.Block
 
 class ContainerBlock(superBlockInit: Block = null) extends Block(superBlockInit, false, true) {
 
-  override def init() {}
-
   override def getName: String = "container"
 
   override def getValue: String = "container"

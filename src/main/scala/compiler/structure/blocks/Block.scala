@@ -71,9 +71,6 @@ abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, i
 
   def removeBlock_=(value: Block): ListBuffer[Block] = _subBlocks.filter(_ != value)
 
-  // Called after file is parsed
-  def init()
-
   /* Symbol table information */
   def getName: String
 

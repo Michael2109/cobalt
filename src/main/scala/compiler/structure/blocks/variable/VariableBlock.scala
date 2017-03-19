@@ -28,8 +28,6 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   val row: Row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name)
 
-  override def init() {}
-
   override def getName: String = name
 
   override def getValue: String = ""
