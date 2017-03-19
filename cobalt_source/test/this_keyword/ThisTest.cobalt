@@ -1,0 +1,7 @@
+
+package test.this_keyword
+
+open class ThisTest():
+
+    open def method1() <- void:
+        this

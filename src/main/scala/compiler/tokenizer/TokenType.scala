@@ -24,6 +24,7 @@ object TokenType extends Enumeration {
   TOKEN,
   IDENTIFIER,
   RETURN_TYPE,
+  UNDERSCORE,
 
   INTEGER_LITERAL,
   BYTE_LITERAL,
@@ -46,4 +47,5 @@ object TokenType extends Enumeration {
   LARGER_THAN,
   LARGER_THAN_EQUAL,
   EQUAL_TO = Value
+
 }

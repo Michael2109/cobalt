@@ -19,8 +19,8 @@
 package compiler.structure.parsers.structures
 
 import compiler.structure.blocks.structures.MethodCallBlock
+import compiler.structure.parsers.Parsers
 import compiler.tokenizer.Tokenizer
-import compiler.utilities.Constants
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
@@ -28,7 +28,7 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 @RunWith(classOf[JUnitRunner])
 class MethodCallParserTest() extends FunSuite with BeforeAndAfter {
 
-  val parsers = Constants.parsers
+  val parsers = Parsers.parsers
 
   val lines = List(
     "methodCall()",
