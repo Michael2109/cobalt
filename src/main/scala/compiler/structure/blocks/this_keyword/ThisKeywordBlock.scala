@@ -16,30 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators
+package compiler.structure.blocks.this_keyword
 
-import compiler.structure.blocks.operators.SubtractOpBlock
-import compiler.structure.parsers.Parsers
-import compiler.tokenizer.Tokenizer
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import compiler.structure.blocks.Block
 
-@RunWith(classOf[JUnitRunner])
-class SubtractOpParserTest() extends FunSuite with BeforeAndAfter {
+class ThisKeywordBlock(superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  val parsers = Parsers.parsers
+  override def init() {}
 
-  val lines = List(
-    "-"
-  )
+  override def getName: String = ""
 
-  test("Block creation test") {
-    for (line <- lines) {
-      val parseable = parsers.filter(p => p.shouldParse(line))
-      assert(!parseable.isEmpty)
-      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[SubtractOpBlock])
-    }
+  override def getValue: String = ""
+
+  override def getOpeningCode: String = {
+    ""
   }
+
+  override def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType
+
+  override def getType: String = "<THIS>"
 
 }

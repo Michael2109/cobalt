@@ -27,6 +27,7 @@ import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.FileBlock
 import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
+import compiler.structure.parsers.Parsers
 import compiler.tokenizer.Tokenizer
 
 import scala.collection.mutable.ListBuffer
@@ -83,18 +84,6 @@ object Utils {
     * @return
     */
   def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
-
-  def getFileBlock(blockInit: Block): Block = {
-
-    val fileBlock: Block = {
-      var block: Block = blockInit
-      while (!block.isInstanceOf[FileBlock]) {
-        block = block.superBlock
-      }
-      block
-    }
-    fileBlock
-  }
 
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -249,7 +238,7 @@ object Utils {
       var found = false
       previousLineLeft = lineLeft
 
-      for (parser <- Constants.parsers) {
+      for (parser <- Parsers.parsers) {
         if (!found) {
 
           lineLeft = lineLeft.trim
@@ -285,6 +274,18 @@ object Utils {
 
     result.head
 
+  }
+
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
+      var block: Block = blockInit
+      while (!block.isInstanceOf[FileBlock]) {
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
   }
 
 }

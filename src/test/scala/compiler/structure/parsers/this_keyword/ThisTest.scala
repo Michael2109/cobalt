@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.structure.parsers.operators.assignment.bit
+package compiler.structure.parsers.this_keyword
 
-import compiler.structure.blocks.operators.assignment.bit.LeftShiftAssignOpBlock
+import compiler.structure.blocks.this_keyword.ThisKeywordBlock
 import compiler.structure.parsers.Parsers
 import compiler.tokenizer.Tokenizer
 import org.junit.runner.RunWith
@@ -26,19 +26,19 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 @RunWith(classOf[JUnitRunner])
-class LeftShiftOpParserTest() extends FunSuite with BeforeAndAfter {
+class ThisTest() extends FunSuite with BeforeAndAfter {
 
   val parsers = Parsers.parsers
 
   val lines = List(
-    "<<="
+    "this"
   )
 
   test("Block creation test") {
     for (line <- lines) {
       val parseable = parsers.filter(p => p.shouldParse(line))
       assert(!parseable.isEmpty)
-      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[LeftShiftAssignOpBlock])
+      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[ThisKeywordBlock])
     }
   }
 

@@ -46,6 +46,7 @@ class Tokenizer(var str: String) {
 
     new TokenData("^([;])".r, TokenType.END_STATEMENT),
     new TokenData("^([:])".r, TokenType.COLON),
+    new TokenData("^([_])".r, TokenType.UNDERSCORE),
 
     new TokenData("^([==])".r, TokenType.EQUAL_TO),
     new TokenData("^([<])".r, TokenType.SMALLER_THAN),
