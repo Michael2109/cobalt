@@ -3,7 +3,7 @@ package test.primitives
 class LongTest():
 
     def test() <- void:
-        val test1:long = 5l
-        var test2:long = 5l
-        val test3:long = 5L
-        var test4:long = 5L
+        test1:long = 5l
+        test2:long = 5l
+        test3:long = 5L
+        test4:long = 5L

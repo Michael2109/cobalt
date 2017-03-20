@@ -3,7 +3,7 @@ package test.primitives
 class ByteTest():
 
     def test() <- void:
-        val test1:byte = 5b
-        var test2:byte = 5b
-        val test3:byte = 5B
-        var test4:byte = 5B
+        test1:byte = 5b
+        test2:byte = 5b
+        test3:byte = 5B
+        test4:byte = 5B

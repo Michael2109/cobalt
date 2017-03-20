@@ -76,6 +76,7 @@ class SymbolTable() {
 
   }
 
+  @throws(classOf[UndefinedVarException])
   def getValue(method: Block, variableName: String): Row = {
 
     if (method == null) {
@@ -91,5 +92,6 @@ class SymbolTable() {
       }
     }
     throw new UndefinedVarException("'" + variableName + "' doesn't exist")
+
   }
 }
