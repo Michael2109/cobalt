@@ -5,7 +5,7 @@ import test.MyCode
 class ObjectAssignmentTest():
 
     def main() <- void:
-        val test1:MyCode = new MyCode()
+        test1:MyCode = new MyCode()
 
 
 

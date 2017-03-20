@@ -3,7 +3,7 @@ package test.primitives
 class ShortTest():
 
     def test() <- void:
-        val test1:short = 5s
-        var test2:short = 5s
-        val test3:short = 5S
-        var test4:short = 5S
+        test1:short = 5s
+        test2:short = 5s
+        test3:short = 5S
+        test4:short = 5S

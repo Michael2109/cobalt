@@ -41,19 +41,19 @@ object Utils {
     * @param block
     * @return
     */
-  def getClass(block: Block): Block = {
+  def getClass(block: Block): Option[Block] = {
     var result: Block = block
     while (!(result.isInstanceOf[ClassBlock] || result.isInstanceOf[ObjectBlock])) {
       {
         if (block.superBlock == null) {
-          return null
+          return Option.apply(new EmptyBlock())
         }
         result = result.superBlock
         if (result == null)
-          return result
+          return Option.apply(result)
       }
     }
-    result
+    Option.apply(result)
   }
 
   /**

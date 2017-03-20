@@ -135,12 +135,12 @@ object Parsers {
     new MultiplyOpParser,
     new SubtractOpParser,
     new ModulusOpParser,
-    new ColonParser,
 
 
-    new AssignmentOpParser,
     new DefineVariableParser,
+    new AssignmentOpParser,
 
+    /* constants */
     new BooleanConstantParser,
     new CharConstantParser,
     new StringConstantParser,
@@ -151,7 +151,11 @@ object Parsers {
     new LongConstantParser,
     new IntConstantParser,
 
-    new VariableParser
+    new VariableParser,
+
+    /* syntax */
+    new ColonParser
+
   )
 
 }

@@ -15,7 +15,7 @@ open class MyCode(xx:int, yy:int):
         */
         open def method1(stringTest:String) <- void:
             print(stringTest)
-            val x: int = 5
+            x: int = 5
             //while (x < 10):
                 //x += 1
                 //print("Test")
@@ -24,19 +24,19 @@ open class MyCode(xx:int, yy:int):
         *Another test
         */
         def main() <- void:
-            val stringyThing: String = "Thisisastring"
-            val z: int = (10 + 25) * 5 - 3 + (7 * 5) + 5 + 5
-            val longTest: long
-            val ty: int = 15
-            //val myCode: MyCode = new MyCode()
+            stringyThing: String = "Thisisastring"
+            z: int = (10 + 25) * 5 - 3 + (7 * 5) + 5 + 5
+            longTest: long
+            ty: int = 15
+            //myCode: MyCode = new MyCode()
 
-            //val w: float = 2.0f
+            //w: float = 2.0f
             //myCode.method1(stringyThing)
             //myCode
 
     private:
         def privateMethod(y: int) <- void:
-            val yy: int = 10
+            yy: int = 10
 
     def noModifierMethod(z: int) <- void:
-        var test: int = 35
+        test: int = 35

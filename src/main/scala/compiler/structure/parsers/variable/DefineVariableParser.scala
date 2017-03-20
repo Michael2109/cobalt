@@ -32,13 +32,18 @@ class DefineVariableParser extends Parser[DefineVariableBlock] {
     */
   override def getRegexs: List[String] = List(
     //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
-    "(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
+    "(mut[ ]+)?[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DefineVariableBlock = {
-    val declaration: Boolean = tokenizer.nextToken.token == "val"
+
+    val nextToken: String = tokenizer.nextToken.token
+
+    val mutable: Boolean = nextToken == "mut"
+
+
     // "val" or "var"
-    val name: String = tokenizer.nextToken.token
+    val name: String = if (mutable) tokenizer.nextToken.token else nextToken
     tokenizer.nextToken
 
 
@@ -53,6 +58,6 @@ class DefineVariableParser extends Parser[DefineVariableBlock] {
       case _ => "void"
     }
 
-    new DefineVariableBlock(superBlock, declaration, name, varType)
+    new DefineVariableBlock(superBlock, mutable, name, varType)
   }
 }

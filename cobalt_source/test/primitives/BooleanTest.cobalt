@@ -3,7 +3,7 @@ package test.primitives
 class BooleanTest():
 
     def test() <- void:
-        val test1:boolean = false
-        var test2:boolean = false
-        val test3:boolean = true
-        var test4:boolean = true
+        test1:boolean = false
+        test2:boolean = false
+        test3:boolean = true
+        test4:boolean = true
