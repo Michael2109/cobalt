@@ -29,7 +29,7 @@ class BooleanConstantBlock(var superBlockInit: Block, value: String) extends Blo
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      ""
+      asm.visitInsn("ICONST_" + (if (value == "true") "1" else "0"))
     } else {
       ""
     }

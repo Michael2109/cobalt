@@ -2,6 +2,8 @@ package test.primitives
 
 class DoubleTest():
 
-    def test() <- void:
-        test1:double = 5.0
-        test2:double = 5.0
+    def main() <- void:
+        test1:double = 50.0
+        test2:double = 500.0
+        println(test1)
+        println(test2)

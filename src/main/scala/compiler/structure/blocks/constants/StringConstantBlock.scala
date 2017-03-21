@@ -29,7 +29,7 @@ class StringConstantBlock(var superBlockInit: Block, value: String) extends Bloc
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      ""
+      asm.visitLdcInsn("new String(" + value + ")")
     } else {
       ""
     }

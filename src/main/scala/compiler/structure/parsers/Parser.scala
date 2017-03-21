@@ -31,7 +31,7 @@ import compiler.structure.parsers.operators.assignment._
 import compiler.structure.parsers.operators.assignment.bit._
 import compiler.structure.parsers.operators.bit._
 import compiler.structure.parsers.packages.PackageParser
-import compiler.structure.parsers.prints.{PrintParser, PrintlnParser}
+import compiler.structure.parsers.prints.PrintlnParser
 import compiler.structure.parsers.structures.kinds.{ClassParser, ObjectParser}
 import compiler.structure.parsers.structures.methods.MethodParser
 import compiler.structure.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
@@ -80,7 +80,6 @@ object Parsers {
     new FinallyParser,
 
     /* printing */
-    new PrintParser,
     new PrintlnParser,
 
     /* loops */

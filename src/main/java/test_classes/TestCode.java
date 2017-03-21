@@ -24,18 +24,10 @@ package test_classes;
 public class TestCode {
 
     void test() {
-        int x = 1;
-        float y = 2;
-        double z = 3;
-        short s = 4;
+
         long l = 50000000000000L;
-        byte b = 10;
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(z);
-        System.out.println(s);
+
         System.out.println(l);
-        System.out.println(b);
     }
 
 }

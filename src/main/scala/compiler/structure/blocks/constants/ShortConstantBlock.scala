@@ -29,7 +29,7 @@ class ShortConstantBlock(var superBlockInit: Block, value: String) extends Block
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      ""
+      asm.visitLdcInsn("new Short(\"" + value.replaceAll("(s|S)", "") + "\")")
     } else {
       ""
     }

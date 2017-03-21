@@ -19,7 +19,9 @@
 package compiler.structure.blocks.prints
 
 import compiler.structure.blocks.Block
+import compiler.structure.parsers.Parsers
 import compiler.symbol_table.SymbolTable
+import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils
 
 class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
@@ -27,7 +29,7 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
   def init() {
   }
 
-  def getName: String = null
+  def getName: String = ""
 
   def getValue: String = value
 
@@ -35,9 +37,20 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
 
   def getOpeningCode: String = {
 
+
     if (isVariableInit) {
+      val row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value)
+
+      var v: Block = null
+      for (p <- Parsers.parsers) {
+        if (p.shouldParse(value)) {
+          v = p.parse(superBlockInit, new Tokenizer(value))
+        }
+      }
+
+
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
-        "mv.visitVarInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getId + ");" +
+        v.getOpeningCode +
         "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(" + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getType + ")V\");"
     }
     else {

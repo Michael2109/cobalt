@@ -45,7 +45,16 @@ class Parameters {
           typeNext = true
         }
         else if (typeNext) {
-          paramType = nextToken.trim
+          paramType = nextToken.trim match {
+            case "int" => "I"
+            case "long" => "J"
+            case "double" => "D"
+            case "float" => "F"
+            case "short" => "S"
+            case "boolean" => "BA"
+            case "String" => "Ljava/lang/String;"
+            case _ => "void"
+          }
           typeNext = false
           result += new Parameter(paramType, paramName)
         }

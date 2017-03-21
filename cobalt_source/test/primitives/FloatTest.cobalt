@@ -2,6 +2,8 @@ package test.primitives
 
 class FloatTest():
 
-    def test() <- void:
-        test1:float = 5.0f
-        test2:float = 5.0f
+    def main() <- void:
+        test1:float = 10.0f
+        test2:float = 15.0f
+        println(test1)
+        println(test2)

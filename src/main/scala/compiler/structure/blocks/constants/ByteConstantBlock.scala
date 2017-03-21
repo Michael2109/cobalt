@@ -29,7 +29,7 @@ class ByteConstantBlock(var superBlockInit: Block, value: String) extends Block(
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      ""
+      asm.visitLdcInsn("new Byte(\"" + value.replaceAll("(b|B)", "") + "\")")
     } else {
       ""
     }
@@ -40,4 +40,5 @@ class ByteConstantBlock(var superBlockInit: Block, value: String) extends Block(
   override def toString: String = getType + ": " + value
 
   override def getType: String = "byte_const"
+
 }

@@ -13,8 +13,8 @@ open class MyCode(xx:int, yy:int):
         /*
         Another test
         */
-        open def method1(stringTest:String) <- void:
-            print(stringTest)
+        open def method1() <- void:
+
             x: int = 5
             //while (x < 10):
                 //x += 1
