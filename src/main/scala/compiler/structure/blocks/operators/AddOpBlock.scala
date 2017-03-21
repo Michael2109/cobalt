@@ -36,9 +36,7 @@ class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    // println(superBlockInit)
-    // asm.visitInsn(""+superBlockInit.getType + "ADD")
-    asm.visitInsn("IADD")
+    asm.visitInsn("" + superBlockInit.getType + "ADD")
   }
 
   def getClosingCode: String = {

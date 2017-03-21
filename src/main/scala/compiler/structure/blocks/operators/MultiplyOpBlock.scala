@@ -29,7 +29,7 @@ class MultiplyOpBlock(val superBlockInit: Block) extends Block(superBlockInit, f
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    asm.visitInsn("IMUL")
+    asm.visitInsn("" + superBlockInit.getType + "MUL")
   }
 
   def getClosingCode: String = {

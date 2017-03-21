@@ -3,13 +3,12 @@ package test
 import asm.MyCode
 
 object ObjectTest:
-    public:
-        def main() <- void:
-            // stringyThing: String = "TEST"
-            z: int = 10
-            longTest: long
-            ty: int = 15
-            //myCode: MyCode = new MyCode(z, ty)
-            y: int = 1
-           // w: float = 2.0f
-            //myCode.method1(stringyThing)
+
+    def main() <- void:
+
+        z: int = 10
+
+        ty: int = 15
+        myCode: MyCode = new MyCode(ty)
+
+        //myCode.method1(stringyThing)

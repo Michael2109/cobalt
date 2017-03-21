@@ -45,6 +45,9 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     val initClassName: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip "("
 
+    // todo loop through arguments
+
+
     new ObjectDefinitionBlock(superBlock, newKeyword, initClassName)
   }
 }

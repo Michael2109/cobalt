@@ -85,6 +85,18 @@ object Utils {
     */
   def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
+      var block: Block = blockInit
+      while (!block.isInstanceOf[FileBlock]) {
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
+  }
+
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
     * @param block
@@ -257,7 +269,7 @@ object Utils {
               found = true
 
               if (result.nonEmpty) {
-                result.head.expressions += parser.parse(superBlock, new Tokenizer(first))
+                result.head.expressions += parser.parse(result.head, new Tokenizer(first))
               } else {
                 result += parser.parse(superBlock, new Tokenizer(first))
               }
@@ -274,18 +286,6 @@ object Utils {
 
     result.head
 
-  }
-
-  def getFileBlock(blockInit: Block): Block = {
-
-    val fileBlock: Block = {
-      var block: Block = blockInit
-      while (!block.isInstanceOf[FileBlock]) {
-        block = block.superBlock
-      }
-      block
-    }
-    fileBlock
   }
 
 }
