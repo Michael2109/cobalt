@@ -31,8 +31,6 @@ class CatchBlock(var superBlockInit: Block) extends Block(superBlockInit, true, 
 
   def getValue: String = ""
 
-  def init() {
-  }
 
   def getOpeningCode: String = {
     ""

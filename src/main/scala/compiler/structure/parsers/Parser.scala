@@ -21,7 +21,7 @@ package compiler.structure.parsers
 import compiler.structure.blocks.Block
 import compiler.structure.parsers.cases.CaseParser
 import compiler.structure.parsers.constants._
-import compiler.structure.parsers.exceptions.{CatchParser, FinallyParser, TryParser}
+import compiler.structure.parsers.exceptions._
 import compiler.structure.parsers.ifs.{ElseParser, IfParser, SwitchParser}
 import compiler.structure.parsers.imports.ImportParser
 import compiler.structure.parsers.loops.{DoParser, ForParser, WhileParser}
@@ -78,6 +78,10 @@ object Parsers {
     new TryParser,
     new CatchParser,
     new FinallyParser,
+
+    /* throw, throws */
+    new ThrowParser,
+    new ThrowsParser,
 
     /* printing */
     new PrintlnParser,

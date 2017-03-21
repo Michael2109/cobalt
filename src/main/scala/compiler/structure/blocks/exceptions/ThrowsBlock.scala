@@ -25,7 +25,7 @@ import compiler.structure.blocks.Block
   *
   * @param superBlockInit The parent block
   */
-class TryBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+class ThrowsBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
   def getName: String = ""
 
@@ -42,6 +42,6 @@ class TryBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fa
 
   override def toString: String = getType
 
-  def getType: String = "<TRY>"
+  def getType: String = "<THROW>"
 
 }
