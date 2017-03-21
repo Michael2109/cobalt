@@ -2,6 +2,8 @@ package test.primitives
 
 class IntegerTest():
 
-    def test() <- void:
+    def main() <- void:
         test1:int = 10
         test2:int = 10
+        println(test1)
+        println(test2)

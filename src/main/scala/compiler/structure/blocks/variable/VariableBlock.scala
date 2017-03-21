@@ -42,21 +42,25 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
       if (expressions.isEmpty) {
         row.getType match {
-          case "int" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "double" => asm.visitVarInsn("DLOAD", "" + row.getId)
-          case "float" => asm.visitVarInsn("FLOAD", "" + row.getId)
-          case "short" => asm.visitVarInsn("SALOAD", "" + row.getId)
-          case "boolean" => asm.visitVarInsn("BALOAD", "" + row.getId)
+          case "C" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "B" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "I" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "D" => asm.visitVarInsn("DLOAD", "" + row.getId)
+          case "F" => asm.visitVarInsn("FLOAD", "" + row.getId)
+          case "S" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "J" => asm.visitVarInsn("LLOAD", "" + row.getId)
+          case "Z" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "Ljava/lang/String;" => asm.visitVarInsn("ALOAD", "" + row.getId)
           case _ => ""
         }
       }
       else {
         row.getType match {
-          case "int" => rpnString + asm.visitVarInsn("ISTORE", "" + row.getId)
-          case "double" => rpnString + asm.visitVarInsn("DSTORE", "" + row.getId)
-          case "float" => rpnString + asm.visitVarInsn("FSTORE", "" + row.getId)
-          case "short" => rpnString + asm.visitVarInsn("SASTORE", "" + row.getId)
-          case "boolean" => rpnString + asm.visitVarInsn("BASTORE", "" + row.getId)
+          case "I" => rpnString + asm.visitVarInsn("ISTORE", "" + row.getId)
+          case "D" => rpnString + asm.visitVarInsn("DSTORE", "" + row.getId)
+          case "F" => rpnString + asm.visitVarInsn("FSTORE", "" + row.getId)
+          case "S" => rpnString + asm.visitVarInsn("SASTORE", "" + row.getId)
+          case "Z" => rpnString + asm.visitVarInsn("BASTORE", "" + row.getId)
           case "String" => rpnString + asm.visitVarInsn("ASTORE", "" + row.getId)
 
           case _ => ""

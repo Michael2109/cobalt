@@ -31,8 +31,6 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
   override def getValue: String = ""
 
-  override def getType: String = varType
-
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
@@ -40,13 +38,16 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
       val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
       // if integer
-      varType match {
-        case "int" => rpnString + asm.visitVarInsn("ISTORE", id)
-        case "double" => rpnString + asm.visitVarInsn("DSTORE", id)
-        case "float" => rpnString + asm.visitVarInsn("FSTORE", id)
-        case "short" => rpnString + asm.visitVarInsn("SASTORE", id)
-        case "boolean" => rpnString + asm.visitVarInsn("BASTORE", id)
-        case "String" => rpnString + asm.visitVarInsn("ASTORE", id)
+      getType match {
+        case "C" => rpnString + asm.visitVarInsn("ISTORE", id)
+        case "B" => rpnString + asm.visitVarInsn("ISTORE", id)
+        case "I" => rpnString + asm.visitVarInsn("ISTORE", id)
+        case "D" => rpnString + asm.visitVarInsn("DSTORE", id)
+        case "F" => rpnString + asm.visitVarInsn("FSTORE", id)
+        case "S" => rpnString + asm.visitVarInsn("ISTORE", id)
+        case "Z" => rpnString + asm.visitVarInsn("ISTORE", id)
+        case "J" => rpnString + asm.visitVarInsn("LSTORE", id)
+        case "Ljava/lang/String;" => rpnString + asm.visitVarInsn("ASTORE", id)
 
         case _ => expressions.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
       }
@@ -54,6 +55,20 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     } else {
       ""
     }
+  }
+
+  override def getType: String = varType.trim match {
+
+    case "char" => "C"
+    case "byte" => "I"
+    case "int" => "I"
+    case "long" => "J"
+    case "double" => "D"
+    case "float" => "F"
+    case "short" => "S"
+    case "boolean" => "Z"
+    case "String" => "Ljava/lang/String;"
+    case _ => "void"
   }
 
   override def getClosingCode: String = {
