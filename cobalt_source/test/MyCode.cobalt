@@ -1,7 +1,6 @@
 
 package test
-import other
-import compiler.structure.blocks.ifs.IfBlock
+
 import test.MyCode
 
 open class MyCode(xx:int, yy:int):
