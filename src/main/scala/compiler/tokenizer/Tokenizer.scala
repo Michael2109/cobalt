@@ -26,13 +26,13 @@ class Tokenizer(var str: String) {
   private val tokenDatas: ListBuffer[TokenData] = ListBuffer[TokenData](
     new TokenData("^([<-])".r, TokenType.RETURN_TYPE),
 
-    new TokenData("^((-)?[0-9]+(([.][0-9]*(f|F))|([.](f|F))|(f|F)))".r, TokenType.FLOAT_LITERAL),
-    new TokenData("^((-)?[0-9]+(([.][0-9]*(d|D))|([.](d|D))|(d|D)|([.][0-9]*)|([.])))".r, TokenType.DOUBLE_LITERAL),
+    new TokenData("^([0-9]+(([.][0-9]*(f|F))|([.](f|F))|(f|F)))".r, TokenType.FLOAT_LITERAL),
+    new TokenData("^([0-9]+(([.][0-9]*(d|D))|([.](d|D))|(d|D)|([.][0-9]*)|([.])))".r, TokenType.DOUBLE_LITERAL),
 
-    new TokenData("^((-)?[0-9]+(b|B))".r, TokenType.BYTE_LITERAL),
-    new TokenData("^((-)?[0-9]+(s|S))".r, TokenType.SHORT_LITERAL),
-    new TokenData("^((-)?[0-9]+(l|L))".r, TokenType.LONG_LITERAL),
-    new TokenData("^((-)?[0-9]+)".r, TokenType.INTEGER_LITERAL),
+    new TokenData("^([0-9]+(b|B))".r, TokenType.BYTE_LITERAL),
+    new TokenData("^([0-9]+(s|S))".r, TokenType.SHORT_LITERAL),
+    new TokenData("^([0-9]+(l|L))".r, TokenType.LONG_LITERAL),
+    new TokenData("^([0-9]+)".r, TokenType.INTEGER_LITERAL),
 
     new TokenData("^(\".*\")".r, TokenType.STRING_LITERAL),
     new TokenData("^(\'.\')".r, TokenType.CHARACTER_LITERAL),
@@ -67,21 +67,11 @@ class Tokenizer(var str: String) {
       new Token("", TokenType.EMPTY)
     } else {
       for (data <- tokenDatas) {
-
         val matched = data.pattern.findFirstIn(str)
         if (matched.isDefined) {
           val token: String = matched.getOrElse("")
           str = str.replace(token, "")
-          //   if (data.getType == TokenType.STRING_LITERAL) {
-          //    return new Token(token.substring(1, token.length - 1), TokenType.STRING_LITERAL)
-          //  }
-          //  else if (data.getType == TokenType.CHARACTER_LITERAL) {
-          //    return new Token(token.substring(1, token.length - 1), TokenType.CHARACTER_LITERAL)
-
-          //   }
-          //  else {
-            return new Token(token, data.getType)
-          //  }
+          return new Token(token, data.getType)
         }
       }
       throw new IllegalStateException("Could not parse:" + str)
