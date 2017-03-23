@@ -7,3 +7,4 @@ open class PrintlnTest():
     def main() <- void:
         x: int = 5
         println(x)
+        println("Hello World")
