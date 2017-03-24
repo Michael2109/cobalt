@@ -21,7 +21,7 @@ package compiler.structure.blocks.constants
 import compiler.structure.blocks.Block
 import compiler.utilities.Utils
 
-class DoubleConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+class DoubleConstantBlock(var superBlockInit: Block, value: String) extends AbstractConstantBlock(superBlockInit, false, true) {
 
   override def getName: String = ""
 

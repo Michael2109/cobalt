@@ -20,7 +20,7 @@ package compiler.structure.blocks.constants
 
 import compiler.structure.blocks.Block
 
-class IntConstantBlock(var superBlockInit: Block, value: String) extends Block(superBlockInit, false, true) {
+class IntConstantBlock(var superBlockInit: Block, value: String) extends AbstractConstantBlock(superBlockInit, false, true) {
 
   override def getName: String = ""
 

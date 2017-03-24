@@ -19,26 +19,7 @@
 package compiler.structure.blocks.constants
 
 import compiler.structure.blocks.Block
-import compiler.utilities.Utils
 
-class FloatConstantBlock(var superBlockInit: Block, value: String) extends AbstractConstantBlock(superBlockInit, false, true) {
-
-  override def getName: String = ""
-
-  override def getValue: String = value
-
-  override def getOpeningCode: String = {
-    if (Utils.getMethod(this) != null) {
-      asm.visitLdcInsn("new Float(" + value + ")")
-    } else {
-      ""
-    }
-  }
-
-  override def getClosingCode: String = ""
-
-  override def toString: String = getType + ": " + value
-
-  override def getType: String = "float_const"
+abstract class AbstractConstantBlock(var sBlockInit: Block, container: Boolean, variable: Boolean, immutable: Boolean = false) extends Block(sBlockInit, container, variable, immutable) {
 
 }
