@@ -20,10 +20,9 @@ package compiler.structure.parsers.constants
 
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.constants.ByteConstantBlock
-import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class ByteConstantParser extends Parser[ByteConstantBlock] {
+class ByteConstantParser extends AbstractConstantParser[ByteConstantBlock] {
 
 
   /**

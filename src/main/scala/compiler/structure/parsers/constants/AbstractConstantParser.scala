@@ -19,24 +19,8 @@
 package compiler.structure.parsers.constants
 
 import compiler.structure.blocks.Block
-import compiler.structure.blocks.constants.IntConstantBlock
-import compiler.tokenizer.Tokenizer
+import compiler.structure.parsers.Parser
 
-class IntConstantParser extends AbstractConstantParser[IntConstantBlock] {
-
-
-  /**
-    * A list of all regular expressions
-    *
-    * @return
-    */
-  override def getRegexs: List[String] = List(
-    "[0-9]+"
-  )
-
-  override def parse(superBlock: Block, tokenizer: Tokenizer): IntConstantBlock = {
-    val value: String = tokenizer.nextToken.token
-    new IntConstantBlock(superBlock, value)
-  }
+abstract class AbstractConstantParser[T <: Block] extends Parser[T] {
 
 }

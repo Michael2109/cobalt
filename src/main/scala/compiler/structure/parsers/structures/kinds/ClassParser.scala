@@ -22,19 +22,35 @@ import compiler.data.parameters.Parameters
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.ClassBlock
 import compiler.structure.parsers.Parser
+import compiler.structure.parsers.modifiers.ModifierParser
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {
+
   /**
     * A list of all regular expressions
     *
-    * @return
+    * @return list of regexs
     */
   override def getRegexs: List[String] = List(
-    "(open[ ]+)?class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((([ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[,]?)*)*\\):"
+    "((public|protected|private|open|abstract)[ ]+)*class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((([ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[,]?)*)*\\):"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
+
+    val modifierParsers = List {
+      new ModifierParser
+    }
+
+    //  var token = tokenizer.nextToken.token
+    for (p <- modifierParsers) {
+      //    if(p.shouldParse(token.trim)){
+      //     p match {
+
+      //     }
+      //     token = tokenizer.nextToken.token
+      //  }
+    }
 
     val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open
 

@@ -20,10 +20,9 @@ package compiler.structure.parsers.constants
 
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.constants.FloatConstantBlock
-import compiler.structure.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class FloatConstantParser extends Parser[FloatConstantBlock] {
+class FloatConstantParser extends AbstractConstantParser[FloatConstantBlock] {
 
   /**
     * A list of all regular expressions
