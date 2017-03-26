@@ -1,0 +1,9 @@
+package test.demo
+
+class Demo():
+
+    def main() <- void:
+        println("Hello World")
+        y:int = 1000
+        x:int = 10 + 15 - 10 / 2 * 3 + y
+        println(x)

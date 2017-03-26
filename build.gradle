@@ -92,6 +92,4 @@ dependencies {
 
     // Scala compiler
     compile group: 'org.scala-lang', name: 'scala-compiler', version: '2.12.1'
-
-
 }

@@ -60,6 +60,23 @@ class Tokenizer(var str: String) {
   for (t <- List[String]("\\=", "\\(", "\\)", "\\.", "\\,", "\\'"))
     tokenDatas += new TokenData(("^(" + t + ")").r, TokenType.TOKEN)
 
+  def peek: Token = {
+    str = str.trim
+
+    if (str.isEmpty) {
+      new Token("", TokenType.EMPTY)
+    } else {
+      for (data <- tokenDatas) {
+        val matched = data.pattern.findFirstIn(str)
+        if (matched.isDefined) {
+          val token: String = matched.getOrElse("")
+          return new Token(token, data.getType)
+        }
+      }
+      throw new IllegalStateException("Could not parse:" + str)
+    }
+  }
+
   def nextToken: Token = {
     str = str.trim
 

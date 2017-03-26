@@ -22,7 +22,6 @@ import compiler.data.parameters.Parameters
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.ClassBlock
 import compiler.structure.parsers.Parser
-import compiler.structure.parsers.modifiers.ModifierParser
 import compiler.tokenizer.Tokenizer
 
 class ClassParser extends Parser[ClassBlock] {
@@ -39,7 +38,7 @@ class ClassParser extends Parser[ClassBlock] {
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
 
     val modifierParsers = List {
-      new ModifierParser
+
     }
 
     //  var token = tokenizer.nextToken.token
