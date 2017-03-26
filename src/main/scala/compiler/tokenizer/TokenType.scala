@@ -21,6 +21,16 @@ package compiler.tokenizer
 object TokenType extends Enumeration {
   type TokenType = Value
   val EMPTY,
+
+  // Modifiers
+  PUBLIC,
+  PRIVATE,
+  PROTECTED,
+  ABSTRACT,
+  OVERRIDE,
+  INTERNAL,
+  OPEN,
+
   TOKEN,
   IDENTIFIER,
   RETURN_TYPE,

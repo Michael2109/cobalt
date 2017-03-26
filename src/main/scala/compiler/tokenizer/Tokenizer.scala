@@ -24,6 +24,16 @@ import scala.collection.mutable.ListBuffer
 class Tokenizer(var str: String) {
 
   private val tokenDatas: ListBuffer[TokenData] = ListBuffer[TokenData](
+
+    /* Modifiers */
+    new TokenData("public".r, TokenType.PUBLIC),
+    new TokenData("private".r, TokenType.PRIVATE),
+    new TokenData("protected".r, TokenType.PROTECTED),
+    new TokenData("internal".r, TokenType.INTERNAL),
+    new TokenData("abstract".r, TokenType.ABSTRACT),
+    new TokenData("override".r, TokenType.OVERRIDE),
+    new TokenData("open".r, TokenType.OPEN),
+
     new TokenData("^([<-])".r, TokenType.RETURN_TYPE),
 
     new TokenData("^([0-9]+(([.][0-9]*(f|F))|([.](f|F))|(f|F)))".r, TokenType.FLOAT_LITERAL),

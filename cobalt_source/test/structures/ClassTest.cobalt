@@ -1,5 +1,5 @@
 package test.structures
 
-open class ClassTest():
+public private open class ClassTest():
 
     open def method1() <- void:

@@ -24,16 +24,17 @@ import compiler.structure.blocks.modifiers.ModifierBlock
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
 import compiler.symbol_table.{Row, SymbolTable}
+import compiler.tokenizer.TokenType.TokenType
 
 /**
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
+class ClassBlock(var superBlockInit: Block, modifiers: List[TokenType], var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
-  val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
+  val `sealed`: String = if (false) "+ACC_FINAL" else ""
   // Parameters added to constuctor
   private var parameterString: String = ""
   // Local variables from the parameters
@@ -110,6 +111,6 @@ class ClassBlock(var superBlockInit: Block, isSealed: Boolean, var name: String,
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses + " " + expressions
+    name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses + " " + expressions + " modifiers:" + modifiers
   }
 }

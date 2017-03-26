@@ -19,10 +19,12 @@
 package compiler.data
 
 object Modifiers extends Enumeration {
+  type Modifiers = Value
   val ABSTRACT,
   PUBLIC,
   PRIVATE,
   PROTECTED,
   INTERNAL,
-  OVERRIDES = Value
+  OVERRIDES,
+  OPEN = Value
 }

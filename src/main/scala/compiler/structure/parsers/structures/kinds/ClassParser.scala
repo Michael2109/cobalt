@@ -22,7 +22,10 @@ import compiler.data.parameters.Parameters
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.ClassBlock
 import compiler.structure.parsers.Parser
-import compiler.tokenizer.Tokenizer
+import compiler.tokenizer.TokenType.TokenType
+import compiler.tokenizer.{TokenType, Tokenizer}
+
+import scala.collection.mutable.ListBuffer
 
 class ClassParser extends Parser[ClassBlock] {
 
@@ -37,12 +40,24 @@ class ClassParser extends Parser[ClassBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
 
-    val modifierParsers = List {
+    val modifiers = {
+      var result: ListBuffer[TokenType] = ListBuffer()
 
-    }
+      while (tokenizer.peek.tokenType == TokenType.PUBLIC ||
+        tokenizer.peek.tokenType == TokenType.PRIVATE ||
+        tokenizer.peek.tokenType == TokenType.PROTECTED ||
+        tokenizer.peek.tokenType == TokenType.INTERNAL ||
+        tokenizer.peek.tokenType == TokenType.OPEN ||
+        tokenizer.peek.tokenType == TokenType.ABSTRACT ||
+        tokenizer.peek.tokenType == TokenType.OVERRIDE) {
+
+        result += tokenizer.nextToken.tokenType
+      }
+      result
+    }: ListBuffer[TokenType]
 
     //  var token = tokenizer.nextToken.token
-    for (p <- modifierParsers) {
+    for (p <- modifiers) {
       //    if(p.shouldParse(token.trim)){
       //     p match {
 
@@ -57,7 +72,8 @@ class ClassParser extends Parser[ClassBlock] {
       tokenizer.nextToken // skip class
 
     val className: String = tokenizer.nextToken.token
-    tokenizer.nextToken // (
+    tokenizer.nextToken
+    // (
     var nextToken: String = tokenizer.nextToken.token
 
     var paramString = ""
@@ -82,6 +98,6 @@ class ClassParser extends Parser[ClassBlock] {
     }
 
 
-    new ClassBlock(superBlock, isSealed, className, parameters.toArray, parentClass, implementedClasses)
+    new ClassBlock(superBlock, modifiers.toList, className, parameters.toArray, parentClass, implementedClasses)
   }
 }
