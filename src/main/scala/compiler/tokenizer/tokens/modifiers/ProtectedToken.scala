@@ -16,14 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.tokenizer
+package compiler.tokenizer.tokens.modifiers
 
-class Token(val _token: String, val _type: TokenType) {
+import scala.util.matching.Regex
 
-  def token: String = _token
+class ProtectedToken extends ModifierToken {
 
-  def tokenType: TokenType = _type
-
-  override def toString: String = _token
-
+  override def getRegex(): Regex = "protected".r
 }

@@ -16,14 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.tokenizer
+package compiler.tokenizer.tokens.modifiers
 
-class Token(val _token: String, val _type: TokenType) {
+import compiler.tokenizer.TokenType
 
-  def token: String = _token
-
-  def tokenType: TokenType = _type
-
-  override def toString: String = _token
+abstract class ModifierToken extends TokenType {
 
 }

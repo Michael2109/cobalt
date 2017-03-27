@@ -21,7 +21,8 @@ package compiler.structure.parsers.prints
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.prints.PrintlnBlock
 import compiler.structure.parsers.Parser
-import compiler.tokenizer.{Token, TokenType, Tokenizer}
+import compiler.tokenizer.tokens.constants.StringLiteralToken
+import compiler.tokenizer.{Token, Tokenizer}
 
 // todo set up print parser
 class PrintlnParser extends Parser[PrintlnBlock] {
@@ -42,7 +43,7 @@ class PrintlnParser extends Parser[PrintlnBlock] {
     tokenizer.nextToken
     // skip (
     val value: Token = tokenizer.nextToken
-    val isVar: Boolean = value.tokenType != TokenType.STRING_LITERAL
+    val isVar: Boolean = !value.tokenType.isInstanceOf[StringLiteralToken]
 
     new PrintlnBlock(superBlock, value.token, isVar)
   }

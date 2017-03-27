@@ -24,7 +24,7 @@ import compiler.structure.blocks.modifiers.ModifierBlock
 import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
 import compiler.symbol_table.{Row, SymbolTable}
-import compiler.tokenizer.TokenType.TokenType
+import compiler.tokenizer.TokenType
 
 /**
   * Represents a class.

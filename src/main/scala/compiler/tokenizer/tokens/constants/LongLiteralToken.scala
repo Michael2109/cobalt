@@ -16,14 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.tokenizer
+package compiler.tokenizer.tokens.constants
 
-class Token(val _token: String, val _type: TokenType) {
+import compiler.tokenizer.TokenType
 
-  def token: String = _token
+import scala.util.matching.Regex
 
-  def tokenType: TokenType = _type
+class LongLiteralToken extends TokenType {
 
-  override def toString: String = _token
-
+  override def getRegex(): Regex = "^([0-9]+(l|L))".r
 }

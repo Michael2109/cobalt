@@ -18,44 +18,10 @@
 
 package compiler.tokenizer
 
-object TokenType extends Enumeration {
-  type TokenType = Value
-  val EMPTY,
+import scala.util.matching.Regex
 
-  // Modifiers
-  PUBLIC,
-  PRIVATE,
-  PROTECTED,
-  ABSTRACT,
-  OVERRIDE,
-  INTERNAL,
-  OPEN,
+trait TokenType {
 
-  TOKEN,
-  IDENTIFIER,
-  RETURN_TYPE,
-  UNDERSCORE,
-
-  INTEGER_LITERAL,
-  BYTE_LITERAL,
-  SHORT_LITERAL,
-  LONG_LITERAL,
-  DOUBLE_LITERAL,
-  FLOAT_LITERAL,
-  STRING_LITERAL,
-  CHARACTER_LITERAL,
-
-  MODULUS_OPERATOR,
-  ADD_OPERATOR,
-  SUBTRACT_OPERATOR,
-  MULTIPLY_OPERATOR,
-  DIVIDE_OPERATOR,
-  END_STATEMENT,
-  COLON,
-  SMALLER_THAN,
-  SMALLER_THAN_EQUAL,
-  LARGER_THAN,
-  LARGER_THAN_EQUAL,
-  EQUAL_TO = Value
+ def getRegex(): Regex
 
 }

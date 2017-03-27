@@ -19,68 +19,76 @@
 package compiler.tokenizer
 
 
+import compiler.tokenizer.tokens._
+import compiler.tokenizer.tokens.constants._
+import compiler.tokenizer.tokens.modifiers._
+import compiler.tokenizer.tokens.operators._
+
 import scala.collection.mutable.ListBuffer
 
 class Tokenizer(var str: String) {
 
-  private val tokenDatas: ListBuffer[TokenData] = ListBuffer[TokenData](
+  private val tokenDatas: ListBuffer[TokenType] = ListBuffer[TokenType](
 
     /* Modifiers */
-    new TokenData("public".r, TokenType.PUBLIC),
-    new TokenData("private".r, TokenType.PRIVATE),
-    new TokenData("protected".r, TokenType.PROTECTED),
-    new TokenData("internal".r, TokenType.INTERNAL),
-    new TokenData("abstract".r, TokenType.ABSTRACT),
-    new TokenData("override".r, TokenType.OVERRIDE),
-    new TokenData("open".r, TokenType.OPEN),
+    new PublicToken,
+    new PrivateToken,
+    new ProtectedToken,
+    new InternalToken,
+    new AbstractToken,
+    new OverrideToken,
+    new OpenToken,
 
-    new TokenData("^([<-])".r, TokenType.RETURN_TYPE),
+    new ReturnTypeToken,
 
-    new TokenData("^([0-9]+(([.][0-9]*(f|F))|([.](f|F))|(f|F)))".r, TokenType.FLOAT_LITERAL),
-    new TokenData("^([0-9]+(([.][0-9]*(d|D))|([.](d|D))|(d|D)|([.][0-9]*)|([.])))".r, TokenType.DOUBLE_LITERAL),
+    new FloatLiteralToken,
+    new DoubleLiteralToken,
+    new ByteLiteralToken,
+    new ShortLiteralToken,
+    new LongLiteralToken,
+    new IntegerLiteralToken,
 
-    new TokenData("^([0-9]+(b|B))".r, TokenType.BYTE_LITERAL),
-    new TokenData("^([0-9]+(s|S))".r, TokenType.SHORT_LITERAL),
-    new TokenData("^([0-9]+(l|L))".r, TokenType.LONG_LITERAL),
-    new TokenData("^([0-9]+)".r, TokenType.INTEGER_LITERAL),
+    new StringLiteralToken,
+    new CharacterLiteralToken,
 
-    new TokenData("^(\".*\")".r, TokenType.STRING_LITERAL),
-    new TokenData("^(\'.\')".r, TokenType.CHARACTER_LITERAL),
+    new AddOperatorToken,
+    new SubtractOperatorToken,
+    new MultiplyOperatorToken,
+    new DivideOperatorToken,
+    new ModulusOperatorToken,
 
-    new TokenData("^([+])".r, TokenType.ADD_OPERATOR),
-    new TokenData("^([-])".r, TokenType.SUBTRACT_OPERATOR),
-    new TokenData("^([*])".r, TokenType.MULTIPLY_OPERATOR),
-    new TokenData("^([/])".r, TokenType.DIVIDE_OPERATOR),
-    new TokenData("^([%])".r, TokenType.MODULUS_OPERATOR),
+    new EndStatementToken,
+    new ColonToken,
+    new UnderscoreToken,
 
+    new EqualToToken,
+    new SmallerThanToken,
+    new SmallerThanEqualToken,
+    new LargerThanToken,
+    new LargerThanEqualToken,
 
-    new TokenData("^([;])".r, TokenType.END_STATEMENT),
-    new TokenData("^([:])".r, TokenType.COLON),
-    new TokenData("^([_])".r, TokenType.UNDERSCORE),
+    new IdentifierToken,
 
-    new TokenData("^([==])".r, TokenType.EQUAL_TO),
-    new TokenData("^([<])".r, TokenType.SMALLER_THAN),
-    new TokenData("^([<=])".r, TokenType.SMALLER_THAN_EQUAL),
-    new TokenData("^([>])".r, TokenType.LARGER_THAN),
-    new TokenData("^([>=])".r, TokenType.LARGER_THAN_EQUAL),
-
-    new TokenData("^([a-zA-Z][a-zA-Z0-9]*)".r, TokenType.IDENTIFIER)
+    new AssignmentToken,
+    new OpeningBracketToken,
+    new ClosingBracketToken,
+    new FullStopToken,
+    new CommaToken,
+    new ApostropheToken
   )
 
-  for (t <- List[String]("\\=", "\\(", "\\)", "\\.", "\\,", "\\'"))
-    tokenDatas += new TokenData(("^(" + t + ")").r, TokenType.TOKEN)
 
   def peek: Token = {
     str = str.trim
 
     if (str.isEmpty) {
-      new Token("", TokenType.EMPTY)
+      new Token("", new EmptyToken)
     } else {
       for (data <- tokenDatas) {
-        val matched = data.pattern.findFirstIn(str)
+        val matched = data.getRegex().findFirstIn(str)
         if (matched.isDefined) {
           val token: String = matched.getOrElse("")
-          return new Token(token, data.getType)
+          return new Token(token, data)
         }
       }
       throw new IllegalStateException("Could not parse:" + str)
@@ -91,14 +99,14 @@ class Tokenizer(var str: String) {
     str = str.trim
 
     if (str.isEmpty) {
-      new Token("", TokenType.EMPTY)
+      new Token("", new EmptyToken)
     } else {
       for (data <- tokenDatas) {
-        val matched = data.pattern.findFirstIn(str)
+        val matched = data.getRegex().findFirstIn(str)
         if (matched.isDefined) {
           val token: String = matched.getOrElse("")
           str = str.replace(token, "")
-          return new Token(token, data.getType)
+          return new Token(token, data)
         }
       }
       throw new IllegalStateException("Could not parse:" + str)
