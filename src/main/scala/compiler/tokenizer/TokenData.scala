@@ -18,8 +18,6 @@
 
 package compiler.tokenizer
 
-import compiler.tokenizer.TokenType.TokenType
-
 import scala.util.matching.Regex
 
 class TokenData(val pattern: Regex, val `type`: TokenType) {

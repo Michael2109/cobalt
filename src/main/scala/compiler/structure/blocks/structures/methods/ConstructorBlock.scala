@@ -23,13 +23,13 @@ import compiler.structure.blocks.Block
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
-class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Parameter], className: String) extends Block(superBlockInit, true, false) {
+class ConstructorBlock(val superBlockInit: Block, val parameters: List[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("<init>").setClassName(className))
 
   val classBlock: Block = superBlock
+  val parameterString = parameters.map(_.getType).mkString("")
   private val packageDir: String = Utils.getPackage(this)
-  var parameterString = ""
   var localVariableString = ""
     var i = 1
 
@@ -38,9 +38,9 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
       // Add to the symbol table
       SymbolTable.getInstance.addRow(new Row().setId(id).setName(parameter.getName).setType(parameter.getType).setMethodName(getName).setClassName(className))
 
-      parameterString += parameter.getAsmType
+
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
-      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + i + ");\n"
+      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lConstructor0, lConstructor2, " + i + ");\n"
       //     SymbolTable.getInstance.addRow(new Row().setId(i).setName(parameter.getName).setClassName(className))
       i += 1
 
@@ -57,6 +57,9 @@ class ConstructorBlock(var superBlockInit: Block, var parameters: Array[Paramete
   override def getType: String = "constructor"
 
   override def getOpeningCode: String = {
+
+    println("Param String: " + parameterString)
+
     asm.getOpeningBrace +
       asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
       asm.visitCode() +

@@ -25,21 +25,42 @@ import compiler.structure.blocks.packages.PackageBlock
 import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.TokenType
+import compiler.tokenizer.tokens.keywords.modifiers._
 
 /**
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlockInit: Block, modifiers: List[TokenType], var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
+class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var name: String, var parameters: List[Parameter], extendsTokens: List[TokenType], implementedTokens: List[TokenType]) extends Block(superBlockInit, true, false) {
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
   val `sealed`: String = if (false) "+ACC_FINAL" else ""
+  private val modifiersASM = {
+    var result = ""
+    for (m <- modifierTokens) {
+      if (m.isInstanceOf[PublicToken]) {
+        result += "+ACC_PUBLIC"
+      }
+      else if (m.isInstanceOf[InternalToken]) {
+        result += ""
+      }
+      else if (m.isInstanceOf[ProtectedToken]) {
+        result += "+ACC_PROTECTED"
+      }
+      else if (m.isInstanceOf[AbstractToken]) {
+        result += "+ACC_ABSTRACT"
+      }
+    }
+    if (!(modifierTokens.find(m => m.isInstanceOf[InternalToken]).size > 0)) {
+      result += "+ACC_PRIVATE"
+    }
+    result
+  }
   // Parameters added to constuctor
   private var parameterString: String = ""
   // Local variables from the parameters
   private var localVariableString: String = ""
-
   // Create a constructor blocks and add it to the class blocks
   private var constructorBlock: Block = new ConstructorBlock(this, parameters, name)
 
@@ -61,9 +82,9 @@ class ClassBlock(var superBlockInit: Block, modifiers: List[TokenType], var name
     }
 
     for (parameter <- parameters) {
-      parameterString += parameter.getAsmType
+      parameterString += parameter.getType
       Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
-      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
+      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
     }
   }
 
@@ -87,7 +108,8 @@ class ClassBlock(var superBlockInit: Block, modifiers: List[TokenType], var name
       asm.getClassOpening(name) +
       asm.executeMethodOpening +
       asm.getClassWriter +
-        asm.visitClassWriter(`sealed`, packageBlock.directory + "/" + name, null, parentClass, null)
+        "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + "java/lang/Object" + "\", new String[]{});\n"
+
   }
 
   /**
@@ -111,6 +133,6 @@ class ClassBlock(var superBlockInit: Block, modifiers: List[TokenType], var name
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    name + " ( " + paramString + ") extends " + parentClass + " implements " + implementedClasses + " " + expressions + " modifiers:" + modifiers
+    name + " ( " + paramString + ") extends " + extendsTokens + " implements " + implementedTokens + " " + expressions + " modifiers:" + modifierTokens
   }
 }

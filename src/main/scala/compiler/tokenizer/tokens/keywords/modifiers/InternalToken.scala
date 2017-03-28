@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test_classes;
+package compiler.tokenizer.tokens.keywords.modifiers
 
-/**
- * Used to view ASM code
- */
-public abstract class TestCode {
+import scala.util.matching.Regex
 
+class InternalToken extends ModifierToken {
 
+  override def getRegex(): Regex = "internal".r
 }

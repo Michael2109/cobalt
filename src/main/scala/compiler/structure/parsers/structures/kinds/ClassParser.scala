@@ -22,7 +22,9 @@ import compiler.data.parameters.Parameters
 import compiler.structure.blocks.Block
 import compiler.structure.blocks.structures.kinds.ClassBlock
 import compiler.structure.parsers.Parser
-import compiler.tokenizer.tokens.modifiers.ModifierToken
+import compiler.tokenizer.tokens.EmptyToken
+import compiler.tokenizer.tokens.keywords.modifiers.ModifierToken
+import compiler.tokenizer.tokens.keywords.{ExtendsToken, ImplementsToken}
 import compiler.tokenizer.{TokenType, Tokenizer}
 
 import scala.collection.mutable.ListBuffer
@@ -40,34 +42,19 @@ class ClassParser extends Parser[ClassBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
 
-    val modifiers = {
+    val modifiers: ListBuffer[TokenType] = {
       var result: ListBuffer[TokenType] = ListBuffer()
-
       while (tokenizer.peek.tokenType.isInstanceOf[ModifierToken]) {
-
         result += tokenizer.nextToken.tokenType
       }
       result
-    }: ListBuffer[TokenType]
-
-    //  var token = tokenizer.nextToken.token
-    for (p <- modifiers) {
-      //    if(p.shouldParse(token.trim)){
-      //     p match {
-
-      //     }
-      //     token = tokenizer.nextToken.token
-      //  }
     }
 
-    val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open
-
-    if (!isSealed)
-      tokenizer.nextToken // skip class
+    tokenizer.nextToken // skip "class"
 
     val className: String = tokenizer.nextToken.token
     tokenizer.nextToken
-    // (
+    // skip "("
     var nextToken: String = tokenizer.nextToken.token
 
     var paramString = ""
@@ -76,22 +63,27 @@ class ClassParser extends Parser[ClassBlock] {
       nextToken = tokenizer.nextToken.token
     }
 
+
     val parameters = new Parameters().getParameters(paramString)
 
-    var parentClass = ""
+    val extendsToken: List[TokenType] = List[TokenType](
+      if (tokenizer.peek.tokenType.isInstanceOf[ExtendsToken]) {
+        tokenizer.nextToken.tokenType
+        tokenizer.nextToken.tokenType
+      } else {
+        new EmptyToken
+      }
+    ).filter(!_.isInstanceOf[EmptyToken])
 
-    if (tokenizer.nextToken.token == "extends") {
-      parentClass = tokenizer.nextToken.token
-    } else {
-      parentClass = "java/lang/Object"
-    }
+    val implementsTokens: List[TokenType] = List[TokenType](
+      if (tokenizer.peek.tokenType.isInstanceOf[ImplementsToken]) {
+        tokenizer.nextToken.tokenType
+        tokenizer.nextToken.tokenType
+      } else {
+        new EmptyToken
+      }
+    ).filter(!_.isInstanceOf[EmptyToken])
 
-    var implementedClasses = ""
-    if (tokenizer.nextToken.token == "implements") {
-      implementedClasses = tokenizer.nextToken.token
-    }
-
-
-    new ClassBlock(superBlock, modifiers.toList, className, parameters.toArray, parentClass, implementedClasses)
+    new ClassBlock(superBlock, modifiers.toList, className, parameters, extendsToken, implementsTokens)
   }
 }

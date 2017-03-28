@@ -48,15 +48,14 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
     SymbolTable.getInstance.addRow(new Row().setId(id).setName(parameter.getName).setType(parameter.getType).setMethodName(getName).setClassName(Utils.getClass(this).get.getName))
 
     Block.TOTAL_BLOCKS += 1
-    localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getAsmType + "\", null, lMethod0, lMethod1, " + i + ");\n"
+    localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lMethod0, lMethod1, " + i + ");\n"
     // SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(i).setName(parameter.getName))
 
     i += 1
   }
 
   val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
-
-  val parameterString: String = params.map(_.getAsmType).mkString("")
+  val parameterString: String = params.map(_.getType).mkString("")
 
   var localVariableString: String = ""
   var i = 1

@@ -21,7 +21,7 @@ package compiler.tokenizer
 
 import compiler.tokenizer.tokens._
 import compiler.tokenizer.tokens.constants._
-import compiler.tokenizer.tokens.modifiers._
+import compiler.tokenizer.tokens.keywords.modifiers._
 import compiler.tokenizer.tokens.operators._
 
 import scala.collection.mutable.ListBuffer
@@ -32,7 +32,6 @@ class Tokenizer(var str: String) {
 
     /* Modifiers */
     new PublicToken,
-    new PrivateToken,
     new ProtectedToken,
     new InternalToken,
     new AbstractToken,

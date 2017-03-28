@@ -35,7 +35,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
 
   private val `type`: String = null
   // private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
-  private var parameterString: String = params.map(p => p.getAsmType).mkString(";")
+  private var parameterString: String = params.map(p => p.getType).mkString(";")
   private var argumentString: String = ""
   private var directory: String = ""
 
@@ -62,7 +62,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
         for (param <- params) {
           println(Utils.getMethod(this) + " " + param.getName)
           param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
-          parameterString += param.getAsmType
+          parameterString += param.getType
           argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
         }
   }

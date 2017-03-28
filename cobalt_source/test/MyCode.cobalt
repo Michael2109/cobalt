@@ -23,9 +23,9 @@ open class MyCode(xx:int, yy:int):
         *Another test
         */
         def main() <- void:
-            stringyThing: String = "Thisisastring"
+            //stringyThing: String = "Thisisastring"
             z: int = (10 + 25) * 5 - 3 + (7 * 5) + 5 + 5
-            longTest: long
+            longTest: long = 10L
             ty: int = 15
             //myCode: MyCode = new MyCode()
 

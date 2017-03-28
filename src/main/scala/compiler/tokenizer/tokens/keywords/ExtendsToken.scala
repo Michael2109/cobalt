@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.tokenizer.tokens.modifiers
+package compiler.tokenizer.tokens.keywords
+
+import compiler.tokenizer.TokenType
 
 import scala.util.matching.Regex
 
-class PrivateToken extends ModifierToken {
+class ExtendsToken extends TokenType {
 
-  override def getRegex(): Regex = "private".r
+  override def getRegex(): Regex = "extends".r
 }
