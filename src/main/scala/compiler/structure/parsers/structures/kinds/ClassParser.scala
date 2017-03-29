@@ -37,11 +37,12 @@ class ClassParser extends Parser[ClassBlock] {
     * @return list of regexs
     */
   override def getRegexs: List[String] = List(
-    "((public|protected|private|open|abstract)[ ]+)*class[ ]+[a-zA-Z][a-zA-Z0-9]*\\((([ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[,]?)*)*\\):"
+    "(public[ ]+|protected[ ]+|internal[ ]+)?(open[ ]+|abstract[ ]+)*class[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((([ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[,]?)*)*\\)([ ]+extends[ ]+[a-zA-Z][a-zA-Z0-9]*)?+([ ]+implements[ ]+[a-zA-Z][a-zA-Z0-9]*([,][a-zA-Z][a-zA-Z0-9]*)*)?:?"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
 
+    println(tokenizer.line)
     val modifiers: ListBuffer[TokenType] = {
       var result: ListBuffer[TokenType] = ListBuffer()
       while (tokenizer.peek.tokenType.isInstanceOf[ModifierToken]) {

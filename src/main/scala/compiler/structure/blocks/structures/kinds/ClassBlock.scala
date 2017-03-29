@@ -38,25 +38,27 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var
   val `sealed`: String = if (false) "+ACC_FINAL" else ""
   private val modifiersASM = {
     var result = ""
+    if (!(modifierTokens.find(m => m.isInstanceOf[InternalToken]).size > 0)) {
+      result = "+ACC_PRIVATE"
+    }
     for (m <- modifierTokens) {
       if (m.isInstanceOf[PublicToken]) {
-        result += "+ACC_PUBLIC"
+        result = "+ACC_PUBLIC"
       }
       else if (m.isInstanceOf[InternalToken]) {
-        result += ""
+        result = "0"
       }
       else if (m.isInstanceOf[ProtectedToken]) {
-        result += "+ACC_PROTECTED"
+        result = "+ACC_PROTECTED"
       }
       else if (m.isInstanceOf[AbstractToken]) {
         result += "+ACC_ABSTRACT"
       }
     }
-    if (!(modifierTokens.find(m => m.isInstanceOf[InternalToken]).size > 0)) {
-      result += "+ACC_PRIVATE"
-    }
+
     result
   }
+
   // Parameters added to constuctor
   private var parameterString: String = ""
   // Local variables from the parameters

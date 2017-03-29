@@ -26,7 +26,7 @@ import compiler.tokenizer.tokens.operators._
 
 import scala.collection.mutable.ListBuffer
 
-class Tokenizer(var str: String) {
+class Tokenizer(var line: String) {
 
   private val tokenDatas: ListBuffer[TokenType] = ListBuffer[TokenType](
 
@@ -78,39 +78,39 @@ class Tokenizer(var str: String) {
 
 
   def peek: Token = {
-    str = str.trim
+    line = line.trim
 
-    if (str.isEmpty) {
+    if (line.isEmpty) {
       new Token("", new EmptyToken)
     } else {
       for (data <- tokenDatas) {
-        val matched = data.getRegex().findFirstIn(str)
+        val matched = data.getRegex().findFirstIn(line)
         if (matched.isDefined) {
           val token: String = matched.getOrElse("")
           return new Token(token, data)
         }
       }
-      throw new IllegalStateException("Could not parse:" + str)
+      throw new IllegalStateException("Could not parse:" + line)
     }
   }
 
   def nextToken: Token = {
-    str = str.trim
+    line = line.trim
 
-    if (str.isEmpty) {
+    if (line.isEmpty) {
       new Token("", new EmptyToken)
     } else {
       for (data <- tokenDatas) {
-        val matched = data.getRegex().findFirstIn(str)
+        val matched = data.getRegex().findFirstIn(line)
         if (matched.isDefined) {
           val token: String = matched.getOrElse("")
-          str = str.replace(token, "")
+          line = line.replace(token, "")
           return new Token(token, data)
         }
       }
-      throw new IllegalStateException("Could not parse:" + str)
+      throw new IllegalStateException("Could not parse:" + line)
     }
   }
 
-  def hasNextToken: Boolean = !str.isEmpty
+  def hasNextToken: Boolean = !line.isEmpty
 }

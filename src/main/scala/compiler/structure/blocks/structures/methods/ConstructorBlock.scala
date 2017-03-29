@@ -58,8 +58,6 @@ class ConstructorBlock(val superBlockInit: Block, val parameters: List[Parameter
 
   override def getOpeningCode: String = {
 
-    println("Param String: " + parameterString)
-
     asm.getOpeningBrace +
       asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
       asm.visitCode() +
