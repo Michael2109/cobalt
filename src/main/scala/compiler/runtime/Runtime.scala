@@ -20,11 +20,11 @@ package compiler.runtime
 
 import java.io.File
 
-import compiler.structure.blocks.Block
-import compiler.structure.blocks.packages.PackageBlock
-import compiler.structure.blocks.structures.FileBlock
-import compiler.structure.parsers.imports.ImportParser
-import compiler.structure.parsers.packages.PackageParser
+import compiler.ast.blocks.Block
+import compiler.ast.blocks.packages.PackageBlock
+import compiler.ast.blocks.structures.FileBlock
+import compiler.ast.parsers.imports.ImportParser
+import compiler.ast.parsers.packages.PackageParser
 import compiler.symbol_table.SymbolTable
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils
@@ -33,7 +33,7 @@ import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
 /**
-  * Parses the code to create the AST structure.
+  * Parses the code to create the AST ast.
   */
 class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
@@ -106,7 +106,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
   private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "").split("\n").filter(_.trim != "").toList
 
   /**
-    * Recursively gets the class AST structure.
+    * Recursively gets the class AST ast.
     */
   private def getBlockStructure(lines: List[String], block: Block, previousIndentation: Int, currentLine: Int) {
     if (lines.nonEmpty) {

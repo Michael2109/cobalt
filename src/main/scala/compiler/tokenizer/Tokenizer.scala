@@ -22,6 +22,7 @@ package compiler.tokenizer
 import compiler.tokenizer.tokens._
 import compiler.tokenizer.tokens.constants._
 import compiler.tokenizer.tokens.keywords.modifiers._
+import compiler.tokenizer.tokens.keywords.{ExtendsToken, ImplementsToken}
 import compiler.tokenizer.tokens.operators._
 
 import scala.collection.mutable.ListBuffer
@@ -37,6 +38,10 @@ class Tokenizer(var line: String) {
     new AbstractToken,
     new OverrideToken,
     new OpenToken,
+
+    // keywords
+    new ExtendsToken,
+    new ImplementsToken,
 
     new ReturnTypeToken,
 
@@ -76,7 +81,11 @@ class Tokenizer(var line: String) {
     new ApostropheToken
   )
 
-
+  /**
+    * Returns the next token without removing it from the line
+    *
+    * @return The next token
+    */
   def peek: Token = {
     line = line.trim
 
@@ -94,6 +103,11 @@ class Tokenizer(var line: String) {
     }
   }
 
+  /**
+    * Returns the next token and removes it from the line
+    *
+    * @return The next token
+    */
   def nextToken: Token = {
     line = line.trim
 
@@ -102,7 +116,7 @@ class Tokenizer(var line: String) {
     } else {
       for (data <- tokenDatas) {
         val matched = data.getRegex().findFirstIn(line)
-        if (matched.isDefined) {
+        if (matched.isDefined && matched.get == line.substring(0, matched.get.size)) {
           val token: String = matched.getOrElse("")
           line = line.replace(token, "")
           return new Token(token, data)
@@ -112,5 +126,10 @@ class Tokenizer(var line: String) {
     }
   }
 
+  /**
+    * Returns whether the next token exists.
+    *
+    * @return
+    */
   def hasNextToken: Boolean = !line.isEmpty
 }

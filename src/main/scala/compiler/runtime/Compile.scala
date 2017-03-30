@@ -20,8 +20,8 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.structure.blocks.Block
-import compiler.structure.blocks.structures.methods.MethodBlock
+import compiler.ast.blocks.Block
+import compiler.ast.blocks.structures.methods.MethodBlock
 
 
 /**
@@ -54,7 +54,7 @@ class Compile(val outputFile: File, val block: Block) {
   }*/
 
   /**
-    * Converts the blocks structure into ASM and saves as a .java file
+    * Converts the blocks ast into ASM and saves as a .java file
     */
   def generateASM(block: Block) {
 

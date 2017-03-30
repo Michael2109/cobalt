@@ -1,6 +1,6 @@
 package test.assignment
 
-protected abstract class AssignmentTest():
+public class AssignmentTest() extends TestClass implements TestImplement,AnotherClass:
 
     def main() <- void:
         test1:int = 5 + 5 - 3

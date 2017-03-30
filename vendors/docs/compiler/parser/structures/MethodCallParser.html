@@ -21,11 +21,11 @@
         <head>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <title>cobalt 1.0-SNAPSHOT API - compiler.structure.parsers.structures.MethodCallParser</title>
+            <title>cobalt 1.0-SNAPSHOT API - compiler.ast.parsers.structures.MethodCallParser</title>
             <meta name="description"
-                  content="cobalt 1.0 - SNAPSHOT API - compiler.structure.parsers.structures.MethodCallParser"/>
+                  content="cobalt 1.0 - SNAPSHOT API - compiler.ast.parsers.structures.MethodCallParser"/>
             <meta name="keywords"
-                  content="cobalt 1.0 SNAPSHOT API compiler.structure.parsers.structures.MethodCallParser"/>
+                  content="cobalt 1.0 SNAPSHOT API compiler.ast.parsers.structures.MethodCallParser"/>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
@@ -110,7 +110,7 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
               </li>
-                  <li name="compiler.structure.parsers" visbl="pub" class="indented2 " data-isabs="false"
+                  <li name="compiler.ast.parsers" visbl="pub" class="indented2 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="parser"></a><a id="parser:parser"></a>
       <span class="permalink">
@@ -130,7 +130,7 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="compiler">compiler</a></dd></dl></div>
                   </li>
-                  <li name="compiler.structure.parsers.structures" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.parsers.structures" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="structures"></a><a id="structures:structures"></a>
       <span class="permalink">
@@ -151,12 +151,12 @@
                       <div class="fullcomment">
                           <dl class="attributes block">
                               <dt>Definition Classes</dt>
-                              <dd><a href="../index.html" class="extype" name="compiler.structure.parsers">parser</a>
+                              <dd><a href="../index.html" class="extype" name="compiler.ast.parsers">parser</a>
                               </dd>
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.structure.parsers.structures.kinds" visbl="pub" class="indented4 "
+                  <li name="compiler.ast.parsers.structures.kinds" visbl="pub" class="indented4 "
                       data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="kinds"></a><a id="kinds:kinds"></a>
       <span class="permalink">
@@ -177,12 +177,13 @@
                       <div class="fullcomment">
                           <dl class="attributes block">
                               <dt>Definition Classes</dt>
-                              <dd><a href="index.html" class="extype" name="compiler.structure.parsers.structures">structures</a>
+                              <dd><a href="index.html" class="extype"
+                                     name="compiler.ast.parsers.structures">structures</a>
                               </dd>
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.structure.parsers.structures.methods" visbl="pub" class="indented4 "
+                  <li name="compiler.ast.parsers.structures.methods" visbl="pub" class="indented4 "
                       data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="methods"></a><a id="methods:methods"></a>
       <span class="permalink">
@@ -203,7 +204,8 @@
                       <div class="fullcomment">
                           <dl class="attributes block">
                               <dt>Definition Classes</dt>
-                              <dd><a href="index.html" class="extype" name="compiler.structure.parsers.structures">structures</a>
+                              <dd><a href="index.html" class="extype"
+                                     name="compiler.ast.parsers.structures">structures</a>
                               </dd>
                           </dl>
                       </div>
@@ -241,8 +243,8 @@
         <div class="big-circle class">c</div>
           <p id="owner"><a href="../../index.html" class="extype" name="compiler">compiler</a>.<a href="../index.html"
                                                                                                   class="extype"
-                                                                                                  name="compiler.structure.parsers">parser</a>.<a
-                  href="index.html" class="extype" name="compiler.structure.parsers.structures">structures</a></p>
+                                                                                                  name="compiler.ast.parsers">parser</a>.<a
+                  href="index.html" class="extype" name="compiler.ast.parsers.structures">structures</a></p>
         <h1>MethodCallParser<span class="permalink">
       <a href="../../../compiler/parser/structures/MethodCallParser.html" title="Permalink">
         <i class="material-icons"></i>
@@ -258,9 +260,9 @@
       </span>
       <span class="symbol">
         <span class="name">MethodCallParser</span><span class="result"> extends <a href="../Parser.html" class="extype"
-                                                                                   name="compiler.structure.parsers.Parser">Parser</a>[<a
+                                                                                   name="compiler.ast.parsers.Parser">Parser</a>[<a
               href="../../block/structures/MethodCallBlock.html" class="extype"
-              name="compiler.structure.blocks.structures.MethodCallBlock">MethodCallBlock</a>]</span>
+              name="compiler.ast.blocks.structures.MethodCallBlock">MethodCallBlock</a>]</span>
       </span>
       </h4>
 
@@ -271,9 +273,9 @@
             Linear Supertypes
           </span>
               <div class="superTypes hiddenContent"><a href="../Parser.html" class="extype"
-                                                       name="compiler.structure.parsers.Parser">Parser</a>[<a
+                                                       name="compiler.ast.parsers.Parser">Parser</a>[<a
                       href="../../block/structures/MethodCallBlock.html" class="extype"
-                      name="compiler.structure.blocks.structures.MethodCallBlock">MethodCallBlock</a>], <span
+                      name="compiler.ast.blocks.structures.MethodCallBlock">MethodCallBlock</a>], <span
                       class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span>
               </div>
         </div></div>
@@ -301,9 +303,10 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                      <li class="in" name="compiler.structure.parsers.structures.MethodCallParser"><span>MethodCallParser</span>
+                      <li class="in" name="compiler.ast.parsers.structures.MethodCallParser">
+                          <span>MethodCallParser</span>
                       </li>
-                      <li class="in" name="compiler.structure.parsers.Parser"><span>Parser</span></li>
+                      <li class="in" name="compiler.ast.parsers.Parser"><span>Parser</span></li>
                       <li class="in" name="scala.AnyRef"><span>AnyRef</span></li>
                       <li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
@@ -326,12 +329,12 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
             <ol>
-                <li name="compiler.structure.parsers.structures.MethodCallParser#&lt;init&gt;" visbl="pub"
+                <li name="compiler.ast.parsers.structures.MethodCallParser#&lt;init&gt;" visbl="pub"
                     class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-                    <a id="&lt;init&gt;():compiler.structure.parsers.structures.MethodCallParser"></a><a
+                    <a id="&lt;init&gt;():compiler.ast.parsers.structures.MethodCallParser"></a><a
                         id="&lt;init&gt;:MethodCallParser"></a>
       <span class="permalink">
-      <a href="../../../compiler/parser/structures/MethodCallParser.html#&lt;init&gt;():compiler.structure.parsers.structures.MethodCallParser"
+      <a href="../../../compiler/parser/structures/MethodCallParser.html#&lt;init&gt;():compiler.ast.parsers.structures.MethodCallParser"
          title="Permalink">
         <i class="material-icons"></i>
       </a>
@@ -592,12 +595,12 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
               </li>
-                  <li name="compiler.structure.parsers.structures.MethodCallParser#parse" visbl="pub" class="indented0 "
+                  <li name="compiler.ast.parsers.structures.MethodCallParser#parse" visbl="pub" class="indented0 "
                       data-isabs="false" fullComment="yes" group="Ungrouped">
-                      <a id="parse(superBlock:compiler.structure.blocks.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.structure.blocks.structures.MethodCallBlock"></a><a
+                      <a id="parse(superBlock:compiler.ast.blocks.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.ast.blocks.structures.MethodCallBlock"></a><a
                           id="parse(Block,Tokenizer):MethodCallBlock"></a>
       <span class="permalink">
-      <a href="../../../compiler/parser/structures/MethodCallParser.html#parse(superBlock:compiler.structure.blocks.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.structure.blocks.structures.MethodCallBlock"
+      <a href="../../../compiler/parser/structures/MethodCallParser.html#parse(superBlock:compiler.ast.blocks.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.ast.blocks.structures.MethodCallBlock"
          title="Permalink">
         <i class="material-icons"></i>
       </a>
@@ -609,24 +612,24 @@
       <span class="symbol">
         <span class="name">parse</span><span class="params">(<span name="superBlock">superBlock: <a
               href="../../block/Block.html" class="extype"
-              name="compiler.structure.blocks.Block">Block</a></span>, <span name="tokenizer">tokenizer: <a
+              name="compiler.ast.blocks.Block">Block</a></span>, <span name="tokenizer">tokenizer: <a
               href="../../tokenizer/Tokenizer.html" class="extype"
               name="compiler.tokenizer.Tokenizer">Tokenizer</a></span>)</span><span class="result">: <a
               href="../../block/structures/MethodCallBlock.html" class="extype"
-              name="compiler.structure.blocks.structures.MethodCallBlock">MethodCallBlock</a></span>
+              name="compiler.ast.blocks.structures.MethodCallBlock">MethodCallBlock</a></span>
       </span>
       
       <p class="shortcomment cmt">Take the superBlock and the tokenizer for the line and return a block of this parser's type.</p><div class="fullcomment"><div class="comment cmt"><p>Take the superBlock and the tokenizer for the line and return a block of this parser's type.
                   </p></div>
                       <dl class="attributes block">
                           <dt>Definition Classes</dt>
-                          <dd><a href="" class="extype" name="compiler.structure.parsers.structures.MethodCallParser">MethodCallParser</a>
+                          <dd><a href="" class="extype" name="compiler.ast.parsers.structures.MethodCallParser">MethodCallParser</a>
                               → <a href="../Parser.html" class="extype"
-                                   name="compiler.structure.parsers.Parser">Parser</a></dd>
+                                   name="compiler.ast.parsers.Parser">Parser</a></dd>
                       </dl>
                   </div>
                   </li>
-                  <li name="compiler.structure.parsers.structures.MethodCallParser#shouldParse" visbl="pub"
+                  <li name="compiler.ast.parsers.structures.MethodCallParser#shouldParse" visbl="pub"
                       class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="shouldParse(line:String):Boolean"></a><a id="shouldParse(String):Boolean"></a>
       <span class="permalink">
@@ -646,9 +649,9 @@
                   </p></div>
                       <dl class="attributes block">
                           <dt>Definition Classes</dt>
-                          <dd><a href="" class="extype" name="compiler.structure.parsers.structures.MethodCallParser">MethodCallParser</a>
+                          <dd><a href="" class="extype" name="compiler.ast.parsers.structures.MethodCallParser">MethodCallParser</a>
                               → <a href="../Parser.html" class="extype"
-                                   name="compiler.structure.parsers.Parser">Parser</a></dd>
+                                   name="compiler.ast.parsers.Parser">Parser</a></dd>
                       </dl>
                   </div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -759,10 +762,10 @@
         </div>
 
         <div id="inheritedMembers">
-            <div class="parent" name="compiler.structure.parsers.Parser">
-                <h3>Inherited from <a href="../Parser.html" class="extype" name="compiler.structure.parsers.Parser">Parser</a>[<a
+            <div class="parent" name="compiler.ast.parsers.Parser">
+                <h3>Inherited from <a href="../Parser.html" class="extype" name="compiler.ast.parsers.Parser">Parser</a>[<a
                         href="../../block/structures/MethodCallBlock.html" class="extype"
-                        name="compiler.structure.blocks.structures.MethodCallBlock">MethodCallBlock</a>]</h3>
+                        name="compiler.ast.blocks.structures.MethodCallBlock">MethodCallBlock</a>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

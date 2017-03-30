@@ -18,8 +18,8 @@
 
 package compiler.symbol_table
 
+import compiler.ast.blocks.Block
 import compiler.exceptions.UndefinedVarException
-import compiler.structure.blocks.Block
 
 import scala.collection.mutable.ListBuffer
 

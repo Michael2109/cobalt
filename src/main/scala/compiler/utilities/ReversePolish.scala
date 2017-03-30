@@ -18,9 +18,9 @@
 
 package compiler.utilities
 
-import compiler.structure.blocks.Block
-import compiler.structure.blocks.operators._
-import compiler.structure.blocks.variable.DefineVariableBlock
+import compiler.ast.blocks.Block
+import compiler.ast.blocks.operators._
+import compiler.ast.blocks.variable.DefineVariableBlock
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

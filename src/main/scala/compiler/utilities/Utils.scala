@@ -20,14 +20,14 @@ package compiler.utilities
 
 import java.io.File
 
-import compiler.structure.blocks.Block
-import compiler.structure.blocks.empty.EmptyBlock
-import compiler.structure.blocks.imports.ImportBlock
-import compiler.structure.blocks.packages.PackageBlock
-import compiler.structure.blocks.structures.FileBlock
-import compiler.structure.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.structure.blocks.structures.methods.{ConstructorBlock, MethodBlock}
-import compiler.structure.parsers.Parsers
+import compiler.ast.blocks.Block
+import compiler.ast.blocks.empty.EmptyBlock
+import compiler.ast.blocks.imports.ImportBlock
+import compiler.ast.blocks.packages.PackageBlock
+import compiler.ast.blocks.structures.FileBlock
+import compiler.ast.blocks.structures.kinds.{ClassBlock, ObjectBlock}
+import compiler.ast.blocks.structures.methods.{ConstructorBlock, MethodBlock}
+import compiler.ast.parsers.Parsers
 import compiler.tokenizer.Tokenizer
 
 import scala.collection.mutable.ListBuffer

@@ -8,3 +8,4 @@ log4j.log
 out/
 src/test/java/
 /src/main/java/test/
+!/src/main/scala/compiler/tokenizer/Tokenizer.scala
