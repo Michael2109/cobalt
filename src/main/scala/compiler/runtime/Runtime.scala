@@ -42,7 +42,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     // get all lines excluding comments
     val lines = getIgnoreComments(Source.fromFile(sourceFile).getLines().toList)
 
-    //  lines.foreach(println(_))
     // get the file
     val fileBlock: FileBlock = new FileBlock(sourceFile.getName, buildDir)
 
