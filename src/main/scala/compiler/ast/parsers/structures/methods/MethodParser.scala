@@ -23,6 +23,9 @@ import compiler.ast.blocks.structures.methods.MethodBlock
 import compiler.ast.parsers.Parser
 import compiler.data.parameters.Parameters
 import compiler.tokenizer.Tokenizer
+import compiler.tokenizer.tokens.keywords.modifiers.ModifierToken
+
+import scala.collection.mutable.ListBuffer
 
 class MethodParser extends Parser[MethodBlock] {
 
@@ -32,10 +35,19 @@ class MethodParser extends Parser[MethodBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "(open[ ]+)?def[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*\\((.*)*\\)[ ]*<-[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*:"
+    "(public[ ]+|protected[ ]+|internal[ ]+)?(open[ ]+|override[ ]+)*def[ ]+[a-zA-Z_][a-zA-Z0-9_]*[ ]*\\((([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)*([,]?(([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)))*)*\\)([ ]*<-[ ]*[a-zA-Z_][a-zA-Z0-9_]*)?:?"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodBlock = {
+
+    val modifiers: ListBuffer[ModifierToken] = {
+      var result: ListBuffer[ModifierToken] = ListBuffer()
+      while (tokenizer.peek.tokenType.isInstanceOf[ModifierToken]) {
+        result += tokenizer.nextToken.tokenType.asInstanceOf[ModifierToken]
+
+      }
+      result
+    }
 
     val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open
 
@@ -61,7 +73,6 @@ class MethodParser extends Parser[MethodBlock] {
 
     val returnType: String = tokenizer.nextToken.token // method return type
 
-
-    new MethodBlock(superBlock, name, returnType, isSealed, parameters.toArray)
+    new MethodBlock(superBlock, modifiers.toList, name, returnType, isSealed, parameters.toArray)
   }
 }

@@ -51,12 +51,8 @@ class ClassParser extends Parser[ClassBlock] {
       result
     }
 
-    println("modifiers:" + modifiers)
-
-    println("class:" + tokenizer.nextToken) // skip "class"
-
     val className: String = tokenizer.nextToken.token
-    println("classname:" + className)
+
     tokenizer.nextToken
     // skip "("
     var nextToken: String = tokenizer.nextToken.token

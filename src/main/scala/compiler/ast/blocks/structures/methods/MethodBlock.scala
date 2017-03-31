@@ -23,9 +23,10 @@ import compiler.ast.blocks.modifiers.ModifierBlock
 import compiler.ast.generators.structures.methods.MethodGen
 import compiler.data.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
+import compiler.tokenizer.tokens.keywords.modifiers.ModifierToken
 import compiler.utilities.Utils
 
-class MethodBlock(var superBlockInit: Block, val name: String, val returnType: String, val isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
+class MethodBlock(var superBlockInit: Block, val modifiers: List[ModifierToken], name: String, val returnType: String, val isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
 
   println(superBlockInit)
 
@@ -81,7 +82,7 @@ class MethodBlock(var superBlockInit: Block, val name: String, val returnType: S
 
 
   override def toString: String = {
-    var paramString: String = ""
+    var paramString: String = "modifiers: " + modifiers + " "
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
