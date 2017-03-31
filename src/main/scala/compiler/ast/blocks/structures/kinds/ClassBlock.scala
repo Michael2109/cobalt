@@ -33,9 +33,6 @@ import compiler.tokenizer.tokens.keywords.modifiers._
   */
 class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var name: String, var parameters: List[Parameter], extendsTokens: List[TokenType], implementedTokens: List[TokenType]) extends Block(superBlockInit, true, false) {
 
-  println(extendsTokens)
-  println(implementedTokens)
-
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
   val `sealed`: String = if (false) "+ACC_FINAL" else ""

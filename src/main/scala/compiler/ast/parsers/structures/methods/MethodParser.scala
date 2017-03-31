@@ -44,7 +44,6 @@ class MethodParser extends Parser[MethodBlock] {
       var result: ListBuffer[ModifierToken] = ListBuffer()
       while (tokenizer.peek.tokenType.isInstanceOf[ModifierToken]) {
         result += tokenizer.nextToken.tokenType.asInstanceOf[ModifierToken]
-
       }
       result
     }
@@ -53,7 +52,6 @@ class MethodParser extends Parser[MethodBlock] {
 
     if (!isSealed)
       tokenizer.nextToken // skip def
-
 
     val name: String = tokenizer.nextToken.token // method name
 

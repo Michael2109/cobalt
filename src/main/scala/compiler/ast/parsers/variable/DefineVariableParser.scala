@@ -32,7 +32,7 @@ class DefineVariableParser extends Parser[DefineVariableBlock] {
     */
   override def getRegexs: List[String] = List(
     //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
-    "(mut[ ]+)?[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
+    "(public[ ]+|protected[ ]+|internal[ ]+)?(mut[ ]+)?[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DefineVariableBlock = {

@@ -46,10 +46,11 @@ class ClassParser extends Parser[ClassBlock] {
       var result: ListBuffer[TokenType] = ListBuffer()
       while (tokenizer.peek.tokenType.isInstanceOf[ModifierToken]) {
         result += tokenizer.nextToken.tokenType
-
       }
       result
     }
+
+    tokenizer.nextToken // skip "class"
 
     val className: String = tokenizer.nextToken.token
 
