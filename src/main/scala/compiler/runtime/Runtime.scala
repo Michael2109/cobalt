@@ -54,16 +54,8 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     val importBlocks: ListBuffer[Block] = getImports(lines).to[ListBuffer]
     fileBlock.addBlocks_=(importBlocks)
 
-    // Get the Class/Object block
-    //println(if (packageBlock.directory != "") 1 else 0)
-    //val block: Block = Utils.getBlocks(fileBlock, lines(0))
-
     // get the AST
     getBlockStructure(lines, fileBlock, -1, 0)
-
-    // Add the block to a fileblock and set fileblock as parent
-    //  fileBlock.addBlock_=(block)
-    //  block.superBlock_=(fileBlock)
 
     // Output the result
     Utils.printBlockInfo(fileBlock)
