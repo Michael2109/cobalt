@@ -24,16 +24,19 @@ import compiler.ast.blocks.packages.PackageBlock
 import compiler.ast.blocks.structures.methods.{ConstructorBlock, MethodBlock}
 import compiler.data.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
-import compiler.tokenizer.TokenType
+import compiler.tokenizer.Token
 import compiler.tokenizer.tokens.keywords.modifiers._
+import compiler.utilities.Utils
 
 /**
   * Represents a class.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
-class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var name: String, var parameters: List[Parameter], extendsTokens: List[TokenType], implementedTokens: List[TokenType]) extends Block(superBlockInit, true, false) {
+class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: String, parameters: List[Parameter], extendsTokens: List[Token], implementedTokens: List[Token]) extends Block(superBlockInit, true, false) {
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
+
+  val ref = this
 
   val `sealed`: String = if (false) "+ACC_FINAL" else ""
   private val modifiersASM = {
@@ -60,7 +63,7 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var
   }
 
   // Parameters added to constuctor
-  private var parameterString: String = ""
+  private var parameterString: String = parameters.map(_.getType).mkString("")
   // Local variables from the parameters
   private var localVariableString: String = ""
   // Create a constructor blocks and add it to the class blocks
@@ -68,27 +71,24 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var
 
   addBlock_=(constructorBlock)
 
+  // Move anything outside a method and within the class to a constructor blocks
+  for (sub <- subBlocks) {
+    moveToConstructor(sub)
+  }
+
+  for (parameter <- parameters) {
+    Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
+    localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
+  }
+
   def getName: String = name
 
   def getValue: String = null
 
   def getType: String = "class"
 
-  /**
-    * Performed just before compiling blocks to allow for action when all blocks parsed
-    */
-  def init() {
-    // Move anything outside a method and within the class to a constructor blocks
-    for (sub <- subBlocks) {
-      moveToConstructor(sub)
-    }
 
-    for (parameter <- parameters) {
-      parameterString += parameter.getType
-      Block.TOTAL_BLOCKS_$eq(Block.TOTAL_BLOCKS + 1)
-      localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
-    }
-  }
+
 
   // Moves all blocks that are inside the class and outside methods into the constructor blocks
   def moveToConstructor(block: Block) {
@@ -106,11 +106,12 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[TokenType], var
     }
   }
 
+  // todo sort out bug causing list to be output for the parent class.
   def getOpeningCode: String = {
       asm.getClassOpening(name) +
       asm.executeMethodOpening +
       asm.getClassWriter +
-        "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + "java/lang/Object" + "\", new String[]{});\n"
+        "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + (if (extendsTokens.size == 0) "java/lang/Object" else (extendsTokens.map(t => Utils.getDirectory(ref, t.token) + "/" + t.token).mkString(""))) + "\", new String[]{});\n"
 
   }
 

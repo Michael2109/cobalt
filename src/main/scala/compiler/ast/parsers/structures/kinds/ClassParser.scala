@@ -25,7 +25,7 @@ import compiler.data.parameters.Parameters
 import compiler.tokenizer.tokens.EmptyToken
 import compiler.tokenizer.tokens.keywords.modifiers.ModifierToken
 import compiler.tokenizer.tokens.keywords.{ExtendsToken, ImplementsToken}
-import compiler.tokenizer.{TokenType, Tokenizer}
+import compiler.tokenizer.{Token, Tokenizer}
 
 import scala.collection.mutable.ListBuffer
 
@@ -42,10 +42,10 @@ class ClassParser extends Parser[ClassBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClassBlock = {
 
-    val modifiers: ListBuffer[TokenType] = {
-      var result: ListBuffer[TokenType] = ListBuffer()
+    val modifiers: ListBuffer[Token] = {
+      var result: ListBuffer[Token] = ListBuffer()
       while (tokenizer.peek.tokenType.isInstanceOf[ModifierToken]) {
-        result += tokenizer.nextToken.tokenType
+        result += tokenizer.nextToken
       }
       result
     }
@@ -66,23 +66,24 @@ class ClassParser extends Parser[ClassBlock] {
 
     val parameters = new Parameters().getParameters(paramString)
 
-    val extendsTokens: List[TokenType] = List[TokenType](
+    val extendsTokens: List[Token] = List[Token](
       if (tokenizer.peek.tokenType.isInstanceOf[ExtendsToken]) {
-        tokenizer.nextToken.tokenType
-        tokenizer.nextToken.tokenType
+        tokenizer.nextToken
+        tokenizer.nextToken
       } else {
-        new EmptyToken
+        new Token("", new EmptyToken)
       }
     ).filter(!_.isInstanceOf[EmptyToken])
     println(extendsTokens)
 
-    val implementsTokens: List[TokenType] = List[TokenType](
+    val implementsTokens: List[Token] = List[Token](
       if (tokenizer.peek.tokenType.isInstanceOf[ImplementsToken]) {
-        tokenizer.nextToken.tokenType
-        tokenizer.nextToken.tokenType
+        tokenizer.nextToken
+        tokenizer.nextToken
       } else {
-        new EmptyToken
+        new Token("", new EmptyToken)
       }
+
     ).filter(!_.isInstanceOf[EmptyToken])
 
     new ClassBlock(superBlock, modifiers.toList, className, parameters, extendsTokens, implementsTokens)
