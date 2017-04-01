@@ -43,16 +43,6 @@ class Compile(val outputFile: File, val block: Block) {
   println("Complete.")
   w.close()
 
-  // Initialises all blocks.
-  // Allows for initialisation when all blocks have been loaded.
-  /*
-  def initBlocks(block: Block) {
-    block.init()
-    for (sub <- block.subBlocks) {
-      initBlocks(sub)
-    }
-  }*/
-
   /**
     * Converts the blocks ast into ASM and saves as a .java file
     */
