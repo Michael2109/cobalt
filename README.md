@@ -4,8 +4,6 @@ Cobalt is an object oriented and functional language that runs on the JVM.
 
 Scala has shown that difficulties can arise in development when too many methods can be used to complete the same task. This can lead to multiple developers writing code in various styles which then leads to a difficult to manage codebase. The target is to create a powerful language that has similar features to Scala but to also create more clear restrictions to allow for teams to manage code more efficiency. As this project has started later we can take into consideration the advantages and disadvantages of other languages to design and create a language that could be extemely powerful in the future. 
 
-We're currently looking for contributors so if you are interested then please get in contact!
-
 # Main Features
 * Object oriented and functional  
 * Statically typed
