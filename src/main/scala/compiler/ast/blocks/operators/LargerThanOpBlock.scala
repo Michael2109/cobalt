@@ -16,31 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.parsers.ifs
+package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.ifs.IfBlock
-import compiler.ast.parsers.Parser
-import compiler.tokenizer.Tokenizer
 
-class IfParser extends Parser[IfBlock] {
+/**
+  * Represents checking if equal - "=="
+  *
+  * @param superBlockInit The parent block
+  */
+class LargerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  /**
-    * A list of all regular expressions
-    *
-    * @return
-    */
-  override def getRegexs: List[String] = List("if[ ]*\\(([^]]+)\\)")
+  def getName: String = ""
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
+  def getValue: String = ""
 
-    // skip "if"
-    tokenizer.nextToken
-
-    // skip "("
-    tokenizer.nextToken
-
-
-    new IfBlock(superBlock, tokenizer)
+  def getOpeningCode: String = {
+    ""
   }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType
+
+  def getType: String = "<LARGER_THAN_OP>"
+
+
 }

@@ -16,31 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.parsers.ifs
+package compiler.ast.parsers.operators
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.ifs.IfBlock
+import compiler.ast.blocks.operators.SmallerThanEqualOpBlock
 import compiler.ast.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class IfParser extends Parser[IfBlock] {
-
+class SmallerThanEqualOpParser extends Parser[SmallerThanEqualOpBlock] {
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List("if[ ]*\\(([^]]+)\\)")
+  override def getRegexs: List[String] = List("[<=]")
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
-
-    // skip "if"
-    tokenizer.nextToken
-
-    // skip "("
-    tokenizer.nextToken
-
-
-    new IfBlock(superBlock, tokenizer)
+  def parse(superBlock: Block, tokenizer: Tokenizer): SmallerThanEqualOpBlock = {
+    new SmallerThanEqualOpBlock(superBlock)
   }
 }

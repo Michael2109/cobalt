@@ -45,6 +45,12 @@ object ReversePolish {
 
   def OPERATORS(b: Block): List[Int] = b match {
 
+    case _: SmallerThanOpBlock => List(0, LEFT_ASSOC)
+    case _: SmallerThanEqualOpBlock => List(0, LEFT_ASSOC)
+    case _: EqualsOpBlock => List(0, LEFT_ASSOC)
+    case _: LargerThanOpBlock => List(0, LEFT_ASSOC)
+    case _: LargerThanEqualOpBlock => List(0, LEFT_ASSOC)
+
     case _: AddOpBlock => List(0, LEFT_ASSOC)
 
     case _: SubtractOpBlock => List(0, LEFT_ASSOC)

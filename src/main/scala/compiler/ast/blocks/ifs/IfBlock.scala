@@ -20,14 +20,32 @@ package compiler.ast.blocks.ifs
 
 import compiler.ast.blocks.Block
 import compiler.ast.generators.ifs.IfGen
+import compiler.ast.parsers.Parsers
+import compiler.tokenizer.Tokenizer
+import compiler.utilities.ReversePolish
+
+import scala.collection.mutable.ListBuffer
 
 /**
   * Represents an if statement
   *
   * @param superBlockInit The parent block
   */
-class IfBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(superBlockInit, true, false) {
 
+  val statementBlocks = new ListBuffer[Block]
+  // Extract information from within the parenthesis
+  while (tokenizer.peek.token != ")") {
+    val nextToken = tokenizer.nextToken.token
+    for (p <- Parsers.parsers) {
+      if (p.shouldParse(nextToken)) {
+        statementBlocks += p.parse(this, new Tokenizer(nextToken))
+      }
+    }
+  }
+  val orderedStatementBlocks = ReversePolish.infixToRPN(statementBlocks.toList)
+
+  println(orderedStatementBlocks)
 
   def getName: String = ""
 
