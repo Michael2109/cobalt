@@ -29,7 +29,7 @@ class LargerThanOpParser extends Parser[LargerThanOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[<=]")
+  override def getRegexs: List[String] = List("[\\>]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): LargerThanOpBlock = {
     new LargerThanOpBlock(superBlock)

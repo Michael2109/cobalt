@@ -138,11 +138,13 @@ object Parsers {
     new AndOpParser,
     new OrOpParser,
     new NotOpParser,
-    new EqualsOpParser,
-    new SmallerThanOpParser,
+
     new SmallerThanEqualOpParser,
+    new SmallerThanOpParser,
     new LargerThanEqualOpParser,
     new LargerThanOpParser,
+    new EqualsOpParser,
+
     new AddOpParser,
     new DivideOpParser,
     new MultiplyOpParser,
