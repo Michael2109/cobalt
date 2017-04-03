@@ -28,10 +28,12 @@ object IfGen extends Generator{
     //  asm.visitLdcInsn(value) +
     //   asm.newLabel("l" + id) +
     //   byteCodeOp
+    ""
   }
 
   def getClosingCode(ifBlock: IfBlock): String = {
     //asm.visitLabel("l" + id)
+    ""
   }
 
 }

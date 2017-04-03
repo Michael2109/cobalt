@@ -30,7 +30,7 @@ class IfParser extends Parser[IfBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("if")
+  override def getRegexs: List[String] = List("if[ ]*\\(([^]]+)\\)")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
     new IfBlock(superBlock)
