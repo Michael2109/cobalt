@@ -2,4 +2,4 @@ package test.structures
 
 public abstract open class ClassTest():
 
-    open def method1() <- void:
+    open let method1() <- void:

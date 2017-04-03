@@ -2,8 +2,11 @@ package test.ifs
 
 class IfElseTest():
 
-    def test() <- void:
+    let test() <- void
         x:int = 5
-        if (x < 10):
 
-        else:
+        if (x < 10)
+
+        //elif (x > 15)
+
+        else

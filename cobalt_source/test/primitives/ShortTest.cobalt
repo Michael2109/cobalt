@@ -2,7 +2,7 @@ package test.primitives
 
 class ShortTest():
 
-    def main() <- void:
+    let main() <- void:
         test1:short = 5s
         test2:short = 5s
         test3:short = 5S

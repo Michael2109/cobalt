@@ -2,7 +2,7 @@ package test.primitives
 
 class IntegerTest():
 
-    def main() <- void:
+    let main() <- void:
         test1:int = 10
         test2:int = 10
         println(test1)

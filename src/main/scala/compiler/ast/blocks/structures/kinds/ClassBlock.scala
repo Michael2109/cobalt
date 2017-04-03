@@ -136,6 +136,6 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    name + " ( " + paramString + ") extends " + extendsTokens + " implements " + implementedTokens + " " + expressions + " modifiers:" + modifierTokens
+    name + " ( " + paramString + ") extends " + extendsTokens + " implements " + implementedTokens + " " + expressions + " modifierTokens:" + modifierTokens
   }
 }

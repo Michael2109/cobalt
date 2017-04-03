@@ -2,7 +2,7 @@ package test.primitives
 
 class ByteTest():
 
-    def main() <- void:
+    let main() <- void:
         test1:byte = 5b
         test2:byte = 5b
         test3:byte = 5B

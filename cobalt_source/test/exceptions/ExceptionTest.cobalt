@@ -2,7 +2,7 @@ package test.exceptions
 
 class ExceptionTest():
 
-    def test() <- void:
+    let test() <- void:
         try:
 
         catch:

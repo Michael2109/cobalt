@@ -2,7 +2,7 @@ package test.primitives
 
 class CharTest():
 
-    def main() <- void:
+    let main() <- void:
         test1:char = 'a'
         test2:char = 'z'
         test3:char = 'A'

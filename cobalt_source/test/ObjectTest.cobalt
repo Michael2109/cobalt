@@ -4,7 +4,7 @@ import asm.MyCode
 
 object ObjectTest:
 
-    def main() <- void:
+    let main() <- void:
 
         z: int = 10
 
