@@ -19,6 +19,7 @@
 package compiler.utilities
 
 import compiler.ast.blocks.Block
+import compiler.ast.blocks.conditionals._
 import compiler.ast.blocks.operators._
 import compiler.ast.blocks.variable.DefineVariableBlock
 

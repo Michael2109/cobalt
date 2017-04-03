@@ -16,24 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.blocks.operators
+package compiler.ast.blocks.conditionals
 
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents checking if equal - "=="
   *
   * @param superBlockInit The parent block
   */
-class OrOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class LargerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
+  def getName: String = ""
 
-  }
-
-  override def getName: String = ""
-
-  override def getValue: String = ""
+  def getValue: String = ""
 
   def getOpeningCode: String = {
     ""
@@ -45,7 +41,7 @@ class OrOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, 
 
   override def toString: String = getType
 
-  override def getType: String = "<OR_OP>"
+  def getType: String = "<LARGER_THAN_OP>"
 
 
 }

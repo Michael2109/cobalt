@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.blocks.operators
+package compiler.ast.blocks.conditionals
 
 import compiler.ast.blocks.Block
 
 /**
-  * Represents checking if equal - "=="
+  * Represents not - "!"
   *
   * @param superBlockInit The parent block
   */
-class SmallerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class NotOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   def init() {
 
@@ -45,6 +45,6 @@ class SmallerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit
 
   override def toString: String = getType
 
-  def getType: String = "<SMALLER_THAN_OP>"
+  def getType: String = "<MULTIPLY_OP>"
 
 }

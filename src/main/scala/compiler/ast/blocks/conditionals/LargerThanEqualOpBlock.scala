@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.blocks.operators
+package compiler.ast.blocks.conditionals
 
 import compiler.ast.blocks.Block
 
@@ -25,7 +25,7 @@ import compiler.ast.blocks.Block
   *
   * @param superBlockInit The parent block
   */
-class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class LargerThanEqualOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   def init() {
 
@@ -45,6 +45,7 @@ class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, fal
 
   override def toString: String = getType
 
-  def getType: String = "<EQUALS_OP>"
+  def getType: String = "<LARGER_THAN_EQUAL_OP>"
+
 
 }

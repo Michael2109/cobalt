@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.parsers.operators
+package compiler.ast.parsers.conditionals
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.operators.OrOpBlock
+import compiler.ast.blocks.conditionals.OrOpBlock
 import compiler.ast.parsers.Parser
 import compiler.tokenizer.Tokenizer
 

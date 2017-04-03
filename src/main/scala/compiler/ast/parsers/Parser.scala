@@ -20,6 +20,7 @@ package compiler.ast.parsers
 
 import compiler.ast.blocks.Block
 import compiler.ast.parsers.cases.CaseParser
+import compiler.ast.parsers.conditionals._
 import compiler.ast.parsers.constants._
 import compiler.ast.parsers.exceptions._
 import compiler.ast.parsers.ifs.{ElifParser, ElseParser, IfParser, SwitchParser}

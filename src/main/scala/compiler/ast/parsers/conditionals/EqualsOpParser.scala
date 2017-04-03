@@ -16,36 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.blocks.operators
+package compiler.ast.parsers.conditionals
 
 import compiler.ast.blocks.Block
+import compiler.ast.blocks.conditionals.EqualsOpBlock
+import compiler.ast.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-/**
-  * Represents adding a value to a primitive
-  *
-  * @param superBlockInit The parent block
-  */
-class AndOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class EqualsOpParser extends Parser[EqualsOpBlock] {
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("[=][=]")
 
-  def init() {
-
+  def parse(superBlock: Block, tokenizer: Tokenizer): EqualsOpBlock = {
+    new EqualsOpBlock(superBlock)
   }
-
-  override def getName: String = ""
-
-  override def getValue: String = ""
-
-  def getOpeningCode: String = {
-    ""
-  }
-
-  def getClosingCode: String = {
-    ""
-  }
-
-  override def toString: String = getType
-
-  override def getType: String = "<AND_OP>"
-
-
 }

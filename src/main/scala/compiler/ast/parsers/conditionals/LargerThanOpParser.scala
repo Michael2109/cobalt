@@ -16,32 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.blocks.operators
+package compiler.ast.parsers.conditionals
 
 import compiler.ast.blocks.Block
+import compiler.ast.blocks.conditionals.LargerThanOpBlock
+import compiler.ast.parsers.Parser
+import compiler.tokenizer.Tokenizer
 
-/**
-  * Represents checking if equal - "=="
-  *
-  * @param superBlockInit The parent block
-  */
-class LargerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class LargerThanOpParser extends Parser[LargerThanOpBlock] {
+  /**
+    * A list of all regular expressions
+    *
+    * @return
+    */
+  override def getRegexs: List[String] = List("[\\>]")
 
-  def getName: String = ""
-
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
-    ""
+  def parse(superBlock: Block, tokenizer: Tokenizer): LargerThanOpBlock = {
+    new LargerThanOpBlock(superBlock)
   }
-
-  def getClosingCode: String = {
-    ""
-  }
-
-  override def toString: String = getType
-
-  def getType: String = "<LARGER_THAN_OP>"
-
-
 }

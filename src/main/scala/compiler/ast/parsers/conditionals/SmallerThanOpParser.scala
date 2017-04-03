@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.parsers.operators
+package compiler.ast.parsers.conditionals
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.operators.LargerThanEqualOpBlock
+import compiler.ast.blocks.conditionals.SmallerThanOpBlock
 import compiler.ast.parsers.Parser
 import compiler.tokenizer.Tokenizer
 
-class LargerThanEqualOpParser extends Parser[LargerThanEqualOpBlock] {
+class SmallerThanOpParser extends Parser[SmallerThanOpBlock] {
   /**
     * A list of all regular expressions
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[\\>\\=]")
+  override def getRegexs: List[String] = List("[\\<]")
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): LargerThanEqualOpBlock = {
-    new LargerThanEqualOpBlock(superBlock)
+  def parse(superBlock: Block, tokenizer: Tokenizer): SmallerThanOpBlock = {
+    new SmallerThanOpBlock(superBlock)
   }
 }

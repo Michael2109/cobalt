@@ -16,22 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.parsers.operators
+package compiler.ast.blocks.conditionals
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.operators.SmallerThanOpBlock
-import compiler.ast.parsers.Parser
-import compiler.tokenizer.Tokenizer
 
-class SmallerThanOpParser extends Parser[SmallerThanOpBlock] {
-  /**
-    * A list of all regular expressions
-    *
-    * @return
-    */
-  override def getRegexs: List[String] = List("[\\<]")
+/**
+  * Represents checking if equal - "=="
+  *
+  * @param superBlockInit The parent block
+  */
+class NotEqualOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): SmallerThanOpBlock = {
-    new SmallerThanOpBlock(superBlock)
+  def init() {
+
   }
+
+  def getName: String = ""
+
+  def getValue: String = ""
+
+  def getOpeningCode: String = {
+    ""
+  }
+
+  def getClosingCode: String = {
+    ""
+  }
+
+  override def toString: String = getType
+
+  def getType: String = "<NOT_EQUAL_OP>"
+
+
 }
