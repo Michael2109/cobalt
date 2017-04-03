@@ -22,7 +22,7 @@ import compiler.ast.blocks.Block
 import compiler.ast.parsers.cases.CaseParser
 import compiler.ast.parsers.constants._
 import compiler.ast.parsers.exceptions._
-import compiler.ast.parsers.ifs.{ElseParser, IfParser, SwitchParser}
+import compiler.ast.parsers.ifs.{ElifParser, ElseParser, IfParser, SwitchParser}
 import compiler.ast.parsers.imports.ImportParser
 import compiler.ast.parsers.loops.{DoParser, ForParser, WhileParser}
 import compiler.ast.parsers.modifiers.ModifierParser
@@ -77,6 +77,7 @@ object Parsers {
 
     /* if, else */
     new IfParser,
+    new ElifParser,
     new ElseParser,
     new DoParser,
 

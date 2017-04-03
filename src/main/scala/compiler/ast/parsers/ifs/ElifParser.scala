@@ -30,7 +30,7 @@ class ElifParser extends Parser[ElifBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("elif")
+  override def getRegexs: List[String] = List("elif[ ]*\\(([^]]+)\\)")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ElifBlock = {
     new ElifBlock(superBlock)
