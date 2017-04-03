@@ -29,7 +29,7 @@ class EqualsOpParser extends Parser[EqualsOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[=][=]")
+  override def getRegexs: List[String] = List("[\\=][\\=]")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): EqualsOpBlock = {
     new EqualsOpBlock(superBlock)

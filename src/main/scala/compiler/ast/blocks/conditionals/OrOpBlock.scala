@@ -25,7 +25,7 @@ import compiler.ast.blocks.Block
   *
   * @param superBlockInit The parent block
   */
-class OrOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class OrOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
   def init() {
 

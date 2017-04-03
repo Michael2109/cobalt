@@ -25,7 +25,7 @@ import compiler.ast.blocks.Block
   *
   * @param superBlockInit The parent block
   */
-class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class EqualsOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
   def init() {
 
@@ -36,7 +36,7 @@ class EqualsOpBlock(var superBlockInit: Block) extends Block(superBlockInit, fal
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    ""
+    "IF_ICMPEQ"
   }
 
   def getClosingCode: String = {

@@ -25,14 +25,14 @@ import compiler.ast.blocks.Block
   *
   * @param superBlockInit The parent block
   */
-class LargerThanOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
+class LargerThanOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
   def getName: String = ""
 
   def getValue: String = ""
 
   def getOpeningCode: String = {
-    ""
+    "IF_ICMPLT"
   }
 
   def getClosingCode: String = {

@@ -21,7 +21,14 @@ package test_classes;
 /**
  * Used to view ASM code
  */
-public abstract class TestCode {
+public class TestCode {
 
+    public void test() {
+        int x = 5;
+
+        if (x < 10) {
+            System.out.println("True");
+        }
+    }
 
 }
