@@ -19,6 +19,7 @@
 package compiler.ast.blocks.ifs
 
 import compiler.ast.blocks.Block
+import compiler.ast.generators.ifs.IfGen
 
 /**
   * Represents an if statement
@@ -30,23 +31,19 @@ class IfBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fal
 
   def getName: String = ""
 
-  def getType: String = "if"
-
   def getValue: String = ""
 
-  def init() {
-  }
-
   def getOpeningCode: String = {
-    // IfGen.getOpeningCode(pointer, value, id,  "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n")
-    ""
+    IfGen.getOpeningCode(this)
+
   }
 
   def getClosingCode: String = {
-    ""
-    // asm.visitLabel("l" + id)
+    IfGen.getClosingCode(this)
   }
 
-  override def toString: String = "<IF_STATEMENT>" + expressions
+  override def toString: String = getType + expressions
+
+  def getType: String = "<IF_STATEMENT>"
 
 }

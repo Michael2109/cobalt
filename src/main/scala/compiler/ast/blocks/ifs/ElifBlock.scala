@@ -30,12 +30,7 @@ class ElifBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
 
   def getName: String = ""
 
-  def getType: String = "elif"
-
   def getValue: String = ""
-
-  def init() {
-  }
 
   def getOpeningCode: String = {
 
@@ -47,6 +42,8 @@ class ElifBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
     // asm.visitLabel("l" + id)
   }
 
-  override def toString: String = "<ELIF_STATEMENT>" + expressions
+  override def toString: String = getType + expressions
+
+  def getType: String = "<ELIF_STATEMENT>"
 
 }

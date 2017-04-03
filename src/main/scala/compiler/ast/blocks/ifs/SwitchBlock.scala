@@ -30,23 +30,18 @@ class SwitchBlock(var superBlockInit: Block) extends Block(superBlockInit, true,
 
   def getName: String = ""
 
-  def getType: String = "if"
-
   def getValue: String = ""
 
-  def init() {
-  }
-
   def getOpeningCode: String = {
-    // IfGen.getOpeningCode(pointer, value, id,  "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");\n")
     ""
   }
 
   def getClosingCode: String = {
     ""
-    // asm.visitLabel("l" + id)
   }
 
-  override def toString: String = "<IF_STATEMENT>" + expressions
+  override def toString: String = getType + expressions
+
+  def getType: String = "<IF_STATEMENT>"
 
 }

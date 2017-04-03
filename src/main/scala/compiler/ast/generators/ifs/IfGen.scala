@@ -18,19 +18,20 @@
 
 package compiler.ast.generators.ifs
 
+import compiler.ast.blocks.ifs.IfBlock
 import compiler.ast.generators.Generator
 
 object IfGen extends Generator{
 
-  def getOpeningCode(pointer : String, value : String, id: Int, byteCodeOp : String) :String = {
-    asm.visitVarInsn("ILOAD", pointer) +
-    asm.visitLdcInsn(value) +
-    asm.newLabel("l" + id) +
-    byteCodeOp
+  def getOpeningCode(ifBlock: IfBlock): String = {
+    // asm.visitVarInsn("ILOAD", pointer) +
+    //  asm.visitLdcInsn(value) +
+    //   asm.newLabel("l" + id) +
+    //   byteCodeOp
   }
 
-  def getClosingCode(id : Int) : String = {
-    asm.visitLabel("l" + id)
+  def getClosingCode(ifBlock: IfBlock): String = {
+    //asm.visitLabel("l" + id)
   }
 
 }

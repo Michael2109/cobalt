@@ -29,12 +29,7 @@ class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
 
   def getName: String = ""
 
-  def getType: String = "else"
-
   def getValue: String = ""
-
-  def init() {
-  }
 
   def getOpeningCode: String = {
     ""
@@ -44,6 +39,8 @@ class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
     ""
   }
 
-  override def toString: String = "<ELSE>"
+  override def toString: String = getType
+
+  def getType: String = "<ELSE>"
 
 }
