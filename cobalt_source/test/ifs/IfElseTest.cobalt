@@ -7,6 +7,6 @@ class IfElseTest():
 
         if (x < 10)
 
-        //elif (x > 15)
+        elif (x > 15)
 
         else
