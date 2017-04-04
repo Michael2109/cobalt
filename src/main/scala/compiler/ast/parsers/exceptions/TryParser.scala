@@ -26,7 +26,7 @@ import compiler.tokenizer.Tokenizer
 class TryParser extends Parser[TryBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

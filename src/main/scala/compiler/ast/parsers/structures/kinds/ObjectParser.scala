@@ -27,7 +27,7 @@ import compiler.tokenizer.Tokenizer
 class ObjectParser extends Parser[ObjectBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

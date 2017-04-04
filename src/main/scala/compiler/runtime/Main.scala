@@ -37,9 +37,11 @@ object Main {
       logger.info("Program arguments: $args")
       start(args)
     } else {
-      logger.info("Default program arguments used.")
-      start(Array("cobalt_source", "src/main/java", "build/classes/main"))
+      val defaultArgs = Array("cobalt_source", "src/main/java", "cobalt_generated")
+      logger.info("Default program arguments used: $args")
+      start(defaultArgs)
     }
+
   }
 
   def start(args: Array[String]) {

@@ -20,11 +20,8 @@ package compiler.ast.blocks.ifs
 
 import compiler.ast.blocks.Block
 import compiler.ast.generators.ifs.IfGen
-import compiler.ast.parsers.Parsers
 import compiler.tokenizer.Tokenizer
-import compiler.utilities.ReversePolish
-
-import scala.collection.mutable.ListBuffer
+import compiler.utilities.{ReversePolish, Utils}
 
 /**
   * Represents an if statement
@@ -33,21 +30,15 @@ import scala.collection.mutable.ListBuffer
   */
 class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(superBlockInit, true, false) {
 
-  val statementBlocks = new ListBuffer[Block]
-
+  val orderedStatementBlocks = ReversePolish.infixToRPN(Utils.getAllBlocks(this, statementString))
   // Extract information from within the parenthesis
   while (tokenizer.peek.token != ")") {
     val nextToken = tokenizer.nextToken.token
     var found = false
-    for (p <- Parsers.parsers) {
-      if (!found && p.shouldParse(nextToken)) {
-        statementBlocks += p.parse(this, new Tokenizer(nextToken))
-        found = true
-      }
-    }
+    statementString += nextToken
+    found = true
   }
-
-  val orderedStatementBlocks = ReversePolish.infixToRPN(statementBlocks.toList)
+  var statementString = ""
 
   def getName: String = ""
 
@@ -62,7 +53,7 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
     IfGen.getClosingCode(this)
   }
 
-  override def toString: String = getType + expressions
+  override def toString: String = getType + stack
 
   def getType: String = "<IF_STATEMENT>"
 

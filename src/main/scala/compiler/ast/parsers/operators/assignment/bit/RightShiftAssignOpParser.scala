@@ -27,7 +27,7 @@ class RightShiftAssignOpParser extends Parser[RightShiftAssignOpBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

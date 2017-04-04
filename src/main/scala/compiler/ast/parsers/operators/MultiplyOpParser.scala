@@ -26,7 +26,7 @@ import compiler.tokenizer.Tokenizer
 class MultiplyOpParser extends Parser[MultiplyOpBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

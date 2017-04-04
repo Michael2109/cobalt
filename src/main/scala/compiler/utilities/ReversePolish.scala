@@ -39,7 +39,7 @@ object ReversePolish {
     println(isOperator(new AddOpBlock(null)))
     println(isOperator(new DefineVariableBlock(null, false, "other", "something")))
 
-    val blocks = Utils.getBlocks(null, "val x:int = 5 + 3 - 2 * 4/3").expressions.toList.drop(1)
+    val blocks = Utils.getBlocksAndStack(null, "val x:int = 5 + 3 - 2 * 4/3").stack.toList.drop(1)
     println(blocks)
     println(infixToRPN(blocks))
   }

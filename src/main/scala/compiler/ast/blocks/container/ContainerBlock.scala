@@ -34,7 +34,7 @@ class ContainerBlock(superBlockInit: Block = null) extends Block(superBlockInit,
     ""
   }
 
-  override def toString: String = getType + expressions
+  override def toString: String = getType + stack
 
   override def getType: String = "<CONTAINER>"
 

@@ -43,7 +43,7 @@ abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, i
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
-  val expressions: ListBuffer[Block] = ListBuffer[Block]()
+  val stack: ListBuffer[Block] = ListBuffer[Block]()
   private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
   private val _asm: ASMGenerator = new ASMGenerator
   private var _id: Integer = Block.TOTAL_BLOCKS

@@ -26,7 +26,7 @@ import compiler.tokenizer.Tokenizer
 class CatchParser extends Parser[CatchBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

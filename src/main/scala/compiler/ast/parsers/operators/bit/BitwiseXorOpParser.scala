@@ -27,7 +27,7 @@ class BitwiseXorOpParser extends Parser[BitwiseXorOpBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

@@ -29,7 +29,7 @@ need to make parameter single variable names instead as cant define a variable i
 class WhileParser extends Parser[WhileBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

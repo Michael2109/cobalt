@@ -25,7 +25,7 @@ import compiler.tokenizer.Tokenizer
 
 class NotOpParser extends Parser[NotOpBlock] {
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

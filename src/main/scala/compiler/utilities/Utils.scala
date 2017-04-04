@@ -85,18 +85,6 @@ object Utils {
     */
   def packageBlock(block: Block): PackageBlock = Utils.getFileBlock(block).subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
-  def getFileBlock(blockInit: Block): Block = {
-
-    val fileBlock: Block = {
-      var block: Block = blockInit
-      while (!block.isInstanceOf[FileBlock]) {
-        block = block.superBlock
-      }
-      block
-    }
-    fileBlock
-  }
-
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
     * @param block
@@ -238,7 +226,7 @@ object Utils {
     * @param line
     * @return
     */
-  def getBlocks(superBlock: Block, line: String, lineNumber: Int = 0): Block = {
+  def getBlocksAndStack(superBlock: Block, line: String, lineNumber: Int = 0): Block = {
 
     val result: ListBuffer[Block] = ListBuffer[Block]()
 
@@ -269,7 +257,7 @@ object Utils {
               found = true
 
               if (result.nonEmpty) {
-                result.head.expressions += parser.parse(result.head, new Tokenizer(first))
+                result.head.stack += parser.parse(result.head, new Tokenizer(first))
               } else {
                 result += parser.parse(superBlock, new Tokenizer(first))
               }
@@ -285,6 +273,65 @@ object Utils {
     }
 
     result.head
+
+  }
+
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
+      var block: Block = blockInit
+      while (!block.isInstanceOf[FileBlock]) {
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
+  }
+
+  def getAllBlocks(superBlock: Block, line: String, lineNumber: Int = 0): List[Block] = {
+
+    val result: ListBuffer[Block] = ListBuffer[Block]()
+
+    var previousLineLeft = ""
+    // var tuple = null
+    var lineLeft: String = line
+
+    while (lineLeft != "" && lineLeft != previousLineLeft) {
+      var found = false
+      previousLineLeft = lineLeft
+
+      for (parser <- Parsers.parsers) {
+        if (!found) {
+
+          lineLeft = lineLeft.trim
+
+          if (parser.shouldParse(lineLeft)) {
+
+
+            // Get the regex that matched
+            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
+
+            // Get the section of the line that matched the regex
+            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
+
+            // If the line started with the section then parse it
+            if (lineLeft.trim.startsWith(first)) {
+              found = true
+
+              result += parser.parse(superBlock, new Tokenizer(first))
+
+              lineLeft = lineLeft.substring(first.length)
+
+            }
+          }
+        }
+      }
+      if (!found) {
+        throw new RuntimeException("Error parsing: '" + Utils.getFileBlock(superBlock) + "' '" + line.trim + "' section: '" + lineLeft + "' Line:" + lineNumber)
+      }
+    }
+
+    result.toList
 
   }
 

@@ -38,9 +38,9 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
+      val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
-      if (expressions.isEmpty) {
+      if (stack.isEmpty) {
         row.getType match {
           case "C" => asm.visitVarInsn("ILOAD", "" + row.getId)
           case "B" => asm.visitVarInsn("ILOAD", "" + row.getId)

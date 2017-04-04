@@ -30,7 +30,7 @@ import scala.collection.mutable.ListBuffer
 class MethodParser extends Parser[MethodBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

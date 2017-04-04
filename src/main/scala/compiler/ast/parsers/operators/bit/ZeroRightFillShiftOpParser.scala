@@ -27,7 +27,7 @@ class ZeroRightFillShiftOpParser extends Parser[ZeroRightFillShiftOpBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

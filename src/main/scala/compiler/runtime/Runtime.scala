@@ -106,7 +106,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
         val line = lines(currentLine)
 
-        val nextBlock = Utils.getBlocks(block, line, currentLine)
+        val nextBlock = Utils.getBlocksAndStack(block, line, currentLine)
 
         val nextIndentation: Int = Utils.getIndentation(line)
 

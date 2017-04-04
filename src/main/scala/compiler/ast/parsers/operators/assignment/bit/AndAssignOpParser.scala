@@ -27,7 +27,7 @@ class AndAssignOpParser extends Parser[AndAssignOpBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

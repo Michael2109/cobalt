@@ -65,5 +65,5 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
     ""
   }
 
-  override def toString: String = "print: " + value + " " + expressions
+  override def toString: String = "print: " + value + " " + stack
 }

@@ -26,7 +26,7 @@ class DoubleConstantParser extends AbstractConstantParser[DoubleConstantBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

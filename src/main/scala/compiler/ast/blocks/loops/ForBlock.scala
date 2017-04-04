@@ -45,7 +45,7 @@ class ForBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fa
 
   def getClosingCode: String = ""
 
-  override def toString: String = getType + ": " + expressions
+  override def toString: String = getType + ": " + stack
 
   def getType: String = "<FOR>"
 

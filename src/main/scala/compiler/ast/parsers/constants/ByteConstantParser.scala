@@ -26,7 +26,7 @@ class ByteConstantParser extends AbstractConstantParser[ByteConstantBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

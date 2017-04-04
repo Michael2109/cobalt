@@ -28,7 +28,7 @@ import compiler.tokenizer.{Token, Tokenizer}
 class PrintlnParser extends Parser[PrintlnBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

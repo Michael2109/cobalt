@@ -42,7 +42,7 @@ class ElifBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
     // asm.visitLabel("l" + id)
   }
 
-  override def toString: String = getType + expressions
+  override def toString: String = getType + stack
 
   def getType: String = "<ELIF_STATEMENT>"
 

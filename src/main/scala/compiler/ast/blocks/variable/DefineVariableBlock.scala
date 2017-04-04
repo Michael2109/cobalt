@@ -35,7 +35,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (expressions.nonEmpty && expressions.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(expressions.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
+      val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
       // if integer
       getType match {
@@ -49,7 +49,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
         case "J" => rpnString + asm.visitVarInsn("LSTORE", id)
         case "Ljava/lang/String;" => rpnString + asm.visitVarInsn("ASTORE", id)
 
-        case _ => expressions.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
+        case _ => stack.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
       }
 
     } else {
@@ -75,6 +75,6 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     ""
   }
 
-  override def toString: String = "def variable: " + name + expressions
+  override def toString: String = "def variable: " + name + stack
 
 }

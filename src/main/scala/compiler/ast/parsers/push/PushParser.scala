@@ -27,7 +27,7 @@ class PushParser extends Parser[PushBlock] {
   val printVariable: Boolean = false
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

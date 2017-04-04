@@ -27,7 +27,7 @@ class MultiplyAssignOpParser extends Parser[MultiplyAssignOpBlock] {
 
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

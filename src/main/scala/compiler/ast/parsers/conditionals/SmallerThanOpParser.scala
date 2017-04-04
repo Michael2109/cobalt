@@ -25,7 +25,7 @@ import compiler.tokenizer.Tokenizer
 
 class SmallerThanOpParser extends Parser[SmallerThanOpBlock] {
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return
     */

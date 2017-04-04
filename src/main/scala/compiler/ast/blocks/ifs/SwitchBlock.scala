@@ -40,7 +40,7 @@ class SwitchBlock(var superBlockInit: Block) extends Block(superBlockInit, true,
     ""
   }
 
-  override def toString: String = getType + expressions
+  override def toString: String = getType + stack
 
   def getType: String = "<IF_STATEMENT>"
 

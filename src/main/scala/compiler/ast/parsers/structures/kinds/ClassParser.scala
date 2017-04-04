@@ -32,7 +32,7 @@ import scala.collection.mutable.ListBuffer
 class ClassParser extends Parser[ClassBlock] {
 
   /**
-    * A list of all regular expressions
+    * A list of all regular stack
     *
     * @return list of regexs
     */
