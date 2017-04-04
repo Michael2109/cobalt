@@ -106,6 +106,7 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
     }
   }
 
+  // println(extendsTokens)
   // todo sort out bug causing list to be output for the parent class.
   def getOpeningCode: String = {
       asm.getClassOpening(name) +
