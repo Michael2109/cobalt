@@ -74,12 +74,6 @@ public object ExampleMain()
         
         // Alternative 1
         let lSquareSumAlt1 = list.map(obj.square).sum
-        
-        // Alternative 2 
-        let lSquareSumAlt2 = 
-            list
-            |> map(square)
-            |> sum
             
         // Match 
         let exampleMatch x:Int = 
