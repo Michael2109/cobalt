@@ -276,18 +276,6 @@ object Utils {
 
   }
 
-  def getFileBlock(blockInit: Block): Block = {
-
-    val fileBlock: Block = {
-      var block: Block = blockInit
-      while (!block.isInstanceOf[FileBlock]) {
-        block = block.superBlock
-      }
-      block
-    }
-    fileBlock
-  }
-
   def getAllBlocks(superBlock: Block, line: String, lineNumber: Int = 0): List[Block] = {
 
     val result: ListBuffer[Block] = ListBuffer[Block]()
@@ -303,7 +291,6 @@ object Utils {
       for (parser <- Parsers.parsers) {
         if (!found) {
 
-          lineLeft = lineLeft.trim
 
           if (parser.shouldParse(lineLeft)) {
 
@@ -333,6 +320,18 @@ object Utils {
 
     result.toList
 
+  }
+
+  def getFileBlock(blockInit: Block): Block = {
+
+    val fileBlock: Block = {
+      var block: Block = blockInit
+      while (!block.isInstanceOf[FileBlock]) {
+        block = block.superBlock
+      }
+      block
+    }
+    fileBlock
   }
 
   def getASMLOAD(varType: String): String = {
