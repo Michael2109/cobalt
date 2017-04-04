@@ -105,11 +105,4 @@ public object ExampleMain()
             println "Is true"
         else 
             println "All others false"
-            
-        
-        
-        
-        
-        
-        
 ```
