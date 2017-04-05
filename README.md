@@ -2,7 +2,7 @@
 
 Cobalt is an object oriented and functional language that runs on the JVM.
 
-Scala has shown that difficulties can arise in development when too many methods can be used to complete the same task. This can lead to multiple developers writing code in various styles which then leads to a difficult to manage codebase. The target is to create a powerful language that has similar features to Scala but to also create more clear structures to allow for teams to manage code more efficiency. As this project has started later we can take into consideration the advantages and disadvantages of other languages to design and create a language that could be extemely powerful in the future. 
+Scala has shown that difficulties can arise in development when too many methods can be used to complete the same task. This can lead to multiple developers writing code in various styles which then leads to a difficult to manage codebase. The target is to create a powerful language that has similar features to Scala but to also create more clear structures to allow for teams to manage code more efficiency.
 
 The syntax will be similar to languages such as Java, Scala, F# and python.  
 
@@ -30,34 +30,34 @@ https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
 All code is subject to change. 
-```
+```scala
 // Example class with constructor
 public class ExampleClass()
 
     // Square - Similar to F#
-    let square x = x * x
+    square x = x * x
     
     // Add - Alternative parameter style
-    let add a:Int b: Int = x + b
+    add a:Int b: Int = x + b
     
     // Subtract - Add return type
-    let subtract a:Double b:Double <- Double = 
+    subtract a:Double b:Double <- Double = 
         a - b
         
     // Add One - lambda
-    let addOne = fun x -> x + 1
+    addOne = fun x -> x + 1
     
     // Add values to a formatted String
-    let formatValues <- String = fun a b c -> "$a $b $c"
+    formatValues <- String = fun a b c -> "$a $b $c"
     
     // Return list with x added to each element
-    let getAdded list x = list.map(fun i -> i + x)
+    getAdded list x = list.map(fun i -> i + x)
     
 // Singleton (Similar to Scala)
 public object ExampleMain()
 
     // Entry Point
-    let main args =
+    main args =
         obj = new ExampleClass()
         
         // Without parenthesis
@@ -67,16 +67,16 @@ public object ExampleMain()
         println (obj.square(10))
         
         // Create a list
-        let list = [1 .. 10]
+        list = [1 .. 10]
         
         // Find the sum of all list elements squared
-        let lSquareSum = list.map(obj.square(_)).sum
+        lSquareSum = list.map(obj.square(_)).sum
         
         // Alternative 1
-        let lSquareSumAlt1 = list.map(obj.square).sum
+        lSquareSumAlt1 = list.map(obj.square).sum
             
         // Match 
-        let exampleMatch x:Int = 
+        exampleMatch x:Int = 
             match x with
             | 1 -> "a"
             | 2 -> "b"
