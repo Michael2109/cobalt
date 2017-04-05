@@ -30,7 +30,7 @@ https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
 All code is subject to change. 
-```python
+```scala
 // Example class with constructor
 public class ExampleClass()
 
