@@ -94,7 +94,10 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
     * @param lines A List of all file lines
     * @return
     */
-  private def getIgnoreComments(lines: List[String]): List[String] = lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "").split("\n").filter(_.trim != "").toList
+  private def getIgnoreComments(lines: List[String]): List[String] = {
+    val lineCount = "\r\n|\r|\n".r.findAllIn(lines.mkString("\n")).length
+    lines.mkString("\n").replaceAll("(?sm)(^(?:\\s*)?((?:/\\*(?:\\*)?).*?(?<=\\*/))|(?://).*?(?<=$))", "\n" * lineCount).split("\n").filter(_.trim != "").toList
+  }
 
   /**
     * Recursively gets the class AST ast.
