@@ -30,34 +30,34 @@ https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
 All code is subject to change. 
-```
+```python
 // Example class with constructor
 public class ExampleClass()
 
     // Square - Similar to F#
-    let square x = x * x
+    square x = x * x
     
     // Add - Alternative parameter style
-    let add a:Int b: Int = x + b
+    add a:Int b: Int = x + b
     
     // Subtract - Add return type
-    let subtract a:Double b:Double <- Double = 
+    subtract a:Double b:Double <- Double = 
         a - b
         
     // Add One - lambda
-    let addOne = fun x -> x + 1
+    addOne = fun x -> x + 1
     
     // Add values to a formatted String
-    let formatValues <- String = fun a b c -> "$a $b $c"
+    formatValues <- String = fun a b c -> "$a $b $c"
     
     // Return list with x added to each element
-    let getAdded list x = list.map(fun i -> i + x)
+    getAdded list x = list.map(fun i -> i + x)
     
 // Singleton (Similar to Scala)
 public object ExampleMain()
 
     // Entry Point
-    let main args =
+    main args =
         obj = new ExampleClass()
         
         // Without parenthesis
@@ -67,16 +67,16 @@ public object ExampleMain()
         println (obj.square(10))
         
         // Create a list
-        let list = [1 .. 10]
+        list = [1 .. 10]
         
         // Find the sum of all list elements squared
-        let lSquareSum = list.map(obj.square(_)).sum
+        lSquareSum = list.map(obj.square(_)).sum
         
         // Alternative 1
-        let lSquareSumAlt1 = list.map(obj.square).sum
+        lSquareSumAlt1 = list.map(obj.square).sum
             
         // Match 
-        let exampleMatch x:Int = 
+        exampleMatch x:Int = 
             match x with
             | 1 -> "a"
             | 2 -> "b"
