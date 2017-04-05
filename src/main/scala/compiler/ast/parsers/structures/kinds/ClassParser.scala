@@ -73,7 +73,7 @@ class ClassParser extends Parser[ClassBlock] {
       } else {
         new Token("", new EmptyToken)
       }
-    ).filter(!_.isInstanceOf[EmptyToken])
+    ).filter(!_.tokenType.isInstanceOf[EmptyToken])
 
     val implementsTokens: List[Token] = List[Token](
       if (tokenizer.peek.tokenType.isInstanceOf[ImplementsToken]) {
@@ -83,7 +83,7 @@ class ClassParser extends Parser[ClassBlock] {
         new Token("", new EmptyToken)
       }
 
-    ).filter(!_.isInstanceOf[EmptyToken])
+    ).filter(!_.tokenType.isInstanceOf[EmptyToken])
 
     new ClassBlock(superBlock, modifiers.toList, className, parameters, extendsTokens, implementsTokens)
   }

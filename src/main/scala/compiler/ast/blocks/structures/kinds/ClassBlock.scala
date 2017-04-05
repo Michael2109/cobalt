@@ -113,7 +113,6 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
       asm.executeMethodOpening +
       asm.getClassWriter +
         "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + (if (extendsTokens.size == 0) "java/lang/Object" else (extendsTokens.map(t => Utils.getDirectory(ref, t.token) + "/" + t.token).mkString(""))) + "\", new String[]{});\n"
-
   }
 
   /**
