@@ -32,32 +32,32 @@ https://github.com/Michael2109/cobalt/wiki/Getting-Started
 All code is subject to change. 
 ```scala
 // Example class with constructor
-public class ExampleClass()
+public class ExampleClass(arg1: Int, arg2: Int)
 
     // Square - Similar to F#
-    square x = x * x
+    square(x:Int) = x * x
     
     // Add - Alternative parameter style
-    add a:Int b: Int = x + b
+    add(a:Int, b: Int) = x + b
     
     // Subtract - Add return type
-    subtract a:Double b:Double <- Double = 
+    subtract(a:Double b:Double): = 
         a - b
         
     // Add One - lambda
     addOne = fun x -> x + 1
     
     // Add values to a formatted String
-    formatValues <- String = fun a b c -> "$a $b $c"
+    formatValues:String = fun a b c -> "$a $b $c"
     
     // Return list with x added to each element
-    getAdded list x = list.map(fun i -> i + x)
+    getAdded(list, x) = list.map(fun i -> i + x)
     
 // Singleton (Similar to Scala)
 public object ExampleMain()
 
     // Entry Point
-    main args =
+    main(args: Array[String]) =
         obj = new ExampleClass()
         
         // Without parenthesis
@@ -78,24 +78,21 @@ public object ExampleMain()
         // Match 
         exampleMatch x:Int = 
             match x with
-            | 1 -> "a"
-            | 2 -> "b"
-            | _ -> "z"
+            1 -> "a"
+            2 -> "b"
+            _ -> "z"
         
-        // If statements
-        if square(12) > 100 then println "Larger than 100"
-        
-        // Alternative 1
+        // If statements - inline
         if (square(12) > 100) println "Larger than 100"
         
-        // Alternative 2
-        if square(12) > 100
+        // If statements
+        if (square(12) > 100)
             println "Larger than 100"
             
         // Elif and else
-        if false
+        if (false)
             println "Is true"
-        elif true
+        elif (true)
             println "Is true"
         else 
             println "All others false"
