@@ -2,4 +2,4 @@ package test.operators
 
 class OperatorTest():
 
-    let test() <- void:
+    let test() : void:

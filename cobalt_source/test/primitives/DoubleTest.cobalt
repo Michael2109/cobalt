@@ -2,7 +2,7 @@ package test.primitives
 
 class DoubleTest():
 
-    let main() <- void:
+    let main() : void:
         test1:double = 50.0
         test2:double = 500.0
         println(test1)

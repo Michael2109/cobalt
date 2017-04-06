@@ -12,7 +12,7 @@ open class MyCode(xx:int, yy:int):
         /*
         Another test
         */
-        open let method1() <- void:
+        open let method1() : void:
 
             x: int = 5
             //while (x < 10):
@@ -22,7 +22,7 @@ open class MyCode(xx:int, yy:int):
         /**
         *Another test
         */
-        let main() <- void:
+        let main() : void:
             //stringyThing: String = "Thisisastring"
             z: int = (10 + 25) * 5 - 3 + (7 * 5) + 5 + 5
             longTest: long = 10L
@@ -34,8 +34,8 @@ open class MyCode(xx:int, yy:int):
             //myCode
 
     private:
-        let privateMethod(y: int) <- void:
+        let privateMethod(y: int) : void:
             yy: int = 10
 
-    let noModifierMethod(z: int) <- void:
+    let noModifierMethod(z: int) : void:
         test: int = 35

@@ -2,7 +2,7 @@ package test.primitives
 
 class LongTest():
 
-    let main() <- void:
+    let main() : void:
         test1:long = 20l
         test2:long = 25l
         test3:long = 30L

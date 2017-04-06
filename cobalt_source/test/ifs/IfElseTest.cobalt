@@ -2,7 +2,7 @@ package test.ifs
 
 class IfElseTest():
 
-    let main() <- void
+    let main() : void
         x:int = 50
         y:int = 75
 

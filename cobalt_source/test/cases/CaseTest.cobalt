@@ -2,7 +2,7 @@ package test.cases
 
 class CaseTest():
 
-    let main() <- void:
+    let main() : void:
 
         // Test parses correctly
         case test => exampleValue

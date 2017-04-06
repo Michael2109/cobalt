@@ -3,5 +3,5 @@ package test.this_keyword
 
 open class ThisTest():
 
-    open let method1() <- void:
+    open let method1() : void:
         this
