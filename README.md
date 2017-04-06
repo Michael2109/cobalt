@@ -57,7 +57,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
 public object ExampleMain()
 
     // Entry Point
-    main args =
+    main(args: Array[String]) =
         obj = new ExampleClass()
         
         // Without parenthesis
