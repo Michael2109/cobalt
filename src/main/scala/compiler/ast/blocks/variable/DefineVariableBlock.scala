@@ -57,22 +57,11 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
+      if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock])
+        ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
+      else
+        ""
 
-      // if integer
-      getType match {
-        case "C" => rpnString + asm.visitVarInsn("ISTORE", id)
-        case "B" => rpnString + asm.visitVarInsn("ISTORE", id)
-        case "I" => rpnString + asm.visitVarInsn("ISTORE", id)
-        case "D" => rpnString + asm.visitVarInsn("DSTORE", id)
-        case "F" => rpnString + asm.visitVarInsn("FSTORE", id)
-        case "S" => rpnString + asm.visitVarInsn("ISTORE", id)
-        case "Z" => rpnString + asm.visitVarInsn("ISTORE", id)
-        case "J" => rpnString + asm.visitVarInsn("LSTORE", id)
-        case "Ljava/lang/String;" => rpnString + asm.visitVarInsn("ASTORE", id)
-
-        case _ => stack.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
-      }
 
     } else {
       ""
@@ -81,7 +70,21 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
 
   override def getClosingCode: String = {
-    ""
+
+    // if integer
+    getType match {
+      case "C" => asm.visitVarInsn("ISTORE", id)
+      case "B" => asm.visitVarInsn("ISTORE", id)
+      case "I" => asm.visitVarInsn("ISTORE", id)
+      case "D" => asm.visitVarInsn("DSTORE", id)
+      case "F" => asm.visitVarInsn("FSTORE", id)
+      case "S" => asm.visitVarInsn("ISTORE", id)
+      case "Z" => asm.visitVarInsn("ISTORE", id)
+      case "J" => asm.visitVarInsn("LSTORE", id)
+      case "Ljava/lang/String;" => asm.visitVarInsn("ASTORE", id)
+
+      case _ => stack.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
+    }
   }
 
   override def toString: String = "def variable: " + name + stack
