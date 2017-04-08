@@ -2,8 +2,9 @@
 package test
 
 import test.MyCode
+import test.ObjectTest
 
-open class MyCode(xx:int, yy:int):
+open class MyCode(xx:int, yy:int) extends TestClass implements ObjectTest
     /* Other test */
     //xx += 1
 
