@@ -38,10 +38,13 @@ public class ExampleClass(arg1: Int, arg2: Int)
     x = 5
     
     // Expression - Type specified
-    x:Int = 5
+    y:Int = 5
+    
+    // Mutable variable
+    mutable z:Int = 10
     
     // Expression Block
-    x:Int = 
+    a:Int = 
         if(true)
             10
         else
