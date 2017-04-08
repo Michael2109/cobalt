@@ -63,8 +63,11 @@ dependencies {
     // janino simple compiler
     compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.6'
 
-    // asm
+    // asm - Java
     compile group: 'org.ow2.asm', name: 'asm', version: '5.2'
+
+    // asm - Scala
+    compile group: 'org.scala-lang.modules', name: 'scala-asm', version: '5.1.0-scala-2'
 
     // Scala logging slf4j
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.24'
