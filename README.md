@@ -34,30 +34,43 @@ All code is subject to change.
 // Example class with constructor
 public class ExampleClass(arg1: Int, arg2: Int)
 
-    // Square - Similar to F#
-    square(x:Int) = x * x
+    // Expression - Type inference
+    x = 5
     
-    // Add - Alternative parameter style
-    add(a:Int, b: Int) = x + b
+    // Expression - Type specified
+    x:Int = 5
+    
+    // Expression Block
+    x:Int = 
+        if(true)
+            10
+        else
+            20
+           
+    // Function - Square value (Similar to F#)
+    let square(x:Int) = x * x
+    
+    // Add - Specified return type
+    let add(a:Int, b: Int):Int = x + b
     
     // Subtract - Add return type
-    subtract(a:Double b:Double): = 
+    let subtract(a:Double b:Double): = 
         a - b
         
     // Add One - lambda
-    addOne = fun x -> x + 1
+    let addOne = fun x -> x + 1
     
     // Add values to a formatted String
-    formatValues:String = fun a b c -> "$a $b $c"
+    let formatValues:String = fun a b c -> "$a $b $c"
     
     // Return list with x added to each element
-    getAdded(list, x) = list.map(fun i -> i + x)
+    let getAdded(list, x) = list.map(fun i -> i + x)
     
 // Singleton (Similar to Scala)
 public object ExampleMain()
 
     // Entry Point
-    main(args: Array[String]) =
+    let main(args: Array[String]) =
         obj = new ExampleClass()
         
         // Without parenthesis
