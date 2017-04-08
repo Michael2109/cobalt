@@ -20,6 +20,14 @@ package compiler.ast.blocks.constants
 
 import compiler.ast.blocks.Block
 
-abstract class AbstractConstantBlock(var sBlockInit: Block, container: Boolean, variable: Boolean, immutable: Boolean = false) extends Block(sBlockInit, container, variable, immutable) {
+/**
+  * The parent of all constant blocks to group them together.
+  *
+  * @param sBlockInit
+  * @param container Whether the blocks contains other blocks
+  * @param variable  Whether the blocks is a variable
+  * @param immutable
+  */
+abstract class AbstractConstantBlock(sBlockInit: Block, container: Boolean, variable: Boolean, immutable: Boolean = false) extends Block(sBlockInit, container, variable, immutable) {
 
 }

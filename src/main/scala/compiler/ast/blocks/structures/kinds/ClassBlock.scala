@@ -39,6 +39,7 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
   val ref = this
 
   val `sealed`: String = if (false) "+ACC_FINAL" else ""
+
   private val modifiersASM = {
     var result = ""
     if (!(modifierTokens.find(m => m.isInstanceOf[InternalToken]).size > 0)) {
@@ -64,11 +65,14 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
 
   // Parameters added to constuctor
   private var parameterString: String = parameters.map(_.getType).mkString("")
+
   // Local variables from the parameters
   private var localVariableString: String = ""
+
   // Create a constructor blocks and add it to the class blocks
   private var constructorBlock: Block = new ConstructorBlock(this, parameters, name)
 
+  // Add the constructor block to the class
   addBlock_=(constructorBlock)
 
   // Move anything outside a method and within the class to a constructor blocks
@@ -81,16 +85,12 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
     localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lConstructor0, lConstructor2, " + Block.TOTAL_BLOCKS + ");\n"
   }
 
-  def getName: String = name
 
-  def getValue: String = null
-
-  def getType: String = "class"
-
-
-
-
-  // Moves all blocks that are inside the class and outside methods into the constructor blocks
+  /**
+    * Moves all blocks that are inside the class and outside methods into the constructor blocks
+    *
+    * @param block
+    */
   def moveToConstructor(block: Block) {
     if (block.isInstanceOf[MethodBlock] || block.isInstanceOf[ConstructorBlock] || block.isInstanceOf[ModifierBlock]) {
       return
@@ -106,14 +106,6 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
     }
   }
 
-  // println(extendsTokens)
-  // todo sort out bug causing list to be output for the parent class.
-  def getOpeningCode: String = {
-      asm.getClassOpening(name) +
-      asm.executeMethodOpening +
-      asm.getClassWriter +
-        "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + (if (extendsTokens.size == 0) "java/lang/Object" else (extendsTokens.map(t => Utils.getDirectory(ref, t.token) + "/" + t.token).mkString(""))) + "\", new String[]{});\n"
-  }
 
   /**
     * Gets the package blocks
@@ -124,18 +116,30 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
     superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
   }
 
-  def getClosingCode: String = {
-     "cw.visitEnd();\n" +
-       "return cw.toByteArray();\n" +
-       asm.getClosingBrace
-     }
+  override def getName: String = name
 
+  override def getValue: String = null
+
+  override def getType: String = "<CLASS>"
+
+  override def getOpeningCode: String = {
+    asm.getClassOpening(name) +
+      asm.executeMethodOpening +
+      asm.getClassWriter +
+      "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + (if (extendsTokens.size == 0) "java/lang/Object" else (extendsTokens.map(t => Utils.getDirectory(ref, t.token) + "/" + t.token).mkString(""))) + "\", new String[]{});\n"
+  }
+
+  override def getClosingCode: String = {
+    "cw.visitEnd();\n" +
+      "return cw.toByteArray();\n" +
+      "}"
+  }
 
   override def toString: String = {
     var paramString: String = ""
     for (parameter <- parameters) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    name + " ( " + paramString + ") extends " + extendsTokens + " implements " + implementedTokens + " " + stack + " modifierTokens:" + modifierTokens
+    name + " ( " + paramString + ") <EXTENDS> " + extendsTokens + " <IMPLEMENTS> " + implementedTokens + " " + stack + " <MODIFIERS>" + modifierTokens
   }
 }

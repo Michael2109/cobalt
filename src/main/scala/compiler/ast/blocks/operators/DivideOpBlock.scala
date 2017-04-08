@@ -20,27 +20,29 @@ package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents a divide operator
+  *
+  * @param superBlockInit
+  */
 class DivideOpBlock(val superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {}
+  override def getName: String = ""
 
-  def getName: String = ""
+  override def getValue: String = ""
 
-  def getValue: String = ""
+  override def getType: String = "<DIVIDE_OP>"
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     asm.visitInsn("" + superBlockInit.getType + "DIV")
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
   override def toString: String = {
     getType
   }
-
-  def getType: String = "<DIVIDE_OP>"
-
 
 }

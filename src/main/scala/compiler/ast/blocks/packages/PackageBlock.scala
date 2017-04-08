@@ -20,20 +20,23 @@ package compiler.ast.blocks.packages
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents a package
+  *
+  * @param directory
+  */
 class PackageBlock(var directory: String) extends Block(null, true, false) {
 
-  def init() {}
+  override def getName: String = directory
 
-  def getName: String = directory
+  override def getValue: String = null
 
-  def getValue: String = null
+  override def getType: String = "<PACKAGE>"
 
-  def getType: String = "package"
+  override def getOpeningCode: String = ""
 
-  def getOpeningCode: String = ""
+  override def getClosingCode: String = ""
 
-  def getClosingCode: String = ""
-
-  override def toString: String = "package: " + directory
+  override def toString: String = getType + directory
 
 }

@@ -21,19 +21,17 @@ package compiler.ast.blocks.conditionals
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents and - "&&"
   *
   * @param superBlockInit The parent block
   */
 class AndOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
-  def init() {
-
-  }
-
   override def getName: String = ""
 
   override def getValue: String = ""
+
+  override def getType: String = "<AND_OP>"
 
   def getOpeningCode: String = {
     ""
@@ -44,8 +42,5 @@ class AndOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(sup
   }
 
   override def toString: String = getType
-
-  override def getType: String = "<AND_OP>"
-
 
 }

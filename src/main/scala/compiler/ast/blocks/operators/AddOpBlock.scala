@@ -21,31 +21,28 @@ package compiler.ast.blocks.operators
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents a add operator
   *
   * @param superBlockInit The parent block
   */
 class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
+  override def getName: String = ""
 
-  }
+  override def getValue: String = ""
 
-  def getName: String = ""
+  override def getType(): String = "<ADD_OP>"
 
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     asm.visitInsn("" + superBlockInit.getType + "ADD")
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
      ""
   }
 
   override def toString: String = getType()
 
-  def getType(): String = "<ADD_OP>"
 
 
 }

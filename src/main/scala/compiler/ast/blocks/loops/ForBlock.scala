@@ -22,7 +22,8 @@ import compiler.ast.blocks.Block
 import compiler.data.parameters.Parameter
 
 /**
-  * Represents a for loop
+  * Represents a "for loop".
+  * - UNIMPLEMENTED
   *
   * @param superBlockInit The parent block
   */
@@ -34,12 +35,11 @@ class ForBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fa
     params
   }
 
-  def init() {
-  }
-
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<FOR>"
 
   def getOpeningCode: String = ""
 
@@ -47,6 +47,5 @@ class ForBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fa
 
   override def toString: String = getType + ": " + stack
 
-  def getType: String = "<FOR>"
 
 }

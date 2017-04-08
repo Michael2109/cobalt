@@ -21,31 +21,28 @@ package compiler.ast.blocks.operators.assignment
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents modulus assignment
   *
   * @param superBlockInit The parent block
   */
 class ModulusAssignOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
+  override def getName: String = ""
 
-  }
+  override def getValue: String = ""
 
-  def getName: String = ""
+  override def getType(): String = "<MODULUS_ASSIGN_OP>"
 
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     ""
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
   override def toString: String = getType()
 
-  def getType(): String = "<MODULUS_ASSIGN_OP>"
 
 
 }

@@ -21,17 +21,17 @@ package compiler.ast.blocks.empty
 import compiler.ast.blocks.Block
 
 /**
+  * Represents an "empty" block to be used as a placeholder instead of returning null values.
+  *
   * @param superBlockInit The parent block
   */
 class EmptyBlock(var superBlockInit: Block = null) extends Block(superBlockInit, false, false) {
 
-  def init() {
-
-  }
-
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<EMPTY>"
 
   def getOpeningCode: String = {
     ""
@@ -42,8 +42,5 @@ class EmptyBlock(var superBlockInit: Block = null) extends Block(superBlockInit,
   }
 
   override def toString: String = getType
-
-  def getType: String = "<EMPTY>"
-
 
 }

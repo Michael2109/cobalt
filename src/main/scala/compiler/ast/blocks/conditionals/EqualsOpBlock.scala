@@ -21,19 +21,18 @@ package compiler.ast.blocks.conditionals
 import compiler.ast.blocks.Block
 
 /**
-  * Represents checking if equal - "=="
+  * Represents equals - "=="
   *
   * @param superBlockInit The parent block
   */
 class EqualsOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
-  def init() {
-
-  }
 
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<EQUALS_OP>"
 
   def getOpeningCode: String = {
     "IF_ICMPEQ"
@@ -44,7 +43,5 @@ class EqualsOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(
   }
 
   override def toString: String = getType
-
-  def getType: String = "<EQUALS_OP>"
 
 }

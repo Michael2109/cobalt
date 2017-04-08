@@ -21,29 +21,27 @@ package compiler.ast.blocks.super_keyword
 import compiler.ast.blocks.Block
 
 /**
-  * Represents an if statement
+  * Represents calling "super"
   *
   * @param superBlockInit The parent block
   */
 class SuperBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  override def getName: String = ""
 
-  def getValue: String = ""
+  override def getValue: String = ""
 
-  def init() {
-  }
+  override def getType: String = "<SUPER>"
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     ""
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
   override def toString: String = getType
 
-  def getType: String = "<SUPER>"
 
 }

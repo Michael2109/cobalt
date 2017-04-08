@@ -26,7 +26,7 @@ class DoBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fal
 
   def getValue: String = ""
 
-  def init(): Unit = {}
+  def getType: String = "<DO>"
 
   def getOpeningCode: String = {
     ""
@@ -37,7 +37,5 @@ class DoBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fal
   }
 
   override def toString: String = getType
-
-  def getType: String = "<DO>"
 
 }

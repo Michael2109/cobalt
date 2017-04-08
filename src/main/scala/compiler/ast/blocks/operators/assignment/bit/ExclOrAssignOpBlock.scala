@@ -21,31 +21,26 @@ package compiler.ast.blocks.operators.assignment.bit
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents exclusive or assignment
   *
   * @param superBlockInit The parent block
   */
 class ExclOrAssignOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
+  override def getName: String = ""
 
-  }
+  override def getValue: String = ""
 
-  def getName: String = ""
+  override def getType(): String = "<EXCL_OR_ASSIGN_OP>"
 
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     ""
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
   override def toString: String = getType()
-
-  def getType(): String = "<EXCL_OR_ASSIGN_OP>"
-
 
 }

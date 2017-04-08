@@ -20,20 +20,26 @@ package compiler.ast.blocks.constants
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents an "int" constant
+  *
+  * @param superBlockInit
+  * @param value
+  */
 class IntConstantBlock(var superBlockInit: Block, value: String) extends AbstractConstantBlock(superBlockInit, false, true) {
 
   override def getName: String = ""
 
   override def getValue: String = value
 
-  override def getOpeningCode: String = {
+  override def getType: String = "<INT_CONSTANT>"
 
-    asm.visitIntInsn("BIPUSH", value)
+  override def getOpeningCode: String = {
+    "mv.visitIntInsn(BIPUSH, " + value + ");"
   }
 
   override def getClosingCode: String = ""
 
   override def toString: String = getType + ": " + value
 
-  override def getType: String = "int_const"
 }

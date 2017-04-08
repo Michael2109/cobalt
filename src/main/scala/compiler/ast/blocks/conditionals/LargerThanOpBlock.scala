@@ -21,7 +21,7 @@ package compiler.ast.blocks.conditionals
 import compiler.ast.blocks.Block
 
 /**
-  * Represents checking if equal - "=="
+  * Represents larger than - ">"
   *
   * @param superBlockInit The parent block
   */
@@ -30,6 +30,8 @@ class LargerThanOpBlock(var superBlockInit: Block) extends AbstractConditionalBl
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<LARGER_THAN_OP>"
 
   def getOpeningCode: String = {
     "IF_ICMPLT"
@@ -40,8 +42,5 @@ class LargerThanOpBlock(var superBlockInit: Block) extends AbstractConditionalBl
   }
 
   override def toString: String = getType
-
-  def getType: String = "<LARGER_THAN_OP>"
-
 
 }

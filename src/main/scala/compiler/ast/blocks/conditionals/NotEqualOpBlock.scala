@@ -21,19 +21,17 @@ package compiler.ast.blocks.conditionals
 import compiler.ast.blocks.Block
 
 /**
-  * Represents checking if equal - "=="
+  * Represents not equal - "!="
   *
   * @param superBlockInit The parent block
   */
 class NotEqualOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
-  def init() {
-
-  }
-
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<NOT_EQUAL_OP>"
 
   def getOpeningCode: String = {
     ""
@@ -44,8 +42,5 @@ class NotEqualOpBlock(var superBlockInit: Block) extends AbstractConditionalBloc
   }
 
   override def toString: String = getType
-
-  def getType: String = "<NOT_EQUAL_OP>"
-
 
 }

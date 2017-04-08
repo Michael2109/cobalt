@@ -18,6 +18,10 @@
 
 package compiler.ast.blocks.structures.kinds
 
+/**
+  * Represents a trait - Fully abstract class/Interface equivalent
+  * UNIMPLEMENTED
+  */
 class TraitBlock {
 
 }

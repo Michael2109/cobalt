@@ -23,7 +23,7 @@ import compiler.ast.parsers.cases.CaseParser
 import compiler.ast.parsers.conditionals._
 import compiler.ast.parsers.constants._
 import compiler.ast.parsers.exceptions._
-import compiler.ast.parsers.ifs.{ElifParser, ElseParser, IfParser, SwitchParser}
+import compiler.ast.parsers.ifs.{ElifParser, ElseParser, IfParser}
 import compiler.ast.parsers.imports.ImportParser
 import compiler.ast.parsers.loops.{DoParser, ForParser, WhileParser}
 import compiler.ast.parsers.modifiers.ModifierParser
@@ -37,7 +37,6 @@ import compiler.ast.parsers.structures.kinds.{ClassParser, ObjectParser}
 import compiler.ast.parsers.structures.methods.MethodParser
 import compiler.ast.parsers.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.ast.parsers.super_keyword.SuperParser
-import compiler.ast.parsers.syntax.ColonParser
 import compiler.ast.parsers.variable.{DefineVariableParser, ThisKeywordParser, VariableParser}
 import compiler.tokenizer.Tokenizer
 
@@ -102,14 +101,11 @@ object Parsers {
 
     new ObjectDefinitionParser,
     new ObjectMethodCallParser,
-    new SwitchParser,
     new ModifierParser,
 
     new MethodCallParser,
     new ImportParser,
     new WhileParser,
-
-
 
     /* bit assignments */
     new AndAssignOpParser,
@@ -166,10 +162,8 @@ object Parsers {
     new LongConstantParser,
     new IntConstantParser,
 
-    new VariableParser,
+    new VariableParser
 
-    /* syntax */
-    new ColonParser
 
   )
 

@@ -27,13 +27,11 @@ import compiler.ast.blocks.Block
   */
 class NotOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
-  def init() {
-
-  }
-
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<NOT_OP>"
 
   def getOpeningCode: String = {
     ""
@@ -44,7 +42,5 @@ class NotOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(sup
   }
 
   override def toString: String = getType
-
-  def getType: String = "<MULTIPLY_OP>"
 
 }

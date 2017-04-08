@@ -26,18 +26,17 @@ import compiler.utilities.Utils
 
 /**
   * Represents the whole file.
+  * The base parent class for the AST
   */
 class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
 
-  def init() {}
+  override def getName: String = name
 
-  def getName: String = name
+  override def getValue: String = ""
 
-  def getValue: String = ""
+  override def getType: String = "file"
 
-  def getType: String = "file"
-
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
 
     asm.getPackage(Utils.packageBlock(this).directory.replace("/", ".")) +
     asm.getImport("java.io.DataOutputStream") +
@@ -49,7 +48,7 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
     asm.getImport("org.objectweb.asm.*")
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     val packageBlock: PackageBlock = {
 
         var result = new PackageBlock("")

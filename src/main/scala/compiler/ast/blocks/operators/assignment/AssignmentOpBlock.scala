@@ -20,27 +20,29 @@ package compiler.ast.blocks.operators.assignment
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents assignment - "="
+  *
+  * @param superBlockInit
+  */
 class AssignmentOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
+  override def getName: String = ""
 
-  }
+  override def getValue: String = ""
 
-  def getName: String = ""
+  override def getType: String = "<ASSIGNMENT>"
 
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     ""
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
   override def toString: String = getType
 
-  def getType: String = "<ASSIGNMENT>"
 
 
 }

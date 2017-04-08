@@ -21,7 +21,7 @@ package compiler.ast.blocks.ifs
 import compiler.ast.blocks.Block
 
 /**
-  * Represents an if statement
+  * Represents an "else" statement
   *
   * @param superBlockInit The parent block
   */
@@ -30,6 +30,8 @@ class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<ELSE_STATEMENT>"
 
   def getOpeningCode: String = {
     ""
@@ -41,6 +43,5 @@ class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, f
 
   override def toString: String = getType
 
-  def getType: String = "<ELSE>"
 
 }

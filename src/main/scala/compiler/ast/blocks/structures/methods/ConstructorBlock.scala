@@ -23,6 +23,13 @@ import compiler.data.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.Utils
 
+/**
+  * Represents a constructor
+  *
+  * @param superBlockInit
+  * @param parameters
+  * @param className
+  */
 class ConstructorBlock(val superBlockInit: Block, val parameters: List[Parameter], className: String) extends Block(superBlockInit, true, false) {
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("<init>").setClassName(className))
@@ -45,10 +52,6 @@ class ConstructorBlock(val superBlockInit: Block, val parameters: List[Parameter
       i += 1
 
     }
-
-  def init(): Unit = {
-
-  }
 
   override def getName: String = "<init>"
 

@@ -24,7 +24,7 @@ import compiler.data.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 
 /**
-  * Represents a class.
+  * Represents a singleton.
   * Creates a constructor method. Loops through all blocks unless it's a method or within a method adding to the constructor
   */
 class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: Array[Parameter], parentClass: String, implementedClasses: String) extends Block(superBlockInit, true, false) {
@@ -47,8 +47,8 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
   def packageBlock: PackageBlock = superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
 
   def getClosingCode: String = {
-     " cw.visitEnd();\n" + "return cw.toByteArray();\n" +
-       asm.getClosingBrace
+    "cw.visitEnd();\n" + "return cw.toByteArray();\n" +
+      "}"
     }
 
   override def toString: String = "object" + name

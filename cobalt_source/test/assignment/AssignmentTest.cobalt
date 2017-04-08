@@ -19,5 +19,7 @@ public class AssignmentTest() extends TestClass implements TestImplement,Another
 
     protected let test1() : void:
         println("Hello World")
+        println("x")
+
 
 

@@ -20,6 +20,13 @@ package compiler.ast.blocks.modifiers
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents a "modifier"
+  * E.g. public, protected, internal, abstract, override
+  *
+  * @param superBlockInit
+  * @param value
+  */
 class ModifierBlock (var superBlockInit: Block, var value: String) extends Block(superBlockInit, true, false) {
 
   /* Symbol table information */
@@ -27,7 +34,7 @@ class ModifierBlock (var superBlockInit: Block, var value: String) extends Block
 
   override def getValue: String = value
 
-  override def getType: String = "modifier"
+  override def getType: String = "<MODIFIER>"
 
   /* Bytecode for the opening and closing of the blocks */
   override def getOpeningCode: String = ""

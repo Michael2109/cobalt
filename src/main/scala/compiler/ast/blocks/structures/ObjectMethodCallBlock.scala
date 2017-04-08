@@ -28,7 +28,7 @@ import compiler.utilities.Utils
 import scala.collection.mutable.ListBuffer
 
 /**
-  * Calling a method of an object
+  * Represents calling a method in an object
   * E.g. obj.methodCall(10,20)
   */
 class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
@@ -45,19 +45,8 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
     params
   }
 
-  def getName: String = ""
 
-  def getValue: String = ""
-
-  def getType: String = `type`
-
-  def init() {
-    /*
-        if (className == getClassName)
-          directory = getPackage
-        else
-          directory = getDirectory
-*/
+  /*
         // Get the type of the parameters
         for (param <- params) {
           println(Utils.getMethod(this) + " " + param.getName)
@@ -65,7 +54,8 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
           parameterString += param.getType
           argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
         }
-  }
+  */
+
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
   def getDirectory: String = {
@@ -123,13 +113,18 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
     block.getName
   }
 
+  override def getName: String = ""
 
-  def getOpeningCode: String = {
+  override def getValue: String = ""
+
+  override def getType: String = `type`
+
+  override def getOpeningCode: String = {
     // "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
     ""
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 

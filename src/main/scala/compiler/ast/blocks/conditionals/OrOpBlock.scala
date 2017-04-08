@@ -21,19 +21,17 @@ package compiler.ast.blocks.conditionals
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents or - "||"
   *
   * @param superBlockInit The parent block
   */
 class OrOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
-  def init() {
-
-  }
-
   override def getName: String = ""
 
   override def getValue: String = ""
+
+  override def getType: String = "<OR_OP>"
 
   def getOpeningCode: String = {
     ""
@@ -44,8 +42,5 @@ class OrOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(supe
   }
 
   override def toString: String = getType
-
-  override def getType: String = "<OR_OP>"
-
 
 }

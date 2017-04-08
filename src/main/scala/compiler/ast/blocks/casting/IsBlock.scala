@@ -21,11 +21,18 @@ package compiler.ast.blocks.casting
 import compiler.ast.blocks.Block
 import compiler.utilities.Utils
 
+/**
+  * Represents "is"
+  *
+  * @param superBlockInit
+  */
 class IsBlock(var superBlockInit: Block) extends Block(superBlockInit, false, true) {
 
   override def getName: String = ""
 
   override def getValue: String = ""
+
+  override def getType: String = "<IS>"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
@@ -39,5 +46,4 @@ class IsBlock(var superBlockInit: Block) extends Block(superBlockInit, false, tr
 
   override def toString: String = getType + ""
 
-  override def getType: String = "<IS>"
 }

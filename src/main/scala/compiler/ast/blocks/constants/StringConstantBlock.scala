@@ -21,11 +21,19 @@ package compiler.ast.blocks.constants
 import compiler.ast.blocks.Block
 import compiler.utilities.Utils
 
+/**
+  * Represents a "String" object
+  *
+  * @param superBlockInit
+  * @param value
+  */
 class StringConstantBlock(var superBlockInit: Block, value: String) extends AbstractConstantBlock(superBlockInit, false, true) {
 
   override def getName: String = ""
 
   override def getValue: String = value
+
+  override def getType: String = "<STRING_CONSTANT>"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
@@ -39,5 +47,4 @@ class StringConstantBlock(var superBlockInit: Block, value: String) extends Abst
 
   override def toString: String = getType + ": " + value
 
-  override def getType: String = "String_const"
 }

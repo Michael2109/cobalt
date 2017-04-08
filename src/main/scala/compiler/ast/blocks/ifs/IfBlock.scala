@@ -30,21 +30,13 @@ import compiler.utilities.{ReversePolish, Utils}
   */
 class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(superBlockInit, true, false) {
 
-  var statementString = ""
-
-  // Extract information from within the parenthesis
-  while (tokenizer.peek.token != ")") {
-    val nextToken = tokenizer.nextToken.token
-    var found = false
-    statementString += nextToken
-    found = true
-  }
-
-  val orderedStatementBlocks = ReversePolish.infixToRPN(Utils.getAllBlocks(this, statementString))
+  val orderedStatementBlocks = getOrderedStatements(tokenizer)
 
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<IF_STATEMENT>"
 
   def getOpeningCode: String = {
     IfGen.getOpeningCode(this)
@@ -57,6 +49,20 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
 
   override def toString: String = getType + stack
 
-  def getType: String = "<IF_STATEMENT>"
+  private def getOrderedStatements(tokenizer: Tokenizer): List[Block] = {
+
+    var statementString = ""
+
+    // Extract information from within the parenthesis
+    while (tokenizer.peek.token != ")") {
+      val nextToken = tokenizer.nextToken.token
+      var found = false
+      statementString += nextToken
+      found = true
+    }
+    ReversePolish.infixToRPN(Utils.getAllBlocks(this, statementString))
+
+  }
+
 
 }

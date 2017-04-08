@@ -22,23 +22,21 @@ import compiler.ast.blocks.Block
 import compiler.data.parameters.Parameter
 
 /**
-  * Calling of a method within the class
+  * Represents calling a method within a class
   */
 class MethodCallBlock(var superBlockInit: Block, var name: String, var `type`: String, var params: Array[Parameter]) extends Block(superBlockInit, false, false) {
 
   def getParameters: Array[Parameter] = params
 
-  def init() {}
+  override def getName: String = name
 
-  def getName: String = name
+  override def getValue: String = ""
 
-  def getValue: String = ""
+  override def getType: String = `type`
 
-  def getType: String = `type`
+  override def getOpeningCode: String = name + "();"
 
-  def getOpeningCode: String = name + "();"
-
-  def getClosingCode: String = ""
+  override def getClosingCode: String = ""
 
   override def toString: String = {
     var paramString: String = ""

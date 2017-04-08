@@ -21,26 +21,24 @@ package compiler.ast.blocks.imports
 import compiler.ast.blocks.Block
 
 /**
-  * Represents an import
+  * Represents an "import"
   *
   * @param directory The directory
   * @param fileName  The class name
   */
 class ImportBlock(var directory: String, var fileName: String) extends Block(null, false, false) {
 
-  def init() {}
-
   def getName: String = ""
 
   def getValue: String = ""
 
-  def getType: String = "import"
+  def getType: String = "<IMPORT>"
 
   def getOpeningCode: String = ""
 
   def getClosingCode: String = ""
 
-  override def toString: String = "import: " + directory + " : " + fileName
+  override def toString: String = getType + directory + " : " + fileName
 
 
 }

@@ -20,11 +20,18 @@ package compiler.ast.blocks.this_keyword
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents "this"
+  *
+  * @param superBlockInit
+  */
 class ThisKeywordBlock(superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
   override def getName: String = ""
 
   override def getValue: String = ""
+
+  override def getType: String = "<THIS>"
 
   override def getOpeningCode: String = {
     ""
@@ -35,7 +42,5 @@ class ThisKeywordBlock(superBlockInit: Block) extends Block(superBlockInit, fals
   }
 
   override def toString: String = getType
-
-  override def getType: String = "<THIS>"
 
 }

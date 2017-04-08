@@ -24,19 +24,22 @@ import compiler.symbol_table.SymbolTable
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils
 
+/**
+  * Represents a println
+  *
+  * @param superBlockInit
+  * @param value
+  * @param isVariableInit
+  */
 class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
-  def init() {
-  }
+  override def getName: String = ""
 
-  def getName: String = ""
+  override def getValue: String = value
 
-  def getValue: String = value
+  override def getType: String = "<PRINTLN>"
 
-  def getType: String = "print"
-
-  def getOpeningCode: String = {
-
+  override def getOpeningCode: String = {
 
     if (isVariableInit) {
       val row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value)
@@ -61,7 +64,7 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
     }
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 

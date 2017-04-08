@@ -23,6 +23,14 @@ import compiler.ast.blocks.operators.assignment.AssignmentOpBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.{ReversePolish, Utils}
 
+/**
+  * Represents a variable definition
+  *
+  * @param superBlockInit
+  * @param declaration
+  * @param name
+  * @param varType
+  */
 class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).get.getName))
@@ -30,6 +38,20 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
   override def getName: String = name
 
   override def getValue: String = ""
+
+  override def getType: String = varType.trim match {
+
+    case "char" => "C"
+    case "byte" => "I"
+    case "int" => "I"
+    case "long" => "J"
+    case "double" => "D"
+    case "float" => "F"
+    case "short" => "S"
+    case "boolean" => "Z"
+    case "String" => "Ljava/lang/String;"
+    case _ => "void"
+  }
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
@@ -57,19 +79,6 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     }
   }
 
-  override def getType: String = varType.trim match {
-
-    case "char" => "C"
-    case "byte" => "I"
-    case "int" => "I"
-    case "long" => "J"
-    case "double" => "D"
-    case "float" => "F"
-    case "short" => "S"
-    case "boolean" => "Z"
-    case "String" => "Ljava/lang/String;"
-    case _ => "void"
-  }
 
   override def getClosingCode: String = {
     ""

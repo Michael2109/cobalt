@@ -21,31 +21,28 @@ package compiler.ast.blocks.operators.bit
 import compiler.ast.blocks.Block
 
 /**
-  * Represents adding a value to a primitive
+  * Represents left shift
   *
   * @param superBlockInit The parent block
   */
 class LeftShiftOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
+  override def getName: String = ""
 
-  }
+  override def getValue: String = ""
 
-  def getName: String = ""
+  override def getType(): String = "<LEFT_SHIFT_OP>"
 
-  def getValue: String = ""
-
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     ""
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
   override def toString: String = getType()
 
-  def getType(): String = "<LEFT_SHIFT_OP>"
 
 
 }

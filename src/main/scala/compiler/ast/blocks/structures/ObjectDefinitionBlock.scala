@@ -24,7 +24,13 @@ import compiler.ast.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.utilities.Utils
 
 
-// Creation of a new object and storing to a variable
+/**
+  * Represents pushing an object onto the stack
+  *
+  * @param superBlockInit
+  * @param newKeyword
+  * @param initClassName
+  */
 class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String) extends Block(superBlockInit, false, true, false) {
 
   private val parameterString: String = ""
@@ -40,20 +46,6 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
     result
   }
 
-  def init() {
-
-
-    // Get the type of the parameters
-    /* for (param <- params) {
-       param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
-       parameterString += param.getAsmType
-       argumentString += "mv.visitIntInsn(ILOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
-     }*/
-  }
-
-
-
-
 
   // Returns the main class name for the file
   def getObjectName: String = {
@@ -66,20 +58,19 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
     block.getName
   }
 
-  def getName: String = ""
+  override def getName: String = ""
 
-  def getValue: String = ""
+  override def getValue: String = ""
 
-  def getType: String = initClassName
+  override def getType: String = initClassName
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
     else "/") + initClassName + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
     else "/") + initClassName + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n"
-
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 

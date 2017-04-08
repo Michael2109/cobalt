@@ -23,7 +23,12 @@ import compiler.ast.blocks.operators.assignment.AssignmentOpBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.{ReversePolish, Utils}
 
-
+/**
+  * Represents a variable reference
+  *
+  * @param superBlockInit
+  * @param name
+  */
 class VariableBlock(superBlockInit: Block, name: String) extends Block(superBlockInit, false, true) {
 
   val row: Row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name)

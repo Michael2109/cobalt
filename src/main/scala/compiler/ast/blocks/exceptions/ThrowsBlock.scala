@@ -21,16 +21,17 @@ package compiler.ast.blocks.exceptions
 import compiler.ast.blocks.Block
 
 /**
-  * Represents an if statement
+  * Represents "throws"
   *
   * @param superBlockInit The parent block
   */
-class ThrowsBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+class ThrowsBlock(superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
   def getName: String = ""
 
   def getValue: String = ""
 
+  def getType: String = "<THROWS>"
 
   def getOpeningCode: String = {
     ""
@@ -41,7 +42,5 @@ class ThrowsBlock(var superBlockInit: Block) extends Block(superBlockInit, true,
   }
 
   override def toString: String = getType
-
-  def getType: String = "<THROW>"
 
 }

@@ -20,19 +20,24 @@ package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents a multiply operator
+  *
+  * @param superBlockInit
+  */
 class MultiplyOpBlock(val superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {}
+  override def getName: String = ""
 
-  def getName: String = ""
+  override def getValue: String = ""
 
-  def getValue: String = ""
+  override def getType: String = "<MULTIPLY_OP>"
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     asm.visitInsn("" + superBlockInit.getType + "MUL")
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
@@ -40,5 +45,4 @@ class MultiplyOpBlock(val superBlockInit: Block) extends Block(superBlockInit, f
     getType
   }
 
-  def getType: String = "<MULTIPLY_OP>"
 }

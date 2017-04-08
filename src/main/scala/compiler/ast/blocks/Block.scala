@@ -31,11 +31,12 @@ object Block {
 }
 
 /**
-  * Represents a blocks of code.
+  * Represents a block of code.
   *
   * @param sBlock    The superBlock of this blocks
-  * @param container Whether the blocks contains other blocks
-  * @param variable  Whether the blocks is a variable
+  * @param container Whether the block contains other blocks
+  * @param variable  Whether the block represents a variable
+  * @param immutable Whether the block represents an immutable value
   */
 abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, immutable: Boolean = false) {
 
@@ -46,13 +47,9 @@ abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, i
   val stack: ListBuffer[Block] = ListBuffer[Block]()
   private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
   private val _asm: ASMGenerator = new ASMGenerator
-  private var _id: Integer = Block.TOTAL_BLOCKS
+
   private var _superBlock: Block = sBlock
-
-  /* id GET and SET */
-  def id: Integer = _id
-
-  def id_=(value: Integer): Unit = _id = value
+  var id: Integer = Block.TOTAL_BLOCKS
 
   /* subBlocks GET */
   def subBlocks: ListBuffer[Block] = _subBlocks

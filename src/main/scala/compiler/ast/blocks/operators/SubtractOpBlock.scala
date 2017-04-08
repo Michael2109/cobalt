@@ -20,20 +20,24 @@ package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents a subtract operator
+  *
+  * @param superBlockInit
+  */
 class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  def init() {
-  }
+  override def getName: String = ""
 
-  def getName: String = ""
+  override def getValue: String = ""
 
-  def getValue: String = ""
+  override def getType: String = "<SUBTRACT_OP>"
 
-  def getOpeningCode: String = {
+  override def getOpeningCode: String = {
     asm.visitInsn("" + superBlockInit.getType + "SUB")
   }
 
-  def getClosingCode: String = {
+  override def getClosingCode: String = {
     ""
   }
 
@@ -41,7 +45,7 @@ class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, f
     getType
   }
 
-  def getType: String = "<SUBTRACT_OP>"
+
 
 
 }

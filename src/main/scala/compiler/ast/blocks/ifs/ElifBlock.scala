@@ -21,29 +21,26 @@ package compiler.ast.blocks.ifs
 import compiler.ast.blocks.Block
 
 /**
-  * Represents an else if statement
+  * Represents an "else if" statement
   *
   * @param superBlockInit The parent block
   */
 class ElifBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-
   def getName: String = ""
 
   def getValue: String = ""
 
-  def getOpeningCode: String = {
+  def getType: String = "<ELIF_STATEMENT>"
 
+  def getOpeningCode: String = {
     ""
   }
 
   def getClosingCode: String = {
     ""
-    // asm.visitLabel("l" + id)
   }
 
   override def toString: String = getType + stack
-
-  def getType: String = "<ELIF_STATEMENT>"
 
 }

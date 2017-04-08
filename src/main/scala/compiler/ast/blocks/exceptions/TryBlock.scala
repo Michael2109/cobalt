@@ -21,11 +21,11 @@ package compiler.ast.blocks.exceptions
 import compiler.ast.blocks.Block
 
 /**
-  * Represents an if statement
+  * Represents "try"
   *
   * @param superBlockInit The parent block
   */
-class TryBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
+class TryBlock(superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
   def getName: String = ""
 

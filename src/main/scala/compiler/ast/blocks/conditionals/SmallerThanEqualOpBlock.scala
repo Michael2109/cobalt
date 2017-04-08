@@ -21,19 +21,17 @@ package compiler.ast.blocks.conditionals
 import compiler.ast.blocks.Block
 
 /**
-  * Represents checking if equal - "=="
+  * Representssmaller than or equal - "<="
   *
   * @param superBlockInit The parent block
   */
 class SmallerThanEqualOpBlock(var superBlockInit: Block) extends AbstractConditionalBlock(superBlockInit, false, false) {
 
-  def init() {
-
-  }
-
   def getName: String = ""
 
   def getValue: String = ""
+
+  def getType: String = "<SMALLER_THAN_EQUAL_OP>"
 
   def getOpeningCode: String = {
     ""
@@ -44,8 +42,5 @@ class SmallerThanEqualOpBlock(var superBlockInit: Block) extends AbstractConditi
   }
 
   override def toString: String = getType
-
-  def getType: String = "<SMALLER_THAN_EQUAL_OP>"
-
 
 }

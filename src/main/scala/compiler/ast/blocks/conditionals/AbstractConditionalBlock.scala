@@ -20,6 +20,14 @@ package compiler.ast.blocks.conditionals
 
 import compiler.ast.blocks.Block
 
+/**
+  * Is the parent class of all conditionals to group them together.
+  *
+  * @param sBlockInit
+  * @param container Whether the block contains other blocks
+  * @param variable  Whether the block represents a variable
+  * @param immutable Whether the block represents an immutable value
+  */
 abstract class AbstractConditionalBlock(var sBlockInit: Block, container: Boolean, variable: Boolean, immutable: Boolean = false) extends Block(sBlockInit, container, variable, immutable) {
 
 }

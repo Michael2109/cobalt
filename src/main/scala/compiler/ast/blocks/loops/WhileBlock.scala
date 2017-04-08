@@ -20,15 +20,18 @@ package compiler.ast.blocks.loops
 
 import compiler.ast.blocks.Block
 
+/**
+  * Represents a "while" loop
+  *
+  * @param superBlockInit
+  */
 class WhileBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
   def getName: String = ""
 
   def getValue: String = ""
 
-  def getType: String = "while"
-
-  def init(): Unit = {}
+  def getType: String = "<WHILE_LOOP>"
 
   def getOpeningCode: String = {
     //WhileGen.getOpeningCode(id, pointer, value, "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");)
@@ -40,6 +43,6 @@ class WhileBlock(var superBlockInit: Block) extends Block(superBlockInit, true, 
     ""
   }
 
-  override def toString: String = "<WHILE_LOOP>"
+  override def toString: String = getType
 
 }
