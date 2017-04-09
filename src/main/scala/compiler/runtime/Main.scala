@@ -58,8 +58,6 @@ object Main {
 
         new Runtime(cobaltFile, asmFile, buildDir).parseFile()
 
-        println(asmFile.getPath.replace(".java", "").replace("\\", ".").substring(asmFile.getPath.replace(".java", "").replace("\\", ".").indexOf(".") + 1))
-
         val compiler = new SimpleCompiler(asmFile.getAbsolutePath);
 
         val loader = compiler.getClassLoader();

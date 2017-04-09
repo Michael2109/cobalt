@@ -18,6 +18,7 @@
 
 package cobalt_tests.assignment
 
+import compiler.runtime.Main
 import compiler.utilities.Utils
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -29,8 +30,12 @@ class AssignmentTest() extends FunSuite with BeforeAndAfter {
 
 
   test("Assignment Test") {
+    Main.main(Array("cobalt_source/test/assignment/AssignmentTest.cobalt", "cobalt_java/test/assignment/AssignmentTest.java", "cobalt_generated"))
+
     val output = Utils.executionOutput("cobalt_generated", "test.assignment.AssignmentTest")
+    println("<OUTPUT>")
     println(output)
+    println("<COMPLETE>")
   }
 
 }
