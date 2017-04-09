@@ -4,10 +4,6 @@ class BooleanTest():
 
     let main() : void:
         test1:boolean = false
-        test2:boolean = false
-        test3:boolean = true
-        test4:boolean = true
+        test2:boolean = true
         println(test1)
         println(test2)
-        println(test3)
-        println(test4)

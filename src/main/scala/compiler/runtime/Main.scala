@@ -20,6 +20,7 @@ package compiler.runtime
 
 import java.io.File
 
+import compiler.symbol_table.SymbolTable
 import org.apache.log4j.PropertyConfigurator
 import org.codehaus.janino.SimpleCompiler
 import org.slf4j.{Logger, LoggerFactory}
@@ -49,6 +50,8 @@ object Main {
       // If compiling a single file
       if (args(0).contains(".cobalt")) {
 
+        SymbolTable.getInstance.rows.clear()
+
         val cobaltFile: File = new File(args(0))
         val asmFile: File = new File(args(1))
         val buildDir = new File(args(2))
@@ -58,12 +61,13 @@ object Main {
 
         new Runtime(cobaltFile, asmFile, buildDir).parseFile()
 
-        val compiler = new SimpleCompiler(asmFile.getAbsolutePath);
+        val compiler = new SimpleCompiler(asmFile.getAbsolutePath)
 
-        val loader = compiler.getClassLoader();
+        val loader = compiler.getClassLoader()
 
-        val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").substring(asmFile.getPath.replace(".java", "").replace("\\", ".").indexOf(".") + 1));
-        val instance = compClass.newInstance();
+        val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").substring(asmFile.getPath.replace(".java", "").replace("\\", ".").indexOf(".") + 1))
+
+        val instance = compClass.newInstance()
         compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
 
         println()

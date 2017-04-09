@@ -369,19 +369,19 @@ object Utils {
     * @param directory
     * @return process output
     */
-  def executionOutput(classPath: String, directory: String): String = {
-    val result = new StringBuilder
+  def executionOutput(classPath: String, directory: String): List[String] = {
+    val result = new ListBuffer[String]
     val runtime = Runtime.getRuntime
     val command = "java -cp " + classPath + " " + directory
     val process = runtime.exec(command)
     val input = new BufferedReader(new InputStreamReader(process.getInputStream()))
     var line = input.readLine()
     while (line != null) {
-      result.append(line + "\n")
+      result += line
       line = input.readLine()
     }
     input.close()
-    result.toString
+    result.toList
   }
 
 }
