@@ -19,7 +19,6 @@ public class AssignmentTest() extends TestClass implements TestImplement,Another
 
         expressionBlock:int =
             5
-        println(expressionBlock)
 
     protected let test1() : void:
         println("Hello World")

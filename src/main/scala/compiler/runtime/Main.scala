@@ -20,8 +20,6 @@ package compiler.runtime
 
 import java.io.File
 
-import compiler.symbol_table.SymbolTable
-import compiler.utilities.Utils
 import org.apache.log4j.PropertyConfigurator
 import org.codehaus.janino.SimpleCompiler
 import org.slf4j.{Logger, LoggerFactory}
@@ -37,7 +35,7 @@ object Main {
       logger.info("Program arguments: $args")
       start(args)
     } else {
-      val defaultArgs = Array("cobalt_source", "cobalt_java", "cobalt_generated")
+      val defaultArgs = Array("cobalt_source/test/assignment/AssignmentTest.cobalt", "cobalt_java/test/assignment/AssignmentTest.java", "cobalt_generated")
       logger.info("Default program arguments used: $args")
       start(defaultArgs)
     }
@@ -46,33 +44,32 @@ object Main {
 
   def start(args: Array[String]) {
 
-
-
     if (args.length == 3) {
 
-      val fileList:Array[File] = Utils.recursiveListFiles(new File(args(0)),"cobalt".r)
+      // If compiling a single file
+      if (args(0).contains(".cobalt")) {
 
-
-      for(file <- fileList){
-
-        SymbolTable.getInstance.rows.clear()
-
-
-        val input: File = file
-        val asmFile: File = new File(file.getPath.replace(args(0),args(1)).replaceAll("(\\.[^\\.]*$)", ".java"))
+        val cobaltFile: File = new File(args(0))
+        val asmFile: File = new File(args(1))
         val buildDir = new File(args(2))
-        new Runtime(input, asmFile, buildDir).parseFile()
+
+        // Generate directories for Java ASM files
+        new File(asmFile.getParent).mkdirs()
+
+        new Runtime(cobaltFile, asmFile, buildDir).parseFile()
+
+        println(asmFile.getPath.replace(".java", "").replace("\\", ".").substring(asmFile.getPath.replace(".java", "").replace("\\", ".").indexOf(".") + 1))
 
         val compiler = new SimpleCompiler(asmFile.getAbsolutePath);
+
         val loader = compiler.getClassLoader();
-        val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").replace(args(1).replace("/", ".") + ".", ""));
+
+        val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").substring(asmFile.getPath.replace(".java", "").replace("\\", ".").indexOf(".") + 1));
         val instance = compClass.newInstance();
         compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
 
         println()
       }
-
-
 
     }
     else {

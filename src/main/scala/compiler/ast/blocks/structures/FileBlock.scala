@@ -59,11 +59,20 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
           }
         result
     }
-    "    public static void main(String [] args){\n   " +
-      "new File(new File(\"" + buildDir.getPath.replace("\\", "/") + "/" + packageBlock.directory + "/" + name.split("\\.")(0) + ".class\").getParent()).mkdirs();" +
+
+    "public static void main(String [] args){\n" +
+      "try {\n" +
+      "File file = new File(\"" + buildDir.getPath.replace("\\", "/") + "/" + packageBlock.directory + "/" + name.split("\\.")(0) + ".class\");\n" +
+      "file.createNewFile();\n" +
+      "new File(file.getParent()).mkdirs();" +
       "  DataOutputStream dout = null;\n" +
       "        try {\n" +
-      "" + "            dout = new DataOutputStream(new FileOutputStream(\"" + buildDir.getPath.replace("\\", "/") + "/" + packageBlock.directory + "/" + name.split("\\.")(0) + ".class\"));\n" + "\n" + "        dout.write(execute());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" + "}"
+      "" + "            dout = new DataOutputStream(new FileOutputStream(\"" + buildDir.getPath.replace("\\", "/") + "/" + packageBlock.directory + "/" + name.split("\\.")(0) + ".class\"));\n" + "\n" + "        dout.write(execute());\n" + "        dout.flush();\n" + "        dout.close();\n" + "        } catch (FileNotFoundException e) {\n" + "        e.printStackTrace();\n" + "    } catch (IOException e) {\n" + "            e.printStackTrace();\n" + "        } catch (Exception e) {\n" + "            e.printStackTrace();\n" + "        " + "   } }\n" +
+      "catch(IOException e){\n" +
+      "e.printStackTrace();" +
+      "}\n" +
+      "}\n" +
+      "}\n"
   }
 
   override def toString: String = "file: " + name

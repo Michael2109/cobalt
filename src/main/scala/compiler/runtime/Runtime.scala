@@ -120,9 +120,9 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
           getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
 
         } else if (previousIndentation == nextIndentation) {
+
           block.superBlock.addBlock_=(nextBlock)
           getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
-
 
         } else {
           var currentBlock = block.superBlock
@@ -133,9 +133,7 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
           }
           currentBlock.addBlock_=(nextBlock)
           getBlockStructure(lines, nextBlock, Utils.getIndentation(line), currentLine + 1)
-
         }
-
       }
     }
   }
