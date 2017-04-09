@@ -19,16 +19,6 @@
 group 'group_id'
 version '1.0-SNAPSHOT'
 
-buildscript {
-    repositories {
-        maven { url "http://clojars.org/repo" }
-        mavenCentral()
-    }
-    dependencies {
-        classpath "clojuresque:clojuresque:1.7.0"
-    }
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.13'
 }
@@ -36,26 +26,18 @@ task wrapper(type: Wrapper) {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'scala'
-apply plugin: 'clojure'
 
 repositories {
-    maven { url "http://clojars.org/repo" }
     mavenCentral()
 }
 
 dependencies {
 
-    // clojure
-    compile group: 'org.clojure', name: 'clojure', version: '1.9.0-alpha15'
-
-    // from scala - interop library for clojure
-    compile group: 't6', name: 'from-scala', version: '0.3.0'
+    // junit
+    compile group: 'junit', name: 'junit', version: '4.12'
 
     // scalatest
     compile group: 'org.scalatest', name: 'scalatest_2.12', version: '3.0.1'
-
-    // junit
-    compile group: 'junit', name: 'junit', version: '4.12'
 
     // Scalastyle
     compile group: 'org.scalastyle', name: 'scalastyle-maven-plugin', version: '0.8.0'
@@ -79,11 +61,6 @@ dependencies {
     compile group: 'org.scala-lang', name: 'scala-compiler', version: '2.12.1'
 }
 
-clojure {
-    warnOnReflection = true
-    aotCompile = true
-}
-
 allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -92,12 +69,9 @@ allprojects {
 sourceSets {
     main {
         scala {
-            srcDirs = ['src/main/scala', 'src/main/java', 'src/main/clojure']
+            srcDirs = ['src/main/scala', 'src/main/java']
         }
         java {
-            srcDirs = []
-        }
-        clojure {
             srcDirs = []
         }
     }
@@ -106,6 +80,10 @@ sourceSets {
         scala {
             include "**/*Test.scala"
         }
+        resources {
+            srcDir "resources"
+        }
+
     }
 }
 

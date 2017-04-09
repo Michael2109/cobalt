@@ -73,7 +73,7 @@ object Main {
 
     }
     else {
-      System.out.println("Error: Input and Output file args required. Enter with file extension removed.")
+      System.out.println("Error: Source, ASM, and build args required. ")
     }
   }
 }

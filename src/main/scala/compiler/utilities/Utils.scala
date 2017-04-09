@@ -18,7 +18,7 @@
 
 package compiler.utilities
 
-import java.io.File
+import java.io.{BufferedReader, File, InputStreamReader}
 
 import compiler.ast.blocks.Block
 import compiler.ast.blocks.empty.EmptyBlock
@@ -360,6 +360,28 @@ object Utils {
       case "J" => "LSTORE"
       case _ => "ASTORE"
     }
+  }
+
+  /**
+    * Executes cmd "java" with the classpath and file location and returns the output
+    *
+    * @param classPath
+    * @param directory
+    * @return process output
+    */
+  def executionOutput(classPath: String, directory: String): String = {
+    val result = new StringBuilder
+    val runtime = Runtime.getRuntime
+    val command = "java -cp " + classPath + " " + directory
+    val process = runtime.exec(command)
+    val input = new BufferedReader(new InputStreamReader(process.getInputStream()))
+    var line = input.readLine()
+    while (line != null) {
+      result.append(line + "\n")
+      line = input.readLine()
+    }
+    input.close()
+    result.toString
   }
 
 }
