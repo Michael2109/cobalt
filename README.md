@@ -25,7 +25,7 @@ To view all of the language specifications please view our wiki!
 https://github.com/Michael2109/cobalt/wiki
 
 # Getting Starting
-To view how to get up and running please view  
+To view how to get up and running please view our tutorial!
 https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
@@ -57,7 +57,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
     let add(a:Int, b: Int):Int = x + b
     
     // Subtract - Add return type
-    let subtract(a:Double b:Double): = 
+    let subtract(a:Double b:Double) = 
         a - b
         
     // Add One - lambda
@@ -74,22 +74,25 @@ public object ExampleMain()
 
     // Entry Point
     let main(args: Array[String]) =
+    
+    
         obj = new ExampleClass()
+  
         
-        // Without parenthesis
-        println (obj.square 10)
-        
-        // With parenthesis
+        // Call a instance method
         println (obj.square(10))
+        
         
         // Create a list
         list = [1 .. 10]
         
+        
         // Find the sum of all list elements squared
         lSquareSum = list.map(obj.square(_)).sum
         
-        // Alternative 1
+        // Alternative
         lSquareSumAlt1 = list.map(obj.square).sum
+            
             
         // Match 
         exampleMatch x:Int = 
@@ -97,6 +100,7 @@ public object ExampleMain()
             1 -> "a"
             2 -> "b"
             _ -> "z"
+        
         
         // If statements - inline
         if (square(12) > 100) println "Larger than 100"
@@ -107,9 +111,9 @@ public object ExampleMain()
             
         // Elif and else
         if (false)
-            println "Is true"
+            println("Is true")
         elif (true)
-            println "Is true"
+            println("Is true")
         else 
-            println "All others false"
+            println("All others false")
 ```
