@@ -25,7 +25,7 @@ To view all of the language specifications please view our wiki!
 https://github.com/Michael2109/cobalt/wiki
 
 # Getting Starting
-To view how to get up and running please view  
+To view how to get up and running please view our tutorial!
 https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
