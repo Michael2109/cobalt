@@ -18,16 +18,16 @@
 
 package test_classes;
 
-/**
- * Used to view ASM code
- */
-public class TestCode {
+public class BoxedInteger {
 
-    public void test() {
+    int intValue;
 
-        BoxedInteger x = new BoxedInteger(5);
+    public BoxedInteger(int value) {
+        intValue = value;
+    }
 
-        System.out.println(x);
+    public int getIntValue() {
+        return intValue;
     }
 
 }

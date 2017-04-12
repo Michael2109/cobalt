@@ -125,7 +125,32 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="compiler">compiler</a></dd></dl></div>
-    </li><li class="current-entities indented2">
+              </li>
+                  <li name="compiler.tokenizer.tokens" visbl="pub" class="indented3 " data-isabs="false"
+                      fullComment="yes" group="Ungrouped">
+                      <a id="tokens"></a><a id="tokens:tokens"></a>
+                      <span class="permalink">
+      <a href="../../compiler/tokenizer/index.html#tokens" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+                      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+                      <span class="symbol">
+        <a title="" href="tokens/index.html">
+              <span class="name">tokens</span>
+            </a>
+      </span>
+
+                      <div class="fullcomment">
+                          <dl class="attributes block">
+                              <dt>Definition Classes</dt>
+                              <dd><a href="index.html" class="extype" name="compiler.tokenizer">tokenizer</a></dd>
+                          </dl>
+                      </div>
+                  </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="Token.html" title=""></a>
                         <a href="Token.html" title="">
@@ -139,8 +164,8 @@
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="TokenType$.html" title=""></a>
-                        <a href="TokenType$.html" title="">
+                  <a class="trait" href="TokenType.html" title=""></a>
+                  <a href="TokenType.html" title="">
                           TokenType
                         </a>
                       </li><li class="current-entities indented2">
@@ -228,9 +253,10 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="compiler.tokenizer.Tokenizer#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(str:String):compiler.tokenizer.Tokenizer"></a><a id="&lt;init&gt;:Tokenizer"></a>
+                  <a id="&lt;init&gt;(line:String):compiler.tokenizer.Tokenizer"></a><a id="&lt;init&gt;:Tokenizer"></a>
       <span class="permalink">
-      <a href="../../compiler/tokenizer/Tokenizer.html#&lt;init&gt;(str:String):compiler.tokenizer.Tokenizer" title="Permalink">
+      <a href="../../compiler/tokenizer/Tokenizer.html#&lt;init&gt;(line:String):compiler.tokenizer.Tokenizer"
+         title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -239,7 +265,8 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Tokenizer</span><span class="params">(<span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+        <span class="name">Tokenizer</span><span class="params">(<span name="line">line: <span class="extype"
+                                                                                               name="scala.Predef.String">String</span></span>)</span>
       </span>
       
       
@@ -423,8 +450,8 @@
       <span class="symbol">
         <span class="name">hasNextToken</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      
-      
+
+                  <p class="shortcomment cmt">Returns whether the next token exists.</p>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
@@ -457,7 +484,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+              </li>
+                  <li name="compiler.tokenizer.Tokenizer#line" visbl="pub" class="indented0 " data-isabs="false"
+                      fullComment="no" group="Ungrouped">
+                      <a id="line:String"></a>
+                      <span class="permalink">
+      <a href="../../compiler/tokenizer/Tokenizer.html#line:String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+                      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+                      <span class="symbol">
+        <span class="name">line</span><span class="result">: <span class="extype"
+                                                                   name="scala.Predef.String">String</span></span>
+      </span>
+
+
+                  </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
       <a href="../../compiler/tokenizer/Tokenizer.html#ne(x$1:AnyRef):Boolean" title="Permalink">
@@ -473,7 +519,9 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="compiler.tokenizer.Tokenizer#nextToken" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              </li>
+                  <li name="compiler.tokenizer.Tokenizer#nextToken" visbl="pub" class="indented0 " data-isabs="false"
+                      fullComment="yes" group="Ungrouped">
       <a id="nextToken:compiler.tokenizer.Token"></a><a id="nextToken:Token"></a>
       <span class="permalink">
       <a href="../../compiler/tokenizer/Tokenizer.html#nextToken:compiler.tokenizer.Token" title="Permalink">
@@ -487,8 +535,17 @@
       <span class="symbol">
         <span class="name">nextToken</span><span class="result">: <a href="Token.html" class="extype" name="compiler.tokenizer.Token">Token</a></span>
       </span>
-      
-      
+
+                      <p class="shortcomment cmt">Returns the next token and removes it from the line
+                      </p>
+                      <div class="fullcomment">
+                          <div class="comment cmt"><p>Returns the next token and removes it from the line
+                          </p></div>
+                          <dl class="paramcmts block">
+                              <dt>returns</dt>
+                              <dd class="cmt"><p>The next token</p></dd>
+                          </dl>
+                      </div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
@@ -521,22 +578,34 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="compiler.tokenizer.Tokenizer#str" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="str:String"></a>
+              </li>
+                  <li name="compiler.tokenizer.Tokenizer#peek" visbl="pub" class="indented0 " data-isabs="false"
+                      fullComment="yes" group="Ungrouped">
+                      <a id="peek:compiler.tokenizer.Token"></a><a id="peek:Token"></a>
       <span class="permalink">
-      <a href="../../compiler/tokenizer/Tokenizer.html#str:String" title="Permalink">
+      <a href="../../compiler/tokenizer/Tokenizer.html#peek:compiler.tokenizer.Token" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">var</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">str</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">peek</span><span class="result">: <a href="Token.html" class="extype"
+                                                                name="compiler.tokenizer.Token">Token</a></span>
       </span>
-      
-      
+
+                      <p class="shortcomment cmt">Returns the next token without removing it from the line
+                      </p>
+                      <div class="fullcomment">
+                          <div class="comment cmt"><p>Returns the next token without removing it from the line
+                          </p></div>
+                          <dl class="paramcmts block">
+                              <dt>returns</dt>
+                              <dd class="cmt"><p>The next token</p></dd>
+                          </dl>
+                      </div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">

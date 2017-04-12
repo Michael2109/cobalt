@@ -51,9 +51,8 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
         }
       }
 
-
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
-        v.getOpeningCode +
+        v.getOpeningCode + "\n" +
         "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(" + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, value).getType + ")V\");"
     }
     else {

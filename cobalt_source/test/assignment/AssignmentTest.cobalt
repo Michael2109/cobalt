@@ -5,20 +5,20 @@ import test.TestClass
 public class AssignmentTest():
 
     let main() : void:
-        test1:int = 5 + 5 - 3
-        test2:int = (5 * 7) - 3/ (4 * 2) + test1
-        test2 = 7
-        test3:int = 7 + 10 - 5 + test2
-        test2 = test2 + 8
-        test3:int = 10 + 12 - 13 * 14 / 15
-        test4:float = 10.4f + 11.5f - 7.2f + 10f
+        test1:Int = 5 + 5 - 3
+        test2:Int = (5 * 7) - 3/ (4 * 2) + test1
+        test3:Int = 10 + 12 - 13 * 14 / 15
+       // test4:float = 10.4f + 11.5f - 7.2f + 10f
         println(test1)
         println(test2)
         println(test3)
-        println(test4)
+    //    println(test4)
 
-        expressionBlock:int =
-            5
+        expressionBlock:Int =
+           if(test1 < 10)
+               10
+           else
+               20
 
     protected let test1() : void:
         println("Hello World")

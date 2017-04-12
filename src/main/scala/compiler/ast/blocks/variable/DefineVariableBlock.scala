@@ -39,30 +39,38 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
   override def getValue: String = ""
 
+  // Map the defined var type to the ASM type
   override def getType: String = varType.trim match {
 
     case "char" => "C"
     case "byte" => "I"
     case "int" => "I"
+    case "Int" => "I"
     case "long" => "J"
     case "double" => "D"
     case "float" => "F"
     case "short" => "S"
     case "boolean" => "Z"
     case "String" => "Ljava/lang/String;"
-    case _ => "void"
+    case _ => "Ljava/lang/Object;"
   }
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
 
-      // Get assigned blocks in reverse polish notation
-      if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock])
-        ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
-      else
-        ""
+      if (varType == "Int") {
+        "mv.visitTypeInsn(NEW, \"java/lang/Integer\");\n" +
+          "mv.visitInsn(DUP);\n" +
+          ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
+      } else {
 
+        // Get assigned blocks in reverse polish notation
+        if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock])
+          ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
+        else
+          ""
 
+      }
     } else {
       ""
     }
@@ -71,19 +79,24 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
   override def getClosingCode: String = {
 
-    // if integer
-    getType match {
-      case "C" => asm.visitVarInsn("ISTORE", id)
-      case "B" => asm.visitVarInsn("ISTORE", id)
-      case "I" => asm.visitVarInsn("ISTORE", id)
-      case "D" => asm.visitVarInsn("DSTORE", id)
-      case "F" => asm.visitVarInsn("FSTORE", id)
-      case "S" => asm.visitVarInsn("ISTORE", id)
-      case "Z" => asm.visitVarInsn("ISTORE", id)
-      case "J" => asm.visitVarInsn("LSTORE", id)
-      case "Ljava/lang/String;" => asm.visitVarInsn("ASTORE", id)
 
-      case _ => stack.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
+    if (varType == "Int") {
+      "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Integer\", \"<init>\", \"(I)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
+    } else {
+      // if integer
+      getType match {
+        case "C" => asm.visitVarInsn("ISTORE", id)
+        case "B" => asm.visitVarInsn("ISTORE", id)
+        case "I" => asm.visitVarInsn("ASTORE", id)
+        case "D" => asm.visitVarInsn("DSTORE", id)
+        case "F" => asm.visitVarInsn("FSTORE", id)
+        case "S" => asm.visitVarInsn("ISTORE", id)
+        case "Z" => asm.visitVarInsn("ISTORE", id)
+        case "J" => asm.visitVarInsn("LSTORE", id)
+        case "Ljava/lang/String;" => asm.visitVarInsn("ASTORE", id)
+
+        case _ => stack.map(b => b.getOpeningCode).mkString("\n") + asm.visitVarInsn("ASTORE", id)
+      }
     }
   }
 
