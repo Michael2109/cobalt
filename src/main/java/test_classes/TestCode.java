@@ -27,8 +27,8 @@ public class TestCode {
 
         BoxedInteger x = new BoxedInteger(5);
 
-        Float y = 20f;
-        System.out.println(x);
+        String test = "Hello World";
+        System.out.println(test);
     }
 
 }

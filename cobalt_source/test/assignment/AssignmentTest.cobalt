@@ -9,10 +9,13 @@ public class AssignmentTest():
         test2:Int = (5 * 7) - 3/ (4 * 2) + test1
         test3:Int = 10 + 12 - 13 * 14 / 15
         test4:Float = 10.4f + 11.5f - 7.2f + 10f
+        test5:String = "Hello World"
+
         println(test1)
         println(test2)
         println(test3)
         println(test4)
+        println(test5)
 
         expressionBlock:Int =
             5

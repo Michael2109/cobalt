@@ -19,43 +19,14 @@
 package compiler.ast.generators.structures.methods
 
 import compiler.ast.blocks.structures.methods.MethodBlock
-import compiler.utilities.Utils
 
 object MethodGen {
 
   def getOpeningCode(methodBlock: MethodBlock): String = {
-    if (methodBlock.getName != "main") {
-      "   {\n" + "            /* Build '" + methodBlock.getName + "' method */\n" + "            " +
-        "MethodVisitor mv = cw.visitMethod(\n" + "                    " + methodBlock.modifiersASM + " " + methodBlock.static + " " + methodBlock.`sealed` + ",                         // public method\n" +
-        "                    \"" + methodBlock.getName + "\",                              // name\n" +
-        "                    \"(" + methodBlock.parameterString + ")V\",                            // descriptor\n" +
-        "                    null,                               // signature (null means not generic)\n" + "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
-    }
-    else {
-      "{\n" + "// Main Method\n" +
-        "MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, \"main\", \"([Ljava/lang/String;)V\", null, null);\n" + "mv.visitCode();\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
-    }
+    ""
   }
 
   def getClosingCode(methodBlock: MethodBlock): String = {
-    if (methodBlock.getName != "main") {
-      "mv.visitInsn(RETURN);     \n" +
-        "Label lMethod1 = new Label();\n" +
-        "mv.visitLabel(lMethod1);\n" +
-        "mv.visitLocalVariable(\"this\", \"L" + Utils.packageBlock(methodBlock).directory + "/" + methodBlock.getName + ";\", null, lMethod0, lMethod1, " + 0 + ");\n               " +
-        "// Return integer from top of stack\n" +
-        methodBlock.localVariableString +
-        "  mv.visitMaxs(0, 0);\n" +
-        "mv.visitEnd();\n" + "}\n"
-    }
-    else {
-      "mv.visitInsn(RETURN);     \n" +
-        "Label lMethod1 = new Label();\n" +
-        "mv.visitLabel(lMethod1);\n" +
-        "mv.visitLocalVariable(\"this\", \"L" + Utils.packageBlock(methodBlock).directory + "/" + methodBlock.getName + ";\", null, lMethod0, lMethod1, " + 0 + ");\n" +
-        "mv.visitLocalVariable(\"args\", \"[Ljava/lang/String;\", null, lMethod0, lMethod1, 0);                " +
-        "// Return integer from top of stack\n" + methodBlock.localVariableString +
-        "  mv.visitMaxs(0, 0);\n" + "mv.visitEnd();\n" + "}\n"
-    }
+    ""
   }
 }

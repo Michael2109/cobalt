@@ -30,7 +30,7 @@ class StringConstantParser extends AbstractConstantParser[StringConstantBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "\"[a-zA-Z0-9]*\""
+    "\"[a-zA-Z0-9 ]*\""
   )
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): StringConstantBlock = {

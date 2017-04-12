@@ -65,9 +65,7 @@ class MethodParser extends Parser[MethodBlock] {
 
     val parameters = new Parameters().getParameters(paramString)
 
-    tokenizer.nextToken // skip "<"
-
-    tokenizer.nextToken // skip "-"
+    tokenizer.nextToken // skip ":"
 
     val returnType: String = tokenizer.nextToken.token // method return type
 

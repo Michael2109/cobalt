@@ -20,7 +20,6 @@ package compiler.ast.blocks.structures.methods
 
 import compiler.ast.blocks.Block
 import compiler.ast.blocks.modifiers.ModifierBlock
-import compiler.ast.generators.structures.methods.MethodGen
 import compiler.data.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.tokens.keywords.modifiers._
@@ -94,12 +93,41 @@ class MethodBlock(var superBlockInit: Block, val modifierTokens: List[ModifierTo
   def static: String = if(!Utils.isClass(this))"+ACC_STATIC" else ""
 
   def getOpeningCode: String = {
-    MethodGen.getOpeningCode(this)
+    if (getName != "main") {
+      "   {\n" + "            /* Build '" + getName + "' method */\n" + "            " +
+        "MethodVisitor mv = cw.visitMethod(\n" + "                    " + modifiersASM + " " + static + " " + `sealed` + ",                         // public method\n" +
+        "                    \"" + getName + "\",                              // name\n" +
+        "                    \"(" + parameterString + ")V\",                            // descriptor\n" +
+        "                    " + (if (returnType == "void") "null" else Utils.getDirectory(this, returnType)) + ",                               // signature (null means not generic)\n" +
+        "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
+    }
+    else {
+      "{\n" + "// Main Method\n" +
+        "MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, \"main\", \"([Ljava/lang/String;)V\", null, null);\n" + "mv.visitCode();\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
+    }
   }
 
 
   def getClosingCode: String = {
-    MethodGen.getClosingCode(this)
+    if (getName != "main") {
+      "mv.visitInsn(RETURN);     \n" +
+        "Label lMethod1 = new Label();\n" +
+        "mv.visitLabel(lMethod1);\n" +
+        "mv.visitLocalVariable(\"this\", \"L" + Utils.packageBlock(this).directory + "/" + getName + ";\", null, lMethod0, lMethod1, " + 0 + ");\n" +
+        "// Return integer from top of stack\n" +
+        localVariableString +
+        "mv.visitMaxs(0, 0);\n" +
+        "mv.visitEnd();\n" + "}\n"
+    }
+    else {
+      "mv.visitInsn(RETURN);     \n" +
+        "Label lMethod1 = new Label();\n" +
+        "mv.visitLabel(lMethod1);\n" +
+        "mv.visitLocalVariable(\"this\", \"L" + Utils.packageBlock(this).directory + "/" + getName + ";\", null, lMethod0, lMethod1, " + 0 + ");\n" +
+        "mv.visitLocalVariable(\"args\", \"[Ljava/lang/String;\", null, lMethod0, lMethod1, 0);                " +
+        "// Return integer from top of stack\n" + localVariableString +
+        "  mv.visitMaxs(0, 0);\n" + "mv.visitEnd();\n" + "}\n"
+    }
   }
 
 
