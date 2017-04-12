@@ -19,6 +19,7 @@
 package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
+import compiler.utilities.Utils
 
 /**
   * Represents a subtract operator
@@ -34,7 +35,7 @@ class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, f
   override def getType: String = "<SUBTRACT_OP>"
 
   override def getOpeningCode: String = {
-    asm.visitInsn("" + superBlockInit.getType + "SUB")
+    "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "SUB);"
   }
 
   override def getClosingCode: String = {

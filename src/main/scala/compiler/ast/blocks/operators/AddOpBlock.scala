@@ -19,6 +19,7 @@
 package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
+import compiler.utilities.Utils
 
 /**
   * Represents a add operator
@@ -34,7 +35,7 @@ class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
   override def getType(): String = "<ADD_OP>"
 
   override def getOpeningCode: String = {
-    asm.visitInsn("" + superBlockInit.getType + "ADD")
+    "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "ADD);"
   }
 
   override def getClosingCode: String = {

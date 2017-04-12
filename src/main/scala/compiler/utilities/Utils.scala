@@ -334,33 +334,14 @@ object Utils {
     fileBlock
   }
 
-  def getASMLOAD(varType: String): String = {
+  def getASMType(varType: String): String = {
     varType match {
-      case "C" => "ILOAD"
-      case "B" => "ILOAD"
-      case "I" => "ILOAD"
-      case "D" => "DLOAD"
-      case "F" => "FLOAD"
-      case "S" => "ILOAD"
-      case "Z" => "ILOAD"
-      case "J" => "LLOAD"
-      case _ => "ALOAD"
+      case "Int" => "I"
+      case "Float" => "F"
+      case _ => "A"
     }
   }
 
-  def getASMStore(varType: String): String = {
-    varType match {
-      case "C" => "ISTORE"
-      case "B" => "ISTORE"
-      case "I" => "ISTORE"
-      case "D" => "DSTORE"
-      case "F" => "FSTORE"
-      case "S" => "ISTORE"
-      case "Z" => "ISTORE"
-      case "J" => "LSTORE"
-      case _ => "ASTORE"
-    }
-  }
 
   /**
     * Executes cmd "java" with the classpath and file location and returns the output

@@ -19,6 +19,7 @@
 package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
+import compiler.utilities.Utils
 
 /**
   * Represents a multiply operator
@@ -34,7 +35,7 @@ class MultiplyOpBlock(val superBlockInit: Block) extends Block(superBlockInit, f
   override def getType: String = "<MULTIPLY_OP>"
 
   override def getOpeningCode: String = {
-    asm.visitInsn("" + superBlockInit.getType + "MUL")
+    "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "MUL);"
   }
 
   override def getClosingCode: String = {

@@ -48,9 +48,9 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
         row.getType match {
           case "C" => asm.visitVarInsn("ILOAD", "" + row.getId)
           case "B" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "I" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);"
+          case "Int" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
           case "D" => asm.visitVarInsn("DLOAD", "" + row.getId)
-          case "F" => asm.visitVarInsn("FLOAD", "" + row.getId)
+          case "Float" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
           case "S" => asm.visitVarInsn("ILOAD", "" + row.getId)
           case "J" => asm.visitVarInsn("LLOAD", "" + row.getId)
           case "Z" => asm.visitVarInsn("ILOAD", "" + row.getId)

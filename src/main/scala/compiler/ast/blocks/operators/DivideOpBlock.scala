@@ -19,6 +19,7 @@
 package compiler.ast.blocks.operators
 
 import compiler.ast.blocks.Block
+import compiler.utilities.Utils
 
 /**
   * Represents a divide operator
@@ -34,7 +35,8 @@ class DivideOpBlock(val superBlockInit: Block) extends Block(superBlockInit, fal
   override def getType: String = "<DIVIDE_OP>"
 
   override def getOpeningCode: String = {
-    asm.visitInsn("" + superBlockInit.getType + "DIV")
+
+    "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "DIV);"
   }
 
   override def getClosingCode: String = {
