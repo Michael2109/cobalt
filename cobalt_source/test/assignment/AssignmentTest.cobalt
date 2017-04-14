@@ -3,15 +3,16 @@ package test.assignment
 public class AssignmentTest():
 
     let main() : void:
-        x:Int = 5 + 10 - (17 * 3)
-        y:Float = 5.2F + 7.4F
-        z:String = "test"
-
-        other:AssignmentTest = new AssignmentTest()
-        println(x)
-        println(y)
-        println(z)
-        println(other)
+        i:Int = 5 + 10 - (17 * 3)
+        f:Float = 5.2F + 7.4F
+        d:Double = 5.0 * 3.0
+        s:String = "test"
+        o:AssignmentTest = new AssignmentTest()
+        println(i)
+        println(f)
+        println(d)
+        println(s)
+        println(o)
 
     let test(): void:
         println("Hello World")

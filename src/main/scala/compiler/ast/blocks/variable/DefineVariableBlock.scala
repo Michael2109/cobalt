@@ -50,6 +50,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
         case "Double" => "mv.visitTypeInsn(NEW, \"java/lang/Double\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
         case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
         case "Long" => "mv.visitTypeInsn(NEW, \"java/lang/Long\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
+        case "Char" => "mv.visitTypeInsn(NEW, \"java/lang/Character\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
         case "String" => stack.toList.map(b => b.getOpeningCode).mkString("\n")
         case _ => ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
 
@@ -65,11 +66,12 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
 
     varType match {
+      case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
       case "Int" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Integer\", \"<init>\", \"(I)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
+      case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(L)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
       case "Float" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Float\", \"<init>\", \"(F)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
       case "Double" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Double\", \"<init>\", \"(D)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(L)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
+      case "Char" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Character\", \"<init>\", \"(C)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
       case _ => asm.visitVarInsn("ASTORE", id)
 
 

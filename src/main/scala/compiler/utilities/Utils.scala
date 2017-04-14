@@ -334,6 +334,8 @@ object Utils {
     varType match {
       case "Int" => "I"
       case "Float" => "F"
+      case "Double" => "D"
+      case "Char" => "C"
       case "String" => "Ljava/lang/String;"
       case _ => "Ljava/lang/Object;"
     }
