@@ -13,6 +13,8 @@ public class AssignmentTest():
         println(y)
         println(z)
 
+    let test(): TestClass:
+        println("Hello World")
 
 
 

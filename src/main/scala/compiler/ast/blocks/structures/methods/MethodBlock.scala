@@ -25,7 +25,7 @@ import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.tokens.keywords.modifiers._
 import compiler.utilities.Utils
 
-class MethodBlock(var superBlockInit: Block, val modifierTokens: List[ModifierToken], name: String, val returnType: String, val isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
+class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken], name: String, returnType: String, isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
 
   println(superBlockInit)
 
@@ -97,8 +97,8 @@ class MethodBlock(var superBlockInit: Block, val modifierTokens: List[ModifierTo
       "   {\n" + "            /* Build '" + getName + "' method */\n" + "            " +
         "MethodVisitor mv = cw.visitMethod(\n" + "                    " + modifiersASM + " " + static + " " + `sealed` + ",                         // public method\n" +
         "                    \"" + getName + "\",                              // name\n" +
-        "                    \"(" + parameterString + ")V\",                            // descriptor\n" +
-        "                    " + (if (returnType == "void") "null" else Utils.getDirectory(this, returnType)) + ",                               // signature (null means not generic)\n" +
+        "                    \"(" + parameterString + ")" + (if (returnType == "void") "V" else ("L" + Utils.getDirectory(this, returnType)).trim + "/" + returnType.trim + ";") + "\",                            // descriptor\n" +
+        "                    " + "null" + ",                               // signature (null means not generic)\n" +
         "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
     }
     else {
