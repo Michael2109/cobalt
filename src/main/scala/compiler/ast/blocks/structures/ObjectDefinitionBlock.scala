@@ -65,9 +65,12 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
   override def getType: String = initClassName
 
   override def getOpeningCode: String = {
-    "mv.visitTypeInsn(NEW, \"" + directory + (if (directory == "") ""
-    else "/") + initClassName + "\");\n" + "mv.visitInsn(DUP);\n" + argumentString + "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + (if (directory == "") ""
-    else "/") + initClassName + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n"
+
+    val directory = if (Utils.getDirectory(this, initClassName) == "") Utils.getPackage(this).replace(".", "/") else Utils.getDirectory(this, initClassName)
+
+    "mv.visitTypeInsn(NEW, \"" + directory + "/" + initClassName + "\");\n" + "mv.visitInsn(DUP);\n" +
+      argumentString +
+      "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + "/" + initClassName + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n"
   }
 
   override def getClosingCode: String = {

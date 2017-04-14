@@ -1,17 +1,17 @@
 package test.assignment
 
-import test.TestClass
-import test.assignment.AssignmentTest
-
 public class AssignmentTest():
 
     let main() : void:
         x:Int = 5 + 10 - (17 * 3)
         y:Float = 5.2F + 7.4F
         z:String = "test"
+
+        other:AssignmentTest = new AssignmentTest()
         println(x)
         println(y)
         println(z)
+        println(other)
 
     let test(): void:
         println("Hello World")

@@ -55,7 +55,7 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
           case "J" => asm.visitVarInsn("LLOAD", "" + row.getId)
           case "Z" => asm.visitVarInsn("ILOAD", "" + row.getId)
           case "String" => asm.visitVarInsn("ALOAD", "" + row.getId)
-          case _ => ""
+          case _ => asm.visitVarInsn("ALOAD", "" + row.getId)
         }
 
 

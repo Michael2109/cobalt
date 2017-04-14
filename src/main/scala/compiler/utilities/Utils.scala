@@ -335,6 +335,7 @@ object Utils {
       case "Int" => "I"
       case "Float" => "F"
       case "String" => "Ljava/lang/String;"
+      case _ => "Ljava/lang/Object;"
     }
   }
 
