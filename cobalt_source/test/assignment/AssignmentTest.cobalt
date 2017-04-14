@@ -8,12 +8,12 @@ public class AssignmentTest():
     let main() : void:
         x:Int = 5 + 10 - (17 * 3)
         y:Float = 5.2F + 7.4F
-        z:String = "Hello World"
+        z:String = "test"
         println(x)
         println(y)
         println(z)
 
-    let test(): TestClass:
+    let test(): void:
         println("Hello World")
 
 

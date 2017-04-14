@@ -45,13 +45,13 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     if (Utils.getMethod(this) != null) {
 
       varType match {
-        case "Int" => "mv.visitTypeInsn(NEW, \"java/lang/Integer\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
-        case "Float" => "mv.visitTypeInsn(NEW, \"java/lang/Float\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
-        case "Double" => "mv.visitTypeInsn(NEW, \"java/lang/Double\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
-        case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
-        case "Long" => "mv.visitTypeInsn(NEW, \"java/lang/Long\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
-        case _ => "mv.visitTypeInsn(NEW, \"" + Utils.getDirectory(this, varType) + "/" + varType + "\");\n" + "mv.visitInsn(DUP);\n"
-
+        case "Int" => "mv.visitTypeInsn(NEW, \"java/lang/Integer\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
+        case "Float" => "mv.visitTypeInsn(NEW, \"java/lang/Float\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
+        case "Double" => "mv.visitTypeInsn(NEW, \"java/lang/Double\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
+        case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
+        case "Long" => "mv.visitTypeInsn(NEW, \"java/lang/Long\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
+        case "String" => stack.toList.map(b => b.getOpeningCode).mkString("\n")
+        case _ => "mv.visitTypeInsn(NEW, \"" + Utils.getDirectory(this, varType) + "/" + varType + "\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode).mkString("\n")
       }
 
     } else {
