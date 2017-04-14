@@ -35,26 +35,27 @@ class ImportParser extends Parser[ImportBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ImportBlock = {
 
-    println(tokenizer.nextToken) // "import"
+    tokenizer.nextToken // "import"
 
     var directory: String = ""
 
     // Get the string value of the next token.;
     var nextToken: String = ""
     while (!tokenizer.peek.tokenType.isInstanceOf[EmptyToken]) {
-      println("TOKEN -> " + tokenizer.peek.token + "   ->   " + tokenizer.peek.tokenType)
+
       nextToken = tokenizer.nextToken.token
-      println("NEXTTOKEN:" + nextToken)
+
       if (nextToken == ".") {
         directory += "/"
       }
       else {
         directory += nextToken
       }
-
-
     }
-    println()
+
+    // Remove the file name
+    directory = directory.substring(0, directory.lastIndexOf("/"))
+
     new ImportBlock(directory, nextToken)
   }
 }
