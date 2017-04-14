@@ -24,5 +24,5 @@ import scala.util.matching.Regex
 
 class IdentifierToken extends TokenType {
 
-  override def getRegex(): Regex = "^([a-zA-Z][a-zA-Z0-9]*)" r
+  override def getRegex(): Regex = "[a-zA-Z][a-zA-Z0-9]*" r
 }

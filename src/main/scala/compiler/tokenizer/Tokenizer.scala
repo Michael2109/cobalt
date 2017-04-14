@@ -81,6 +81,8 @@ class Tokenizer(var line: String) {
     new ApostropheToken
   )
 
+  //line = StringEscapeUtils.escapeJava(line)
+
   /**
     * Returns the next token without removing it from the line
     *
@@ -94,7 +96,7 @@ class Tokenizer(var line: String) {
     } else {
       for (data <- tokenDatas) {
         val matched = data.getRegex().findFirstIn(line)
-        if (matched.isDefined) {
+        if (matched.isDefined && matched.get == line.substring(0, matched.get.size)) {
           val token: String = matched.getOrElse("")
           return new Token(token, data)
         }
@@ -118,7 +120,7 @@ class Tokenizer(var line: String) {
         val matched = data.getRegex().findFirstIn(line)
         if (matched.isDefined && matched.get == line.substring(0, matched.get.size)) {
           val token: String = matched.getOrElse("")
-          line = line.replace(token, "")
+          line = data.getRegex().replaceFirstIn(line, "")
           return new Token(token, data)
         }
       }

@@ -92,12 +92,8 @@ object Utils {
     */
   def getDirectory(blockInit: Block, className: String): String = {
     // Get the FileBlock to find the imports
-    var block = blockInit
-    while (!block.isInstanceOf[FileBlock]) {
-      {
-        block = block.superBlock
-      }
-    }
+    val block = getFileBlock(blockInit)
+
     // Get the directory of the Object
     for (sub <- block.subBlocks) {
       sub match {
@@ -363,6 +359,17 @@ object Utils {
     }
     input.close()
     result.toList
+  }
+
+  /**
+    * Escapes a String
+    *
+    * @param raw
+    * @return
+    */
+  def escapeString(raw: String): String = {
+    import scala.reflect.runtime.universe._
+    Literal(Constant(raw)).toString
   }
 
 }

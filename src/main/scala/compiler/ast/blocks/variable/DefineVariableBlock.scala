@@ -19,7 +19,6 @@
 package compiler.ast.blocks.variable
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.operators.assignment.AssignmentOpBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.{ReversePolish, Utils}
 
@@ -51,8 +50,8 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
         case "Double" => "mv.visitTypeInsn(NEW, \"java/lang/Double\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
         case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
         case "Long" => "mv.visitTypeInsn(NEW, \"java/lang/Long\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n")
+        case _ => "mv.visitTypeInsn(NEW, \"" + Utils.getDirectory(this, varType) + "/" + varType + "\");\n" + "mv.visitInsn(DUP);\n"
 
-        case _ => if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
       }
 
     } else {
@@ -71,6 +70,7 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
       case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
       case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(L)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
       case "String" => asm.visitVarInsn("ASTORE", id)
+      case _ => "mv.visitMethodInsn(INVOKESPECIAL, \"" + Utils.getDirectory(this, varType) + "/" + varType + "\", \"<init>\", \"()V\", false);\n" + asm.visitVarInsn("ASTORE", id)
 
     }
 

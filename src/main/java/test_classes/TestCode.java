@@ -25,10 +25,9 @@ public class TestCode {
 
     public void test() {
 
-        BoxedInteger x = new BoxedInteger(5);
-
-        String test = "Hello World";
-        System.out.println(test);
+        int x = 5;
+        int y = 10;
+        int result = x + y;
     }
 
 }

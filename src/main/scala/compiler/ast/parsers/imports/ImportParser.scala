@@ -22,6 +22,7 @@ import compiler.ast.blocks.Block
 import compiler.ast.blocks.imports.ImportBlock
 import compiler.ast.parsers.Parser
 import compiler.tokenizer.Tokenizer
+import compiler.tokenizer.tokens.EmptyToken
 
 class ImportParser extends Parser[ImportBlock] {
 
@@ -34,27 +35,26 @@ class ImportParser extends Parser[ImportBlock] {
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ImportBlock = {
 
-    tokenizer.nextToken // "import"
+    println(tokenizer.nextToken) // "import"
 
-    var fileLoc: String = tokenizer.nextToken.token // Get the string value of the next token.;
-    var nextToken: String = tokenizer.nextToken.token
-    var fileName: String = nextToken
+    var directory: String = ""
 
-    while (nextToken != "") {
-      {
-        if (nextToken == ".") {
-          fileLoc += "/"
-        }
-        else {
-          fileLoc += nextToken
-        }
-        fileName = nextToken
-        nextToken = tokenizer.nextToken.token
+    // Get the string value of the next token.;
+    var nextToken: String = ""
+    while (!tokenizer.peek.tokenType.isInstanceOf[EmptyToken]) {
+      println("TOKEN -> " + tokenizer.peek.token + "   ->   " + tokenizer.peek.tokenType)
+      nextToken = tokenizer.nextToken.token
+      println("NEXTTOKEN:" + nextToken)
+      if (nextToken == ".") {
+        directory += "/"
       }
+      else {
+        directory += nextToken
+      }
+
+
     }
-    val i: Int = fileLoc.lastIndexOf("/")
-    fileLoc = if (i > -1) fileLoc.substring(0, i)
-    else fileLoc
-    new ImportBlock(fileLoc, fileName)
+    println()
+    new ImportBlock(directory, nextToken)
   }
 }

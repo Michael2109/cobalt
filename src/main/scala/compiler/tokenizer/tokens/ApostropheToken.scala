@@ -24,5 +24,5 @@ import scala.util.matching.Regex
 
 class ApostropheToken extends TokenType {
 
-  override def getRegex(): Regex = "^([:\\')" r
+  override def getRegex(): Regex = "[\\']" r
 }

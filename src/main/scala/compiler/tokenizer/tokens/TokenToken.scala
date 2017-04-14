@@ -24,5 +24,5 @@ import scala.util.matching.Regex
 
 class TokenToken extends TokenType {
 
-  override def getRegex(): Regex = "^([:])" r
+  override def getRegex(): Regex = "^([\\:])" r
 }

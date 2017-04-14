@@ -57,27 +57,6 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
   */
 
 
-  // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
-  def getDirectory: String = {
-    // Get the FileBlock to find the imports
-    var block: Block = this
-    while (!block.isInstanceOf[FileBlock]) {
-      {
-        block = block.superBlock
-      }
-    }
-    // Get the directory of the Object
-    /*
-    for (sub <- block.subBlocks) {
-      sub match {
-        case block1: ImportBlock if block1.fileName == className =>
-          return block1.directory
-        case _ =>
-      }
-    }
-    */
-    ""
-  }
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
   def getPackage: String = {
