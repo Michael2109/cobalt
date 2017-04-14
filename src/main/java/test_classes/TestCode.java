@@ -25,7 +25,9 @@ public class TestCode {
 
     public void test() {
 
-        int x = 5;
+        short x = 5;
+
+        System.out.println(x);
         int y = 10;
         int result = x + y;
     }

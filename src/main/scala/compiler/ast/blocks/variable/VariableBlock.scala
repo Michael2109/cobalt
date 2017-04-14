@@ -46,14 +46,16 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
       val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
         row.getType match {
-          case "C" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "B" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "Char" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
+
+          case "Byte" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()I\", false);\n"
+          case "Short" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
           case "Int" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
-          case "Double" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
+          case "Long" => asm.visitVarInsn("LLOAD", "" + row.getId)
+
           case "Float" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
-          case "S" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "J" => asm.visitVarInsn("LLOAD", "" + row.getId)
-          case "Z" => asm.visitVarInsn("ILOAD", "" + row.getId)
+          case "Double" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
+
           case "String" => asm.visitVarInsn("ALOAD", "" + row.getId)
           case _ => asm.visitVarInsn("ALOAD", "" + row.getId)
         }
