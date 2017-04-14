@@ -25,7 +25,7 @@ public class TestCode {
 
     public void test() {
 
-        Byte x = new Byte((byte) 10);
+        char x = 'c';
 
         System.out.println(x);
 

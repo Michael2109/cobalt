@@ -9,6 +9,7 @@ public class AssignmentTest():
         l:Long = 50000L
         f:Float = 5.2F + 7.4F
         d:Double = 5.0 * 3.0
+        c:Char = 'a'
         string:String = "test"
         o:AssignmentTest = new AssignmentTest()
 
@@ -18,6 +19,7 @@ public class AssignmentTest():
         println(l)
         println(f)
         println(d)
+        println(c)
         println(string)
         println(o)
 
