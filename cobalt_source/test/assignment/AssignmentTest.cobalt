@@ -3,18 +3,22 @@ package test.assignment
 public class AssignmentTest():
 
     let main() : void:
-        short:Short = 5S
+        b:Byte = 10B
+        s:Short = 5S
         i:Int = 5 + 10 - (17 * 3)
+        l:Long = 50000L
         f:Float = 5.2F + 7.4F
         d:Double = 5.0 * 3.0
-        s:String = "test"
+        string:String = "test"
         o:AssignmentTest = new AssignmentTest()
 
-        println(short)
+        println(b)
+        println(s)
         println(i)
+        println(l)
         println(f)
         println(d)
-        println(s)
+        println(string)
         println(o)
 
     let test(): void:

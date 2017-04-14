@@ -332,10 +332,10 @@ object Utils {
 
   def getASMType(varType: String): String = {
     varType match {
-      case "Byte" => "B"
+      case "Byte" => "I"
       case "Short" => "I"
       case "Int" => "I"
-      case "Long" => "I"
+      case "Long" => "J"
       case "Float" => "F"
       case "Double" => "D"
       case "Char" => "C"

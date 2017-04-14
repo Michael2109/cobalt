@@ -25,11 +25,10 @@ public class TestCode {
 
     public void test() {
 
-        short x = 5;
+        Byte x = new Byte((byte) 10);
 
         System.out.println(x);
-        int y = 10;
-        int result = x + y;
+
     }
 
 }
