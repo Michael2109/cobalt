@@ -53,6 +53,7 @@ import compiler.ast.packages.PackageParser
 import compiler.ast.prints.PrintlnParser
 import compiler.ast.structures.kinds.{ClassParser, ObjectParser}
 import compiler.ast.structures.methods.MethodParser
+import compiler.ast.structures.parameter.ParameterParser
 import compiler.ast.structures.{MethodCallParser, ObjectDefinitionParser, ObjectMethodCallParser}
 import compiler.ast.super_keyword.SuperParser
 import compiler.ast.variable.{DefineVariableParser, ThisKeywordParser, VariableParser}
@@ -167,6 +168,7 @@ object Parsers {
     new ModulusOpParser,
 
     new DefineVariableParser,
+    new ParameterParser,
     new AssignmentOpParser,
 
     /* constants */
