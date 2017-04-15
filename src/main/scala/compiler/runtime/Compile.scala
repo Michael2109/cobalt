@@ -20,8 +20,8 @@ package compiler.runtime
 
 import java.io._
 
-import compiler.ast.blocks.Block
-import compiler.ast.blocks.structures.methods.MethodBlock
+import compiler.ast.Block
+import compiler.ast.structures.methods.MethodBlock
 
 
 /**

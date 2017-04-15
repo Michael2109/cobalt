@@ -20,11 +20,10 @@ package compiler.runtime
 
 import java.io.File
 
-import compiler.ast.blocks.Block
-import compiler.ast.blocks.packages.PackageBlock
-import compiler.ast.blocks.structures.FileBlock
-import compiler.ast.parsers.imports.ImportParser
-import compiler.ast.parsers.packages.PackageParser
+import compiler.ast.Block
+import compiler.ast.imports.ImportParser
+import compiler.ast.packages.{PackageBlock, PackageParser}
+import compiler.ast.structures.FileBlock
 import compiler.symbol_table.SymbolTable
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils

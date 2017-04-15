@@ -18,10 +18,14 @@
 
 package compiler.utilities
 
-import compiler.ast.blocks.Block
-import compiler.ast.blocks.conditionals._
-import compiler.ast.blocks.operators._
-import compiler.ast.blocks.variable.DefineVariableBlock
+import compiler.ast.Block
+import compiler.ast.conditionals.equals.EqualsOpBlock
+import compiler.ast.conditionals.larger_than.LargerThanOpBlock
+import compiler.ast.conditionals.larger_than_equal.LargerThanEqualOpBlock
+import compiler.ast.conditionals.smaller_than.SmallerThanOpBlock
+import compiler.ast.conditionals.smaller_than_equal.SmallerThanEqualOpBlock
+import compiler.ast.operators._
+import compiler.ast.variable.DefineVariableBlock
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

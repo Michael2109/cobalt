@@ -18,7 +18,7 @@
 
 package compiler.ast.generators.structures.methods
 
-import compiler.ast.blocks.structures.methods.MethodBlock
+import compiler.ast.structures.methods.MethodBlock
 
 object MethodGen {
 

@@ -18,7 +18,7 @@
 
 package compiler.ast.parsers
 
-import compiler.ast.blocks.Block
+import compiler.ast.Block
 import compiler.tokenizer.TokenizerTest
 
 abstract class ParserTest[T <: Block] {

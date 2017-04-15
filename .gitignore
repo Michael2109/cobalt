@@ -11,3 +11,5 @@ src/test/java/
 !/src/main/scala/compiler/tokenizer/Tokenizer.scala
 /cobalt_java/
 /cobalt_generated/
+!/cobalt_generated/
+!/cobalt_java/

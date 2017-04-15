@@ -18,19 +18,19 @@
 
 package compiler.ast.generators.ifs
 
-import compiler.ast.blocks.conditionals.AbstractConditionalBlock
-import compiler.ast.blocks.ifs.IfBlock
+import compiler.ast.conditionals.ConditionalBlock
 import compiler.ast.generators.Generator
+import compiler.ast.ifs.IfBlock
 
 object IfGen extends Generator{
 
   def getOpeningCode(ifBlock: IfBlock): String = {
 
-    val values = ifBlock.orderedStatementBlocks.filter(!_.isInstanceOf[AbstractConditionalBlock]).map(_.getOpeningCode).mkString("")
+    val values = ifBlock.orderedStatementBlocks.filter(!_.isInstanceOf[ConditionalBlock]).map(_.getOpeningCode).mkString("")
 
     values +
       asm.newLabel("l" + ifBlock.id) +
-      asm.visitJumpInsn(ifBlock.orderedStatementBlocks.filter(_.isInstanceOf[AbstractConditionalBlock]).head.getOpeningCode, "l" + ifBlock.id)
+      asm.visitJumpInsn(ifBlock.orderedStatementBlocks.filter(_.isInstanceOf[ConditionalBlock]).head.getOpeningCode, "l" + ifBlock.id)
 
   }
 

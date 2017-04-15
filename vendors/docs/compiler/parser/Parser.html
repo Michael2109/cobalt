@@ -21,9 +21,9 @@
         <head>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <title>cobalt 1.0-SNAPSHOT API - compiler.ast.parsers.Parser</title>
-            <meta name="description" content="cobalt 1.0 - SNAPSHOT API - compiler.ast.parsers.Parser"/>
-            <meta name="keywords" content="cobalt 1.0 SNAPSHOT API compiler.ast.parsers.Parser"/>
+            <title>cobalt 1.0-SNAPSHOT API - compiler.ast.Parser</title>
+            <meta name="description" content="cobalt 1.0 - SNAPSHOT API - compiler.ast.Parser"/>
+            <meta name="keywords" content="cobalt 1.0 SNAPSHOT API compiler.ast.Parser"/>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
@@ -178,7 +178,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.ifs" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.ifs" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="ifs"></a><a id="ifs:ifs"></a>
       <span class="permalink">
@@ -203,7 +203,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.imports" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.imports" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="imports"></a><a id="imports:imports"></a>
       <span class="permalink">
@@ -228,7 +228,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.loops" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.loops" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="loops"></a><a id="loops:loops"></a>
       <span class="permalink">
@@ -253,7 +253,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.modifiers" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.modifiers" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="modifiers"></a><a id="modifiers:modifiers"></a>
       <span class="permalink">
@@ -278,7 +278,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.operators" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.operators" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="operators"></a><a id="operators:operators"></a>
       <span class="permalink">
@@ -303,7 +303,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.packages" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.packages" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="packages"></a><a id="packages:packages"></a>
       <span class="permalink">
@@ -353,7 +353,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.prints" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.prints" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="prints"></a><a id="prints:prints"></a>
       <span class="permalink">
@@ -378,7 +378,7 @@
                           </dl>
                       </div>
                   </li>
-                  <li name="compiler.ast.parsers.structures" visbl="pub" class="indented3 " data-isabs="false"
+                  <li name="compiler.ast.structures" visbl="pub" class="indented3 " data-isabs="false"
                       fullComment="yes" group="Ungrouped">
       <a id="structures"></a><a id="structures:structures"></a>
       <span class="permalink">
@@ -436,7 +436,7 @@
       <span class="symbol">
         <span class="name">Parser</span><span class="tparams">[<span name="T">T &lt;: <a href="../block/Block.html"
                                                                                          class="extype"
-                                                                                         name="compiler.ast.blocks.Block">Block</a></span>]</span><span
+                                                                                         name="compiler.ast.Block">Block</a></span>]</span><span
               class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
@@ -452,26 +452,26 @@
               Known Subclasses
             </span>
               <div class="subClasses hiddenContent"><a href="assignment/AssignmentParser.html" class="extype"
-                                                       name="compiler.ast.parsers.operators.assignment.AssignmentOpParser">AssignmentParser</a>,
+                                                       name="compiler.ast.operators.assignment.AssignmentOpParser">AssignmentParser</a>,
                   <a href="comments/CommentParser.html" class="extype"
                      name="compiler.ast.parsers.comments.CommentParser">CommentParser</a>, <a
-                          href="ifs/IfParser.html" class="extype" name="compiler.ast.parsers.ifs.IfParser">IfParser</a>,
+                          href="ifs/IfParser.html" class="extype" name="compiler.ast.ifs.IfParser">IfParser</a>,
                   <a href="imports/ImportParser.html" class="extype"
-                     name="compiler.ast.parsers.imports.ImportParser">ImportParser</a>, <a
-                          href="loops/ForParser.html" class="extype" name="compiler.ast.parsers.loops.ForParser">ForParser</a>,
-                  <a href="loops/WhileParser.html" class="extype" name="compiler.ast.parsers.loops.WhileParser">WhileParser</a>,
+                     name="compiler.ast.imports.ImportParser">ImportParser</a>, <a
+                          href="loops/ForParser.html" class="extype" name="compiler.ast.loops.ForParser">ForParser</a>,
+                  <a href="loops/WhileParser.html" class="extype" name="compiler.ast.loops.WhileParser">WhileParser</a>,
                   <a href="modifiers/ModifierParser.html" class="extype"
-                     name="compiler.ast.parsers.modifiers.ModifierParser">ModifierParser</a>, <a
+                     name="compiler.ast.modifiers.ModifierParser">ModifierParser</a>, <a
                           href="operators/AddParser.html" class="extype"
-                          name="compiler.ast.parsers.operators.AddOpParser">AddParser</a>, <a
+                          name="compiler.ast.operators.AddOpParser">AddParser</a>, <a
                           href="operators/DivideParser.html" class="extype"
-                          name="compiler.ast.parsers.operators.DivideOpParser">DivideParser</a>, <a
+                          name="compiler.ast.operators.DivideOpParser">DivideParser</a>, <a
                           href="operators/MultiplyParser.html" class="extype"
-                          name="compiler.ast.parsers.operators.MultiplyOpParser">MultiplyParser</a>, <a
+                          name="compiler.ast.operators.MultiplyOpParser">MultiplyParser</a>, <a
                           href="operators/SubtractParser.html" class="extype"
-                          name="compiler.ast.parsers.operators.SubtractOpParser">SubtractParser</a>, <a
+                          name="compiler.ast.operators.SubtractOpParser">SubtractParser</a>, <a
                           href="packages/PackageParser.html" class="extype"
-                          name="compiler.ast.parsers.packages.PackageParser">PackageParser</a>, <a
+                          name="compiler.ast.packages.PackageParser">PackageParser</a>, <a
                           href="primitives/BooleanParser.html" class="extype"
                           name="compiler.ast.parsers.primitives.BooleanParser">BooleanParser</a>, <a
                           href="primitives/CharacterParser.html" class="extype"
@@ -489,19 +489,19 @@
                           href="primitives/StringParser.html" class="extype"
                           name="compiler.ast.parsers.primitives.StringParser">StringParser</a>, <a
                           href="prints/PrintParser.html" class="extype"
-                          name="compiler.ast.parsers.prints.PrintParser">PrintParser</a>, <a
+                          name="compiler.ast.prints.PrintParser">PrintParser</a>, <a
                           href="structures/MethodCallParser.html" class="extype"
-                          name="compiler.ast.parsers.structures.MethodCallParser">MethodCallParser</a>, <a
+                          name="compiler.ast.structures.MethodCallParser">MethodCallParser</a>, <a
                           href="structures/ObjectDefinitionParser.html" class="extype"
-                          name="compiler.ast.parsers.structures.ObjectDefinitionParser">ObjectDefinitionParser</a>,
+                          name="compiler.ast.structures.ObjectDefinitionParser">ObjectDefinitionParser</a>,
                   <a href="structures/ObjectMethodCallParser.html" class="extype"
-                     name="compiler.ast.parsers.structures.ObjectMethodCallParser">ObjectMethodCallParser</a>, <a
+                     name="compiler.ast.structures.ObjectMethodCallParser">ObjectMethodCallParser</a>, <a
                           href="structures/kinds/ClassParser.html" class="extype"
-                          name="compiler.ast.parsers.structures.kinds.ClassParser">ClassParser</a>, <a
+                          name="compiler.ast.structures.kinds.ClassParser">ClassParser</a>, <a
                           href="structures/kinds/ObjectParser.html" class="extype"
-                          name="compiler.ast.parsers.structures.kinds.ObjectParser">ObjectParser</a>, <a
+                          name="compiler.ast.structures.kinds.ObjectParser">ObjectParser</a>, <a
                           href="structures/methods/MethodParser.html" class="extype"
-                          name="compiler.ast.parsers.structures.methods.MethodParser">MethodParser</a></div>
+                          name="compiler.ast.structures.methods.MethodParser">MethodParser</a></div>
           </div></div>
         
 
@@ -527,7 +527,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                      <li class="in" name="compiler.ast.parsers.Parser"><span>Parser</span></li>
+                      <li class="in" name="compiler.ast.Parser"><span>Parser</span></li>
                       <li class="in" name="scala.AnyRef"><span>AnyRef</span></li>
                       <li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
@@ -550,11 +550,11 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
             <ol>
-                <li name="compiler.ast.parsers.Parser#&lt;init&gt;" visbl="pub" class="indented0 "
+                <li name="compiler.ast.Parser#&lt;init&gt;" visbl="pub" class="indented0 "
                     data-isabs="false" fullComment="no" group="Ungrouped">
-                    <a id="&lt;init&gt;():compiler.ast.parsers.Parser[T]"></a><a id="&lt;init&gt;:Parser[T]"></a>
+                    <a id="&lt;init&gt;():compiler.ast.Parser[T]"></a><a id="&lt;init&gt;:Parser[T]"></a>
       <span class="permalink">
-      <a href="../../compiler/parser/Parser.html#&lt;init&gt;():compiler.ast.parsers.Parser[T]" title="Permalink">
+      <a href="../../compiler/parser/Parser.html#&lt;init&gt;():compiler.ast.Parser[T]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -575,12 +575,12 @@
         <div class="values members">
               <h3>Abstract Value Members</h3>
             <ol>
-                <li name="compiler.ast.parsers.Parser#parse" visbl="pub" class="indented0 " data-isabs="true"
+                <li name="compiler.ast.Parser#parse" visbl="pub" class="indented0 " data-isabs="true"
                     fullComment="no" group="Ungrouped">
-                    <a id="parse(superBlock:compiler.ast.blocks.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.ast.blocks.Block"></a><a
+                    <a id="parse(superBlock:compiler.ast.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.ast.Block"></a><a
                         id="parse(Block,Tokenizer):Block"></a>
       <span class="permalink">
-      <a href="../../compiler/parser/Parser.html#parse(superBlock:compiler.ast.blocks.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.ast.blocks.Block"
+      <a href="../../compiler/parser/Parser.html#parse(superBlock:compiler.ast.Block,tokenizer:compiler.tokenizer.Tokenizer):compiler.ast.Block"
          title="Permalink">
         <i class="material-icons"></i>
       </a>
@@ -591,16 +591,16 @@
       </span>
       <span class="symbol">
         <span class="name">parse</span><span class="params">(<span name="superBlock">superBlock: <a
-              href="../block/Block.html" class="extype" name="compiler.ast.blocks.Block">Block</a></span>, <span
+              href="../block/Block.html" class="extype" name="compiler.ast.Block">Block</a></span>, <span
               name="tokenizer">tokenizer: <a href="../tokenizer/Tokenizer.html" class="extype"
                                              name="compiler.tokenizer.Tokenizer">Tokenizer</a></span>)</span><span
               class="result">: <a href="../block/Block.html" class="extype"
-                                  name="compiler.ast.blocks.Block">Block</a></span>
+                                  name="compiler.ast.Block">Block</a></span>
       </span>
       
       <p class="shortcomment cmt">Take the superBlock and the tokenizer for the line and return a block of this parser's type.</p>
                 </li>
-                <li name="compiler.ast.parsers.Parser#shouldParse" visbl="pub" class="indented0 "
+                <li name="compiler.ast.Parser#shouldParse" visbl="pub" class="indented0 "
                     data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="shouldParse(line:String):Boolean"></a><a id="shouldParse(String):Boolean"></a>
       <span class="permalink">
