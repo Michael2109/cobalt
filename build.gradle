@@ -74,6 +74,9 @@ sourceSets {
         java {
             srcDirs = []
         }
+        resources {
+            srcDir "resources"
+        }
     }
 
     test {
@@ -81,8 +84,9 @@ sourceSets {
             include "**/*Test.scala"
         }
         resources {
-            srcDir "resources"
+            srcDir 'resources'
         }
+
 
     }
 }

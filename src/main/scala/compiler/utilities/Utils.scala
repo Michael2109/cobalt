@@ -369,7 +369,13 @@ object Utils {
     val command = "java -cp " + classPath + " " + directory
     val process = runtime.exec(command)
     val input = new BufferedReader(new InputStreamReader(process.getInputStream()))
+    val error = new BufferedReader(new InputStreamReader(process.getInputStream()))
     var line = input.readLine()
+    while (line != null) {
+      result += line
+      line = input.readLine()
+    }
+    input.close()
     while (line != null) {
       result += line
       line = input.readLine()

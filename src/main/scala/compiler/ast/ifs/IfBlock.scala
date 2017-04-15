@@ -19,7 +19,7 @@
 package compiler.ast.ifs
 
 import compiler.ast.Block
-import compiler.ast.generators.ifs.IfGen
+import compiler.ast.conditionals.ConditionalBlock
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.{ReversePolish, Utils}
 
@@ -39,12 +39,15 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
   def getType: String = "<IF_STATEMENT>"
 
   def getOpeningCode: String = {
-    IfGen.getOpeningCode(this)
+    val values = orderedStatementBlocks.filter(!_.isInstanceOf[ConditionalBlock]).map(_.getOpeningCode).mkString("")
+    values +
+      asm.newLabel("l" + id) +
+      asm.visitJumpInsn(orderedStatementBlocks.filter(_.isInstanceOf[ConditionalBlock]).head.getOpeningCode, "l" + id)
 
   }
 
   def getClosingCode: String = {
-    IfGen.getClosingCode(this)
+    asm.visitLabel("l" + id)
   }
 
   override def toString: String = getType + stack
