@@ -19,7 +19,6 @@
 package compiler.ast.blocks.structures
 
 import compiler.ast.blocks.Block
-import compiler.ast.blocks.imports.ImportBlock
 import compiler.ast.blocks.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.utilities.Utils
 
@@ -31,21 +30,10 @@ import compiler.utilities.Utils
   * @param newKeyword
   * @param initClassName
   */
-class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String) extends Block(superBlockInit, false, true, false) {
+class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClassName: String, argumentBlocks: List[Block]) extends Block(superBlockInit, false, true, false) {
 
-  private val parameterString: String = ""
-  private val argumentString: String = ""
-  private val directory: String = {
-    var result = ""
-    for (i <- Utils.getFileBlock(this).subBlocks) {
-
-      if (i.isInstanceOf[ImportBlock] && i.asInstanceOf[ImportBlock].fileName == initClassName) {
-        result = i.asInstanceOf[ImportBlock].directory
-      }
-    }
-    result
-  }
-
+  private val argTypeString: String = argumentBlocks.map(b => Utils.getASMType(b.getType)).mkString("")
+  private val argStackString: String = argumentBlocks.map(_.getOpeningCode).mkString("\n")
 
   // Returns the main class name for the file
   def getObjectName: String = {
@@ -69,8 +57,8 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
     val directory = if (Utils.getDirectory(this, initClassName) == "") Utils.getPackage(this).replace(".", "/") else Utils.getDirectory(this, initClassName)
 
     "mv.visitTypeInsn(NEW, \"" + directory + "/" + initClassName + "\");\n" + "mv.visitInsn(DUP);\n" +
-      argumentString +
-      "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + "/" + initClassName + "\", \"<init>\", \"(" + parameterString + ")V\", false);\n"
+      argStackString +
+      "mv.visitMethodInsn(INVOKESPECIAL, \"" + directory + "/" + initClassName + "\", \"<init>\", \"(" + argTypeString + ")V\", false);\n"
   }
 
   override def getClosingCode: String = {

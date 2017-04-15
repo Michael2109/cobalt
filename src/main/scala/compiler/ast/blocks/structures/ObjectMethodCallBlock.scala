@@ -29,9 +29,6 @@ import compiler.utilities.Utils
   */
 class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var argumentBlocks: List[Block]) extends Block(superBlockInit, false, false, false) {
 
-  println(argumentBlocks)
-
-  private val `type`: String = null
   private val argTypeString: String = argumentBlocks.map(b => Utils.getASMType(b.getType)).mkString("")
   private val argStackString: String = argumentBlocks.map(_.getOpeningCode).mkString("\n")
 
@@ -74,7 +71,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
 
   override def getValue: String = ""
 
-  override def getType: String = `type`
+  override def getType: String = superBlockInit.getType
 
   override def getOpeningCode: String = {
 

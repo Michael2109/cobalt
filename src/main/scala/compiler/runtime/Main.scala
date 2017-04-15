@@ -69,13 +69,11 @@ object Main {
 
         val instance = compClass.newInstance()
         compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
-
-        println()
       }
 
     }
     else {
-      System.out.println("Error: Source, ASM, and build args required. ")
+      logger.info("Error: Source, ASM, and build args required. ")
     }
   }
 }

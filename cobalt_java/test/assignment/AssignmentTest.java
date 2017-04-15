@@ -123,19 +123,20 @@ mv.visitLdcInsn(new Character('a'));
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Character", "<init>", "(C)V", false);
 mv.visitVarInsn(ASTORE,83);
 
-mv.visitLdcInsn("test");
+mv.visitLdcInsn("hiiiiiiiiiiiiiiiiiiii");
 
 mv.visitVarInsn(ASTORE,85);
 
 mv.visitTypeInsn(NEW, "java/lang/Integer");
 mv.visitInsn(DUP);
-mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Integer", "<init>", "()V", false);
+mv.visitIntInsn(BIPUSH, 25);mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V", false);
 
 mv.visitVarInsn(ASTORE,87);
 
+mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
 mv.visitVarInsn(ALOAD,87);
-mv.visitIntInsn(BIPUSH, 5);mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "test", "(I)V", false);
 
+mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
 mv.visitVarInsn(ALOAD,59);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Byte", "byteValue", "()B", false);
@@ -189,10 +190,10 @@ mv.visitEnd();
 }
 
    {
-            /* Build 'test' method */
+            /* Build 'sayHello' method */
             MethodVisitor mv = cw.visitMethod(
                     +ACC_PRIVATE  +ACC_FINAL,                         // public method
-                    "test",                              // name
+                    "sayHello",                              // name
                     "()V",                            // descriptor
                     null,                               // signature (null means not generic)
                     null);                              // exceptions (array of strings)
@@ -202,12 +203,12 @@ Label lMethod0 = new Label();
 mv.visitLabel(lMethod0);
 
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitLdcInsn("Hello World");
+mv.visitLdcInsn("sup");
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
 mv.visitInsn(RETURN);     
 Label lMethod1 = new Label();
 mv.visitLabel(lMethod1);
-mv.visitLocalVariable("this", "Ltest/assignment/test;", null, lMethod0, lMethod1, 0);
+mv.visitLocalVariable("this", "Ltest/assignment/sayHello;", null, lMethod0, lMethod1, 0);
 // Return integer from top of stack
 mv.visitMaxs(0, 0);
 mv.visitEnd();

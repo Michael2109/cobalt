@@ -23,6 +23,7 @@ import compiler.ast.blocks.Block
 import compiler.ast.blocks.structures.ObjectDefinitionBlock
 import compiler.ast.parsers.Parser
 import compiler.tokenizer.Tokenizer
+import compiler.utilities.Utils
 
 /**
   * Creation of a new instance of a class
@@ -37,7 +38,7 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "new[ ]*[a-zA-Z][a-zA-Z0-9]*\\((([ ]*([a-zA-Z][a-zA-Z0-9]*|[0-9]+)[ ]*[,]?)*)*\\)"
+    "new[ ]*[a-zA-Z][a-zA-Z0-9]*\\(([^]]*)\\)"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectDefinitionBlock = {
@@ -45,9 +46,19 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     val initClassName: String = tokenizer.nextToken.token
     tokenizer.nextToken // skip "("
 
-    // todo loop through arguments
+    // Contains everything within the parenthesis
+    var argString = ""
+    while (tokenizer.peek.token != ")" && tokenizer.peek.token != "") {
+      if (tokenizer.peek.token == ",") {
+        argString += " "
+        tokenizer.nextToken
+      }
+      else
+        argString += tokenizer.nextToken.token.trim
+    }
 
+    val argBlocks = Utils.getAllBlocks(superBlock, argString)
 
-    new ObjectDefinitionBlock(superBlock, newKeyword, initClassName)
+    new ObjectDefinitionBlock(superBlock, newKeyword, initClassName, argBlocks)
   }
 }

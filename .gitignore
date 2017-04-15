@@ -9,3 +9,5 @@ out/
 src/test/java/
 /src/main/java/test/
 !/src/main/scala/compiler/tokenizer/Tokenizer.scala
+/cobalt_java/
+/cobalt_generated/

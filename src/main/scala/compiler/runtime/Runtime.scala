@@ -28,6 +28,7 @@ import compiler.ast.parsers.packages.PackageParser
 import compiler.symbol_table.SymbolTable
 import compiler.tokenizer.Tokenizer
 import compiler.utilities.Utils
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -36,6 +37,8 @@ import scala.io.Source
   * Parses the code to create the AST ast.
   */
 class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
+
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   def parseFile() {
 

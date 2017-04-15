@@ -12,10 +12,11 @@ public class AssignmentTest():
         f:Float = 5.2F + 7.4F
         d:Double = 5.0 * 3.0
         c:Char = 'a'
-        string:String = "test"
-        o:Integer = new Integer(5)
+        string:String = "hiiiiiiiiiiiiiiiiiiii"
+        o:Integer = new Integer(25)
 
-        o.test(5)
+        println(o.intValue())
+
 
         println(b)
         println(s)
@@ -27,8 +28,8 @@ public class AssignmentTest():
         println(string)
         println(o)
 
-    let test(): void:
-        println("Hello World")
+    let sayHello(): void:
+        println("sup")
 
 
 

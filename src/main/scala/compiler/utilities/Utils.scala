@@ -35,6 +35,8 @@ import scala.util.matching.Regex
 
 object Utils {
 
+  //val logger: Logger = LoggerFactory.getLogger(this)
+
   /**
     * Returns the method a blocks is within
     *
@@ -183,7 +185,7 @@ object Utils {
         i - 1
       }
     }
-    System.out.println(indentationString + block.toString)
+    println(indentationString + block.toString)
     for (sub <- block.subBlocks) {
       printBlockInfo(sub, indentation + 1)
     }
@@ -206,7 +208,7 @@ object Utils {
 
   /**
     * Returns a list of all files in the directory
-    * @param dir
+    * @param File directory
     * @return
     */
   def recursiveListFiles(f: File, r: Regex): Array[File] = {
