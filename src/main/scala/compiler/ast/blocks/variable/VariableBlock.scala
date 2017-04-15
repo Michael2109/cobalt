@@ -41,7 +41,7 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      println(stack.map(_.getOpeningCode).mkString("\n"))
+
       // Get assigned blocks in reverse polish notation
       val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
