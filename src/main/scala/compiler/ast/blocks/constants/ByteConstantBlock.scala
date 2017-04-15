@@ -33,7 +33,7 @@ class ByteConstantBlock(var superBlockInit: Block, value: String) extends Abstra
 
   override def getValue: String = value
 
-  override def getType: String = "<BYTE_CONSTANT>"
+  override def getType: String = "byte"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

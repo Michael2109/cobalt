@@ -21,40 +21,19 @@ package compiler.ast.blocks.structures
 import compiler.ast.blocks.Block
 import compiler.ast.blocks.packages.PackageBlock
 import compiler.ast.blocks.structures.kinds.{ClassBlock, ObjectBlock}
-import compiler.data.parameters.Parameter
-import compiler.symbol_table.SymbolTable
 import compiler.utilities.Utils
-
-import scala.collection.mutable.ListBuffer
 
 /**
   * Represents calling a method in an object
   * E.g. obj.methodCall(10,20)
   */
-class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var params: ListBuffer[Parameter]) extends Block(superBlockInit, false, false, false) {
+class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var argumentBlocks: List[Block]) extends Block(superBlockInit, false, false, false) {
+
+  println(argumentBlocks)
 
   private val `type`: String = null
-  // private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
-  private val parameterString: String = params.map(p => p.getType).mkString(";")
-  private val argumentString: String = ""
-
-  params.foreach(p => p.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, p.getName).getType))
-
-  def getParameters: ListBuffer[Parameter] = {
-    params
-  }
-
-
-  /*
-        // Get the type of the parameters
-        for (param <- params) {
-          println(Utils.getMethod(this) + " " + param.getName)
-          param.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getType)
-          parameterString += param.getType
-          argumentString += "mv.visitIntInsn(ALOAD, " + SymbolTable.getInstance.getValue(Utils.getMethod(this).get, param.getName).getId + ");"
-        }
-  */
-
+  private val argTypeString: String = argumentBlocks.map(b => Utils.getASMType(b.getType)).mkString("")
+  private val argStackString: String = argumentBlocks.map(_.getOpeningCode).mkString("\n")
 
 
   // Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
@@ -78,7 +57,7 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
   }
 
   // Returns the main class name for the file
-  def getClassName: String = {
+  val className: String = {
     // Get the FileBlock to find the imports
     var block: Block = this
     while (!block.isInstanceOf[ClassBlock] && !block.isInstanceOf[ObjectBlock]) {
@@ -99,10 +78,10 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
 
   override def getOpeningCode: String = {
 
-    val directory = if (Utils.getDirectory(this, getClassName) == "") Utils.getPackage(this).replace(".", "/") else Utils.getDirectory(this, getClassName)
+    val directory = if (Utils.getDirectory(this, superBlockInit.getType) == "") Utils.getPackage(this).replace(".", "/") else Utils.getDirectory(this, superBlockInit.getType)
 
-    argumentString +
-      "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + getClassName + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+    argStackString +
+      "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + superBlockInit.getType + "\", \"" + methodName + "\", \"(" + argTypeString + ")V\", false);\n"
 
   }
 
@@ -111,10 +90,6 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
   }
 
   override def toString: String = {
-    var paramString: String = ""
-    for (parameter <- params) {
-      paramString += parameter.getType + ":" + parameter.getName + "; "
-    }
-    "<OBJECT_METHOD_CALL> " + methodName + " ( " + paramString + ")"
+    "<OBJECT_METHOD_CALL> " + methodName + " ( " + argTypeString + ")"
   }
 }

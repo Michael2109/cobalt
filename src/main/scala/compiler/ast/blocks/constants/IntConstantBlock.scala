@@ -32,7 +32,7 @@ class IntConstantBlock(var superBlockInit: Block, value: String) extends Abstrac
 
   override def getValue: String = value
 
-  override def getType: String = "<INT_CONSTANT>"
+  override def getType: String = "int"
 
   override def getOpeningCode: String = {
     "mv.visitIntInsn(BIPUSH, " + value + ");"

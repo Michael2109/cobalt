@@ -1,5 +1,7 @@
 package test.assignment
 
+import java.lang.Integer
+
 public class AssignmentTest():
 
     let main() : void:
@@ -11,9 +13,9 @@ public class AssignmentTest():
         d:Double = 5.0 * 3.0
         c:Char = 'a'
         string:String = "test"
-        o:AssignmentTest = new AssignmentTest()
+        o:Integer = new Integer(5)
 
-        o.test()
+        o.test(5)
 
         println(b)
         println(s)

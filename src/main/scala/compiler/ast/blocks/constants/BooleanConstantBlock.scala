@@ -33,7 +33,7 @@ class BooleanConstantBlock(var superBlockInit: Block, value: String) extends Abs
 
   override def getValue: String = value
 
-  override def getType: String = "<BOOLEAN_CONST>"
+  override def getType: String = "boolean"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

@@ -33,7 +33,7 @@ class FloatConstantBlock(var superBlockInit: Block, value: String) extends Abstr
 
   override def getValue: String = value
 
-  override def getType: String = "<FLOAT_CONSTANT>"
+  override def getType: String = "float"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

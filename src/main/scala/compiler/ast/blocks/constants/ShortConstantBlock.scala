@@ -33,7 +33,7 @@ class ShortConstantBlock(var superBlockInit: Block, value: String) extends Abstr
 
   override def getValue: String = value
 
-  override def getType: String = "<SHORT_CONSTANT>"
+  override def getType: String = "short"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

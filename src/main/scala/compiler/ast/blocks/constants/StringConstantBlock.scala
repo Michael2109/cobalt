@@ -33,7 +33,7 @@ class StringConstantBlock(var superBlockInit: Block, value: String) extends Abst
 
   override def getValue: String = value
 
-  override def getType: String = "<STRING_CONSTANT>"
+  override def getType: String = "String"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

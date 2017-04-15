@@ -314,7 +314,10 @@ object Utils {
       }
     }
 
-    result.toList
+    if (result.length > 1)
+      result.toList.drop(1)
+    else
+      result.toList
 
   }
 
@@ -332,6 +335,13 @@ object Utils {
 
   def getASMType(varType: String): String = {
     varType match {
+      case "byte" => "I"
+      case "short" => "I"
+      case "int" => "I"
+      case "long" => "J"
+      case "float" => "F"
+      case "double" => "D"
+      case "char" => "C"
       case "Byte" => "I"
       case "Short" => "I"
       case "Int" => "I"

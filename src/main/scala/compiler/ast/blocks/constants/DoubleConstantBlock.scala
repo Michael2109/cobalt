@@ -33,7 +33,7 @@ class DoubleConstantBlock(var superBlockInit: Block, value: String) extends Abst
 
   override def getValue: String = value
 
-  override def getType: String = "<DOUBLE_CONSTANT>"
+  override def getType: String = "double"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

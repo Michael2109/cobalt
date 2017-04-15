@@ -68,14 +68,14 @@ mv.visitInsn(DUP);
 mv.visitLdcInsn(new Byte("10"));
 
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Byte", "<init>", "(B)V", false);
-mv.visitVarInsn(ASTORE,57);
+mv.visitVarInsn(ASTORE,59);
 
 mv.visitTypeInsn(NEW, "java/lang/Short");
 mv.visitInsn(DUP);
 mv.visitLdcInsn(new Short("5"));
 
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Short", "<init>", "(S)V", false);
-mv.visitVarInsn(ASTORE,59);
+mv.visitVarInsn(ASTORE,61);
 
 mv.visitTypeInsn(NEW, "java/lang/Integer");
 mv.visitInsn(DUP);
@@ -87,14 +87,14 @@ mv.visitIntInsn(BIPUSH, 3);
 mv.visitInsn(IMUL);
 mv.visitInsn(ISUB);
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V", false);
-mv.visitVarInsn(ASTORE,61);
+mv.visitVarInsn(ASTORE,63);
 
 mv.visitTypeInsn(NEW, "java/lang/Long");
 mv.visitInsn(DUP);
 mv.visitLdcInsn(new Long(50000L));
 
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Long", "<init>", "(J)V", false);
-mv.visitVarInsn(ASTORE,71);
+mv.visitVarInsn(ASTORE,73);
 
 mv.visitTypeInsn(NEW, "java/lang/Float");
 mv.visitInsn(DUP);
@@ -104,7 +104,7 @@ mv.visitLdcInsn(new Float(7.4F));
 
 mv.visitInsn(FADD);
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Float", "<init>", "(F)V", false);
-mv.visitVarInsn(ASTORE,73);
+mv.visitVarInsn(ASTORE,75);
 
 mv.visitTypeInsn(NEW, "java/lang/Double");
 mv.visitInsn(DUP);
@@ -114,69 +114,69 @@ mv.visitLdcInsn(new Double(3.0));
 
 mv.visitInsn(DMUL);
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Double", "<init>", "(D)V", false);
-mv.visitVarInsn(ASTORE,77);
+mv.visitVarInsn(ASTORE,79);
 
 mv.visitTypeInsn(NEW, "java/lang/Character");
 mv.visitInsn(DUP);
 mv.visitLdcInsn(new Character('a'));
 
 mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Character", "<init>", "(C)V", false);
-mv.visitVarInsn(ASTORE,81);
+mv.visitVarInsn(ASTORE,83);
 
 mv.visitLdcInsn("test");
 
-mv.visitVarInsn(ASTORE,83);
-
-mv.visitTypeInsn(NEW, "test/assignment/AssignmentTest");
-mv.visitInsn(DUP);
-mv.visitMethodInsn(INVOKESPECIAL, "test/assignment/AssignmentTest", "<init>", "()V", false);
-
 mv.visitVarInsn(ASTORE,85);
 
-mv.visitVarInsn(ALOAD,85);
-mv.visitMethodInsn(INVOKEVIRTUAL, "test/assignment/AssignmentTest", "test", "()V", false);
+mv.visitTypeInsn(NEW, "java/lang/Integer");
+mv.visitInsn(DUP);
+mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Integer", "<init>", "()V", false);
+
+mv.visitVarInsn(ASTORE,87);
+
+mv.visitVarInsn(ALOAD,87);
+mv.visitIntInsn(BIPUSH, 5);mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "test", "(I)V", false);
 
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,57);
+mv.visitVarInsn(ALOAD,59);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Byte", "byteValue", "()B", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,59);
+mv.visitVarInsn(ALOAD,61);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Short", "shortValue", "()S", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,61);
+mv.visitVarInsn(ALOAD,63);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,71);
+mv.visitVarInsn(ALOAD,73);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Long", "longValue", "()J", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(J)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,73);
+mv.visitVarInsn(ALOAD,75);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Float", "floatValue", "()F", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(F)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,77);
+mv.visitVarInsn(ALOAD,79);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(D)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,81);
+mv.visitVarInsn(ALOAD,83);
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Character", "charValue", "()C", false);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(C)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,83);
+mv.visitVarInsn(ALOAD,85);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
 mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-mv.visitVarInsn(ALOAD,85);
+mv.visitVarInsn(ALOAD,87);
 
 mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V");
 mv.visitInsn(RETURN);     

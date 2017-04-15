@@ -22,10 +22,8 @@ package compiler.ast.parsers.structures
 import compiler.ast.blocks.Block
 import compiler.ast.blocks.structures.ObjectMethodCallBlock
 import compiler.ast.parsers.Parser
-import compiler.data.parameters.Parameter
 import compiler.tokenizer.Tokenizer
-
-import scala.collection.mutable.ListBuffer
+import compiler.utilities.Utils
 
 /**
   * Parses calling of an objects method
@@ -38,7 +36,7 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "\\.[a-zA-Z][a-zA-Z0-9]*\\((([ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*[ ]?)*)*\\)"
+    "\\.[a-zA-Z][a-zA-Z0-9]*\\(([^]]+)\\)"
   )
 
 
@@ -46,24 +44,20 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
 
     tokenizer.nextToken
     val methodName: String = tokenizer.nextToken.token
-    tokenizer.nextToken // ")"
-    var nextToken: String = tokenizer.nextToken.token
-    val paramType: String = ""
-    var paramName: String = ""
-    val parameters: ListBuffer[Parameter] = new ListBuffer[Parameter]
-    while (nextToken != ")") {
-      {
-        if (nextToken == ",") {
-          nextToken = tokenizer.nextToken.token
-        } else {
-          // todo find the paramType. Utilities add a method to get the type
-          paramName = nextToken.trim
-          val parameter = new Parameter(paramType, paramName)
-          parameters.append(parameter)
-          nextToken = tokenizer.nextToken.token
-        }
+    tokenizer.nextToken // "("
+
+    // Contains everything within the parenthesis
+    var argString = ""
+    while (tokenizer.peek.token != ")" && tokenizer.peek.token != "") {
+      if (tokenizer.peek.token == ",") {
+        argString += " "
+        tokenizer.nextToken
       }
+      else
+        argString += tokenizer.nextToken.token.trim
     }
-    new ObjectMethodCallBlock(superBlock, methodName, parameters)
+
+    val argBlocks = Utils.getAllBlocks(superBlock, argString)
+    new ObjectMethodCallBlock(superBlock, methodName, argBlocks)
   }
 }

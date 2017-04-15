@@ -33,7 +33,7 @@ class LongConstantBlock(var superBlockInit: Block, value: String) extends Abstra
 
   override def getValue: String = value
 
-  override def getType: String = "<LONG_CONSTANT>"
+  override def getType: String = "long"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

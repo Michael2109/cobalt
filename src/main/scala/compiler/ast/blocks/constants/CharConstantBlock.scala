@@ -33,7 +33,7 @@ class CharConstantBlock(var superBlockInit: Block, value: String) extends Abstra
 
   override def getValue: String = value
 
-  override def getType: String = "<CHAR_CONSTANT>"
+  override def getType: String = "char"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
