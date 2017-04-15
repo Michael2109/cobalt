@@ -35,9 +35,8 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
 
   private val `type`: String = null
   // private val className: String = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, variableName).getType
-  private var parameterString: String = params.map(p => p.getType).mkString(";")
-  private var argumentString: String = ""
-  private var directory: String = ""
+  private val parameterString: String = params.map(p => p.getType).mkString(";")
+  private val argumentString: String = ""
 
   params.foreach(p => p.setType(SymbolTable.getInstance.getValue(Utils.getMethod(this).get, p.getName).getType))
 
@@ -99,8 +98,12 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
   override def getType: String = `type`
 
   override def getOpeningCode: String = {
-    // "mv.visitVarInsn(ALOAD, " + id + ");\n" + argumentString + "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + className + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
-    ""
+
+    val directory = if (Utils.getDirectory(this, getClassName) == "") Utils.getPackage(this).replace(".", "/") else Utils.getDirectory(this, getClassName)
+
+    argumentString +
+      "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + getClassName + "\", \"" + methodName + "\", \"(" + parameterString + ")V\", false);\n"
+
   }
 
   override def getClosingCode: String = {
@@ -112,6 +115,6 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
     for (parameter <- params) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
-    "object method call: " + methodName + " ( " + paramString + ")"
+    "<OBJECT_METHOD_CALL> " + methodName + " ( " + paramString + ")"
   }
 }

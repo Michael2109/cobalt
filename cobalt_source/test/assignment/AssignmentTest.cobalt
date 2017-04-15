@@ -13,6 +13,8 @@ public class AssignmentTest():
         string:String = "test"
         o:AssignmentTest = new AssignmentTest()
 
+        o.test()
+
         println(b)
         println(s)
         println(i)

@@ -41,7 +41,7 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-
+      println(stack.map(_.getOpeningCode).mkString("\n"))
       // Get assigned blocks in reverse polish notation
       val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
@@ -57,7 +57,8 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
           case "Double" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
 
           case "String" => asm.visitVarInsn("ALOAD", "" + row.getId)
-          case _ => asm.visitVarInsn("ALOAD", "" + row.getId)
+          case _ => asm.visitVarInsn("ALOAD", "" + row.getId) + stack.map(_.getOpeningCode).mkString("\n")
+
         }
 
 
@@ -70,6 +71,6 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
     ""
   }
 
-  override def toString: String = "variable: " + name
+  override def toString: String = "variable: " + name + " " + stack
 
 }
