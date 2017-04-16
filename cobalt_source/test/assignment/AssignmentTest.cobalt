@@ -2,9 +2,9 @@ package test.assignment
 
 import java.lang.Integer
 
-public class AssignmentTest():
+public class AssignmentTest()
 
-    let main() : void:
+    let main(): void
         b:Byte = 10B
         s:Short = 5S
         i:Int = 5 + 10 - (17 * 3)
@@ -13,10 +13,10 @@ public class AssignmentTest():
         d:Double = 5.0 * 3.0
         c:Char = 'a'
         string:String = "hiiiiiiiiiiiiiiiiiiii"
-        o:Integer = new Integer(25)
+        o:AssignmentTest = new AssignmentTest()
 
-        println(o.intValue())
-
+        q:Int = 5000
+        o.sayHello(i)
 
         println(b)
         println(s)
@@ -28,8 +28,8 @@ public class AssignmentTest():
         println(string)
         println(o)
 
-    let sayHello(): void:
-        println("sup")
+    public let sayHello(x:Int): void
+        println(x)
 
 
 

@@ -45,39 +45,65 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
       // Get assigned blocks in reverse polish notation
       val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
-        row.getType match {
+      // Calls methods to get value from wrapper class
+      val convertString: String = {
 
-          // Primitives
-          case "char" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "byte" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "short" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "int" => asm.visitVarInsn("ILOAD", "" + row.getId)
-          case "long" => asm.visitVarInsn("LLOAD", "" + row.getId)
-          case "float" => asm.visitVarInsn("FLOAD", "" + row.getId)
-          case "double" => asm.visitVarInsn("DLOAD", "" + row.getId)
+        if (superBlockInit.isInstanceOf[DefineVariableBlock]) {
+          row.getType match {
 
-          // Objects
-          case "Char" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
-          case "Byte" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()B\", false);\n"
-          case "Short" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
-          case "Int" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
-          case "Long" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Long\", \"longValue\", \"()J\", false);\n"
-          case "Float" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
-          case "Double" => asm.visitVarInsn("ALOAD", "" + row.getId) + "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
-          case "String" => asm.visitVarInsn("ALOAD", "" + row.getId)
-          case _ => asm.visitVarInsn("ALOAD", "" + row.getId) + stack.map(_.getOpeningCode).mkString("\n")
-
+            case "Char" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
+            case "Byte" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()B\", false);\n"
+            case "Short" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
+            case "Int" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
+            case "Long" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Long\", \"longValue\", \"()J\", false);\n"
+            case "Float" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
+            case "Double" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
+            case _ => ""
+          }
+        } else {
+          ""
         }
+      }
 
 
-    } else {
-      ""
+    row.getType match {
+
+      // Primitives
+      case "char" => asm.visitVarInsn("ILOAD", "" + row.getId)
+      case "byte" => asm.visitVarInsn("ILOAD", "" + row.getId)
+      case "short" => asm.visitVarInsn("ILOAD", "" + row.getId)
+      case "int" => asm.visitVarInsn("ILOAD", "" + row.getId)
+      case "long" => asm.visitVarInsn("LLOAD", "" + row.getId)
+      case "float" => asm.visitVarInsn("FLOAD", "" + row.getId)
+      case "double" => asm.visitVarInsn("DLOAD", "" + row.getId)
+
+
+      // Objects
+      case "Char" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "Byte" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "Short" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "Int" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "Long" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "Float" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "Double" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
+      case "String" => asm.visitVarInsn("ALOAD", "" + row.getId)
+      case _ => asm.visitVarInsn("ALOAD", "" + row.getId) + stack.map(_.getOpeningCode).mkString("\n")
+
+
     }
+
+
   }
 
-  override def getClosingCode: String = {
+  else
+  {
     ""
   }
+}
+
+override def getClosingCode: String = {
+  ""
+}
 
   override def toString: String = "variable: " + name + " " + stack
 

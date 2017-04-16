@@ -41,7 +41,6 @@ class Runtime(sourceFile: File, outputFile: File, buildDir: File) {
 
   def parseFile() {
 
-    println(new File("").getAbsolutePath)
 
     // get all lines excluding comments
     val lines = getIgnoreComments(Source.fromFile(sourceFile).getLines().toList)

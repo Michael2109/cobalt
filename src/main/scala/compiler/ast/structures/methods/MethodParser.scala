@@ -19,9 +19,9 @@
 package compiler.ast.structures.methods
 
 import compiler.ast.{Block, Parser}
-import compiler.data.parameters.Parameters
 import compiler.tokenizer.Tokenizer
 import compiler.tokenizer.tokens.keywords.modifiers.ModifierToken
+import compiler.utilities.Utils
 
 import scala.collection.mutable.ListBuffer
 
@@ -54,19 +54,25 @@ class MethodParser extends Parser[MethodBlock] {
     val name: String = tokenizer.nextToken.token // method name
 
     tokenizer.nextToken // "("
-    var nextToken = tokenizer.nextToken.token
+    // Contains everything within the parenthesis
     var paramString = ""
-    while (!nextToken.equals(")")) {
-      paramString += nextToken
-      nextToken = tokenizer.nextToken.token
+    while (tokenizer.peek.token != ")" && tokenizer.peek.token != "") {
+      if (tokenizer.peek.token == ",") {
+        paramString += " "
+        tokenizer.nextToken
+      }
+      else
+        paramString += tokenizer.nextToken.token.trim
     }
 
-    val parameters = new Parameters().getParameters(paramString)
+    val paramBlocks = Utils.getAllBlocks(superBlock, paramString)
 
+    tokenizer.nextToken // skip ")"
     tokenizer.nextToken // skip ":"
 
     val returnType: String = tokenizer.nextToken.token // method return type
 
-    new MethodBlock(superBlock, modifiers.toList, name, returnType, isSealed, parameters.toArray)
+    println("Return type:" + returnType)
+    new MethodBlock(superBlock, modifiers.toList, name, returnType, isSealed, paramBlocks)
   }
 }

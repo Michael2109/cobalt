@@ -36,7 +36,7 @@ class IntConstantBlock(var superBlockInit: Block, value: String) extends Constan
   override def getType: String = "int"
 
   override def getOpeningCode: String = {
-    "mv.visitIntInsn(BIPUSH, " + value + ");"
+    "mv.visitLdcInsn(new Integer(" + value + "));"
   }
 
   override def getClosingCode: String = ""

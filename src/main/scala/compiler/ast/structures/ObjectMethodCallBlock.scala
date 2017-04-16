@@ -29,7 +29,7 @@ import compiler.utilities.Utils
   */
 class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, var argumentBlocks: List[Block]) extends Block(superBlockInit, false, false, false) {
 
-  private val argTypeString: String = argumentBlocks.map(b => Utils.getASMType(b.getType)).mkString("")
+  private val argTypeString: String = argumentBlocks.map(b => Utils.getWrapperType(b.getType)).mkString("")
   private val argStackString: String = argumentBlocks.map(_.getOpeningCode).mkString("\n")
 
 

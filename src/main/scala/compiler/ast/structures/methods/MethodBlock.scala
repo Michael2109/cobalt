@@ -20,17 +20,19 @@ package compiler.ast.structures.methods
 
 import compiler.ast.Block
 import compiler.ast.modifiers.ModifierBlock
-import compiler.data.parameters.Parameter
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.tokenizer.tokens.keywords.modifiers._
 import compiler.utilities.Utils
 
-class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken], name: String, returnType: String, isSealed: Boolean, var params: Array[Parameter]) extends Block(superBlockInit, true, false, false) {
+class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken], name: String, returnType: String, isSealed: Boolean, paramBlocks: List[Block]) extends Block(superBlockInit, true, false, false) {
 
-  println(superBlockInit)
+  println(paramBlocks)
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(name).setClassName(Utils.getClass(this).get.getName))
 
+  paramBlocks.zipWithIndex.map { case (element, index) =>
+    SymbolTable.getInstance.addRow(new Row().setId(index+1).setName(element.getName).setType(element.getType).setValue("").setMethodName(name).setClassName(Utils.getClass(this).get.getName))
+  }
 
   val modifiersASM = {
 
@@ -64,22 +66,13 @@ class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken]
     }
   }
 
-  for (parameter <- params) {
-
-    //    println("Adding to symbol table")
-    SymbolTable.getInstance.addRow(new Row().setId(id).setName(parameter.getName).setType(parameter.getType).setMethodName(getName).setClassName(Utils.getClass(this).get.getName))
-
-    Block.TOTAL_BLOCKS += 1
-    localVariableString += "mv.visitLocalVariable(\"" + parameter.getName + "\", \"" + parameter.getType + "\", null, lMethod0, lMethod1, " + i + ");\n"
-    // SymbolTable.getInstance.addRow(new Row().setMethodName(name).setId(i).setName(parameter.getName))
-
-    i += 1
-  }
-
   val `sealed`: String = if (isSealed) "+ACC_FINAL" else ""
-  val parameterString: String = params.map(_.getType).mkString("")
+  val parameterString: String = paramBlocks.map(b => Utils.getWrapperType(b.getType)).mkString("")
 
-  var localVariableString: String = ""
+  var localVariableString: String = paramBlocks.zipWithIndex.map { case (element, index) =>
+    "mv.visitLocalVariable(\"" + element.getName + "\", \"" + Utils.getWrapperType(element.getType) + "\", null, lMethod0, lMethod1, " + (index + 1) + ");".mkString("\n")
+  }.mkString("")
+
   var i = 1
 
   def getName: String = name
@@ -88,9 +81,7 @@ class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken]
 
   def getValue: String = ""
 
-
-
-  def static: String = if(!Utils.isClass(this))"+ACC_STATIC" else ""
+  def static: String = if (!Utils.isClass(this)) "+ACC_STATIC" else ""
 
   def getOpeningCode: String = {
     if (getName != "main") {
@@ -133,7 +124,7 @@ class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken]
 
   override def toString: String = {
     var paramString: String = "modifierTokens: " + modifierTokens + " "
-    for (parameter <- params) {
+    for (parameter <- paramBlocks) {
       paramString += parameter.getType + ":" + parameter.getName + "; "
     }
     name + " ( " + paramString + ")"

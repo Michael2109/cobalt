@@ -25,10 +25,12 @@ public class TestCode {
 
     public void test() {
 
-        char x = 'c';
+        other(50000);
 
-        System.out.println(x);
+    }
 
+    public void other(Integer x){
+        System.out.println(x.intValue());
     }
 
 }

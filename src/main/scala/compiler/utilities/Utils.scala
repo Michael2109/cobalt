@@ -334,10 +334,23 @@ object Utils {
     fileBlock
   }
 
+  def getWrapperType(varType: String): String ={
+    varType match {
+      case "Byte" => "Ljava/lang/Byte;"
+      case "Short" => "Ljava/lang/Short;"
+      case "Int" => "Ljava/lang/Integer;"
+      case "Long" =>"Ljava/lang/Long;"
+      case "Float" => "Ljava/lang/Float;"
+      case "Double" => "Ljava/lang/Double;"
+      case "Char" => "Ljava/lang/Character;"
+      case _ => "Ljava/lang/Object;"
+    }
+  }
+
   def getASMType(varType: String): String = {
     varType match {
-      case "byte" => "I"
-      case "short" => "I"
+      case "byte" => "B"
+      case "short" => "S"
       case "int" => "I"
       case "long" => "J"
       case "float" => "F"
