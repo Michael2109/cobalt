@@ -64,15 +64,17 @@ class MethodParser extends Parser[MethodBlock] {
       else
         paramString += tokenizer.nextToken.token.trim
     }
+    println("ParamString:" + paramString)
 
     val paramBlocks = Utils.getAllBlocks(superBlock, paramString)
+
+    println(paramBlocks)
 
     tokenizer.nextToken // skip ")"
     tokenizer.nextToken // skip ":"
 
     val returnType: String = tokenizer.nextToken.token // method return type
 
-    println("Return type:" + returnType)
     new MethodBlock(superBlock, modifiers.toList, name, returnType, isSealed, paramBlocks)
   }
 }

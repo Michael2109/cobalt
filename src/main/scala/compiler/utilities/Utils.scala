@@ -302,9 +302,10 @@ object Utils {
             if (lineLeft.trim.startsWith(first)) {
               found = true
 
+
               result += parser.parse(superBlock, new Tokenizer(first))
 
-              lineLeft = lineLeft.substring(first.length)
+              lineLeft = lineLeft.substring(first.length).trim
 
             }
           }
@@ -315,9 +316,7 @@ object Utils {
       }
     }
 
-    if (result.length > 1)
-      result.toList.drop(1)
-    else
+
       result.toList
 
   }

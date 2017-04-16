@@ -26,7 +26,6 @@ import compiler.utilities.Utils
 
 class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken], name: String, returnType: String, isSealed: Boolean, paramBlocks: List[Block]) extends Block(superBlockInit, true, false, false) {
 
-  println(paramBlocks)
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(name).setClassName(Utils.getClass(this).get.getName))
 

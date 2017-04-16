@@ -16,7 +16,7 @@ public class AssignmentTest()
         o:AssignmentTest = new AssignmentTest()
 
         q:Int = 5000
-        o.sayHello(i)
+        o.sayHello(i,q)
 
         println(b)
         println(s)
@@ -28,8 +28,10 @@ public class AssignmentTest()
         println(string)
         println(o)
 
-    public let sayHello(x:Int): void
+    public let sayHello(x:Int, y:Int): void
         println(x)
+        println(y)
+
 
 
 
