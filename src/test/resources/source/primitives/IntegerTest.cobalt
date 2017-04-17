@@ -6,8 +6,12 @@ public class IntegerTest()
 
     let main(): void
 
-        i:Int = 5 + 10 - (17 * 3)
+        test1:Int = 0-2147483647
+        test2:Int = 2147483647
+        test3:Int = 1 * 2 /(3 + 4) - 5
 
-        println(i)
+        println(test1)
+        println(test2)
+        println(test3)
 
 

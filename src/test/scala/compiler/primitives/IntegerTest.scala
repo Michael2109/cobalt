@@ -38,7 +38,9 @@ class IntegerTest() extends FunSuite with BeforeAndAfter with Base {
     compile()
 
     val output = executeOutput()
-    println("Output:"+output)
+    assert(output(0) == "-2147483647")
+    assert(output(1) == "2147483647")
+    assert(output(2) == "-5")
   }
 
 }

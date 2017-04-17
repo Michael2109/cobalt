@@ -378,7 +378,6 @@ object Utils extends Meta[Base]{
     * @return process output
     */
   def executionOutput(classPath: String, directory: String): List[String] = {
-    println(classPath + " : " + directory)
     val result = new ListBuffer[String]
     val runtime = Runtime.getRuntime
     val command = "java -cp " + classPath + " " + directory

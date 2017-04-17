@@ -22,6 +22,7 @@ import java.io._
 
 import compiler.ast.Block
 import compiler.ast.structures.methods.MethodBlock
+import org.slf4j.{Logger, LoggerFactory}
 
 
 /**
@@ -30,17 +31,14 @@ import compiler.ast.structures.methods.MethodBlock
   */
 class Compile(val outputFile: File, val block: Block) {
 
-  println(outputFile.getAbsolutePath)
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
+
   new File(outputFile.getParent).mkdirs()
   outputFile.createNewFile
   val w: PrintWriter = new PrintWriter(outputFile)
 
-  System.out.println("Output File: " + outputFile.getAbsolutePath)
-
-  println("Generating ASM code...")
   generateASM(block)
 
-  println("Complete.")
   w.close()
 
   /**
