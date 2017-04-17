@@ -13,3 +13,5 @@ src/test/java/
 /cobalt_generated/
 !/cobalt_generated/
 !/cobalt_java/
+/src/test/resources/asm/
+/src/test/resources/generated/
