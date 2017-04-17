@@ -1,0 +1,14 @@
+package primitives
+
+public class DoubleTest()
+
+    let main(): void
+
+        test1:Double = 5.0-50.0
+        test2:Double = 100.0
+
+        println(test1)
+        println(test2)
+
+
+

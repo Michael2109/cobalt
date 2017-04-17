@@ -1,7 +1,5 @@
 package primitives
 
-import java.lang.Float
-
 public class IntegerTest()
 
     let main(): void

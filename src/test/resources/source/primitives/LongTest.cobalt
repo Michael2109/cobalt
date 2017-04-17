@@ -1,0 +1,14 @@
+package primitives
+
+public class LongTest()
+
+    let main(): void
+
+        test1:Long = 5L
+        test2:Long = 10000L
+
+        println(test1)
+        println(test2)
+
+
+
