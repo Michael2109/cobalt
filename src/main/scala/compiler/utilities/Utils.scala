@@ -32,9 +32,11 @@ import compiler.tokenizer.Tokenizer
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
-object Utils {
+object Utils extends Meta[Base]{
 
-  //val logger: Logger = LoggerFactory.getLogger(this)
+  def meta = Utils
+
+ // val logger: Logger = LoggerFactory.getLogger(getClass)
 
   /**
     * Returns the method a blocks is within
@@ -184,7 +186,7 @@ object Utils {
         i - 1
       }
     }
-    println(indentationString + block.toString)
+    logger.debug(indentationString + block.toString)
     for (sub <- block.subBlocks) {
       printBlockInfo(sub, indentation + 1)
     }

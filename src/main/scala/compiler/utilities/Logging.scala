@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package code_tests
+package compiler.utilities
 
-object Constants {
+import org.slf4j.LoggerFactory
 
-  val DELETE_GENERATED = false
+trait Meta[Base] {
+  val logger = LoggerFactory.getLogger(getClass)
+}
 
+trait Base {
+  def meta: Meta[Base]
+  def logger = meta.logger
 }

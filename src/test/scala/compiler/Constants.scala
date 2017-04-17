@@ -16,34 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package code_tests
+package compiler
 
-import java.io.File
+object Constants {
 
-import compiler.utilities.Utils
-
-trait Base {
-
-  val cobaltFile:File
-  val asmFile:File
-  val buildFile:File
-  val classPath:File
-
-  /**
-    * Executes with the classpath and returns the output
-    */
-  def executeOutput(): List[String] ={
-    Utils.executionOutput("src/test/resources/generated", asmFile.getPath.replace(".java", "").replace("\\", ".").replace((classPath.getPath + "\\")replace("\\","."),""))
-  }
-
-  /**
-    * Deletes all generated files
-    */
-  def cleanup(): Unit ={
-    if(Constants.DELETE_GENERATED){
-      asmFile.delete()
-      buildFile.delete()
-    }
-  }
+  val DELETE_GENERATED = false
 
 }

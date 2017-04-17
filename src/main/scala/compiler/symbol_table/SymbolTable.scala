@@ -20,6 +20,7 @@ package compiler.symbol_table
 
 import compiler.ast.Block
 import compiler.exceptions.UndefinedVarException
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
 
@@ -32,6 +33,9 @@ object SymbolTable {
 }
 
 class SymbolTable() {
+
+  val logger = LoggerFactory.getLogger(getClass)
+
   var rows: ListBuffer[Row] = new ListBuffer[Row]
 
   def addRow(row: Row): ListBuffer[Row] = rows += row
@@ -87,11 +91,11 @@ class SymbolTable() {
 
   def printSymbols() {
 
-    printf("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "|", "ID", "|", "Name", "|", "Type", "|", "Value", "|", "Method", "|", "Class")
-    printf("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s \n", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----")
+    logger.debug(String.format("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s", "|", "ID", "|", "Name", "|", "Type", "|", "Value", "|", "Method", "|", "Class"))
+    logger.debug(String.format("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----", "+", "----"))
 
     for (row <- rows) {
-      printf("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s \n", " ", row.getId, " ", row.getName, " ", row.getType, " ", row.getValue, " ", row.getMethodName, " ", row.getClassName, " ")
+     logger.debug(String.format("%-1s %-5s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s %-15s %-1s", " ", ""+row.getId, " ", row.getName, " ", row.getType, " ", row.getValue, " ", row.getMethodName, " ", row.getClassName, " "))
     }
 
   }

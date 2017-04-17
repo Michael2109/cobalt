@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package code_tests.primitives
+package compiler.primitives
 
 import java.io.File
 
-import code_tests.Base
-import compiler.runtime.Main
+import compiler.Base
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
@@ -35,11 +34,11 @@ class IntegerTest() extends FunSuite with BeforeAndAfter with Base {
   override val classPath = new File("src/test/resources/asm")
 
   test("Integer primitive test") {
-       Main.start(Array(cobaltFile, asmFile, buildFile, classPath))
+
+    compile()
 
     val output = executeOutput()
     println("Output:"+output)
-    //cleanup()
   }
 
 }

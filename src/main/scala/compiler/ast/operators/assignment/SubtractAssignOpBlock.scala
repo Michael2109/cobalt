@@ -21,7 +21,7 @@ package compiler.ast.operators.assignment
 import compiler.ast.Block
 
 /**
-  * Represents subtract code_tests.assignment
+  * Represents subtract compiler.assignment
   *
   * @param superBlockInit The parent block
   */

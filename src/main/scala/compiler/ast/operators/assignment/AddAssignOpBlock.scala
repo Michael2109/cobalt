@@ -21,7 +21,7 @@ package compiler.ast.operators.assignment
 import compiler.ast.Block
 
 /**
-  * Represents add code_tests.assignment
+  * Represents add compiler.assignment
   *
   * @param superBlockInit The parent block
   */

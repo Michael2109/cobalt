@@ -21,7 +21,7 @@ package compiler.ast.operators.assignment.bit
 import compiler.ast.Block
 
 /**
-  * Represents bitwise and code_tests.assignment - "&="
+  * Represents bitwise and compiler.assignment - "&="
   *
   * @param superBlockInit The parent block
   */

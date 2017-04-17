@@ -21,7 +21,7 @@ package compiler.ast.operators.assignment.bit
 import compiler.ast.Block
 
 /**
-  * Represents right shift code_tests.assignment
+  * Represents right shift compiler.assignment
   *
   * @param superBlockInit The parent block
   */

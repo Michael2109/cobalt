@@ -64,11 +64,8 @@ class MethodParser extends Parser[MethodBlock] {
       else
         paramString += tokenizer.nextToken.token.trim
     }
-    println("ParamString:" + paramString)
 
     val paramBlocks = Utils.getAllBlocks(superBlock, paramString)
-
-    println(paramBlocks)
 
     tokenizer.nextToken // skip ")"
     tokenizer.nextToken // skip ":"
