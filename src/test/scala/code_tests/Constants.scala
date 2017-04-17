@@ -20,6 +20,6 @@ package code_tests
 
 object Constants {
 
-  val DELETE_GENERATED = true
+  val DELETE_GENERATED = false
 
 }

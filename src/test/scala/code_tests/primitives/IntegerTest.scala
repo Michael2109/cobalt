@@ -29,17 +29,17 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 @RunWith(classOf[JUnitRunner])
 class IntegerTest() extends FunSuite with BeforeAndAfter with Base {
 
-  override val cobaltFile = new File("src/test/resources/source/primitives/Integer.cobalt")
-  override val asmFile = new File("src/test/resources/asm/primitives/Integer.java")
-  override val buildFile = new File("src/test/resources/generated/primitives/Integer.class")
+  override val cobaltFile = new File("src/test/resources/source/primitives/IntegerTest.cobalt")
+  override val asmFile = new File("src/test/resources/asm/primitives/IntegerTest.java")
+  override val buildFile = new File("src/test/resources/generated/primitives/IntegerTest.class")
   override val classPath = new File("src/test/resources/asm")
 
   test("Integer primitive test") {
-    Main.start(Array(cobaltFile, asmFile, buildFile, classPath))
+       Main.start(Array(cobaltFile, asmFile, buildFile, classPath))
 
     val output = executeOutput()
-    println(output)
-    cleanup()
+    println("Output:"+output)
+    //cleanup()
   }
 
 }

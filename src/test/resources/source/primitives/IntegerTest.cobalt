@@ -1,0 +1,13 @@
+package primitives
+
+import java.lang.Float
+
+public class IntegerTest()
+
+    let main(): void
+
+        i:Int = 5 + 10 - (17 * 3)
+
+        println(i)
+
+
