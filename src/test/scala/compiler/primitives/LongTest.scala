@@ -31,7 +31,6 @@ class LongTest() extends FunSuite with BeforeAndAfter with Base {
     val output = executeOutput()
     assert(output(0) == "5")
     assert(output(1) == "10000")
-
   }
 
 }

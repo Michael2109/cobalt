@@ -81,7 +81,8 @@ sourceSets {
 
     test {
         scala {
-            include "**/*Test.scala"
+
+            include "compiler"
         }
         resources {
             srcDir 'resources'
