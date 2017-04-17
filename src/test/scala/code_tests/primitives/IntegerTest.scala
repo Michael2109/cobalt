@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cobalt_tests.primitives
+package code_tests.primitives
 
+import java.io.File
+
+import code_tests.Base
 import compiler.runtime.Main
-import compiler.utilities.Utils
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
-
 @RunWith(classOf[JUnitRunner])
-class BooleanTest() extends FunSuite with BeforeAndAfter {
+class IntegerTest() extends FunSuite with BeforeAndAfter with Base {
 
+  override val cobaltFile = new File("src/test/resources/source/primitives/Integer.cobalt")
+  override val asmFile = new File("src/test/resources/asm/primitives/Integer.java")
+  override val buildFile = new File("src/test/resources/generated/primitives/Integer.class")
+  override val classPath = new File("src/test/resources/asm")
 
-  test("Boolean primitive test") {
-    Main.main(Array("cobalt_source/test/primitives/BooleanTest.cobalt", "cobalt_java/test/primitives/BooleanTest.java", "cobalt_generated"))
+  test("Integer primitive test") {
+    Main.start(Array(cobaltFile, asmFile, buildFile, classPath))
 
-    val output = Utils.executionOutput("cobalt_generated", "test.primitives.BooleanTest")
-    println("<OUTPUT_START>")
+    val output = executeOutput()
     println(output)
-    println("<OUTPUT_END>")
-
-    // assert(output(0).equals("false"))
-    //assert(output(1).equals("true"))
+    cleanup()
   }
 
 }

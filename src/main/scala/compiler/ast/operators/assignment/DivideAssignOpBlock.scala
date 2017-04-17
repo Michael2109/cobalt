@@ -21,7 +21,7 @@ package compiler.ast.operators.assignment
 import compiler.ast.Block
 
 /**
-  * Represents divide assignment
+  * Represents divide code_tests.assignment
   *
   * @param superBlockInit The parent block
   */

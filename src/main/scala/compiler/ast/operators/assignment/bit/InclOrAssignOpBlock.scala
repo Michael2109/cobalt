@@ -21,7 +21,7 @@ package compiler.ast.operators.assignment.bit
 import compiler.ast.Block
 
 /**
-  * Represents inclusive or assignment
+  * Represents inclusive or code_tests.assignment
   *
   * @param superBlockInit The parent block
   */

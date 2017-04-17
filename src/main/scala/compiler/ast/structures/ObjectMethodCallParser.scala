@@ -45,15 +45,18 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
 
     // Contains everything within the parenthesis
     var argString = ""
-    while (tokenizer.peek.token != ")" && tokenizer.peek.token != "") {
+    while (tokenizer.peek.token != "") {
       if (tokenizer.peek.token == ",") {
         argString += " "
         tokenizer.nextToken
       }
       else
-        argString += tokenizer.nextToken.token.trim
+        argString += tokenizer.nextToken.token.trim + " "
     }
 
+    argString = argString.substring(0, argString.length()-1)
+
+    println(argString)
     val argBlocks = Utils.getAllBlocks(superBlock, argString)
     new ObjectMethodCallBlock(superBlock, methodName, argBlocks)
   }

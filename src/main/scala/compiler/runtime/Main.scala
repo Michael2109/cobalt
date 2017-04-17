@@ -32,48 +32,41 @@ object Main {
 
   def main(args: Array[String]) {
     PropertyConfigurator.configure("src/log4j.properties")
-    if (args.length == 3) {
+    if (args.length == 4) {
       logger.info("Program arguments: $args")
-      start(args)
+      val files = Array[File](new File(args(0)), new File(args(1)), new File(args(2)), new File(args(3)))
+      start(files)
     } else {
-      val defaultArgs = Array("cobalt_source/test/assignment/AssignmentTest.cobalt", "cobalt_java/test/assignment/AssignmentTest.java", "cobalt_generated")
+      val defaultArgs = Array(new File("cobalt_source/test/assignment/AssignmentTest.cobalt"), new File("cobalt_java/test/assignment/AssignmentTest.java"), new File("cobalt_generated/test/assignment/AssignmentTest.class"), new File("cobalt_asm"))
       logger.info("Default program arguments used: $args")
       start(defaultArgs)
     }
 
   }
 
-  def start(args: Array[String]) {
+  def start(args: Array[File]) {
 
-    if (args.length == 3) {
+    // If compiling a single file
+    SymbolTable.getInstance.rows.clear()
 
-      // If compiling a single file
-      if (args(0).contains(".cobalt")) {
+    val cobaltFile = args(0)
+    val asmFile = args(1)
+    val buildDir = args(2)
+    val classPath = args(3)
 
-        SymbolTable.getInstance.rows.clear()
+    // Generate directories for Java ASM files
+    new File(asmFile.getParent).mkdirs()
+    asmFile.createNewFile()
 
-        val cobaltFile: File = new File(args(0))
-        val asmFile: File = new File(args(1))
-        val buildDir = new File(args(2))
+    new Runtime(cobaltFile, asmFile, buildDir).parseFile()
 
-        // Generate directories for Java ASM files
-        new File(asmFile.getParent).mkdirs()
+    val compiler = new SimpleCompiler(asmFile.getAbsolutePath)
 
-        new Runtime(cobaltFile, asmFile, buildDir).parseFile()
+    val loader = compiler.getClassLoader()
 
-        val compiler = new SimpleCompiler(asmFile.getAbsolutePath)
+    val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").replace((classPath.getPath + "\\")replace("\\","."),""))
 
-        val loader = compiler.getClassLoader()
-
-        val compClass = loader.loadClass(asmFile.getPath.replace(".java", "").replace("\\", ".").substring(asmFile.getPath.replace(".java", "").replace("\\", ".").indexOf(".") + 1))
-
-        val instance = compClass.newInstance()
-        compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
-      }
-
-    }
-    else {
-      logger.info("Error: Source, ASM, and build args required. ")
-    }
+    val instance = compClass.newInstance()
+    compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
   }
 }

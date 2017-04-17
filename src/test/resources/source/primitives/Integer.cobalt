@@ -1,0 +1,7 @@
+package primitives
+
+class Integer()
+
+    let main(): void
+
+        println("Hello World")

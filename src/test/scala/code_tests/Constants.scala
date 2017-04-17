@@ -16,27 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cobalt_tests.primitives
+package code_tests
 
-import compiler.runtime.Main
-import compiler.utilities.Utils
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfter, FunSuite}
+object Constants {
 
-
-@RunWith(classOf[JUnitRunner])
-class IntegerTest() extends FunSuite with BeforeAndAfter {
-
-
-  test("Boolean primitive test") {
-    Main.main(Array("cobalt_source/test/primitives/IntegerTest.cobalt", "cobalt_java/test/primitives/IntegerTest.java", "cobalt_generated"))
-
-    val output = Utils.executionOutput("cobalt_generated", "test.primitives.IntegerTest")
-    println("<OUTPUT_START>")
-    println(output)
-    println("<OUTPUT_END>")
-
-  }
+  val DELETE_GENERATED = true
 
 }

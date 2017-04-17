@@ -1,4 +1,4 @@
-package test.primitives
+package test.source.primitives
 
 class FloatTest():
 
