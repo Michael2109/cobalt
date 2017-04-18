@@ -20,9 +20,12 @@ package compiler.runtime
 
 import java.io._
 
+import com.google.googlejavaformat.java.Formatter
 import compiler.ast.Block
 import compiler.ast.structures.methods.MethodBlock
 import org.slf4j.{Logger, LoggerFactory}
+
+import scala.io.Source
 
 
 /**
@@ -39,7 +42,15 @@ class Compile(val outputFile: File, val block: Block) {
 
   generateASM(block)
 
+
+
   w.close()
+
+  // Format the file and save the output to the same file
+  val formattedFile = new Formatter().formatSource(Source.fromFile(outputFile).getLines().toList.mkString("\n"))
+  val formattedWriter = new PrintWriter(outputFile)
+  formattedWriter.println(formattedFile)
+  formattedWriter.close()
 
   /**
     * Converts the blocks ast into ASM and saves as a .java file
