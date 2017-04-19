@@ -34,14 +34,18 @@ All code is subject to change.
 // Example class with constructor
 public class ExampleClass(arg1: Int, arg2: Int)
 
+
     // Expression - Type inference
     x = 5
+    
     
     // Expression - Type specified
     y:Int = 5
     
+    
     // Mutable variable
     mutable z:Int = 10
+    
     
     // Expression Block
     a:Int = 
@@ -50,21 +54,27 @@ public class ExampleClass(arg1: Int, arg2: Int)
         else
             20
            
+           
     // Function - Square value (Similar to F#)
     let square(x:Int) = x * x
+    
     
     // Add - Specified return type
     let add(a:Int, b: Int):Int = x + b
     
+    
     // Subtract - Add return type
-    let subtract(a:Double b:Double) = 
+    let subtract(a:Double, b:Double) = 
         a - b
+        
         
     // Add One - lambda
     let addOne = fun x -> x + 1
     
+    
     // Add values to a formatted String
     let formatValues:String = fun a b c -> "$a $b $c"
+    
     
     // Return list with x added to each element
     let getAdded(list, x) = list.map(fun i -> i + x)
