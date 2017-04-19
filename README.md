@@ -22,7 +22,7 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 
 # Language Specifications
 To view all of the language specifications please view our wiki!  
-https://github.com/Michael2109/cobalt/wiki
+https://github.com/Michael2109/cobalt/wiki/Language-Specifications
 
 # Getting Starting
 To view how to get up and running please view our tutorial!
