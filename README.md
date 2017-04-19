@@ -79,11 +79,51 @@ public class ExampleClass(arg1: Int, arg2: Int)
     // Return list with x added to each element
     let getAdded(list, x) = list.map(fun i -> i + x)
     
+    // Function within function
+    let getEvenNumbers(list:List[Int])
+        let isEven(x: Int)
+            x % 2 == 0
+        list.filter(isEven(_))
+       
+    /* Same/Similar to Scala */
+    
+    // Value with function literal
+    doubleValue = (i: Int) => i * 2
+    
+    
+    // Function with boolean return type
+    f1 = (i: Int) => { i % 2 == 0 }
+    
+    
+    // Example of other formats
+    f2: (Int) => Boolean = i => 
+        i % 2 == 0
+        
+    f3: Int => Boolean = i => 
+        i % 2 == 0
+        
+    f4: Int => Boolean = i => i % 2 == 0
+    
+    f5: Int => Boolean = _ % 2 == 0
+    
+    
+    // Anonymous function
+    def modMethod1(i: Int) = i % 2 == 0
+    
+    def modMethod2(i: Int) = 
+        i % 2 == 0
+        
+    def modMethod3(i: Int): Boolean = i % 2 == 0
+    
+    def modMethod4(i: Int): Boolean = 
+        i % 2 == 0
+    
+    
 // Singleton (Similar to Scala)
 public object ExampleMain()
 
     // Entry Point
-    let main(args: Array[String]) =
+    let main(args: Array[String])
     
     
         obj = new ExampleClass()
