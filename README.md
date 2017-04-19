@@ -108,14 +108,14 @@ public class ExampleClass(arg1: Int, arg2: Int)
     
     
     // Anonymous function
-    def modMethod1(i: Int) = i % 2 == 0
+    let modMethod1(i: Int) = i % 2 == 0
     
-    def modMethod2(i: Int) = 
+    let modMethod2(i: Int) = 
         i % 2 == 0
         
-    def modMethod3(i: Int): Boolean = i % 2 == 0
+    let modMethod3(i: Int): Boolean = i % 2 == 0
     
-    def modMethod4(i: Int): Boolean = 
+    let modMethod4(i: Int): Boolean = 
         i % 2 == 0
     
     
