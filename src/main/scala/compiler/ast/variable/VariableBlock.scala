@@ -39,72 +39,65 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   override def getType: String = row.getType
 
-  override def getOpeningCode: String = {
+  override def getOpeningCode(): String = {
     if (Utils.getMethod(this) != null) {
 
       // Get assigned blocks in reverse polish notation
       val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) ReversePolish.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
 
-      // Calls methods to get value from wrapper class
-      val convertString: String = {
 
-        if (superBlockInit.isInstanceOf[DefineVariableBlock]) {
-          row.getType match {
+      row.getType match {
 
-            case "Char" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
-            case "Byte" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()B\", false);\n"
-            case "Short" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
-            case "Int" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
-            case "Long" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Long\", \"longValue\", \"()J\", false);\n"
-            case "Float" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
-            case "Double" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
-            case _ => ""
-          }
-        } else {
-          ""
+        // Primitives
+        case "char" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
+        case "byte" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
+        case "short" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
+        case "int" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
+        case "long" => "mv.visitVarInsn(LLOAD" + "," + row.getId + ");\n"
+        case "float" => "mv.visitVarInsn(FLOAD" + "," + row.getId + ");\n"
+        case "double" => "mv.visitVarInsn(DLOAD" + "," + row.getId + ");\n"
+
+        // Objects
+        case "Char" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Byte" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Short" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Int" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Long" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Float" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Double" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "String" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case _ => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + stack.map(_.getOpeningCode).mkString("\n")
+      }
+    }
+    else {
+      ""
+    }
+  }
+
+  def unwrapCode(): String ={
+    // Calls methods to get value from wrapper class
+    val convertString: String = {
+      if (superBlockInit.isInstanceOf[DefineVariableBlock]) {
+        row.getType match {
+          case "Char" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
+          case "Byte" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()B\", false);\n"
+          case "Short" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
+          case "Int" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
+          case "Long" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Long\", \"longValue\", \"()J\", false);\n"
+          case "Float" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
+          case "Double" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
+          case _ => ""
         }
+      } else {
         ""
       }
-
-
-    row.getType match {
-
-      // Primitives
-      case "char" => "mv.visitVarInsn(ILOAD" + "," + row.getId +");\n"
-      case "byte" => "mv.visitVarInsn(ILOAD" + "," + row.getId +");\n"
-      case "short" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
-      case "int" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
-      case "long" => "mv.visitVarInsn(LLOAD" + "," + row.getId + ");\n"
-      case "float" => "mv.visitVarInsn(FLOAD" + "," + row.getId + ");\n"
-      case "double" => "mv.visitVarInsn(DLOAD" + "," + row.getId + ");\n"
-
-
-      // Objects
-      case "Char" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "Byte" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "Short" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "Int" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "Long" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "Float" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "Double" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
-      case "String" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-      case _ => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + stack.map(_.getOpeningCode).mkString("\n")
-
-
     }
-
-
+    convertString
   }
 
-  else
-  {
+  override def getClosingCode: String = {
     ""
   }
-}
-
-override def getClosingCode: String = {
-  ""
-}
 
   override def toString: String = "variable: " + name + " " + stack
 
