@@ -4,7 +4,7 @@ import java.lang.Float
 
 public class AssignmentTest()
 
-    let main(): void
+    main(): void
         b:Byte = 10B
         s:Short = 5S
         i:Int = 5 + 10 - (17 * 3)
@@ -25,9 +25,9 @@ public class AssignmentTest()
         println(string)
         println(o)
 
-    public let addAndPrint(x:Int, y:Int): void
+    public addAndPrint(x:Int, y:Int): void
         println(x)
         println(y)
 
-    public let anotherTest(x:Float): void
+    public anotherTest(x:Float): void
         println(x)

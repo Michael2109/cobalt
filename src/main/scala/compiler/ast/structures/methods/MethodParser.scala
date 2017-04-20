@@ -33,7 +33,7 @@ class MethodParser extends Parser[MethodBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "(public[ ]+|protected[ ]+|internal[ ]+)?(open[ ]+|override[ ]+)*let[ ]+[a-zA-Z_][a-zA-Z0-9_]*[ ]*\\((([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)*([,]?(([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)))*)*\\)([ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*)?:?"
+    "(public[ ]+|protected[ ]+|internal[ ]+)?(open[ ]+|override[ ]+)*[a-zA-Z_][a-zA-Z0-9_]*[ ]*\\((([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)*([,]?(([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)))*)*\\)([ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*)?:?"
   )
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodBlock = {
@@ -46,10 +46,10 @@ class MethodParser extends Parser[MethodBlock] {
       result
     }
 
-    val isSealed: Boolean = tokenizer.nextToken.token != "open" // check open
+    val isSealed: Boolean = tokenizer.peek.token != "open" // check open
 
     if (!isSealed)
-      tokenizer.nextToken // skip def
+      tokenizer.nextToken // skip open
 
     val name: String = tokenizer.nextToken.token // method name
 

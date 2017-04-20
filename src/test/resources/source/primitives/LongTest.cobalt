@@ -2,7 +2,7 @@ package primitives
 
 public class LongTest()
 
-    let main(): void
+    main(): void
 
         test1:Long = 5L
         test2:Long = 10000L

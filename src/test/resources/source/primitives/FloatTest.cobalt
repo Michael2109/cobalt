@@ -2,7 +2,7 @@ package primitives
 
 public class FloatTest()
 
-    let main(): void
+    main(): void
 
         test1:Float = 5.0f-50.0f
         test2:Float = 100f

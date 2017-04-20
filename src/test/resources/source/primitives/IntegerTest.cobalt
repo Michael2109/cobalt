@@ -2,7 +2,7 @@ package primitives
 
 public class IntegerTest()
 
-    let main(): void
+    main(): void
 
         test1:Int = 0-2147483647
         test2:Int = 2147483647

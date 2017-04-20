@@ -84,10 +84,10 @@ object Parsers {
   val parsers: List[Parser[_]] = List(
 
     new PackageParser,
-    new ObjectParser,
+
     new ClassParser,
     new MethodParser,
-
+    new ObjectParser,
     /* this */
     new ThisKeywordParser,
 
