@@ -54,7 +54,7 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
         argString += tokenizer.nextToken.token.trim + " "
     }
 
-    argString = argString.substring(0, argString.length()-1)
+    argString = argString.substring(0, argString.length()-2)
 
     println(argString)
     val argBlocks = Utils.getAllBlocks(superBlock, argString)
