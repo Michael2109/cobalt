@@ -42,21 +42,16 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
 
   private val modifiersASM = {
     var result = ""
-    if (!(modifierTokens.find(m => m.isInstanceOf[InternalToken]).size > 0)) {
+    if (!modifierTokens.exists(m => m.isInstanceOf[InternalToken])) {
       result = "+ACC_PRIVATE"
     }
     for (m <- modifierTokens) {
-      if (m.isInstanceOf[PublicToken]) {
-        result = "+ACC_PUBLIC"
-      }
-      else if (m.isInstanceOf[InternalToken]) {
-        result = "0"
-      }
-      else if (m.isInstanceOf[ProtectedToken]) {
-        result = "+ACC_PROTECTED"
-      }
-      else if (m.isInstanceOf[AbstractToken]) {
-        result += "+ACC_ABSTRACT"
+      m match {
+        case _: PublicToken => result = "+ACC_PUBLIC"
+        case _: InternalToken => result = "0"
+        case _: ProtectedToken => result = "+ACC_PROTECTED"
+        case _: AbstractToken => result += "+ACC_ABSTRACT"
+        case _ =>
       }
     }
 
