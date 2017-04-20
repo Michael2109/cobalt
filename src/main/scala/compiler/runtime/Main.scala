@@ -41,7 +41,6 @@ object Main {
       logger.info("Default program arguments used: $args")
       start(defaultArgs)
     }
-
   }
 
   def start(args: Array[File]) {
@@ -51,14 +50,16 @@ object Main {
 
     val cobaltFile = args(0)
     val asmFile = args(1)
-    val buildDir = args(2)
+    val classFile = args(2)
     val classPath = args(3)
+
+    logger.info("Cobalt File: " + cobaltFile)
 
     // Generate directories for Java ASM files
     new File(asmFile.getParent).mkdirs()
     asmFile.createNewFile()
 
-    new Runtime(cobaltFile, asmFile, buildDir).parseFile()
+    new Runtime(cobaltFile, asmFile, classFile).parseFile()
 
     val compiler = new SimpleCompiler(asmFile.getAbsolutePath)
 
@@ -68,5 +69,9 @@ object Main {
 
     val instance = compClass.newInstance()
     compClass.getMethod("main", classOf[Array[String]]).invoke(null, Array[String]())
+
+    logger.info("ASM File: " + asmFile + " - Class Path: " + classPath)
+    logger.info("Class File: " + classFile)
+
   }
 }

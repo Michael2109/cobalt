@@ -38,7 +38,7 @@ class FloatConstantBlock(var superBlockInit: Block, value: String) extends Const
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      asm.visitLdcInsn("new Float(" + value + ")")
+      "mv.visitLdcInsn(" + "new Float(" + value + ")" + ");\n"
     } else {
       ""
     }

@@ -38,7 +38,7 @@ class CharConstantBlock(var superBlockInit: Block, value: String) extends Consta
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      asm.visitLdcInsn("new Character(" + value + ")")
+      "mv.visitLdcInsn(" + "new Character(" + value + ")" + ");\n"
     } else {
       ""
     }

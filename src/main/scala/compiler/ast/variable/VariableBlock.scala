@@ -70,25 +70,25 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
     row.getType match {
 
       // Primitives
-      case "char" => asm.visitVarInsn("ILOAD", "" + row.getId)
-      case "byte" => asm.visitVarInsn("ILOAD", "" + row.getId)
-      case "short" => asm.visitVarInsn("ILOAD", "" + row.getId)
-      case "int" => asm.visitVarInsn("ILOAD", "" + row.getId)
-      case "long" => asm.visitVarInsn("LLOAD", "" + row.getId)
-      case "float" => asm.visitVarInsn("FLOAD", "" + row.getId)
-      case "double" => asm.visitVarInsn("DLOAD", "" + row.getId)
+      case "char" => "mv.visitVarInsn(ILOAD" + "," + row.getId +");\n"
+      case "byte" => "mv.visitVarInsn(ILOAD" + "," + row.getId +");\n"
+      case "short" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
+      case "int" => "mv.visitVarInsn(ILOAD" + "," + row.getId + ");\n"
+      case "long" => "mv.visitVarInsn(LLOAD" + "," + row.getId + ");\n"
+      case "float" => "mv.visitVarInsn(FLOAD" + "," + row.getId + ");\n"
+      case "double" => "mv.visitVarInsn(DLOAD" + "," + row.getId + ");\n"
 
 
       // Objects
-      case "Char" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "Byte" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "Short" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "Int" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "Long" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "Float" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "Double" => asm.visitVarInsn("ALOAD", "" + row.getId) + convertString
-      case "String" => asm.visitVarInsn("ALOAD", "" + row.getId)
-      case _ => asm.visitVarInsn("ALOAD", "" + row.getId) + stack.map(_.getOpeningCode).mkString("\n")
+      case "Char" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "Byte" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "Short" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "Int" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "Long" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "Float" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "Double" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + convertString
+      case "String" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+      case _ => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + stack.map(_.getOpeningCode).mkString("\n")
 
 
     }

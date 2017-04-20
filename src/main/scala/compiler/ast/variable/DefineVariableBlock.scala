@@ -66,14 +66,14 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
 
 
     varType match {
-      case "Byte" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Byte\", \"<init>\", \"(B)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Int" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Integer\", \"<init>\", \"(I)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(J)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Float" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Float\", \"<init>\", \"(F)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Double" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Double\", \"<init>\", \"(D)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case "Char" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Character\", \"<init>\", \"(C)V\", false);\n" + asm.visitVarInsn("ASTORE", id)
-      case _ => asm.visitVarInsn("ASTORE", id)
+      case "Byte" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Byte\", \"<init>\", \"(B)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case "Int" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Integer\", \"<init>\", \"(I)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(J)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case "Float" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Float\", \"<init>\", \"(F)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case "Double" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Double\", \"<init>\", \"(D)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case "Char" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Character\", \"<init>\", \"(C)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      case _ => "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
 
 
     }

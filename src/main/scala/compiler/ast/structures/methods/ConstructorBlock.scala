@@ -60,14 +60,13 @@ class ConstructorBlock(val superBlockInit: Block, val parameters: List[Parameter
   override def getType: String = "constructor"
 
   override def getOpeningCode: String = {
-
-    asm.getOpeningBrace +
-      asm.getMethodVisitor("<init>", "(" + parameterString + ")V", null, null) +
-      asm.visitCode() +
-      asm.getComment("Constructor") +
-      asm.newLabel("lConstructor0") +
-      asm.visitLabel("lConstructor0") +
-      asm.visitVarInsn("ALOAD", "0") +
+      "{\n" +
+        "MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, \"<init>\", \"" + "(" + parameterString + ")V" + "\" ," + null + ", null);\n" +
+      "mv.visitCode();\n" +
+      "// Constructor\n" +
+      "Label " + "lConstructor0" + " = new Label();\n" +
+        "mv.visitLabel(lConstructor0);\n" +
+        "mv.visitVarInsn(ALOAD" + "," + "0" + ");\n" +
       "// Load \"this\" onto the stack\n" + "\n" +
       "mv.visitMethodInsn(INVOKESPECIAL," +
       "// Invoke an instance method (non-virtual)\n" +

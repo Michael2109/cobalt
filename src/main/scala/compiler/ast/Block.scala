@@ -18,7 +18,6 @@
 
 package compiler.ast
 
-import compiler.utilities.ASMGenerator
 import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.mutable.ListBuffer
@@ -46,7 +45,6 @@ abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, i
 
   val stack: ListBuffer[Block] = ListBuffer[Block]()
   private val _subBlocks: ListBuffer[Block] = new ListBuffer[Block]
-  private val _asm: ASMGenerator = new ASMGenerator
 
   private var _superBlock: Block = sBlock
   var id: Integer = Block.TOTAL_BLOCKS
@@ -83,6 +81,4 @@ abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, i
   // Error check on the line of code
   def error(): Boolean = false
 
-  // Used to generate ASM code
-  def asm: ASMGenerator = _asm
 }

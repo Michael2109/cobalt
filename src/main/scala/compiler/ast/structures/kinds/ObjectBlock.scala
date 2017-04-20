@@ -38,10 +38,10 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
   def getType: String = "class"
 
   def getOpeningCode: String = {
-      asm.getClassOpening(name) +
-      asm.executeMethodOpening +
-      asm.getClassWriter +
-        asm.visitClassWriter("", packageBlock.directory + "/" + name, null, parentClass, null)
+    "public class " + name + "{\n" +
+      "public static byte[] execute() throws Exception {\n" +
+      "ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);\n" +
+      "cw.visit(V1_7, ACC_PUBLIC " + "" + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + parentClass + "\", new String[]{});\n"
   }
 
   def packageBlock: PackageBlock = superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]

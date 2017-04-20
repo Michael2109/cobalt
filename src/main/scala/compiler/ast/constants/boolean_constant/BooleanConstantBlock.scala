@@ -38,7 +38,7 @@ class BooleanConstantBlock(var superBlockInit: Block, value: String) extends Con
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      asm.visitInsn("ICONST_" + (if (value == "true") "1" else "0"))
+      "mv.visitInsn(" + "ICONST_" + (if (value == "true") "1" else "0") + ");"
     } else {
       ""
     }

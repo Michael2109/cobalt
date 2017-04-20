@@ -123,9 +123,9 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
   override def getType: String = "<CLASS>"
 
   override def getOpeningCode: String = {
-    asm.getClassOpening(name) +
-      asm.executeMethodOpening +
-      asm.getClassWriter +
+    "public class " + name + "{\n" +
+      "public static byte[] execute() throws Exception {\n" +
+      "ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);\n" +
       "cw.visit(V1_7, " + modifiersASM + ", \"" + packageBlock.directory + "/" + name + "\", " + null + ", \"" + (if (extendsTokens.size == 0) "java/lang/Object" else (extendsTokens.map(t => Utils.getDirectory(ref, t.token) + "/" + t.token).mkString(""))) + "\", new String[]{});\n"
   }
 

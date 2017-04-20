@@ -38,7 +38,7 @@ class StringConstantBlock(var superBlockInit: Block, value: String) extends Cons
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {
-      asm.visitLdcInsn(value)
+      "mv.visitLdcInsn(" + value + ");\n"
     } else {
       ""
     }

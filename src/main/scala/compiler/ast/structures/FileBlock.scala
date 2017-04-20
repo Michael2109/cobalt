@@ -37,15 +37,14 @@ class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
   override def getType: String = "file"
 
   override def getOpeningCode: String = {
-
-    asm.getPackage(Utils.packageBlock(this).directory.replace("/", ".")) +
-    asm.getImport("java.io.DataOutputStream") +
-    asm.getImport("java.io.FileNotFoundException") +
-    asm.getImport("java.io.FileOutputStream") +
-    asm.getImport("java.io.IOException") +
-    asm.getImport("java.io.*") +
-    asm.getStaticImport("org.objectweb.asm.Opcodes.*") +
-    asm.getImport("org.objectweb.asm.*")
+    "package " + Utils.packageBlock(this).directory.replace("/", ".") + ";\n" +
+      "import " + "java.io.DataOutputStream" + ";\n"+
+      "import " + "java.io.FileNotFoundException" + ";\n"+
+      "import " + "java.io.FileOutputStream" + ";\n"+
+      "import " + "java.io.IOException" + ";\n"+
+      "import " + "java.io.*" + ";\n"+
+      "import " + "org.objectweb.asm.*" + ";\n"+
+      "import static " + "org.objectweb.asm.Opcodes.*" + ";\n"
   }
 
   override def getClosingCode: String = {

@@ -41,13 +41,12 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
   def getOpeningCode: String = {
     val values = orderedStatementBlocks.filter(!_.isInstanceOf[ConditionalBlock]).map(_.getOpeningCode).mkString("")
     values +
-      asm.newLabel("l" + id) +
-      asm.visitJumpInsn(orderedStatementBlocks.filter(_.isInstanceOf[ConditionalBlock]).head.getOpeningCode, "l" + id)
-
+      "Label " + "l" + id + " = new Label();\n" +
+      "mv.visitJumpInsn(" + orderedStatementBlocks.filter(_.isInstanceOf[ConditionalBlock]).head.getOpeningCode + "," +  "l" + id + ");\n"
   }
 
   def getClosingCode: String = {
-    asm.visitLabel("l" + id)
+    "mv.visitLabel(" + "l" + id + ");\n"
   }
 
   override def toString: String = getType + stack
