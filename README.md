@@ -22,7 +22,7 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 
 # Language Specifications
 To view all of the language specifications please view our wiki!  
-https://github.com/Michael2109/cobalt/wiki
+https://github.com/Michael2109/cobalt/wiki/Language-Specifications
 
 # Getting Starting
 To view how to get up and running please view our tutorial!
@@ -34,14 +34,18 @@ All code is subject to change.
 // Example class with constructor
 public class ExampleClass(arg1: Int, arg2: Int)
 
+
     // Expression - Type inference
     x = 5
+    
     
     // Expression - Type specified
     y:Int = 5
     
+    
     // Mutable variable
     mutable z:Int = 10
+    
     
     // Expression Block
     a:Int = 
@@ -50,30 +54,76 @@ public class ExampleClass(arg1: Int, arg2: Int)
         else
             20
            
+           
     // Function - Square value (Similar to F#)
     let square(x:Int) = x * x
+    
     
     // Add - Specified return type
     let add(a:Int, b: Int):Int = x + b
     
+    
     // Subtract - Add return type
-    let subtract(a:Double b:Double) = 
+    let subtract(a:Double, b:Double) = 
         a - b
+        
         
     // Add One - lambda
     let addOne = fun x -> x + 1
     
+    
     // Add values to a formatted String
     let formatValues:String = fun a b c -> "$a $b $c"
     
+    
     // Return list with x added to each element
     let getAdded(list, x) = list.map(fun i -> i + x)
+    
+    // Function within function
+    let getEvenNumbers(list:List[Int])
+        let isEven(x: Int)
+            x % 2 == 0
+        list.filter(isEven(_))
+       
+    /* Same/Similar to Scala */
+    
+    // Value with function literal
+    doubleValue = (i: Int) => i * 2
+    
+    
+    // Function with boolean return type
+    f1 = (i: Int) => { i % 2 == 0 }
+    
+    
+    // Example of other formats
+    f2: (Int) => Boolean = i => 
+        i % 2 == 0
+        
+    f3: Int => Boolean = i => 
+        i % 2 == 0
+        
+    f4: Int => Boolean = i => i % 2 == 0
+    
+    f5: Int => Boolean = _ % 2 == 0
+    
+    
+    // Anonymous function
+    let modMethod1(i: Int) = i % 2 == 0
+    
+    let modMethod2(i: Int) = 
+        i % 2 == 0
+        
+    let modMethod3(i: Int): Boolean = i % 2 == 0
+    
+    let modMethod4(i: Int): Boolean = 
+        i % 2 == 0
+    
     
 // Singleton (Similar to Scala)
 public object ExampleMain()
 
     // Entry Point
-    let main(args: Array[String]) =
+    let main(args: Array[String])
     
     
         obj = new ExampleClass()
