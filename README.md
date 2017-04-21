@@ -56,32 +56,32 @@ public class ExampleClass(arg1: Int, arg2: Int)
            
            
     // Function - Square value (Similar to F#)
-    let square(x:Int) = x * x
+    square(x:Int) = x * x
     
     
     // Add - Specified return type
-    let add(a:Int, b: Int):Int = x + b
+    add(a:Int, b: Int):Int = x + b
     
     
     // Subtract - Add return type
-    let subtract(a:Double, b:Double) = 
+    subtract(a:Double, b:Double) = 
         a - b
         
         
     // Add One - lambda
-    let addOne = fun x -> x + 1
+    addOne = fun x -> x + 1
     
     
     // Add values to a formatted String
-    let formatValues:String = fun a b c -> "$a $b $c"
+    formatValues:String = fun a b c -> "$a $b $c"
     
     
     // Return list with x added to each element
-    let getAdded(list, x) = list.map(fun i -> i + x)
+    getAdded(list, x) = list.map(fun i -> i + x)
     
     // Function within function
-    let getEvenNumbers(list:List[Int])
-        let isEven(x: Int)
+    getEvenNumbers(list:List[Int])
+        isEven(x: Int) =
             x % 2 == 0
         list.filter(isEven(_))
        
@@ -108,14 +108,14 @@ public class ExampleClass(arg1: Int, arg2: Int)
     
     
     // Anonymous function
-    let modMethod1(i: Int) = i % 2 == 0
+    modMethod1(i: Int) = i % 2 == 0
     
-    let modMethod2(i: Int) = 
+    modMethod2(i: Int) = 
         i % 2 == 0
         
-    let modMethod3(i: Int): Boolean = i % 2 == 0
+    modMethod3(i: Int): Boolean = i % 2 == 0
     
-    let modMethod4(i: Int): Boolean = 
+    modMethod4(i: Int): Boolean = 
         i % 2 == 0
     
     
@@ -123,7 +123,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
 public object ExampleMain()
 
     // Entry Point
-    let main(args: Array[String])
+    main(args: Array[String])
     
     
         obj = new ExampleClass()
