@@ -69,15 +69,15 @@ public class ExampleClass(arg1: Int, arg2: Int)
         
         
     // Add One - lambda
-    addOne = fun x -> x + 1
+    addOne = (x:Int) -> x + 1
     
     
     // Add values to a formatted String
-    formatValues:String = fun a b c -> "$a $b $c"
+    formatValues:String = (a:String, b:String, c:String) -> "$a $b $c"
     
     
     // Return list with x added to each element
-    getAdded(list, x) = list.map(fun i -> i + x)
+    getAdded(list, x) = list.map(i -> i + x)
     
     // Function within function
     getEvenNumbers(list:List[Int])
@@ -88,7 +88,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
     /* Same/Similar to Scala */
     
     // Value with function literal
-    doubleValue = (i: Int) => i * 2
+    doubleValue = (i: Int) -> i * 2
     
     
     // Function with boolean return type
@@ -96,7 +96,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
     
     
     // Example of other formats
-    f2: (Int) => Boolean = i => 
+    f2: (Int) => Boolean = i -> 
         i % 2 == 0
         
     f3: Int => Boolean = i => 
@@ -126,7 +126,7 @@ public object ExampleMain()
     main(args: Array[String])
     
     
-        obj = new ExampleClass()
+        obj = new ExampleClass(50, 100)
   
         
         // Call a instance method
@@ -147,9 +147,9 @@ public object ExampleMain()
         // Match 
         exampleMatch x:Int = 
             match x with
-            1 -> "a"
-            2 -> "b"
-            _ -> "z"
+            :1 -> "a"
+            :2 -> "b"
+            :_ -> "z"
         
         
         // If statements - inline
