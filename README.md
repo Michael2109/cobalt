@@ -56,39 +56,39 @@ public class ExampleClass(arg1: Int, arg2: Int)
            
            
     // Function - Square value (Similar to F#)
-    let square(x:Int) = x * x
+    square(x:Int) = x * x
     
     
     // Add - Specified return type
-    let add(a:Int, b: Int):Int = x + b
+    add(a:Int, b: Int):Int = x + b
     
     
     // Subtract - Add return type
-    let subtract(a:Double, b:Double) = 
+    subtract(a:Double, b:Double) = 
         a - b
         
         
     // Add One - lambda
-    let addOne = fun x -> x + 1
+    addOne = (x:Int) -> x + 1
     
     
     // Add values to a formatted String
-    let formatValues:String = fun a b c -> "$a $b $c"
+    formatValues:String = (a:String, b:String, c:String) -> "$a $b $c"
     
     
     // Return list with x added to each element
-    let getAdded(list, x) = list.map(fun i -> i + x)
+    getAdded(list, x) = list.map(i -> i + x)
     
     // Function within function
-    let getEvenNumbers(list:List[Int])
-        let isEven(x: Int)
+    getEvenNumbers(list:List[Int])
+        isEven(x: Int) =
             x % 2 == 0
         list.filter(isEven(_))
        
     /* Same/Similar to Scala */
     
     // Value with function literal
-    doubleValue = (i: Int) => i * 2
+    doubleValue = (i: Int) -> i * 2
     
     
     // Function with boolean return type
@@ -96,7 +96,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
     
     
     // Example of other formats
-    f2: (Int) => Boolean = i => 
+    f2: (Int) => Boolean = i -> 
         i % 2 == 0
         
     f3: Int => Boolean = i => 
@@ -108,14 +108,14 @@ public class ExampleClass(arg1: Int, arg2: Int)
     
     
     // Anonymous function
-    let modMethod1(i: Int) = i % 2 == 0
+    modMethod1(i: Int) = i % 2 == 0
     
-    let modMethod2(i: Int) = 
+    modMethod2(i: Int) = 
         i % 2 == 0
         
-    let modMethod3(i: Int): Boolean = i % 2 == 0
+    modMethod3(i: Int): Boolean = i % 2 == 0
     
-    let modMethod4(i: Int): Boolean = 
+    modMethod4(i: Int): Boolean = 
         i % 2 == 0
     
     
@@ -123,10 +123,10 @@ public class ExampleClass(arg1: Int, arg2: Int)
 public object ExampleMain()
 
     // Entry Point
-    let main(args: Array[String])
+    main(args: Array[String])
     
     
-        obj = new ExampleClass()
+        obj = new ExampleClass(50, 100)
   
         
         // Call a instance method
@@ -147,9 +147,9 @@ public object ExampleMain()
         // Match 
         exampleMatch x:Int = 
             match x with
-            1 -> "a"
-            2 -> "b"
-            _ -> "z"
+            :1 -> "a"
+            :2 -> "b"
+            :_ -> "z"
         
         
         // If statements - inline
