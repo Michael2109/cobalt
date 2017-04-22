@@ -50,7 +50,8 @@ import compiler.ast.operators.assignment._
 import compiler.ast.operators.assignment.bit._
 import compiler.ast.operators.bit._
 import compiler.ast.packages.PackageParser
-import compiler.ast.prints.PrintlnParser
+import compiler.ast.prints.print.PrintParser
+import compiler.ast.prints.println.PrintlnParser
 import compiler.ast.structures.kinds.{ClassParser, ObjectParser}
 import compiler.ast.structures.methods.MethodParser
 import compiler.ast.structures.parameter.ParameterParser
@@ -114,6 +115,7 @@ object Parsers {
 
     /* printing */
     new PrintlnParser,
+    new PrintParser,
 
     /* loops */
     new ForParser,

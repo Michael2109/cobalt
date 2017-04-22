@@ -22,9 +22,9 @@ public class AssignmentTest()
         println(f)
         println(d)
         println(c)
-        println(string)
+        println(string)c
         println(o)
-        println(test)
+        print(test)
 
         number1:Int=75
         number2:Int=125

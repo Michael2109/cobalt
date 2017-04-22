@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.prints
+package compiler.ast.prints.print
 
 import compiler.ast.{Block, Parsers}
 import compiler.symbol_table.SymbolTable
@@ -30,13 +30,13 @@ import compiler.utilities.Utils
   * @param value
   * @param isVariableInit
   */
-class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
+class PrintBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
   override def getName: String = ""
 
   override def getValue: String = value
 
-  override def getType: String = "<PRINTLN>"
+  override def getType: String = "<PRINT>"
 
   override def getOpeningCode: String = {
 
@@ -52,13 +52,12 @@ class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableI
 
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
         v.getOpeningCode + "\n" +
-        "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/Object;)V\");"
+        "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"print\", \"(Ljava/lang/Object;)V\");"
     }
     else {
-      //return "System.out.println(\""+value+"\");";
       "mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\");\n" +
         "mv.visitLdcInsn(" + value + ");\n" +
-        "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\");"
+        "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"print\", \"(Ljava/lang/String;)V\");"
     }
   }
 

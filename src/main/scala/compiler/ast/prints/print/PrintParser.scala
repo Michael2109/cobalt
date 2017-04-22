@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.ast.prints
+package compiler.ast.prints.print
 
 import compiler.ast.{Block, Parser}
 import compiler.tokenizer.tokens.constants.StringLiteralToken
 import compiler.tokenizer.{Token, Tokenizer}
 
 // todo set up print parser
-class PrintlnParser extends Parser[PrintlnBlock] {
+class PrintParser extends Parser[PrintBlock] {
 
   /**
     * A list of all regular stack
@@ -31,19 +31,19 @@ class PrintlnParser extends Parser[PrintlnBlock] {
     * @return
     */
   override def getRegexs: List[String] = List(
-    "println[ ]*\\([\"].*[\"]\\)",
-    "println[ ]*\\(.*\\)"
+    "print[ ]*\\([\"].*[\"]\\)",
+    "print[ ]*\\(.*\\)"
   )
 
 
-  def parse(superBlock: Block, tokenizer: Tokenizer): PrintlnBlock = {
+  def parse(superBlock: Block, tokenizer: Tokenizer): PrintBlock = {
     tokenizer.nextToken // skip print
     tokenizer.nextToken
     // skip (
     val value: Token = tokenizer.nextToken
     val isVar: Boolean = !value.tokenType.isInstanceOf[StringLiteralToken]
 
-    new PrintlnBlock(superBlock, value.token, isVar)
+    new PrintBlock(superBlock, value.token, isVar)
   }
 
 }
