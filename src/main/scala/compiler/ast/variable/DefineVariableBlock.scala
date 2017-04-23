@@ -19,6 +19,7 @@
 package compiler.ast.variable
 
 import compiler.ast.Block
+import compiler.ast.empty.EmptyBlock
 import compiler.symbol_table.{Row, SymbolTable}
 import compiler.utilities.{ReversePolish, Utils}
 
@@ -32,7 +33,7 @@ import compiler.utilities.{ReversePolish, Utils}
   */
 class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
-  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).get.getName).setClassName(Utils.getClass(this).get.getName))
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getOrElse(new EmptyBlock()).getName).setClassName(Utils.getClass(this).get.getName))
 
   override def getName: String = name
 
@@ -42,8 +43,11 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
   override def getType: String = varType
 
   override def getOpeningCode: String = {
-    if (Utils.getMethod(this) != null) {
 
+    // If it is within a method
+    if (!Utils.getMethod(this).isEmpty) {
+
+      // Push the object to the stack
       varType match {
         case "Byte" => "mv.visitTypeInsn(NEW, \"java/lang/Byte\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
         case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + ReversePolish.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
@@ -57,27 +61,29 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
       }
 
     } else {
-      ""
+      "fv = cw.visitField(0, \""+name+"\", \""+Utils.getWrapperType(varType)+"\", null, null);\n" +
+        "fv.visitEnd();\n"
     }
   }
 
 
   override def getClosingCode: String = {
 
-
-    varType match {
-      case "Byte" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Byte\", \"<init>\", \"(B)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case "Int" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Integer\", \"<init>\", \"(I)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(J)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case "Float" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Float\", \"<init>\", \"(F)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case "Double" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Double\", \"<init>\", \"(D)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case "Char" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Character\", \"<init>\", \"(C)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-      case _ => "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
-
-
+    // If it is within a method
+    if (!Utils.getMethod(this).isEmpty) {
+      varType match {
+        case "Byte" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Byte\", \"<init>\", \"(B)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case "Short" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Short\", \"<init>\", \"(S)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case "Int" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Integer\", \"<init>\", \"(I)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case "Long" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Long\", \"<init>\", \"(J)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case "Float" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Float\", \"<init>\", \"(F)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case "Double" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Double\", \"<init>\", \"(D)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case "Char" => "mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/Character\", \"<init>\", \"(C)V\", false);\n" + "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+        case _ => "mv.visitVarInsn(ASTORE" + "," + id + ");\n"
+      }
+    }else{
+      ""
     }
-
   }
 
   override def toString: String = "def variable: " + name + stack

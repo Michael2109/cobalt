@@ -33,7 +33,7 @@ class PrintlnTest() extends FunSuite with BeforeAndAfter with Base {
   override val buildFile = new File("src/test/resources/generated/prints/PrintlnTest.class")
   override val classPath = new File("src/test/resources/asm")
 
-  test("Integer primitive test") {
+  test("Print test") {
     compile()
     val output = executeOutput()
     println(output)

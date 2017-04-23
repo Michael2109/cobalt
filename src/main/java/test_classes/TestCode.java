@@ -23,14 +23,6 @@ package test_classes;
  */
 public class TestCode {
 
-    public void test() {
-
-        other(50000);
-
-    }
-
-    public void other(Integer x){
-        System.out.println(x.intValue());
-    }
-
+   int x = 500;
+   int y = 200;
 }

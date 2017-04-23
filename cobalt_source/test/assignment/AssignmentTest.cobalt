@@ -4,6 +4,8 @@ import java.lang.Integer
 
 public class AssignmentTest()
 
+    instanceVar:Int = 10 + 20 
+
     main(): void
         b:Byte = 10B
         s:Short = 5S
