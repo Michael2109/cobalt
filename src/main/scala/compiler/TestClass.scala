@@ -20,20 +20,6 @@ package compiler
 
 class TestClass {
 
-
-  def test(): Unit = {
-
-    def innerFunction(): Unit = {
-      val x = {
-        if (true) {
-          5
-        }
-        else
-          10
-      }
-    }
-
-  }
-
+   val x:Int = 25
 
 }

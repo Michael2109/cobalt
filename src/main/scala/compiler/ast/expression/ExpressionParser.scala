@@ -28,7 +28,7 @@ class ExpressionParser extends Parser[ExpressionBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("")
+  override def getRegexs: List[String] = List("([0-9]+([\\.][0-9]*)?[dDfFsSlLbB]?)?[ ]*([\\(\\)]*[\\+\\-\\*\\/][ \\(\\)]*[0-9]+([\\.][0-9]*)?[dDfFsSlLbB]?[ \\(\\)]*)*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ExpressionBlock = {
     val blocks:List[Block] = Utils.getAllBlocks(superBlock, tokenizer.line)

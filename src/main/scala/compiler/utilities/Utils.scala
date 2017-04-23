@@ -290,9 +290,10 @@ object Utils extends Meta[Base]{
       for (parser <- Parsers.parsers) {
         if (!found) {
 
+          println(lineLeft)
+          println(parser)
 
           if (parser.shouldParse(lineLeft)) {
-
 
             // Get the regex that matched
             val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
@@ -303,7 +304,6 @@ object Utils extends Meta[Base]{
             // If the line started with the section then parse it
             if (lineLeft.trim.startsWith(first)) {
               found = true
-
 
               result += parser.parse(superBlock, new Tokenizer(first))
 

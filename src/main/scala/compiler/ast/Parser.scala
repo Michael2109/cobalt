@@ -41,6 +41,7 @@ import compiler.ast.exceptions.exception_finally.FinallyParser
 import compiler.ast.exceptions.exception_throw.ThrowParser
 import compiler.ast.exceptions.exception_throws.ThrowsParser
 import compiler.ast.exceptions.exception_try.TryParser
+import compiler.ast.expression.ExpressionParser
 import compiler.ast.ifs.{ElifParser, ElseParser, IfParser}
 import compiler.ast.imports.ImportParser
 import compiler.ast.loops.{DoParser, ForParser, WhileParser}
@@ -105,6 +106,9 @@ object Parsers {
     new TryParser,
     new CatchParser,
     new FinallyParser,
+
+    /* Expressions */
+    new ExpressionParser,
 
     /* super */
     new SuperParser,
