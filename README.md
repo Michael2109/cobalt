@@ -63,7 +63,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
     add(a:Int, b: Int):Int = x + b
     
     
-    // Subtract - Add return type
+    // Subtract - Return type inference
     subtract(a:Double, b:Double) = 
         a - b
         
@@ -84,8 +84,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
         isEven(x: Int) =
             x % 2 == 0
         list.filter(isEven(_))
-       
-    /* Same/Similar to Scala */
+  
     
     // Value with function literal
     doubleValue = (i: Int) -> i * 2
@@ -153,11 +152,11 @@ public object ExampleMain()
         
         
         // If statements - inline
-        if (square(12) > 100) println "Larger than 100"
+        if (square(12) > 100) println ("Larger than 100")
         
         // If statements
         if (square(12) > 100)
-            println "Larger than 100"
+            println ("Larger than 100")
             
         // Elif and else
         if (false)
