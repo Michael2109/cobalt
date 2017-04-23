@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package compiler.primitives
+package compiler.structures.objects
 
 import java.io.File
 
@@ -26,18 +26,17 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 @RunWith(classOf[JUnitRunner])
-class LongTest() extends FunSuite with BeforeAndAfter with Base {
+class ObjectDefinitionTest() extends FunSuite with BeforeAndAfter with Base {
 
-  override val cobaltFile = new File("src/test/resources/source/primitives/LongTest.cobalt")
-  override val asmFile = new File("src/test/resources/asm/primitives/LongTest.java")
-  override val buildFile = new File("src/test/resources/generated/primitives/LongTest.class")
+  override val cobaltFile = new File("src/test/resources/source/structures/objects/ObjectDefinitionTest.cobalt")
+  override val asmFile = new File("src/test/resources/asm/structures/objects/ObjectDefinitionTest.java")
+  override val buildFile = new File("src/test/resources/generated/structures/objects/ObjectDefinitionTest.class")
   override val classPath = new File("src/test/resources/asm")
 
-  test("Integer primitive test") {
+  test("Object definition test") {
     compile()
     val output = executeOutput()
-    assert(output(0) == "5")
-    assert(output(1) == "10000")
+    assert("10" == output(0))
   }
 
 }

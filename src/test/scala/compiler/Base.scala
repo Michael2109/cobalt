@@ -25,11 +25,10 @@ import compiler.utilities.Utils
 import org.apache.log4j.PropertyConfigurator
 
 trait Base {
-   val cobaltFile = new File("src/test/resources/source/primitives/"+getClass.getSimpleName+".cobalt")
-   val asmFile = new File("src/test/resources/asm/primitives/"+getClass.getSimpleName+".java")
-   val buildFile = new File("src/test/resources/generated/primitives/"+getClass.getSimpleName+".class")
-   val classPath = new File("src/test/resources/asm")
-
+   val cobaltFile: File
+   val asmFile: File
+   val buildFile: File
+   val classPath: File
 
   def compile(): Unit ={
     PropertyConfigurator.configure("src/test/log4j.properties")

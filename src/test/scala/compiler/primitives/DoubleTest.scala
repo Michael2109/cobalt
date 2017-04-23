@@ -18,6 +18,8 @@
 
 package compiler.primitives
 
+import java.io.File
+
 import compiler.Base
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -25,6 +27,11 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 
 @RunWith(classOf[JUnitRunner])
 class DoubleTest() extends FunSuite with BeforeAndAfter with Base {
+
+  override val cobaltFile = new File("src/test/resources/source/primitives/DoubleTest.cobalt")
+  override val asmFile = new File("src/test/resources/asm/primitives/DoubleTest.java")
+  override val buildFile = new File("src/test/resources/generated/primitives/DoubleTest.class")
+  override val classPath = new File("src/test/resources/asm")
 
   test("Integer primitive test") {
     compile()
