@@ -32,10 +32,7 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "\\.[a-zA-Z][a-zA-Z0-9]*\\(([^]]*)\\)"
-  )
-
+  override val regex: String = "\\.[a-zA-Z][a-zA-Z0-9]*\\(([^]]*)\\)"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectMethodCallBlock = {
 

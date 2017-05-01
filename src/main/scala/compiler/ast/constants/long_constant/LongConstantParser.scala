@@ -30,9 +30,8 @@ class LongConstantParser extends ConstantParser[LongConstantBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "^((-)?[0-9]+(l|L))"
-  )
+  override val regex: String = "^((-)?[0-9]+(l|L))"
+
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): LongConstantBlock = {
     val value: String = tokenizer.nextToken.token

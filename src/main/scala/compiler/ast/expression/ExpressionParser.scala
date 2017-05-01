@@ -39,7 +39,7 @@ class ExpressionParser extends Parser[ExpressionBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("([\\(\\)]*[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*[\\+\\-\\*\\/][ \\(\\)]*)+[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*")
+  override val regex: String = "([\\(\\)]*[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*[\\+\\-\\*\\/][ \\(\\)]*)+[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ExpressionBlock = {
     val parsers:List[Parser[_]] = List[Parser[_]](

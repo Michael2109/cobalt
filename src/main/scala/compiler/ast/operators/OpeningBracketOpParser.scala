@@ -27,7 +27,7 @@ class OpeningBracketOpParser extends Parser[OpeningBracketOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[\\(]")
+  override val regex: String = "[\\(]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): OpeningBracketOpBlock = {
     new OpeningBracketOpBlock(superBlock)

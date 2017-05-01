@@ -30,11 +30,7 @@ class PrintParser extends Parser[PrintBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "print[ ]*\\([\"].*[\"]\\)",
-    "print[ ]*\\(.*\\)"
-  )
-
+  override val regex: String = "print[ ]*\\([\"]?.*[\"]?\\)"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PrintBlock = {
     tokenizer.nextToken // skip print

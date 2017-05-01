@@ -28,7 +28,7 @@ class ElifParser extends Parser[ElifBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("elif[ ]*\\(([^]]+)\\)")
+  override val regex: String = "elif[ ]*\\(([^]]+)\\)"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ElifBlock = {
     new ElifBlock(superBlock)

@@ -28,17 +28,14 @@ class ParameterParser extends Parser[ParameterBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    //"(val|var)[ ]+[a-zA-Z][a-zA-Z0-9]*[ ]*(:[ ]*int)?[ ]*",
-    "(public[ ]+|protected[ ]+|internal[ ]+)?(mutable[ ]+)?[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
-  )
+  override val regex: String = "(public[ ]+|protected[ ]+|internal[ ]+)?(mutable[ ]+)?[a-zA-Z][a-zA-Z0-9]*[ ]*:[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*"
+
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ParameterBlock = {
 
     val nextToken: String = tokenizer.nextToken.token
 
     val mutable: Boolean = nextToken == "mut"
-
 
     // "val" or "var"
     val name: String = if (mutable) tokenizer.nextToken.token else nextToken

@@ -30,9 +30,8 @@ class IntConstantParser extends ConstantParser[IntConstantBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "[0-9]+"
-  )
+  override val regex: String = "[0-9]+"
+
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): IntConstantBlock = {
     val value: String = tokenizer.nextToken.token

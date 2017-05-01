@@ -18,8 +18,8 @@
 
 package compiler.ast.variable
 
-import compiler.ast.{Block, Parser}
 import compiler.ast.this_keyword.ThisKeywordBlock
+import compiler.ast.{Block, Parser}
 import compiler.tokenizer.Tokenizer
 
 class ThisKeywordParser extends Parser[ThisKeywordBlock] {
@@ -29,9 +29,7 @@ class ThisKeywordParser extends Parser[ThisKeywordBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "this"
-  )
+  override val regex: String = "this"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ThisKeywordBlock = {
     new ThisKeywordBlock(superBlock)

@@ -29,10 +29,9 @@ class OrOpParser extends Parser[OrOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "[\\|][\\|]",
-    "or"
-  )
+  override val regex: String = "[\\|][\\|]"
+
+
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): OrOpBlock = {
     new OrOpBlock(superBlock)

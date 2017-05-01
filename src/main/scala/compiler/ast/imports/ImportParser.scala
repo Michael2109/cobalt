@@ -29,7 +29,7 @@ class ImportParser extends Parser[ImportBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("import [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*")
+  override val regex: String = "import [a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ImportBlock = {
 

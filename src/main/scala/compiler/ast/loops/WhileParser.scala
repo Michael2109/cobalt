@@ -31,7 +31,7 @@ class WhileParser extends Parser[WhileBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("while[ ]*\\([\"].*[\"]\\)")
+  override val regex: String = "while[ ]*\\([\"].*[\"]\\)"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): WhileBlock = {
     new WhileBlock(superBlock)

@@ -69,10 +69,10 @@ abstract class Parser[T <: Block] {
     *
     * @return
     */
-  def getRegexs: List[String]
 
+  val regex: String
 
-  def shouldParse(line: String): Boolean = getRegexs.exists(_.r.findFirstIn(line).nonEmpty)
+  def shouldParse(line: String): Boolean = regex.r.findFirstIn(line).nonEmpty
 
   /**
     * Take the superBlock and the tokenizer for the line and return a blocks of this parsers's type.

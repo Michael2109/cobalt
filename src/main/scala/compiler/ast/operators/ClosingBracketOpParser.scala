@@ -27,7 +27,7 @@ class ClosingBracketOpParser extends Parser[ClosingBracketOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[\\)]")
+  override val regex: String = "[\\)]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ClosingBracketOpBlock = {
     new ClosingBracketOpBlock(superBlock)

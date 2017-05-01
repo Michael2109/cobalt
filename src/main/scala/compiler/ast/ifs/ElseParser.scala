@@ -28,7 +28,7 @@ class ElseParser extends Parser[ElseBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("else(:)?")
+  override val regex: String = "else(:)?"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ElseBlock = {
 

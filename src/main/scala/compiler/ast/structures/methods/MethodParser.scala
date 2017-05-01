@@ -32,9 +32,7 @@ class MethodParser extends Parser[MethodBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "(public[ ]+|protected[ ]+|internal[ ]+)?(open[ ]+|override[ ]+)*[a-zA-Z_][a-zA-Z0-9_]*[ ]*\\((([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)*([,]?(([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)))*)*\\)([ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*)?:?"
-  )
+  override val regex: String = "(public[ ]+|protected[ ]+|internal[ ]+)?(open[ ]+|override[ ]+)*[a-zA-Z_][a-zA-Z0-9_]*[ ]*\\((([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)*([,]?(([ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*[ ]*)))*)*\\)([ ]*:[ ]*[a-zA-Z_][a-zA-Z0-9_]*)?:?"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodBlock = {
 

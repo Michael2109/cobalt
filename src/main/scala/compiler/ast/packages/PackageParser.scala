@@ -28,7 +28,7 @@ class PackageParser extends Parser[PackageBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("package[ ]+[a-zA-Z][a-zA-Z0-9\\_]*(\\.[a-zA-Z][a-zA-Z0-9\\_]*)*")
+  override val regex: String = "package[ ]+[a-zA-Z][a-zA-Z0-9\\_]*(\\.[a-zA-Z][a-zA-Z0-9\\_]*)*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PackageBlock = {
     tokenizer.nextToken // skip "package"

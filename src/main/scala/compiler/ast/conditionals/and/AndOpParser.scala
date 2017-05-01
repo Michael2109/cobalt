@@ -29,10 +29,7 @@ class AndOpParser extends Parser[AndOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "[\\&][\\&]",
-    "and"
-  )
+  override val regex: String = "[\\&][\\&]"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): AndOpBlock = {
 

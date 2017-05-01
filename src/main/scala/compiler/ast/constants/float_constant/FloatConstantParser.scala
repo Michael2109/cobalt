@@ -29,9 +29,8 @@ class FloatConstantParser extends ConstantParser[FloatConstantBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "^((-)?[0-9]+(([.][0-9](f|F))|([.](f|F))|(f|F)))"
-  )
+  override val regex: String = "^((-)?[0-9]+(([.][0-9](f|F))|([.](f|F))|(f|F)))"
+
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): FloatConstantBlock = {
 

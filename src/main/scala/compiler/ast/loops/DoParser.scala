@@ -31,7 +31,7 @@ class DoParser extends Parser[DoBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("do")
+  override val regex: String = "do"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): DoBlock = {
     new DoBlock(superBlock)

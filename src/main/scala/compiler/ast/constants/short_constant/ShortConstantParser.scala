@@ -29,9 +29,7 @@ class ShortConstantParser extends ConstantParser[ShortConstantBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "^((-)?[0-9]+(s|S))"
-  )
+  override val regex: String = "^((-)?[0-9]+(s|S))"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ShortConstantBlock = {
     val value: String = tokenizer.nextToken.token

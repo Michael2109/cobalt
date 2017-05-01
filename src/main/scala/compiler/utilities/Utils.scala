@@ -246,7 +246,7 @@ object Utils extends Meta[Base]{
 
 
             // Get the regex that matched
-            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
+            val regex: String = if(parser.regex.r.findFirstIn(lineLeft).nonEmpty) parser.regex else ""
 
             // Get the section of the line that matched the regex
             val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
@@ -293,7 +293,7 @@ object Utils extends Meta[Base]{
           if (parser.shouldParse(lineLeft)) {
 
             // Get the regex that matched
-            val regex: String = parser.getRegexs.find(_.r.findFirstIn(lineLeft).nonEmpty).getOrElse("")
+            val regex: String = if(parser.regex.r.findFirstIn(lineLeft).nonEmpty) parser.regex else ""
 
             // Get the section of the line that matched the regex
             val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim

@@ -28,7 +28,7 @@ class MultiplyOpParser extends Parser[MultiplyOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[*]")
+  override val regex: String = "[*]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyOpBlock = {
     new MultiplyOpBlock(superBlock)

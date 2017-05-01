@@ -28,7 +28,7 @@ class SuperParser extends Parser[SuperBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("super")
+  override val regex: String = "super"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): SuperBlock = {
 

@@ -29,9 +29,8 @@ class AsParser extends Parser[AsBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "as"
-  )
+  override val regex: String = "as"
+
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): AsBlock = {
 

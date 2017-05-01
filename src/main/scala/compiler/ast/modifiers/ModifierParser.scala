@@ -28,7 +28,7 @@ class ModifierParser extends Parser[ModifierBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("(public|private|protected|abstract|open)(:)?")
+  override val regex: String = "(public|private|protected|abstract|open)(:)?"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ModifierBlock = new ModifierBlock(superBlock, tokenizer.nextToken.token)
 

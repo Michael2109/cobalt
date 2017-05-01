@@ -29,9 +29,7 @@ class CaseParser extends Parser[CaseBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "case[ ]+[a-zA-Z0-9]+[ ]*=>[ ]*[a-zA-Z0-9]+"
-  )
+  override val regex: String = "case[ ]+[a-zA-Z0-9]+[ ]*=>[ ]*[a-zA-Z0-9]+"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): CaseBlock = {
     new CaseBlock(superBlock)

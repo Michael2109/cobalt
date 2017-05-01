@@ -34,9 +34,7 @@ class ObjectDefinitionParser extends Parser[ObjectDefinitionBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List(
-    "new[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*\\(([^]]*)\\)[ ]*"
-  )
+  override val regex: String = "new[ ]*[a-zA-Z][a-zA-Z0-9]*[ ]*\\(([^]]*)\\)[ ]*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ObjectDefinitionBlock = {
     val newKeyword: String = tokenizer.nextToken.token

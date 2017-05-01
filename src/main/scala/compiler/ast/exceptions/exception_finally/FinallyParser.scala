@@ -28,7 +28,7 @@ class FinallyParser extends Parser[FinallyBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("finally:")
+  override val regex: String = "finally:"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): FinallyBlock = {
     new FinallyBlock(superBlock)

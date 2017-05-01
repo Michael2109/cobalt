@@ -27,7 +27,7 @@ class EqualsOpParser extends Parser[EqualsOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[\\=][\\=]")
+  override val regex: String = "[\\=][\\=]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): EqualsOpBlock = {
     new EqualsOpBlock(superBlock)

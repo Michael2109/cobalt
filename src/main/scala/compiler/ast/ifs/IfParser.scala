@@ -28,7 +28,7 @@ class IfParser extends Parser[IfBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("if[ ]*\\(([^]]+)\\)")
+  override val regex: String = "if[ ]*\\(([^]]+)\\)"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): IfBlock = {
 

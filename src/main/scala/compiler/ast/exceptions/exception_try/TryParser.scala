@@ -28,7 +28,7 @@ class TryParser extends Parser[TryBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("try:")
+  override val regex: String = "try:"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): TryBlock = {
     new TryBlock(superBlock)

@@ -27,7 +27,7 @@ class AddOpParser extends Parser[AddOpBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("[+]")
+  override val regex: String = "[+]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): AddOpBlock = {
     new AddOpBlock(superBlock)
