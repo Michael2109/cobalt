@@ -18,9 +18,20 @@
 
 package compiler.ast.expression
 
+import compiler.ast.constants.boolean_constant.BooleanConstantParser
+import compiler.ast.constants.byte_constant.ByteConstantParser
+import compiler.ast.constants.char_constant.CharConstantParser
+import compiler.ast.constants.double_constant.DoubleConstantParser
+import compiler.ast.constants.float_constant.FloatConstantParser
+import compiler.ast.constants.int_constant.IntConstantParser
+import compiler.ast.constants.long_constant.LongConstantParser
+import compiler.ast.constants.short_constant.ShortConstantParser
+import compiler.ast.constants.string_constant.StringConstantParser
+import compiler.ast.operators._
+import compiler.ast.variable.VariableParser
 import compiler.ast.{Block, Parser}
 import compiler.tokenizer.Tokenizer
-import compiler.utilities.Utils
+import compiler.utilities.{ReversePolish, Utils}
 
 class ExpressionParser extends Parser[ExpressionBlock] {
   /**
@@ -28,11 +39,34 @@ class ExpressionParser extends Parser[ExpressionBlock] {
     *
     * @return
     */
-  override def getRegexs: List[String] = List("([0-9]+([\\.][0-9]*)?[dDfFsSlLbB]?)?[ ]*([\\(\\)]*[\\+\\-\\*\\/][ \\(\\)]*[0-9]+([\\.][0-9]*)?[dDfFsSlLbB]?[ \\(\\)]*)*")
+  override def getRegexs: List[String] = List("([\\(\\)]*[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*[\\+\\-\\*\\/][ \\(\\)]*)+[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*")
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ExpressionBlock = {
-    val blocks:List[Block] = Utils.getAllBlocks(superBlock, tokenizer.line)
-    println(blocks)
-    new ExpressionBlock(superBlock, blocks)
+    val parsers:List[Parser[_]] = List[Parser[_]](
+      new AddOpParser,
+      new DivideOpParser,
+      new MultiplyOpParser,
+      new SubtractOpParser,
+      new ModulusOpParser,
+
+      /* constants */
+      new BooleanConstantParser,
+      new CharConstantParser,
+      new StringConstantParser,
+      new FloatConstantParser,
+      new DoubleConstantParser,
+      new ShortConstantParser,
+      new ByteConstantParser,
+      new LongConstantParser,
+      new IntConstantParser,
+
+      new VariableParser,
+      new OpeningBracketOpParser,
+      new ClosingBracketOpParser
+    )
+
+    val expressionBlocks:List[Block] = ReversePolish.infixToRPN(Utils.getAllBlocks(superBlock, tokenizer.line, 0, parsers))
+
+    new ExpressionBlock(superBlock, expressionBlocks)
   }
 }

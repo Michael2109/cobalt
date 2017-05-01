@@ -25,7 +25,7 @@ import compiler.ast.Block
   *
   * @param superBlockInit The parent block
   */
-class ExpressionBlock(var superBlockInit: Block, rpmBlocks: List[Block]) extends Block(superBlockInit, false, false) {
+class ExpressionBlock(var superBlockInit: Block, expressionBlocks: List[Block]) extends Block(superBlockInit, false, false) {
 
   override def getName: String = ""
 
@@ -34,14 +34,14 @@ class ExpressionBlock(var superBlockInit: Block, rpmBlocks: List[Block]) extends
   override def getType(): String = "<EXPRESSION>"
 
   override def getOpeningCode: String = {
-    ""
+    expressionBlocks.map(_.getOpeningCode).mkString("\n")
   }
 
   override def getClosingCode: String = {
      ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = expressionBlocks.toString()
 
 
 

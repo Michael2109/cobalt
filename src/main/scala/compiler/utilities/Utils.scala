@@ -26,7 +26,7 @@ import compiler.ast.packages.PackageBlock
 import compiler.ast.structures.FileBlock
 import compiler.ast.structures.kinds.{ClassBlock, ObjectBlock}
 import compiler.ast.structures.methods.{ConstructorBlock, MethodBlock}
-import compiler.ast.{Block, Parsers}
+import compiler.ast.{Block, Parser, Parsers}
 import compiler.tokenizer.Tokenizer
 
 import scala.collection.mutable.ListBuffer
@@ -275,7 +275,7 @@ object Utils extends Meta[Base]{
 
   }
 
-  def getAllBlocks(superBlock: Block, line: String, lineNumber: Int = 0): List[Block] = {
+  def getAllBlocks(superBlock: Block, line: String, lineNumber: Int = 0, parsers: List[Parser[_]] = Parsers.parsers): List[Block] = {
 
     val result: ListBuffer[Block] = ListBuffer[Block]()
 
@@ -287,11 +287,8 @@ object Utils extends Meta[Base]{
       var found = false
       previousLineLeft = lineLeft
 
-      for (parser <- Parsers.parsers) {
+      for (parser <- parsers) {
         if (!found) {
-
-          println(lineLeft)
-          println(parser)
 
           if (parser.shouldParse(lineLeft)) {
 

@@ -107,8 +107,6 @@ object Parsers {
     new CatchParser,
     new FinallyParser,
 
-    /* Expressions */
-    new ExpressionParser,
 
     /* super */
     new SuperParser,
@@ -152,6 +150,10 @@ object Parsers {
     new BitwiseXorOpParser,
     new LeftShiftOpParser,
     new RightShiftOpParser,
+
+
+    /* Expressions */
+    new ExpressionParser,
 
     /* operators */
     new OpeningBracketOpParser,
