@@ -28,13 +28,14 @@ import cobalt.utilities.Utils
   */
 class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType(): String = "<ADD_OP>"
+  override val getType: String = "<ADD_OP>"
 
   override def getOpeningCode: String = {
+    println("SuperBlockType:" + superBlockInit.getType)
     "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "ADD);"
   }
 
@@ -42,7 +43,7 @@ class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
      ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
 
 

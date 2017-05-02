@@ -21,7 +21,7 @@ package cobalt.ast.ifs
 import cobalt.ast.Block
 import cobalt.ast.conditionals.ConditionalBlock
 import cobalt.tokenizer.Tokenizer
-import cobalt.utilities.{RPN, Utils}
+import cobalt.utilities.Utils
 
 /**
   * Represents an if statement
@@ -32,11 +32,11 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
 
   val orderedStatementBlocks = getOrderedStatements(tokenizer)
 
-  def getName: String = ""
+  override val getName: String = ""
 
-  def getValue: String = ""
+  override val getValue: String = ""
 
-  def getType: String = "<IF_STATEMENT>"
+  override val getType: String = "<IF_STATEMENT>"
 
   def getOpeningCode: String = {
     val values = orderedStatementBlocks.filter(!_.isInstanceOf[ConditionalBlock]).map(_.getOpeningCode).mkString("")
@@ -62,7 +62,9 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
       statementString += nextToken
       found = true
     }
-    RPN.infixToRPN(Utils.getAllBlocks(this, statementString))
+
+    println("All If Blocks:::" +  Utils.getAllBlocks(this, statementString))
+   Utils.getAllBlocks(this, statementString)
 
   }
 

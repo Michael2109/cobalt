@@ -18,20 +18,8 @@
 
 package cobalt.ast.expression
 
-import cobalt.ast.constants.boolean_constant.BooleanConstantParser
-import cobalt.ast.constants.byte_constant.ByteConstantParser
-import cobalt.ast.constants.char_constant.CharConstantParser
-import cobalt.ast.constants.double_constant.DoubleConstantParser
-import cobalt.ast.constants.float_constant.FloatConstantParser
-import cobalt.ast.constants.int_constant.IntConstantParser
-import cobalt.ast.constants.long_constant.LongConstantParser
-import cobalt.ast.constants.short_constant.ShortConstantParser
-import cobalt.ast.constants.string_constant.StringConstantParser
-import cobalt.ast.operators._
-import cobalt.ast.variable.VariableParser
 import cobalt.ast.{Block, Parser}
 import cobalt.tokenizer.Tokenizer
-import cobalt.utilities.{RPN, Utils}
 
 class ExpressionParser extends Parser[ExpressionBlock] {
   /**
@@ -42,31 +30,8 @@ class ExpressionParser extends Parser[ExpressionBlock] {
   override val regex: String = "([\\(\\)]*[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*[\\+\\-\\*\\/][ \\(\\)]*)+[0-9]+([\\.][0-9]*)?([dDfFsSlLbB])?[ \\(\\)]*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ExpressionBlock = {
-    val parsers:List[Parser[_]] = List[Parser[_]](
-      new AddOpParser,
-      new DivideOpParser,
-      new MultiplyOpParser,
-      new SubtractOpParser,
-      new ModulusOpParser,
 
-      /* constants */
-      new BooleanConstantParser,
-      new CharConstantParser,
-      new StringConstantParser,
-      new FloatConstantParser,
-      new DoubleConstantParser,
-      new ShortConstantParser,
-      new ByteConstantParser,
-      new LongConstantParser,
-      new IntConstantParser,
 
-      new VariableParser,
-      new OpeningBracketOpParser,
-      new ClosingBracketOpParser
-    )
-
-    val expressionBlocks:List[Block] = RPN.infixToRPN(Utils.getAllBlocks(superBlock, tokenizer.line, 0, parsers))
-
-    new ExpressionBlock(superBlock, expressionBlocks)
+    new ExpressionBlock(superBlock, tokenizer)
   }
 }

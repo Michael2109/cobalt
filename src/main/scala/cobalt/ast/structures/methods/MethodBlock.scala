@@ -74,11 +74,11 @@ class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken]
 
   var i = 1
 
-  def getName: String = name
+  val getName: String = name
 
-  def getType: String = returnType
+  val getType: String = returnType
 
-  def getValue: String = ""
+  val getValue: String = ""
 
   def static: String = if (!Utils.isClass(this)) "+ACC_STATIC" else ""
 

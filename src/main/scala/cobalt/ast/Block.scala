@@ -67,11 +67,11 @@ abstract class Block(var sBlock: Block, container: Boolean, variable: Boolean, i
   def removeBlock_=(value: Block): ListBuffer[Block] = _subBlocks.filter(_ != value)
 
   /* Symbol table information */
-  def getName: String
+  val getName: String
 
-  def getValue: String
+  val getValue: String
 
-  def getType: String
+  val getType: String
 
   /* Bytecode for the opening and closing of the blocks */
   def getOpeningCode: String

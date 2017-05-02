@@ -24,9 +24,14 @@ public class AssignmentTest()
         println(f)
         println(d)
         println(c)
-        println(string)c
+        println(string)
         println(o)
         print(test)
+
+
+        if(10 + 2 < 5 - 3)
+            println("If Test")
+
 
         number1:Int=75
         number2:Int=125
