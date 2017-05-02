@@ -27,12 +27,13 @@ import cobalt.ast.Block
   */
 class TryBlock(superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
+  val getType: String = "<TRY>"
 
-  def getOpeningCode: String = {
+  val getOpeningCode: String = {
     ""
   }
 
@@ -42,6 +43,5 @@ class TryBlock(superBlockInit: Block) extends Block(superBlockInit, true, false)
 
   override def toString: String = getType
 
-  def getType: String = "<TRY>"
 
 }

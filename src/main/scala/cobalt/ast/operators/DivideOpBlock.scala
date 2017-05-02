@@ -28,11 +28,11 @@ import cobalt.utilities.Utils
   */
 class DivideOpBlock(val superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<DIVIDE_OP>"
+  override val getType: String = "<DIVIDE_OP>"
 
   override def getOpeningCode: String = {
 

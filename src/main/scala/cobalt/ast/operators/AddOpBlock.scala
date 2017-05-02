@@ -35,7 +35,6 @@ class AddOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false,
   override val getType: String = "<ADD_OP>"
 
   override def getOpeningCode: String = {
-    println("SuperBlockType:" + superBlockInit.getType)
     "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "ADD);"
   }
 

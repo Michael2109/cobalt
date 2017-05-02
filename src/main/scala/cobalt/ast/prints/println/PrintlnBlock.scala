@@ -32,11 +32,11 @@ import cobalt.utilities.Utils
   */
 class PrintlnBlock(var superBlockInit: Block, var value: String, val isVariableInit: Boolean) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = value
+  override val getValue: String = value
 
-  override def getType: String = "<PRINTLN>"
+  override val getType: String = "<PRINTLN>"
 
   override def getOpeningCode: String = {
 

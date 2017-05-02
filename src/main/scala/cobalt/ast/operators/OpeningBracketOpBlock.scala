@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class OpeningBracketOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<OPENING_BRACKET_OP>"
+  override val getType: String = "<OPENING_BRACKET_OP>"
 
   override def getOpeningCode: String = {
     ""

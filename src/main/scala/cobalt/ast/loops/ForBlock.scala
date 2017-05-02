@@ -35,11 +35,11 @@ class ForBlock(var superBlockInit: Block) extends Block(superBlockInit, true, fa
     params
   }
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<FOR>"
+  val getType: String = "<FOR>"
 
   def getOpeningCode: String = ""
 

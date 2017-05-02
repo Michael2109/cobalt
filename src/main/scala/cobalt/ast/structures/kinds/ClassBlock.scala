@@ -111,11 +111,11 @@ class ClassBlock(var superBlockInit: Block, modifierTokens: List[Token], name: S
     superBlock.subBlocks.find(_.isInstanceOf[PackageBlock]).getOrElse(new PackageBlock("")).asInstanceOf[PackageBlock]
   }
 
-  override def getName: String = name
+  override val getName: String = name
 
-  override def getValue: String = null
+  override val getValue: String = null
 
-  override def getType: String = "<CLASS>"
+  override val getType: String = "<CLASS>"
 
   override def getOpeningCode: String = {
     "public class " + name + "{\n" +

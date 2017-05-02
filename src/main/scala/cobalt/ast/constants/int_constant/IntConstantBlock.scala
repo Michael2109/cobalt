@@ -29,11 +29,11 @@ import cobalt.ast.constants.ConstantBlock
   */
 class IntConstantBlock(var superBlockInit: Block, value: String) extends ConstantBlock(superBlockInit, false, true) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = value
+  override val getValue: String = value
 
-  override def getType: String = "int"
+  override val getType: String = "int"
 
   override def getOpeningCode: String = {
     "mv.visitLdcInsn(new Integer(" + value + "));"

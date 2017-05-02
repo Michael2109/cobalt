@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class ZeroRightFillShiftOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType(): String = "<ZERO_RIGHT_FILL_SHIFT_OP>"
+  override val getType: String = "<ZERO_RIGHT_FILL_SHIFT_OP>"
 
   override def getOpeningCode: String = {
     ""
@@ -41,7 +41,7 @@ class ZeroRightFillShiftOpBlock(var superBlockInit: Block) extends Block(superBl
     ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
 
 

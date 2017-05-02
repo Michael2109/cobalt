@@ -30,11 +30,11 @@ import cobalt.utilities.Utils
   */
 class FileBlock(name: String, buildDir: File) extends Block(null, true, false) {
 
-  override def getName: String = name
+  override val getName: String = name
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "file"
+  override val getType: String = "file"
 
   override def getOpeningCode: String = {
     "package " + Utils.packageBlock(this).directory.replace("/", ".") + ";\n" +

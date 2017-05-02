@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class ElifBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<ELIF_STATEMENT>"
+  val getType: String = "<ELIF_STATEMENT>"
 
   def getOpeningCode: String = {
     ""

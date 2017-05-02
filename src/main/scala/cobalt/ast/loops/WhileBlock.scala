@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class WhileBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<WHILE_LOOP>"
+  val getType: String = "<WHILE_LOOP>"
 
   def getOpeningCode: String = {
     //WhileGen.getOpeningCode(id, pointer, value, "mv.visitJumpInsn(IF_ICMPGE, l" + id + ");)

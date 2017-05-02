@@ -27,12 +27,11 @@ import cobalt.ast.Block
   */
 class ThrowBlock(superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-
-  def getType: String = "<THROW>"
+  val getType: String = "<THROW>"
 
   def getOpeningCode: String = {
     ""

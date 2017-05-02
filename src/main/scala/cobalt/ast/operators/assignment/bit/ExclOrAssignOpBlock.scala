@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class ExclOrAssignOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType(): String = "<EXCL_OR_ASSIGN_OP>"
+  override val getType: String = "<EXCL_OR_ASSIGN_OP>"
 
   override def getOpeningCode: String = {
     ""
@@ -41,6 +41,6 @@ class ExclOrAssignOpBlock(var superBlockInit: Block) extends Block(superBlockIni
     ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
 }

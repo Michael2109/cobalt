@@ -28,11 +28,11 @@ import cobalt.ast.conditionals.ConditionalBlock
   */
 class NotOpBlock(var superBlockInit: Block) extends ConditionalBlock(superBlockInit, false, false) {
 
-  def getName: String = ""
+  override val getName: String = ""
 
-  def getValue: String = ""
+  override val getValue: String = ""
 
-  def getType: String = "<NOT_OP>"
+  override val getType: String = "<NOT_OP>"
 
   def getOpeningCode: String = {
     ""

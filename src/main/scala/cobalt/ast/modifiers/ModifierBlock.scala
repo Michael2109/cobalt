@@ -30,11 +30,11 @@ import cobalt.ast.Block
 class ModifierBlock (var superBlockInit: Block, var value: String) extends Block(superBlockInit, true, false) {
 
   /* Symbol table information */
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = value
+  override val getValue: String = value
 
-  override def getType: String = "<MODIFIER>"
+  override val getType: String = "<MODIFIER>"
 
   /* Bytecode for the opening and closing of the blocks */
   override def getOpeningCode: String = ""

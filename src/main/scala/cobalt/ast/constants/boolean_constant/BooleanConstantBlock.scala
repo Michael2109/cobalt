@@ -30,11 +30,11 @@ import cobalt.utilities.Utils
   */
 class BooleanConstantBlock(var superBlockInit: Block, value: String) extends ConstantBlock(superBlockInit, false, true) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = value
+  override val getValue: String = value
 
-  override def getType: String = "boolean"
+  override val getType: String = "boolean"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

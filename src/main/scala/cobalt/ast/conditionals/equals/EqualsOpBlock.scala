@@ -29,11 +29,11 @@ import cobalt.ast.conditionals.ConditionalBlock
 class EqualsOpBlock(var superBlockInit: Block) extends ConditionalBlock(superBlockInit, false, false) {
 
 
-  def getName: String = ""
+  override val getName: String = ""
 
-  def getValue: String = ""
+  override val getValue: String = ""
 
-  def getType: String = "<EQUALS_OP>"
+  override val getType: String = "<EQUALS_OP>"
 
   def getOpeningCode: String = {
     "IF_ICMPEQ"

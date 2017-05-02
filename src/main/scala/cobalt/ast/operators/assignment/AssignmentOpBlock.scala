@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class AssignmentOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<ASSIGNMENT>"
+  override val getType: String = "<ASSIGNMENT>"
 
   override def getOpeningCode: String = {
     ""

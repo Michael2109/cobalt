@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class EmptyBlock(var superBlockInit: Block = null) extends Block(superBlockInit, false, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<EMPTY>"
+  val getType: String = "<EMPTY>"
 
   def getOpeningCode: String = {
     ""

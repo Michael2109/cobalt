@@ -46,11 +46,11 @@ class ObjectDefinitionBlock(superBlockInit: Block, newKeyword: String, initClass
     block.getName
   }
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = initClassName
+  override val getType: String = initClassName
 
   override def getOpeningCode: String = {
 

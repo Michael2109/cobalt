@@ -53,11 +53,11 @@ class ConstructorBlock(val superBlockInit: Block, val parameters: List[Parameter
 
     }
 
-  override def getName: String = "<init>"
+  override val getName: String = "<init>"
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "constructor"
+  override val getType: String = "constructor"
 
   override def getOpeningCode: String = {
       "{\n" +

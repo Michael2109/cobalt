@@ -28,11 +28,11 @@ import cobalt.ast.conditionals.ConditionalBlock
   */
 class AndOpBlock(var superBlockInit: Block) extends ConditionalBlock(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<AND_OP>"
+  override val getType: String = "<AND_OP>"
 
   def getOpeningCode: String = {
     ""

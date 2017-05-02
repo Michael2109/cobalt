@@ -28,11 +28,11 @@ class MethodCallBlock(var superBlockInit: Block, var name: String, var `type`: S
 
   def getParameters: Array[Parameter] = params
 
-  override def getName: String = name
+  override val getName: String = name
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = `type`
+  override val getType: String = `type`
 
   override def getOpeningCode: String = name + "();"
 

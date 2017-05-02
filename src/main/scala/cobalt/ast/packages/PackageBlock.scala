@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class PackageBlock(var directory: String) extends Block(null, true, false) {
 
-  override def getName: String = directory
+  override val getName: String = directory
 
-  override def getValue: String = null
+  override val getValue: String = null
 
-  override def getType: String = "<PACKAGE>"
+  override val getType: String = "<PACKAGE>"
 
   override def getOpeningCode: String = ""
 

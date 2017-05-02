@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class ElseBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<ELSE_STATEMENT>"
+  val getType: String = "<ELSE_STATEMENT>"
 
   def getOpeningCode: String = {
     ""

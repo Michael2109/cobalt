@@ -63,7 +63,6 @@ class IfBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends Block(sup
       found = true
     }
 
-    println("All If Blocks:::" +  Utils.getAllBlocks(this, statementString))
    Utils.getAllBlocks(this, statementString)
 
   }

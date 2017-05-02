@@ -33,11 +33,11 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
 
   val row: Row = SymbolTable.getInstance.getValue(Utils.getMethod(this).get, name)
 
-  override def getName: String = name
+  override val getName: String = name
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = row.getType
+  override val getType: String = row.getType
 
   override def getOpeningCode(): String = {
     if (Utils.getMethod(this) != null) {

@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class LeftShiftAssignOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType(): String = "<LEFT_SHIFT_ASSIGN_OP>"
+  override val getType: String = "<LEFT_SHIFT_ASSIGN_OP>"
 
   override def getOpeningCode: String = {
     ""
@@ -41,6 +41,6 @@ class LeftShiftAssignOpBlock(var superBlockInit: Block) extends Block(superBlock
     ""
   }
 
-  override def toString: String = getType()
+  override def toString: String = getType
 
 }

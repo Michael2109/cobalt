@@ -28,11 +28,11 @@ import cobalt.utilities.Utils
   */
 class IsBlock(var superBlockInit: Block) extends Block(superBlockInit, false, true) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<IS>"
+  override val getType: String = "<IS>"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

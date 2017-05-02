@@ -53,7 +53,6 @@ class ObjectMethodCallParser extends Parser[ObjectMethodCallBlock] {
 
     argString = argString.substring(0, argString.length()-2)
 
-    println(argString)
     val argBlocks = Utils.getAllBlocks(superBlock, argString)
     new ObjectMethodCallBlock(superBlock, methodName, argBlocks)
   }

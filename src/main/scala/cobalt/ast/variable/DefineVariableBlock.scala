@@ -33,14 +33,14 @@ import cobalt.utilities.{RPN, Utils}
   */
 class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: String, varType: String) extends Block(superBlockInit, false, true) {
 
-  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getOrElse(new EmptyBlock()).getName).setClassName(Utils.getClass(this).get.getName))
+  override val getName: String = name
 
-  override def getName: String = name
-
-  override def getValue: String = ""
+  override val getValue: String = ""
 
   // Map the defined var type to the ASM type
-  override def getType: String = varType
+  override val getType: String = varType
+
+  SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName(Utils.getMethod(this).getOrElse(new EmptyBlock()).getName).setClassName(Utils.getClass(this).get.getName))
 
   override def getOpeningCode: String = {
 

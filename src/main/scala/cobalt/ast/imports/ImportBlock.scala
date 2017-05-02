@@ -28,11 +28,11 @@ import cobalt.ast.Block
   */
 class ImportBlock(var directory: String, var fileName: String) extends Block(null, false, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<IMPORT>"
+  val getType: String = "<IMPORT>"
 
   def getOpeningCode: String = ""
 

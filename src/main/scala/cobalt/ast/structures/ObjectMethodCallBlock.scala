@@ -67,11 +67,11 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
     block.getName
   }
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = superBlockInit.getType
+  override val getType: String = superBlockInit.getType
 
   override def getOpeningCode: String = {
 

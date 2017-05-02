@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class ModulusOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<MODULUS_OP>"
+  override val getType: String = "<MODULUS_OP>"
 
   override def getOpeningCode: String = {
     ""

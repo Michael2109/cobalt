@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class ThisKeywordBlock(superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<THIS>"
+  override val getType: String = "<THIS>"
 
   override def getOpeningCode: String = {
     ""

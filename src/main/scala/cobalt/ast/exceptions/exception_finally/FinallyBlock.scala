@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class FinallyBlock(superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<FINALLY>"
+  val getType: String = "<FINALLY>"
 
   def getOpeningCode: String = {
     ""

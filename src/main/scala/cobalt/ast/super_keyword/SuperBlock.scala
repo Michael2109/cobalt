@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class SuperBlock(var superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<SUPER>"
+  override val getType: String = "<SUPER>"
 
   override def getOpeningCode: String = {
     ""

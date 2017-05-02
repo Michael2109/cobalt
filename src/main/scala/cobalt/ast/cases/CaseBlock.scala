@@ -28,11 +28,11 @@ import cobalt.utilities.Utils
   */
 class CaseBlock(var superBlockInit: Block) extends Block(superBlockInit, false, true) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<CASE>"
+  override val getType: String = "<CASE>"
 
   override def getOpeningCode: String = {
     if (Utils.getMethod(this) != null) {

@@ -28,11 +28,11 @@ import cobalt.utilities.Utils
   */
 class MultiplyOpBlock(val superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<MULTIPLY_OP>"
+  override val getType: String = "<MULTIPLY_OP>"
 
   override def getOpeningCode: String = {
     "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "MUL);"

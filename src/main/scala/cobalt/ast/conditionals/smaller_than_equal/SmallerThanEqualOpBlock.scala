@@ -28,11 +28,11 @@ import cobalt.ast.conditionals.ConditionalBlock
   */
 class SmallerThanEqualOpBlock(var superBlockInit: Block) extends ConditionalBlock(superBlockInit, false, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<SMALLER_THAN_EQUAL_OP>"
+  val getType: String = "<SMALLER_THAN_EQUAL_OP>"
 
   def getOpeningCode: String = {
     ""

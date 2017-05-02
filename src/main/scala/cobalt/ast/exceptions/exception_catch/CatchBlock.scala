@@ -27,11 +27,11 @@ import cobalt.ast.Block
   */
 class CatchBlock(superBlockInit: Block) extends Block(superBlockInit, true, false) {
 
-  def getName: String = ""
+  val getName: String = ""
 
-  def getValue: String = ""
+  val getValue: String = ""
 
-  def getType: String = "<CATCH>"
+  val getType: String = "<CATCH>"
 
   def getOpeningCode: String = {
     ""

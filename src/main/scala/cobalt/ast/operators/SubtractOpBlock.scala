@@ -28,11 +28,11 @@ import cobalt.utilities.Utils
   */
 class SubtractOpBlock(var superBlockInit: Block) extends Block(superBlockInit, false, false) {
 
-  override def getName: String = ""
+  override val getName: String = ""
 
-  override def getValue: String = ""
+  override val getValue: String = ""
 
-  override def getType: String = "<SUBTRACT_OP>"
+  override val getType: String = "<SUBTRACT_OP>"
 
   override def getOpeningCode: String = {
     "mv.visitInsn(" + Utils.getASMType(superBlockInit.getType) + "SUB);"

@@ -31,11 +31,11 @@ class ObjectBlock(var superBlockInit: Block, var name: String, var parameters: A
 
   SymbolTable.getInstance.addRow(new Row().setId(id).setName(getName).setType(getType).setValue(getValue).setMethodName("").setClassName(name))
 
-  def getName: String = name
+  val getName: String = name
 
-  def getValue: String = null
+  val getValue: String = null
 
-  def getType: String = "class"
+  val getType: String = "class"
 
   def getOpeningCode: String = {
     "public class " + name + "{\n" +

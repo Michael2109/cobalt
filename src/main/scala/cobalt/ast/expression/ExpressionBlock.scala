@@ -18,6 +18,7 @@
 
 package cobalt.ast.expression
 
+import cobalt.ast.constants.ConstantBlock
 import cobalt.ast.constants.boolean_constant.BooleanConstantParser
 import cobalt.ast.constants.byte_constant.ByteConstantParser
 import cobalt.ast.constants.char_constant.CharConstantParser
@@ -70,7 +71,7 @@ class ExpressionBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends B
 
   override val getValue: String = ""
 
-  override val getType: String = "int"
+  override val getType: String = expressionBlocks.filter(_.isInstanceOf[ConstantBlock]).head.getType
 
   override def getOpeningCode: String = {
     expressionBlocks.map(_.getOpeningCode).mkString("\n")
