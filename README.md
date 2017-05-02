@@ -56,11 +56,17 @@ public class ExampleClass(arg1: Int, arg2: Int)
            
            
     // Function - Square value (Similar to F#)
-    square(x:Int) = x * x
+    square x:Int <-Int = x * x
     
     
     // Add - Specified return type
-    add(a:Int, b: Int):Int = x + b
+    //add a b: Int Int <- Int = a + b
+    
+    add(a:Int, b:Int): Int = a + b
+    
+    //add a:Int b:Int <- Int = a + b
+    
+    //add a b <- Int Int <- Int = a + b
     
     
     // Subtract - Return type inference
