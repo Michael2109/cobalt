@@ -45,7 +45,7 @@ dependencies {
     // Scalastyle
     compile group: 'org.scalastyle', name: 'scalastyle-maven-plugin', version: '0.8.0'
 
-    // janino simple compiler
+    // janino simple cobalt
     compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.6'
 
     // asm - Java
@@ -60,7 +60,7 @@ dependencies {
     // Scala library
     compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.1'
 
-    // Scala compiler
+    // Scala cobalt
     compile group: 'org.scala-lang', name: 'scala-compiler', version: '2.12.1'
 }
 
@@ -85,7 +85,7 @@ sourceSets {
     test {
         scala {
 
-            include "compiler"
+            include "cobalt"
         }
         resources {
             srcDir 'resources'
