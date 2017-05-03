@@ -29,7 +29,7 @@ import cobalt.ast.constants.long_constant.LongConstantParser
 import cobalt.ast.constants.short_constant.ShortConstantParser
 import cobalt.ast.constants.string_constant.StringConstantParser
 import cobalt.ast.operators._
-import cobalt.ast.variable.VariableParser
+import cobalt.ast.variable.{VariableBlock, VariableParser}
 import cobalt.ast.{Block, Parser}
 import cobalt.tokenizer.Tokenizer
 import cobalt.utilities.{RPN, Utils}
@@ -64,6 +64,7 @@ class ExpressionBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends B
     new ClosingBracketOpParser
   )
 
+  println(tokenizer.line)
   val expressionBlocks:List[Block] = RPN.infixToRPN(Utils.getAllBlocks(this, tokenizer.line, 0, parsers))
 
 
@@ -71,7 +72,7 @@ class ExpressionBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends B
 
   override val getValue: String = ""
 
-  override val getType: String = expressionBlocks.filter(_.isInstanceOf[ConstantBlock]).head.getType
+  override val getType: String = expressionBlocks.filter(b => b.isInstanceOf[ConstantBlock] || b.isInstanceOf[VariableBlock]).head.getType
 
   override def getOpeningCode: String = {
     expressionBlocks.map(_.getOpeningCode).mkString("\n")
