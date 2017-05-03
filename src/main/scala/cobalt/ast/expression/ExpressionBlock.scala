@@ -64,7 +64,6 @@ class ExpressionBlock(var superBlockInit: Block, tokenizer: Tokenizer) extends B
     new ClosingBracketOpParser
   )
 
-  println(tokenizer.line)
   val expressionBlocks:List[Block] = RPN.infixToRPN(Utils.getAllBlocks(this, tokenizer.line, 0, parsers))
 
 
