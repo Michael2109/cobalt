@@ -60,13 +60,7 @@ public class ExampleClass(arg1: Int, arg2: Int)
     
     
     // Add - Specified return type
-    //add a b: Int Int <- Int = a + b
-    
     add(a:Int, b:Int): Int = a + b
-    
-    //add a:Int b:Int <- Int = a + b
-    
-    //add a b <- Int Int <- Int = a + b
     
     
     // Subtract - Return type inference
@@ -74,8 +68,8 @@ public class ExampleClass(arg1: Int, arg2: Int)
         a - b
         
         
-    // Add One - lambda
-    addOne = (x:Int) -> x + 1
+    // Add One - Anonymous Function
+    addOne = (x:Int) => x + 1
     
     
     // Add values to a formatted String
