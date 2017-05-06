@@ -19,9 +19,8 @@
 package cobalt.ast.variable
 
 import cobalt.ast.Block
-import cobalt.ast.operators.assignment.AssignmentOpBlock
 import cobalt.symbol_table.{Row, SymbolTable}
-import cobalt.utilities.{RPN, Utils}
+import cobalt.utilities.Utils
 
 /**
   * Represents a variable reference
@@ -42,10 +41,7 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
   override def getOpeningCode(): String = {
     if (Utils.getMethod(this) != null) {
 
-      // Get assigned blocks in reverse polish notation
-      val rpnString: String = if (stack.nonEmpty && stack.head.isInstanceOf[AssignmentOpBlock]) RPN.infixToRPN(stack.drop(1).toList).map(b => b.getOpeningCode).mkString("\n") else ""
-
-
+      val unwrap = if(superBlockInit.superBlock.isInstanceOf[DefineVariableBlock]) Utils.unwrapCode(this) else ""
       row.getType match {
 
         // Primitives
@@ -58,14 +54,14 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
         case "double" => "mv.visitVarInsn(DLOAD" + "," + row.getId + ");\n"
 
         // Objects
-        case "Char" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "Byte" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "Short" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "Int" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "Long" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "Float" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "Double" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
-        case "String" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n"
+        case "Char" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "Byte" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "Short" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "Int" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "Long" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "Float" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "Double" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
+        case "String" => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + unwrap
         case _ => "mv.visitVarInsn(ALOAD" + "," + row.getId + ");\n" + stack.map(_.getOpeningCode).mkString("\n")
       }
     }
@@ -74,26 +70,6 @@ class VariableBlock(superBlockInit: Block, name: String) extends Block(superBloc
     }
   }
 
-  def unwrapCode(): String ={
-    // Calls methods to get value from wrapper class
-    val convertString: String = {
-      if (superBlockInit.isInstanceOf[DefineVariableBlock]) {
-        row.getType match {
-          case "Char" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
-          case "Byte" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()B\", false);\n"
-          case "Short" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
-          case "Int" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
-          case "Long" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Long\", \"longValue\", \"()J\", false);\n"
-          case "Float" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
-          case "Double" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
-          case _ => ""
-        }
-      } else {
-        ""
-      }
-    }
-    convertString
-  }
 
   override def getClosingCode: String = {
     ""

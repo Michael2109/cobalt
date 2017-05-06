@@ -30,7 +30,7 @@ class CharConstantParser extends ConstantParser[CharConstantBlock] {
     *
     * @return
     */
-  override val regex: String = "\'[a-zA-Z0-9]\'"
+  override val regex: String = "^\'[a-zA-Z0-9]\'"
 
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): CharConstantBlock = {

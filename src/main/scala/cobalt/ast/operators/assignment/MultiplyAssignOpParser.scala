@@ -29,7 +29,7 @@ class MultiplyAssignOpParser extends Parser[MultiplyAssignOpBlock] {
     *
     * @return
     */
-  override val regex: String = "\\*="
+  override val regex: String = "^\\*="
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): MultiplyAssignOpBlock = {
     new MultiplyAssignOpBlock(superBlock)

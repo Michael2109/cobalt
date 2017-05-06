@@ -32,11 +32,11 @@ import cobalt.tokenizer.Tokenizer
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
-object Utils extends Meta[Base]{
+object Utils extends Meta[Base] {
 
   def meta = Utils
 
- // val logger: Logger = LoggerFactory.getLogger(getClass)
+  // val logger: Logger = LoggerFactory.getLogger(getClass)
 
   /**
     * Returns the method a blocks is within
@@ -90,6 +90,7 @@ object Utils extends Meta[Base]{
 
   /**
     * Gets the directory of the class using the Imports. Otherwise assumes class is  in the same package
+    *
     * @param block
     * @return
     */
@@ -110,6 +111,7 @@ object Utils extends Meta[Base]{
 
   /**
     * Gets the directory of the class using the package. Otherwise assumes class is  in the same package
+    *
     * @return
     */
   def getPackage(blockInit: Block): String = {
@@ -192,30 +194,31 @@ object Utils extends Meta[Base]{
     }
   }
 
-  def isClass(blockInit : Block) : Boolean = {
+  def isClass(blockInit: Block): Boolean = {
 
-      var block: Block = blockInit
-      while (!block.isInstanceOf[ClassBlock] && !block.isInstanceOf[ObjectBlock]) {
-        block = block.superBlock
-      }
+    var block: Block = blockInit
+    while (!block.isInstanceOf[ClassBlock] && !block.isInstanceOf[ObjectBlock]) {
+      block = block.superBlock
+    }
 
-      if (block.isInstanceOf[ClassBlock]) {
-        true
-      }else {
-        false
-      }
+    if (block.isInstanceOf[ClassBlock]) {
+      true
+    } else {
+      false
+    }
 
   }
 
   /**
     * Returns a list of all files in the directory
+    *
     * @param File directory
     * @return
     */
   def recursiveListFiles(f: File, r: Regex): Array[File] = {
     val these = f.listFiles
     val good = these.filter(f => r.findFirstIn(f.getName).isDefined)
-    good ++ these.filter(_.isDirectory).flatMap(recursiveListFiles(_,r))
+    good ++ these.filter(_.isDirectory).flatMap(recursiveListFiles(_, r))
   }
 
   /**
@@ -244,25 +247,20 @@ object Utils extends Meta[Base]{
 
           if (parser.shouldParse(lineLeft)) {
 
-
-            // Get the regex that matched
-            val regex: String = if(parser.regex.r.findFirstIn(lineLeft).nonEmpty) parser.regex else ""
-
             // Get the section of the line that matched the regex
-            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
+            val first: String = parser.regex.r.findFirstIn(lineLeft).getOrElse("").trim
 
             // If the line started with the section then parse it
-            if (lineLeft.trim.startsWith(first)) {
-              found = true
+            found = true
 
-              if (result.nonEmpty) {
-                result.head.stack += parser.parse(result.head, new Tokenizer(first))
-              } else {
-                result += parser.parse(superBlock, new Tokenizer(first))
-              }
-              lineLeft = lineLeft.substring(first.length)
-
+            if (result.nonEmpty) {
+              result.head.stack += parser.parse(result.head, new Tokenizer(first))
+            } else {
+              result += parser.parse(superBlock, new Tokenizer(first))
             }
+            lineLeft = lineLeft.substring(first.length)
+
+
           }
         }
       }
@@ -292,21 +290,17 @@ object Utils extends Meta[Base]{
 
           if (parser.shouldParse(lineLeft)) {
 
-            // Get the regex that matched
-            val regex: String = if(parser.regex.r.findFirstIn(lineLeft).nonEmpty) parser.regex else ""
-
             // Get the section of the line that matched the regex
-            val first: String = regex.r.findFirstIn(lineLeft).getOrElse("").trim
+            val first: String = parser.regex.r.findFirstIn(lineLeft).getOrElse("").trim
 
             // If the line started with the section then parse it
-            if (lineLeft.trim.startsWith(first)) {
-              found = true
+            found = true
 
-              result += parser.parse(superBlock, new Tokenizer(first))
+            result += parser.parse(superBlock, new Tokenizer(first))
 
-              lineLeft = lineLeft.substring(first.length).trim
+            lineLeft = lineLeft.substring(first.length).trim
 
-            }
+
           }
         }
       }
@@ -316,7 +310,7 @@ object Utils extends Meta[Base]{
     }
 
 
-      result.toList
+    result.toList
 
   }
 
@@ -332,12 +326,12 @@ object Utils extends Meta[Base]{
     fileBlock
   }
 
-  def getWrapperType(varType: String): String ={
+  def getWrapperType(varType: String): String = {
     varType match {
       case "Byte" => "Ljava/lang/Byte;"
       case "Short" => "Ljava/lang/Short;"
       case "Int" => "Ljava/lang/Integer;"
-      case "Long" =>"Ljava/lang/Long;"
+      case "Long" => "Ljava/lang/Long;"
       case "Float" => "Ljava/lang/Float;"
       case "Double" => "Ljava/lang/Double;"
       case "Char" => "Ljava/lang/Character;"
@@ -366,6 +360,24 @@ object Utils extends Meta[Base]{
     }
   }
 
+  def unwrapCode(block: Block): String = {
+    // Calls methods to get value from wrapper class
+    val convertString: String = {
+
+      block.getType match {
+        case "Char" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Character\", \"charValue\", \"()C\", false);\n"
+        case "Byte" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Byte\", \"byteValue\", \"()B\", false);\n"
+        case "Short" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Short\", \"shortValue\", \"()S\", false);\n"
+        case "Int" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Integer\", \"intValue\", \"()I\", false);\n"
+        case "Long" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Long\", \"longValue\", \"()J\", false);\n"
+        case "Float" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Float\", \"floatValue\", \"()F\", false);\n"
+        case "Double" => "mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/Double\", \"doubleValue\", \"()D\", false);\n"
+        case _ => ""
+      }
+    }
+    convertString
+  }
+
 
   /**
     * Executes cmd "java" with the classpath and file location and returns the output
@@ -380,7 +392,7 @@ object Utils extends Meta[Base]{
     val command = "java -cp " + classPath + " " + directory
     val process = runtime.exec(command)
     val input = new BufferedReader(new InputStreamReader(process.getInputStream()))
-     var line = input.readLine()
+    var line = input.readLine()
     while (line != null) {
       result += line
       line = input.readLine()

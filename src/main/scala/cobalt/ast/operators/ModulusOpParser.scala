@@ -27,7 +27,7 @@ class ModulusOpParser extends Parser[ModulusOpBlock] {
     *
     * @return
     */
-  override val regex: String = "[\\%]"
+  override val regex: String = "^[\\%]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ModulusOpBlock = {
     new ModulusOpBlock(superBlock)

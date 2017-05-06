@@ -31,7 +31,7 @@ class ForParser extends Parser[ForBlock] {
     *
     * @return
     */
-  override val regex: String = "for"
+  override val regex: String = "^for"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ForBlock = {
     new ForBlock(superBlock)

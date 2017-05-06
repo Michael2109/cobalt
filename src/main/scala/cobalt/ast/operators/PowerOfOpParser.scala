@@ -28,7 +28,7 @@ class PowerOfOpParser extends Parser[PowerOfOpBlock] {
     *
     * @return
     */
-  override val regex: String = "\\*\\*"
+  override val regex: String = "^\\*\\*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): PowerOfOpBlock = {
     new PowerOfOpBlock(superBlock)

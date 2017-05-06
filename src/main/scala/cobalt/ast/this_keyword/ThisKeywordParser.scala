@@ -29,7 +29,7 @@ class ThisKeywordParser extends Parser[ThisKeywordBlock] {
     *
     * @return
     */
-  override val regex: String = "this"
+  override val regex: String = "^this"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ThisKeywordBlock = {
     new ThisKeywordBlock(superBlock)

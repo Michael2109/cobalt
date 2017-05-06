@@ -28,7 +28,7 @@ class CatchParser extends Parser[CatchBlock] {
     *
     * @return
     */
-  override val regex: String = "catch:"
+  override val regex: String = "^catch:"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): CatchBlock = {
     new CatchBlock(superBlock)

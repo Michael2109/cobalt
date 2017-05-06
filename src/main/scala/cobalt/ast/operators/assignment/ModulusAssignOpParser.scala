@@ -29,7 +29,7 @@ class ModulusAssignOpParser extends Parser[ModulusAssignOpBlock] {
     *
     * @return
     */
-  override val regex: String = "%="
+  override val regex: String = "^%="
 
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ModulusAssignOpBlock = {

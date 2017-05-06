@@ -75,16 +75,17 @@ class ObjectMethodCallBlock(var superBlockInit: Block, var methodName: String, v
 
   override def getOpeningCode: String = {
 
-    val directory = if (Utils.getDirectory(this, superBlockInit.getType) == "") Utils.getPackage(this).replace(".", "/") else Utils.getDirectory(this, superBlockInit.getType)
+    val directory = if (Utils.getDirectory(this, superBlockInit.getType) == "") Utils.getPackage(this).replace(".", "/") else Utils.getWrapperType(superBlockInit.getType)
 
     argStackString +
-      "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + directory + "/" + superBlockInit.getType + "\", \"" + methodName + "\", \"(" + argTypeString + ")V\", false);\n"
+      "mv.visitMethodInsn(INVOKEVIRTUAL, \"" + Utils.getWrapperType(superBlockInit.getType) + "\", \"" + methodName + "\", \"(" + argTypeString + ")V\", false);\n"
 
   }
 
   override def getClosingCode: String = {
     ""
   }
+
 
   override def toString: String = {
     "<OBJECT_METHOD_CALL> " + methodName + " ( " + argTypeString + ")"

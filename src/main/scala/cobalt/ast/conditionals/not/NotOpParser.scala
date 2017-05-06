@@ -27,7 +27,7 @@ class NotOpParser extends Parser[NotOpBlock] {
     *
     * @return
     */
-  override val regex: String = "[!]"
+  override val regex: String = "^[!]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): NotOpBlock = {
     new NotOpBlock(superBlock)

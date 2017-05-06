@@ -32,7 +32,7 @@ class MethodCallParser extends Parser[MethodCallBlock] {
     *
     * @return
     */
-  override val regex: String = "[a-zA-Z][a-zA-Z0-9]*[ ]*\\((([ ]*([a-zA-Z][a-zA-Z0-9]*|[0-9]+)[ ]*[ ]?)*)*\\)"
+  override val regex: String = "^[a-zA-Z][a-zA-Z0-9]*[ ]*\\((([ ]*([a-zA-Z][a-zA-Z0-9]*|[0-9]+)[ ]*[ ]?)*)*\\)"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): MethodCallBlock = {
     val name: String = tokenizer.nextToken.token // Get the string value of the next token.

@@ -29,7 +29,7 @@ class ExclOrAssignOpParser extends Parser[ExclOrAssignOpBlock] {
     *
     * @return
     */
-  override val regex: String = "\\^="
+  override val regex: String = "^\\^="
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ExclOrAssignOpBlock = {
     new ExclOrAssignOpBlock(superBlock)

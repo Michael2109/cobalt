@@ -29,7 +29,7 @@ class BitwiseXorOpParser extends Parser[BitwiseXorOpBlock] {
     *
     * @return
     */
-  override val regex: String = "\\^"
+  override val regex: String = "^\\^"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): BitwiseXorOpBlock = {
     new BitwiseXorOpBlock(superBlock)

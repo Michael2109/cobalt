@@ -30,7 +30,7 @@ class ByteConstantParser extends ConstantParser[ByteConstantBlock] {
     *
     * @return
     */
-  override val regex: String = "[0-9]+(b|B)"
+  override val regex: String = "^[0-9]+(b|B)"
 
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): ByteConstantBlock = {

@@ -28,7 +28,7 @@ class ThrowsParser extends Parser[ThrowsBlock] {
     *
     * @return
     */
-  override val regex: String = "throws"
+  override val regex: String = "^throws"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): ThrowsBlock = {
     new ThrowsBlock(superBlock)

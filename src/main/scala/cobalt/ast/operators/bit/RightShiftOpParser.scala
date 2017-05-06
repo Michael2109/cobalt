@@ -29,7 +29,7 @@ class RightShiftOpParser extends Parser[RightShiftOpBlock] {
     *
     * @return
     */
-  override val regex: String = ">>"
+  override val regex: String = "^>>"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): RightShiftOpBlock = {
     new RightShiftOpBlock(superBlock)

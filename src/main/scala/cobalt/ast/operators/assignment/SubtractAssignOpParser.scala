@@ -29,7 +29,7 @@ class SubtractAssignOpParser extends Parser[SubtractAssignOpBlock] {
     *
     * @return
     */
-  override val regex: String = "-="
+  override val regex: String = "^-="
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): SubtractAssignOpBlock = {
     new SubtractAssignOpBlock(superBlock)

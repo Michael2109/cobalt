@@ -29,7 +29,7 @@ class BooleanConstantParser extends ConstantParser[BooleanConstantBlock] {
     *
     * @return
     */
-  override val regex: String = "(true|false)"
+  override val regex: String = "^(true|false)"
 
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): BooleanConstantBlock = {

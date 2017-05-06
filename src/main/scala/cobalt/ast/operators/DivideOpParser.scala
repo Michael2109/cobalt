@@ -27,7 +27,7 @@ class DivideOpParser extends Parser[DivideOpBlock] {
     *
     * @return
     */
-  override val regex: String = "[/]"
+  override val regex: String = "^[/]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): DivideOpBlock = {
     new DivideOpBlock(superBlock)

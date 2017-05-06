@@ -29,7 +29,7 @@ class IsParser extends Parser[IsBlock] {
     *
     * @return
     */
-  override val regex: String = "is"
+  override val regex: String = "^is"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): IsBlock = {
 

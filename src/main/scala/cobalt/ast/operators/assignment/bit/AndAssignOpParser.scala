@@ -29,7 +29,7 @@ class AndAssignOpParser extends Parser[AndAssignOpBlock] {
     *
     * @return
     */
-  override val regex: String = "\\&="
+  override val regex: String = "^\\&="
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): AndAssignOpBlock = {
     new AndAssignOpBlock(superBlock)

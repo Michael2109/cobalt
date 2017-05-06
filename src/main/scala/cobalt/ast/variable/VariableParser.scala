@@ -28,7 +28,7 @@ class VariableParser extends Parser[DefineVariableBlock] {
     *
     * @return
     */
-  override val regex: String = "[a-zA-Z][a-zA-Z0-9]*"
+  override val regex: String = "^[a-zA-Z][a-zA-Z0-9]*"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): VariableBlock = {
     val name: String = tokenizer.nextToken.token

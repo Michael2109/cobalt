@@ -29,7 +29,7 @@ class OrOpParser extends Parser[OrOpBlock] {
     *
     * @return
     */
-  override val regex: String = "[\\|][\\|]"
+  override val regex: String = "^[\\|][\\|]"
 
 
 

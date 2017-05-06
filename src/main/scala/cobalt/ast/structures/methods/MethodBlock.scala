@@ -87,7 +87,7 @@ class MethodBlock(var superBlockInit: Block, modifierTokens: List[ModifierToken]
       "   {\n" + "            /* Build '" + getName + "' method */\n" + "            " +
         "MethodVisitor mv = cw.visitMethod(\n" + "                    " + modifiersASM + " " + static + " " + `sealed` + ",                         // public method\n" +
         "                    \"" + getName + "\",                              // name\n" +
-        "                    \"(" + parameterString + ")" + (if (returnType == "void") "V" else ("L" + Utils.getDirectory(this, returnType)).trim + "/" + returnType.trim + ";") + "\",                            // descriptor\n" +
+        "                    \"(" + parameterString + ")" + (if (returnType == "void") "V" else (Utils.getWrapperType(returnType)).trim) + "\",                            // descriptor\n" +
         "                    " + "null" + ",                               // signature (null means not generic)\n" +
         "                    null);                              // exceptions (array of strings)\n" + "mv.visitCode();\n" + "\n" + "Label lMethod0 = new Label();\n" + "mv.visitLabel(lMethod0);\n"
     }

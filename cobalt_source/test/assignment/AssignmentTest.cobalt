@@ -1,6 +1,5 @@
 package test.assignment
 
-import java.lang.Integer
 
 public class AssignmentTest()
 
@@ -37,9 +36,11 @@ public class AssignmentTest()
         number2:Int=125
         o.addAndPrint(number1, number2)
 
-    public addAndPrint(x:Int, y:Int): void
+
+    public addAndPrint(x:Int, y:Int): Int
         result:Int = x + y
         println(result)
+        x
 
 
     public anotherTest(x:Float): void

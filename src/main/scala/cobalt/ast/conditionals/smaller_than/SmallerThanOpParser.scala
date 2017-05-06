@@ -27,7 +27,7 @@ class SmallerThanOpParser extends Parser[SmallerThanOpBlock] {
     *
     * @return
     */
-  override val regex: String =  "[\\<]"
+  override val regex: String =  "^[\\<]"
 
   def parse(superBlock: Block, tokenizer: Tokenizer): SmallerThanOpBlock = {
     new SmallerThanOpBlock(superBlock)

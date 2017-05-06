@@ -29,7 +29,7 @@ class BitwiseOrOpParser extends Parser[BitwiseAndOpBlock] {
     *
     * @return
     */
-  override val regex: String = "\\|"
+  override val regex: String = "^\\|"
 
   override def parse(superBlock: Block, tokenizer: Tokenizer): BitwiseOrOpBlock = {
     new BitwiseOrOpBlock(superBlock)

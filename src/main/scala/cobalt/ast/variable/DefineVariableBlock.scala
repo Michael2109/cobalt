@@ -20,8 +20,9 @@ package cobalt.ast.variable
 
 import cobalt.ast.Block
 import cobalt.ast.empty.EmptyBlock
+import cobalt.ast.structures.ObjectMethodCallBlock
 import cobalt.symbol_table.{Row, SymbolTable}
-import cobalt.utilities.{RPN, Utils}
+import cobalt.utilities.Utils
 
 /**
   * Represents a variable definition
@@ -47,17 +48,19 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
     // If it is within a method
     if (!Utils.getMethod(this).isEmpty) {
 
+      val code = stack.toList.map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock] || b.isInstanceOf[ObjectMethodCallBlock]) Utils.unwrapCode(b) else "")).mkString("\n")
+
       // Push the object to the stack
       varType match {
-        case "Byte" => "mv.visitTypeInsn(NEW, \"java/lang/Byte\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "Int" => "mv.visitTypeInsn(NEW, \"java/lang/Integer\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "Long" => "mv.visitTypeInsn(NEW, \"java/lang/Long\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "Float" => "mv.visitTypeInsn(NEW, \"java/lang/Float\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "Double" => "mv.visitTypeInsn(NEW, \"java/lang/Double\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "Char" => "mv.visitTypeInsn(NEW, \"java/lang/Character\");\n" + "mv.visitInsn(DUP);\n" + RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case "String" => stack.toList.map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
-        case _ => RPN.infixToRPN(stack.toList).map(b => b.getOpeningCode + (if(b.isInstanceOf[VariableBlock])b.asInstanceOf[VariableBlock].unwrapCode() else "")).mkString("\n")
+        case "Byte" => "mv.visitTypeInsn(NEW, \"java/lang/Byte\");\n" + "mv.visitInsn(DUP);\n" + code
+        case "Short" => "mv.visitTypeInsn(NEW, \"java/lang/Short\");\n" + "mv.visitInsn(DUP);\n" + code
+        case "Int" => "mv.visitTypeInsn(NEW, \"java/lang/Integer\");\n" + "mv.visitInsn(DUP);\n"  + code
+        case "Long" => "mv.visitTypeInsn(NEW, \"java/lang/Long\");\n" + "mv.visitInsn(DUP);\n" + code
+        case "Float" => "mv.visitTypeInsn(NEW, \"java/lang/Float\");\n" + "mv.visitInsn(DUP);\n" + code
+        case "Double" => "mv.visitTypeInsn(NEW, \"java/lang/Double\");\n" + "mv.visitInsn(DUP);\n" + code
+        case "Char" => "mv.visitTypeInsn(NEW, \"java/lang/Character\");\n" + "mv.visitInsn(DUP);\n" + code
+        case "String" =>  code
+        case _ => code
       }
 
     } else {
@@ -85,6 +88,9 @@ class DefineVariableBlock(superBlockInit: Block, declaration: Boolean, name: Str
       ""
     }
   }
+
+
+
 
   override def toString: String = "def variable: " + name + stack
 
