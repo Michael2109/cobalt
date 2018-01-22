@@ -1,9 +1,0 @@
-package test.source.primitives
-
-class BooleanTest():
-
-    let main() : void:
-        test1:boolean = false
-        test2:boolean = true
-        println(test1)
-        println(test2)

@@ -1,9 +1,0 @@
-package test.source.primitives
-
-class IntegerTest():
-
-    let main() : void:
-        test1:int = 10
-        test2:int = 20
-        println(test1)
-        println(test2)

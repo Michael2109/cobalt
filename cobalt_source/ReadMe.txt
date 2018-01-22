@@ -1,1 +1,0 @@
-All Cobalt source files are placed here.

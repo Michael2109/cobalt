@@ -1,5 +1,0 @@
-package test.operators
-
-class OperatorTest():
-
-    let test() : void:

@@ -1,9 +1,0 @@
-package test.source.primitives
-
-class DoubleTest():
-
-    let main() : void:
-        test1:double = 50.0
-        test2:double = 500.0
-        println(test1)
-        println(test2)

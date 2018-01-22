@@ -1,7 +1,0 @@
-package test.source.primitives
-
-class StringTest():
-
-    let main() : void:
-        test1:String = "Hello World"
-        println(test1)

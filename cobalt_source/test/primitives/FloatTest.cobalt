@@ -1,9 +1,0 @@
-package test.source.primitives
-
-class FloatTest():
-
-    let main() : void:
-        test1:float = 10.0f
-        test2:float = 15.0f
-        println(test1)
-        println(test2)

@@ -1,5 +1,0 @@
-package test.structures
-
-public abstract open class ClassTest():
-
-    open let method1() : void:
