@@ -18,6 +18,6 @@ module TestModule {
         arrTest:[int] = [x y z]
         println arrTest;
         testFunction (x)
-        z :String = "Helloworld";
+        stringTest :String = "Helloworld";
     }
 }

@@ -6,7 +6,8 @@ int y=10;
 int z=15;
 int[] arrTest={x, y, z};
 System.out.println(arrTest);
-testmodule.testFunction(x);}
+testmodule.testFunction(x);
+String z="Helloworld";}
 public void testFunction(int x){
 if(x < 50){
 System.out.println(x);
