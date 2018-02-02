@@ -1,0 +1,7 @@
+module IndentationTest
+    testFunction : int -> void
+    testFunction x =
+        x =
+    main : String -> IO
+    main args =
+        y =

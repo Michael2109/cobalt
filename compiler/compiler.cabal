@@ -38,6 +38,7 @@ library
       Lib
       Parser
       Block
+      IndentTest
   other-modules:
       Paths_haskell_project
   default-language: Haskell2010

@@ -19,6 +19,7 @@ module TestModule {
         println arrTest;
         testFunction (x)
         stringTest :String = "Helloworld";
+        #otherStringTest: String = "Test";
         #otherStringTest: String = "Something else";
         #if(x < 4){
         #print stringTest;
