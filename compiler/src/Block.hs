@@ -84,7 +84,8 @@ data Expr
   | ReturnType String
   | AssignArith Expr String AExpr
   | AssignString Expr String Expr
-  | If BExpr [Expr] [Expr]
+  | If BExpr [Expr]
+  | Else [Expr]
   | While BExpr [Expr]
   | Print String
   | Return Expr
@@ -120,7 +121,8 @@ instance Show Expr where
     show (ReturnType b) = b
     show (AssignArith vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (AssignString vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
-    show (If condition statement elseStatement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "} else {\n" ++ intercalate "\n" (map show elseStatement) ++ "}"
+    show (If condition statement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
+    show (Else statement) = " else {\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (While condition statement) = "while(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Skip) = "[skip]"
     show (Seq s) = "[seq]"

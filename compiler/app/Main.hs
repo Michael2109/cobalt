@@ -37,12 +37,12 @@ main = do
     print $ "Reading: " ++ inputFile
     s <- readFile inputFile
 
-    --print "Compiling..."
-    --let compiledString = parseString s
+    print "Compiling..."
+    let compiledString = parseString s
 
     print "Compiling complete."
     print $ "Writing: " ++ outputFile
-    --writeFile outputFile $ compiledString
+    writeFile outputFile $ compiledString
     --print $ parseString s
 
     parsePrint s

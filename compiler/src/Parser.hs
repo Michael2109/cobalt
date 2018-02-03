@@ -21,7 +21,7 @@ import Data.Either.Unwrap
 
 --import Lexer
 import Block
-
+{--
 type Parser = Parsec Void String
 
 lineComment :: Parser ()
@@ -316,3 +316,4 @@ parseString input =
 --prettyPrint :: (Either (ParseError (Expr) e) a) -> IO()
 --prettyPrint p = do
   --  pPrint p
+  --}
