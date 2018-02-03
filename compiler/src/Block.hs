@@ -12,15 +12,30 @@ data BExpr
   | BBinary BBinOp BExpr BExpr
   | RBinary RBinOp AExpr AExpr
 
+instance Show BExpr where
+    show (BoolConst b) = lowerString $ show b
+    show (Not n) = show n
+    show (BBinary bbinop bExpr1 bExpr2) = show bExpr1 ++ " " ++ show bbinop ++ " " ++ show bExpr2
+    show (RBinary rbinop aExpr1 aExpr2) = show aExpr1 ++ " " ++ show rbinop ++ " " ++ show aExpr2
+
+
 -- Boolean ops
 data BBinOp
   = And
   | Or
 
+instance Show BBinOp where
+    show (And) = "&&"
+    show (Or) = "||"
+
 -- R binary ops
 data RBinOp
   = Greater
   | Less
+
+instance Show RBinOp where
+    show (Greater) = ">"
+    show (Less) = "<"
 
 -- Arithmetic expressions
 data AExpr
@@ -28,6 +43,14 @@ data AExpr
   | IntConst Integer
   | Neg AExpr
   | ABinary ABinOp AExpr AExpr
+  | Parenthesis AExpr
+
+instance Show AExpr where
+    show (Var v) = v
+    show (IntConst i) = show i
+    show (Neg aExpr) = "-" ++ show aExpr
+    show (ABinary aBinOp aExpr1 aExpr2) = show aExpr1 ++ " " ++ show aBinOp ++ " " ++ show aExpr2
+    show (Parenthesis aExpr) = "(" ++ show aExpr ++ ")"
 
 -- Arithmetic ops
 data ABinOp
@@ -37,6 +60,14 @@ data ABinOp
   | Subtract
   | Multiply
   | Divide
+
+instance Show ABinOp where
+    show (Add) = "+"
+    show (Subtract) = "-"
+    show (Multiply) = "*"
+    show (Divide) = "/"
+    show (OpeningParenthesis) = "("
+    show (ClosingParenthesis) = ")"
 
 -- Statements
 data Expr
@@ -65,32 +96,6 @@ data Expr
   | Where [Expr]
   | StringLiteral String
   | Skip
-
-instance Show ABinOp where
-    show (Add) = "+"
-    show (Subtract) = "-"
-    show (Multiply) = "*"
-    show (Divide) = "/"
-
-instance Show BBinOp where
-    show (And) = "&&"
-    show (Or) = "||"
-
-instance Show RBinOp where
-    show (Greater) = ">"
-    show (Less) = "<"
-
-instance Show AExpr where
-    show (Var v) = v
-    show (IntConst i) = show i
-    show (Neg aExpr) = "-" ++ show aExpr
-    show (ABinary aBinOp aExpr1 aExpr2) = show aExpr1 ++ " " ++ show aBinOp ++ " " ++ show aExpr2
-
-instance Show BExpr where
-    show (BoolConst b) = lowerString $ show b
-    show (Not n) = show n
-    show (BBinary bbinop bExpr1 bExpr2) = show bExpr1 ++ " " ++ show bbinop ++ " " ++ show bExpr2
-    show (RBinary rbinop aExpr1 aExpr2) = show aExpr1 ++ " " ++ show rbinop ++ " " ++ show aExpr2
 
 instance Show Expr where
     show (Module name bodyArray) =

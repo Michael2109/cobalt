@@ -1,7 +1,7 @@
 module IndentationTest
     testFunction : int -> void
     testFunction x =
-        x =
+        x: int = 10 + 5
     main : String -> IO
     main args =
-        y =
+        y: int = (12 + 2) / 3 + 2

@@ -9,10 +9,13 @@ import Data.Char (isAlphaNum)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Expr
 
 import Block
 
 type Parser = Parsec Void String
+
+-- Tokens
 
 lineComment :: Parser ()
 lineComment = L.skipLineComment "#"
@@ -37,6 +40,66 @@ rws = ["module", "println", "import",  "let", "if","then","else","while","do","s
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
+integer :: Parser Integer
+integer = lexeme L.decimal
+
+parens :: Parser a -> Parser a
+parens = between (symbol "(") (symbol ")")
+
+aTerm :: Parser AExpr
+aTerm = parens aExpr
+  <|> Var      <$> identifier
+  <|> IntConst <$> integer
+
+aOperators :: [[Operator Parser AExpr]]
+aOperators =
+  [ [Prefix (Neg <$ symbol "-") ]
+  , [ InfixL (ABinary Multiply <$ symbol "*")
+    , InfixL (ABinary Divide   <$ symbol "/") ]
+  , [ InfixL (ABinary Add      <$ symbol "+")
+    , InfixL (ABinary Subtract <$ symbol "-") ]
+  ]
+
+aExpr :: Parser AExpr
+aExpr = makeExprParser aTerm aOperators
+
+assignArith :: Parser Expr
+assignArith = do
+  var  <- identifier
+  symbol ":"
+  vType <- valType
+  symbol "="
+  e <- aExpr
+  return $ AssignArith vType var e
+
+
+bTerm :: Parser BExpr
+bTerm =  parens bExpr
+  <|> (BoolConst True  <$ rword "true")
+  <|> (BoolConst False <$ rword "false")
+  <|> rExpr
+
+bOperators :: [[Operator Parser BExpr]]
+bOperators =
+  [ [Prefix (Not <$ rword "not") ]
+  , [InfixL (BBinary And <$ rword "and")
+    , InfixL (BBinary Or <$ rword "or") ]
+  ]
+
+bExpr :: Parser BExpr
+bExpr = makeExprParser bTerm bOperators
+
+rExpr :: Parser BExpr
+rExpr = do
+  a1 <- aExpr
+  op <- relation
+  a2 <- aExpr
+  return (RBinary op a1 a2)
+
+relation :: Parser RBinOp
+relation = (symbol ">" *> pure Greater)
+  <|> (symbol "<" *> pure Less)
+
 identifier :: Parser String
 identifier = (lexeme . try) (p >>= check)
   where
@@ -46,34 +109,6 @@ identifier = (lexeme . try) (p >>= check)
                 else return x
 
 
-pItemList :: Parser (String, [(String, [String])])
-pItemList = L.nonIndented scn (L.indentBlock scn p)
-  where
-    p = do
-      header <- pItem
-      return (L.IndentSome Nothing (return . (header, )) pComplexItem)
-
-pComplexItem :: Parser (String, [String])
-pComplexItem = L.indentBlock scn p
-  where
-    p = do
-      header <- pItem
-      return (L.IndentMany Nothing (return . (header, )) pLineFold)
-
-pItem :: Parser String
-pItem = lexeme (takeWhile1P Nothing f) <?> "list item"
-  where
-    f x = isAlphaNum x || x == '-'
-
-
-pLineFold :: Parser String
-pLineFold = L.lineFold scn $ \sc' ->
-  let ps = takeWhile1P Nothing f `sepBy1` try sc'
-      f x = isAlphaNum x || x == '-'
-  in unwords <$> ps <* sc
-
-parser :: Parser (String, [(String, [String])])
-parser = pItemList <* eof
 
 expr :: Parser Expr
 expr = f <$> sepBy1 expr' (symbol ";")
@@ -84,7 +119,7 @@ expr = f <$> sepBy1 expr' (symbol ";")
 expr' :: Parser Expr
 expr' = try moduleParser
   <|> try functionParser
-  <|> valueParser
+  <|> try assignArith
 
 moduleParser :: Parser Expr
 moduleParser = L.nonIndented scn (L.indentBlock scn p)
@@ -147,8 +182,8 @@ argument = do
   return $ Argument value
 
 
-exprParser :: Parser Expr
-exprParser = expr'
+parser :: Parser Expr
+parser = expr'
 
 parsePrint :: String -> IO()
-parsePrint s = parseTest' exprParser s
+parsePrint s = parseTest' parser s
