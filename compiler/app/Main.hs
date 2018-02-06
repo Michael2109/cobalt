@@ -1,5 +1,7 @@
 module Main where
 
+import Data.List
+import System.Directory (getDirectoryContents)
 --import Data.List
 --import Parser
 --import System.Directory
@@ -28,6 +30,21 @@ main = do
 
     --}
 
+
+
+--compileDir :: String -> IO()
+--compileDir directory outputDirectory = do
+--  filePaths <- getDirectoryContents directory
+ -- mapM (comp) map (\p -> outputDirectory ++ p) filePaths
+
+compile :: String -> String -> IO()
+compile inputDir outputDir = do
+   --getDirectoryContents inputDir
+   print "Test"
+
+
+
+
 main :: IO ()
 main = do
     let inputDir = "cobalt_src/"
@@ -35,15 +52,17 @@ main = do
     let inputFile = inputDir ++ "IndentationTest.cobalt"
     let outputFile = outputDir ++ "IndentationTest.java"
 
+    --compile inputDir outputDir
+
     print $ "Reading: " ++ inputFile
-    s <- readFile inputFile
+    fileData <- readFile inputFile
 
     print "Compiling..."
-    let compiledString = parseString s
+    let compiledString = parseString fileData
 
     print "Compiling complete."
     print $ "Writing: " ++ outputFile
     writeFile outputFile $ compiledString
     --print $ parseString s
 
-    parsePrint s
+    parsePrint fileData
