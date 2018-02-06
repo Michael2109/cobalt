@@ -2,12 +2,12 @@ module IndentationTest
     testFunction : int -> void
     testFunction x =
         if(x < 50)
-            println x;
+            println x
             nextX :int = x + 1 * 2 - 3 / 2 + 5
             testFunction (nextX)
         else
             last :int = 1000
-            println last;
+            println last
 
     main : String -> IO
     main args =
@@ -15,14 +15,16 @@ module IndentationTest
         y :int = 10
         z :int = 15
         arrTest:[int] = [x y z]
-        println arrTest;
+        println arrTest
         testFunction (x)
-        stringTest :String = "Helloworld";
-        #otherStringTest: String = "Test";
-        #otherStringTest: String = "Something else";
-        #if(x < 4){
-        #print stringTest;
-        #} else {
-        #print otherStringTest;
-        #}
+        stringTest :String = "Hello world"
+        otherStringTest: String = "Test"
+
+        if(x < 4)
+            println stringTest
+        else if (x > 10)
+            println stringTest
+        else
+            println otherStringTest
+
 

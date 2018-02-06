@@ -10,6 +10,7 @@ extra-deps:
 - base-compat-0.9.3
 - case-insensitive-1.2.0.10
 - colour-2.3.4
+- directory-1.2.6.2
 - dlist-0.8.0.3
 - either-unwrap-1.1
 - hashable-1.2.6.1

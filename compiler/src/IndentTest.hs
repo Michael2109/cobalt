@@ -138,7 +138,6 @@ identifier = (lexeme . try) (p >>= check)
 stringLiteral :: Parser Expr
 stringLiteral = do
   value <- char '"' >> manyTill L.charLiteral (char '"')
-  symbol ";"
   return $ StringLiteral value
 
 
@@ -227,8 +226,7 @@ functionParser = L.indentBlock scn p
       argTypes <- some argumentType
       symbol "->"
       rType <- IndentTest.returnType
-      nameDup <- L.lineFold scn $ \sp' ->
-        (identifier) `sepBy1` try sp' <* scn
+      nameDup <- L.lineFold scn $ \sp' -> identifier
       args <- many argument
       symbol "="
       if(name == "main") then
@@ -249,7 +247,6 @@ printParser :: Parser Expr
 printParser = do
   rword "println"
   bodyArr <- identifier
-  symbol ";"
   return $ Print bodyArr
 
 
@@ -266,6 +263,15 @@ ifStmt = L.indentBlock scn p
        rword "if"
        cond  <- bExpr
        return (L.IndentMany Nothing (return . (If cond)) expr')
+
+elseIfStmt :: Parser Expr
+elseIfStmt = L.indentBlock scn p
+   where
+     p = do
+       rword "else"
+       rword "if"
+       cond  <- bExpr
+       return (L.IndentMany Nothing (return . (ElseIf cond)) expr')
 
 elseStmt :: Parser Expr
 elseStmt = L.indentBlock scn p
@@ -294,6 +300,7 @@ expr' :: Parser Expr
 expr' = try moduleParser
   <|> try functionParser
   <|> try ifStmt
+  <|> try elseIfStmt
   <|> try elseStmt
   <|> try arrayAssign
   <|> arrayElementSelect

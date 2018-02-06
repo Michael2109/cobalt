@@ -2,6 +2,7 @@ module Main where
 
 --import Data.List
 --import Parser
+--import System.Directory
 import IndentTest
 
 {--
@@ -29,7 +30,7 @@ main = do
 
 main :: IO ()
 main = do
-    let inputDir = "cobalt/"
+    let inputDir = "cobalt_src/"
     let outputDir = "../compiler-tester/src/java/"
     let inputFile = inputDir ++ "IndentationTest.cobalt"
     let outputFile = outputDir ++ "IndentationTest.java"
