@@ -184,18 +184,20 @@ arrayElementSelect = do
 
 
 moduleParser :: Parser Expr
-moduleParser = L.nonIndented scn (L.indentBlock scn p)
-  where
-    p = do
-      rword "module"
-      name <- identifier
-      return (L.IndentSome Nothing (return . (Module name)) expr')
+moduleParser = do
+    rword "module"
+    name <- identifier
+
+    e <- many expr'
+    return (Module name e)
 
 importParser :: Parser Expr
-importParser = do
-    rword "import"
-    locations <- sepBy1 identifier (symbol ".")
-    return (Import locations)
+importParser = L.nonIndented scn p
+  where
+    p = do
+      rword "import"
+      locations <- sepBy1 identifier (symbol ".")
+      return $ (Import locations)
 
 valType :: Parser Expr
 valType = do
@@ -223,7 +225,7 @@ argument = do
 
 -- Function parser
 functionParser :: Parser Expr
-functionParser = L.indentBlock scn p
+functionParser = L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       name <- identifier

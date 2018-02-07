@@ -102,19 +102,19 @@ data Expr
 instance Show Expr where
     show (Module name bodyArray) =
         -- Get the main function tree
-
+        intercalate "\n" (map (show) (filter isImportStatement bodyArray)) ++
         "public class " ++ name ++ "{\n" ++
             "public static void main(String[] args){\n" ++
                 name ++ " " ++ lowerString name ++ "= new " ++ name ++ "();\n" ++
                 intercalate "\n" (map (\mStatement -> if(isFunctionCall mStatement) then (lowerString name ++ "." ++ show mStatement) else show mStatement) (body ((filter (isMainFunction) bodyArray)!!0))) ++
             "}\n" ++
-            getFunctionString bodyArray ++
+
+            intercalate "\n" (map (getFunctionString) bodyArray) ++
         "}\n"
 
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
     show (Function name argTypes args returnType body) = "public " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (MainFunction name argTypes args returnType body) =
-        intercalate "\n " $ map show body
+    show (MainFunction name argTypes args returnType body) = intercalate "\n " $ map show body
     show (FunctionCall name exprs) = name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b
     show (Argument b) = b
@@ -141,16 +141,24 @@ instance Show Expr where
 
 lowerString str = [ toLower loweredString | loweredString <- str]
 
-extractMain :: Expr -> Maybe String
-extractMain (MainFunction m _ _ _ _) = Just m
-extractMain _ = Nothing
+extractImportStatement :: Expr -> Maybe [String]
+extractImportStatement (Import m) = Just m
+extractImportStatement _ = Nothing
+
+extractMainFunction :: Expr -> Maybe String
+extractMainFunction (MainFunction m _ _ _ _) = Just m
+extractMainFunction _ = Nothing
 
 extractFunctionCall :: Expr -> Maybe String
 extractFunctionCall (FunctionCall m _) = Just m
 extractFunctionCall _ = Nothing
 
+
+isImportStatement :: Expr -> Bool
+isImportStatement e = isJust $ extractImportStatement e
+
 isMainFunction :: Expr -> Bool
-isMainFunction e = isJust $ extractMain e
+isMainFunction e = isJust $ extractMainFunction e
 
 isFunctionCall :: Expr -> Bool
 isFunctionCall e = isJust $ extractFunctionCall e
@@ -163,9 +171,9 @@ getInnerMainFunctionString e instanceName  = do
     else
       getInnerMainFunctionString (drop 1 e) instanceName
 --}
-getFunctionString :: [Expr] -> String
+getFunctionString :: Expr -> String
 getFunctionString e = do
-    if(isMainFunction (e!!0)) then
+    if(isMainFunction (e) || isImportStatement (e)) then
       ""
     else
-      "" ++ show (e!!0) ++ getFunctionString (drop 1 e)
+      "" ++ show (e)
