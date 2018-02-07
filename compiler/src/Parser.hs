@@ -1,65 +1,48 @@
+{-# LANGUAGE TupleSections #-}
+
 module Parser where
 
-import           Data.Functor                  ((<$>), (<$))
-import           Control.Applicative           (Applicative(..))
-import qualified Control.Monad                 as M
+import Control.Applicative (empty)
 import Control.Monad (void)
-import           Data.Functor.Identity
-import           Data.Text                     (Text)
-import qualified Data.Text                     as Text
-
 import Data.Void
-
+import Data.Char (isAlphaNum)
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import Text.Megaparsec.Perm
-import Text.Megaparsec.Expr
 import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Expr
 
-import Text.Pretty.Simple
-import Data.Either.Unwrap
-
---import Lexer
 import Block
-{--
+
 type Parser = Parsec Void String
+
+-- Tokens
+
 
 lineComment :: Parser ()
 lineComment = L.skipLineComment "#"
 
+
 scn :: Parser ()
 scn = L.space space1 lineComment empty
 
-sc :: Parser () -- ‘sc’ stands for “space consumer”
+
+sc :: Parser ()
 sc = L.space (void $ takeWhile1P Nothing f) lineComment empty
   where
-    f x = x == ' ' || x == '\t' || x =='\n'
+    f x = x == ' ' || x == '\t'
 
-lexeme :: Parser a -> Parser a
-lexeme = L.lexeme sc
 
 symbol :: String -> Parser String
 symbol = L.symbol sc
 
-integer :: Parser Integer
-integer = lexeme L.decimal
-
-semi :: Parser String
-semi = symbol ";"
 
 rword :: String -> Parser ()
 rword w = lexeme (string w *> notFollowedBy alphaNumChar)
 
+
 rws :: [String] -- list of reserved words
 rws = ["module", "println", "import",  "let", "if","then","else","while","do","skip","true","false","not","and","or"]
 
-identifier :: Parser String
-identifier = (lexeme . try) (p >>= check)
-  where
-    p       = (:) <$> letterChar <*> many alphaNumChar
-    check x = if x `elem` rws
-                then fail $ "keyword " ++ show x ++ " cannot be an identifier"
-                else return x
 
 word :: Parser String
 word = (lexeme . try) (p >>= check)
@@ -69,28 +52,104 @@ word = (lexeme . try) (p >>= check)
                 then fail $ "keyword " ++ show x ++ " cannot be an word"
                 else return x
 
+lexeme :: Parser a -> Parser a
+lexeme = L.lexeme sc
+
+
+integer :: Parser Integer
+integer = lexeme L.decimal
+
+
 parens :: Parser a -> Parser a
 parens = between (symbol "(") (symbol ")")
 
-valType :: Parser Expr
-valType = do
-    value <- identifier
-    return $ Type value
 
-argumentType :: Parser Expr
-argumentType = do
-    value <- identifier
-    return $ ArgumentType value
+aTerm :: Parser AExpr
+aTerm = parens aExpr
+  <|> Var      <$> identifier
+  <|> IntConst <$> integer
 
-returnType :: Parser Expr
-returnType = do
-    value <- identifier
-    return $ ReturnType value
 
-argument :: Parser Expr
-argument = do
-  value <- identifier
-  return $ Argument value
+aOperators :: [[Operator Parser AExpr]]
+aOperators =
+  [ [Prefix (Neg <$ symbol "-") ]
+  , [ InfixL (ABinary Multiply <$ symbol "*")
+    , InfixL (ABinary Divide   <$ symbol "/") ]
+  , [ InfixL (ABinary Add      <$ symbol "+")
+    , InfixL (ABinary Subtract <$ symbol "-") ]
+  ]
+
+
+aExpr :: Parser AExpr
+aExpr = makeExprParser aTerm aOperators
+
+
+assignArith :: Parser Expr
+assignArith = do
+  var  <- identifier
+  symbol ":"
+  vType <- valType
+  symbol "="
+  e <- aExpr
+  return $ AssignArith vType var e
+
+
+bTerm :: Parser BExpr
+bTerm =  parens bExpr
+  <|> (BoolConst True  <$ rword "true")
+  <|> (BoolConst False <$ rword "false")
+  <|> rExpr
+
+
+bOperators :: [[Operator Parser BExpr]]
+bOperators =
+  [ [Prefix (Not <$ rword "not") ]
+  , [InfixL (BBinary And <$ rword "and")
+    , InfixL (BBinary Or <$ rword "or") ]
+  ]
+
+
+bExpr :: Parser BExpr
+bExpr = makeExprParser bTerm bOperators
+
+
+rExpr :: Parser BExpr
+rExpr = do
+  a1 <- aExpr
+  op <- relation
+  a2 <- aExpr
+  return (RBinary op a1 a2)
+
+
+relation :: Parser RBinOp
+relation = (symbol ">" *> pure Greater)
+  <|> (symbol "<" *> pure Less)
+
+
+identifier :: Parser String
+identifier = (lexeme . try) (p >>= check)
+  where
+    p       = (:) <$> letterChar <*> many alphaNumChar
+    check x = if x `elem` rws
+                then fail $ "keyword " ++ show x ++ " cannot be an identifier"
+                else return x
+
+
+stringLiteral :: Parser Expr
+stringLiteral = do
+  value <- char '"' >> manyTill L.charLiteral (char '"')
+  return $ StringLiteral value
+
+
+assignString :: Parser Expr
+assignString = do
+  var  <- identifier
+  symbol ":"
+  vType <- valType
+  symbol "="
+  e <- stringLiteral
+  return (AssignString vType var e)
+
 
 arrayDef :: Parser Expr
 arrayDef = do
@@ -123,54 +182,108 @@ arrayElementSelect = do
   elementNum <- word
   return $ ArrayElementSelect elementNum
 
-whileParser :: Parser Expr
-whileParser = between sc eof expr
 
-expr :: Parser Expr
-expr = f <$> sepBy1 expr' semi
+moduleParser :: Parser Expr
+moduleParser = L.nonIndented scn (L.indentBlock scn p)
   where
-    -- if there's only one expr return it without using ‘Seq’
-    f l = if length l == 1 then head l else Seq l
+    p = do
+      rword "module"
+      name <- identifier
+      return (L.IndentSome Nothing (return . (Module name)) expr')
 
-expr' :: Parser Expr
-expr' =
-  try moduleParser
-  <|> try importParser
-  <|> try function
-  <|> try functionCall
-  <|> printParser
-  <|> ifStmt
-  <|> whileStmt
-  <|> whereStmt
-  <|> skipStmt
-  <|> try arrayAssign
-  <|> arrayElementSelect
-  <|> try assignArith
-  <|> try assignString
-  <|> parens expr
-  <|> stringLiteral
+importParser :: Parser Expr
+importParser = do
+    rword "import"
+    locations <- sepBy1 identifier (symbol ".")
+    return (Import locations)
+
+valType :: Parser Expr
+valType = do
+    value <- identifier
+    return $ Type value
+
+
+argumentType :: Parser Expr
+argumentType = do
+    value <- identifier
+    return $ ArgumentType value
+
+
+returnType :: Parser Expr
+returnType = do
+    value <- identifier
+    return $ ReturnType value
+
+
+argument :: Parser Expr
+argument = do
+  value <- identifier
+  return $ Argument value
+
+
+-- Function parser
+functionParser :: Parser Expr
+functionParser = L.indentBlock scn p
+  where
+    p = do
+      name <- identifier
+      symbol ":"
+      argTypes <- some argumentType
+      symbol "->"
+      rType <- Parser.returnType
+      nameDup <- L.lineFold scn $ \sp' -> identifier
+      args <- many argument
+      symbol "="
+      if(name == "main") then
+          return (L.IndentMany Nothing (return . (MainFunction name argTypes args rType)) expr')
+      else
+          return (L.IndentMany Nothing (return . (Function name argTypes args rType)) expr')
+
+
+
+functionCallParser :: Parser Expr
+functionCallParser = do
+  name <- identifier
+  args <- parens $ many argument
+  return $ FunctionCall name args
+
+
+printParser :: Parser Expr
+printParser = do
+  rword "println"
+  bodyArr <- identifier
+  return $ Print bodyArr
+
+
+valueToken :: Parser String
+valueToken = lexeme (takeWhile1P Nothing f) <?> "list item"
+  where
+    f x = isAlphaNum x || x == '-'
+
 
 ifStmt :: Parser Expr
-ifStmt = do
-    rword "if"
-    cond  <- bExpr
-    symbol "{"
-    expr1 <- many expr
-    symbol "}"
-    rword "else"
-    symbol "{"
-    expr2 <- many expr
-    symbol "}"
-    return (If cond expr1 expr2)
+ifStmt = L.indentBlock scn p
+   where
+     p = do
+       rword "if"
+       cond  <- bExpr
+       return (L.IndentMany Nothing (return . (If cond)) expr')
 
-whileStmt :: Parser Expr
-whileStmt = do
-  rword "while"
-  cond <- bExpr
-  symbol "{"
-  exprs <- some expr
-  symbol "}"
-  return (While cond exprs)
+elseIfStmt :: Parser Expr
+elseIfStmt = L.indentBlock scn p
+   where
+     p = do
+       rword "else"
+       rword "if"
+       cond  <- bExpr
+       return (L.IndentMany Nothing (return . (ElseIf cond)) expr')
+
+elseStmt :: Parser Expr
+elseStmt = L.indentBlock scn p
+   where
+     p = do
+       rword "else"
+       return (L.IndentMany Nothing (return . (Else)) expr')
 
 whereStmt :: Parser Expr
 whereStmt = do
@@ -181,139 +294,42 @@ whereStmt = do
   return $ (Where exprs)
 
 
-moduleParser :: Parser Expr
-moduleParser = do
-  rword "module"
-  name <- identifier
-  symbol "{"
-  body <- many expr
-  symbol "}"
-  return $ Module name body
-
-importParser :: Parser Expr
-importParser = do
-  rword "import"
-  firstDir <- word
-  --symbol "."
-  --directory <- some ((symbol ".") word)
-  return $ Import (firstDir) ""
-
-function :: Parser Expr
-function = do
-  name <- identifier
-  symbol ":"
-  argTypes <- some argumentType
-  symbol "->"
-  rType <- Parser.returnType
-  nameDup <- identifier
-  args <- many argument
-  symbol "="
-  symbol "{"
-  bodyArr <- many expr
-  symbol "}"
-  if(name == "main") then
-      return $ MainFunction name argTypes args rType bodyArr
-  else
-      return $ Function name argTypes args rType bodyArr
-
-functionCall :: Parser Expr
-functionCall = do
-  name <- identifier
-  args <- parens $ many argument
-  return $ FunctionCall name args
-
-printParser :: Parser Expr
-printParser = do
-  rword "println"
-  bodyArr <- identifier
-  symbol ";"
-  return $ Print bodyArr
-
-assignArith :: Parser Expr
-assignArith = do
-  var  <- identifier
-  symbol ":"
-  vType <- valType
-  symbol "="
-  e <- aExpr
-  return (AssignArith vType var e)
-
-assignString :: Parser Expr
-assignString = do
-  var  <- identifier
-  symbol ":"
-  vType <- valType
-  symbol "="
-  e <- stringLiteral
-  return (AssignString vType var e)
-
-skipStmt :: Parser Expr
-skipStmt = Skip <$ rword "skip"
-
-aExpr :: Parser AExpr
-aExpr = makeExprParser aTerm aOperators
-
-bExpr :: Parser BExpr
-bExpr = makeExprParser bTerm bOperators
-
-aOperators :: [[Operator Parser AExpr]]
-aOperators =
-  [ [Prefix (Neg <$ symbol "-") ]
-
-  , [ InfixL (ABinary Multiply <$ symbol "*")
-    , InfixL (ABinary Divide   <$ symbol "/") ]
-  , [ InfixL (ABinary Add      <$ symbol "+")
-    , InfixL (ABinary Subtract <$ symbol "-") ]
-  ]
-
-bOperators :: [[Operator Parser BExpr]]
-bOperators =
-  [ [Prefix (Not <$ rword "not") ]
-  , [InfixL (BBinary And <$ rword "and")
-    , InfixL (BBinary Or <$ rword "or") ]
-  ]
+expr :: Parser Expr
+expr = f <$> sepBy1 expr' (symbol ";")
+  where
+    -- if there's only one expr return it without using ‘Seq’
+    f l = if length l == 1 then head l else Seq l
 
 
-aTerm :: Parser AExpr
-aTerm = parens aExpr
-  <|> Var      <$> identifier
-  <|> IntConst <$> integer
+expr' :: Parser Expr
+expr' = try moduleParser
+  <|> try importParser
+  <|> try functionParser
+  <|> try ifStmt
+  <|> try elseIfStmt
+  <|> try elseStmt
+  <|> try arrayAssign
+  <|> arrayElementSelect
+  <|> try assignArith
+  <|> try functionCallParser
+  <|> try assignString
+  <|> try printParser
+  <|> try whereStmt
+  <|> try stringLiteral
 
-stringLiteral :: Parser Expr
-stringLiteral = do
-  value <- char '"' >> manyTill L.charLiteral (char '"')
-  symbol ";"
-  return $ StringLiteral value
 
-bTerm :: Parser BExpr
-bTerm =  parens bExpr
-  <|> (BoolConst True  <$ rword "true")
-  <|> (BoolConst False <$ rword "false")
-  <|> rExpr
+parser :: Parser Expr
+parser = expr'
 
-rExpr :: Parser BExpr
-rExpr = do
-  a1 <- aExpr
-  op <- relation
-  a2 <- aExpr
-  return (RBinary op a1 a2)
-
-relation :: Parser RBinOp
-relation = (symbol ">" *> pure Greater)
-  <|> (symbol "<" *> pure Less)
-
-parsePrint :: String -> IO()
-parsePrint s = do
-    parseTest' expr' s
 
 parseFromFile file = runParser expr file <$> readFile file
+
 
 parseString input =
   case parse expr' "" input of
     Left  e -> show e
     Right x -> show x
 
---prettyPrint :: (Either (ParseError (Expr) e) a) -> IO()
---prettyPrint p = do
-  --  pPrint p
-  --}
+
+parsePrint :: String -> IO()
+parsePrint s = parseTest' parser s

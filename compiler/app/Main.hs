@@ -5,7 +5,7 @@ import System.Directory (getDirectoryContents)
 --import Data.List
 --import Parser
 --import System.Directory
-import IndentTest
+import Parser
 
 {--
 main :: IO ()

@@ -1,4 +1,7 @@
 module IndentationTest
+
+    import this.is.a.Test
+
     testFunction : int -> void
     testFunction x =
         if(x < 50)

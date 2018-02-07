@@ -73,7 +73,7 @@ instance Show ABinOp where
 data Expr
   = Seq [Expr]
   | Module String [Expr]
-  | Import String String
+  | Import [String]
   | MainFunction {name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String [Expr] [Expr] Expr [Expr]
   | FunctionCall String [Expr]
@@ -111,7 +111,7 @@ instance Show Expr where
             getFunctionString bodyArray ++
         "}\n"
 
-    show (Import directory moduleName) = "import " ++ directory ++ moduleName
+    show (Import locs) = "import " ++ intercalate "." locs ++ ";"
     show (Function name argTypes args returnType body) = "public " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (MainFunction name argTypes args returnType body) =
         intercalate "\n " $ map show body
