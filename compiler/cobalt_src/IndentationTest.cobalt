@@ -1,6 +1,8 @@
 module IndentationTest
 
-import this.is.a.Test
+import java.util.Random
+
+data A = B String | C String
 
 testFunction : int -> void
 testFunction x =

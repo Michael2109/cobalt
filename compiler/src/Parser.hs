@@ -242,12 +242,30 @@ functionParser = L.nonIndented scn (L.indentBlock scn p)
           return (L.IndentMany Nothing (return . (Function name argTypes args rType)) expr')
 
 
-
 functionCallParser :: Parser Expr
 functionCallParser = do
   name <- identifier
   args <- parens $ many argument
   return $ FunctionCall name args
+
+
+-- data A = B String | C Integer
+dataElementParser :: Parser Expr
+dataElementParser = do
+  name <- identifier
+  args <- many identifier
+  return $ DataElement name args
+
+
+dataParser :: Parser Expr
+dataParser = L.nonIndented scn p
+  where
+    p = do
+      rword "data"
+      name <- identifier
+      symbol "="
+      dataElements <- sepBy dataElementParser (symbol "|")
+      return $ Data name dataElements
 
 
 printParser :: Parser Expr
@@ -306,6 +324,7 @@ expr = f <$> sepBy1 expr' (symbol ";")
 expr' :: Parser Expr
 expr' = try moduleParser
   <|> try importParser
+  <|> try dataParser
   <|> try functionParser
   <|> try ifStmt
   <|> try elseIfStmt

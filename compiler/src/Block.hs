@@ -97,6 +97,8 @@ data Expr
   | Lambda String String
   | Where [Expr]
   | StringLiteral String
+  | Data String [Expr]
+  | DataElement String [String]
   | Skip
 
 instance Show Expr where
@@ -104,6 +106,7 @@ instance Show Expr where
         -- Get the main function tree
         intercalate "\n" (map (show) (filter isImportStatement bodyArray)) ++
         "public class " ++ name ++ "{\n" ++
+
             "public static void main(String[] args){\n" ++
                 name ++ " " ++ lowerString name ++ "= new " ++ name ++ "();\n" ++
                 intercalate "\n" (map (\mStatement -> if(isFunctionCall mStatement) then (lowerString name ++ "." ++ show mStatement) else show mStatement) (body ((filter (isMainFunction) bodyArray)!!0))) ++
@@ -137,7 +140,11 @@ instance Show Expr where
     show (Lambda valName collectionName) = ""
     show (Where exprs) = intercalate "\n" (map show exprs)
     show (StringLiteral value) = "\"" ++ value ++ "\""
+    show (Data name exprs) = "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
+    show (DataElement name argTypes) = "class " ++ name ++ "{ public " ++ name ++ "(" ++ intercalate ", " (map showDataElement (zip argTypes [0..])) ++ "){" ++ "} }"
     show (_) = "<unknown>"
+
+showDataElement (name, index) = name ++ " " ++ (lowerString name) ++ (show index)
 
 lowerString str = [ toLower loweredString | loweredString <- str]
 
