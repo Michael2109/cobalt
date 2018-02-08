@@ -187,8 +187,8 @@ moduleParser :: Parser Expr
 moduleParser = do
     rword "module"
     name <- identifier
-    e <- many expr'
-    return (Module name e)
+    es <- many expr'
+    return (Module name es)
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
