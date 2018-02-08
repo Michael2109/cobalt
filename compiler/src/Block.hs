@@ -98,7 +98,7 @@ data Expr
   | Where [Expr]
   | StringLiteral String
   | Data String [Expr]
-  | DataElement String [String]
+  | DataElement String String [String]
   | Skip
 
 instance Show Expr where
@@ -141,7 +141,7 @@ instance Show Expr where
     show (Where exprs) = intercalate "\n" (map show exprs)
     show (StringLiteral value) = "\"" ++ value ++ "\""
     show (Data name exprs) = "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
-    show (DataElement name argTypes) = "class " ++ name ++ "{ public " ++ name ++ "(" ++ intercalate ", " (map showDataElement (zip argTypes [0..])) ++ "){" ++ "} }"
+    show (DataElement superName name argTypes) = "class " ++ name ++ " extends "++ superName ++" { public " ++ name ++ "(" ++ intercalate ", " (map showDataElement (zip argTypes [0..])) ++ "){" ++ "} }"
     show (_) = "<unknown>"
 
 showDataElement (name, index) = name ++ " " ++ (lowerString name) ++ (show index)

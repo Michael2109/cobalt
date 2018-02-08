@@ -2,7 +2,7 @@ module IndentationTest
 
 import java.util.Random
 
-data A = B String | C String
+data A = B String | C String | D Integer
 
 testFunction : int -> void
 testFunction x =

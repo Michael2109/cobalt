@@ -250,11 +250,11 @@ functionCallParser = do
 
 
 -- data A = B String | C Integer
-dataElementParser :: Parser Expr
-dataElementParser = do
+dataElementParser :: String -> Parser Expr
+dataElementParser superName = do
   name <- identifier
   args <- many identifier
-  return $ DataElement name args
+  return $ DataElement superName name args
 
 
 dataParser :: Parser Expr
@@ -264,7 +264,7 @@ dataParser = L.nonIndented scn p
       rword "data"
       name <- identifier
       symbol "="
-      dataElements <- sepBy dataElementParser (symbol "|")
+      dataElements <- sepBy (dataElementParser name) (symbol "|")
       return $ Data name dataElements
 
 
