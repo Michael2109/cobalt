@@ -98,7 +98,7 @@ data Expr
   | Where [Expr]
   | StringLiteral String
   | Data String [Expr]
-  | DataElement String String [String]
+  | DataElement String String [String] [String]
   | Skip
 
 instance Show Expr where
@@ -141,10 +141,12 @@ instance Show Expr where
     show (Where exprs) = intercalate "\n" (map show exprs)
     show (StringLiteral value) = "\"" ++ value ++ "\""
     show (Data name exprs) = "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
-    show (DataElement superName name argTypes) = "class " ++ name ++ " extends "++ superName ++" { public " ++ name ++ "(" ++ intercalate ", " (map showDataElement (zip argTypes [0..])) ++ "){" ++ "} }"
+    show (DataElement superName name argTypes args) = "class " ++ name ++ " extends "++ superName ++ " { " ++
+      intercalate " "(zipWith (\x y -> x ++ " " ++ y ++ ";") argTypes args) ++ " public " ++ name ++ "(" ++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) argTypes args) ++
+      "){" ++
+      intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
+      "} }"
     show (_) = "<unknown>"
-
-showDataElement (name, index) = name ++ " " ++ (lowerString name) ++ (show index)
 
 lowerString str = [ toLower loweredString | loweredString <- str]
 

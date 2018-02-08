@@ -187,7 +187,6 @@ moduleParser :: Parser Expr
 moduleParser = do
     rword "module"
     name <- identifier
-
     e <- many expr'
     return (Module name e)
 
@@ -253,8 +252,9 @@ functionCallParser = do
 dataElementParser :: String -> Parser Expr
 dataElementParser superName = do
   name <- identifier
-  args <- many identifier
-  return $ DataElement superName name args
+  argTypes <- many identifier
+  let args = map (\x -> "var" ++ show x) [0..((length argTypes)-1)]
+  return $ DataElement superName name argTypes args
 
 
 dataParser :: Parser Expr
