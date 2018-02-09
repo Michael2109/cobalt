@@ -187,8 +187,15 @@ moduleParser :: Parser Expr
 moduleParser = do
     rword "module"
     name <- identifier
-    es <- many expr'
-    return (Module name es)
+    --es <- many expr'
+    exprs <- many $ specialParser name
+    return (Module name exprs)
+
+specialParser :: String -> Parser Expr
+specialParser moduleName = try (functionParser moduleName)
+  <|> try importParser
+  <|> expr'
+
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
@@ -198,33 +205,9 @@ importParser = L.nonIndented scn p
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
 
-valType :: Parser Expr
-valType = do
-    value <- identifier
-    return $ Type value
-
-
-argumentType :: Parser Expr
-argumentType = do
-    value <- identifier
-    return $ ArgumentType value
-
-
-returnType :: Parser Expr
-returnType = do
-    value <- identifier
-    return $ ReturnType value
-
-
-argument :: Parser Expr
-argument = do
-  value <- identifier
-  return $ Argument value
-
-
 -- Function parser
-functionParser :: Parser Expr
-functionParser = L.nonIndented scn (L.indentBlock scn p)
+functionParser :: String -> Parser Expr
+functionParser moduleName = L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       name <- identifier
@@ -236,16 +219,40 @@ functionParser = L.nonIndented scn (L.indentBlock scn p)
       args <- many argument
       symbol "="
       if(name == "main") then
-          return (L.IndentMany Nothing (return . (MainFunction name argTypes args rType)) expr')
+          return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr'))
       else
-          return (L.IndentMany Nothing (return . (Function name argTypes args rType)) expr')
+          return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType)) (expr'))
+
+functionOther :: String -> Parser Expr
+functionOther moduleName = expr'
+  <|> try $ functionCallParser moduleName
+
+valType :: Parser Expr
+valType = do
+    value <- identifier
+    return $ Type value
+
+argumentType :: Parser Expr
+argumentType = do
+    value <- identifier
+    return $ ArgumentType value
+
+returnType :: Parser Expr
+returnType = do
+    value <- identifier
+    return $ ReturnType value
+
+argument :: Parser Expr
+argument = do
+  value <- identifier
+  return $ Argument value
 
 
-functionCallParser :: Parser Expr
-functionCallParser = do
+functionCallParser :: String -> Parser Expr
+functionCallParser moduleName = do
   name <- identifier
   args <- parens $ many argument
-  return $ FunctionCall name args
+  return $ FunctionCall moduleName name args
 
 
 -- data A = B String | C Integer
@@ -323,16 +330,14 @@ expr = f <$> sepBy1 expr' (symbol ";")
 
 expr' :: Parser Expr
 expr' = try moduleParser
-  <|> try importParser
   <|> try dataParser
-  <|> try functionParser
   <|> try ifStmt
+  <|> try (functionCallParser "test")
   <|> try elseIfStmt
   <|> try elseStmt
   <|> try arrayAssign
-  <|> arrayElementSelect
+  <|> try arrayElementSelect
   <|> try assignArith
-  <|> try functionCallParser
   <|> try assignString
   <|> try printParser
   <|> try whereStmt

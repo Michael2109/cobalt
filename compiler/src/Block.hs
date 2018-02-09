@@ -74,9 +74,9 @@ data Expr
   = Seq [Expr]
   | Module String [Expr]
   | Import [String]
-  | MainFunction {name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
-  | Function String [Expr] [Expr] Expr [Expr]
-  | FunctionCall String [Expr]
+  | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
+  | Function String String [Expr] [Expr] Expr [Expr]
+  | FunctionCall String String [Expr]
   | Type String
   | ValueType String
   | Argument String
@@ -103,22 +103,14 @@ data Expr
 
 instance Show Expr where
     show (Module name bodyArray) =
-        -- Get the main function tree
         intercalate "\n" (map (show) (filter isImportStatement bodyArray)) ++
         "public class " ++ name ++ "{\n" ++
-
-            "public static void main(String[] args){\n" ++
-                name ++ " " ++ lowerString name ++ "= new " ++ name ++ "();\n" ++
-                intercalate "\n" (map (\mStatement -> if(isFunctionCall mStatement) then (lowerString name ++ "." ++ show mStatement) else show mStatement) (body ((filter (isMainFunction) bodyArray)!!0))) ++
-            "}\n" ++
-
-            intercalate "\n" (map (getFunctionString) bodyArray) ++
-        "}\n"
-
+        intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
+        "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
-    show (Function name argTypes args returnType body) = "public " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (MainFunction name argTypes args returnType body) = intercalate "\n " $ map show body
-    show (FunctionCall name exprs) = name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
+    show (Function moduleName name argTypes args returnType body) = "public " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+    show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++  moduleName ++ " " ++ lowerString moduleName ++ "= new " ++ moduleName ++ "();\n" ++ (intercalate " " $ map show body) ++ "}"
+    show (FunctionCall moduleName name exprs) = lowerString moduleName ++ "." ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b
     show (Argument b) = b
     show (ArgumentType b) = b
@@ -155,11 +147,11 @@ extractImportStatement (Import m) = Just m
 extractImportStatement _ = Nothing
 
 extractMainFunction :: Expr -> Maybe String
-extractMainFunction (MainFunction m _ _ _ _) = Just m
+extractMainFunction (MainFunction m _ _ _ _ _) = Just m
 extractMainFunction _ = Nothing
 
 extractFunctionCall :: Expr -> Maybe String
-extractFunctionCall (FunctionCall m _) = Just m
+extractFunctionCall (FunctionCall m _ _) = Just m
 extractFunctionCall _ = Nothing
 
 
