@@ -188,13 +188,9 @@ moduleParser = do
     rword "module"
     name <- identifier
     --es <- many expr'
-    exprs <- many $ specialParser name
-    return (Module name exprs)
-
-specialParser :: String -> Parser Expr
-specialParser moduleName = try (functionParser moduleName)
-  <|> try importParser
-  <|> expr'
+    imports <- many (try importParser)
+    exprs <- many $ (expr' name <|> functionParser name)
+    return (Module name imports exprs)
 
 
 importParser :: Parser Expr
@@ -219,13 +215,9 @@ functionParser moduleName = L.nonIndented scn (L.indentBlock scn p)
       args <- many argument
       symbol "="
       if(name == "main") then
-          return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr'))
+          return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr' moduleName))
       else
-          return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType)) (expr'))
-
-functionOther :: String -> Parser Expr
-functionOther moduleName = expr'
-  <|> try $ functionCallParser moduleName
+          return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType)) (expr' ""))
 
 valType :: Parser Expr
 valType = do
@@ -288,29 +280,29 @@ valueToken = lexeme (takeWhile1P Nothing f) <?> "list item"
     f x = isAlphaNum x || x == '-'
 
 
-ifStmt :: Parser Expr
-ifStmt = L.indentBlock scn p
+ifStmt :: String -> Parser Expr
+ifStmt moduleName = L.indentBlock scn p
    where
      p = do
        rword "if"
        cond  <- bExpr
-       return (L.IndentMany Nothing (return . (If cond)) expr')
+       return (L.IndentMany Nothing (return . (If cond)) (expr' moduleName))
 
-elseIfStmt :: Parser Expr
-elseIfStmt = L.indentBlock scn p
+elseIfStmt :: String -> Parser Expr
+elseIfStmt moduleName = L.indentBlock scn p
    where
      p = do
        rword "else"
        rword "if"
        cond  <- bExpr
-       return (L.IndentMany Nothing (return . (ElseIf cond)) expr')
+       return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' moduleName))
 
-elseStmt :: Parser Expr
-elseStmt = L.indentBlock scn p
+elseStmt :: String -> Parser Expr
+elseStmt moduleName = L.indentBlock scn p
    where
      p = do
        rword "else"
-       return (L.IndentMany Nothing (return . (Else)) expr')
+       return (L.IndentMany Nothing (return . (Else)) (expr' moduleName))
 
 whereStmt :: Parser Expr
 whereStmt = do
@@ -322,19 +314,19 @@ whereStmt = do
 
 
 expr :: Parser Expr
-expr = f <$> sepBy1 expr' (symbol ";")
+expr = f <$> sepBy1 (expr' "") (symbol ";")
   where
     -- if there's only one expr return it without using ‘Seq’
     f l = if length l == 1 then head l else Seq l
 
 
-expr' :: Parser Expr
-expr' = try moduleParser
+expr' :: String -> Parser Expr
+expr' moduleName = try moduleParser
   <|> try dataParser
-  <|> try ifStmt
-  <|> try (functionCallParser "test")
-  <|> try elseIfStmt
-  <|> try elseStmt
+  <|> try (functionCallParser moduleName)
+  <|> try (ifStmt moduleName)
+  <|> try (elseIfStmt moduleName)
+  <|> try (elseStmt moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
   <|> try assignArith
@@ -345,14 +337,14 @@ expr' = try moduleParser
 
 
 parser :: Parser Expr
-parser = expr'
+parser = expr' ""
 
 
 parseFromFile file = runParser expr file <$> readFile file
 
 
 parseString input =
-  case parse expr' "" input of
+  case parse (expr' "") "" input of
     Left  e -> show e
     Right x -> show x
 

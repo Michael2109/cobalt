@@ -72,8 +72,8 @@ instance Show ABinOp where
 -- Statements
 data Expr
   = Seq [Expr]
-  | Module String [Expr]
-  | Import [String]
+  | Module String [Expr] [Expr]
+  | Import {locs ::[String]}
   | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String [Expr] [Expr] Expr [Expr]
   | FunctionCall String String [Expr]
@@ -102,15 +102,16 @@ data Expr
   | Skip
 
 instance Show Expr where
-    show (Module name bodyArray) =
-        intercalate "\n" (map (show) (filter isImportStatement bodyArray)) ++
-        "public class " ++ name ++ "{\n" ++
+    show (Module name imports bodyArray) =
+        intercalate "\n" (map show imports) ++
+        "public final class " ++ name ++ "{\n" ++
+        intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
     show (Function moduleName name argTypes args returnType body) = "public " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++  moduleName ++ " " ++ lowerString moduleName ++ "= new " ++ moduleName ++ "();\n" ++ (intercalate " " $ map show body) ++ "}"
-    show (FunctionCall moduleName name exprs) = lowerString moduleName ++ "." ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
+    show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then lowerString moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b
     show (Argument b) = b
     show (ArgumentType b) = b
@@ -133,8 +134,8 @@ instance Show Expr where
     show (Where exprs) = intercalate "\n" (map show exprs)
     show (StringLiteral value) = "\"" ++ value ++ "\""
     show (Data name exprs) = "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
-    show (DataElement superName name argTypes args) = "class " ++ name ++ " extends "++ superName ++ " { " ++
-      intercalate " "(zipWith (\x y -> x ++ " " ++ y ++ ";") argTypes args) ++ " public " ++ name ++ "(" ++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) argTypes args) ++
+    show (DataElement superName name argTypes args) = "final class " ++ name ++ " extends "++ superName ++ " { " ++
+      intercalate " "(zipWith (\x y -> "final " ++ x ++ " " ++ y ++ ";") argTypes args) ++ " public " ++ name ++ "(" ++ intercalate ", " (zipWith (\x y -> "final " ++ x ++ " " ++ y) argTypes args) ++
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
