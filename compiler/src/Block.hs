@@ -83,6 +83,7 @@ data Expr
   | ArgumentType String
   | ReturnType String
   | AssignArith Expr String AExpr
+  | ArrayAppend [Expr]
   | Assign Expr String Expr
   | If BExpr [Expr]
   | ElseIf BExpr [Expr]
@@ -130,6 +131,7 @@ instance Show Expr where
     show (ArrayDef arrType name) = arrType ++ "[] " ++ name ++ "="
     show (ArrayValues exprs) = "{" ++ intercalate ", " exprs ++ "};"
     show (ArrayAssignment arr values) = show arr ++ show values
+    show (ArrayAppend arrays) = intercalate "" (map (\arr -> "") arrays)
     show (ArrayElementSelect i) = "[" ++ i ++ "];"
     show (Lambda valName collectionName) = ""
     show (Where exprs) = intercalate "\n" (map show exprs)

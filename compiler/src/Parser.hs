@@ -182,6 +182,12 @@ arrayElementSelect = do
   elementNum <- word
   return $ ArrayElementSelect elementNum
 
+arrayAppend :: String ->Parser Expr
+arrayAppend moduleName = do
+  arrays <- sepBy1 (expr' "") (symbol "++")
+  return $ ArrayAppend arrays
+
+
 
 moduleParser :: Parser Expr
 moduleParser = do
@@ -337,6 +343,7 @@ expr' moduleName = try moduleParser
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
+  <|> try (arrayAppend moduleName)
   <|> try assignArith
   <|> try (assignParser moduleName)
   <|> try printParser
