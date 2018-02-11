@@ -17,6 +17,13 @@ testFunction x =
 main : String -> IO
 main args =
     x :int = 3
+
+    example1 :String = "Example"
+    println example1
+
+    B "Data test"
+    C "other Data test"
+    #D 123456
     y :int = 10
     z :int = 15
     arrTest:[int] = [x y z]

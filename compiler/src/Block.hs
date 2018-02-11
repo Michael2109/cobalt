@@ -99,6 +99,7 @@ data Expr
   | StringLiteral String
   | Data String [Expr]
   | DataElement String String [String] [String]
+  | DataInstance String Expr Expr
   | Skip
 
 instance Show Expr where
@@ -139,6 +140,7 @@ instance Show Expr where
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
+    show (DataInstance moduleName typeName expr) = "final " ++ show typeName ++ " " ++  (lowerString $ show typeName) ++ "= new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ show expr ++ ");"
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

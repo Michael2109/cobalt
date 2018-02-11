@@ -267,6 +267,13 @@ dataParser = L.nonIndented scn p
       return $ Data name dataElements
 
 
+dataInstanceParser :: String -> Parser Expr
+dataInstanceParser moduleName = do
+  typeName <- valType
+  es <- expr' moduleName
+  return $ DataInstance moduleName typeName es
+
+
 printParser :: Parser Expr
 printParser = do
   rword "println"
@@ -332,6 +339,7 @@ expr' moduleName = try moduleParser
   <|> try assignArith
   <|> try assignString
   <|> try printParser
+  <|> try (dataInstanceParser moduleName)
   <|> try whereStmt
   <|> try stringLiteral
 
