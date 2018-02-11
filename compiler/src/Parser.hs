@@ -141,14 +141,14 @@ stringLiteral = do
   return $ StringLiteral value
 
 
-assignString :: Parser Expr
-assignString = do
+assignParser :: String -> Parser Expr
+assignParser moduleName = do
   var  <- identifier
   symbol ":"
   vType <- valType
   symbol "="
-  e <- stringLiteral
-  return (AssignString vType var e)
+  e <- expr' moduleName
+  return (Assign vType var e)
 
 
 arrayDef :: Parser Expr
@@ -334,12 +334,12 @@ expr' moduleName = try moduleParser
   <|> try (ifStmt moduleName)
   <|> try (elseIfStmt moduleName)
   <|> try (elseStmt moduleName)
+  <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
   <|> try assignArith
-  <|> try assignString
+  <|> try (assignParser moduleName)
   <|> try printParser
-  <|> try (dataInstanceParser moduleName)
   <|> try whereStmt
   <|> try stringLiteral
 

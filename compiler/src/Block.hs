@@ -83,7 +83,7 @@ data Expr
   | ArgumentType String
   | ReturnType String
   | AssignArith Expr String AExpr
-  | AssignString Expr String Expr
+  | Assign Expr String Expr
   | If BExpr [Expr]
   | ElseIf BExpr [Expr]
   | Else [Expr]
@@ -118,7 +118,7 @@ instance Show Expr where
     show (ArgumentType b) = b
     show (ReturnType b) = b
     show (AssignArith vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
-    show (AssignString vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
+    show (Assign vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (If condition statement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (ElseIf condition statement) = " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Else statement) = " else {\n" ++ intercalate "\n" (map show statement) ++ "}"
@@ -140,7 +140,7 @@ instance Show Expr where
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
-    show (DataInstance moduleName typeName expr) = "final " ++ show typeName ++ " " ++  (lowerString $ show typeName) ++ "= new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ show expr ++ ");"
+    show (DataInstance moduleName typeName expr) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ show expr ++ ");"
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]
