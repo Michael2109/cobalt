@@ -1,7 +1,8 @@
 module Main where
 
 import Data.List
-import System.Directory (getDirectoryContents)
+import System.Directory
+import System.FilePath.Posix
 --import Data.List
 --import Parser
 --import System.Directory
@@ -30,19 +31,21 @@ main = do
 
     --}
 
+allFilesIn dir = filter (\filePath -> takeExtension filePath == ".cobalt")<$>(getDirectoryContents dir)
 
-
---compileDir :: String -> IO()
---compileDir directory outputDirectory = do
---  filePaths <- getDirectoryContents directory
- -- mapM (comp) map (\p -> outputDirectory ++ p) filePaths
+compileDir :: String -> String -> IO[()]
+compileDir inputDir outputDir = do
+  allFilesIn inputDir >>= mapM (\inputLoc -> compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java"))
 
 compile :: String -> String -> IO()
-compile inputDir outputDir = do
-   --getDirectoryContents inputDir
-   print "Test"
+compile inputFile outputFile = do
+   fileData <- readFile inputFile
 
+   print "Compiling..."
+   let compiledString = parseString fileData
 
+   print $ "Writing: " ++ outputFile
+   writeFile outputFile $ compiledString
 
 
 main :: IO ()
@@ -52,6 +55,9 @@ main = do
     let inputFile = inputDir ++ "IndentationTest.cobalt"
     let outputFile = outputDir ++ "IndentationTest.java"
 
+    print "Compiling directory"
+    compileDir inputDir outputDir
+    print "Compiled directory."
     --compile inputDir outputDir
 
     print $ "Reading: " ++ inputFile

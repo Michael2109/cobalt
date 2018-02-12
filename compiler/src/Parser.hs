@@ -343,7 +343,7 @@ expr' moduleName = try moduleParser
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
-  <|> try (arrayAppend moduleName)
+ -- <|> try (arrayAppend moduleName)
   <|> try assignArith
   <|> try (assignParser moduleName)
   <|> try printParser
