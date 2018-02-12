@@ -26,7 +26,7 @@ https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
 All code is subject to change. 
-```haskell
+```scala
 
 // Example module
 module Example
