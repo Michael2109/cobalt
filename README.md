@@ -1,20 +1,16 @@
 # Cobalt
 
-Cobalt is an object oriented and functional language that runs on the JVM.
+Cobalt is an purely functional language that runs on the JVM.
 
-Scala has shown that difficulties can arise in development when too many methods can be used to complete the same task. This can lead to multiple developers writing code in various styles which then leads to a difficult to manage codebase. The target is to create a powerful language that has similar features to Scala but to also create more clear structures to allow for teams to manage code more efficiency.
-
-The syntax will be similar to languages such as Java, Scala, F# and python.  
+The syntax will be similar to languages such as Haskell and Scala.  
 
 # Main Features
-* Object oriented and functional  
+* Purely functional  
 * Statically typed
-* Immutable by default
-* Classes and methods Sealed by default
+* Immutable
+* Can be used with other languages on the JVM
 * Non-nullable
 * High readability    
-* Simplistic Asynchronous Programming  
-* Operator overloading
 
 # Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
@@ -30,9 +26,10 @@ https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example (Target)
 All code is subject to change. 
-```scala
-// Example class with constructor
-public class ExampleClass(arg1: Int, arg2: Int)
+```haskell
+
+// Example module
+module Example
 
 
     // Expression - Type inference
