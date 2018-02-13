@@ -1,2 +1,1 @@
-public final class TestModule{
-}
+FancyError (SourcePos {sourceName = "", sourceLine = Pos 1, sourceColumn = Pos 7} :| []) (fromList [ErrorFail "keyword \"module\" cannot be an identifier"])

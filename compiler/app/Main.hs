@@ -12,6 +12,7 @@ allFilesIn dir = getDirectoryContents dir
 
 compileDir :: String -> String -> IO()
 compileDir inputDir outputDir = do
+  createDirectoryIfMissing False outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
     if (takeExtension inputLoc == "")
       then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
@@ -20,6 +21,7 @@ compileDir inputDir outputDir = do
         then (compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java"))
         else print ""
     )
+
   print "Compiled?"
 
 

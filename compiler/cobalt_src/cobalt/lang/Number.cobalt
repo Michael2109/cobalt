@@ -1,3 +1,5 @@
+package cobalt.lang
+
 module Number
 
-data Number = Int
+data A = Int

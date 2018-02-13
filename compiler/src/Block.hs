@@ -72,7 +72,8 @@ instance Show ABinOp where
 -- Statements
 data Expr
   = Seq [Expr]
-  | Module String [Expr] [Expr]
+  | Package {locs ::[String]}
+  | Module String Expr [Expr] [Expr]
   | Import {locs ::[String]}
   | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String [Expr] [Expr] Expr [Expr]
@@ -104,7 +105,9 @@ data Expr
   | Skip
 
 instance Show Expr where
-    show (Module name imports bodyArray) =
+    show (Package locs) = "package " ++ intercalate "." locs ++ ";"
+    show (Module name package imports bodyArray) =
+        show package ++
         intercalate "\n" (map show imports) ++
         "public final class " ++ name ++ "{\n" ++
         intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++

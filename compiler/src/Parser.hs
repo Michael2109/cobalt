@@ -41,7 +41,7 @@ rword w = lexeme (string w *> notFollowedBy alphaNumChar)
 
 
 rws :: [String] -- list of reserved words
-rws = ["module", "println", "import",  "let", "if","then","else","while","do","skip","true","false","not","and","or"]
+rws = ["module", "package", "println", "import",  "let", "if","then","else","while","do","skip","true","false","not","and","or"]
 
 
 word :: Parser String
@@ -191,13 +191,22 @@ arrayAppend moduleName = do
 
 moduleParser :: Parser Expr
 moduleParser = do
+    --package <- try packageParser
     rword "module"
     name <- identifier
     --es <- many expr'
+    package <- try packageParser
     imports <- many (try importParser)
     exprs <- many $ (expr' name <|> functionParser name)
-    return (Module name imports exprs)
+    return (Module name package imports exprs)
 
+packageParser :: Parser Expr
+packageParser = L.nonIndented scn p
+  where
+    p = do
+      rword "package"
+      locations <- sepBy1 identifier (symbol ".")
+      return $ (Package locations)
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
