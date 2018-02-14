@@ -354,11 +354,12 @@ parser = expr' ""
 
 parseFromFile file = runParser expr file <$> readFile file
 
+parseTree relativeDir input = parse (moduleParser relativeDir) "" input
 
 parseString relativeDir input =
   case parse (moduleParser relativeDir) "" input of
-    Left  e -> pShow $ show e
-    Right x -> pShow $ show x
+    Left  e -> show e
+    Right x -> show x
 
 
 parsePrint :: String -> IO()

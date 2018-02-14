@@ -1,1 +1,2 @@
-"\ESC[1m\ESC[97m\"\ESC[0m\ESC[1m\ESC[94mpublic final class TestModule{\n}\ESC[0m\ESC[1m\ESC[97m\"\ESC[0m"
+public final class TestModule{
+}
