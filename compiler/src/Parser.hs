@@ -187,26 +187,14 @@ arrayAppend moduleName = do
   arrays <- sepBy1 (expr' "") (symbol "++")
   return $ ArrayAppend arrays
 
-
-
-moduleParser :: Parser Expr
-moduleParser = do
-    --package <- try packageParser
+moduleParser :: [String] -> Parser Expr
+moduleParser relativeDir = do
     rword "module"
     name <- identifier
-    --es <- many expr'
-    package <- try packageParser
     imports <- many (try importParser)
     exprs <- many $ (expr' name <|> functionParser name)
-    return (Module name package imports exprs)
-
-packageParser :: Parser Expr
-packageParser = L.nonIndented scn p
-  where
-    p = do
-      rword "package"
-      locations <- sepBy1 identifier (symbol ".")
-      return $ (Package locations)
+    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+    return (Module (packageDir) name imports exprs)
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
@@ -343,8 +331,7 @@ expr = f <$> sepBy1 (expr' "") (symbol ";")
 
 
 expr' :: String -> Parser Expr
-expr' moduleName = try moduleParser
-  <|> try dataParser
+expr' moduleName = try dataParser
   <|> try (functionCallParser moduleName)
   <|> try (ifStmt moduleName)
   <|> try (elseIfStmt moduleName)
@@ -367,8 +354,8 @@ parser = expr' ""
 parseFromFile file = runParser expr file <$> readFile file
 
 
-parseString input =
-  case parse (expr' "") "" input of
+parseString relativeDir input =
+  case parse (moduleParser relativeDir) "" input of
     Left  e -> show e
     Right x -> show x
 

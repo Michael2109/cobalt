@@ -3,6 +3,7 @@ module Main where
 import Data.List
 import System.Directory
 import System.FilePath.Posix
+import Data.List.Split
 
 import Parser
 
@@ -30,7 +31,7 @@ compile inputFile outputFile = do
    fileData <- readFile inputFile
 
    print "Compiling..."
-   let compiledString = parseString fileData
+   let compiledString = parseString (splitOn "/" $ takeDirectory inputFile) fileData
 
    print $ "Writing: " ++ outputFile
    writeFile outputFile $ compiledString
