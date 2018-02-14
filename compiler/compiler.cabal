@@ -30,7 +30,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec
+      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text
 
   exposed-modules:
       Lexer
@@ -48,7 +48,7 @@ executable compiler-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , compiler, directory, filepath, split
+    , compiler, directory, filepath, split, text
   other-modules:
       
   default-language: Haskell2010

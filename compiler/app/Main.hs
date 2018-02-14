@@ -1,9 +1,10 @@
 module Main where
 
+import Data.Text
 import Data.List
 import System.Directory
 import System.FilePath.Posix
-import Data.List.Split
+import qualified Data.List.Split as Split
 
 import Parser
 
@@ -20,21 +21,24 @@ compileDir inputDir outputDir = do
       else
         if(takeExtension inputLoc == ".cobalt")
         then (compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java"))
-        else print ""
+        else putStrLn ""
     )
-
-  print "Compiled?"
+  putStrLn ""
 
 
 compile :: String -> String -> IO()
 compile inputFile outputFile = do
    fileData <- readFile inputFile
 
-   print "Compiling..."
-   let compiledString = parseString (splitOn "/" $ takeDirectory inputFile) fileData
+   let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
+   putStrLn $ "Compiling: " ++ inputFile
+   putStrLn ""
+   print compiledString
+   putStrLn $ "Compiled:" ++ outputFile
+   putStrLn ""
+   putStrLn ""
 
-   print $ "Writing: " ++ outputFile
-   writeFile outputFile $ compiledString
+   writeFile outputFile $ show compiledString
 
 
 main :: IO ()
@@ -44,6 +48,7 @@ main = do
     let inputFile = inputDir ++ "IndentationTest.cobalt"
     let outputFile = outputDir ++ "IndentationTest.java"
 
-    print "Compiling directory..."
+    putStrLn "Compiling directory..."
+    putStrLn ""
     compileDir inputDir outputDir
-    print "Complete."
+    putStrLn "Complete."

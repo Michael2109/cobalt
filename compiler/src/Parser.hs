@@ -10,6 +10,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
+import Text.Pretty.Simple (pShow)
 
 import Block
 
@@ -356,8 +357,8 @@ parseFromFile file = runParser expr file <$> readFile file
 
 parseString relativeDir input =
   case parse (moduleParser relativeDir) "" input of
-    Left  e -> show e
-    Right x -> show x
+    Left  e -> pShow $ show e
+    Right x -> pShow $ show x
 
 
 parsePrint :: String -> IO()
