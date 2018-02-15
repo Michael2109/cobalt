@@ -2,6 +2,7 @@ module Main where
 
 import Compiler
 
+
 main :: IO ()
 main = do
     let inputDir = "cobalt_src/"

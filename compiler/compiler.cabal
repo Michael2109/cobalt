@@ -28,12 +28,19 @@ source-repository head
 
 library
   hs-source-dirs:
-      src, src/compiler
+      src,
+      src/compiler,
+      src/blocks,
+      src/parsers
   build-depends:
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
   exposed-modules:
       Lexer
       Lib
+      BaseParser
+      AExprParser
+      BExprParser
+      ExprParser
       Parser
       Block
       Compiler
