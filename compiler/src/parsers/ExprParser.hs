@@ -11,7 +11,7 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import BExprParser
+import ABExprParser
 import Block
 
 
@@ -222,7 +222,6 @@ expr' moduleName = try dataParser
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
- -- <|> try (arrayAppend moduleName)
   <|> try assignArith
   <|> try (assignParser moduleName)
   <|> try printParser

@@ -38,8 +38,7 @@ library
       Lexer
       Lib
       BaseParser
-      AExprParser
-      BExprParser
+      ABExprParser
       ExprParser
       Parser
       Block
