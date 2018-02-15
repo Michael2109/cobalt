@@ -35,13 +35,13 @@ library
   build-depends:
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
   exposed-modules:
-      Lexer
-      Lib
       BaseParser
       ABExprParser
       ExprParser
       Parser
       Block
+      ABBlock
+      BlockUtils
       Compiler
   other-modules:
       
