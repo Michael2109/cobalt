@@ -25,7 +25,6 @@ To view how to get up and running please view our tutorial!
 https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example Module (Target)
-All code is subject to change. 
 ```
 
 // Example module
@@ -36,110 +35,34 @@ import dir.subdir.Module
 exampleFunction : Int -> Int -> Int
 exampleFunction a b = 
 
-    result:Int = a + b
+  result:Int = a + b
     
-    if(result > 10)
-      // Do something
-    else if(result < 5)
-      // Do something
-    else
-      // Do something
-          
-square x = x * x
-
-    
+  if(result > 10)
+    // Do something
+  else if(result < 5)
+    // Do something
+  else
+    // Do something
+       
     
 // Add values to a formatted String
 formatValues : String -> String -> String -> String
 formatValues a b c = "$a $b $c"
     
-    // Return list with x added to each element
-    getAdded(list, x) = list.map(i -> i + x)
     
-    // Function within function
-    getEvenNumbers(list:List[Int])
-        isEven(x: Int) =
-            x % 2 == 0
-        list.filter(isEven(_))
+// Add one to all elements in a list
+higherOrderFunction : [Int] -> [Int] 
+higherOrderFunction list = map (i -> i + x) list
+    
+    
+// Function within function
+innerFunction : [Int] -> [Int]
+innerFunction list = 
   
-    
-    // Value with function literal
-    doubleValue = (i: Int) -> i * 2
-    
-    
-    // Function with boolean return type
-    f1 = (i: Int) => { i % 2 == 0 }
-    
-    
-    // Example of other formats
-    f2: (Int) => Boolean = i -> 
-        i % 2 == 0
-        
-    f3: Int => Boolean = i => 
-        i % 2 == 0
-        
-    f4: Int => Boolean = i => i % 2 == 0
-    
-    f5: Int => Boolean = _ % 2 == 0
-    
-    
-    // Anonymous function
-    modMethod1(i: Int) = i % 2 == 0
-    
-    modMethod2(i: Int) = 
-        i % 2 == 0
-        
-    modMethod3(i: Int): Boolean = i % 2 == 0
-    
-    modMethod4(i: Int): Boolean = 
-        i % 2 == 0
-    
-    
-// Singleton (Similar to Scala)
-public object ExampleMain()
-
-    // Entry Point
-    main(args: Array[String])
-    
-    
-        obj = new ExampleClass(50, 100)
   
-        
-        // Call a instance method
-        println (obj.square(10))
-        
-        
-        // Create a list
-        list = [1 .. 10]
-        
-        
-        // Find the sum of all list elements squared
-        lSquareSum = list.map(obj.square(_)).sum
-        
-        // Alternative
-        lSquareSumAlt1 = list.map(obj.square).sum
-            
-            
-        // Match 
-        exampleMatch x:Int = 
-            match x with
-            :1 -> "a"
-            :2 -> "b"
-            :_ -> "z"
-        
-        
-        // If statements - inline
-        if (square(12) > 100) println ("Larger than 100")
-        
-        // If statements
-        if (square(12) > 100)
-            println ("Larger than 100")
-            
-        // Elif and else
-        if (false)
-            println("Is true")
-        elif (true)
-            println("Is true")
-        else 
-            println("All others false")
-```
+getEvenNumbers(list:List[Int])
+  isEven : Int -> Boolean
+  isEven x =
+    x % 2 == 0
+  filter (isEven) list
+  
