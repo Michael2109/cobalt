@@ -121,10 +121,11 @@ functionParser moduleName = L.nonIndented scn (L.indentBlock scn p)
       nameDup <- L.lineFold scn $ \sp' -> identifier
       args <- many argument
       symbol "="
-      if(name == "main") then
-          return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr' moduleName))
-      else
-          return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType)) (expr' ""))
+      if(name == "main")
+        then return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr' moduleName))
+        else if name == moduleName
+          then return (L.IndentMany Nothing (return . (Constructor moduleName name argTypes args)) (expr' ""))
+          else return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType)) (expr' ""))
 
 valType :: Parser Expr
 valType = do

@@ -19,6 +19,7 @@ data Expr
   | Import {locs ::[String]}
   | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String [Expr] [Expr] Expr [Expr]
+  | Constructor String String [Expr] [Expr] [Expr]
   | FunctionCall String String [Expr]
   | Type String
   | ValueType String
@@ -60,7 +61,7 @@ instance Show Expr where
         ++
         intercalate "\n" (map show imports) ++
         "public final class " ++ name ++ "{\n" ++
-        intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
+        --intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Module packageLocs name imports bodyArray) =
@@ -74,6 +75,7 @@ instance Show Expr where
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
+    show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function moduleName name argTypes args returnType body) = "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++ (intercalate " " $ map show body) ++ "}"
     show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
