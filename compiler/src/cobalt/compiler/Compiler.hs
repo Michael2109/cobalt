@@ -1,3 +1,8 @@
+{-|
+Module      : Compiler
+Description : Functions for compiling and generating code.
+There are functions for compiling directories or individual strings etc.
+-}
 module Compiler where
 
 import Data.Text

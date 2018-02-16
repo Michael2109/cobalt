@@ -1,3 +1,9 @@
+{-|
+Module      : Block
+Description : Data types that store general expressions.
+These are used to store the data and specify how the code is generated.
+-}
+
 module Block where
 
 import Data.List

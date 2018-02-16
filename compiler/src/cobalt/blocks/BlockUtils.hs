@@ -1,3 +1,7 @@
+{-|
+Module      : BlockUtils
+Description : All utilities for the Block modules.
+-}
 module BlockUtils (
     lowerString
 ) where

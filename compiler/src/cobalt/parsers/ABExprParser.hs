@@ -1,3 +1,7 @@
+{-|
+Module      : ABExprParser
+Description : Parses arithmetic and boolean expressions.
+-}
 module ABExprParser (Parser,
   parens, symbol, rword, scn, identifier, word,
   aTerm, aExpr, bExpr) where

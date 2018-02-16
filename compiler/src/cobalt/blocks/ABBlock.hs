@@ -1,3 +1,8 @@
+{-|
+Module      : ABBlock
+Description : Data types that store arithmetic and boolean expressions.
+These are used to store the data and specify how the code is generated.
+-}
 module ABBlock where
 
 import BlockUtils

@@ -1,5 +1,7 @@
-{-# LANGUAGE TupleSections #-}
-
+{-|
+Module      : Parser
+Description : Functions that call the ExprParser functions to generate the AST.
+-}
 module Parser where
 
 import Control.Applicative (empty)
@@ -20,10 +22,6 @@ parseString relativeDir input =
   case parse (moduleParser relativeDir <|> classParser relativeDir) "" input of
     Left  e -> show e
     Right x -> show x
-
-
--- Unused
---
 
 parsePrint :: String -> IO()
 parsePrint s = parseTest' parser s
