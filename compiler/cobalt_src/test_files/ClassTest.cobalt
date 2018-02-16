@@ -1,0 +1,46 @@
+class ClassTest
+
+import java.util.Random
+
+classTest : int -> void
+classTest x y =
+  result: int = x + y
+
+
+data A = B String | C String | D Integer
+
+update : int -> void
+update x =
+    if(x < 50)
+        println x
+        nextX :int = x + 1 * 2 - 3 / 2 + 5
+    else
+        last :int = 1000
+        println last
+
+paint : String -> void
+paint args =
+    x :int = 3
+
+    example1 :String = "Example"
+    println example1
+
+    B "Data test"
+    C "other Data test"
+    #D 123456
+    y :int = 10
+    z :int = 15
+    #dataTest :B = B "Data test"
+    arrTest:[int] = [x y z]
+    println arrTest
+    stringTest :String = "Hello world"
+    otherStringTest: String = "Test"
+
+    if(x < 4)
+        println stringTest
+    else if (x > 10)
+        println stringTest
+    else
+        println otherStringTest
+
+

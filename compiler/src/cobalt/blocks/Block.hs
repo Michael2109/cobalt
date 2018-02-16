@@ -74,9 +74,9 @@ instance Show Expr where
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
-    show (Function moduleName name argTypes args returnType body) = "public " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++  moduleName ++ " " ++ lowerString moduleName ++ "= new " ++ moduleName ++ "();\n" ++ (intercalate " " $ map show body) ++ "}"
-    show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then lowerString moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
+    show (Function moduleName name argTypes args returnType body) = "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+    show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++ (intercalate " " $ map show body) ++ "}"
+    show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b
     show (Argument b) = b
     show (ArgumentType b) = b

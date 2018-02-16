@@ -87,7 +87,7 @@ moduleParser relativeDir = do
     rword "module"
     name <- identifier
     imports <- many (try importParser)
-    exprs <- many $ (expr' name <|> functionParser name)
+    exprs <- many (expr' name <|> functionParser name)
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Module (packageDir) name imports exprs)
 
@@ -96,9 +96,9 @@ classParser relativeDir = do
     rword "class"
     name <- identifier
     imports <- many (try importParser)
-    exprs <- many $ (expr' name <|> functionParser name)
+    exprs <- many (expr' name <|> functionParser name)
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Module (packageDir) name imports exprs)
+    return (Class (packageDir) name imports exprs)
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
