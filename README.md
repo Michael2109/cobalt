@@ -58,11 +58,9 @@ higherOrderFunction list = map (i -> i + x) list
 // Function within function
 innerFunction : [Int] -> [Int]
 innerFunction list = 
-  
-  
-getEvenNumbers(list:List[Int])
-  isEven : Int -> Boolean
-  isEven x =
-    x % 2 == 0
-  filter (isEven) list
+  getEvenNumbers(list:List[Int])
+    isEven : Int -> Boolean
+    isEven x =
+      x % 2 == 0
+    filter (isEven) list
   
