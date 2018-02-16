@@ -5,7 +5,7 @@ Cobalt is an purely functional language that runs on the JVM.
 The syntax will be similar to languages such as Haskell and Scala.  
 
 # Main Features
-* Purely functional  
+* Hybrid Language - Functional/Object Oriented
 * Statically typed
 * Immutable
 * Can be used with other languages on the JVM
@@ -24,54 +24,34 @@ https://github.com/Michael2109/cobalt/wiki/Language-Specifications
 To view how to get up and running please view our tutorial!
 https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
-# Example (Target)
+# Example Module (Target)
 All code is subject to change. 
-```scala
+```
 
 // Example module
 module Example
 
+import dir.subdir.Module
 
-    // Expression - Type inference
-    x = 5
+exampleFunction : Int -> Int -> Int
+exampleFunction a b = 
+
+    result:Int = a + b
+    
+    if(result > 10)
+      // Do something
+    else if(result < 5)
+      // Do something
+    else
+      // Do something
+          
+square x = x * x
+
     
     
-    // Expression - Type specified
-    y:Int = 5
-    
-    
-    // Mutable variable
-    mutable z:Int = 10
-    
-    
-    // Expression Block
-    a:Int = 
-        if(true)
-            10
-        else
-            20
-           
-           
-    // Function - Square value (Similar to F#)
-    square x:Int <-Int = x * x
-    
-    
-    // Add - Specified return type
-    add(a:Int, b:Int): Int = a + b
-    
-    
-    // Subtract - Return type inference
-    subtract(a:Double, b:Double) = 
-        a - b
-        
-        
-    // Add One - Anonymous Function
-    addOne = (x:Int) => x + 1
-    
-    
-    // Add values to a formatted String
-    formatValues:String = (a:String, b:String, c:String) -> "$a $b $c"
-    
+// Add values to a formatted String
+formatValues : String -> String -> String -> String
+formatValues a b c = "$a $b $c"
     
     // Return list with x added to each element
     getAdded(list, x) = list.map(i -> i + x)
