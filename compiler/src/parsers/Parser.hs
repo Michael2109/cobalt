@@ -14,16 +14,18 @@ import Text.Pretty.Simple (pShow)
 
 import ExprParser
 
-
-parseFromFile file = runParser expr file <$> readFile file
-
-parseTree relativeDir input = parse (moduleParser relativeDir) "" input
+parseTree relativeDir input = parse (moduleParser relativeDir <|> classParser relativeDir) "" input
 
 parseString relativeDir input =
-  case parse (moduleParser relativeDir) "" input of
+  case parse (moduleParser relativeDir <|> classParser relativeDir) "" input of
     Left  e -> show e
     Right x -> show x
 
 
+-- Unused
+--
+
 parsePrint :: String -> IO()
 parsePrint s = parseTest' parser s
+
+parseFromFile file = runParser expr file <$> readFile file

@@ -1,4 +1,4 @@
-module IndentationTest
+module ModuleTest
 
 import java.util.Random
 

@@ -10,7 +10,6 @@ import ABBlock
 -- Statements
 data Expr
   = Seq [Expr]
-  | Module [String] String [Expr] [Expr]
   | Import {locs ::[String]}
   | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String [Expr] [Expr] Expr [Expr]
@@ -41,7 +40,23 @@ data Expr
   | DataInstance String Expr Expr
   | Skip
 
+  -- Module specific
+  | Module [String] String [Expr] [Expr]
+
+  -- Class specific
+  | Class [String] String [Expr] [Expr]
+
 instance Show Expr where
+    show (Class packageLocs name imports bodyArray) =
+        (if(length packageLocs > 0)
+          then "package " ++ (intercalate "." packageLocs) ++ ";"
+          else "")
+        ++
+        intercalate "\n" (map show imports) ++
+        "public final class " ++ name ++ "{\n" ++
+        intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
+        intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
+        "}"
     show (Module packageLocs name imports bodyArray) =
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"

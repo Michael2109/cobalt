@@ -1,5 +1,5 @@
 module ExprParser (Parser,
-  expr, moduleParser, parser) where
+  expr, moduleParser, classParser, parser) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -76,9 +76,19 @@ arrayAppend moduleName = do
   arrays <- sepBy1 (expr' "") (symbol "++")
   return $ ArrayAppend arrays
 
+
 moduleParser :: [String] -> Parser Expr
 moduleParser relativeDir = do
     rword "module"
+    name <- identifier
+    imports <- many (try importParser)
+    exprs <- many $ (expr' name <|> functionParser name)
+    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+    return (Module (packageDir) name imports exprs)
+
+classParser :: [String] -> Parser Expr
+classParser relativeDir = do
+    rword "class"
     name <- identifier
     imports <- many (try importParser)
     exprs <- many $ (expr' name <|> functionParser name)
