@@ -20,16 +20,11 @@ import ABExprParser
 import Block
 
 
-assignArith :: Parser Expr
-assignArith = do
-  var  <- identifier
-  symbol ":"
-  vType <- valType
-  symbol "="
-  e <- aExpr
-  return $ AssignArith True vType var e
 
-
+arithmeticParser :: String -> Parser Expr
+arithmeticParser moduleName = do
+  aE <- aExpr
+  return $ ArithExpr aE
 
 stringLiteral :: Parser Expr
 stringLiteral = do
@@ -96,7 +91,7 @@ moduleParser relativeDir = do
     moduleKeyword <- rword "module"
     name <- identifier
     imports <- many (try importParser)
-    exprs <- many (expr' name <|> functionParser name True)
+    exprs <- many (try (functionParser name True) <|> expr' name)
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Module (packageDir) name imports exprs)
 
@@ -109,7 +104,7 @@ classParser relativeDir = do
     implementsKeyword <- optional (rword "implements")
     interfaces <- optional (identifier)
     imports <- many (try importParser)
-    exprs <- many (expr' name <|> functionParser name False)
+    exprs <- many (try (functionParser name False) <|> expr' name )
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Class (packageDir) name parent interfaces imports exprs)
 
@@ -144,12 +139,12 @@ importParser = L.nonIndented scn p
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
 
-mutableBlockParser :: String -> Parser Expr
-mutableBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
+globalVarParser :: String -> Parser Expr
+globalVarParser moduleName = L.nonIndented scn p
   where
     p = do
-      rword "mutable"
-      return (L.IndentMany Nothing (return . (MutableBlock)) (expr' moduleName))
+      e <- assignParser moduleName
+      return $ GlobalVar e
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr
@@ -274,7 +269,6 @@ expr = f <$> sepBy1 (expr' "") (symbol ";")
 
 expr' :: String -> Parser Expr
 expr' moduleName = try dataParser
-  <|> try (mutableBlockParser moduleName)
   <|> try (functionCallParser moduleName)
   <|> try (booleanParser moduleName)
   <|> try (ifStmt moduleName)
@@ -286,10 +280,11 @@ expr' moduleName = try dataParser
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
-  <|> try assignArith
   <|> try (assignParser moduleName)
+  <|> try (arithmeticParser moduleName)
   <|> try (printParser moduleName)
   <|> try whereStmt
+  <|> try (globalVarParser moduleName)
   <|> try stringLiteral
 
 

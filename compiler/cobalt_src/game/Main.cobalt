@@ -2,4 +2,4 @@ module Main
 
 main : String -> void
 main args =
-  new Frame()
+  frame: Frame = new Frame()

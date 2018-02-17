@@ -4,8 +4,7 @@ import javax.swing.JPanel
 import java.awt.Graphics
 
 # Global variables
-mutable
-  thread: Thread = new Thread(this)
+thread: Thread = new Thread(this)
 
 ClassTest : void
 ClassTest =

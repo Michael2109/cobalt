@@ -33,11 +33,11 @@ main args =
     stringTest :String = "Hello world"
     otherStringTest: String = "Test"
 
-    if(x < 4)
-        println stringTest
-    else if (x > 10)
-        println stringTest
-    else
-        println otherStringTest
+    #if(x < 4)
+    #    println stringTest
+    #else if (x > 10)
+    #    println stringTest
+    #else
+    #    println otherStringTest
 
 

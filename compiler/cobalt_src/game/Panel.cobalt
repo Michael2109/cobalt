@@ -4,8 +4,9 @@ import javax.swing.JPanel
 import java.awt.Graphics
 
 # Global variables
-mutable
-  thread: Thread = new Thread(this)
+thread: Thread = new Thread(this)
+x: int = 100
+y: int = 100
 
 ClassTest : void
 ClassTest =
@@ -18,7 +19,9 @@ update x =
 
 paint : Graphics -> void
 paint g =
-  x :int = 3
+  super.paintComponent(g)
+
+  g.drawRect(x, y, 50, 50)
 
 run : void
 run =

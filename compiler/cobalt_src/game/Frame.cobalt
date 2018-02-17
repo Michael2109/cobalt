@@ -4,5 +4,10 @@ import javax.swing.JFrame
 
 Frame : void
 Frame =
+  add(new Panel())
+  setTitle("Game")
+  setResizable(True)
+  pack()
+  setSize(800, 600)
   setVisible(True)
 
