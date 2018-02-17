@@ -1,0 +1,27 @@
+class Panel extends JPanel implements Runnable
+
+import javax.swing.JPanel
+import java.awt.Graphics
+
+# Global variables
+mutable
+  thread: Thread = new Thread(this)
+
+ClassTest : void
+ClassTest =
+  thread.start()
+
+
+update : int -> void
+update x =
+  println "Updating"
+
+paint : Graphics -> void
+paint g =
+  x :int = 3
+
+run : void
+run =
+  x: int = 10 + 1
+
+

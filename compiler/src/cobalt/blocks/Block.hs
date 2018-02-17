@@ -34,7 +34,7 @@ data Expr
   | ElseIf BExpr [Expr]
   | Else [Expr]
   | While BExpr [Expr]
-  | Print String
+  | Print Expr
   | Return Expr
   | ArrayValues [String]
   | ArrayDef String String
@@ -103,7 +103,7 @@ instance Show Expr where
     show (Skip) = "[skip]"
     show (Seq s) = "[seq]"
     show (Return expr) = "return " ++ show expr ++ ";"
-    show (Print exprs) = "System.out.println(" ++ exprs ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
+    show (Print exprs) = "System.out.println(" ++ show exprs ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
     show (ArrayDef arrType name) = arrType ++ "[] " ++ name ++ "="
     show (ArrayValues exprs) = "{" ++ intercalate ", " exprs ++ "};"
     show (ArrayAssignment arr values) = show arr ++ show values

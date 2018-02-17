@@ -209,10 +209,10 @@ dataInstanceParser moduleName = do
   return $ DataInstance moduleName typeName es
 
 
-printParser :: Parser Expr
-printParser = do
+printParser :: String -> Parser Expr
+printParser moduleName = do
   rword "println"
-  bodyArr <- identifier
+  bodyArr <- expr' moduleName
   return $ Print bodyArr
 
 
@@ -270,7 +270,7 @@ expr' moduleName = try dataParser
   <|> try arrayElementSelect
   <|> try assignArith
   <|> try (assignParser moduleName)
-  <|> try printParser
+  <|> try (printParser moduleName)
   <|> try whereStmt
   <|> try stringLiteral
 
