@@ -82,6 +82,14 @@ arrayAppend moduleName = do
   arrays <- sepBy1 (expr' "") (symbol "++")
   return $ ArrayAppend arrays
 
+-- Parses "True" or "False"
+booleanParser :: String -> Parser Expr
+booleanParser moduleName = do
+  rword "True"
+  return $ BooleanExpr True
+
+
+
 
 moduleParser :: [String] -> Parser Expr
 moduleParser relativeDir = do
@@ -105,6 +113,13 @@ classParser relativeDir = do
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Class (packageDir) name parent interfaces imports exprs)
 
+thisMethodCall :: String -> Parser Expr
+thisMethodCall moduleName = do
+  methodName <- identifier
+  args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
+  return $ ThisMethodCall methodName args
+
+
 objectMethodCall :: String -> Parser Expr
 objectMethodCall moduleName = do
   objectName <- identifier
@@ -112,6 +127,7 @@ objectMethodCall moduleName = do
   methodName <- identifier
   args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
   return $ ObjectMethodCall objectName methodName args
+
 
 newClassInstance :: String -> Parser Expr
 newClassInstance moduleName = do
@@ -260,9 +276,11 @@ expr' :: String -> Parser Expr
 expr' moduleName = try dataParser
   <|> try (mutableBlockParser moduleName)
   <|> try (functionCallParser moduleName)
+  <|> try (booleanParser moduleName)
   <|> try (ifStmt moduleName)
   <|> try (elseIfStmt moduleName)
   <|> try (objectMethodCall moduleName)
+  <|> try (thisMethodCall moduleName)
   <|> try (newClassInstance moduleName)
   <|> try (elseStmt moduleName)
   <|> try (dataInstanceParser moduleName)

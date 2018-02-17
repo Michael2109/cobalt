@@ -48,6 +48,7 @@ rws :: [String] -- list of reserved words
 rws = [
   "module",
   "mutable",
+  "True",
   "new",
   "package",
   "println",

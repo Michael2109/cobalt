@@ -47,7 +47,9 @@ data Expr
   | DataElement String String [String] [String]
   | DataInstance String Expr Expr
   | ObjectMethodCall String String [Expr]
+  | ThisMethodCall String [Expr]
   | NewClassInstance String [Expr]
+  | BooleanExpr Bool
   | Skip
 
   -- Module specific
@@ -119,8 +121,10 @@ instance Show Expr where
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
     show (DataInstance moduleName typeName expr) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ show expr ++ ");"
+    show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (BooleanExpr status) = if status then "true" else "false"
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

@@ -1,0 +1,8 @@
+class Frame extends JFrame
+
+import javax.swing.JFrame
+
+Frame : void
+Frame =
+  setVisible(True)
+
