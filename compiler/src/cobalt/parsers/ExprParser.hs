@@ -27,7 +27,8 @@ assignArith = do
   vType <- valType
   symbol "="
   e <- aExpr
-  return $ AssignArith vType var e
+  return $ AssignArith True vType var e
+
 
 
 stringLiteral :: Parser Expr
@@ -84,7 +85,7 @@ arrayAppend moduleName = do
 
 moduleParser :: [String] -> Parser Expr
 moduleParser relativeDir = do
-    rword "module"
+    moduleKeyword <- rword "module"
     name <- identifier
     imports <- many (try importParser)
     exprs <- many (expr' name <|> functionParser name True)
@@ -95,14 +96,29 @@ classParser :: [String] -> Parser Expr
 classParser relativeDir = do
     rword "class"
     name <- identifier
-    optional (rword "extends")
+    extendsKeyword <- optional (rword "extends")
     parent <- optional (identifier)
-    optional (rword "implements")
+    implementsKeyword <- optional (rword "implements")
     interfaces <- optional (identifier)
     imports <- many (try importParser)
     exprs <- many (expr' name <|> functionParser name False)
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Class (packageDir) name parent interfaces imports exprs)
+
+objectMethodCall :: String -> Parser Expr
+objectMethodCall moduleName = do
+  objectName <- identifier
+  symbol "."
+  methodName <- identifier
+  args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
+  return $ ObjectMethodCall objectName methodName args
+
+newClassInstance :: String -> Parser Expr
+newClassInstance moduleName = do
+  rword "new"
+  className <- identifier
+  arguments <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
+  return $ (NewClassInstance className arguments)
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
@@ -111,6 +127,13 @@ importParser = L.nonIndented scn p
       rword "import"
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
+
+mutableBlockParser :: String -> Parser Expr
+mutableBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
+  where
+    p = do
+      rword "mutable"
+      return (L.IndentMany Nothing (return . (MutableBlock)) (expr' moduleName))
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr
@@ -235,9 +258,12 @@ expr = f <$> sepBy1 (expr' "") (symbol ";")
 
 expr' :: String -> Parser Expr
 expr' moduleName = try dataParser
+  <|> try (mutableBlockParser moduleName)
   <|> try (functionCallParser moduleName)
   <|> try (ifStmt moduleName)
   <|> try (elseIfStmt moduleName)
+  <|> try (objectMethodCall moduleName)
+  <|> try (newClassInstance moduleName)
   <|> try (elseStmt moduleName)
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign

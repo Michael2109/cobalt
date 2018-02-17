@@ -17,6 +17,7 @@ import ABBlock
 data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
+  | MutableBlock [Expr]
   | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String [Expr] [Expr] Expr Bool [Expr]
   | Constructor String String [Expr] [Expr] [Expr]
@@ -26,7 +27,7 @@ data Expr
   | Argument String
   | ArgumentType String
   | ReturnType String
-  | AssignArith Expr String AExpr
+  | AssignArith Bool Expr String AExpr
   | ArrayAppend [Expr]
   | Assign Expr String Expr
   | If BExpr [Expr]
@@ -45,6 +46,8 @@ data Expr
   | Data String [Expr]
   | DataElement String String [String] [String]
   | DataInstance String Expr Expr
+  | ObjectMethodCall String String [Expr]
+  | NewClassInstance String [Expr]
   | Skip
 
   -- Module specific
@@ -82,6 +85,7 @@ instance Show Expr where
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
+    show (MutableBlock exprs) = intercalate " " (map show exprs)
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function moduleName name argTypes args returnType static body) = "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++ (intercalate " " $ map show body) ++ "}"
@@ -90,7 +94,7 @@ instance Show Expr where
     show (Argument b) = b
     show (ArgumentType b) = b
     show (ReturnType b) = b
-    show (AssignArith vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
+    show (AssignArith mutable vType name value) = "" ++ (if mutable then "" else "final ") ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (Assign vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (If condition statement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (ElseIf condition statement) = " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
@@ -115,6 +119,8 @@ instance Show Expr where
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
     show (DataInstance moduleName typeName expr) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ show expr ++ ");"
+    show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

@@ -3,7 +3,7 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module BaseParser (Parser, scn, symbol, integer, rword, parens, word, identifier, valueToken) where
+module BaseParser (Parser, scn, symbol, integer, rword, rws, parens, word, identifier, valueToken) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -45,7 +45,28 @@ rword w = lexeme (string w *> notFollowedBy alphaNumChar)
 
 
 rws :: [String] -- list of reserved words
-rws = ["module", "package", "println", "import", "implements", "extends", "let", "if","then","else","while","do","skip","true","false","not","and","or"]
+rws = [
+  "module",
+  "mutable",
+  "new",
+  "package",
+  "println",
+  "import",
+  "implements",
+  "extends",
+  "let",
+  "if",
+  "then",
+  "else",
+  "while",
+  "do",
+  "skip",
+  "true",
+  "false",
+  "not",
+  "and",
+  "or"
+  ]
 
 
 word :: Parser String

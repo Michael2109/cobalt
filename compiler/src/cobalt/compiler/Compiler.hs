@@ -45,6 +45,7 @@ compile inputFile outputFile = do
    putStrLn $ "Compiled:" ++ outputFile
    putStrLn ""
    putStrLn ""
+   parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    writeFile outputFile compiledString
 

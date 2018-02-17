@@ -3,9 +3,14 @@ class ClassTest extends JPanel implements Runnable
 import javax.swing.JPanel
 import java.awt.Graphics
 
-ClassTest : int -> void
-ClassTest x y =
-  result: int = x + 10
+# Global variables
+mutable
+  thread: Thread = new Thread(this)
+
+ClassTest : void
+ClassTest =
+  thread.start()
+
 
 update : int -> void
 update x =

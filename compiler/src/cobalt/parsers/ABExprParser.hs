@@ -3,7 +3,7 @@ Module      : ABExprParser
 Description : Parses arithmetic and boolean expressions.
 -}
 module ABExprParser (Parser,
-  parens, symbol, rword, scn, identifier, word,
+  parens, symbol, rword, rws, scn, identifier, word,
   aTerm, aExpr, bExpr) where
 
 import Control.Applicative (empty)

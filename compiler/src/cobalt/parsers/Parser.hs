@@ -23,7 +23,7 @@ parseString relativeDir input =
     Left  e -> show e
     Right x -> show x
 
-parsePrint :: String -> IO()
-parsePrint s = parseTest' parser s
+parsePrint :: [String] -> String -> IO()
+parsePrint relativeDir input = parseTest' (moduleParser relativeDir <|> classParser relativeDir) input
 
 parseFromFile file = runParser expr file <$> readFile file
