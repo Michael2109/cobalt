@@ -26,6 +26,11 @@ arithmeticParser moduleName = do
   aE <- aExpr
   return $ ArithExpr aE
 
+booleanParser :: String -> Parser Expr
+booleanParser moduleName = do
+  bE <- bExpr
+  return $ BooleanExpr bE
+
 stringLiteral :: Parser Expr
 stringLiteral = do
   value <- char '"' >> manyTill L.charLiteral (char '"')
@@ -40,6 +45,14 @@ assignParser moduleName = do
   symbol "="
   e <- expr' moduleName
   return (Assign vType var e)
+
+
+reassignParser :: String -> Parser Expr
+reassignParser moduleName = do
+  name  <- identifier
+  symbol "="
+  value <- expr' moduleName
+  return (Reassign name value)
 
 
 arrayDef :: Parser Expr
@@ -78,10 +91,10 @@ arrayAppend moduleName = do
   return $ ArrayAppend arrays
 
 -- Parses "True" or "False"
-booleanParser :: String -> Parser Expr
-booleanParser moduleName = do
+booleanValueParser :: String -> Parser Expr
+booleanValueParser moduleName = do
   rword "True"
-  return $ BooleanExpr True
+  return $ BooleanValueExpr True
 
 
 
@@ -216,15 +229,16 @@ dataParser = L.nonIndented scn p
 dataInstanceParser :: String -> Parser Expr
 dataInstanceParser moduleName = do
   typeName <- valType
-  es <- expr' moduleName
+  es <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
   return $ DataInstance moduleName typeName es
+
 
 
 printParser :: String -> Parser Expr
 printParser moduleName = do
   rword "println"
-  bodyArr <- expr' moduleName
-  return $ Print bodyArr
+  e <- expr' moduleName
+  return $ Print e
 
 
 ifStmt :: String -> Parser Expr
@@ -251,6 +265,31 @@ elseStmt moduleName = L.indentBlock scn p
        rword "else"
        return (L.IndentMany Nothing (return . (Else)) (expr' moduleName))
 
+whileParser :: String -> Parser Expr
+whileParser moduleName = L.indentBlock scn p
+   where
+     p = do
+       rword "while"
+       e <- parens (booleanParser moduleName)
+       return (L.IndentMany Nothing (return . (While e)) (expr' moduleName))
+
+tryParser :: String -> Parser Expr
+tryParser moduleName = L.indentBlock scn p
+   where
+     p = do
+       rword "try"
+       return (L.IndentMany Nothing (return . (Try)) (expr' moduleName))
+
+
+catchParser :: String -> Parser Expr
+catchParser moduleName = L.indentBlock scn p
+   where
+     p = do
+       rword "catch"
+       let argType = "Exception"
+       let argName = "e"
+       return (L.IndentMany Nothing (return . (Catch argType argName)) (expr' moduleName))
+
 whereStmt :: Parser Expr
 whereStmt = do
   rword "where"
@@ -271,18 +310,28 @@ expr' :: String -> Parser Expr
 expr' moduleName = try dataParser
   <|> try (functionCallParser moduleName)
   <|> try (booleanParser moduleName)
+  <|> try (booleanValueParser moduleName)
+
+  -- If else
   <|> try (ifStmt moduleName)
   <|> try (elseIfStmt moduleName)
+  <|> try (elseStmt moduleName)
+
+  <|> try (whileParser moduleName)
+
+  -- try/catch
+  <|> try (tryParser moduleName)
+  <|> try (catchParser moduleName)
+  <|> try (printParser moduleName)
   <|> try (objectMethodCall moduleName)
   <|> try (thisMethodCall moduleName)
   <|> try (newClassInstance moduleName)
-  <|> try (elseStmt moduleName)
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
   <|> try (assignParser moduleName)
+  <|> try (reassignParser moduleName)
   <|> try (arithmeticParser moduleName)
-  <|> try (printParser moduleName)
   <|> try whereStmt
   <|> try (globalVarParser moduleName)
   <|> try stringLiteral

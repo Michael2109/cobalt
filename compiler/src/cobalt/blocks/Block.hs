@@ -31,10 +31,13 @@ data Expr
   | ArithExpr AExpr
   | ArrayAppend [Expr]
   | Assign Expr String Expr
+  | Reassign String Expr
   | If BExpr [Expr]
   | ElseIf BExpr [Expr]
   | Else [Expr]
-  | While BExpr [Expr]
+  | Try [Expr]
+  | Catch String String [Expr]
+  | While Expr [Expr]
   | Print Expr
   | Return Expr
   | ArrayValues [String]
@@ -46,11 +49,12 @@ data Expr
   | StringLiteral String
   | Data String [Expr]
   | DataElement String String [String] [String]
-  | DataInstance String Expr Expr
+  | DataInstance String Expr [Expr]
   | ObjectMethodCall String String [Expr]
   | ThisMethodCall String [Expr]
   | NewClassInstance String [Expr]
-  | BooleanExpr Bool
+  | BooleanExpr BExpr
+  | BooleanValueExpr Bool
   | Skip
 
   -- Module specific
@@ -99,10 +103,13 @@ instance Show Expr where
     show (ReturnType b) = b
     show (AssignArith mutable vType name value) = "" ++ (if mutable then "" else "final ") ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (ArithExpr aExpr) = show aExpr
-    show (Assign vType name value) = "" ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
+    show (Assign vType name value) = show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
+    show (Reassign name value) = name ++ "=" ++ show value ++ ";"
     show (If condition statement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (ElseIf condition statement) = " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Else statement) = " else {\n" ++ intercalate "\n" (map show statement) ++ "}"
+    show (Try exprs) = "try{" ++ intercalate " " (map show exprs) ++ "}"
+    show (Catch argType argName exprs) = "catch(" ++ argType ++ " " ++ argName ++ "){" ++ intercalate " " (map show exprs) ++ "}"
     show (While condition statement) = "while(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Skip) = "[skip]"
     show (Seq s) = "[seq]"
@@ -122,11 +129,12 @@ instance Show Expr where
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
-    show (DataInstance moduleName typeName expr) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ show expr ++ ");"
+    show (DataInstance moduleName typeName args) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
-    show (BooleanExpr status) = if status then "true" else "false"
+    show (BooleanValueExpr status) = if status then "true" else "false"
+    show (BooleanExpr expr) = show expr
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

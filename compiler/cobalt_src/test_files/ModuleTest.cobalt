@@ -21,9 +21,6 @@ main args =
     example1 :String = "Example"
     println example1
 
-    B "Data test"
-    C "other Data test"
-    #D 123456
     y :int = 10
     z :int = 15
     #dataTest :B = B "Data test"
@@ -33,11 +30,11 @@ main args =
     stringTest :String = "Hello world"
     otherStringTest: String = "Test"
 
-    #if(x < 4)
-    #    println stringTest
-    #else if (x > 10)
-    #    println stringTest
-    #else
-    #    println otherStringTest
+    if(x < 4)
+        println stringTest
+    else if (x > 10)
+        println stringTest
+    else
+        println otherStringTest
 
 

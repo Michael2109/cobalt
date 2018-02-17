@@ -5,16 +5,31 @@ import java.awt.Graphics
 
 # Global variables
 thread: Thread = new Thread(this)
+
 x: int = 100
 y: int = 100
+dx: int = 1
+dy: int = 1
 
-ClassTest : void
-ClassTest =
+Panel : void
+Panel =
   thread.start()
 
 
-update : int -> void
+update : void
 update x =
+  x = x + dx
+  y = y + dy
+
+  if (x > 800)
+    dx = -1
+  if (x < 0)
+    dx = 1
+  if (y < 0)
+    dy = 1
+  if (y > 600)
+    dy = -1
+
   println "Updating"
 
 paint : Graphics -> void
@@ -25,6 +40,12 @@ paint g =
 
 run : void
 run =
-  x: int = 10 + 1
+  try
+    while(true)
+      Thread.sleep(7)
+      update()
+      repaint()
+  catch
+
 
 
