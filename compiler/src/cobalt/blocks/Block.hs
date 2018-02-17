@@ -53,6 +53,7 @@ data Expr
   | ObjectMethodCall String String [Expr]
   | ThisMethodCall String [Expr]
   | NewClassInstance String [Expr]
+  | ClassVariable String String
   | BooleanExpr BExpr
   | BooleanValueExpr Bool
   | Skip
@@ -133,6 +134,7 @@ instance Show Expr where
     show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
+    show (ClassVariable className varName) = className ++ "." ++ varName
     show (BooleanValueExpr status) = if status then "true" else "false"
     show (BooleanExpr expr) = show expr
     show (_) = "<unknown>"

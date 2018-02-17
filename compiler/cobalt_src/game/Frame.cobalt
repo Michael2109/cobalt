@@ -7,6 +7,7 @@ Frame =
   add(new Panel())
   setTitle("Game")
   setResizable(True)
+  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
   pack()
   setSize(800, 600)
   setVisible(True)

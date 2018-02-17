@@ -144,6 +144,13 @@ newClassInstance moduleName = do
   arguments <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
   return $ (NewClassInstance className arguments)
 
+classVariable :: String -> Parser Expr
+classVariable moduleName = do
+  className <- identifier
+  symbol "."
+  varName <- identifier
+  return $ ClassVariable className varName
+
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
   where
@@ -326,6 +333,7 @@ expr' moduleName = try dataParser
   <|> try (objectMethodCall moduleName)
   <|> try (thisMethodCall moduleName)
   <|> try (newClassInstance moduleName)
+  <|> try (classVariable moduleName)
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
