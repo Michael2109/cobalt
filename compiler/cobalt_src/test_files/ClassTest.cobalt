@@ -1,26 +1,27 @@
-class ClassTest
+class ClassTest extends JPanel implements Runnable
 
+import javax.swing.JPanel
 import java.awt.Graphics
 
 ClassTest : int -> void
 ClassTest x y =
   result: int = x + 10
 
-
-data A = B String | C String | D Integer
-
 update : int -> void
 update x =
-    if(x < 50)
-        println x
-        nextX :int = x + 1 * 2 - 3 / 2 + 5
-    else
-        last :int = 1000
-        println last
+  if(x < 50)
+    println x
+    nextX :int = x + 1 * 2 - 3 / 2 + 5
+  else
+    last :int = 1000
+    println last
 
 paint : Graphics -> void
 paint g =
-    x :int = 3
+  x :int = 3
 
+run : void
+run =
+  x: int = 10 + 1
 
 

@@ -45,7 +45,7 @@ rword w = lexeme (string w *> notFollowedBy alphaNumChar)
 
 
 rws :: [String] -- list of reserved words
-rws = ["module", "package", "println", "import",  "let", "if","then","else","while","do","skip","true","false","not","and","or"]
+rws = ["module", "package", "println", "import", "implements", "extends", "let", "if","then","else","while","do","skip","true","false","not","and","or"]
 
 
 word :: Parser String

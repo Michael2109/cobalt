@@ -18,7 +18,7 @@ data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
   | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
-  | Function String String [Expr] [Expr] Expr [Expr]
+  | Function String String [Expr] [Expr] Expr Bool [Expr]
   | Constructor String String [Expr] [Expr] [Expr]
   | FunctionCall String String [Expr]
   | Type String
@@ -51,19 +51,26 @@ data Expr
   | Module [String] String [Expr] [Expr]
 
   -- Class specific
-  | Class [String] String [Expr] [Expr]
+  | Class [String] String (Maybe String) (Maybe String) [Expr] [Expr]
 
 instance Show Expr where
-    show (Class packageLocs name imports bodyArray) =
+    show (Class packageLocs name parent interfaces imports bodyArray) = do
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"
           else "")
         ++
         intercalate "\n" (map show imports) ++
-        "public final class " ++ name ++ "{\n" ++
+        "public final class " ++ name ++ " " ++ extendSection ++ " " ++ implementSection ++ "{\n" ++
         --intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
+        where
+          extendSection = case parent of
+              Just a -> "extends " ++ a
+              Nothing -> ""
+          implementSection = case interfaces of
+              Just a -> "implements " ++ a
+              Nothing -> ""
     show (Module packageLocs name imports bodyArray) =
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"
@@ -76,7 +83,7 @@ instance Show Expr where
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (Function moduleName name argTypes args returnType body) = "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+    show (Function moduleName name argTypes args returnType static body) = "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++ (intercalate " " $ map show body) ++ "}"
     show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b

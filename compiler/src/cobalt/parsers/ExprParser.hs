@@ -87,7 +87,7 @@ moduleParser relativeDir = do
     rword "module"
     name <- identifier
     imports <- many (try importParser)
-    exprs <- many (expr' name <|> functionParser name)
+    exprs <- many (expr' name <|> functionParser name True)
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Module (packageDir) name imports exprs)
 
@@ -95,10 +95,14 @@ classParser :: [String] -> Parser Expr
 classParser relativeDir = do
     rword "class"
     name <- identifier
+    optional (rword "extends")
+    parent <- optional (identifier)
+    optional (rword "implements")
+    interfaces <- optional (identifier)
     imports <- many (try importParser)
-    exprs <- many (expr' name <|> functionParser name)
+    exprs <- many (expr' name <|> functionParser name False)
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Class (packageDir) name imports exprs)
+    return (Class (packageDir) name parent interfaces imports exprs)
 
 importParser :: Parser Expr
 importParser = L.nonIndented scn p
@@ -109,15 +113,15 @@ importParser = L.nonIndented scn p
       return $ (Import locations)
 
 -- Function parser
-functionParser :: String -> Parser Expr
-functionParser moduleName = L.nonIndented scn (L.indentBlock scn p)
+functionParser :: String -> Bool -> Parser Expr
+functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       name <- identifier
       symbol ":"
-      argTypes <- some argumentType
-      symbol "->"
-      rType <- ExprParser.returnType
+      aList <- sepBy (identifier) (symbol "->")
+      let argTypes = map (\x -> ArgumentType x) (take (length aList - 1) aList)
+      let rType = ReturnType $ last aList
       nameDup <- L.lineFold scn $ \sp' -> identifier
       args <- many argument
       symbol "="
@@ -125,7 +129,7 @@ functionParser moduleName = L.nonIndented scn (L.indentBlock scn p)
         then return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr' moduleName))
         else if name == moduleName
           then return (L.IndentMany Nothing (return . (Constructor moduleName name argTypes args)) (expr' ""))
-          else return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType)) (expr' ""))
+          else return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType static)) (expr' ""))
 
 valType :: Parser Expr
 valType = do
