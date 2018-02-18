@@ -19,7 +19,10 @@ import Text.Pretty.Simple (pShow)
 import ABExprParser
 import Block
 
-
+identifierParser :: String -> Parser Expr
+identifierParser moduleName = do
+  name <- identifier
+  return $ Identifier name
 
 arithmeticParser :: String -> Parser Expr
 arithmeticParser moduleName = do
@@ -54,6 +57,12 @@ reassignParser moduleName = do
   value <- expr' moduleName
   return (Reassign name value)
 
+arrayType :: Parser Expr
+arrayType = do
+  symbol "["
+  arrType <- identifier
+  symbol "]"
+  return $ ArrayType arrType
 
 arrayDef :: Parser Expr
 arrayDef = do
@@ -164,9 +173,9 @@ functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
     p = do
       name <- identifier
       symbol ":"
-      aList <- sepBy (identifier) (symbol "->")
-      let argTypes = map (\x -> ArgumentType x) (take (length aList - 1) aList)
-      let rType = ReturnType $ last aList
+      aList <- sepBy (identifierParser moduleName <|> arrayType) (symbol "->")
+      let argTypes = take (length aList - 1) aList
+      let rType = last aList
       nameDup <- L.lineFold scn $ \sp' -> identifier
       args <- many argument
       symbol "="

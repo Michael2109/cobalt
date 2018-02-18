@@ -1,5 +1,5 @@
 module Main
 
-main : String -> void
+main : [String] -> void
 main args =
   frame: Frame = new Frame()

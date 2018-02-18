@@ -29,6 +29,7 @@ data Expr
   | ReturnType String
   | AssignArith Bool Expr String Expr
   | ArithExpr AExpr
+  | ArrayType String
   | ArrayAppend [Expr]
   | Assign Expr String Expr
   | Reassign String Expr
@@ -55,6 +56,7 @@ data Expr
   | NewClassInstance String [Expr]
   | ClassVariable String String
   | BooleanExpr BExpr
+  | Identifier String
   | Skip
 
   -- Module specific
@@ -95,7 +97,7 @@ instance Show Expr where
     show (GlobalVar expr) = show expr
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function moduleName name argTypes args returnType static body) = "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (MainFunction moduleName name argTypes args returnType body) = "public static void main(String args[]){" ++ (intercalate " " $ map show body) ++ "}"
+    show (MainFunction moduleName name argTypes args returnType body) = "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b
     show (Argument b) = b
@@ -115,6 +117,7 @@ instance Show Expr where
     show (Seq s) = "[seq]"
     show (Return expr) = "return " ++ show expr ++ ";"
     show (Print exprs) = "System.out.println(" ++ show exprs ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
+    show (ArrayType arrType) = arrType ++ "[]"
     show (ArrayDef arrType name) = arrType ++ "[] " ++ name ++ "="
     show (ArrayValues exprs) = "{" ++ intercalate ", " exprs ++ "};"
     show (ArrayAssignment arr values) = show arr ++ show values
@@ -135,6 +138,7 @@ instance Show Expr where
     show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
     show (ClassVariable className varName) = className ++ "." ++ varName
     show (BooleanExpr expr) = show expr
+    show (Identifier name) = name
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

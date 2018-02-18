@@ -10,15 +10,10 @@ thread.start();}
 public void update(){
 x=x + dx;
 y=y + dy;
-if(x > 800){
+if(x < 0 || x > 750){
 dx=dx * -1;}
-if(x < 0){
-dx=dx * -1;}
-if(y < 0){
-dy=dy * -1;}
-if(y > 600){
-dy=dy * -1;}
-System.out.println("Updating");}
+if(y < 0 || y > 550){
+dy=dy * -1;}}
 public void paint(Graphics g){
 super.paintComponent(g);
 g.drawRect(x, y, 50, 50);}
