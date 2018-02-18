@@ -22,13 +22,13 @@ update x =
   y = y + dy
 
   if (x > 800)
-    dx = -1
+    dx = dx * -1
   if (x < 0)
-    dx = 1
+    dx = dx * -1
   if (y < 0)
-    dy = 1
+    dy = dy * -1
   if (y > 600)
-    dy = -1
+    dy = dy * -1
 
   println "Updating"
 
@@ -41,11 +41,8 @@ paint g =
 run : void
 run =
   try
-    while(true)
+    while(True)
       Thread.sleep(7)
       update()
       repaint()
   catch
-
-
-

@@ -90,15 +90,6 @@ arrayAppend moduleName = do
   arrays <- sepBy1 (expr' "") (symbol "++")
   return $ ArrayAppend arrays
 
--- Parses "True" or "False"
-booleanValueParser :: String -> Parser Expr
-booleanValueParser moduleName = do
-  rword "True"
-  return $ BooleanValueExpr True
-
-
-
-
 moduleParser :: [String] -> Parser Expr
 moduleParser relativeDir = do
     moduleKeyword <- rword "module"
@@ -317,7 +308,6 @@ expr' :: String -> Parser Expr
 expr' moduleName = try dataParser
   <|> try (functionCallParser moduleName)
   <|> try (booleanParser moduleName)
-  <|> try (booleanValueParser moduleName)
 
   -- If else
   <|> try (ifStmt moduleName)

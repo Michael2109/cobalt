@@ -49,8 +49,8 @@ aExpr = makeExprParser aTerm aOperators
 
 bTerm :: Parser BExpr
 bTerm =  parens bExpr
-  <|> (BoolConst True  <$ rword "true")
-  <|> (BoolConst False <$ rword "false")
+  <|> (BoolConst True  <$ rword "True")
+  <|> (BoolConst False <$ rword "False")
   <|> rExpr
 
 

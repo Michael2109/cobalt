@@ -11,13 +11,13 @@ public void update(){
 x=x + dx;
 y=y + dy;
 if(x > 800){
-dx=-1;}
+dx=dx * -1;}
 if(x < 0){
-dx=1;}
+dx=dx * -1;}
 if(y < 0){
-dy=1;}
+dy=dy * -1;}
 if(y > 600){
-dy=-1;}
+dy=dy * -1;}
 System.out.println("Updating");}
 public void paint(Graphics g){
 super.paintComponent(g);
