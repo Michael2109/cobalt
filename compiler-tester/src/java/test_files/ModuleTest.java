@@ -8,7 +8,7 @@ testFunction(nextX);}
  else {
 int last=1000;
 System.out.println(last);}}
-public static IO main(String args){
+public static void main(String args){
 int x=3;
 String example1="Example";
 System.out.println(example1);

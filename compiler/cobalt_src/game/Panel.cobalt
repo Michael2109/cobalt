@@ -3,15 +3,21 @@ class Panel extends JPanel implements Runnable
 import javax.swing.JPanel
 import java.awt.Graphics
 
-thread: Thread = new Thread(this)
 
-x: int = 100
-y: int = 100
-dx: int = 1
-dy: int = 1
+public
+  alive: boolean = True
+
+private
+  thread: Thread = new Thread(this)
+  x: int = 100
+  y: int = 100
+  dx: int = 1
+  dy: int = 1
 
 Panel : void
 Panel =
+  println "Something"
+
   thread.start()
 
 

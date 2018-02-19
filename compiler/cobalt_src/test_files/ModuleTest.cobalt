@@ -14,7 +14,7 @@ testFunction x =
         last :int = 1000
         println last
 
-main : String -> IO
+main : String -> void
 main args =
     x :int = 3
 

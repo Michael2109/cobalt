@@ -117,9 +117,10 @@ classParser relativeDir = do
     implementsKeyword <- optional (rword "implements")
     interfaces <- optional (identifier)
     imports <- many (try importParser)
+    modifierBlocks <- many (try (modifierBlockParser name))
     exprs <- many (try (functionParser name False) <|> expr' name )
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Class (packageDir) name parent interfaces imports exprs)
+    return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
 
 thisMethodCall :: String -> Parser Expr
 thisMethodCall moduleName = do
@@ -159,12 +160,18 @@ importParser = L.nonIndented scn p
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
 
-globalVarParser :: String -> Parser Expr
-globalVarParser moduleName = L.nonIndented scn p
+modifierBlockParser :: String -> Parser Expr
+modifierBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
-      e <- assignParser moduleName
-      return $ GlobalVar e
+      modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
+      return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser moduleName modifier))
+
+
+globalVarParser :: String -> String -> Parser Expr
+globalVarParser moduleName modifier = do
+  e <- assignParser moduleName
+  return $ GlobalVar modifier e
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr
@@ -333,6 +340,7 @@ expr' moduleName = try dataParser
 
   <|> try (whileParser moduleName)
 
+
   -- try/catch
   <|> try (tryParser moduleName)
   <|> try (catchParser moduleName)
@@ -348,7 +356,6 @@ expr' moduleName = try dataParser
   <|> try (reassignParser moduleName)
   <|> try (arithmeticParser moduleName)
   <|> try whereStmt
-  <|> try (globalVarParser moduleName)
   <|> try stringLiteral
 
 

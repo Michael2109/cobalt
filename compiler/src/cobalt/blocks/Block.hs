@@ -17,7 +17,7 @@ import ABBlock
 data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
-  | GlobalVar Expr
+  | GlobalVar String Expr
   | MainFunction {moduleName:: String, name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
   | Constructor String String [Expr] [Expr] [Expr]
@@ -58,24 +58,26 @@ data Expr
   | BooleanExpr BExpr
   | Identifier String
   | Annotation String
+  | ModifierBlock [Expr]
   | Skip
 
   -- Module specific
   | Module [String] String [Expr] [Expr]
 
   -- Class specific
-  | Class [String] String (Maybe String) (Maybe String) [Expr] [Expr]
+  | Class [String] String (Maybe String) (Maybe String) [Expr] [Expr] [Expr]
 
 instance Show Expr where
-    show (Class packageLocs name parent interfaces imports bodyArray) = do
+    show (Class packageLocs name parent interfaces imports modifierBlocks bodyArray) = do
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"
           else "")
         ++
         intercalate "\n" (map show imports) ++
         "public final class " ++ name ++ " " ++ extendSection ++ " " ++ implementSection ++ "{\n" ++
+        intercalate "\n" (map show modifierBlocks) ++
         --intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
-        intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
+        intercalate "\n" (map show (filter (not . isImportStatement) bodyArray))  ++
         "}"
         where
           extendSection = case parent of
@@ -95,7 +97,7 @@ instance Show Expr where
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
-    show (GlobalVar expr) = show expr
+    show (GlobalVar modifier expr) = modifier ++ " " ++ show expr
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function moduleName name annotations argTypes args returnType static body) =do
       annotationString ++ "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
@@ -151,6 +153,7 @@ instance Show Expr where
     show (BooleanExpr expr) = show expr
     show (Identifier name) = name
     show (Annotation name) = "@" ++ name
+    show (ModifierBlock exprs) = intercalate " " (map show exprs)
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

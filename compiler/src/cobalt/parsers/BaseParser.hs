@@ -40,13 +40,18 @@ symbol :: String -> Parser String
 symbol = L.symbol sc
 
 
-rword :: String -> Parser ()
-rword w = lexeme (string w *> notFollowedBy alphaNumChar)
+rword :: String -> Parser String
+rword word = do
+  lexeme (string word *> notFollowedBy alphaNumChar)
+  return word
 
 
 rws :: [String] -- list of reserved words
 rws = [
   "module",
+  "public",
+  "protected",
+  "private",
   "mutable",
   "True",
   "new",
