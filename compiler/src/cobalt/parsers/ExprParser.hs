@@ -171,6 +171,7 @@ functionParser :: String -> Bool -> Parser Expr
 functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
+      annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser moduleName))
       name <- identifier
       symbol ":"
       aList <- sepBy (identifierParser moduleName <|> arrayType) (symbol "->")
@@ -180,10 +181,17 @@ functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
       args <- many argument
       symbol "="
       if(name == "main")
-        then return (L.IndentMany Nothing (return . (MainFunction moduleName name argTypes args rType)) (expr' moduleName))
+        then return (L.IndentMany Nothing (return . (MainFunction moduleName name annotations argTypes args rType)) (expr' moduleName))
         else if name == moduleName
           then return (L.IndentMany Nothing (return . (Constructor moduleName name argTypes args)) (expr' ""))
-          else return (L.IndentMany Nothing (return . (Function moduleName name argTypes args rType static)) (expr' ""))
+          else return (L.IndentMany Nothing (return . (Function moduleName name annotations argTypes args rType static)) (expr' ""))
+
+annotationParser :: String -> Parser Expr
+annotationParser moduleName = do
+  symbol "@"
+  name <- identifier
+  return $ Annotation name
+
 
 valType :: Parser Expr
 valType = do

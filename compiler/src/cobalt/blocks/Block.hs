@@ -18,8 +18,8 @@ data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
   | GlobalVar Expr
-  | MainFunction {moduleName:: String, name ::String, argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
-  | Function String String [Expr] [Expr] Expr Bool [Expr]
+  | MainFunction {moduleName:: String, name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
+  | Function String String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
   | Constructor String String [Expr] [Expr] [Expr]
   | FunctionCall String String [Expr]
   | Type String
@@ -57,6 +57,7 @@ data Expr
   | ClassVariable String String
   | BooleanExpr BExpr
   | Identifier String
+  | Annotation String
   | Skip
 
   -- Module specific
@@ -96,8 +97,18 @@ instance Show Expr where
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
     show (GlobalVar expr) = show expr
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (Function moduleName name argTypes args returnType static body) = "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (MainFunction moduleName name argTypes args returnType body) = "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+    show (Function moduleName name annotations argTypes args returnType static body) =do
+      annotationString ++ "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+        where
+          annotationString = case annotations of
+              Just a -> show a
+              Nothing -> ""
+    show (MainFunction moduleName name annotations argTypes args returnType body) = do
+      annotationString ++ "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+        where
+          annotationString = case annotations of
+              Just a -> show a
+              Nothing -> ""
     show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
     show (Type b) = b
     show (Argument b) = b
@@ -139,6 +150,7 @@ instance Show Expr where
     show (ClassVariable className varName) = className ++ "." ++ varName
     show (BooleanExpr expr) = show expr
     show (Identifier name) = name
+    show (Annotation name) = "@" ++ name
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]
@@ -148,7 +160,7 @@ extractImportStatement (Import m) = Just m
 extractImportStatement _ = Nothing
 
 extractMainFunction :: Expr -> Maybe String
-extractMainFunction (MainFunction m _ _ _ _ _) = Just m
+extractMainFunction (MainFunction m _ _ _ _ _ _) = Just m
 extractMainFunction _ = Nothing
 
 extractFunctionCall :: Expr -> Maybe String
