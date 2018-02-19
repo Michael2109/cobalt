@@ -52,6 +52,7 @@ rws = [
   "public",
   "protected",
   "private",
+  "this",
   "mutable",
   "True",
   "new",

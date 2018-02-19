@@ -9,7 +9,7 @@ public
 
 private
   thread: Thread = new Thread(this)
-  x: int = 100
+  x: int = 50
   y: int = 100
   dx: int = 1
   dy: int = 1

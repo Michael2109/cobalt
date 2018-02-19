@@ -9,14 +9,14 @@ import BlockUtils
 
 -- Arithmetic expressions
 data AExpr
-  = Var String
+  = Var Bool String
   | IntConst Integer
   | Neg AExpr
   | ABinary ABinOp AExpr AExpr
   | Parenthesis AExpr
 
 instance Show AExpr where
-    show (Var v) = v
+    show (Var globalVar v) = v ++ if globalVar then "()" else ""
     show (IntConst i) = show i
     show (Neg aExpr) = "-" ++ show aExpr
     show (ABinary aBinOp aExpr1 aExpr2) = show aExpr1 ++ " " ++ show aBinOp ++ " " ++ show aExpr2

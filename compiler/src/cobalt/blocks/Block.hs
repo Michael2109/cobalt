@@ -17,7 +17,7 @@ import ABBlock
 data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
-  | GlobalVar String Expr
+  | GlobalVar String Expr Expr [Expr]
   | MainFunction {moduleName:: String, name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
   | Constructor String String [Expr] [Expr] [Expr]
@@ -51,6 +51,7 @@ data Expr
   | Data String [Expr]
   | DataElement String String [String] [String]
   | DataInstance String Expr [Expr]
+  | SuperMethodCall String String [Expr]
   | ObjectMethodCall String String [Expr]
   | ThisMethodCall String [Expr]
   | NewClassInstance String [Expr]
@@ -59,6 +60,8 @@ data Expr
   | Identifier String
   | Annotation String
   | ModifierBlock [Expr]
+  | This
+  | Super
   | Skip
 
   -- Module specific
@@ -97,7 +100,9 @@ instance Show Expr where
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
-    show (GlobalVar modifier expr) = modifier ++ " " ++ show expr
+    show (GlobalVar modifier varType varName exprs) =
+      modifier ++ " " ++ show varType ++ " " ++ show varName ++ ";" ++
+      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs) ++ "}"
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function moduleName name annotations argTypes args returnType static body) =do
       annotationString ++ "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
@@ -147,13 +152,16 @@ instance Show Expr where
       "} }"
     show (DataInstance moduleName typeName args) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
-    show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (SuperMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (ObjectMethodCall objectName methodName args) = objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
     show (ClassVariable className varName) = className ++ "." ++ varName
     show (BooleanExpr expr) = show expr
     show (Identifier name) = name
     show (Annotation name) = "@" ++ name
     show (ModifierBlock exprs) = intercalate " " (map show exprs)
+    show (This) = "this"
+    show (Super) = "super"
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]
