@@ -376,6 +376,7 @@ expr' moduleName = try dataParser
   <|> try (arithmeticParser moduleName)
   <|> try whereStmt
   <|> try stringLiteral
+  <|> try (identifierParser moduleName)
 
 
 parser :: Parser Expr

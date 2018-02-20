@@ -101,7 +101,7 @@ instance Show Expr where
         "}"
     show (Import locs) = "import " ++ intercalate "." locs ++ ";"
     show (GlobalVar modifier varType varName exprs) =
-      modifier ++ " " ++ show varType ++ " " ++ show varName ++ ";" ++
+      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
       modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs) ++ "}"
     show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function moduleName name annotations argTypes args returnType static body) =do
@@ -153,7 +153,7 @@ instance Show Expr where
     show (DataInstance moduleName typeName args) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (SuperMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
-    show (ObjectMethodCall objectName methodName args) = objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
     show (ClassVariable className varName) = className ++ "." ++ varName
     show (BooleanExpr expr) = show expr
