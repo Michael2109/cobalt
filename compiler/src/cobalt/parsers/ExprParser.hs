@@ -31,7 +31,7 @@ arithmeticParser moduleName = do
 
 booleanParser :: String -> Parser Expr
 booleanParser moduleName = do
-  bE <- bExpr
+  bE <- try bExpr
   return $ BooleanExpr bE
 
 stringLiteral :: Parser Expr
@@ -331,7 +331,7 @@ expr = f <$> sepBy1 (expr' "") (symbol ";")
 expr' :: String -> Parser Expr
 expr' moduleName = try dataParser
   <|> try (functionCallParser moduleName)
-  <|> try (booleanParser moduleName)
+  <|> booleanParser moduleName
 
   -- If else
   <|> try (ifStmt moduleName)
