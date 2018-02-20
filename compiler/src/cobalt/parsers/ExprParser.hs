@@ -19,6 +19,32 @@ import Text.Pretty.Simple (pShow)
 import ABExprParser
 import Block
 
+
+moduleParser :: [String] -> Parser Expr
+moduleParser relativeDir = do
+    moduleKeyword <- try (rword "module")
+    name <- identifier
+    imports <- many (try importParser)
+    exprs <- many (try (functionParser name True) <|> expr' name)
+    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+    return (Module (packageDir) name imports exprs)
+
+classParser :: [String] -> Parser Expr
+classParser relativeDir = do
+    try (rword "class")
+    name <- identifier
+    extendsKeyword <- optional (rword "extends")
+    parent <- optional (identifier)
+    implementsKeyword <- optional (rword "implements")
+    interfaces <- optional (identifier)
+    imports <- many (try importParser)
+    modifierBlocks <- many (try (modifierBlockParser name))
+    exprs <- many (try (functionParser name False) <|> expr' name )
+    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+    return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
+
+
+
 identifierParser :: String -> Parser Expr
 identifierParser moduleName = do
   name <- identifier
@@ -99,29 +125,6 @@ arrayAppend moduleName = do
   arrays <- sepBy1 (expr' "") (symbol "++")
   return $ ArrayAppend arrays
 
-moduleParser :: [String] -> Parser Expr
-moduleParser relativeDir = do
-    moduleKeyword <- rword "module"
-    name <- identifier
-    imports <- many (try importParser)
-    exprs <- many (try (functionParser name True) <|> expr' name)
-    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Module (packageDir) name imports exprs)
-
-classParser :: [String] -> Parser Expr
-classParser relativeDir = do
-    rword "class"
-    name <- identifier
-    extendsKeyword <- optional (rword "extends")
-    parent <- optional (identifier)
-    implementsKeyword <- optional (rword "implements")
-    interfaces <- optional (identifier)
-    imports <- many (try importParser)
-    modifierBlocks <- many (try (modifierBlockParser name))
-    exprs <- many (try (functionParser name False) <|> expr' name )
-    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
-
 thisMethodCall :: String -> Parser Expr
 thisMethodCall moduleName = do
   methodName <- identifier
@@ -135,12 +138,14 @@ objectMethodCall moduleName = do
   symbol "."
   methodName <- identifier
   args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
-  return $ ObjectMethodCall objectName methodName args
+  if(objectName == "super")
+    then return $ SuperMethodCall objectName methodName args
+    else return $ ObjectMethodCall objectName methodName args
 
 
 newClassInstance :: String -> Parser Expr
 newClassInstance moduleName = do
-  rword "new"
+  try (rword "new")
   className <- identifier
   arguments <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
   return $ (NewClassInstance className arguments)
@@ -156,7 +161,7 @@ importParser :: Parser Expr
 importParser = L.nonIndented scn p
   where
     p = do
-      rword "import"
+      try (rword "import")
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
 
@@ -170,8 +175,12 @@ modifierBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
 
 globalVarParser :: String -> String -> Parser Expr
 globalVarParser moduleName modifier = do
-  e <- assignParser moduleName
-  return $ GlobalVar modifier e
+  varName  <- identifierParser moduleName
+  symbol ":"
+  varType <- valType
+  symbol "="
+  es <- many (expr' moduleName)
+  return $ GlobalVar modifier varType varName es
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr
@@ -236,6 +245,13 @@ dataElementParser superName = do
   let args = map (\x -> "var" ++ show x) [0..((length argTypes)-1)]
   return $ DataElement superName name argTypes args
 
+lambdaParser :: String -> Parser Expr
+lambdaParser moduleName = do
+  try (symbol "\\")
+  varName <- identifier
+  symbol "->"
+  es <- some (expr' moduleName)
+  return $ Lambda varName es
 
 dataParser :: Parser Expr
 dataParser = L.nonIndented scn p
@@ -320,6 +336,15 @@ whereStmt = do
   symbol "}"
   return $ (Where exprs)
 
+thisParser :: Parser Expr
+thisParser = do
+  rword "this"
+  return This
+
+superParser :: Parser Expr
+superParser = do
+  rword "super"
+  return Super
 
 expr :: Parser Expr
 expr = f <$> sepBy1 (expr' "") (symbol ";")
@@ -347,16 +372,22 @@ expr' moduleName = try dataParser
   <|> try (printParser moduleName)
   <|> try (objectMethodCall moduleName)
   <|> try (thisMethodCall moduleName)
-  <|> try (newClassInstance moduleName)
+  <|> newClassInstance moduleName
   <|> try (classVariable moduleName)
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
+  <|> lambdaParser moduleName
+
   <|> try (assignParser moduleName)
   <|> try (reassignParser moduleName)
+
+  <|> try (thisParser)
+
   <|> try (arithmeticParser moduleName)
   <|> try whereStmt
   <|> try stringLiteral
+  <|> try (identifierParser moduleName)
 
 
 parser :: Parser Expr

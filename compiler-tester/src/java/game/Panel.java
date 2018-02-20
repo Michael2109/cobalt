@@ -1,7 +1,7 @@
 package game;import javax.swing.JPanel;
 import java.awt.Graphics;public final class Panel extends JPanel implements Runnable{
-public boolean alive=true;
-private Thread thread=new Thread(this); private int x=100; private int y=100; private int dx=1; private int dy=1;public Panel(){
+public boolean alive=true;public boolean alive(){return true;}
+private Thread thread=new Thread(this);private Thread thread(){return new Thread(this);} private int x=50;private int x(){return 50;} private int y=100;private int y(){return 100;} private int dx=1;private int dx(){return 1;} private int dy=1;private int dy(){return 1;}public Panel(){
 System.out.println("Something");
 thread.start();}
 public void update(){
