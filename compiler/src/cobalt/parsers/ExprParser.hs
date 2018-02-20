@@ -135,7 +135,9 @@ objectMethodCall moduleName = do
   symbol "."
   methodName <- identifier
   args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
-  return $ ObjectMethodCall objectName methodName args
+  if(objectName == "super")
+    then return $ SuperMethodCall objectName methodName args
+    else return $ ObjectMethodCall objectName methodName args
 
 
 newClassInstance :: String -> Parser Expr
@@ -170,8 +172,12 @@ modifierBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
 
 globalVarParser :: String -> String -> Parser Expr
 globalVarParser moduleName modifier = do
-  e <- assignParser moduleName
-  return $ GlobalVar modifier e
+  varName  <- identifierParser moduleName
+  symbol ":"
+  varType <- valType
+  symbol "="
+  es <- many (expr' moduleName)
+  return $ GlobalVar modifier varType varName es
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr
@@ -320,6 +326,15 @@ whereStmt = do
   symbol "}"
   return $ (Where exprs)
 
+thisParser :: Parser Expr
+thisParser = do
+  rword "this"
+  return This
+
+superParser :: Parser Expr
+superParser = do
+  rword "super"
+  return Super
 
 expr :: Parser Expr
 expr = f <$> sepBy1 (expr' "") (symbol ";")
@@ -352,11 +367,16 @@ expr' moduleName = try dataParser
   <|> try (dataInstanceParser moduleName)
   <|> try arrayAssign
   <|> try arrayElementSelect
+
   <|> try (assignParser moduleName)
   <|> try (reassignParser moduleName)
+
+  <|> try (thisParser)
+
   <|> try (arithmeticParser moduleName)
   <|> try whereStmt
   <|> try stringLiteral
+  <|> try (identifierParser moduleName)
 
 
 parser :: Parser Expr
