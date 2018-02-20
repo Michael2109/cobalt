@@ -45,7 +45,6 @@ data Expr
   | ArrayDef String String
   | ArrayAssignment Expr Expr
   | ArrayElementSelect String
-  | Lambda String String
   | Where [Expr]
   | StringLiteral String
   | Data String [Expr]
@@ -62,6 +61,7 @@ data Expr
   | ModifierBlock [Expr]
   | This
   | Super
+  | Lambda String [Expr]
   | Skip
 
   -- Module specific
@@ -141,7 +141,6 @@ instance Show Expr where
     show (ArrayAssignment arr values) = show arr ++ show values
     show (ArrayAppend arrays) = intercalate "" (map (\arr -> "") arrays)
     show (ArrayElementSelect i) = "[" ++ i ++ "];"
-    show (Lambda valName collectionName) = ""
     show (Where exprs) = intercalate "\n" (map show exprs)
     show (StringLiteral value) = "\"" ++ value ++ "\""
     show (Data name exprs) = "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
@@ -162,6 +161,7 @@ instance Show Expr where
     show (ModifierBlock exprs) = intercalate " " (map show exprs)
     show (This) = "this"
     show (Super) = "super"
+    show (Lambda varName exprs) = "<LAMBDA " ++ varName ++ " " ++ intercalate " " (map show exprs)
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]
