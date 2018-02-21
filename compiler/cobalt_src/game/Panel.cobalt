@@ -1,13 +1,12 @@
-class Panel extends JPanel implements Runnable
-
 import javax.swing.JPanel
 import java.awt.Graphics
 
-
-public
-  alive: boolean = True
+class Panel extends JPanel implements Runnable
 
 private
+  alive: boolean = True
+
+public
   thread: Thread = new Thread(this)
   x: int = 50
   y: int = 100

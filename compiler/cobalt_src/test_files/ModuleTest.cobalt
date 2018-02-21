@@ -1,6 +1,6 @@
-module ModuleTest
-
 import java.util.Random
+
+module ModuleTest
 
 data A = B String | C String | D Integer
 

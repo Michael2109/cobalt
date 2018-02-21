@@ -1,7 +1,8 @@
-class ClassTest extends JPanel implements Runnable
-
 import javax.swing.JPanel
 import java.awt.Graphics
+
+
+class ClassTest extends JPanel implements Runnable
 
 # Global variables
 public
