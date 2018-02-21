@@ -24,10 +24,10 @@ moduleParser :: [String] -> Parser Expr
 moduleParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
-      imports <- try (many (try importParser))
+      imports <- many (try importParser)
       moduleT <- L.lineFold scn $ \sp' -> try (rword "module")
       name <- identifier
-      exprs <- many (try (functionParser name True) <|> expr' name)
+      exprs <- many (functionParser name True <|> expr' name)
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Module (packageDir) name imports exprs)
 
@@ -35,7 +35,7 @@ classParser :: [String] -> Parser Expr
 classParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
-      imports <- try (many (try importParser))
+      imports <- many (try importParser)
 
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
@@ -43,14 +43,14 @@ classParser relativeDir = try $ L.nonIndented scn p
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
       interfaces <- optional (identifier)
-      modifierBlocks <- many (try (modifierBlockParser name))
-      exprs <- many (try (functionParser name False) <|> expr' name )
+      modifierBlocks <- many (modifierBlockParser name)
+      exprs <- many (functionParser name False <|> expr' name )
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
 
 
 importParser :: Parser Expr
-importParser = L.nonIndented scn p
+importParser = try $ L.nonIndented scn p
   where
     p = do
       try (rword "import")
@@ -59,7 +59,7 @@ importParser = L.nonIndented scn p
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr
-functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
+functionParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser moduleName))
@@ -200,7 +200,7 @@ classVariable moduleName = do
   return $ ClassVariable className varName
 
 modifierBlockParser :: String -> Parser Expr
-modifierBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
+modifierBlockParser moduleName = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
