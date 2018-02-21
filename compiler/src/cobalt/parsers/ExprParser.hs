@@ -22,7 +22,7 @@ import Block
 
 moduleParser :: [String] -> Parser Expr
 moduleParser relativeDir = do
-    moduleKeyword <- try (rword "module")
+    try (rword "module")
     name <- identifier
     imports <- many (try importParser)
     exprs <- many (try (functionParser name True) <|> expr' name)
@@ -42,8 +42,6 @@ classParser relativeDir = do
     exprs <- many (try (functionParser name False) <|> expr' name )
     let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
     return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
-
-
 
 identifierParser :: String -> Parser Expr
 identifierParser moduleName = do
@@ -98,9 +96,12 @@ arrayType = do
 
 arrayDef :: Parser Expr
 arrayDef = do
-  name <- identifier
-  symbol ":"
-  symbol "["
+  name <-
+    try $ do
+      id <- identifier
+      symbol ":"
+      symbol "["
+      return id
   arrType <- word
   symbol "]"
   symbol "="
@@ -109,7 +110,7 @@ arrayDef = do
 
 arrayValues :: Parser Expr
 arrayValues = do
-  symbol "["
+  try (symbol "[")
   values <- many identifier
   symbol "]"
   return $ ArrayValues values
@@ -289,7 +290,7 @@ ifStmt :: String -> Parser Expr
 ifStmt moduleName = L.indentBlock scn p
    where
      p = do
-       rword "if"
+       try (rword "if")
        cond  <- bExpr
        return (L.IndentMany Nothing (return . (If cond)) (expr' moduleName))
 
@@ -297,8 +298,9 @@ elseIfStmt :: String -> Parser Expr
 elseIfStmt moduleName = L.indentBlock scn p
    where
      p = do
-       rword "else"
-       rword "if"
+       try $ do
+         rword "else"
+         rword "if"
        cond  <- bExpr
        return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' moduleName))
 
@@ -313,7 +315,7 @@ whileParser :: String -> Parser Expr
 whileParser moduleName = L.indentBlock scn p
    where
      p = do
-       rword "while"
+       try (rword "while")
        e <- parens (booleanParser moduleName)
        return (L.IndentMany Nothing (return . (While e)) (expr' moduleName))
 
@@ -365,11 +367,11 @@ expr' moduleName = try dataParser
   <|> booleanParser moduleName
 
   -- If else
-  <|> try (ifStmt moduleName)
-  <|> try (elseIfStmt moduleName)
-  <|> try (elseStmt moduleName)
+  <|> ifStmt moduleName
+  <|> elseIfStmt moduleName
+  <|> elseStmt moduleName
 
-  <|> try (whileParser moduleName)
+  <|> whileParser moduleName
 
 
   -- try/catch
@@ -381,7 +383,7 @@ expr' moduleName = try dataParser
   <|> newClassInstance moduleName
   <|> try (classVariable moduleName)
   <|> try (dataInstanceParser moduleName)
-  <|> try arrayAssign
+  <|> arrayAssign
   <|> try arrayElementSelect
   <|> lambdaParser moduleName
 

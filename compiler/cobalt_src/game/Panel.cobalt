@@ -4,10 +4,10 @@ import javax.swing.JPanel
 import java.awt.Graphics
 
 
-public
+private
   alive: boolean = True
 
-private
+public
   thread: Thread = new Thread(this)
   x: int = 50
   y: int = 100
