@@ -1,6 +1,6 @@
-class Frame extends JFrame
-
 import javax.swing.JFrame
+
+class Frame extends JFrame
 
 Frame : void
 Frame =

@@ -21,27 +21,62 @@ import Block
 
 
 moduleParser :: [String] -> Parser Expr
-moduleParser relativeDir = do
-    try (rword "module")
-    name <- identifier
-    imports <- many (try importParser)
-    exprs <- many (try (functionParser name True) <|> expr' name)
-    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Module (packageDir) name imports exprs)
+moduleParser relativeDir = try $ L.nonIndented scn p
+  where
+    p = do
+      imports <- try (many (try importParser))
+      moduleT <- L.lineFold scn $ \sp' -> try (rword "module")
+      name <- identifier
+      exprs <- many (try (functionParser name True) <|> expr' name)
+      let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+      return (Module (packageDir) name imports exprs)
 
 classParser :: [String] -> Parser Expr
-classParser relativeDir = do
-    try (rword "class")
-    name <- identifier
-    extendsKeyword <- optional (rword "extends")
-    parent <- optional (identifier)
-    implementsKeyword <- optional (rword "implements")
-    interfaces <- optional (identifier)
-    imports <- many (try importParser)
-    modifierBlocks <- many (try (modifierBlockParser name))
-    exprs <- many (try (functionParser name False) <|> expr' name )
-    let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-    return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
+classParser relativeDir = try $ L.nonIndented scn p
+  where
+    p = do
+      imports <- try (many (try importParser))
+
+      classT <- L.lineFold scn $ \sp' -> try (rword "class")
+      name <- identifier
+      extendsKeyword <- optional (rword "extends")
+      parent <- optional (identifier)
+      implementsKeyword <- optional (rword "implements")
+      interfaces <- optional (identifier)
+      modifierBlocks <- many (try (modifierBlockParser name))
+      exprs <- many (try (functionParser name False) <|> expr' name )
+      let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+      return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
+
+
+importParser :: Parser Expr
+importParser = L.nonIndented scn p
+  where
+    p = do
+      try (rword "import")
+      locations <- sepBy1 identifier (symbol ".")
+      return $ (Import locations)
+
+-- Function parser
+functionParser :: String -> Bool -> Parser Expr
+functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
+  where
+    p = do
+      annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser moduleName))
+      name <- identifier
+      symbol ":"
+      aList <- sepBy (identifierParser moduleName <|> arrayType) (symbol "->")
+      let argTypes = take (length aList - 1) aList
+      let rType = last aList
+      nameDup <- L.lineFold scn $ \sp' -> identifier
+      args <- many argument
+      symbol "="
+      if(name == "main")
+        then return (L.IndentMany Nothing (return . (MainFunction moduleName name annotations argTypes args rType)) (expr' moduleName))
+        else if name == moduleName
+          then return (L.IndentMany Nothing (return . (Constructor moduleName name argTypes args)) (expr' ""))
+          else return (L.IndentMany Nothing (return . (Function moduleName name annotations argTypes args rType static)) (expr' ""))
+
 
 identifierParser :: String -> Parser Expr
 identifierParser moduleName = do
@@ -164,14 +199,6 @@ classVariable moduleName = do
   varName <- identifier
   return $ ClassVariable className varName
 
-importParser :: Parser Expr
-importParser = L.nonIndented scn p
-  where
-    p = do
-      try (rword "import")
-      locations <- sepBy1 identifier (symbol ".")
-      return $ (Import locations)
-
 modifierBlockParser :: String -> Parser Expr
 modifierBlockParser moduleName = L.nonIndented scn (L.indentBlock scn p)
   where
@@ -188,26 +215,6 @@ globalVarParser moduleName modifier = do
   symbol "="
   es <- many (expr' moduleName)
   return $ GlobalVar modifier varType varName es
-
--- Function parser
-functionParser :: String -> Bool -> Parser Expr
-functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
-  where
-    p = do
-      annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser moduleName))
-      name <- identifier
-      symbol ":"
-      aList <- sepBy (identifierParser moduleName <|> arrayType) (symbol "->")
-      let argTypes = take (length aList - 1) aList
-      let rType = last aList
-      nameDup <- L.lineFold scn $ \sp' -> identifier
-      args <- many argument
-      symbol "="
-      if(name == "main")
-        then return (L.IndentMany Nothing (return . (MainFunction moduleName name annotations argTypes args rType)) (expr' moduleName))
-        else if name == moduleName
-          then return (L.IndentMany Nothing (return . (Constructor moduleName name argTypes args)) (expr' ""))
-          else return (L.IndentMany Nothing (return . (Function moduleName name annotations argTypes args rType static)) (expr' ""))
 
 annotationParser :: String -> Parser Expr
 annotationParser moduleName = do
@@ -367,11 +374,11 @@ expr' moduleName = try dataParser
   <|> booleanParser moduleName
 
   -- If else
-  <|> ifStmt moduleName
-  <|> elseIfStmt moduleName
-  <|> elseStmt moduleName
+  <|> try (ifStmt moduleName)
+  <|> try (elseIfStmt moduleName)
+  <|> try (elseStmt moduleName)
 
-  <|> whileParser moduleName
+  <|> try (whileParser moduleName)
 
 
   -- try/catch

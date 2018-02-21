@@ -1,8 +1,7 @@
-class Panel extends JPanel implements Runnable
-
 import javax.swing.JPanel
 import java.awt.Graphics
 
+class Panel extends JPanel implements Runnable
 
 private
   alive: boolean = True
