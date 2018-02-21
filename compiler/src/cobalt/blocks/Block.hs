@@ -31,7 +31,7 @@ data Expr
   | ArithExpr AExpr
   | ArrayType String
   | ArrayAppend [Expr]
-  | Assign Expr String Expr
+  | Assign Expr Expr Expr
   | Reassign String Expr
   | If BExpr [Expr]
   | ElseIf BExpr [Expr]
@@ -123,7 +123,7 @@ instance Show Expr where
     show (ReturnType b) = b
     show (AssignArith mutable vType name value) = "" ++ (if mutable then "" else "final ") ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (ArithExpr aExpr) = show aExpr
-    show (Assign vType name value) = show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
+    show (Assign vType name value) = show vType ++ " " ++ show name ++ "=" ++ show value ++ ";"
     show (Reassign name value) = name ++ "=" ++ show value ++ ";"
     show (If condition statement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (ElseIf condition statement) = " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"

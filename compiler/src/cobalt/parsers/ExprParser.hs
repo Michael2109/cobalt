@@ -68,12 +68,18 @@ stringLiteral = do
 
 assignParser :: String -> Parser Expr
 assignParser moduleName = do
-  var  <- identifier
-  symbol ":"
-  vType <- valType
-  symbol "="
+  varName <-
+    try $ do
+      varN  <- identifierParser moduleName
+      symbol ":"
+      return varN
+  varType <-
+    try $ do
+      vType <- valType
+      symbol "="
+      return vType
   e <- expr' moduleName
-  return (Assign vType var e)
+  return $ Assign varType varName e
 
 
 reassignParser :: String -> Parser Expr
@@ -204,7 +210,7 @@ functionParser moduleName static = L.nonIndented scn (L.indentBlock scn p)
 
 annotationParser :: String -> Parser Expr
 annotationParser moduleName = do
-  symbol "@"
+  try (symbol "@")
   name <- identifier
   return $ Annotation name
 
@@ -379,7 +385,7 @@ expr' moduleName = try dataParser
   <|> try arrayElementSelect
   <|> lambdaParser moduleName
 
-  <|> try (assignParser moduleName)
+  <|> assignParser moduleName
   <|> try (reassignParser moduleName)
 
   <|> try (thisParser)
