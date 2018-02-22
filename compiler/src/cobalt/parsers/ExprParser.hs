@@ -122,6 +122,7 @@ stringLiteral = do
 
 assignParser :: Parser Expr
 assignParser  = do
+  --try (rword "var")
   varName <-
     try $ do
       varN  <- identifierParser

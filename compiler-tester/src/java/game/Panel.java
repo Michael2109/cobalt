@@ -1,76 +1,19 @@
-package game;
-
-import javax.swing.JPanel;
-import java.awt.Graphics;
-
-public final class Panel extends JPanel implements Runnable {
-    public Thread thread = new Thread(this);
-
-    public Thread thread() {
-        return new Thread(this);
-    }
-
-    public int x = 50;
-
-    public int x() {
-        return 50;
-    }
-
-    public int y = 100;
-
-    public int y() {
-        return 100;
-    }
-
-    public int dx = 1;
-
-    public int dx() {
-        return 1;
-    }
-
-    public int dy = 1;
-
-    public int dy() {
-        return 1;
-    }
-
-    private boolean alive = true;
-
-    private boolean alive() {
-        return true;
-    }
-
-    private final Game game;
-
-    public Panel(Game game) {
-        this.game = game;
-        thread.start();
-    }
-
-    public void update() {
-        x = x + dx;
-        y = y + dy;
-        if (x < 0 || x > 750) {
-            dx = dx * -1;
-        }
-        if (y < 0 || y > 550) {
-            dy = dy * -1;
-        }
-    }
-
-    public void paint(Graphics g) {
-        super.paintComponent(g);
-        g.drawRect(x, y, 50, 50);
-    }
-
-    public void run() {
-        try {
-            while (true) {
-                Thread.sleep(7);
-                update();
-                repaint();
-            }
-        } catch (Exception e) {
-        }
-    }
-}
+<Class> package game;<Import> import javax.swing.JPanel;
+<Import> import java.awt.Graphics;public final class Panel extends JPanel implements Runnable{
+<ModifierBlock> <GlobalVar> public <Type> <Identifier> Thread <Identifier> thread=<NewClassInstance> new Thread(<This> this);public <Type> <Identifier> Thread <Identifier> thread(){return <NewClassInstance> new Thread(<This> this);} <GlobalVar> public <Type> <Identifier> int <Identifier> x=<ArithExpr> 50;public <Type> <Identifier> int <Identifier> x(){return <ArithExpr> 50;} <GlobalVar> public <Type> <Identifier> int <Identifier> y=<ArithExpr> 100;public <Type> <Identifier> int <Identifier> y(){return <ArithExpr> 100;} <GlobalVar> public <Type> <Identifier> int <Identifier> dx=<ArithExpr> 1;public <Type> <Identifier> int <Identifier> dx(){return <ArithExpr> 1;} <GlobalVar> public <Type> <Identifier> int <Identifier> dy=<ArithExpr> 1;public <Type> <Identifier> int <Identifier> dy(){return <ArithExpr> 1;}
+<ModifierBlock> <GlobalVar> private <Type> <Identifier> boolean <Identifier> alive=<BooleanExpr> true;private <Type> <Identifier> boolean <Identifier> alive(){return <BooleanExpr> true;}private final <ClassParam> <Identifier> Game <Identifier> game;public Panel(<ClassParam> <Identifier> Game <Identifier> game){this.<Identifier> game=<Identifier> game;<ObjectMethodCall> thread.start();}<Function> public <Identifier> void update(){
+<Reassign> x=<ArithExpr> x + dx;
+<Reassign> y=<ArithExpr> y + dy;
+<If> if(x < 0 || x > 750){
+<Reassign> dx=<ArithExpr> dx * -1;}
+<If> if(y < 0 || y > 550){
+<Reassign> dy=<ArithExpr> dy * -1;}}
+<Function> public <Identifier> void paint(<Identifier> Graphics <Argument> g){
+<SuperMethodCall> super.paintComponent(<ArithExpr> g);
+<ObjectMethodCall> g.drawRect(<ArithExpr> x, <ArithExpr> y, <ArithExpr> 50, <ArithExpr> 50);}
+<Function> public <Identifier> void run(){
+<Try> try{<While> while(<BooleanExpr> true){
+<ObjectMethodCall> Thread.sleep(<ArithExpr> 7);
+<FunctionCall> update();
+<FunctionCall> repaint();}}
+<Catch> catch(Exception e){}}}

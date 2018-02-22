@@ -1,2 +1,2 @@
-package game;import javax.swing.JFrame;public final class Frame extends JFrame {
-public Frame(){Game game=new Game(); add(new Panel(game)); setTitle("Game"); setResizable(true); setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); pack(); setSize(800, 600); setVisible(true);}}
+<Class> package game;<Import> import javax.swing.JFrame;public final class Frame extends JFrame {
+public Frame(){<Assign> <Type> <Identifier> Game <Identifier> game=<NewClassInstance> new Game(); <ThisMethodCall> add(<NewClassInstance> new Panel(<ArithExpr> game)); <ThisMethodCall> setTitle(<StringLiteral> "Game"); <ThisMethodCall> setResizable(<BooleanExpr> true); <ThisMethodCall> setDefaultCloseOperation(<ClassVariable> JFrame.EXIT_ON_CLOSE); <FunctionCall> pack(); <ThisMethodCall> setSize(<ArithExpr> 800, <ArithExpr> 600); <ThisMethodCall> setVisible(<BooleanExpr> true);}}

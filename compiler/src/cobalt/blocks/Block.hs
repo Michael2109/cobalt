@@ -13,6 +13,12 @@ import Data.Maybe
 
 import ABBlock
 
+debug :: Bool
+debug = True
+
+getDebug :: String -> String
+getDebug message = (if debug then "<" ++ message ++ "> " else "")
+
 -- Statements
 data Expr
   = Seq [Expr]
@@ -72,7 +78,8 @@ data Expr
   | Class [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
 
 instance Show Expr where
-    show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = do
+    show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) =
+        getDebug "Class" ++
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"
           else "")
@@ -104,6 +111,7 @@ instance Show Expr where
               Just a -> "implements " ++ a
               Nothing -> ""
     show (Module packageLocs name imports bodyArray) =
+        getDebug "Module" ++
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"
           else "")
@@ -113,70 +121,73 @@ instance Show Expr where
         intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
-    show (Import locs) = "import " ++ intercalate "." locs ++ ";"
+    show (Import locs) = getDebug "Import" ++ "import " ++ intercalate "." locs ++ ";"
     show (GlobalVar modifier varType varName exprs) =
+      getDebug "GlobalVar" ++
       modifier ++ " " ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
       modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs) ++ "}"
-    show (Constructor name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (Function name annotations argTypes args returnType static body) =do
+    show (Constructor name argTypes args body) = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+    show (Function name annotations argTypes args returnType static body) =
+      getDebug "Function" ++
       annotationString ++ "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> show a
               Nothing -> ""
-    show (MainFunction name annotations argTypes args returnType body) = do
+    show (MainFunction name annotations argTypes args returnType body) =
+      getDebug "MainFunction" ++
       annotationString ++ "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> show a
               Nothing -> ""
-    show (FunctionCall name exprs) = name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
-    show (Type b) = show b
-    show (Argument b) = b
-    show (ArgumentType b) = b
-    show (ReturnType b) = b
-    show (AssignArith mutable vType name value) = "" ++ (if mutable then "" else "final ") ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
-    show (ArithExpr aExpr) = show aExpr
-    show (Assign vType name value) = show vType ++ " " ++ show name ++ "=" ++ show value ++ ";"
-    show (Reassign name value) = name ++ "=" ++ show value ++ ";"
-    show (If condition statement) = "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
-    show (ElseIf condition statement) = " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
-    show (Else statement) = " else {\n" ++ intercalate "\n" (map show statement) ++ "}"
-    show (Try exprs) = "try{" ++ intercalate " " (map show exprs) ++ "}"
-    show (Catch argType argName exprs) = "catch(" ++ argType ++ " " ++ argName ++ "){" ++ intercalate " " (map show exprs) ++ "}"
-    show (While condition statement) = "while(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
-    show (Skip) = "[skip]"
-    show (Seq s) = "[seq]"
-    show (Return expr) = "return " ++ show expr ++ ";"
-    show (Print exprs) = "System.out.println(" ++ show exprs ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
-    show (ArrayType arrType) = arrType ++ "[]"
-    show (ArrayDef arrType name) = arrType ++ "[] " ++ name ++ "="
-    show (ArrayValues exprs) = "{" ++ intercalate ", " exprs ++ "};"
-    show (ArrayAssignment arr values) = show arr ++ show values
-    show (ArrayAppend arrays) = intercalate "" (map (\arr -> "") arrays)
-    show (ArrayElementSelect i) = "[" ++ i ++ "];"
-    show (Where exprs) = intercalate "\n" (map show exprs)
-    show (StringLiteral value) = "\"" ++ value ++ "\""
-    show (Data name exprs) = "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
-    show (DataElement superName name argTypes args) = "final class " ++ name ++ " extends "++ superName ++ " { " ++
+    show (FunctionCall name exprs) = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
+    show (Type b) = getDebug "Type" ++ show b
+    show (Argument b) = getDebug "Argument" ++ b
+    show (ArgumentType b) = getDebug "ArgumentType" ++ b
+    show (ReturnType b) = getDebug "ReturnType" ++ b
+    show (AssignArith mutable vType name value) = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
+    show (ArithExpr aExpr) = getDebug "ArithExpr" ++ show aExpr
+    show (Assign vType name value) = getDebug "Assign" ++ show vType ++ " " ++ show name ++ "=" ++ show value ++ ";"
+    show (Reassign name value) = getDebug "Reassign" ++ name ++ "=" ++ show value ++ ";"
+    show (If condition statement) = getDebug "If" ++ "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
+    show (ElseIf condition statement) = getDebug "ElseIf" ++ " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
+    show (Else statement) = getDebug "Else" ++ " else {\n" ++ intercalate "\n" (map show statement) ++ "}"
+    show (Try exprs) = getDebug "Try" ++ "try{" ++ intercalate " " (map show exprs) ++ "}"
+    show (Catch argType argName exprs) = getDebug "Catch" ++ "catch(" ++ argType ++ " " ++ argName ++ "){" ++ intercalate " " (map show exprs) ++ "}"
+    show (While condition statement) = getDebug "While" ++ "while(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
+    show (Skip) = getDebug "Skip" ++ "[skip]"
+    show (Seq s) = getDebug "Seq" ++ "[seq]"
+    show (Return expr) = getDebug "Return" ++ "return " ++ show expr ++ ";"
+    show (Print exprs) = getDebug "Print" ++ "System.out.println(" ++ show exprs ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
+    show (ArrayType arrType) = getDebug "ArrayType" ++ arrType ++ "[]"
+    show (ArrayDef arrType name) = getDebug "ArrayDef" ++ arrType ++ "[] " ++ name ++ "="
+    show (ArrayValues exprs) = getDebug "ArrayValues" ++ "{" ++ intercalate ", " exprs ++ "};"
+    show (ArrayAssignment arr values) = getDebug "ArrayAssignment" ++ show arr ++ show values
+    show (ArrayAppend arrays) = getDebug "ArrayAppend" ++ intercalate "" (map (\arr -> "") arrays)
+    show (ArrayElementSelect i) = getDebug "ArrayElementSelect" ++ "[" ++ i ++ "];"
+    show (Where exprs) = getDebug "Where" ++ intercalate "\n" (map show exprs)
+    show (StringLiteral value) = getDebug "StringLiteral" ++ "\"" ++ value ++ "\""
+    show (Data name exprs) = getDebug "Data" ++ "class " ++ name ++ "{}" ++ intercalate " " (map show exprs)
+    show (DataElement superName name argTypes args) = getDebug "DataElement" ++ "final class " ++ name ++ " extends "++ superName ++ " { " ++
       intercalate " "(zipWith (\x y -> "final " ++ x ++ " " ++ y ++ ";") argTypes args) ++ " public " ++ name ++ "(" ++ intercalate ", " (zipWith (\x y -> "final " ++ x ++ " " ++ y) argTypes args) ++
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
-    show (DataInstance typeName args) = "new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
-    show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
-    show (SuperMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
-    show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
-    show (NewClassInstance className args) = "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
-    show (ClassVariable className varName) = className ++ "." ++ varName
-    show (BooleanExpr expr) = show expr
-    show (Identifier name) = name
-    show (Annotation name) = "@" ++ name
-    show (ModifierBlock exprs) = intercalate " " (map show exprs)
-    show (This) = "this"
-    show (Super) = "super"
-    show (Lambda varName exprs) = "<LAMBDA " ++ varName ++ " " ++ intercalate " " (map show exprs)
-    show (ClassParam varType varName) = show varType ++ " " ++ show varName
+    show (DataInstance typeName args) = getDebug "DataInstance" ++ "new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (ThisMethodCall methodName args) = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (SuperMethodCall objectName methodName args) = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (ObjectMethodCall objectName methodName args) = getDebug "ObjectMethodCall" ++objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (NewClassInstance className args) = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map show args) ++ ")"
+    show (ClassVariable className varName) = getDebug "ClassVariable" ++className ++ "." ++ varName
+    show (BooleanExpr expr) = getDebug "BooleanExpr" ++ show expr
+    show (Identifier name) = getDebug "Identifier" ++ name
+    show (Annotation name) = getDebug "Annotation" ++ "@" ++ name
+    show (ModifierBlock exprs) = getDebug "ModifierBlock" ++ intercalate " " (map show exprs)
+    show (This) = getDebug "This" ++ "this"
+    show (Super) = getDebug "Super" ++ "super"
+    show (Lambda varName exprs) = getDebug "Lambda" ++ "<LAMBDA " ++ varName ++ " " ++ intercalate " " (map show exprs)
+    show (ClassParam varType varName) = getDebug "ClassParam" ++ show varType ++ " " ++ show varName
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

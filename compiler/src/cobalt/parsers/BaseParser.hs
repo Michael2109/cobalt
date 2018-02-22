@@ -48,6 +48,8 @@ rword word = do
 
 rws :: [String] -- list of reserved words
 rws = [
+  "val",
+  "var",
   "object",
   "class",
   "public",
