@@ -40,7 +40,10 @@ public final class Panel extends JPanel implements Runnable {
         return true;
     }
 
+    private final Game game;
+
     public Panel(Game game) {
+        this.game = game;
         thread.start();
     }
 

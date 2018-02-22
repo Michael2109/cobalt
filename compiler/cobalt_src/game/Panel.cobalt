@@ -1,7 +1,7 @@
 import javax.swing.JPanel
 import java.awt.Graphics
 
-class Panel extends JPanel implements Runnable
+class Panel(game: Game) extends JPanel implements Runnable
 
 public
   thread: Thread = new Thread(this)
@@ -13,10 +13,7 @@ public
 private
   alive: boolean = True
 
-
-Panel : Game -> void
-Panel game =
-  thread.start()
+thread.start()
 
 update : void
 update =

@@ -62,16 +62,17 @@ data Expr
   | This
   | Super
   | Lambda String [Expr]
+  | ClassParam {varType :: Expr, varName :: Expr}
   | Skip
 
   -- Module specific
   | Module [String] String [Expr] [Expr]
 
   -- Class specific
-  | Class [String] String (Maybe String) (Maybe String) [Expr] [Expr] [Expr]
+  | Class [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
 
 instance Show Expr where
-    show (Class packageLocs name parent interfaces imports modifierBlocks bodyArray) = do
+    show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = do
         (if(length packageLocs > 0)
           then "package " ++ (intercalate "." packageLocs) ++ ";"
           else "")
@@ -79,10 +80,23 @@ instance Show Expr where
         intercalate "\n" (map show imports) ++
         "public final class " ++ name ++ " " ++ extendSection ++ " " ++ implementSection ++ "{\n" ++
         intercalate "\n" (map show modifierBlocks) ++
+
+        intercalate " " (map (\x -> "private final " ++ show x ++ ";") paramList) ++
+
+        -- Constructor
+        "public " ++ name ++ "("++ intercalate ", " (map show paramList) ++"){" ++
+
+        intercalate " " (map (\x -> "this." ++ show (varName x) ++ "=" ++ show (varName x) ++ ";") paramList) ++
+
+        intercalate " " (map show constructorExprs) ++ "}" ++
+
         --intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
         intercalate "\n" (map show (filter (not . isImportStatement) bodyArray))  ++
         "}"
         where
+          paramList = case params of
+              Just a -> a
+              Nothing -> []
           extendSection = case parent of
               Just a -> "extends " ++ a
               Nothing -> ""
@@ -162,6 +176,7 @@ instance Show Expr where
     show (This) = "this"
     show (Super) = "super"
     show (Lambda varName exprs) = "<LAMBDA " ++ varName ++ " " ++ intercalate " " (map show exprs)
+    show (ClassParam varType varName) = show varType ++ " " ++ show varName
     show (_) = "<unknown>"
 
 lowerString str = [ toLower loweredString | loweredString <- str]

@@ -39,14 +39,17 @@ classParser relativeDir = try $ L.nonIndented scn p
 
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
+      params <- optional (parens (sepBy parameterParser (symbol ",")))
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
       interfaces <- optional (identifier)
       modifierBlocks <- many (modifierBlockParser)
+      --let constructorExprs = []
+      constructorExprs <- try (many constructorExpr)
       exprs <- many (functionParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
+      return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 
 importParser :: Parser Expr
@@ -56,6 +59,24 @@ importParser = try $ L.nonIndented scn p
       try (rword "import")
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
+
+-- For the class parameters
+parameterParser :: Parser Expr
+parameterParser = do
+  varName  <- identifierParser
+  symbol ":"
+  varType <- identifierParser
+  return $ ClassParam varType varName
+
+-- Constructor exprs
+constructorExpr :: Parser Expr
+constructorExpr = try $ L.nonIndented scn p
+  where
+    p = do
+      e <- try expr'
+      return e
+
+
 
 -- Function parser
 functionParser :: String -> Bool -> Parser Expr

@@ -8,11 +8,6 @@ class ClassTest extends JPanel implements Runnable
 public
   thread: Thread = new Thread(this)
 
-ClassTest : void
-ClassTest =
-  thread.start()
-
-
 update : int -> void
 update x =
   if(x < 50)

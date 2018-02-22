@@ -2,14 +2,12 @@ import javax.swing.JFrame
 
 class Frame extends JFrame
 
-Frame : void
-Frame =
-  game: Game = new Game()
-  add(new Panel(game))
-  setTitle("Game")
-  setResizable(True)
-  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-  pack()
-  setSize(800, 600)
-  setVisible(True)
+game: Game = new Game()
+add(new Panel(game))
+setTitle("Game")
+setResizable(True)
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+pack()
+setSize(800, 600)
+setVisible(True)
 
