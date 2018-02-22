@@ -4,7 +4,7 @@ Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
 module ExprParser (Parser,
-  expr, moduleParser, classParser, parser) where
+  expr, objectParser, classParser, parser) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -20,14 +20,14 @@ import ABExprParser
 import Block
 
 
-moduleParser :: [String] -> Parser Expr
-moduleParser relativeDir = try $ L.nonIndented scn p
+objectParser :: [String] -> Parser Expr
+objectParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
       imports <- many (try importParser)
-      moduleT <- L.lineFold scn $ \sp' -> try (rword "module")
+      moduleT <- L.lineFold scn $ \sp' -> try (rword "object")
       name <- identifier
-      exprs <- many (functionParser name True <|> expr' name)
+      exprs <- many (functionParser name True <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Module (packageDir) name imports exprs)
 
@@ -43,8 +43,8 @@ classParser relativeDir = try $ L.nonIndented scn p
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
       interfaces <- optional (identifier)
-      modifierBlocks <- many (modifierBlockParser name)
-      exprs <- many (functionParser name False <|> expr' name )
+      modifierBlocks <- many (modifierBlockParser)
+      exprs <- many (functionParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Class (packageDir) name parent interfaces imports modifierBlocks exprs)
 
@@ -62,34 +62,34 @@ functionParser :: String -> Bool -> Parser Expr
 functionParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
-      annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser moduleName))
+      annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser ))
       name <- identifier
       symbol ":"
-      aList <- sepBy (identifierParser moduleName <|> arrayType) (symbol "->")
+      aList <- sepBy (identifierParser  <|> arrayType) (symbol "->")
       let argTypes = take (length aList - 1) aList
       let rType = last aList
       nameDup <- L.lineFold scn $ \sp' -> identifier
       args <- many argument
       symbol "="
       if(name == "main")
-        then return (L.IndentMany Nothing (return . (MainFunction moduleName name annotations argTypes args rType)) (expr' moduleName))
+        then return (L.IndentMany Nothing (return . (MainFunction name annotations argTypes args rType)) (expr'))
         else if name == moduleName
-          then return (L.IndentMany Nothing (return . (Constructor moduleName name argTypes args)) (expr' ""))
-          else return (L.IndentMany Nothing (return . (Function moduleName name annotations argTypes args rType static)) (expr' ""))
+          then return (L.IndentMany Nothing (return . (Constructor name argTypes args)) (expr'))
+          else return (L.IndentMany Nothing (return . (Function name annotations argTypes args rType static)) (expr'))
 
 
-identifierParser :: String -> Parser Expr
-identifierParser moduleName = do
+identifierParser :: Parser Expr
+identifierParser = do
   name <- identifier
   return $ Identifier name
 
-arithmeticParser :: String -> Parser Expr
-arithmeticParser moduleName = do
+arithmeticParser :: Parser Expr
+arithmeticParser = do
   aE <- aExpr
   return $ ArithExpr aE
 
-booleanParser :: String -> Parser Expr
-booleanParser moduleName = do
+booleanParser :: Parser Expr
+booleanParser = do
   bE <- try bExpr
   return $ BooleanExpr bE
 
@@ -99,11 +99,11 @@ stringLiteral = do
   return $ StringLiteral value
 
 
-assignParser :: String -> Parser Expr
-assignParser moduleName = do
+assignParser :: Parser Expr
+assignParser  = do
   varName <-
     try $ do
-      varN  <- identifierParser moduleName
+      varN  <- identifierParser
       symbol ":"
       return varN
   varType <-
@@ -111,15 +111,15 @@ assignParser moduleName = do
       vType <- valType
       symbol "="
       return vType
-  e <- expr' moduleName
+  e <- expr'
   return $ Assign varType varName e
 
 
-reassignParser :: String -> Parser Expr
-reassignParser moduleName = do
+reassignParser :: Parser Expr
+reassignParser = do
   name  <- identifier
   symbol "="
-  value <- expr' moduleName
+  value <- expr'
   return (Reassign name value)
 
 arrayType :: Parser Expr
@@ -162,62 +162,62 @@ arrayElementSelect = do
   elementNum <- word
   return $ ArrayElementSelect elementNum
 
-arrayAppend :: String -> Parser Expr
-arrayAppend moduleName = do
-  arrays <- sepBy1 (expr' "") (symbol "++")
+arrayAppend :: Parser Expr
+arrayAppend = do
+  arrays <- sepBy1 (expr') (symbol "++")
   return $ ArrayAppend arrays
 
-thisMethodCall :: String -> Parser Expr
-thisMethodCall moduleName = do
+thisMethodCall :: Parser Expr
+thisMethodCall  = do
   methodName <- identifier
-  args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
+  args <- parens (sepBy (expr' <|> argument) (symbol ","))
   return $ ThisMethodCall methodName args
 
 
-objectMethodCall :: String -> Parser Expr
-objectMethodCall moduleName = do
+objectMethodCall :: Parser Expr
+objectMethodCall = do
   objectName <- identifier
   symbol "."
   methodName <- identifier
-  args <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
+  args <- parens (sepBy (expr' <|> argument) (symbol ","))
   if(objectName == "super")
     then return $ SuperMethodCall objectName methodName args
     else return $ ObjectMethodCall objectName methodName args
 
 
-newClassInstance :: String -> Parser Expr
-newClassInstance moduleName = do
+newClassInstance :: Parser Expr
+newClassInstance  = do
   try (rword "new")
   className <- identifier
-  arguments <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
+  arguments <- parens (sepBy (expr'  <|> argument) (symbol ","))
   return $ (NewClassInstance className arguments)
 
-classVariable :: String -> Parser Expr
-classVariable moduleName = do
+classVariable ::Parser Expr
+classVariable  = do
   className <- identifier
   symbol "."
   varName <- identifier
   return $ ClassVariable className varName
 
-modifierBlockParser :: String -> Parser Expr
-modifierBlockParser moduleName = try $ L.nonIndented scn (L.indentBlock scn p)
+modifierBlockParser :: Parser Expr
+modifierBlockParser  = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
-      return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser moduleName modifier))
+      return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser  modifier))
 
 
-globalVarParser :: String -> String -> Parser Expr
-globalVarParser moduleName modifier = do
-  varName  <- identifierParser moduleName
+globalVarParser :: String -> Parser Expr
+globalVarParser  modifier = do
+  varName <- identifierParser
   symbol ":"
   varType <- valType
   symbol "="
-  es <- many (expr' moduleName)
+  es <- many (expr')
   return $ GlobalVar modifier varType varName es
 
-annotationParser :: String -> Parser Expr
-annotationParser moduleName = do
+annotationParser :: Parser Expr
+annotationParser  = do
   try (symbol "@")
   name <- identifier
   return $ Annotation name
@@ -225,7 +225,7 @@ annotationParser moduleName = do
 
 valType :: Parser Expr
 valType = do
-    value <- identifier
+    value <- identifierParser <|> arrayType
     return $ Type value
 
 argumentType :: Parser Expr
@@ -244,11 +244,11 @@ argument = do
   return $ Argument value
 
 
-functionCallParser :: String -> Parser Expr
-functionCallParser moduleName = do
+functionCallParser :: Parser Expr
+functionCallParser  = do
   name <- identifier
   args <- parens $ many argument
-  return $ FunctionCall moduleName name args
+  return $ FunctionCall  name args
 
 
 -- data A = B String | C Integer
@@ -259,12 +259,12 @@ dataElementParser superName = do
   let args = map (\x -> "var" ++ show x) [0..((length argTypes)-1)]
   return $ DataElement superName name argTypes args
 
-lambdaParser :: String -> Parser Expr
-lambdaParser moduleName = do
+lambdaParser :: Parser Expr
+lambdaParser  = do
   try (symbol "\\")
   varName <- identifier
   symbol "->"
-  es <- some (expr' moduleName)
+  es <- some (expr' )
   return $ Lambda varName es
 
 dataParser :: Parser Expr
@@ -278,70 +278,70 @@ dataParser = L.nonIndented scn p
       return $ Data name dataElements
 
 
-dataInstanceParser :: String -> Parser Expr
-dataInstanceParser moduleName = do
+dataInstanceParser :: Parser Expr
+dataInstanceParser  = do
   typeName <- valType
-  es <- parens (sepBy (expr' moduleName <|> argument) (symbol ","))
-  return $ DataInstance moduleName typeName es
+  es <- parens (sepBy (expr' <|> argument) (symbol ","))
+  return $ DataInstance typeName es
 
 
 
-printParser :: String -> Parser Expr
-printParser moduleName = do
+printParser :: Parser Expr
+printParser  = do
   rword "println"
-  e <- expr' moduleName
+  e <- expr'
   return $ Print e
 
 
-ifStmt :: String -> Parser Expr
-ifStmt moduleName = L.indentBlock scn p
+ifStmt :: Parser Expr
+ifStmt  = L.indentBlock scn p
    where
      p = do
        try (rword "if")
        cond  <- bExpr
-       return (L.IndentMany Nothing (return . (If cond)) (expr' moduleName))
+       return (L.IndentMany Nothing (return . (If cond)) (expr' ))
 
-elseIfStmt :: String -> Parser Expr
-elseIfStmt moduleName = L.indentBlock scn p
+elseIfStmt :: Parser Expr
+elseIfStmt  = L.indentBlock scn p
    where
      p = do
        try $ do
          rword "else"
          rword "if"
        cond  <- bExpr
-       return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' moduleName))
+       return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' ))
 
-elseStmt :: String -> Parser Expr
-elseStmt moduleName = L.indentBlock scn p
+elseStmt :: Parser Expr
+elseStmt  = L.indentBlock scn p
    where
      p = do
        rword "else"
-       return (L.IndentMany Nothing (return . (Else)) (expr' moduleName))
+       return (L.IndentMany Nothing (return . (Else)) (expr' ))
 
-whileParser :: String -> Parser Expr
-whileParser moduleName = L.indentBlock scn p
+whileParser :: Parser Expr
+whileParser  = L.indentBlock scn p
    where
      p = do
        try (rword "while")
-       e <- parens (booleanParser moduleName)
-       return (L.IndentMany Nothing (return . (While e)) (expr' moduleName))
+       e <- parens (booleanParser )
+       return (L.IndentMany Nothing (return . (While e)) (expr' ))
 
-tryParser :: String -> Parser Expr
-tryParser moduleName = L.indentBlock scn p
+tryParser :: Parser Expr
+tryParser  = L.indentBlock scn p
    where
      p = do
        rword "try"
-       return (L.IndentMany Nothing (return . (Try)) (expr' moduleName))
+       return (L.IndentMany Nothing (return . (Try)) (expr' ))
 
 
-catchParser :: String -> Parser Expr
-catchParser moduleName = L.indentBlock scn p
+catchParser :: Parser Expr
+catchParser  = L.indentBlock scn p
    where
      p = do
        rword "catch"
        let argType = "Exception"
        let argName = "e"
-       return (L.IndentMany Nothing (return . (Catch argType argName)) (expr' moduleName))
+       return (L.IndentMany Nothing (return . (Catch argType argName)) (expr' ))
 
 whereStmt :: Parser Expr
 whereStmt = do
@@ -362,48 +362,48 @@ superParser = do
   return Super
 
 expr :: Parser Expr
-expr = f <$> sepBy1 (expr' "") (symbol ";")
+expr = f <$> sepBy1 (expr') (symbol ";")
   where
     -- if there's only one expr return it without using ‘Seq’
     f l = if length l == 1 then head l else Seq l
 
 
-expr' :: String -> Parser Expr
-expr' moduleName = try dataParser
-  <|> try (functionCallParser moduleName)
-  <|> booleanParser moduleName
+expr' :: Parser Expr
+expr' = try dataParser
+  <|> try (functionCallParser )
+  <|> booleanParser
 
   -- If else
-  <|> try (ifStmt moduleName)
-  <|> try (elseIfStmt moduleName)
-  <|> try (elseStmt moduleName)
+  <|> try (ifStmt )
+  <|> try (elseIfStmt )
+  <|> try (elseStmt )
 
-  <|> try (whileParser moduleName)
+  <|> try (whileParser )
 
 
   -- try/catch
-  <|> try (tryParser moduleName)
-  <|> try (catchParser moduleName)
-  <|> try (printParser moduleName)
-  <|> try (objectMethodCall moduleName)
-  <|> try (thisMethodCall moduleName)
-  <|> newClassInstance moduleName
-  <|> try (classVariable moduleName)
-  <|> try (dataInstanceParser moduleName)
+  <|> try (tryParser)
+  <|> try (catchParser)
+  <|> try (printParser)
+  <|> try (objectMethodCall)
+  <|> try (thisMethodCall)
+  <|> newClassInstance
+  <|> try (classVariable)
+  <|> try (dataInstanceParser)
   <|> arrayAssign
   <|> try arrayElementSelect
-  <|> lambdaParser moduleName
+  <|> lambdaParser
 
-  <|> assignParser moduleName
-  <|> try (reassignParser moduleName)
+  <|> assignParser
+  <|> try (reassignParser)
 
   <|> try (thisParser)
 
-  <|> try (arithmeticParser moduleName)
+  <|> try (arithmeticParser)
   <|> try whereStmt
   <|> try stringLiteral
-  <|> try (identifierParser moduleName)
+  <|> try (identifierParser)
 
 
 parser :: Parser Expr
-parser = expr' ""
+parser = expr'

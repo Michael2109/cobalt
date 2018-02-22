@@ -3,9 +3,6 @@ import java.awt.Graphics
 
 class Panel extends JPanel implements Runnable
 
-private
-  alive: boolean = True
-
 public
   thread: Thread = new Thread(this)
   x: int = 50
@@ -13,15 +10,16 @@ public
   dx: int = 1
   dy: int = 1
 
-Panel : void
-Panel =
-  println "Something"
+private
+  alive: boolean = True
 
+
+Panel : Game -> void
+Panel game =
   thread.start()
 
-
 update : void
-update x =
+update =
   x = x + dx
   y = y + dy
 

@@ -1,4 +1,4 @@
-module Main
+object Main
 
 main : [String] -> void
 main args =

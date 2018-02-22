@@ -4,7 +4,8 @@ class Frame extends JFrame
 
 Frame : void
 Frame =
-  add(new Panel())
+  game: Game = new Game()
+  add(new Panel(game))
   setTitle("Game")
   setResizable(True)
   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)

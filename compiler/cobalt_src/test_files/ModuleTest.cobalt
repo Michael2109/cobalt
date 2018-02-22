@@ -1,8 +1,6 @@
 import java.util.Random
 
-module ModuleTest
-
-data A = B String | C String | D Integer
+object ModuleTest
 
 testFunction : int -> void
 testFunction x =

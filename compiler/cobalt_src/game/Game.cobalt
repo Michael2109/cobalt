@@ -1,0 +1,11 @@
+class Game
+
+public
+
+
+Game : void
+Game =
+
+update : void
+update =
+  # do something

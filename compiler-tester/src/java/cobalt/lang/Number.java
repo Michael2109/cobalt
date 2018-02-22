@@ -1,2 +1,2 @@
 package cobalt.lang;public final class Number{
-class A{}final class Int extends A { final Integer var0; public Int(final Integer var0){this.var0=var0;} } final class Long extends A { final Long var0; public Long(final Long var0){this.var0=var0;} } final class Double extends A { final Double var0; public Double(final Double var0){this.var0=var0;} } final class Float extends A { final Float var0; public Float(final Float var0){this.var0=var0;} }}
+}

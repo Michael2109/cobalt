@@ -1,3 +1,1 @@
-module Number
-
-data A = Int Integer | Long Long | Double Double | Float Float
+object Number

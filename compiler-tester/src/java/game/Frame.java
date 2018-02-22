@@ -1,6 +1,7 @@
 package game;import javax.swing.JFrame;public final class Frame extends JFrame {
 public Frame(){
-add(new Panel());
+Game game=new Game();
+add(new Panel(game));
 setTitle("Game");
 setResizable(true);
 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

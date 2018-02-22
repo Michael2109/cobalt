@@ -18,11 +18,11 @@ data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
   | GlobalVar String Expr Expr [Expr]
-  | MainFunction {moduleName:: String, name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
-  | Function String String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
-  | Constructor String String [Expr] [Expr] [Expr]
-  | FunctionCall String String [Expr]
-  | Type String
+  | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
+  | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
+  | Constructor String [Expr] [Expr] [Expr]
+  | FunctionCall String [Expr]
+  | Type Expr
   | ValueType String
   | Argument String
   | ArgumentType String
@@ -49,7 +49,7 @@ data Expr
   | StringLiteral String
   | Data String [Expr]
   | DataElement String String [String] [String]
-  | DataInstance String Expr [Expr]
+  | DataInstance Expr [Expr]
   | SuperMethodCall String String [Expr]
   | ObjectMethodCall String String [Expr]
   | ThisMethodCall String [Expr]
@@ -103,21 +103,21 @@ instance Show Expr where
     show (GlobalVar modifier varType varName exprs) =
       modifier ++ " " ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
       modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs) ++ "}"
-    show (Constructor moduleName name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
-    show (Function moduleName name annotations argTypes args returnType static body) =do
+    show (Constructor name argTypes args body) = "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+    show (Function name annotations argTypes args returnType static body) =do
       annotationString ++ "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> show a
               Nothing -> ""
-    show (MainFunction moduleName name annotations argTypes args returnType body) = do
+    show (MainFunction name annotations argTypes args returnType body) = do
       annotationString ++ "public static " ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> show a
               Nothing -> ""
-    show (FunctionCall moduleName name exprs) = (if(length moduleName > 0) then moduleName ++ "." else "") ++ name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
-    show (Type b) = b
+    show (FunctionCall name exprs) = name ++ "(" ++ (intercalate ", " (map show exprs)) ++ ");"
+    show (Type b) = show b
     show (Argument b) = b
     show (ArgumentType b) = b
     show (ReturnType b) = b
@@ -149,7 +149,7 @@ instance Show Expr where
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
-    show (DataInstance moduleName typeName args) = "new " ++ moduleName ++ "().new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
+    show (DataInstance typeName args) = "new " ++ show typeName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ThisMethodCall methodName args) = methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (SuperMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
     show (ObjectMethodCall objectName methodName args) = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map show args) ++ ");"
@@ -171,11 +171,11 @@ extractImportStatement (Import m) = Just m
 extractImportStatement _ = Nothing
 
 extractMainFunction :: Expr -> Maybe String
-extractMainFunction (MainFunction m _ _ _ _ _ _) = Just m
+extractMainFunction (MainFunction m _ _ _ _ _) = Just m
 extractMainFunction _ = Nothing
 
 extractFunctionCall :: Expr -> Maybe String
-extractFunctionCall (FunctionCall m _ _) = Just m
+extractFunctionCall (FunctionCall m _) = Just m
 extractFunctionCall _ = Nothing
 
 
