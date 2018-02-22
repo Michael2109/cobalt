@@ -15,10 +15,6 @@ private
 
 thread.start()
 
-Panel : Game -> void
-Panel game =
-
-
 update : void
 update =
   x = x + dx

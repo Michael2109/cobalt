@@ -62,7 +62,7 @@ data Expr
   | This
   | Super
   | Lambda String [Expr]
-  | ClassParam Expr Expr
+  | ClassParam {varType :: Expr, varName :: Expr}
   | Skip
 
   -- Module specific
@@ -80,7 +80,15 @@ instance Show Expr where
         intercalate "\n" (map show imports) ++
         "public final class " ++ name ++ " " ++ extendSection ++ " " ++ implementSection ++ "{\n" ++
         intercalate "\n" (map show modifierBlocks) ++
-        "public " ++ name ++ "("++ intercalate ", " (map show paramList) ++"){\n" ++ "}" ++
+
+        intercalate " " (map (\x -> "private final " ++ show x ++ ";") paramList) ++
+
+        -- Constructor
+        "public " ++ name ++ "("++ intercalate ", " (map show paramList) ++"){" ++
+
+        intercalate " " (map (\x -> "this." ++ show (varName x) ++ "=" ++ show (varName x) ++ ";") paramList) ++
+
+        intercalate " " (map show constructorExprs) ++ "}" ++
 
         --intercalate "\n" (map (\x -> "final " ++ (id $ last (locs x)) ++ " " ++ lowerString (id $ last (locs x)) ++ "= new " ++ (id $ last (locs x)) ++ "();") imports) ++
         intercalate "\n" (map show (filter (not . isImportStatement) bodyArray))  ++

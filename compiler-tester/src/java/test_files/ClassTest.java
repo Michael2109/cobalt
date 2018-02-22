@@ -1,9 +1,6 @@
 package test_files;import javax.swing.JPanel;
 import java.awt.Graphics;public final class ClassTest extends JPanel implements Runnable{
-public Thread thread=new Thread(this);public Thread thread(){return new Thread(this);}public ClassTest(){
-}public ClassTest(){
-thread.start();}
-public void update(int x){
+public Thread thread=new Thread(this);public Thread thread(){return new Thread(this);}public ClassTest(){}public void update(int x){
 if(x < 50){
 System.out.println(x);
 int nextX=x + 1 * 2 - 3 / 2 + 5;}
