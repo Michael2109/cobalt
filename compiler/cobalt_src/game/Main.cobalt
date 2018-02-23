@@ -2,4 +2,4 @@ object Main
 
 main : [String] -> void
 main args =
-  frame: Frame = new Frame()
+  val frame: Frame = new Frame()

@@ -6,23 +6,23 @@ class ClassTest extends JPanel implements Runnable
 
 # Global variables
 public
-  thread: Thread = new Thread(this)
+  val thread: Thread = new Thread(this)
 
 update : int -> void
 update x =
   if(x < 50)
-    println x
-    nextX :int = x + 1 * 2 - 3 / 2 + 5
+    #println x
+    val nextX :int = x + 1 * 2 - 3 / 2 + 5
   else
-    last :int = 1000
-    println last
+    val last :int = 1000
+    #println last
 
 paint : Graphics -> void
 paint g =
-  x :int = 3
+  val x :int = 3
 
 run : void
 run =
-  x: int = 10 + 1
+  val x: int = 10 + 1
 
 

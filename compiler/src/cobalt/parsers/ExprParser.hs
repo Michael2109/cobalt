@@ -230,7 +230,7 @@ modifierBlockParser  = try $ L.nonIndented scn (L.indentBlock scn p)
 
 globalVarParser :: String -> Parser Expr
 globalVarParser  modifier = do
-  try (rword "var")
+  try (rword "val" <|> rword "var")
   varName <- identifierParser
   symbol ":"
   varType <- valType
