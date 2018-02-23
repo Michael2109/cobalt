@@ -122,7 +122,7 @@ stringLiteral = do
 
 assignParser :: Parser Expr
 assignParser  = do
-  try (rword "var")
+  try (rword "val" <|> rword "var")
   varName <- identifierParser
   symbol ":"
 
@@ -191,7 +191,7 @@ arrayAppend = do
 thisMethodCall :: Parser Expr
 thisMethodCall  = do
   methodName <- identifier
-  args <- parens (sepBy (expr' <|> argument) (symbol ","))
+  args <- parens (sepBy (expr' <|> argument <|> identifierParser <|> arithmeticParser) (symbol ","))
   return $ ThisMethodCall methodName args
 
 
@@ -200,7 +200,7 @@ objectMethodCall = do
   objectName <- identifier
   symbol "."
   methodName <- identifier
-  args <- parens (sepBy (expr' <|> argument) (symbol ","))
+  args <- parens (sepBy (expr' <|> argument <|> identifierParser <|> arithmeticParser) (symbol ","))
   if(objectName == "super")
     then return $ SuperMethodCall objectName methodName args
     else return $ ObjectMethodCall objectName methodName args

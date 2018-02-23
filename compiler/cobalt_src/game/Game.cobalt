@@ -1,27 +1,2 @@
-import javax.swing.JPanel
-import java.awt.Graphics
-
-class Game implements Runnable
-
-public
-  var thread: Thread = new Thread(this)
-  var x: int = 50
-  var y: int = 100
-  var dx: int = 1
-  var dy: int = 1
-
-private
-  var alive: boolean = True
-
-thread.start()
-
-update : void
-update =
-  x = x + dx
-  y = y + dy
-
-  if (x < 0 or x > 750)
-    dx = dx * -1
-  if (y < 0 or y > 550)
-    dy = dy * -1
+class Game
 
