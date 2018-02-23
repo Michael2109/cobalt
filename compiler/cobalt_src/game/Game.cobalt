@@ -1,4 +1,2 @@
 class Game
 
-update : void
-update =

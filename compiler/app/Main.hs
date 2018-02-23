@@ -14,3 +14,4 @@ main = do
     putStrLn ""
     compileDir inputDir outputDir
     putStrLn "Complete."
+
