@@ -44,9 +44,9 @@ classParser relativeDir = try $ L.nonIndented scn p
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
       interfaces <- optional (identifier)
-      modifierBlocks <- many (modifierBlockParser)
+      modifierBlocks <- many (try modifierBlockParser)
       --let constructorExprs = []
-      constructorExprs <- try (many constructorExpr)
+      constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (functionParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
@@ -73,7 +73,7 @@ constructorExpr :: Parser Expr
 constructorExpr = try $ L.nonIndented scn p
   where
     p = do
-      e <- try expr'
+      e <- expr'
       return e
 
 
@@ -122,24 +122,25 @@ stringLiteral = do
 
 assignParser :: Parser Expr
 assignParser  = do
-  --try (rword "var")
-  varName <- try $ do
-      varN  <- identifierParser
-      symbol ":"
-      return varN
-  varType <- try $ do
-      vType <- valType
-      symbol "="
-      return vType
-  e <- expr'
+  try (rword "var")
+  varName <- identifierParser
+  symbol ":"
+
+  varType <- valType
+  symbol "="
+
+  e <- expr' <|> arithmeticParser <|> identifierParser
   return $ Assign varType varName e
 
 
 reassignParser :: Parser Expr
 reassignParser = do
-  name  <- identifier
-  symbol "="
-  value <- expr'
+  name  <- try $ do
+    id <- identifier
+    symbol "="
+    return id
+
+  value <- expr' <|> arithmeticParser <|> identifierParser
   return (Reassign name value)
 
 arrayType :: Parser Expr
@@ -229,11 +230,12 @@ modifierBlockParser  = try $ L.nonIndented scn (L.indentBlock scn p)
 
 globalVarParser :: String -> Parser Expr
 globalVarParser  modifier = do
+  try (rword "var")
   varName <- identifierParser
   symbol ":"
   varType <- valType
   symbol "="
-  es <- many (expr')
+  es <- many (expr' <|> arithmeticParser <|> identifierParser)
   return $ GlobalVar modifier varType varName es
 
 annotationParser :: Parser Expr
@@ -373,7 +375,7 @@ whereStmt = do
 
 thisParser :: Parser Expr
 thisParser = do
-  rword "this"
+  try (rword "this")
   return This
 
 superParser :: Parser Expr
@@ -415,14 +417,14 @@ expr' = try dataParser
   <|> lambdaParser
 
   <|> assignParser
-  <|> try (reassignParser)
+  <|> reassignParser
 
-  <|> try (thisParser)
+  <|> thisParser
 
-  <|> try (arithmeticParser)
+ -- <|> try (arithmeticParser)
   <|> try whereStmt
   <|> try stringLiteral
-  <|> try (identifierParser)
+  -- <|> try (identifierParser)
 
 
 parser :: Parser Expr
