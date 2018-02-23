@@ -14,7 +14,7 @@ import Data.Maybe
 import ABBlock
 
 debug :: Bool
-debug = True
+debug = False
 
 getDebug :: String -> String
 getDebug message = (if debug then "<" ++ message ++ "> " else "")

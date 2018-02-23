@@ -123,13 +123,11 @@ stringLiteral = do
 assignParser :: Parser Expr
 assignParser  = do
   --try (rword "var")
-  varName <-
-    try $ do
+  varName <- try $ do
       varN  <- identifierParser
       symbol ":"
       return varN
-  varType <-
-    try $ do
+  varType <- try $ do
       vType <- valType
       symbol "="
       return vType
