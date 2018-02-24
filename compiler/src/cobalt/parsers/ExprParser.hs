@@ -125,10 +125,8 @@ assignParser  = do
   try (rword "val" <|> rword "var")
   varName <- identifierParser
   symbol ":"
-
   varType <- valType
   symbol "="
-
   e <- expr' <|> arithmeticParser <|> identifierParser
   return $ Assign varType varName e
 
@@ -361,9 +359,10 @@ catchParser  = L.indentBlock scn p
    where
      p = do
        rword "catch"
+       params <- optional (parens (sepBy parameterParser (symbol ",")))
        let argType = "Exception"
        let argName = "e"
-       return (L.IndentMany Nothing (return . (Catch argType argName)) (expr' ))
+       return (L.IndentMany Nothing (return . (Catch params)) (expr' ))
 
 whereStmt :: Parser Expr
 whereStmt = do
@@ -421,10 +420,8 @@ expr' = try dataParser
 
   <|> thisParser
 
- -- <|> try (arithmeticParser)
   <|> try whereStmt
   <|> try stringLiteral
-  -- <|> try (identifierParser)
 
 
 parser :: Parser Expr

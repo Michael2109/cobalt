@@ -16,4 +16,4 @@ try{while(true){
 Thread.sleep(7);
 update();
 repaint();}}
-catch(Exception e){}}}
+catch(final Exception e){System.out.println("Error: Thread failed");}}}

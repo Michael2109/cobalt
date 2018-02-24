@@ -43,7 +43,7 @@ data Expr
   | ElseIf BExpr [Expr]
   | Else [Expr]
   | Try [Expr]
-  | Catch String String [Expr]
+  | Catch (Maybe [Expr]) [Expr]
   | While Expr [Expr]
   | Print Expr
   | Return Expr
@@ -154,7 +154,11 @@ instance Show Expr where
     show (ElseIf condition statement) = getDebug "ElseIf" ++ " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Else statement) = getDebug "Else" ++ " else {\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Try exprs) = getDebug "Try" ++ "try{" ++ intercalate " " (map show exprs) ++ "}"
-    show (Catch argType argName exprs) = getDebug "Catch" ++ "catch(" ++ argType ++ " " ++ argName ++ "){" ++ intercalate " " (map show exprs) ++ "}"
+    show (Catch params exprs) = getDebug "Catch" ++ "catch(" ++  intercalate ", " (map (\x -> "final " ++ show x) paramList)  ++ "){" ++ intercalate " " (map show exprs) ++ "}"
+      where
+        paramList = case params of
+            Just a -> a
+            Nothing -> []
     show (While condition statement) = getDebug "While" ++ "while(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Skip) = getDebug "Skip" ++ "[skip]"
     show (Seq s) = getDebug "Seq" ++ "[seq]"

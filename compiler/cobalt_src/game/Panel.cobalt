@@ -38,4 +38,5 @@ run =
       Thread.sleep(7)
       update()
       repaint()
-  catch
+  catch(e: Exception)
+    println "Error: Thread failed"
