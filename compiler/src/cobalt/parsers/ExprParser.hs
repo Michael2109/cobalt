@@ -83,8 +83,8 @@ functionParser :: String -> Bool -> Parser Expr
 functionParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
-      annotations <- try (optional (L.lineFold scn $ \sp' -> annotationParser ))
-      name <- identifier
+      annotations <- try (optional annotationParser)
+      name <- L.lineFold scn $ \sp' -> identifier
       symbol ":"
       aList <- sepBy (identifierParser  <|> arrayType) (symbol "->")
       let argTypes = take (length aList - 1) aList
@@ -121,7 +121,7 @@ stringLiteral = do
 
 
 assignParser :: Parser Expr
-assignParser  = do
+assignParser = do
   try (rword "val" <|> rword "var")
   varName <- identifierParser
   symbol ":"

@@ -129,7 +129,7 @@ instance Show Expr where
     show (Constructor name argTypes args body) = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function name annotations argTypes args returnType static body) =
       getDebug "Function" ++
-      annotationString ++ "public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
+      annotationString ++ " public " ++ (if(static) then "static " else "") ++ show returnType ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> show a

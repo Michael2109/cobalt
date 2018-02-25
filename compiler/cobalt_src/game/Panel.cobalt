@@ -31,6 +31,7 @@ paint g =
 
   g.drawRect(x, y, 50, 50)
 
+@Override
 run : void
 run =
   try
