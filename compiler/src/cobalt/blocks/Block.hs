@@ -23,7 +23,7 @@ getDebug message = (if debug then "<" ++ message ++ "> " else "")
 data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
-  | GlobalVar String Expr Expr [Expr]
+  | GlobalVar String Bool Expr Expr [Expr]
   | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
   | Constructor String [Expr] [Expr] [Expr]
@@ -122,10 +122,12 @@ instance Show Expr where
         intercalate "\n" (map (show) (filter (not . isImportStatement) bodyArray))  ++
         "}"
     show (Import locs) = getDebug "Import" ++ "import " ++ intercalate "." locs ++ ";"
-    show (GlobalVar modifier varType varName exprs) =
+    show (GlobalVar modifier final varType varName exprs) =
       getDebug "GlobalVar" ++
-      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
-      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs) ++ "}"
+      modifier ++ " " ++ if final then "" else "" ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
+      -- Bool to store if the value has been set yet
+      "boolean " ++ show varName ++ "Bool=false;" ++
+      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){ if(!" ++ show varName ++ "Bool){" ++ show varName ++ "Bool=true;" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs)  ++ "}else{return " ++ show varName ++ ";}}"
     show (Constructor name argTypes args body) = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function name annotations argTypes args returnType static body) =
       getDebug "Function" ++
