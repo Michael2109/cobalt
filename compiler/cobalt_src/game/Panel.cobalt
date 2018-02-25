@@ -4,7 +4,7 @@ import java.awt.Graphics
 class Panel(game: Game) extends JPanel implements Runnable
 
 public
-  var thread: Thread = new Thread(this)
+  val thread: Thread = new Thread(this)
   var x: int = 50
   var y: int = 100
   var dx: int = 1

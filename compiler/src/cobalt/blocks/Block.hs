@@ -124,10 +124,16 @@ instance Show Expr where
     show (Import locs) = getDebug "Import" ++ "import " ++ intercalate "." locs ++ ";"
     show (GlobalVar modifier final varType varName exprs) =
       getDebug "GlobalVar" ++
-      modifier ++ " " ++ if final then "" else "" ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
+      "private " ++ show varType ++ " " ++ show varName ++ "=" ++ intercalate " " (map show exprs) ++ ";" ++
       -- Bool to store if the value has been set yet
-      "boolean " ++ show varName ++ "Bool=false;" ++
-      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){ if(!" ++ show varName ++ "Bool){" ++ show varName ++ "Bool=true;" ++ intercalate " " (map (\e -> "return " ++ show e ++ ";") exprs)  ++ "}else{return " ++ show varName ++ ";}}"
+      "private boolean " ++ show varName ++ "Bool=false;" ++
+      -- Create getter method
+      modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){ if(!" ++ show varName ++ "Bool){" ++ show varName ++ "Bool=true;" ++ show varName ++ "=" ++ intercalate " " (map (\e -> show e ++ ";") exprs)  ++ "}return " ++ show varName ++ ";}" ++
+      -- If it isn't final create a setter method
+      if(not final)
+        then modifier ++ " void " ++ show varName ++ "_(final " ++ show varType ++ " " ++ show varName ++ "){this." ++ show varName ++ "=" ++ show varName ++ ";}"
+        else ""
+
     show (Constructor name argTypes args body) = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
     show (Function name annotations argTypes args returnType static body) =
       getDebug "Function" ++

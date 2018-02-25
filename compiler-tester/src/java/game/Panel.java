@@ -4,76 +4,90 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 
 public final class Panel extends JPanel implements Runnable {
-    public Thread thread = new Thread(this);
-    boolean threadBool = false;
+    private Thread thread = new Thread(this);
+    private boolean threadBool = false;
 
     public Thread thread() {
         if (!threadBool) {
             threadBool = true;
-            return new Thread(this);
-        } else {
-            return thread;
+            thread = new Thread(this);
         }
+        return thread;
     }
 
-    public int x = 50;
-    boolean xBool = false;
+    private int x = 50;
+    private boolean xBool = false;
 
     public int x() {
         if (!xBool) {
             xBool = true;
-            return 50;
-        } else {
-            return x;
+            x = 50;
         }
+        return x;
     }
 
-    public int y = 100;
-    boolean yBool = false;
+    public void x_(final int x) {
+        this.x = x;
+    }
+
+    private int y = 100;
+    private boolean yBool = false;
 
     public int y() {
         if (!yBool) {
             yBool = true;
-            return 100;
-        } else {
-            return y;
+            y = 100;
         }
+        return y;
     }
 
-    public int dx = 1;
-    boolean dxBool = false;
+    public void y_(final int y) {
+        this.y = y;
+    }
+
+    private int dx = 1;
+    private boolean dxBool = false;
 
     public int dx() {
         if (!dxBool) {
             dxBool = true;
-            return 1;
-        } else {
-            return dx;
+            dx = 1;
         }
+        return dx;
     }
 
-    public int dy = 1;
-    boolean dyBool = false;
+    public void dx_(final int dx) {
+        this.dx = dx;
+    }
+
+    private int dy = 1;
+    private boolean dyBool = false;
 
     public int dy() {
         if (!dyBool) {
             dyBool = true;
-            return 1;
-        } else {
-            return dy;
+            dy = 1;
         }
+        return dy;
+    }
+
+    public void dy_(final int dy) {
+        this.dy = dy;
     }
 
     private boolean alive = true;
-    boolean aliveBool = false;
+    private boolean aliveBool = false;
 
     private boolean alive() {
         if (!aliveBool) {
             aliveBool = true;
-            return true;
-        } else {
-            return alive;
+            alive = true;
         }
+        return alive;
+    }
+
+    private void alive_(final boolean alive) {
+        this.alive = alive;
     }
 
     private final Game game;
