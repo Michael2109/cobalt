@@ -13,6 +13,7 @@ import System.FilePath.Posix
 import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
+import ClassSymbolTable
 import Parser
 
 --allFilesIn dir = filter (\filePath -> takeExtension filePath == ".cobalt")<$>(getDirectoryContents dir)
@@ -36,6 +37,7 @@ compileDir inputDir outputDir = do
 compile :: String -> String -> IO()
 compile inputFile outputFile = do
    fileData <- readFile inputFile
+
 
    let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
    let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData

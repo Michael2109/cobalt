@@ -1,18 +1,18 @@
 module SymbolTable where
 
-data ClassSymbol
-    = ClassSymbol
+data ClassSymbolTable
+    = ClassSymbolTable
       {
           className       :: String -- class name
         , publicVariables :: [(String, String)] -- (variable name, variable type name) list of variable
-        , methods         :: [(String, MethodSymbol)] -- (method name, method symbol) list of methods
+        , methods         :: [(String, MethodSymbolTable)] -- (method name, method symbol) list of methods
       }
       deriving (Eq)
  
 instance Show ClassSymbol where
     show (ClassSymbol cName vars methods) = show cName
 
-data MethodSymbol = MethodSymbol {
+data MethodSymbolTable = MethodSymbolTable {
       returnType :: String
     , name       :: String
     , args       :: [(String, String)] -- list of arguments
