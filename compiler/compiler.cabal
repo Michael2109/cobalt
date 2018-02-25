@@ -33,6 +33,7 @@ library
       src/cobalt/parsers,
       src/cobalt/error_checking,
       src/cobalt/compiler
+      src/cobalt/symbol_table
   build-depends:
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
   exposed-modules:
@@ -45,6 +46,7 @@ library
       BlockUtils
       Compiler
       ErrorChecker
+      SymbolTable
   other-modules:
       
   default-language: Haskell2010
