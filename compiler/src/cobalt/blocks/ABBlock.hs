@@ -16,7 +16,7 @@ data AExpr
   | Parenthesis AExpr
 
 instance Show AExpr where
-    show (Var v) = v
+    show (Var v) = v ++ "()"
     show (IntConst i) = show i
     show (Neg aExpr) = "-" ++ show aExpr
     show (ABinary aBinOp aExpr1 aExpr2) = show aExpr1 ++ " " ++ show aBinOp ++ " " ++ show aExpr2

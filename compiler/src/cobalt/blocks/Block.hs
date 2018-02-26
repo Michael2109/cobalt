@@ -131,7 +131,7 @@ instance Show Expr where
       modifier ++ " " ++ show varType ++ " " ++ show varName ++ "(){ if(!" ++ show varName ++ "Bool){" ++ show varName ++ "Bool=true;" ++ show varName ++ "=" ++ intercalate " " (map (\e -> show e ++ ";") exprs)  ++ "}return " ++ show varName ++ ";}" ++
       -- If it isn't final create a setter method
       if(not final)
-        then modifier ++ " void " ++ show varName ++ "_(final " ++ show varType ++ " " ++ show varName ++ "){this." ++ show varName ++ "=" ++ show varName ++ ";}"
+        then modifier ++ " void " ++ show varName ++ "_(final " ++ show varType ++ " " ++ show varName ++ "){this." ++ show varName ++ "Bool=true;" ++ "this." ++ show varName ++ "=" ++ show varName ++ ";}"
         else ""
 
     show (Constructor name argTypes args body) = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map show argTypes) (map show args)) ++"){\n" ++ intercalate "\n" (map show body) ++ "}"
@@ -157,7 +157,7 @@ instance Show Expr where
     show (AssignArith mutable vType name value) = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ show vType ++ " " ++ name ++ "=" ++ show value ++ ";"
     show (ArithExpr aExpr) = getDebug "ArithExpr" ++ show aExpr
     show (Assign vType name value) = getDebug "Assign" ++ show vType ++ " " ++ show name ++ "=" ++ show value ++ ";"
-    show (Reassign name value) = getDebug "Reassign" ++ name ++ "=" ++ show value ++ ";"
+    show (Reassign name value) = getDebug "Reassign" ++ name ++ "_(" ++ show value ++ ");"
     show (If condition statement) = getDebug "If" ++ "if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (ElseIf condition statement) = getDebug "ElseIf" ++ " else if(" ++ show condition ++ "){\n" ++ intercalate "\n" (map show statement) ++ "}"
     show (Else statement) = getDebug "Else" ++ " else {\n" ++ intercalate "\n" (map show statement) ++ "}"

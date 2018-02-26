@@ -18,6 +18,7 @@ import Text.Pretty.Simple (pShow)
 
 import BaseParser
 import ABBlock
+import SymbolTable
 
 -- Arithmetic Expression Parsers
 --
