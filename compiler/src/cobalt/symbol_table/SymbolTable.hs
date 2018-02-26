@@ -9,8 +9,8 @@ data ClassSymbolTable
       }
       deriving (Eq)
  
-instance Show ClassSymbol where
-    show (ClassSymbol cName vars methods) = show cName
+instance Show ClassSymbolTable where
+    show (ClassSymbolTable cName vars methods) = show cName
 
 data MethodSymbolTable = MethodSymbolTable {
       returnType :: String

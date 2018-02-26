@@ -13,7 +13,6 @@ import System.FilePath.Posix
 import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
-import ClassSymbolTable
 import Parser
 
 --allFilesIn dir = filter (\filePath -> takeExtension filePath == ".cobalt")<$>(getDirectoryContents dir)
