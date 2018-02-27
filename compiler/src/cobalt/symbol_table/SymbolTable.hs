@@ -18,3 +18,8 @@ data MethodSymbolTable = MethodSymbolTable {
     , args       :: [(String, String)] -- list of arguments
     }
     deriving (Show, Eq)
+
+genSymbolTable ast =
+  case ast of
+    Left  e -> show e
+    Right x -> show x

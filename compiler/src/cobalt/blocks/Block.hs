@@ -19,6 +19,10 @@ debug = False
 getDebug :: String -> String
 getDebug message = (if debug then "<" ++ message ++ "> " else "")
 
+class ErrorCheck a where
+  errorCheck :: a -> String
+
+
 -- Statements
 data Expr
   = Seq [Expr]
@@ -76,6 +80,10 @@ data Expr
 
   -- Class specific
   | Class [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
+
+instance ErrorCheck Expr where
+  errorCheck (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = "An error occurred"
+  errorCheck (_) = "<Unimplemented error check>"
 
 instance Show Expr where
     show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) =

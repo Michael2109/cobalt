@@ -14,8 +14,9 @@ import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
 import Parser
+import SymbolTable
 
---allFilesIn dir = filter (\filePath -> takeExtension filePath == ".cobalt")<$>(getDirectoryContents dir)
+
 allFilesIn dir = getDirectoryContents dir
 
 
@@ -37,15 +38,14 @@ compile :: String -> String -> IO()
 compile inputFile outputFile = do
    fileData <- readFile inputFile
 
-
    let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
    let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
-   putStrLn $ "Compiling: " ++ inputFile
-   putStrLn ""
-   pPrint compiledTree
-   putStrLn $ "Compiled:" ++ outputFile
-   putStrLn ""
-   putStrLn ""
+
+   pPrint "Generating symbol table"
+   let symbolTable = genSymbolTable compiledTree
+
+   pPrint symbolTable
+   --pPrint compiledTree
    parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    writeFile outputFile compiledString
