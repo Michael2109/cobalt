@@ -30,6 +30,7 @@ library
   hs-source-dirs:
       src/cobalt,
       src/cobalt/symbol_table,
+      src/cobalt/code_generator,
       src/cobalt/blocks,
       src/cobalt/parsers,
       src/cobalt/error_checking,
@@ -47,6 +48,7 @@ library
       Compiler
       ErrorChecker
       SymbolTable
+      CodeGenerator
   other-modules:
       
   default-language: Haskell2010

@@ -18,12 +18,4 @@ import ExprParser
 
 parseTree relativeDir input = parse (objectParser relativeDir <|> classParser relativeDir) "" input
 
-parseString relativeDir input =
-  case parse (objectParser relativeDir <|> classParser relativeDir) "" input of
-    Left  e -> show e
-    Right x -> show x
-
-parsePrint :: [String] -> String -> IO()
-parsePrint relativeDir input = parseTest' (objectParser relativeDir <|> classParser relativeDir) input
-
 parseFromFile file = runParser expr file <$> readFile file

@@ -19,7 +19,7 @@ data MethodSymbolTable = MethodSymbolTable {
     }
     deriving (Show, Eq)
 
-genSymbolTable ast =
-  case ast of
-    Left  e -> show e
-    Right x -> show x
+genSymbolTable ast = ClassSymbolTable "ClassName" [] []
+  --case ast of
+  --  Left  e -> show e
+  --  Right x -> show x

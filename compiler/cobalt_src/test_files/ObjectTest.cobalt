@@ -1,6 +1,6 @@
 import java.util.Random
 
-object ModuleTest
+object ObjectTest
 
 testFunction : int -> void
 testFunction x =

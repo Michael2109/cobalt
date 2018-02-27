@@ -3,9 +3,27 @@ Module      : ABBlock
 Description : Data types that store arithmetic and boolean expressions.
 These are used to store the data and specify how the code is generated.
 -}
-module ABBlock where
+module ABBlock (
+  CodeGen,
+  ErrorCheck,
+  genCode,
+  errorCheck,
+  AExpr (Var, IntConst, Neg, ABinary, Parenthesis),
+  BExpr (BoolConst, Not, BBinary, RBinary),
+  ABinOp (Multiply, Divide, Add, Subtract),
+  BBinOp (Or, And),
+  RBinOp (Greater, Less)
+) where
 
+import SymbolTable
 import BlockUtils
+
+
+class ErrorCheck a where
+  errorCheck :: a -> String
+
+class CodeGen a where
+  genCode :: a -> ClassSymbolTable -> String
 
 -- Arithmetic expressions
 data AExpr
@@ -15,12 +33,12 @@ data AExpr
   | ABinary ABinOp AExpr AExpr
   | Parenthesis AExpr
 
-instance Show AExpr where
-    show (Var v) = v ++ "()"
-    show (IntConst i) = show i
-    show (Neg aExpr) = "-" ++ show aExpr
-    show (ABinary aBinOp aExpr1 aExpr2) = show aExpr1 ++ " " ++ show aBinOp ++ " " ++ show aExpr2
-    show (Parenthesis aExpr) = "(" ++ show aExpr ++ ")"
+instance CodeGen AExpr where
+    genCode (Var v) symbolTable = v ++ "()"
+    genCode (IntConst i) symbolTable = show i
+    genCode (Neg aExpr) symbolTable = "-" ++ genCode aExpr symbolTable
+    genCode (ABinary aBinOp aExpr1 aExpr2) symbolTable = genCode aExpr1 symbolTable ++ " " ++ genCode aBinOp symbolTable ++ " " ++ genCode aExpr2 symbolTable
+    genCode (Parenthesis aExpr) symbolTable = "(" ++ genCode aExpr symbolTable ++ ")"
 
 -- Arithmetic ops
 data ABinOp
@@ -31,13 +49,13 @@ data ABinOp
   | Multiply
   | Divide
 
-instance Show ABinOp where
-    show (Add) = "+"
-    show (Subtract) = "-"
-    show (Multiply) = "*"
-    show (Divide) = "/"
-    show (OpeningParenthesis) = "("
-    show (ClosingParenthesis) = ")"
+instance CodeGen ABinOp where
+    genCode (Add) symbolTable = "+"
+    genCode (Subtract) symbolTable = "-"
+    genCode (Multiply) symbolTable = "*"
+    genCode (Divide) symbolTable = "/"
+    genCode (OpeningParenthesis) symbolTable = "("
+    genCode (ClosingParenthesis) symbolTable = ")"
 
 
 -- Boolean expressions
@@ -47,11 +65,11 @@ data BExpr
   | BBinary BBinOp BExpr BExpr
   | RBinary RBinOp AExpr AExpr
 
-instance Show BExpr where
-    show (BoolConst b) = lowerString $ show b
-    show (Not n) = show n
-    show (BBinary bbinop bExpr1 bExpr2) = show bExpr1 ++ " " ++ show bbinop ++ " " ++ show bExpr2
-    show (RBinary rbinop aExpr1 aExpr2) = show aExpr1 ++ " " ++ show rbinop ++ " " ++ show aExpr2
+instance CodeGen BExpr where
+    genCode (BoolConst b) symbolTable = lowerString $ show b
+    genCode (Not n) symbolTable = genCode n symbolTable
+    genCode (BBinary bbinop bExpr1 bExpr2) symbolTable = genCode bExpr1 symbolTable ++ " " ++ genCode bbinop symbolTable ++ " " ++ genCode bExpr2 symbolTable
+    genCode (RBinary rbinop aExpr1 aExpr2) symbolTable = genCode aExpr1 symbolTable ++ " " ++ genCode rbinop symbolTable ++ " " ++ genCode aExpr2 symbolTable
 
 
 -- Boolean ops
@@ -59,15 +77,15 @@ data BBinOp
   = And
   | Or
 
-instance Show BBinOp where
-    show (And) = "&&"
-    show (Or) = "||"
+instance CodeGen BBinOp where
+    genCode (And) symbolTable = "&&"
+    genCode (Or) symbolTable = "||"
 
 -- R binary ops
 data RBinOp
   = Greater
   | Less
 
-instance Show RBinOp where
-    show (Greater) = ">"
-    show (Less) = "<"
+instance CodeGen RBinOp where
+    genCode (Greater) symbolTable = ">"
+    genCode (Less) symbolTable = "<"

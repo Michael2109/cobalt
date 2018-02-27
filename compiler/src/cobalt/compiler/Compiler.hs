@@ -15,6 +15,7 @@ import qualified Data.List.Split as Split
 
 import Parser
 import SymbolTable
+import CodeGenerator
 
 
 allFilesIn dir = getDirectoryContents dir
@@ -39,14 +40,17 @@ compile inputFile outputFile = do
    fileData <- readFile inputFile
 
    let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
-   let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
+   --let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    pPrint "Generating symbol table"
    let symbolTable = genSymbolTable compiledTree
 
+   let generatedCode = compileAST compiledTree symbolTable
    pPrint symbolTable
-   --pPrint compiledTree
-   parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
+   pPrint generatedCode
 
-   writeFile outputFile compiledString
+   --pPrint compiledTree
+  -- parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
+
+   writeFile outputFile generatedCode
 
