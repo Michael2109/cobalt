@@ -158,7 +158,7 @@ instance CodeGen Expr where
               Nothing -> ""
     genCode (FunctionCall name exprs) symbolTable = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map (\x -> genCode x symbolTable) exprs)) ++ ");"
     genCode (Type b) symbolTable = getDebug "Type" ++ genCode b symbolTable
-    genCode (Argument b) symbolTable = getDebug "Argument" ++ b
+    genCode (Argument b) symbolTable = getDebug "Argument" ++ b ++ if(elem b (map (fst) $ publicVariables symbolTable )) then "()" else ""
     genCode (ArgumentType b) symbolTable = getDebug "ArgumentType" ++ b
     genCode (ReturnType b) symbolTable = getDebug "ReturnType" ++ b
     genCode (AssignArith mutable vType name value) symbolTable = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ genCode vType symbolTable ++ " " ++ name ++ "=" ++ genCode value symbolTable ++ ";"
@@ -196,7 +196,7 @@ instance CodeGen Expr where
     genCode (DataInstance typeName args) symbolTable = getDebug "DataInstance" ++ "new " ++ genCode typeName symbolTable ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable) args) ++ ");"
     genCode (ThisMethodCall methodName args) symbolTable = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable) args) ++ ");"
     genCode (SuperMethodCall objectName methodName args) symbolTable = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable) args) ++ ");"
-    genCode (ObjectMethodCall objectName methodName args) symbolTable = getDebug "ObjectMethodCall" ++objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable) args) ++ ");"
+    genCode (ObjectMethodCall objectName methodName args) symbolTable = getDebug "ObjectMethodCall" ++objectName ++ (if(elem objectName (map (fst) $ publicVariables symbolTable )) then "()" else "") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable) args) ++ ");"
     genCode (NewClassInstance className args) symbolTable = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable) args) ++ ")"
     genCode (ClassVariable className varName) symbolTable = getDebug "ClassVariable" ++className ++ "." ++ varName
     genCode (BooleanExpr expr) symbolTable = getDebug "BooleanExpr" ++ genCode expr symbolTable
@@ -215,35 +215,5 @@ extractImportStatement :: Expr -> Maybe [String]
 extractImportStatement (Import m) = Just m
 extractImportStatement _ = Nothing
 
-extractMainFunction :: Expr -> Maybe String
-extractMainFunction (MainFunction m _ _ _ _ _) = Just m
-extractMainFunction _ = Nothing
-
-extractFunctionCall :: Expr -> Maybe String
-extractFunctionCall (FunctionCall m _) = Just m
-extractFunctionCall _ = Nothing
-
-
 isImportStatement :: Expr -> Bool
 isImportStatement e = isJust $ extractImportStatement e
-
-isMainFunction :: Expr -> Bool
-isMainFunction e = isJust $ extractMainFunction e
-
-isFunctionCall :: Expr -> Bool
-isFunctionCall e = isJust $ extractFunctionCall e
-
-{--
-getInnerMainFunctionString :: [Expr] -> String -> String
-getInnerMainFunctionString e instanceName  = do
-    if(isMainFunction (e!!0)) then
-      show (e!!0)
-    else
-      getInnerMainFunctionString (drop 1 e) instanceName
---}
-getFunctionString :: Expr -> ClassSymbolTable -> String
-getFunctionString e symbolTable = do
-    if(isMainFunction (e) || isImportStatement (e)) then
-      ""
-    else
-      "" ++ genCode (e) symbolTable

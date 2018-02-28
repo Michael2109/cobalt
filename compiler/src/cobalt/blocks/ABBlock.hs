@@ -34,7 +34,7 @@ data AExpr
   | Parenthesis AExpr
 
 instance CodeGen AExpr where
-    genCode (Var v) symbolTable = v ++ "()"
+    genCode (Var v) symbolTable = v ++ if(elem v (map (fst) $ publicVariables symbolTable )) then "()" else ""
     genCode (IntConst i) symbolTable = show i
     genCode (Neg aExpr) symbolTable = "-" ++ genCode aExpr symbolTable
     genCode (ABinary aBinOp aExpr1 aExpr2) symbolTable = genCode aExpr1 symbolTable ++ " " ++ genCode aBinOp symbolTable ++ " " ++ genCode aExpr2 symbolTable

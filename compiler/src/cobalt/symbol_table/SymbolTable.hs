@@ -19,7 +19,7 @@ data MethodSymbolTable = MethodSymbolTable {
     }
     deriving (Show, Eq)
 
-genSymbolTable ast = ClassSymbolTable "ClassName" [] []
+genSymbolTable ast = ClassSymbolTable "ClassName" [("x", "int"), ("y", "int"), ("dx", "int"), ("dy", "int"), ("thread", "Thread")] []
   --case ast of
   --  Left  e -> show e
   --  Right x -> show x
