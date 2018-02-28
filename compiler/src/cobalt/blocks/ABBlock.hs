@@ -6,8 +6,10 @@ These are used to store the data and specify how the code is generated.
 module ABBlock (
   CodeGen,
   ErrorCheck,
+  SymbolTableGen,
   genCode,
   errorCheck,
+  genSymbolTable,
   AExpr (Var, IntConst, Neg, ABinary, Parenthesis),
   BExpr (BoolConst, Not, BBinary, RBinary),
   ABinOp (Multiply, Divide, Add, Subtract),
@@ -21,6 +23,9 @@ import BlockUtils
 
 class ErrorCheck a where
   errorCheck :: a -> String
+
+class SymbolTableGen a where
+  genSymbolTable :: a -> ClassSymbolTable
 
 class CodeGen a where
   genCode :: a -> ClassSymbolTable -> String

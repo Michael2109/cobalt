@@ -83,6 +83,20 @@ instance ErrorCheck Expr where
   errorCheck (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = "An error occurred"
   errorCheck (_) = "<Unimplemented error check>"
 
+instance SymbolTableGen Expr where
+  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (ClassSymbolTable name [] []) (foldr1 (\x y -> combineSymbolTable x y) (map genSymbolTable modifierBlocks))
+  genSymbolTable (ModifierBlock exprs) =  foldr1 (\x y -> combineSymbolTable x y) (map genSymbolTable exprs)
+  genSymbolTable (GlobalVar modifier final varType varName exprs) =  ClassSymbolTable "" [(show varName, show varType)] []
+  genSymbolTable (_) = ClassSymbolTable "" [] []
+
+instance Show Expr where
+  show (GlobalVar modifier final varType varName exprs) = ""
+  show (Identifier name) = name
+  show (Type e) = show e
+  show (_) = "<Unknown show>"
+
+combineSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable
+combineSymbolTable a b = ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
 
 instance CodeGen Expr where
     genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable =

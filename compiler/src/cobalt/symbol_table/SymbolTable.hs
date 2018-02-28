@@ -1,5 +1,7 @@
 module SymbolTable where
 
+import Data.List
+
 data ClassSymbolTable
     = ClassSymbolTable
       {
@@ -10,7 +12,7 @@ data ClassSymbolTable
       deriving (Eq)
  
 instance Show ClassSymbolTable where
-    show (ClassSymbolTable cName vars methods) = show cName
+    show (ClassSymbolTable cName vars methods) = show cName ++ intercalate " " (map show vars) ++ intercalate " " (map show methods)
 
 data MethodSymbolTable = MethodSymbolTable {
       returnType :: String
@@ -18,8 +20,3 @@ data MethodSymbolTable = MethodSymbolTable {
     , args       :: [(String, String)] -- list of arguments
     }
     deriving (Show, Eq)
-
-genSymbolTable ast = ClassSymbolTable "ClassName" [("x", "int"), ("y", "int"), ("dx", "int"), ("dy", "int"), ("thread", "Thread")] []
-  --case ast of
-  --  Left  e -> show e
-  --  Right x -> show x

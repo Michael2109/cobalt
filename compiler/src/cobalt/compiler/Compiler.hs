@@ -13,13 +13,18 @@ import System.FilePath.Posix
 import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
+import ABBlock
 import Parser
 import SymbolTable
 import CodeGenerator
 
 
-allFilesIn dir = getDirectoryContents dir
+generateSymbolTable ast = -- ClassSymbolTable "ClassName" [("x", "int"), ("y", "int"), ("dx", "int"), ("dy", "int"), ("thread", "Thread")] []
+  case ast of
+   Left  e -> ClassSymbolTable "ERROR" [] []
+   Right x -> genSymbolTable x
 
+allFilesIn dir = getDirectoryContents dir
 
 compileDir :: String -> String -> IO()
 compileDir inputDir outputDir = do
@@ -43,7 +48,7 @@ compile inputFile outputFile = do
    --let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    pPrint "Generating symbol table"
-   let symbolTable = genSymbolTable compiledTree
+   let symbolTable = generateSymbolTable compiledTree
 
    let generatedCode = compileAST compiledTree symbolTable
    pPrint symbolTable
