@@ -85,8 +85,8 @@ instance ErrorCheck Expr where
 
 
 instance SymbolTableGen Expr where
-  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (ClassSymbolTable name [] []) (foldr1 (\x y -> combineSymbolTable x y) (map genSymbolTable modifierBlocks))) (foldr1 (\x y -> combineSymbolTable x y) (map genSymbolTable bodyArray))
-  genSymbolTable (ModifierBlock exprs) =  foldr1 (\x y -> combineSymbolTable x y) (map genSymbolTable exprs)
+  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (ClassSymbolTable name [] []) (foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable modifierBlocks))) (foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable bodyArray))
+  genSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable exprs)
   genSymbolTable (GlobalVar modifier final varType varName exprs) =  ClassSymbolTable "" [(show varName, show varType)] []
   genSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
   genSymbolTable (_) = ClassSymbolTable "" [] []
@@ -149,7 +149,7 @@ instance CodeGen Expr where
     genCode (Import locs) symbolTable currentState = getDebug "Import" ++ "import " ++ intercalate "." locs ++ ";"
     genCode (GlobalVar modifier final varType varName exprs) symbolTable currentState =
       getDebug "GlobalVar" ++
-      "private " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ "=" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs) ++ ";" ++
+      "private " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ ";" ++ -- ++ "=" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs) ++ ";" ++
       -- Bool to store if the value has been set yet
       "private boolean " ++ genCode varName symbolTable currentState ++ "Bool=false;" ++
       -- Create getter method
@@ -221,8 +221,8 @@ instance CodeGen Expr where
     genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = do
       let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
       if(length methodList > 0)
-      then if (elem objectName (map fst (methodArgs (methodList!!0))) || not (elem objectName (map (fst) $ publicVariables symbolTable ))) then  getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "Argument" ++ (objectName ++ "()") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
-      else  getDebug "ObjectMethodCall" ++ objectName
+      then (if (elem objectName (map fst (methodArgs (methodList!!0))) || not (elem objectName (map (fst) $ publicVariables symbolTable ))) then  getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "Argument" ++ (objectName ++ "()") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");")
+      else if(not (elem objectName (map (fst) $ publicVariables symbolTable ))) then getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "ObjectMethodCall" ++ objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
     genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++className ++ "." ++ varName
     genCode (BooleanExpr expr) symbolTable currentState = getDebug "BooleanExpr" ++ genCode expr symbolTable currentState
