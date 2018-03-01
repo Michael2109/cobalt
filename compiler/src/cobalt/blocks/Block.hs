@@ -162,7 +162,7 @@ instance CodeGen Expr where
     genCode (Constructor name argTypes args body) symbolTable currentState = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable currentState) argTypes) (map (\x -> genCode x symbolTable currentState) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) body) ++ "}"
     genCode (Function name annotations argTypes args returnType static body) symbolTable currentState =
       getDebug "Function" ++
-      annotationString ++ " public " ++ (if(static) then "static " else "") ++ genCode returnType symbolTable currentState ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable currentState) argTypes) (map (\x -> genCode x symbolTable currentState) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) body) ++ "}"
+      annotationString ++ " public " ++ (if(static) then "static " else "") ++ genCode returnType symbolTable (CurrentState name) ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable (CurrentState name)) argTypes) (map (\x -> genCode x symbolTable (CurrentState name)) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable (CurrentState name)) body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> genCode a symbolTable currentState
@@ -176,7 +176,11 @@ instance CodeGen Expr where
               Nothing -> ""
     genCode (FunctionCall name exprs) symbolTable currentState = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map (\x -> genCode x symbolTable currentState) exprs)) ++ ");"
     genCode (Type b) symbolTable currentState = getDebug "Type" ++ genCode b symbolTable currentState
-    genCode (Argument b) symbolTable currentState = getDebug "Argument" ++ b ++ if(elem b (map (fst) $ publicVariables symbolTable )) then "()" else ""
+    genCode (Argument b) symbolTable currentState = do
+        let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+        if(length methodList > 0)
+        then if (elem b (map fst (methodArgs (methodList!!0)))) then  getDebug "Argument" ++ b else  getDebug "Argument" ++ (b ++ "()")
+        else  getDebug "Argument" ++ b
     genCode (ArgumentType b) symbolTable currentState = getDebug "ArgumentType" ++ b
     genCode (ReturnType b) symbolTable currentState = getDebug "ReturnType" ++ b
     genCode (AssignArith mutable vType name value) symbolTable currentState = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ genCode vType symbolTable currentState ++ " " ++ name ++ "=" ++ genCode value symbolTable currentState ++ ";"
@@ -214,7 +218,11 @@ instance CodeGen Expr where
     genCode (DataInstance typeName args) symbolTable currentState = getDebug "DataInstance" ++ "new " ++ genCode typeName symbolTable currentState ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (ThisMethodCall methodName args) symbolTable currentState = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (SuperMethodCall objectName methodName args) symbolTable currentState = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
-    genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = getDebug "ObjectMethodCall" ++objectName ++ (if(elem objectName (map (fst) $ publicVariables symbolTable )) then "()" else "") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
+    genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = do
+      let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+      if(length methodList > 0)
+      then if (elem objectName (map fst (methodArgs (methodList!!0))) || not (elem objectName (map (fst) $ publicVariables symbolTable ))) then  getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "Argument" ++ (objectName ++ "()") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
+      else  getDebug "ObjectMethodCall" ++ objectName
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
     genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++className ++ "." ++ varName
     genCode (BooleanExpr expr) symbolTable currentState = getDebug "BooleanExpr" ++ genCode expr symbolTable currentState

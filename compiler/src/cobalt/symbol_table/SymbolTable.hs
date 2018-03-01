@@ -16,7 +16,7 @@ instance Show ClassSymbolTable where
 
 data MethodSymbolTable = MethodSymbolTable {
       returnType :: String
-    , args       :: [(String, String)] -- list of arguments
+    , methodArgs       :: [(String, String)] -- list of arguments
     }
     deriving (Show, Eq)
 
