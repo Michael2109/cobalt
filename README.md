@@ -1,6 +1,6 @@
 # Cobalt
 
-Cobalt is an purely functional language that runs on the JVM.
+Cobalt is an object-oriented and functional language that runs on the JVM.
 
 The syntax will be similar to languages such as Haskell and Scala.  
 
