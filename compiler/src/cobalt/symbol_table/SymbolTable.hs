@@ -19,3 +19,9 @@ data MethodSymbolTable = MethodSymbolTable {
     , args       :: [(String, String)] -- list of arguments
     }
     deriving (Show, Eq)
+
+data CurrentState
+  = CurrentState {
+    method :: String
+  }
+  deriving (Eq)

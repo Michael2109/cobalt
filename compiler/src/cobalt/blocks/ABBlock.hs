@@ -28,7 +28,7 @@ class SymbolTableGen a where
   genSymbolTable :: a -> ClassSymbolTable
 
 class CodeGen a where
-  genCode :: a -> ClassSymbolTable -> String
+  genCode :: a -> ClassSymbolTable -> CurrentState -> String
 
 -- Arithmetic expressions
 data AExpr
@@ -39,11 +39,16 @@ data AExpr
   | Parenthesis AExpr
 
 instance CodeGen AExpr where
-    genCode (Var v) symbolTable = v ++ if(elem v (map (fst) $ publicVariables symbolTable )) then "()" else ""
-    genCode (IntConst i) symbolTable = show i
-    genCode (Neg aExpr) symbolTable = "-" ++ genCode aExpr symbolTable
-    genCode (ABinary aBinOp aExpr1 aExpr2) symbolTable = genCode aExpr1 symbolTable ++ " " ++ genCode aBinOp symbolTable ++ " " ++ genCode aExpr2 symbolTable
-    genCode (Parenthesis aExpr) symbolTable = "(" ++ genCode aExpr symbolTable ++ ")"
+    genCode (Var v) symbolTable currentState = do
+
+      let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+      if(length methodList > 0)
+      then if (elem v (map fst (args (methodList!!0)))) then v else (v ++ "()")
+      else v
+    genCode (IntConst i) symbolTable currentState = show i
+    genCode (Neg aExpr) symbolTable currentState = "-" ++ genCode aExpr symbolTable currentState
+    genCode (ABinary aBinOp aExpr1 aExpr2) symbolTable currentState = genCode aExpr1 symbolTable currentState ++ " " ++ genCode aBinOp symbolTable currentState ++ " " ++ genCode aExpr2 symbolTable currentState
+    genCode (Parenthesis aExpr) symbolTable currentState = "(" ++ genCode aExpr symbolTable currentState ++ ")"
 
 -- Arithmetic ops
 data ABinOp
@@ -55,12 +60,12 @@ data ABinOp
   | Divide
 
 instance CodeGen ABinOp where
-    genCode (Add) symbolTable = "+"
-    genCode (Subtract) symbolTable = "-"
-    genCode (Multiply) symbolTable = "*"
-    genCode (Divide) symbolTable = "/"
-    genCode (OpeningParenthesis) symbolTable = "("
-    genCode (ClosingParenthesis) symbolTable = ")"
+    genCode (Add) symbolTable currentState = "+"
+    genCode (Subtract) symbolTable currentState = "-"
+    genCode (Multiply) symbolTable currentState = "*"
+    genCode (Divide) symbolTable currentState = "/"
+    genCode (OpeningParenthesis) currentState symbolTable = "("
+    genCode (ClosingParenthesis) currentState symbolTable = ")"
 
 
 -- Boolean expressions
@@ -71,10 +76,10 @@ data BExpr
   | RBinary RBinOp AExpr AExpr
 
 instance CodeGen BExpr where
-    genCode (BoolConst b) symbolTable = lowerString $ show b
-    genCode (Not n) symbolTable = genCode n symbolTable
-    genCode (BBinary bbinop bExpr1 bExpr2) symbolTable = genCode bExpr1 symbolTable ++ " " ++ genCode bbinop symbolTable ++ " " ++ genCode bExpr2 symbolTable
-    genCode (RBinary rbinop aExpr1 aExpr2) symbolTable = genCode aExpr1 symbolTable ++ " " ++ genCode rbinop symbolTable ++ " " ++ genCode aExpr2 symbolTable
+    genCode (BoolConst b) symbolTable currentState = lowerString $ show b
+    genCode (Not n) symbolTable currentState = genCode n symbolTable currentState
+    genCode (BBinary bbinop bExpr1 bExpr2) symbolTable currentState = genCode bExpr1 symbolTable currentState ++ " " ++ genCode bbinop symbolTable currentState ++ " " ++ genCode bExpr2 symbolTable currentState
+    genCode (RBinary rbinop aExpr1 aExpr2) symbolTable currentState = genCode aExpr1 symbolTable currentState ++ " " ++ genCode rbinop symbolTable currentState ++ " " ++ genCode aExpr2 symbolTable currentState
 
 
 -- Boolean ops
@@ -83,8 +88,8 @@ data BBinOp
   | Or
 
 instance CodeGen BBinOp where
-    genCode (And) symbolTable = "&&"
-    genCode (Or) symbolTable = "||"
+    genCode (And) symbolTable currentState = "&&"
+    genCode (Or) symbolTable currentState = "||"
 
 -- R binary ops
 data RBinOp
@@ -92,5 +97,5 @@ data RBinOp
   | Less
 
 instance CodeGen RBinOp where
-    genCode (Greater) symbolTable = ">"
-    genCode (Less) symbolTable = "<"
+    genCode (Greater) symbolTable currentState = ">"
+    genCode (Less) symbolTable currentState = "<"
