@@ -24,43 +24,78 @@ https://github.com/Michael2109/cobalt/wiki/Language-Specifications
 To view how to get up and running please view our tutorial!
 https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
-# Example Module (Target)
+# Example 
+##### Basic 2D animation displaying a square bouncing around the screen
 ```
+import javax.swing.JFrame
 
-// Example module
-module Example
+# Frame
+class Frame extends JFrame
 
-import dir.subdir.Module
+val game: Game = new Game()
+add(new Panel(game))
+setTitle("Game")
+setResizable(True)
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+pack()
+setSize(800, 600)
+setVisible(True)
+```
+```
+import javax.swing.JPanel
+import java.awt.Graphics
 
-exampleFunction : Int -> Int -> Int
-exampleFunction a b = 
+# Panel
+class Panel(game: Game) extends JPanel implements Runnable
 
-  result:Int = a + b
-    
-  if(result > 10)
-    // Do something
-  else if(result < 5)
-    // Do something
-  else
-    // Do something
-       
-    
-// Add values to a formatted String
-formatValues : String -> String -> String -> String
-formatValues a b c = "$a $b $c"
-    
-    
-// Add one to all elements in a list
-higherOrderFunction : [Int] -> [Int] 
-higherOrderFunction list = map (i -> i + x) list
-    
-    
-// Function within function
-innerFunction : [Int] -> [Int]
-innerFunction list = 
-  getEvenNumbers(list:List[Int])
-    isEven : Int -> Boolean
-    isEven x =
-      x % 2 == 0
-    filter (isEven) list
-  
+public
+  val thread: Thread = new Thread(this)
+  var x: int = 50
+  var y: int = 100
+  var dx: int = 1
+  var dy: int = 1
+
+private
+  var alive: boolean = True
+
+thread.start()
+
+update : void
+update =
+  x = x + dx
+  y = y + dy
+
+  if (x < 0 or x > 750)
+    dx = dx * -1
+  if (y < 0 or y > 550)
+    dy = dy * -1
+
+paint : Graphics -> void
+paint g =
+  super.paintComponent(g)
+
+  g.drawRect(x, y, 50, 50)
+
+@Override
+run : void
+run =
+  try
+    while(True)
+      Thread.sleep(7)
+      update()
+      repaint()
+  catch(e: Exception)
+    println "Error: Thread failed"
+```
+```
+# Main
+object Main
+
+main : [String] -> void
+main args =
+  val frame: Frame = new Frame()
+```
+```
+# Game (Currently empty)
+class Game
+```
