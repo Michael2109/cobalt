@@ -96,6 +96,6 @@ main args =
   val frame: Frame = new Frame()
 ```
 ```
-# Game (Currently empty
+# Game (Currently empty)
 class Game
 ```
