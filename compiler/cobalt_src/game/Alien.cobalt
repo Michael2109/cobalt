@@ -1,0 +1,18 @@
+class Alien(x: int, y: int) extends Sprite
+
+initAlien(x,y)
+
+private
+  bomb: Bomb
+
+initAlien :: int -> int -> void
+initAlien x y =
+  this.x = x
+  this.y = y
+
+act :: int -> void
+act direction =
+  this.x = this.x + direction
+
+getBomb :: Bomb
+  return bomb

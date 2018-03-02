@@ -5,7 +5,7 @@ class Frame extends JFrame
 val game: Game = new Game()
 add(new Panel(game))
 setTitle("Game")
-setResizable(True)
+setResizable(False)
 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 pack()
 setSize(800, 600)

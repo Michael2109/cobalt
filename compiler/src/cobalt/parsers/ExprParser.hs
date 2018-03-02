@@ -25,18 +25,24 @@ objectParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
       imports <- many (try importParser)
-      moduleT <- L.lineFold scn $ \sp' -> try (rword "object")
+      classT <- L.lineFold scn $ \sp' -> try (rword "object")
       name <- identifier
+      params <- optional (parens (sepBy parameterParser (symbol ",")))
+      extendsKeyword <- optional (rword "extends")
+      parent <- optional (identifier)
+      implementsKeyword <- optional (rword "implements")
+      interfaces <- optional (identifier)
+      modifierBlocks <- many (try (modifierBlockParser True))
+      constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (functionParser name True <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Module (packageDir) name imports exprs)
+      return (Object (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 classParser :: [String] -> Parser Expr
 classParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
       imports <- many (try importParser)
-
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
       params <- optional (parens (sepBy parameterParser (symbol ",")))
@@ -44,8 +50,7 @@ classParser relativeDir = try $ L.nonIndented scn p
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
       interfaces <- optional (identifier)
-      modifierBlocks <- many (try modifierBlockParser)
-      --let constructorExprs = []
+      modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (functionParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
@@ -218,23 +223,23 @@ classVariable  = do
   varName <- identifier
   return $ ClassVariable className varName
 
-modifierBlockParser :: Parser Expr
-modifierBlockParser  = try $ L.nonIndented scn (L.indentBlock scn p)
+modifierBlockParser :: Bool -> Parser Expr
+modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
-      return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser  modifier))
+      return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser  modifier static))
 
 
-globalVarParser :: String -> Parser Expr
-globalVarParser  modifier = do
+globalVarParser :: String -> Bool -> Parser Expr
+globalVarParser modifier static = do
   final <- try (rword "val" <|> rword "var")
   varName <- identifierParser
   symbol ":"
   varType <- valType
   symbol "="
   es <- many (expr' <|> arithmeticParser <|> identifierParser)
-  return $ GlobalVar modifier (final == "val") varType varName es
+  return $ GlobalVar modifier (final == "val") static varType varName es
 
 annotationParser :: Parser Expr
 annotationParser  = do
