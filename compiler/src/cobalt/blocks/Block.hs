@@ -85,7 +85,7 @@ instance ErrorCheck Expr where
 
 
 instance SymbolTableGen Expr where
-  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (ClassSymbolTable name [] []) (foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable modifierBlocks))) (foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable bodyArray))
+  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (ClassSymbolTable name [] []) (combineSymbolTableList (map genSymbolTable modifierBlocks))) (combineSymbolTableList (map genSymbolTable bodyArray))
   genSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable exprs)
   genSymbolTable (GlobalVar modifier final static varType varName exprs) =  ClassSymbolTable "" [(show varName, show varType)] []
   genSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
@@ -103,7 +103,11 @@ combineSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable
 combineSymbolTable a b = ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
 
 combineSymbolTableList :: [ClassSymbolTable] -> ClassSymbolTable
-combineSymbolTableList list = foldl1 (\x y -> combineSymbolTable x y) list
+combineSymbolTableList list = do
+  if length list > 0
+  then foldl1 (\x y -> combineSymbolTable x y) list
+  else ClassSymbolTable "" [] []
+
 
 instance CodeGen Expr where
     genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable currentState =
