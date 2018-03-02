@@ -2,12 +2,12 @@
 
 Cobalt is an object-oriented and functional language that runs on the JVM.
 
-The syntax will be similar to languages such as Haskell and Scala.  
+The syntax is similar to languages such as Haskell and Scala.  
 
 # Main Features
 * Hybrid Language - Functional/Object Oriented
 * Statically typed
-* Immutable
+* Focusing on immutability
 * Can be used with other languages on the JVM
 * Non-nullable
 * High readability    
@@ -19,10 +19,6 @@ Make sure to have a quick read through the wiki pages to get an idea of where ev
 # Language Specifications
 To view all of the language specifications please view our wiki!  
 https://github.com/Michael2109/cobalt/wiki/Language-Specifications
-
-# Getting Starting
-To view how to get up and running please view our tutorial!
-https://github.com/Michael2109/cobalt/wiki/Getting-Started
 
 # Example 
 ##### Basic 2D animation displaying a square bouncing around the screen
