@@ -1,18 +1,15 @@
 class Alien(x: int, y: int) extends Sprite
 
-private
+public
   val bomb: Bomb = new Bomb()
 
 initAlien(x,y)
 
 initAlien : int -> int -> void
 initAlien x y =
-  x = x
-  y = y
+  this.x = x
+  this.y = y
 
-act :: int -> void
+act : int -> void
 act direction =
-  this.x = this.x + direction
-
-getBomb :: Bomb
-  return bomb
+  x = x + direction

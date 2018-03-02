@@ -109,6 +109,14 @@ identifierParser = do
   name <- identifier
   return $ Identifier name
 
+thisVarParser :: Parser Expr
+thisVarParser = do
+  try $ do
+    rword "this"
+    symbol "."
+  name <- identifierParser
+  return $ ThisVar name
+
 arithmeticParser :: Parser Expr
 arithmeticParser = do
   aE <- aExpr
@@ -139,7 +147,7 @@ assignParser = do
 reassignParser :: Parser Expr
 reassignParser = do
   name  <- try $ do
-    id <- identifier
+    id <- identifierParser <|> thisVarParser
     symbol "="
     return id
 
@@ -423,6 +431,8 @@ expr' = try dataParser
   <|> assignParser
   <|> reassignParser
 
+
+  <|> thisVarParser
   <|> thisParser
 
   <|> try whereStmt
