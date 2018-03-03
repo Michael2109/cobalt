@@ -16,6 +16,6 @@ import Text.Pretty.Simple (pShow)
 
 import ExprParser
 
-parseTree relativeDir input = parse (objectParser relativeDir <|> classParser relativeDir) "" input
+parseTree relativeDir input = parse (objectParser relativeDir <|> classParser relativeDir <|> traitParser relativeDir) "" input
 
 parseFromFile file = runParser expr file <$> readFile file

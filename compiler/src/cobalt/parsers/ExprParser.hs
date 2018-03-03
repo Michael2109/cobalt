@@ -4,7 +4,7 @@ Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
 module ExprParser (Parser,
-  expr, objectParser, classParser, parser) where
+  expr, objectParser, classParser, traitParser, parser) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -56,6 +56,23 @@ classParser relativeDir = try $ L.nonIndented scn p
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
+traitParser :: [String] -> Parser Expr
+traitParser relativeDir = try $ L.nonIndented scn p
+  where
+    p = do
+      imports <- many (try importParser)
+      classT <- L.lineFold scn $ \sp' -> try (rword "trait")
+      name <- identifier
+      params <- optional (parens (sepBy parameterParser (symbol ",")))
+      extendsKeyword <- optional (rword "extends")
+      parent <- optional (identifier)
+      implementsKeyword <- optional (rword "implements")
+      interfaces <- optional (identifier)
+      modifierBlocks <- many (try (modifierBlockParser False))
+      constructorExprs <- try (many $ try constructorExpr)
+      exprs <- many (functionParser name False <|> expr')
+      let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
+      return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 importParser :: Parser Expr
 importParser = try $ L.nonIndented scn p
@@ -273,7 +290,7 @@ returnType = do
 
 argument :: Parser Expr
 argument = do
-  value <- identifier
+  value <- booleanParser <|> identifierParser
   return $ Argument value
 
 
@@ -332,7 +349,7 @@ ifStmt  = L.indentBlock scn p
      p = do
        try (rword "if")
        cond  <- bExpr
-       return (L.IndentMany Nothing (return . (If cond)) (expr' ))
+       return (L.IndentMany Nothing (return . (If cond)) (expr' <|> arithmeticParser <|> booleanParser))
 
 elseIfStmt :: Parser Expr
 elseIfStmt  = L.indentBlock scn p

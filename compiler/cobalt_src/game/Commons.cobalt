@@ -1,4 +1,4 @@
-object GameObjectInfo
+trait Commons
 
 public
   val BoardWidth: int = 358

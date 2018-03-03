@@ -14,7 +14,7 @@ module ABBlock (
   BExpr (BoolConst, Not, BBinary, RBinary),
   ABinOp (Multiply, Divide, Add, Subtract),
   BBinOp (Or, And),
-  RBinOp (Greater, Less)
+  RBinOp (Greater, Less, GreaterEqual, LessEqual)
 ) where
 
 import SymbolTable
@@ -94,8 +94,12 @@ instance CodeGen BBinOp where
 -- R binary ops
 data RBinOp
   = Greater
+  | GreaterEqual
   | Less
+  | LessEqual
 
 instance CodeGen RBinOp where
     genCode (Greater) symbolTable currentState = ">"
     genCode (Less) symbolTable currentState = "<"
+    genCode (GreaterEqual) symbolTable currentState = ">="
+    genCode (LessEqual) symbolTable currentState = "<="

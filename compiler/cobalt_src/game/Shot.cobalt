@@ -1,0 +1,13 @@
+class Shot(x: int, y: int) extends Sprite
+
+private
+  val VSpace: int = 1
+  val HSpace: int = 6
+
+initShot(x, y)
+
+initShot : int -> int -> void
+initShot x y =
+  this.x = x
+  this.y = y
+

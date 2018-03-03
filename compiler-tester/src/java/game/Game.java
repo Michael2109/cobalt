@@ -1,2 +1,2 @@
-package game;public final class Game  {
+package game;public class Game  {
 public Game(){}}

@@ -1,0 +1,36 @@
+import java.awt.event.KeyEvent
+
+class Player(x: int, y: int) extends Sprite
+
+private
+  val startX: int = 270
+  val startY: int = 280
+  val width: int = 32
+  val commons: Commons = new Commons()
+
+
+initPlayer()
+
+initPlayer : void
+initPlayer =
+  this.x = startX
+  this.y = startY
+
+act : void
+act =
+  x = x + dx
+
+  if(x < 2)
+    x = 2
+
+  if(x > BoardWidth - 2 * width)
+    x = BoardWidth - 2 * width
+
+keyPressed : KeyEvent -> void
+keyPressed e =
+  key: int = e.getKeyCode()
+
+  if(key == KeyEvent.VK_LEFT)
+    dx = 0
+  if(key == KeyEvent.VK_RIGHT)
+    dx = 0
