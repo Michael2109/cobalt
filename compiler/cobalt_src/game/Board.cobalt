@@ -1,0 +1,26 @@
+import java.awt.Color
+import java.awt.Dimension
+import java.awt.Font
+import java.awt.FontMetrics
+import java.awt.Graphics
+import java.awt.Toolkit
+import java.awt.event.KeyAdapter
+import java.awt.event.KeyEvent
+
+import java.util.ArrayList
+import java.util.Iterator
+import java.util.Random
+
+import javax.swing.ImageIcon
+import javax.swing.JPanel
+
+class Board extends JPanel implements Runnable
+
+#private
+  #val d: Dimension = new Dimension(BoardWidth, BoardHeight)
+  #val aliens[Alien] = []
+  #val player: Player = new Player()
+  #val shot: Shot = new Shot()
+  #val animator: Thread = new Thread(this)
+  #var inGame: boolean = True
+  #val message: String = "Game Over"

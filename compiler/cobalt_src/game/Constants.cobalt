@@ -1,4 +1,4 @@
-trait Commons
+object Constants
 
 public
   val BoardWidth: int = 358
