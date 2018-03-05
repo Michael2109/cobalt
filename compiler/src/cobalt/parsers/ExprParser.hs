@@ -297,7 +297,7 @@ argument = do
 functionCallParser :: Parser Expr
 functionCallParser  = do
   name <- identifier
-  args <- parens $ many argument
+  args <- parens $ sepBy argument (symbol ",")
   return $ FunctionCall  name args
 
 

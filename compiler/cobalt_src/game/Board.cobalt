@@ -16,11 +16,25 @@ import javax.swing.JPanel
 
 class Board extends JPanel implements Runnable
 
-#private
-  #val d: Dimension = new Dimension(BoardWidth, BoardHeight)
-  #val aliens[Alien] = []
-  #val player: Player = new Player()
-  #val shot: Shot = new Shot()
-  #val animator: Thread = new Thread(this)
-  #var inGame: boolean = True
-  #val message: String = "Game Over"
+private
+  val d: Dimension = new Dimension(BoardWidth, BoardHeight)
+  #val aliens: [Alien] = [test]
+  val player: Player = new Player()
+  val shot: Shot = new Shot()
+
+  val ALIEN_INIT_X: int = 150
+  val ALIEN_INIT_Y: int = 5
+  var direction: int = -1
+  var deaths: int = 0
+
+
+  val animator: Thread = new Thread(this)
+  var inGame: boolean = True
+  val message: String = "Game Over"
+
+initBoard : void
+initBoard =
+  addKeyListener(new TAdapter())
+  setFocusable(True)
+  setBackground(Color.BLACK)
+  setDoubleBuffered(True, False)

@@ -40,7 +40,6 @@ data AExpr
 
 instance CodeGen AExpr where
     genCode (Var v) symbolTable currentState = do
-
       let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
       if(length methodList > 0)
       then if (elem v (map fst (methodArgs (methodList!!0)))) then v else (v ++ "()")
