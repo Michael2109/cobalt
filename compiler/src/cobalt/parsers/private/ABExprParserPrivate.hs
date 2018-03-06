@@ -2,9 +2,7 @@
 Module      : ABExprParser
 Description : Parses arithmetic and boolean expressions.
 -}
-module ABExprParser (Parser,
-  parens, symbol, rword, rws, scn, identifier, word,
-  aTerm, aExpr, bExpr) where
+module ABExprParserPrivate where
 
 import Control.Applicative (empty)
 import Control.Monad (void)

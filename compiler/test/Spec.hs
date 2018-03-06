@@ -1,18 +1,19 @@
 import Test.HUnit
-import Test.Framework
-import Test.Framework.Providers.HUnit
-import Data.Monoid
-import Control.Monad
-import Utils
+import ExprParser
 
-pushTest :: Assertion
-pushTest = [NumLit 1] ^? push (NumLit 1)
+safeHead :: [a] -> Maybe a
+safeHead []    = Nothing
+safeHead (x:_) = Just x
 
-pushPopTest :: Assertion
-pushPopTest = [] ^? (push (NumLit 0) >> void pop)
+testSafeHeadForEmptyList :: Test
+testSafeHeadForEmptyList =
+    TestCase $ assertEqual "Should return Nothing for empty list"
+                           Nothing (safeHead ([]::[Int]))
 
-main :: IO ()
-main = defaultMainWithOpts
-       [testCase "push" pushTest
-       ,testCase "push-pop" pushPopTest]
-       mempty
+testSafeHeadForNonEmptyList :: Test
+testSafeHeadForNonEmptyList =
+    TestCase $ assertEqual "Should return (Just head) for non empty list" (Just 1)
+               (safeHead ([1]::[Int]))
+
+main :: IO Counts
+main = runTestTT $ TestList [testSafeHeadForEmptyList, testSafeHeadForNonEmptyList]

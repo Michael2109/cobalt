@@ -4,6 +4,7 @@ Description : Functions that call the ExprParser functions to generate the AST.
 -}
 module Parser where
 
+import ParserPrivate
 import Control.Applicative (empty)
 import Control.Monad (void)
 import Data.Void
@@ -15,6 +16,7 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import ExprParser
+import ParserPrivate
 
 parseTree relativeDir input = parse (objectParser relativeDir <|> classParser relativeDir <|> traitParser relativeDir) "" input
 
