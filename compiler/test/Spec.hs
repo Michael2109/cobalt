@@ -10,18 +10,29 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import BaseParserPrivate
-import ABExprParserPrivate
-import ExprParserPrivate
-import ParserPrivate
+import ABBlock
+import Block
+
+import BaseParser
+import ABExprParser
+import ExprParser
+import Parser
 
 safeHead :: [a] -> Maybe a
 safeHead []    = Nothing
 safeHead (x:_) = Just x
 
 testBooleanParser :: Test
-testBooleanParser =
-    TestCase $ assertEqual "Should correctly parse boolean values" Nothing (parse (booleanParser) "" input)
+testBooleanParser = do
+  let ast = (parse (booleanParser) "" "True")
+
+
+
+  TestCase $ assertEqual "Should correctly parse boolean values"
+    (BooleanExpr (BoolConst True))
+    (case ast of
+      Left  e -> Empty
+      Right x -> x)
 
 testSafeHeadForEmptyList :: Test
 testSafeHeadForEmptyList =
@@ -34,4 +45,8 @@ testSafeHeadForNonEmptyList =
                (safeHead ([1]::[Int]))
 
 main :: IO Counts
-main = runTestTT $ TestList [testSafeHeadForEmptyList, testSafeHeadForNonEmptyList]
+main = runTestTT $ TestList [
+  testBooleanParser,
+  testSafeHeadForEmptyList,
+  testSafeHeadForNonEmptyList
+  ]

@@ -73,6 +73,7 @@ data Expr
   | Lambda String [Expr]
   | ClassParam {varType :: Expr, varName :: Expr}
   | Skip
+  | Empty
 
   -- Module specific
   | Object [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
@@ -80,8 +81,9 @@ data Expr
   -- Class specific
   | Class [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
 
-    -- Trait specific
-    | Trait [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
+  -- Trait specific
+  | Trait [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
+  deriving (Eq)
 
 instance ErrorCheck Expr where
   errorCheck (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = "An error occurred"

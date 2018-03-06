@@ -37,6 +37,7 @@ data AExpr
   | Neg AExpr
   | ABinary ABinOp AExpr AExpr
   | Parenthesis AExpr
+  deriving (Eq)
 
 instance CodeGen AExpr where
     genCode (Var v) symbolTable currentState = do
@@ -57,6 +58,7 @@ data ABinOp
   | Subtract
   | Multiply
   | Divide
+  deriving (Eq)
 
 instance CodeGen ABinOp where
     genCode (Add) symbolTable currentState = "+"
@@ -73,6 +75,7 @@ data BExpr
   | Not BExpr
   | BBinary BBinOp BExpr BExpr
   | RBinary RBinOp AExpr AExpr
+  deriving (Eq)
 
 instance CodeGen BExpr where
     genCode (BoolConst b) symbolTable currentState = lowerString $ show b
@@ -85,6 +88,7 @@ instance CodeGen BExpr where
 data BBinOp
   = And
   | Or
+  deriving (Eq)
 
 instance CodeGen BBinOp where
     genCode (And) symbolTable currentState = "&&"
@@ -96,6 +100,7 @@ data RBinOp
   | GreaterEqual
   | Less
   | LessEqual
+  deriving (Eq)
 
 instance CodeGen RBinOp where
     genCode (Greater) symbolTable currentState = ">"

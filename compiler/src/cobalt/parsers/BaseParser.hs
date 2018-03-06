@@ -3,7 +3,7 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module BaseParserPrivate where
+module BaseParser (Parser, scn, symbol, integer, rword, rws, parens, word, identifier, valueToken) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)

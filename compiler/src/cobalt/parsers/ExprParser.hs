@@ -3,7 +3,15 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module ExprParserPrivate where
+module ExprParser (Parser,
+                    expr,
+                    objectParser,
+                    classParser,
+                    traitParser,
+                    parser,
+
+                    booleanParser
+                    ) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -16,6 +24,7 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import ABExprParser
+
 import Block
 
 

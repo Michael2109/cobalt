@@ -32,17 +32,12 @@ library
       src/cobalt/symbol_table,
       src/cobalt/code_generator,
       src/cobalt/blocks,
-      src/cobalt/parsers/public,
-      src/cobalt/parsers/private,
+      src/cobalt/parsers,
       src/cobalt/error_checking,
       src/cobalt/compiler
   build-depends:
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
   exposed-modules:
-      BaseParserPrivate
-      ABExprParserPrivate
-      ExprParserPrivate
-      ParserPrivate
       BaseParser
       ABExprParser
       ExprParser
@@ -79,8 +74,7 @@ test-suite compiler-test
       src/cobalt/symbol_table,
       src/cobalt/code_generator,
       src/cobalt/blocks,
-      src/cobalt/parsers/public,
-      src/cobalt/parsers/private,
+      src/cobalt/parsers,
       src/cobalt/error_checking,
       src/cobalt/compiler
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -92,10 +86,6 @@ test-suite compiler-test
       containers == 0.5.*,
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
   other-modules:
-      BaseParserPrivate
-      ABExprParserPrivate
-      ExprParserPrivate
-      ParserPrivate
       BaseParser
       ABExprParser
       ExprParser
