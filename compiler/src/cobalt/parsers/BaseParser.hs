@@ -3,7 +3,7 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module BaseParser (Parser, scn, symbol, integer, rword, rws, parens, word, identifier, valueToken) where
+module BaseParser (Parser, scn, symbol, integer, rword, rws, parens, word, identifier) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -105,9 +105,3 @@ identifier = (lexeme . try) (p >>= check)
     check x = if x `elem` rws
                 then fail $ "keyword " ++ show x ++ " cannot be an identifier"
                 else return x
-
-
-valueToken :: Parser String
-valueToken = lexeme (takeWhile1P Nothing f) <?> "list item"
-  where
-    f x = isAlphaNum x || x == '-'
