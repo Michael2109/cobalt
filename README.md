@@ -16,10 +16,6 @@ The syntax is similar to languages such as Haskell and Scala.
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
 
-# Language Specifications
-To view all of the language specifications please view our wiki!  
-https://github.com/Michael2109/cobalt/wiki/Language-Specifications
-
 # Example 
 ##### Basic 2D animation displaying a square bouncing around the screen
 ```
