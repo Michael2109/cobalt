@@ -1,5 +1,7 @@
 import Test.HUnit
 
+import BooleanParserTest
+
 import BaseParserTest
 import ABExprParserTest
 import ExprParserTest

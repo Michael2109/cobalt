@@ -84,6 +84,9 @@ test-suite compiler-test
       test/cobalt/code_generator,
       test/cobalt/blocks,
       test/cobalt/parsers,
+      test/cobalt/parsers/ab_expr_parsers,
+      test/cobalt/parsers/base_parser,
+      test/cobalt/parsers/expr_parsers,
       test/cobalt/error_checking,
       test/cobalt/compiler
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -106,6 +109,8 @@ test-suite compiler-test
       ErrorChecker
       SymbolTable
       CodeGenerator
+
+      BooleanParserTest
 
       BaseParserTest
       ABExprParserTest
