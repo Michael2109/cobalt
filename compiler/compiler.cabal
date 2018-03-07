@@ -112,6 +112,7 @@ test-suite compiler-test
 
       -- ABExprParser tests
       AExprParserTest
+      ABExprParserTest
 
       -- ExprParser tests
       BooleanParserTest
