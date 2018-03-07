@@ -85,7 +85,7 @@ test-suite compiler-test
       test/cobalt/blocks,
       test/cobalt/parsers,
       test/cobalt/parsers/ab_expr_parsers,
-      test/cobalt/parsers/base_parser,
+      test/cobalt/parsers/base_parsers,
       test/cobalt/parsers/expr_parsers,
       test/cobalt/error_checking,
       test/cobalt/compiler
@@ -110,17 +110,16 @@ test-suite compiler-test
       SymbolTable
       CodeGenerator
 
+      -- Base parser
+      BaseParserTest
+
       -- ABExprParser tests
       AExprParserTest
-      ABExprParserTest
+      BExprParserTest
 
       -- ExprParser tests
       BooleanParserTest
 
-      BaseParserTest
-      ABExprParserTest
-      ExprParserTest
-      ParserTest
 
 
   default-language: Haskell2010

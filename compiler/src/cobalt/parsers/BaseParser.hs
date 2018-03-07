@@ -15,11 +15,7 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import Block
-
 type Parser = Parsec Void String
-
--- Tokens
 
 
 lineComment :: Parser ()
