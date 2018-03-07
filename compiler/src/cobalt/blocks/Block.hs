@@ -73,7 +73,7 @@ data Expr
   | Lambda String [Expr]
   | ClassParam {varType :: Expr, varName :: Expr}
   | Skip
-  | Empty
+  | Error
 
   -- Module specific
   | Object [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
@@ -105,7 +105,7 @@ instance Show Expr where
   show (BooleanExpr be) = show be
   show (ArgumentType e) = e
   show (ThisVar e) = "this." ++ show e
-  show (Empty) = "<EMPTY>"
+  show (Error) = "<ERROR>"
   show (_) = "<Unknown show>"
 
 combineSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable

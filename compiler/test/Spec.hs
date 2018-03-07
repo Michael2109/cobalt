@@ -1,5 +1,9 @@
 import Test.HUnit
 
+-- ABExprParserTests
+import AExprParserTest
+
+-- ExprParserTests
 import BooleanParserTest
 
 import BaseParserTest
@@ -7,16 +11,24 @@ import ABExprParserTest
 import ExprParserTest
 
 main :: IO Counts
-main = runTestTT $ booleanParserTests
+main = runTestTT $ TestList [
+   -- AExprParser tests
+   testAExprParserVar,
+   testAExprParserInt,
+   testAExprParserNeg,
 
-
-
-booleanParserTests = TestList [
-  testBooleanParserTrue,
-  testBooleanParserFalse,
-  testBooleanParserIdentifier,
-  testBooleanParserLessThan,
-  testBooleanParserGreaterThan,
-  testBooleanParserLessThanEqual,
-  testBooleanParserGreaterThanEqual
+   -- ExprParser tests
+   testBooleanParserTrue,
+   testBooleanParserFalse,
+   testBooleanParserIdentifier,
+   testBooleanParserLessThanVar,
+   testBooleanParserLessThanInt,
+   testBooleanParserGreaterThanVar,
+   testBooleanParserGreaterThanInt,
+   testBooleanParserLessThanEqualVar,
+   testBooleanParserLessThanEqualInt,
+   testBooleanParserGreaterThanEqualVar,
+   testBooleanParserGreaterThanEqualInt
   ]
+
+

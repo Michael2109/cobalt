@@ -19,7 +19,7 @@ testBooleanParserTrue = do
   TestCase $ assertEqual code
     (BooleanExpr (BoolConst True))
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
       Right x -> x)
 
 testBooleanParserFalse :: Test
@@ -28,50 +28,93 @@ testBooleanParserFalse = do
   TestCase $ assertEqual code
     (BooleanExpr (BoolConst False))
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
       Right x -> x)
 
 testBooleanParserIdentifier :: Test
 testBooleanParserIdentifier = do
   let code = "true"
   TestCase $ assertEqual code
-    (Empty)
+    (Error)
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
       Right x -> x)
 
-testBooleanParserLessThan :: Test
-testBooleanParserLessThan = do
+-- Less than
+
+testBooleanParserLessThanVar :: Test
+testBooleanParserLessThanVar = do
   let code = "x < y"
   TestCase $ assertEqual code
     (BooleanExpr (RBinary Less (Var "x") (Var "y")))
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
       Right x -> x)
 
-testBooleanParserGreaterThan :: Test
-testBooleanParserGreaterThan = do
+testBooleanParserLessThanInt :: Test
+testBooleanParserLessThanInt = do
+  let code = "100 < 300"
+  TestCase $ assertEqual code
+    (BooleanExpr (RBinary Less (IntConst 100) (IntConst 300)))
+    (case (parse (booleanParser) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+-- Greater than
+
+testBooleanParserGreaterThanVar :: Test
+testBooleanParserGreaterThanVar = do
   let code = "x > y"
   TestCase $ assertEqual code
     (BooleanExpr (RBinary Greater (Var "x") (Var "y")))
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
       Right x -> x)
 
-testBooleanParserLessThanEqual :: Test
-testBooleanParserLessThanEqual = do
+testBooleanParserGreaterThanInt :: Test
+testBooleanParserGreaterThanInt = do
+  let code = "100 > 300"
+  TestCase $ assertEqual code
+    (BooleanExpr (RBinary Greater (IntConst 100) (IntConst 300)))
+    (case (parse (booleanParser) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+-- Less than / equal to
+
+testBooleanParserLessThanEqualVar :: Test
+testBooleanParserLessThanEqualVar = do
   let code = "x <= y"
   TestCase $ assertEqual code
     (BooleanExpr (RBinary LessEqual (Var "x") (Var "y")))
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
       Right x -> x)
 
-testBooleanParserGreaterThanEqual :: Test
-testBooleanParserGreaterThanEqual = do
+testBooleanParserLessThanEqualInt :: Test
+testBooleanParserLessThanEqualInt = do
+  let code = "100 <= 300"
+  TestCase $ assertEqual code
+    (BooleanExpr (RBinary LessEqual (IntConst 100) (IntConst 300)))
+    (case (parse (booleanParser) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+-- Greater than / equal to
+testBooleanParserGreaterThanEqualVar :: Test
+testBooleanParserGreaterThanEqualVar = do
   let code = "x >= y"
   TestCase $ assertEqual code
     (BooleanExpr (RBinary GreaterEqual (Var "x") (Var "y")))
     (case (parse (booleanParser) "" code) of
-      Left  e -> Empty
+      Left  e -> Error
+      Right x -> x)
+
+testBooleanParserGreaterThanEqualInt :: Test
+testBooleanParserGreaterThanEqualInt = do
+  let code = "100 >= 300"
+  TestCase $ assertEqual code
+    (BooleanExpr (RBinary GreaterEqual (IntConst 100) (IntConst 300)))
+    (case (parse (booleanParser) "" code) of
+      Left  e -> Error
       Right x -> x)

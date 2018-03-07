@@ -10,11 +10,11 @@ module ABBlock (
   genCode,
   errorCheck,
   genSymbolTable,
-  AExpr (Var, IntConst, Neg, ABinary, Parenthesis),
-  BExpr (BoolConst, Not, BBinary, RBinary),
-  ABinOp (Multiply, Divide, Add, Subtract),
-  BBinOp (Or, And),
-  RBinOp (Greater, Less, GreaterEqual, LessEqual)
+  AExpr (Var, IntConst, Neg, ABinary, Parenthesis, AError),
+  BExpr (BoolConst, Not, BBinary, RBinary, BError),
+  ABinOp (Multiply, Divide, Add, Subtract, ABinOpError),
+  BBinOp (Or, And, BBinOpError),
+  RBinOp (Greater, Less, GreaterEqual, LessEqual, RBinOpError)
 ) where
 
 import SymbolTable
@@ -37,6 +37,7 @@ data AExpr
   | Neg AExpr
   | ABinary ABinOp AExpr AExpr
   | Parenthesis AExpr
+  | AError
   deriving (Eq)
 
 instance CodeGen AExpr where
@@ -56,6 +57,7 @@ instance Show AExpr where
   show (Neg aExpr) = show aExpr
   show (ABinary aBinOp aExpr1 aExpr2) = show aBinOp ++ show aExpr1 ++ show aExpr2
   show (Parenthesis aExpr) = show aExpr
+  show (AError) = "<AError>"
 
 -- Arithmetic ops
 data ABinOp
@@ -65,6 +67,7 @@ data ABinOp
   | Subtract
   | Multiply
   | Divide
+  | ABinOpError
   deriving (Eq)
 
 instance CodeGen ABinOp where
@@ -82,6 +85,7 @@ instance Show ABinOp where
   show (Divide) = "/"
   show (OpeningParenthesis) = "("
   show (ClosingParenthesis) = ")"
+  show (ABinOpError) = "<ABinOpError>"
 
 -- Boolean expressions
 data BExpr
@@ -89,6 +93,7 @@ data BExpr
   | Not BExpr
   | BBinary BBinOp BExpr BExpr
   | RBinary RBinOp AExpr AExpr
+  | BError
   deriving (Eq)
 
 instance CodeGen BExpr where
@@ -100,12 +105,14 @@ instance CodeGen BExpr where
 instance Show BExpr where
   show (BoolConst v) = if v then "true" else "false"
   show (RBinary rbinop aExpr1 aExpr2) = show rbinop ++ show aExpr1 ++ show aExpr2
+  show (BError) = "<BError>"
   show (_) = "<UNKNOWN SHOW BEXPR>"
 
 -- Boolean ops
 data BBinOp
   = And
   | Or
+  | BBinOpError
   deriving (Eq)
 
 instance CodeGen BBinOp where
@@ -118,6 +125,7 @@ data RBinOp
   | GreaterEqual
   | Less
   | LessEqual
+  | RBinOpError
   deriving (Eq)
 
 instance CodeGen RBinOp where
@@ -131,3 +139,4 @@ instance Show RBinOp where
   show (Less) = "<"
   show (GreaterEqual) = ">="
   show (LessEqual) = "<="
+  show (RBinOpError) = "<RBinOpError>"

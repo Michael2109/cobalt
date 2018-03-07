@@ -110,6 +110,10 @@ test-suite compiler-test
       SymbolTable
       CodeGenerator
 
+      -- ABExprParser tests
+      AExprParserTest
+
+      -- ExprParser tests
       BooleanParserTest
 
       BaseParserTest
