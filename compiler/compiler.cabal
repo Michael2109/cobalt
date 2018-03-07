@@ -118,7 +118,33 @@ test-suite compiler-test
       BExprParserTest
 
       -- ExprParser tests
+      AnnotationParserTest
+      ArgumentParserTest
+      ArgumentTypeParserTest
+      ArithmeticParserTest
+      ArrayAppendParserTest
+      ArrayElementSelectParserTest
+      ArrayValuesParserTest
+      AssignParserTest
       BooleanParserTest
+      ClassParserTest
+      ClassVariableParserTest
+      ConstructorParserTest
+      FunctionParserTest
+      GlobalVariableParserTest
+      IdentifierParserTest
+      ImportParserTest
+      ModifierBlockParserTest
+      NewClassInstanceParserTest
+      ObjectMethodCallParserTest
+      ObjectParserTest
+      ParamParserTest
+      ReassignParserTest
+      StringLiteralParserTest
+      ThisMethodCallParserTest
+      ThisVarParserTest
+      TraitParserTest
+      ValueTypeParserTest
 
 
 
