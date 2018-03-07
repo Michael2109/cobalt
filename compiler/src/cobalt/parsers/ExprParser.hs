@@ -9,7 +9,7 @@ module ExprParser (Parser,
                     classParser,
                     traitParser,
                     parser,
-
+                    annotationParser,
                     booleanParser
                     ) where
 

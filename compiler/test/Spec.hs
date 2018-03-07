@@ -8,6 +8,7 @@ import AExprParserTest
 import BExprParserTest
 
 -- ExprParserTests
+import AnnotationParserTest
 import BooleanParserTest
 
 
@@ -33,6 +34,9 @@ main = runTestTT $ TestList [
    testBExprParserFail,
 
    -- ExprParser
+   testAnnotationParserUpper,
+   testAnnotationParserLower,
+
    testBooleanParserTrue,
    testBooleanParserFalse,
    testBooleanParserIdentifier,
