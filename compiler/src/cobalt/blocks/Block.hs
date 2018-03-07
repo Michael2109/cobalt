@@ -97,10 +97,6 @@ instance SymbolTableGen Expr where
   genSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
   genSymbolTable (_) = ClassSymbolTable "" [] []
 
-instance Show BExpr where
-  show (BoolConst v) = if v then "true" else "false"
-  show (_) = "<UNKNOWN SHOW BEXPR>"
-
 instance Show Expr where
   show (GlobalVar modifier final static varType varName exprs) = ""
   show (Identifier name) = name
@@ -109,6 +105,7 @@ instance Show Expr where
   show (BooleanExpr be) = show be
   show (ArgumentType e) = e
   show (ThisVar e) = "this." ++ show e
+  show (Empty) = "<EMPTY>"
   show (_) = "<Unknown show>"
 
 combineSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable

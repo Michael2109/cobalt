@@ -109,6 +109,8 @@ test-suite compiler-test
 
       BaseParserTest
       ABExprParserTest
+      ExprParserTest
+      ParserTest
 
 
   default-language: Haskell2010

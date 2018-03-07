@@ -50,6 +50,13 @@ instance CodeGen AExpr where
     genCode (ABinary aBinOp aExpr1 aExpr2) symbolTable currentState = genCode aExpr1 symbolTable currentState ++ " " ++ genCode aBinOp symbolTable currentState ++ " " ++ genCode aExpr2 symbolTable currentState
     genCode (Parenthesis aExpr) symbolTable currentState = "(" ++ genCode aExpr symbolTable currentState ++ ")"
 
+instance Show AExpr where
+  show (Var v) = v
+  show (IntConst i) = show i
+  show (Neg aExpr) = show aExpr
+  show (ABinary aBinOp aExpr1 aExpr2) = show aBinOp ++ show aExpr1 ++ show aExpr2
+  show (Parenthesis aExpr) = show aExpr
+
 -- Arithmetic ops
 data ABinOp
   = OpeningParenthesis
@@ -68,6 +75,13 @@ instance CodeGen ABinOp where
     genCode (OpeningParenthesis) currentState symbolTable = "("
     genCode (ClosingParenthesis) currentState symbolTable = ")"
 
+instance Show ABinOp where
+  show (Add) = "+"
+  show (Subtract) = "-"
+  show (Multiply) = "*"
+  show (Divide) = "/"
+  show (OpeningParenthesis) = "("
+  show (ClosingParenthesis) = ")"
 
 -- Boolean expressions
 data BExpr
@@ -83,6 +97,10 @@ instance CodeGen BExpr where
     genCode (BBinary bbinop bExpr1 bExpr2) symbolTable currentState = genCode bExpr1 symbolTable currentState ++ " " ++ genCode bbinop symbolTable currentState ++ " " ++ genCode bExpr2 symbolTable currentState
     genCode (RBinary rbinop aExpr1 aExpr2) symbolTable currentState = genCode aExpr1 symbolTable currentState ++ " " ++ genCode rbinop symbolTable currentState ++ " " ++ genCode aExpr2 symbolTable currentState
 
+instance Show BExpr where
+  show (BoolConst v) = if v then "true" else "false"
+  show (RBinary rbinop aExpr1 aExpr2) = show rbinop ++ show aExpr1 ++ show aExpr2
+  show (_) = "<UNKNOWN SHOW BEXPR>"
 
 -- Boolean ops
 data BBinOp
@@ -107,3 +125,9 @@ instance CodeGen RBinOp where
     genCode (Less) symbolTable currentState = "<"
     genCode (GreaterEqual) symbolTable currentState = ">="
     genCode (LessEqual) symbolTable currentState = "<="
+
+instance Show RBinOp where
+  show (Greater) = ">"
+  show (Less) = "<"
+  show (GreaterEqual) = ">="
+  show (LessEqual) = "<="

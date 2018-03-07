@@ -76,7 +76,7 @@ rExpr = do
 
 
 relation :: Parser RBinOp
-relation = (symbol ">" *> pure Greater)
-  <|> (symbol ">=" *> pure GreaterEqual)
-  <|> (symbol "<" *> pure Less)
+relation = (symbol ">=" *> pure GreaterEqual)
   <|> (symbol "<=" *> pure LessEqual)
+  <|> (symbol ">" *> pure Greater)
+  <|> (symbol "<" *> pure Less)
