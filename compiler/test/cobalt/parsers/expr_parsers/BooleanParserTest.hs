@@ -13,7 +13,6 @@ import ExprParser
 import Parser
 
 -- Boolean Expression tests
-
 testBooleanParserTrue :: Test
 testBooleanParserTrue = do
   let code = "True"
@@ -22,7 +21,6 @@ testBooleanParserTrue = do
     (case (parse (booleanParser) "" code) of
       Left  e -> Empty
       Right x -> x)
-
 
 testBooleanParserFalse :: Test
 testBooleanParserFalse = do
@@ -33,7 +31,6 @@ testBooleanParserFalse = do
       Left  e -> Empty
       Right x -> x)
 
-
 testBooleanParserIdentifier :: Test
 testBooleanParserIdentifier = do
   let code = "true"
@@ -42,7 +39,6 @@ testBooleanParserIdentifier = do
     (case (parse (booleanParser) "" code) of
       Left  e -> Empty
       Right x -> x)
-
 
 testBooleanParserLessThan :: Test
 testBooleanParserLessThan = do
