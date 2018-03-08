@@ -79,7 +79,9 @@ main = runTestTT $ TestList [
    testBooleanParserLessThanEqualVar,
    testBooleanParserLessThanEqualInt,
    testBooleanParserGreaterThanEqualVar,
-   testBooleanParserGreaterThanEqualInt
+   testBooleanParserGreaterThanEqualInt,
+
+   testClassParser
   ]
 
 
