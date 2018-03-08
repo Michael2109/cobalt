@@ -98,8 +98,9 @@ instance SymbolTableGen Expr where
   genSymbolTable (_) = ClassSymbolTable "" [] []
 
 instance Show Expr where
-  show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = "Class" ++ name
-  show (GlobalVar modifier final static varType varName exprs) = ""
+  show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) (ClassSymbolTable name [] []) (CurrentState "")
+  show (ModifierBlock exprs) = intercalate " " (map show exprs)
+  show (GlobalVar modifier final static varType varName exprs) = genCode (GlobalVar modifier final static varType varName exprs) (ClassSymbolTable "" [] []) (CurrentState "")
   show (Identifier name) = name
   show (Type e) = show e
   show (Argument e) = show e

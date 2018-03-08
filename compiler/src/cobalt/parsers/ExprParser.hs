@@ -34,7 +34,7 @@ objectParser :: [String] -> Parser Expr
 objectParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
-      imports <- many (try importParser)
+      imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "object")
       name <- identifier
       params <- optional (parens (sepBy parameterParser (symbol ",")))
@@ -52,7 +52,7 @@ classParser :: [String] -> Parser Expr
 classParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
-      imports <- many (try importParser)
+      imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
       params <- optional (parens (sepBy parameterParser (symbol ",")))
@@ -70,7 +70,7 @@ traitParser :: [String] -> Parser Expr
 traitParser relativeDir = try $ L.nonIndented scn p
   where
     p = do
-      imports <- many (try importParser)
+      imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "trait")
       name <- identifier
       params <- optional (parens (sepBy parameterParser (symbol ",")))
