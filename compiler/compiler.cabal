@@ -110,6 +110,12 @@ test-suite compiler-test
       SymbolTable
       CodeGenerator
 
+      BlocksTest
+      CodeGeneratorTest
+      CompilerTest
+      ErrorCheckingTest
+      SymbolTableTest
+
       -- Base parser
       BaseParserTest
 
