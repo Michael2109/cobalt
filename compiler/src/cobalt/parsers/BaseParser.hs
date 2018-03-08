@@ -67,8 +67,8 @@ rws = [
   "while",
   "do",
   "skip",
-  "true",
-  "false",
+  "True",
+  "False",
   "not",
   "and",
   "or"

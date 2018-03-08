@@ -11,7 +11,8 @@ module ExprParser (Parser,
                     parser,
                     annotationParser,
                     booleanParser,
-                    argumentParser
+                    argumentParser,
+                    argumentTypeParser
                     ) where
 
 import Control.Applicative (empty)
@@ -287,8 +288,8 @@ valType = do
     value <- identifierParser <|> arrayType
     return $ Type value
 
-argumentType :: Parser Expr
-argumentType = do
+argumentTypeParser :: Parser Expr
+argumentTypeParser = do
     value <- identifier
     return $ ArgumentType value
 
