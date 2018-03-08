@@ -10,7 +10,8 @@ module ExprParser (Parser,
                     traitParser,
                     parser,
                     annotationParser,
-                    booleanParser
+                    booleanParser,
+                    argumentParser
                     ) where
 
 import Control.Applicative (empty)
@@ -120,7 +121,7 @@ functionParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
       let argTypes = take (length aList - 1) aList
       let rType = last aList
       nameDup <- L.lineFold scn $ \sp' -> identifier
-      args <- many argument
+      args <- many argumentParser
       symbol "="
       if(name == "main")
         then return (L.IndentMany Nothing (return . (MainFunction name annotations argTypes args rType)) (expr'))
@@ -227,7 +228,7 @@ arrayAppend = do
 thisMethodCall :: Parser Expr
 thisMethodCall  = do
   methodName <- identifier
-  args <- parens (sepBy (expr' <|> argument <|> identifierParser <|> arithmeticParser) (symbol ","))
+  args <- parens (sepBy (expr' <|> argumentParser <|> identifierParser <|> arithmeticParser) (symbol ","))
   return $ ThisMethodCall methodName args
 
 
@@ -236,7 +237,7 @@ objectMethodCall = do
   objectName <- identifier
   symbol "."
   methodName <- identifier
-  args <- parens (sepBy (expr' <|> argument <|> identifierParser <|> arithmeticParser) (symbol ","))
+  args <- parens (sepBy (expr' <|> argumentParser <|> identifierParser <|> arithmeticParser) (symbol ","))
   if(objectName == "super")
     then return $ SuperMethodCall objectName methodName args
     else return $ ObjectMethodCall objectName methodName args
@@ -246,7 +247,7 @@ newClassInstance :: Parser Expr
 newClassInstance  = do
   try (rword "new")
   className <- identifier
-  arguments <- parens (sepBy (expr'  <|> argument) (symbol ","))
+  arguments <- parens (sepBy (expr'  <|> argumentParser) (symbol ","))
   return $ (NewClassInstance className arguments)
 
 classVariable ::Parser Expr
@@ -296,8 +297,8 @@ returnType = do
     value <- identifier
     return $ ReturnType value
 
-argument :: Parser Expr
-argument = do
+argumentParser :: Parser Expr
+argumentParser = do
   value <- booleanParser <|> identifierParser
   return $ Argument value
 
@@ -305,7 +306,7 @@ argument = do
 functionCallParser :: Parser Expr
 functionCallParser  = do
   name <- identifier
-  args <- parens $ sepBy argument (symbol ",")
+  args <- parens $ sepBy argumentParser (symbol ",")
   return $ FunctionCall  name args
 
 
@@ -339,7 +340,7 @@ dataParser = L.nonIndented scn p
 dataInstanceParser :: Parser Expr
 dataInstanceParser  = do
   typeName <- valType
-  es <- parens (sepBy (expr' <|> argument) (symbol ","))
+  es <- parens (sepBy (expr' <|> argumentParser) (symbol ","))
   return $ DataInstance typeName es
 
 
