@@ -12,8 +12,8 @@ import ABExprParser
 import ExprParser
 import Parser
 
-testArgumentParserIdentifier :: Test
-testArgumentParserIdentifier = do
+testArgumentTypeParser :: Test
+testArgumentTypeParser = do
   let code = "ClassName"
   TestCase $ assertEqual code
     (ArgumentType "ClassName")

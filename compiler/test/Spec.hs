@@ -11,7 +11,30 @@ import BExprParserTest
 import AnnotationParserTest
 import ArgumentParserTest
 import ArgumentTypeParserTest
+import ArithmeticParserTest
+import ArrayAppendParserTest
+import ArrayElementSelectParserTest
+import ArrayValuesParserTest
+import AssignParserTest
 import BooleanParserTest
+import ClassParserTest
+import ClassVariableParserTest
+import ConstructorParserTest
+import FunctionParserTest
+import GlobalVariableParserTest
+import IdentifierParserTest
+import ImportParserTest
+import ModifierBlockParserTest
+import NewClassInstanceParserTest
+import ObjectMethodCallParserTest
+import ObjectParserTest
+import ParamParserTest
+import ReassignParserTest
+import StringLiteralParserTest
+import ThisMethodCallParserTest
+import ThisVarParserTest
+import TraitParserTest
+import ValueTypeParserTest
 
 
 main :: IO Counts
