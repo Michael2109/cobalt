@@ -38,3 +38,13 @@ testArgumentParserBoolFalse = do
     (case (parse (argumentParser) "" code) of
       Left  e -> Error
       Right x -> x)
+
+testArgumentParserObjectVar :: Test
+testArgumentParserObjectVar = do
+  let code = "anObject.variable"
+  TestCase $ assertEqual code
+    (Argument (ClassVariable "anObject" "variable"))
+    (case (parse (argumentParser) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
