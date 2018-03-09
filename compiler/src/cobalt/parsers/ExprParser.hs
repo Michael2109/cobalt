@@ -118,7 +118,7 @@ functionParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
       annotations <- try (optional annotationParser)
       name <- L.lineFold scn $ \sp' -> identifier
       symbol ":"
-      aList <- sepBy (identifierParser  <|> arrayType) (symbol "->")
+      aList <- sepBy (argumentTypeParser <|> identifierParser  <|> arrayType) (symbol "->")
       let argTypes = take (length aList - 1) aList
       let rType = last aList
       nameDup <- L.lineFold scn $ \sp' -> identifier
@@ -229,7 +229,7 @@ arrayAppend = do
 thisMethodCall :: Parser Expr
 thisMethodCall  = do
   methodName <- identifier
-  args <- parens (sepBy (expr' <|> argumentParser <|> identifierParser <|> arithmeticParser) (symbol ","))
+  args <- parens (sepBy (argumentParser) (symbol ","))
   return $ ThisMethodCall methodName args
 
 
@@ -238,7 +238,7 @@ objectMethodCall = do
   objectName <- identifier
   symbol "."
   methodName <- identifier
-  args <- parens (sepBy (expr' <|> argumentParser <|> identifierParser <|> arithmeticParser) (symbol ","))
+  args <- parens (sepBy (argumentParser) (symbol ","))
   if(objectName == "super")
     then return $ SuperMethodCall objectName methodName args
     else return $ ObjectMethodCall objectName methodName args
@@ -248,7 +248,7 @@ newClassInstance :: Parser Expr
 newClassInstance  = do
   try (rword "new")
   className <- identifier
-  arguments <- parens (sepBy (expr'  <|> argumentParser) (symbol ","))
+  arguments <- parens (sepBy (argumentParser) (symbol ","))
   return $ (NewClassInstance className arguments)
 
 classVariable ::Parser Expr
@@ -273,7 +273,7 @@ globalVarParser modifier static = do
   symbol ":"
   varType <- valType
   symbol "="
-  es <- many (expr' <|> arithmeticParser <|> identifierParser)
+  es <- many (argumentParser)
   return $ GlobalVar modifier (final == "val") static varType varName es
 
 annotationParser :: Parser Expr
@@ -300,15 +300,8 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-  value <- booleanParser <|> identifierParser
+  value <- thisParser <|> booleanParser <|> newClassInstance <|> classVariable <|> arithmeticParser <|> stringLiteral-- <|>   identifierParser
   return $ Argument value
-
-
-functionCallParser :: Parser Expr
-functionCallParser  = do
-  name <- identifier
-  args <- parens $ sepBy argumentParser (symbol ",")
-  return $ FunctionCall  name args
 
 
 -- data A = B String | C Integer
@@ -336,14 +329,6 @@ dataParser = L.nonIndented scn p
       symbol "="
       dataElements <- sepBy (dataElementParser name) (symbol "|")
       return $ Data name dataElements
-
-
-dataInstanceParser :: Parser Expr
-dataInstanceParser  = do
-  typeName <- valType
-  es <- parens (sepBy (expr' <|> argumentParser) (symbol ","))
-  return $ DataInstance typeName es
-
 
 
 printParser :: Parser Expr
@@ -431,7 +416,6 @@ expr = f <$> sepBy1 (expr') (symbol ";")
 
 expr' :: Parser Expr
 expr' = try dataParser
-  <|> try (functionCallParser )
   <|> booleanParser
 
   -- If else
@@ -450,7 +434,6 @@ expr' = try dataParser
   <|> try (thisMethodCall)
   <|> newClassInstance
   <|> try (classVariable)
-  <|> try (dataInstanceParser)
   <|> arrayAssign
   <|> try arrayElementSelect
   <|> lambdaParser

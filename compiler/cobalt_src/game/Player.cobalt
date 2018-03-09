@@ -6,8 +6,6 @@ private
   val startX: int = 270
   val startY: int = 280
   val width: int = 32
-  val commons: Commons = new Commons()
-
 
 initPlayer()
 

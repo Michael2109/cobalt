@@ -17,7 +17,7 @@ import javax.swing.JPanel
 class Board extends JPanel implements Runnable
 
 private
-  val d: Dimension = new Dimension(BoardWidth, BoardHeight)
+  #val d: Dimension = new Dimension(Constants.BoardWidth, Constants.BoardHeight)
   #val aliens: [Alien] = [test]
   val player: Player = new Player()
   val shot: Shot = new Shot()
@@ -32,9 +32,23 @@ private
   var inGame: boolean = True
   val message: String = "Game Over"
 
+
 initBoard : void
 initBoard =
+  animator.start()
   addKeyListener(new TAdapter())
   setFocusable(True)
-  setBackground(Color.BLACK)
-  setDoubleBuffered(True, False)
+  #setBackground(Color.BLACK)
+  setDoubleBuffered(True)
+
+
+addNotify : void
+addNotify =
+  super.addNotify()
+
+
+drawAliens : Graphics -> void
+drawAliens g =
+  #if(player.visible)
+    #println "TEST"
+    #g.drawRect(player.x, player.y, player.width, player.height)

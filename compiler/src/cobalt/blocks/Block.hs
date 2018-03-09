@@ -31,7 +31,6 @@ data Expr
   | Constructor String [Expr] [Expr] [Expr]
   | FunctionCall String [Expr]
   | Type Expr
-  | ValueType String
   | Argument Expr
   | ArgumentType String
   | ReturnType String
@@ -275,11 +274,11 @@ instance CodeGen Expr where
               Nothing -> ""
     genCode (FunctionCall name exprs) symbolTable currentState = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map (\x -> genCode x symbolTable currentState) exprs)) ++ ");"
     genCode (Type b) symbolTable currentState = getDebug "Type" ++ genCode b symbolTable currentState
-    genCode (Argument b) symbolTable currentState = do
-        let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
-        if(length methodList > 0)
-        then if (elem (show b) (map fst (methodArgs (methodList!!0)))) then  getDebug "Argument" ++ show b else  getDebug "Argument" ++ (show b ++ "()")
-        else  getDebug "Argument" ++ show b
+    genCode (Argument b) symbolTable currentState = getDebug "Argument" ++ genCode b symbolTable currentState
+        -- let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+        --if(length methodList > 0)
+        --then if (elem (show b) (map fst (methodArgs (methodList!!0)))) then  getDebug "Argument" ++ show b else  getDebug "Argument" ++ (show b ++ "")
+        --else  getDebug "Argument" ++ show b
     genCode (ArgumentType b) symbolTable currentState = getDebug "ArgumentType" ++ b
     genCode (ReturnType b) symbolTable currentState = getDebug "ReturnType" ++ b
     genCode (AssignArith mutable vType name value) symbolTable currentState = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ genCode vType symbolTable currentState ++ " " ++ name ++ "=" ++ genCode value symbolTable currentState ++ ";"
@@ -314,7 +313,6 @@ instance CodeGen Expr where
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
-    genCode (DataInstance typeName args) symbolTable currentState = getDebug "DataInstance" ++ "new " ++ genCode typeName symbolTable currentState ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (ThisVar varName) symbolTable currentState = getDebug "ThisVar" ++ show varName ++ "this." ++ show varName
     genCode (ThisMethodCall methodName args) symbolTable currentState = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (SuperMethodCall objectName methodName args) symbolTable currentState = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
@@ -326,7 +324,11 @@ instance CodeGen Expr where
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
     genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++className ++ "." ++ varName
     genCode (BooleanExpr expr) symbolTable currentState = getDebug "BooleanExpr" ++ genCode expr symbolTable currentState
-    genCode (Identifier name) symbolTable currentState = getDebug "Identifier" ++ name
+    genCode (Identifier name) symbolTable currentState = do
+        let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+        if(length methodList > 0)
+        then if (elem (name) (map fst (methodArgs (methodList!!0)))) then getDebug "Identifier" ++ name ++ name else getDebug "Identifier" ++ (name ++ "()")
+        else getDebug "Identifier" ++ name
     genCode (Annotation name) symbolTable currentState = getDebug "Annotation" ++ "@" ++ name
     genCode (ModifierBlock exprs) symbolTable currentState = getDebug "ModifierBlock" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)
     genCode (This) symbolTable currentState = getDebug "This" ++ "this"
