@@ -98,7 +98,7 @@ testClassParserModifierBlock = do
 
         ]
   let imports = [Import ["dir", "sub_dir", "ClassName"]]
-  let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [ArithExpr (IntConst 5)]]]
+  let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [Argument $ ArithExpr (IntConst 5)]]]
   TestCase $ assertEqual code
     (Class [] "Test" (Nothing) (Just "ParentClass") (Just "Interface") imports modifierBlocks [] [])
     (case (parse (classParser []) "" code) of

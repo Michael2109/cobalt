@@ -300,7 +300,7 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-  value <- thisParser <|> booleanParser <|> newClassInstance <|> classVariable <|> arithmeticParser <|> stringLiteral-- <|>   identifierParser
+  value <- thisParser <|> booleanParser <|> newClassInstance <|> try classVariable <|> stringLiteral <|> identifierParser <|> arithmeticParser
   return $ Argument value
 
 
