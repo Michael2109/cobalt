@@ -28,7 +28,7 @@ allFilesIn dir = getDirectoryContents dir
 
 compileDir :: String -> String -> IO()
 compileDir inputDir outputDir = do
-  createDirectoryIfMissing False outputDir
+  createDirectoryIfMissing True outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
     if (takeExtension inputLoc == "")
       then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
