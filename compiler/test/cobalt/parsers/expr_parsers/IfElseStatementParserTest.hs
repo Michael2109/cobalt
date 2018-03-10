@@ -35,3 +35,15 @@ testIfStmtParserBooleanFalse = do
     (case (parse (ifStmtParser) "" code) of
       Left  e -> Error
       Right x -> x)
+
+testIfStmtParserObjectVar :: Test
+testIfStmtParserObjectVar = do
+  let code = unlines [
+        "if(objName.varName)",
+        "  println(\"Test\")"
+        ]
+  TestCase $ assertEqual code
+    (If (Argument $ BooleanExpr (BoolConst True)) [Print (Argument $ ClassVariable "objName" "varName")])
+    (case (parse (ifStmtParser) "" code) of
+      Left  e -> Error
+      Right x -> x)

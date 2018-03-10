@@ -346,28 +346,28 @@ printParser  = do
 
 
 ifStmtParser :: Parser Expr
-ifStmtParser  = L.indentBlock scn p
+ifStmtParser  = try $ L.indentBlock scn p
    where
      p = do
-       try (rword "if")
-       cond  <- argumentParser
+       rword "if"
+       cond  <- parens argumentParser
        return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
 
 elseIfStmtParser :: Parser Expr
-elseIfStmtParser  = L.indentBlock scn p
+elseIfStmtParser  = try $ L.indentBlock scn p
    where
      p = do
        try $ do
          rword "else"
          rword "if"
-       cond  <- argumentParser
+       cond  <- parens argumentParser
        return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
 
 elseStmtParser :: Parser Expr
-elseStmtParser  = L.indentBlock scn p
+elseStmtParser  = try $ L.indentBlock scn p
    where
      p = do
-       rword "else"
+       try $ rword "else"
        return (L.IndentMany Nothing (return . (Else)) (expr' <|> argumentParser))
 
 whileParser :: Parser Expr
@@ -426,9 +426,9 @@ expr' = try dataParser
   <|> booleanParser
 
   -- If else
-  <|> try ifStmtParser
-  <|> try elseIfStmtParser
-  <|> try elseStmtParser
+  <|> ifStmtParser
+  <|> elseIfStmtParser
+  <|> elseStmtParser
 
   <|> try whileParser
 

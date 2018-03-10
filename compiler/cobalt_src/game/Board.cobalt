@@ -52,7 +52,7 @@ drawAliens g =
 
 drawPlayer : Graphics -> void
 drawPlayer g =
-  if(True)
+  if(player.visible)
     println("TEST")
     g.drawRect(player.x, player.y, player.width, player.height)
 
