@@ -20,6 +20,8 @@ module ABBlock (
 import SymbolTable
 import BlockUtils
 
+class Debug a where
+  debug :: a -> String
 
 class ErrorCheck a where
   errorCheck :: a -> String

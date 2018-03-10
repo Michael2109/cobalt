@@ -106,6 +106,11 @@ instance Show Expr where
   show (BooleanExpr be) = show be
   show (ArgumentType e) = e
   show (ThisVar e) = "this." ++ show e
+  show (If b e) = "if(" ++ show b ++ ")" ++ intercalate " " (map show e)
+  show (ElseIf b e) = "else if(" ++ show b ++ ")" ++ intercalate " " (map show e)
+  show (Else e) = "else" ++ intercalate " " (map show e)
+  show (Print e) = "print" ++ show e
+  show (StringLiteral e) = "<StringLiteral>" ++ e
   show (Error) = "<ERROR>"
   show (_) = "<Unknown show>"
 

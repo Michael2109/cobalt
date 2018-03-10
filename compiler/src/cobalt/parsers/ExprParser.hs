@@ -10,9 +10,12 @@ module ExprParser (Parser,
                     traitParser,
                     parser,
                     annotationParser,
-                    booleanParser,
                     argumentParser,
-                    argumentTypeParser
+                    argumentTypeParser,
+                    booleanParser,
+                    ifStmtParser,
+                    elseIfStmtParser,
+                    elseStmtParser
                     ) where
 
 import Control.Applicative (empty)
@@ -342,16 +345,16 @@ printParser  = do
   return $ Print e
 
 
-ifStmt :: Parser Expr
-ifStmt  = L.indentBlock scn p
+ifStmtParser :: Parser Expr
+ifStmtParser  = L.indentBlock scn p
    where
      p = do
        try (rword "if")
        cond  <- argumentParser
        return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
 
-elseIfStmt :: Parser Expr
-elseIfStmt  = L.indentBlock scn p
+elseIfStmtParser :: Parser Expr
+elseIfStmtParser  = L.indentBlock scn p
    where
      p = do
        try $ do
@@ -360,8 +363,8 @@ elseIfStmt  = L.indentBlock scn p
        cond  <- argumentParser
        return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
 
-elseStmt :: Parser Expr
-elseStmt  = L.indentBlock scn p
+elseStmtParser :: Parser Expr
+elseStmtParser  = L.indentBlock scn p
    where
      p = do
        rword "else"
@@ -423,11 +426,11 @@ expr' = try dataParser
   <|> booleanParser
 
   -- If else
-  <|> try (ifStmt )
-  <|> try (elseIfStmt )
-  <|> try (elseStmt )
+  <|> try ifStmtParser
+  <|> try elseIfStmtParser
+  <|> try elseStmtParser
 
-  <|> try (whileParser )
+  <|> try whileParser
 
 
   -- try/catch

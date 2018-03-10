@@ -139,6 +139,7 @@ test-suite compiler-test
       FunctionParserTest
       GlobalVariableParserTest
       IdentifierParserTest
+      IfElseStatementParserTest
       ImportParserTest
       ModifierBlockParserTest
       NewClassInstanceParserTest

@@ -23,6 +23,7 @@ import ConstructorParserTest
 import FunctionParserTest
 import GlobalVariableParserTest
 import IdentifierParserTest
+import IfElseStatementParserTest
 import ImportParserTest
 import ModifierBlockParserTest
 import NewClassInstanceParserTest
@@ -87,8 +88,10 @@ main = runTestTT $ TestList [
    testClassParserExtendsImplements,
    testClassParserImports,
    testClassParserImportsFail,
-   testClassParserModifierBlock
+   testClassParserModifierBlock,
 
+   testIfStmtParserBooleanTrue,
+   testIfStmtParserBooleanFalse
   ]
 
 
