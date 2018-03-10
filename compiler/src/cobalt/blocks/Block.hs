@@ -40,8 +40,8 @@ data Expr
   | ArrayAppend [Expr]
   | Assign Expr Expr Expr
   | Reassign Expr Expr
-  | If BExpr [Expr]
-  | ElseIf BExpr [Expr]
+  | If Expr [Expr]
+  | ElseIf Expr [Expr]
   | Else [Expr]
   | Try [Expr]
   | Catch (Maybe [Expr]) [Expr]
@@ -327,7 +327,7 @@ instance CodeGen Expr where
     genCode (Identifier name) symbolTable currentState = do
         let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
         if(length methodList > 0)
-        then if (elem (name) (map fst (methodArgs (methodList!!0)))) then getDebug "Identifier" ++ name ++ name else getDebug "Identifier" ++ (name ++ "()")
+        then if (elem (name) (map fst (methodArgs (methodList!!0)))) then getDebug "Identifier" ++ name else getDebug "Identifier" ++ (name ++ "()")
         else getDebug "Identifier" ++ name
     genCode (Annotation name) symbolTable currentState = getDebug "Annotation" ++ "@" ++ name
     genCode (ModifierBlock exprs) symbolTable currentState = getDebug "ModifierBlock" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)

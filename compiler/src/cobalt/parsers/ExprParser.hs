@@ -230,7 +230,10 @@ thisMethodCall :: Parser Expr
 thisMethodCall  = do
   methodName <- identifier
   args <- parens (sepBy (argumentParser) (symbol ","))
-  return $ ThisMethodCall methodName args
+
+  if methodName == "println"
+    then (return $ Print (head args))
+    else (return $ ThisMethodCall methodName args)
 
 
 objectMethodCall :: Parser Expr
@@ -253,10 +256,11 @@ newClassInstance  = do
 
 classVariable ::Parser Expr
 classVariable  = do
-  className <- identifier
-  symbol "."
-  varName <- identifier
-  return $ ClassVariable className varName
+  try $ do
+    className <- identifier
+    symbol "."
+    varName <- identifier
+    return $ ClassVariable className varName
 
 modifierBlockParser :: Bool -> Parser Expr
 modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
@@ -300,7 +304,7 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-  value <- thisParser <|> booleanParser <|> newClassInstance <|> classVariable <|> arithmeticParser <|> stringLiteral-- <|>   identifierParser
+  value <- thisParser <|> classVariable <|> booleanParser <|> newClassInstance <|> stringLiteral <|> identifierParser <|> arithmeticParser
   return $ Argument value
 
 
@@ -333,8 +337,8 @@ dataParser = L.nonIndented scn p
 
 printParser :: Parser Expr
 printParser  = do
-  rword "println"
-  e <- expr'
+  try $ rword "println"
+  e <- parens argumentParser
   return $ Print e
 
 
@@ -343,8 +347,8 @@ ifStmt  = L.indentBlock scn p
    where
      p = do
        try (rword "if")
-       cond  <- bExpr
-       return (L.IndentMany Nothing (return . (If cond)) (expr' <|> arithmeticParser <|> booleanParser))
+       cond  <- argumentParser
+       return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
 
 elseIfStmt :: Parser Expr
 elseIfStmt  = L.indentBlock scn p
@@ -353,15 +357,15 @@ elseIfStmt  = L.indentBlock scn p
        try $ do
          rword "else"
          rword "if"
-       cond  <- bExpr
-       return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' ))
+       cond  <- argumentParser
+       return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
 
 elseStmt :: Parser Expr
 elseStmt  = L.indentBlock scn p
    where
      p = do
        rword "else"
-       return (L.IndentMany Nothing (return . (Else)) (expr' ))
+       return (L.IndentMany Nothing (return . (Else)) (expr' <|> argumentParser))
 
 whileParser :: Parser Expr
 whileParser  = L.indentBlock scn p

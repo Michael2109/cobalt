@@ -46,9 +46,35 @@ addNotify : void
 addNotify =
   super.addNotify()
 
-
 drawAliens : Graphics -> void
 drawAliens g =
-  #if(player.visible)
-    #println "TEST"
-    #g.drawRect(player.x, player.y, player.width, player.height)
+  # Need to add for loops for this
+
+drawPlayer : Graphics -> void
+drawPlayer g =
+  if(True)
+    println("TEST")
+    g.drawRect(player.x, player.y, player.width, player.height)
+
+drawShot : Graphics -> void
+drawShot g =
+  if(True)
+    g.drawRect(shot.image, shot.x, shot.y)
+
+drawBombing : Graphics -> void
+drawBombing g =
+  # Need to add for loops for this
+
+paintComponent : Graphics -> void
+paintComponent g =
+  super.paintComponent(g)
+  g.setColor(Color.BLACK)
+  g.fillRect(0, 0, d.width, d.height)
+  g.setColor(Color.green)
+
+  if(inGame)
+    g.drawLine(0, GROUND, BOARD_WIDTH, GROUND)
+    drawAliens(g)
+    drawPlayer(g)
+    drawShot(g)
+    drawBombing(g)
