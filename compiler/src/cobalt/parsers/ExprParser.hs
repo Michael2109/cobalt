@@ -13,9 +13,10 @@ module ExprParser (Parser,
                     argumentParser,
                     argumentTypeParser,
                     booleanParser,
-                    ifStmtParser,
+                    classVariableParser,
                     elseIfStmtParser,
-                    elseStmtParser
+                    elseStmtParser,
+                    ifStmtParser
                     ) where
 
 import Control.Applicative (empty)
@@ -191,32 +192,12 @@ arrayType = do
   symbol "]"
   return $ ArrayType arrType
 
-arrayDef :: Parser Expr
-arrayDef = do
-  name <-
-    try $ do
-      id <- identifier
-      symbol ":"
-      symbol "["
-      return id
-  arrType <- word
-  symbol "]"
-  symbol "="
-  return $ ArrayDef arrType name
-
-
 arrayValues :: Parser Expr
 arrayValues = do
   try (symbol "[")
   values <- many identifier
   symbol "]"
   return $ ArrayValues values
-
-arrayAssign :: Parser Expr
-arrayAssign = do
-  def <- arrayDef
-  values <- arrayValues
-  return $ ArrayAssignment def values
 
 arrayElementSelect :: Parser Expr
 arrayElementSelect = do
@@ -230,24 +211,26 @@ arrayAppend = do
   return $ ArrayAppend arrays
 
 thisMethodCall :: Parser Expr
-thisMethodCall  = do
-  methodName <- identifier
-  args <- parens (sepBy (argumentParser) (symbol ","))
+thisMethodCall  =
+  try $ do
+    methodName <- identifier
+    args <- parens (sepBy (argumentParser) (symbol ","))
 
-  if methodName == "println"
-    then (return $ Print (head args))
-    else (return $ ThisMethodCall methodName args)
+    if methodName == "println"
+      then (return $ Print (head args))
+      else (return $ ThisMethodCall methodName args)
 
 
 objectMethodCall :: Parser Expr
-objectMethodCall = do
-  objectName <- identifier
-  symbol "."
-  methodName <- identifier
-  args <- parens (sepBy (argumentParser) (symbol ","))
-  if(objectName == "super")
-    then return $ SuperMethodCall objectName methodName args
-    else return $ ObjectMethodCall objectName methodName args
+objectMethodCall =
+  try $ do
+    objectName <- identifier
+    symbol "."
+    methodName <- identifier
+    args <- parens (sepBy (argumentParser) (symbol ","))
+    if(objectName == "super")
+      then return $ SuperMethodCall objectName methodName args
+      else return $ ObjectMethodCall objectName methodName args
 
 
 newClassInstance :: Parser Expr
@@ -257,8 +240,8 @@ newClassInstance  = do
   arguments <- parens (sepBy (argumentParser) (symbol ","))
   return $ (NewClassInstance className arguments)
 
-classVariable ::Parser Expr
-classVariable  = do
+classVariableParser ::Parser Expr
+classVariableParser  =
   try $ do
     className <- identifier
     symbol "."
@@ -307,7 +290,7 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-  value <- thisParser <|> classVariable <|> booleanParser <|> newClassInstance <|> stringLiteral <|> identifierParser <|> arithmeticParser
+  value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstance <|> stringLiteral <|> identifierParser <|> arithmeticParser
   return $ Argument value
 
 
@@ -371,15 +354,15 @@ elseStmtParser  = try $ L.indentBlock scn p
        return (L.IndentMany Nothing (return . (Else)) (expr' <|> argumentParser))
 
 whileParser :: Parser Expr
-whileParser  = L.indentBlock scn p
+whileParser  = try $ L.indentBlock scn p
    where
      p = do
-       try (rword "while")
+       rword "while"
        e <- parens (booleanParser )
        return (L.IndentMany Nothing (return . (While e)) (expr' ))
 
 tryParser :: Parser Expr
-tryParser  = L.indentBlock scn p
+tryParser  = try $ L.indentBlock scn p
    where
      p = do
        rword "try"
@@ -387,13 +370,11 @@ tryParser  = L.indentBlock scn p
 
 
 catchParser :: Parser Expr
-catchParser  = L.indentBlock scn p
+catchParser  = try $ L.indentBlock scn p
    where
      p = do
        rword "catch"
        params <- optional (parens (sepBy parameterParser (symbol ",")))
-       let argType = "Exception"
-       let argName = "e"
        return (L.IndentMany Nothing (return . (Catch params)) (expr' ))
 
 whereStmt :: Parser Expr
@@ -430,18 +411,16 @@ expr' = try dataParser
   <|> elseIfStmtParser
   <|> elseStmtParser
 
-  <|> try whileParser
+  <|> whileParser
 
 
-  -- try/catch
-  <|> try (tryParser)
-  <|> try (catchParser)
-  <|> try (printParser)
-  <|> try (objectMethodCall)
-  <|> try (thisMethodCall)
+  <|> tryParser
+  <|> catchParser
+  <|> printParser
+  <|> objectMethodCall
+  <|> thisMethodCall
   <|> newClassInstance
-  <|> try (classVariable)
-  <|> arrayAssign
+  <|> classVariableParser
   <|> try arrayElementSelect
   <|> lambdaParser
 

@@ -90,6 +90,8 @@ main = runTestTT $ TestList [
    testClassParserImportsFail,
    testClassParserModifierBlock,
 
+   testClassVariableParser,
+
    testIfStmtParserBooleanTrue,
    testIfStmtParserBooleanFalse
   ]
