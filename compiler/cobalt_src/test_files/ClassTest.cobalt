@@ -22,6 +22,7 @@ paint : Graphics -> void
 paint g =
   val x :int = 3
 
+@Override
 run : void
 run =
   val x: int = 10 + 1

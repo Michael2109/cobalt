@@ -4,7 +4,6 @@ Description : Compiles all
 -}
 module JavaCompiler where
 
-import Data.Text
 import Data.Text.Internal.Lazy
 import Data.List
 import System.Directory
@@ -22,7 +21,7 @@ compileJavaDir classpath inputDir outputDir = do
       then compileJavaDir classpath (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
       else
         if(takeExtension inputLoc == ".java")
-        then (compileJava classpath outputDir (outputDir ++ (dropExtension inputLoc) ++ ".java"))
+        then (compileJava classpath outputDir (inputDir ++ (dropExtension inputLoc) ++ ".java"))
         else putStrLn ""
     )
   putStrLn ""
@@ -31,5 +30,6 @@ compileJavaDir classpath inputDir outputDir = do
 compileJava :: String -> String -> String -> IO()
 compileJava classpath outputDir inputFile = do
   print ("classpath " ++ classpath ++ " outputDir " ++ outputDir ++ " inputFile " ++ inputFile)
-
-  callCommand ("javac -classpath " ++ classpath ++ " -d " ++ outputDir ++ " " ++ inputFile)
+  absoluteOutputDir <- makeAbsolute outputDir
+  absoluteInputFile <- makeAbsolute inputFile
+  callCommand ("javac -classpath \"" ++ classpath ++ "\" -d \"" ++ take ((length absoluteOutputDir)-1) absoluteOutputDir ++ "\" \"" ++ absoluteInputFile ++ "\"")
