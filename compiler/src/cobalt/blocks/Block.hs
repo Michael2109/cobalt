@@ -46,6 +46,7 @@ data Expr
   | Try [Expr]
   | Catch (Maybe [Expr]) [Expr]
   | While Expr [Expr]
+  | For String Expr Expr [Expr]
   | Print Expr
   | Return Expr
   | ArrayValues [String]
@@ -102,6 +103,7 @@ instance Show Expr where
   show (GlobalVar modifier final static varType varName exprs) = genCode (GlobalVar modifier final static varType varName exprs) (ClassSymbolTable "" [] []) (CurrentState "")
   show (Identifier name) = name
   show (Type e) = show e
+  show (For varName start end exprs) = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
   show (Argument e) = show e
   show (BooleanExpr be) = show be
   show (ArgumentType e) = e
@@ -300,6 +302,7 @@ instance CodeGen Expr where
             Just a -> a
             Nothing -> []
     genCode (While condition statement) symbolTable currentState = getDebug "While" ++ "while(" ++ genCode condition symbolTable currentState ++ "){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) statement) ++ "}"
+    genCode (For varName start end exprs) symbolTable currentState = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
     genCode (Skip) symbolTable currentState = getDebug "Skip" ++ "[skip]"
     genCode (Seq s) symbolTable currentState = getDebug "Seq" ++ "[seq]"
     genCode (Return expr) symbolTable currentState = getDebug "Return" ++ "return " ++ genCode expr symbolTable currentState ++ ";"

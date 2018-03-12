@@ -16,7 +16,8 @@ module ExprParser (Parser,
                     classVariableParser,
                     elseIfStmtParser,
                     elseStmtParser,
-                    ifStmtParser
+                    ifStmtParser,
+                    forLoopParser
                     ) where
 
 import Control.Applicative (empty)
@@ -360,6 +361,20 @@ whileParser  = try $ L.indentBlock scn p
        rword "while"
        e <- parens (booleanParser )
        return (L.IndentMany Nothing (return . (While e)) (expr' ))
+
+forLoopParser :: Parser Expr
+forLoopParser  = try $ L.indentBlock scn p
+   where
+     p = do
+       rword "for"
+       symbol "("
+       varName <- identifier
+       symbol "<-"
+       start <- arithmeticParser
+       rword "to"
+       end <- arithmeticParser
+       symbol ")"
+       return (L.IndentMany Nothing (return . (For varName start end)) (expr' ))
 
 tryParser :: Parser Expr
 tryParser  = try $ L.indentBlock scn p

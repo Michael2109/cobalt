@@ -20,6 +20,7 @@ import BooleanParserTest
 import ClassParserTest
 import ClassVariableParserTest
 import ConstructorParserTest
+import ForLoopParserTest
 import FunctionParserTest
 import GlobalVariableParserTest
 import IdentifierParserTest
@@ -93,7 +94,11 @@ main = runTestTT $ TestList [
    testClassVariableParser,
 
    testIfStmtParserBooleanTrue,
-   testIfStmtParserBooleanFalse
+   testIfStmtParserBooleanFalse,
+
+   testForLoopParser
+
+
   ]
 
 

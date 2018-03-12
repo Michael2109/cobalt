@@ -36,7 +36,7 @@ library
       src/cobalt/error_checking,
       src/cobalt/compiler
   build-depends:
-      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
+      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, process
   exposed-modules:
       BaseParser
       ABExprParser
@@ -46,6 +46,7 @@ library
       ABBlock
       BlockUtils
       Compiler
+      JavaCompiler
       ErrorChecker
       SymbolTable
       CodeGenerator
@@ -136,6 +137,7 @@ test-suite compiler-test
       ClassParserTest
       ClassVariableParserTest
       ConstructorParserTest
+      ForLoopParserTest
       FunctionParserTest
       GlobalVariableParserTest
       IdentifierParserTest
