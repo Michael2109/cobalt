@@ -37,3 +37,11 @@ data CurrentState
     currentMethodName :: String
   }
   deriving (Eq)
+
+
+extractReturnType :: String -> String
+extractReturnType methodName = ""
+
+extractMethodArgs :: String -> [(String, String)]
+extractMethodArgs methodName = []
+

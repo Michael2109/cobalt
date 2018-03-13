@@ -98,23 +98,8 @@ instance SymbolTableGen Expr where
   genSymbolTable (_) = SymbolTable [ClassSymbolTable "" [] []]
 
 instance Show Expr where
-  show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) (SymbolTable [(ClassSymbolTable name [] [])]) (CurrentState "" "")
-  show (ModifierBlock exprs) = intercalate " " (map show exprs)
-  show (GlobalVar modifier final static varType varName exprs) = genCode (GlobalVar modifier final static varType varName exprs) (SymbolTable []) (CurrentState "" "")
-  show (Identifier name) = name
-  show (Type e) = show e
-  show (For varName start end exprs) = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
-  show (Argument e) = show e
-  show (BooleanExpr be) = show be
-  show (ArgumentType e) = e
-  show (ThisVar e) = "this." ++ show e
-  show (If b e) = "if(" ++ show b ++ ")" ++ intercalate " " (map show e)
-  show (ElseIf b e) = "else if(" ++ show b ++ ")" ++ intercalate " " (map show e)
-  show (Else e) = "else" ++ intercalate " " (map show e)
-  show (Print e) = "print" ++ show e
-  show (StringLiteral e) = "<StringLiteral>" ++ e
-  show (Error) = "<ERROR>"
-  show (_) = "<Unknown show>"
+  show (e) = genCode e (SymbolTable [(ClassSymbolTable "" [] [])]) (CurrentState "" "")
+
 
 -- todo combine if the class names are the same
 combineSymbolTable :: SymbolTable -> SymbolTable -> SymbolTable
