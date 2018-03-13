@@ -1,6 +1,7 @@
 module SymbolTable where
 
 import Data.List
+import Data.Maybe
 
 data SymbolTable
   = SymbolTable
@@ -39,9 +40,31 @@ data CurrentState
   deriving (Eq)
 
 
-extractReturnType :: String -> String
-extractReturnType methodName = ""
+extractReturnType :: SymbolTable -> String -> String -> String
+extractReturnType symbolTable className mName = do
+  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (getClassSymbolTable symbolTable className) )
+  if null matchingMethods
+    then error ("No method found: " ++ className ++ "::" ++ mName)
+    else returnType $ matchingMethods!!0
 
-extractMethodArgs :: String -> [(String, String)]
-extractMethodArgs methodName = []
+
+extractMethodArgs :: SymbolTable -> String -> String -> [(String, String)]
+extractMethodArgs symbolTable className mName = do
+  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (getClassSymbolTable symbolTable className) )
+  if null matchingMethods
+    then error ("No method found: " ++ className ++ "::" ++ mName)
+    else methodArgs $ matchingMethods!!0
+
+
+variableExists :: SymbolTable -> String -> String -> String -> Bool
+variableExists symbolTable className methodName varName = False
+
+
+getClassSymbolTable :: SymbolTable -> String -> ClassSymbolTable
+getClassSymbolTable symbolTable symbolTableClassName = do
+  let matchingClasses = filter (\x -> symbolTableClassName == (className x)) (classSymbolTables symbolTable)
+  if null matchingClasses
+    then error ("Class not found: " ++ symbolTableClassName)
+    else matchingClasses!!0
+
 
