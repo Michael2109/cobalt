@@ -2,6 +2,13 @@ module SymbolTable where
 
 import Data.List
 
+data SymbolTable
+  = SymbolTable
+    {
+       classSymbolTables :: [ClassSymbolTable] -- All class symbol tables for all classes to be compiled
+    }
+    deriving (Eq)
+
 data ClassSymbolTable
     = ClassSymbolTable
       {
@@ -10,7 +17,11 @@ data ClassSymbolTable
         , methods         :: [(String, MethodSymbolTable)] -- (method name, method symbol) list of methods
       }
       deriving (Eq)
- 
+
+
+instance Show SymbolTable where
+    show (SymbolTable classSymbolTables) = intercalate "" (map show classSymbolTables)
+
 instance Show ClassSymbolTable where
     show (ClassSymbolTable cName vars methods) = show cName ++ intercalate " " (map show vars) ++ intercalate " " (map show methods)
 
@@ -22,6 +33,15 @@ data MethodSymbolTable = MethodSymbolTable {
 
 data CurrentState
   = CurrentState {
-    method :: String
+    currentClassName :: String,
+    currentMethodName :: String
   }
   deriving (Eq)
+
+
+extractReturnType :: String -> String
+extractReturnType methodName = ""
+
+extractMethodArgs :: String -> [(String, String)]
+extractMethodArgs methodName = []
+

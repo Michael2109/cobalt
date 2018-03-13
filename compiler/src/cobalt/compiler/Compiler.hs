@@ -19,29 +19,29 @@ import SymbolTable
 import CodeGenerator
 
 
-generateSymbolTable ast = -- ClassSymbolTable "ClassName" [("x", "int"), ("y", "int"), ("dx", "int"), ("dy", "int"), ("thread", "Thread")] []
+generateSymbolTable ast =
   case ast of
-   Left  e -> ClassSymbolTable "ERROR" [] []
+   Left  e -> SymbolTable [ClassSymbolTable "ERROR" [] []]
    Right x -> genSymbolTable x
 
 allFilesIn dir = getDirectoryContents dir
 
-compileDir :: String -> String -> IO()
-compileDir inputDir outputDir = do
+compileDir :: String -> String -> SymbolTable -> IO()
+compileDir inputDir outputDir symbolTable = do
   createDirectoryIfMissing True outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
     if (takeExtension inputLoc == "")
-      then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
+      then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/") symbolTable
       else
         if(takeExtension inputLoc == ".cobalt")
-        then (compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java"))
+        then (compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java") symbolTable)
         else putStrLn ""
     )
   putStrLn ""
 
 
-compile :: String -> String -> IO()
-compile inputFile outputFile = do
+compile :: String -> String -> SymbolTable -> IO()
+compile inputFile outputFile symbolTable = do
    fileData <- readFile inputFile
 
    let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData

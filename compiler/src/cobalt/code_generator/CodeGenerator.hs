@@ -7,4 +7,4 @@ import SymbolTable
 compileAST ast symbolTable =
   case ast of
     Left  e -> show e
-    Right x -> genCode x symbolTable (CurrentState "")
+    Right x -> genCode x symbolTable (CurrentState "" "")
