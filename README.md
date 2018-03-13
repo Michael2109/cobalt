@@ -17,7 +17,22 @@ To contribute to the Cobalt project, please send us a pull request from your for
 Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
 
 # Getting Started
-https://github.com/Michael2109/cobalt/wiki/Getting-Started
+
+#### Install IntelliJ IDE
+https://www.jetbrains.com/idea/download/#section=windows
+
+#### Install HaskForce IntelliJ plugin
+http://haskforce.com/
+
+#### Install Stack 
+https://docs.haskellstack.org/en/stable/README/
+
+#### Setting up
+1. `File -> New -> Project from version control -> Github`
+2. Using CMD/terminal navigate to the `cobalt/compiler` directory 
+3. Run `stack build` 
+4. Run `stack exec compiler-exe` to run the the main function in `app/Main`. This currently compiles to Java code, compiles with javac and executes.
+5. Run `stack test` to execute all tests. 
 
 # Example 
 ##### Basic 2D animation displaying a square bouncing around the screen
