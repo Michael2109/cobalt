@@ -91,16 +91,16 @@ instance ErrorCheck Expr where
 
 
 instance SymbolTableGen Expr where
-  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (ClassSymbolTable name [] []) (combineSymbolTableList (map genSymbolTable modifierBlocks))) (combineSymbolTableList (map genSymbolTable bodyArray))
+  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (SymbolTable [ClassSymbolTable name [] []]) (combineSymbolTableList (map genSymbolTable modifierBlocks))) (combineSymbolTableList (map genSymbolTable bodyArray))
   genSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable exprs)
-  genSymbolTable (GlobalVar modifier final static varType varName exprs) =  ClassSymbolTable "" [(show varName, show varType)] []
-  genSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
-  genSymbolTable (_) = ClassSymbolTable "" [] []
+  genSymbolTable (GlobalVar modifier final static varType varName exprs) =  SymbolTable [(ClassSymbolTable "" [(show varName, show varType)] [])]
+  genSymbolTable (Function name annotations argTypes args returnType static body) = SymbolTable [ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]]
+  genSymbolTable (_) = SymbolTable [ClassSymbolTable "" [] []]
 
 instance Show Expr where
-  show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) (ClassSymbolTable name [] []) (CurrentState "")
+  show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) (SymbolTable [(ClassSymbolTable name [] [])]) (CurrentState "" "")
   show (ModifierBlock exprs) = intercalate " " (map show exprs)
-  show (GlobalVar modifier final static varType varName exprs) = genCode (GlobalVar modifier final static varType varName exprs) (ClassSymbolTable "" [] []) (CurrentState "")
+  show (GlobalVar modifier final static varType varName exprs) = genCode (GlobalVar modifier final static varType varName exprs) (SymbolTable []) (CurrentState "" "")
   show (Identifier name) = name
   show (Type e) = show e
   show (For varName start end exprs) = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
@@ -116,14 +116,17 @@ instance Show Expr where
   show (Error) = "<ERROR>"
   show (_) = "<Unknown show>"
 
-combineSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable
-combineSymbolTable a b = ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
+-- todo combine if the class names are the same
+combineSymbolTable :: SymbolTable -> SymbolTable -> SymbolTable
+combineSymbolTable a b = SymbolTable []
+  --ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
 
-combineSymbolTableList :: [ClassSymbolTable] -> ClassSymbolTable
-combineSymbolTableList list = do
-  if length list > 0
-  then foldl1 (\x y -> combineSymbolTable x y) list
-  else ClassSymbolTable "" [] []
+combineSymbolTableList :: [SymbolTable] -> SymbolTable
+combineSymbolTableList list = SymbolTable[]
+--do
+  --if length list > 0
+  --then foldl1 (\x y -> combineSymbolTable x y) list
+  --else ClassSymbolTable "" [] []
 
 
 instance CodeGen Expr where
@@ -267,7 +270,7 @@ instance CodeGen Expr where
     genCode (Constructor name argTypes args body) symbolTable currentState = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable currentState) argTypes) (map (\x -> genCode x symbolTable currentState) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) body) ++ "}"
     genCode (Function name annotations argTypes args returnType static body) symbolTable currentState =
       getDebug "Function" ++
-      annotationString ++ " public " ++ (if(static) then "static " else "") ++ genCode returnType symbolTable (CurrentState name) ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable (CurrentState name)) argTypes) (map (\x -> genCode x symbolTable (CurrentState name)) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable (CurrentState name)) body) ++ "}"
+      annotationString ++ " public " ++ (if(static) then "static " else "") ++ genCode returnType symbolTable (CurrentState (currentClassName currentState) name) ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable (CurrentState (currentClassName currentState) name)) argTypes) (map (\x -> genCode x symbolTable (CurrentState (currentClassName currentState) name)) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable (CurrentState (currentClassName currentState) name)) body) ++ "}"
         where
           annotationString = case annotations of
               Just a -> genCode a symbolTable currentState
@@ -325,18 +328,22 @@ instance CodeGen Expr where
     genCode (ThisMethodCall methodName args) symbolTable currentState = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (SuperMethodCall objectName methodName args) symbolTable currentState = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = do
-      let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
-      if(length methodList > 0)
-      then (if (elem objectName (map fst (methodArgs (methodList!!0))) || not (elem objectName (map (fst) $ publicVariables symbolTable ))) then  getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "Argument" ++ (objectName ++ "()") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");")
-      else if(not (elem objectName (map (fst) $ publicVariables symbolTable ))) then getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "ObjectMethodCall" ++ objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
+      -- todo
+      --let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+      --if(length methodList > 0)
+      --then (if (elem objectName (map fst (methodArgs (methodList!!0))) || not (elem objectName (map (fst) $ publicVariables symbolTable ))) then  getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "Argument" ++ (objectName ++ "()") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");")
+      --else if(not (elem objectName (map (fst) $ publicVariables symbolTable ))) then getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "ObjectMethodCall" ++ objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
+      objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
     genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++className ++ "." ++ varName
     genCode (BooleanExpr expr) symbolTable currentState = getDebug "BooleanExpr" ++ genCode expr symbolTable currentState
     genCode (Identifier name) symbolTable currentState = do
-        let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
-        if(length methodList > 0)
-        then if (elem (name) (map fst (methodArgs (methodList!!0)))) then getDebug "Identifier" ++ name ++ "" else getDebug "Identifier" ++ (name)
-        else getDebug "Identifier" ++ name
+      -- todo
+      --let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
+      --if(length methodList > 0)
+      --then if (elem (name) (map fst (methodArgs (methodList!!0)))) then getDebug "Identifier" ++ name ++ "" else getDebug "Identifier" ++ (name)
+      --else getDebug "Identifier" ++ name
+      name
     genCode (Annotation name) symbolTable currentState = getDebug "Annotation" ++ "@" ++ name
     genCode (ModifierBlock exprs) symbolTable currentState = getDebug "ModifierBlock" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)
     genCode (This) symbolTable currentState = getDebug "This" ++ "this"

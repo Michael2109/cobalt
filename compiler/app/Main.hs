@@ -2,7 +2,7 @@ module Main where
 
 import Compiler
 import JavaCompiler
-
+import SymbolTable
 
 main :: IO ()
 main = do
@@ -13,7 +13,7 @@ main = do
 
     putStrLn "Compiling - Cobalt -> Java"
     putStrLn ""
-    compileDir inputDir javaOutputDir
+    compileDir inputDir javaOutputDir (SymbolTable [])
     putStrLn "Complete."
 
     putStrLn "Compiling - Java -> Byte code"
