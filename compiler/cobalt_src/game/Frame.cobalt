@@ -3,7 +3,7 @@ import javax.swing.JFrame
 class Frame extends JFrame
 
 val game: Game = new Game()
-add(new Panel(game))
+add(new Board())
 setTitle("Game")
 setResizable(False)
 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)

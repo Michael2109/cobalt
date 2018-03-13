@@ -17,7 +17,7 @@ import javax.swing.JPanel
 class Board extends JPanel implements Runnable
 
 private
-  #val d: Dimension = new Dimension(Constants.BoardWidth, Constants.BoardHeight)
+  val d: Dimension = new Dimension(Constants.BoardWidth, Constants.BoardHeight)
   #val aliens: [Alien] = [test]
   val player: Player = new Player()
   val shot: Shot = new Shot()
@@ -73,7 +73,7 @@ paintComponent g =
   g.setColor(Color.green)
 
   if(inGame)
-    g.drawLine(0, GROUND, BOARD_WIDTH, GROUND)
+    g.drawLine(0, Constants.GROUND, Constants.BOARD_WIDTH, Constants.GROUND)
     drawAliens(g)
     drawPlayer(g)
     drawShot(g)

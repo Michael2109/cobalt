@@ -9,7 +9,7 @@ main = do
     let inputDir = "cobalt_src/"
     let javaOutputDir = "cobalt_generated_java/"
     let classOutputDir = "cobalt_generated_classes/"
-    let javaClasspath = ""
+    let javaClasspath = "cobalt_generated_java/"
 
     putStrLn "Compiling - Cobalt -> Java"
     putStrLn ""
