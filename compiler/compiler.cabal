@@ -68,7 +68,7 @@ executable compiler-exe
 
 test-suite compiler-test
   type: exitcode-stdio-1.0
-  main-is: Spec.hs
+  main-is: ParserTests.hs
   hs-source-dirs:
 
       src/cobalt,

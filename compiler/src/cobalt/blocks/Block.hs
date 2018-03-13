@@ -15,7 +15,7 @@ import ABBlock
 import SymbolTable
 
 debug :: Bool
-debug = False
+debug = True
 
 getDebug :: String -> String
 getDebug message = (if debug then "<" ++ message ++ "> " else "")
@@ -98,23 +98,7 @@ instance SymbolTableGen Expr where
   genSymbolTable (_) = ClassSymbolTable "" [] []
 
 instance Show Expr where
-  show (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) (ClassSymbolTable name [] []) (CurrentState "")
-  show (ModifierBlock exprs) = intercalate " " (map show exprs)
-  show (GlobalVar modifier final static varType varName exprs) = genCode (GlobalVar modifier final static varType varName exprs) (ClassSymbolTable "" [] []) (CurrentState "")
-  show (Identifier name) = name
-  show (Type e) = show e
-  show (For varName start end exprs) = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
-  show (Argument e) = show e
-  show (BooleanExpr be) = show be
-  show (ArgumentType e) = e
-  show (ThisVar e) = "this." ++ show e
-  show (If b e) = "if(" ++ show b ++ ")" ++ intercalate " " (map show e)
-  show (ElseIf b e) = "else if(" ++ show b ++ ")" ++ intercalate " " (map show e)
-  show (Else e) = "else" ++ intercalate " " (map show e)
-  show (Print e) = "print" ++ show e
-  show (StringLiteral e) = "<StringLiteral>" ++ e
-  show (Error) = "<ERROR>"
-  show (_) = "<Unknown show>"
+  show (a) = genCode a (ClassSymbolTable "" [] []) (CurrentState "")
 
 combineSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable
 combineSymbolTable a b = ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
