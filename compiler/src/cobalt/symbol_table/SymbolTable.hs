@@ -55,10 +55,25 @@ extractMethodArgs symbolTable className mName = do
     then error ("No method found: " ++ className ++ "::" ++ mName)
     else methodArgs $ matchingMethods!!0
 
+methodExists :: SymbolTable -> String -> String -> Bool
+methodExists symbolTable className mName = do
+  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (getClassSymbolTable symbolTable className) )
+  if null matchingMethods
+    then False
+    else True
 
-variableExists :: SymbolTable -> String -> String -> String -> Bool
-variableExists symbolTable className methodName varName = False
+instanceVariableExists :: SymbolTable -> String -> String -> Bool
+instanceVariableExists symbolTable className varName = do
+  elem varName (map fst (publicVariables (getClassSymbolTable symbolTable className)))
 
+methodParamExists :: SymbolTable -> String -> String -> String -> Bool
+methodParamExists symbolTable className methodName varName = do
+  let methodList = map (snd) (filter (\x -> fst x == (methodName)) (methods (getClassSymbolTable symbolTable className)))
+  if null methodList
+    then False
+    else if (elem (varName) (map fst (methodArgs (methodList!!0))))
+      then True
+      else False
 
 getClassSymbolTable :: SymbolTable -> String -> ClassSymbolTable
 getClassSymbolTable symbolTable symbolTableClassName = do

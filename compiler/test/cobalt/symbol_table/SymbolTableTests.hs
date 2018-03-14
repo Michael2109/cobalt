@@ -12,7 +12,9 @@ symbolTableTestList = TestList [
     testSymbolTableExtractMethodArgs,
     testSymbolTableCombine,
     testSymbolTableCombineList,
-    testSymbolTableVariableExist,
+    testSymbolTableMethodExists,
+    testSymbolTableVariableExists,
+    testSymbolTableVariableExistsFail,
     testSymbolTableGetClassSymbolTable
   ]
 

@@ -54,11 +54,23 @@ testSymbolTableCombineList = do
     ""
     ""
 
-testSymbolTableVariableExist :: Test
-testSymbolTableVariableExist = do
+testSymbolTableMethodExists :: Test
+testSymbolTableMethodExists = do
+  TestCase $ assertEqual "Method exists"
+    True $
+    methodExists generateSymbolTable1 "ClassName" "method1"
+
+testSymbolTableVariableExists:: Test
+testSymbolTableVariableExists = do
   TestCase $ assertEqual "Variable exists"
-    ""
-    ""
+    True $
+    instanceVariableExists generateSymbolTable1 "ClassName" "x"
+
+testSymbolTableVariableExistsFail:: Test
+testSymbolTableVariableExistsFail = do
+  TestCase $ assertEqual "Variable doesn't exists"
+    False $
+    instanceVariableExists generateSymbolTable1 "ClassName" "unknownVarName"
 
 testSymbolTableGetClassSymbolTable :: Test
 testSymbolTableGetClassSymbolTable = do
