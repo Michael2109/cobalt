@@ -19,10 +19,10 @@ import SymbolTable
 import CodeGenerator
 
 
-generateSymbolTable ast =
+generateClassSymbolTable ast =
   case ast of
-   Left  e -> SymbolTable [ClassSymbolTable "ERROR" [] []]
-   Right x -> genSymbolTable x
+   Left  e -> ClassSymbolTable "ERROR" [] []
+   Right x -> genClassSymbolTable x
 
 allFilesIn dir = getDirectoryContents dir
 
@@ -41,14 +41,16 @@ compileDir inputDir outputDir symbolTable = do
 
 
 compile :: String -> String -> SymbolTable -> IO()
-compile inputFile outputFile symbolTable = do
+compile inputFile outputFile classSymbolTable = do
    fileData <- readFile inputFile
 
    let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
    --let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    pPrint "Generating symbol table"
-   let symbolTable = generateSymbolTable compiledTree
+
+   -- todo this should combine the found class symbol table with the current symbol table
+   let symbolTable = SymbolTable [generateClassSymbolTable compiledTree]
 
    let generatedCode = compileAST compiledTree symbolTable
    pPrint symbolTable

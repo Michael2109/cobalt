@@ -12,6 +12,8 @@ symbolTableTestList = TestList [
     testSymbolTableExtractMethodArgs,
     testSymbolTableCombine,
     testSymbolTableCombineList,
+    testClassSymbolTableCombine,
+    testClassSymbolTableCombineList,
     testSymbolTableMethodExists,
     testSymbolTableVariableExists,
     testSymbolTableVariableExistsFail,

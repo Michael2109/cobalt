@@ -89,30 +89,15 @@ instance ErrorCheck Expr where
   errorCheck (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = "An error occurred"
   errorCheck (_) = "<Unimplemented error check>"
 
-
 instance SymbolTableGen Expr where
-  genSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineSymbolTable (combineSymbolTable (SymbolTable [ClassSymbolTable name [] []]) (combineSymbolTableList (map genSymbolTable modifierBlocks))) (combineSymbolTableList (map genSymbolTable bodyArray))
-  genSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineSymbolTable x y) (map genSymbolTable exprs)
-  genSymbolTable (GlobalVar modifier final static varType varName exprs) =  SymbolTable [(ClassSymbolTable "" [(show varName, show varType)] [])]
-  genSymbolTable (Function name annotations argTypes args returnType static body) = SymbolTable [ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]]
-  genSymbolTable (_) = SymbolTable [ClassSymbolTable "" [] []]
+  genClassSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name [] []) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+  genClassSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineClassSymbolTable x y) (map genClassSymbolTable exprs)
+  genClassSymbolTable (GlobalVar modifier final static varType varName exprs) = (ClassSymbolTable "" [(show varName, show varType)] [])
+  genClassSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
+  genClassSymbolTable (_) = ClassSymbolTable "" [] []
 
 instance Show Expr where
   show (e) = genCode e (SymbolTable [(ClassSymbolTable "" [] [])]) (CurrentState "" "")
-
-
--- todo combine if the class names are the same
-combineSymbolTable :: SymbolTable -> SymbolTable -> SymbolTable
-combineSymbolTable a b = SymbolTable []
-  --ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
-
-combineSymbolTableList :: [SymbolTable] -> SymbolTable
-combineSymbolTableList list = SymbolTable[]
---do
-  --if length list > 0
-  --then foldl1 (\x y -> combineSymbolTable x y) list
-  --else ClassSymbolTable "" [] []
-
 
 instance CodeGen Expr where
     genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable currentState =

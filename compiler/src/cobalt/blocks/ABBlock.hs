@@ -9,7 +9,7 @@ module ABBlock (
   SymbolTableGen,
   genCode,
   errorCheck,
-  genSymbolTable,
+  genClassSymbolTable,
   AExpr (Var, IntConst, Neg, ABinary, Parenthesis, AError),
   BExpr (BoolConst, Not, BBinary, RBinary, BError),
   ABinOp (Multiply, Divide, Add, Subtract, ABinOpError),
@@ -27,7 +27,7 @@ class ErrorCheck a where
   errorCheck :: a -> String
 
 class SymbolTableGen a where
-  genSymbolTable :: a -> SymbolTable
+  genClassSymbolTable :: a -> ClassSymbolTable
 
 class CodeGen a where
   genCode :: a -> SymbolTable -> CurrentState -> String

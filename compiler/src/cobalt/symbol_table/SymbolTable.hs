@@ -83,3 +83,24 @@ getClassSymbolTable symbolTable symbolTableClassName = do
     else matchingClasses!!0
 
 
+-- todo combine if the class names are the same
+combineSymbolTable :: SymbolTable -> SymbolTable -> SymbolTable
+combineSymbolTable a b = SymbolTable []
+  --ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
+
+combineSymbolTableList :: [SymbolTable] -> SymbolTable
+combineSymbolTableList list = SymbolTable []
+--do
+  --if length list > 0
+  --then foldl1 (\x y -> combineSymbolTable x y) list
+  --else ClassSymbolTable "" [] []
+
+
+combineClassSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable
+combineClassSymbolTable a b = ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
+
+combineClassSymbolTableList :: [ClassSymbolTable] -> ClassSymbolTable
+combineClassSymbolTableList list = do
+  if length list > 0
+    then foldl1 (\x y -> combineClassSymbolTable x y) list
+    else ClassSymbolTable "" [] []

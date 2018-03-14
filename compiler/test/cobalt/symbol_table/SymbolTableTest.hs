@@ -4,22 +4,26 @@ import Test.HUnit
 
 import SymbolTable
 
-generateSymbolTable1 = SymbolTable [ClassSymbolTable "ClassName"
+generateClassSymbolTable1 = ClassSymbolTable "ClassName"
   [("x", "int"),
    ("y", "int"),
    ("z", "double"),
    ("obj", "Object")]
    [("method1", MethodSymbolTable "int" [("i", "int"), ("j", "int"), ("obj", "Object")])]
-   ]
 
-generateSymbolTable2 = SymbolTable [ClassSymbolTable "ClassName"
+generateClassSymbolTable2 = ClassSymbolTable "ClassName"
   [("a", "int"),
    ("b", "int"),
    ("c", "double"),
    ("d", "Object")]
    [("method2", MethodSymbolTable "String" [("e", "int"), ("f", "int"), ("g", "Object")]),
     ("method1", MethodSymbolTable "int" [("r", "int"), ("p", "int"), ("u", "Object")])]
-   ]
+
+
+
+generateSymbolTable1 = SymbolTable [generateClassSymbolTable1]
+
+generateSymbolTable2 = SymbolTable [generateClassSymbolTable2]
 
 testSymbolTableExtractReturnType1 :: Test
 testSymbolTableExtractReturnType1 = do
@@ -33,13 +37,23 @@ testSymbolTableExtractReturnType2 = do
     "String"
     $ extractReturnType generateSymbolTable2 "ClassName" "method2"
 
-
 testSymbolTableExtractMethodArgs :: Test
 testSymbolTableExtractMethodArgs = do
   TestCase $ assertEqual "Extract method args"
+    3 $
+    length (extractMethodArgs generateSymbolTable2 "ClassName" "method2")
+
+testClassSymbolTableCombine :: Test
+testClassSymbolTableCombine = do
+  TestCase $ assertEqual "Combine symbol tables"
     ""
     ""
 
+testClassSymbolTableCombineList :: Test
+testClassSymbolTableCombineList = do
+  TestCase $ assertEqual "Combine list of symbol tables"
+    ""
+    ""
 
 testSymbolTableCombine :: Test
 testSymbolTableCombine = do
