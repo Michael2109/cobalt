@@ -13,7 +13,7 @@ main = do
 
     putStrLn "Compiling - Cobalt -> Java"
     putStrLn ""
-    compileTest inputDir javaOutputDir (SymbolTable [])
+    compileTest inputDir javaOutputDir
     --compileDir inputDir javaOutputDir (SymbolTable [])
     putStrLn "Complete."
 

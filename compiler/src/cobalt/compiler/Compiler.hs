@@ -6,7 +6,6 @@ There are functions for compiling directories or individual strings etc.
 module Compiler where
 
 import Control.Monad
-import Data.Text
 import Data.Text.Internal.Lazy
 import Data.List
 import System.Directory
@@ -21,13 +20,80 @@ import SymbolTable
 import CodeGenerator
 
 
+data ASTData = ASTData FilePath SymbolTable Expr
+  deriving (Show)
+
+extractASTSymbolTable :: ASTData -> SymbolTable
+extractASTSymbolTable (ASTData _ symbolTable _) = symbolTable
+
 generateClassSymbolTable ast =
   case ast of
    Left  e -> ClassSymbolTable "ERROR" [] []
    Right x -> genClassSymbolTable x
 
+compileTest :: String -> String -> IO ()
+compileTest inputDir outputDir = do
+
+  generateMissingDirectories inputDir outputDir
+  filePaths <- (traverseDir inputDir)
+
+  let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (takeExtension filePath == ".cobalt")) filePaths
+  fileDatas <- mapM (readFile) filteredFilePaths
+
+  let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredFilePaths fileDatas
+
+  -- Combines all class symbol tables
+  let symbolTable = map (extractASTSymbolTable) astDatas
+
+  pPrint symbolTable
+
+  --let generatedCode = compileAST compiledTree symbolTable
+
+  return ()
+
+
+
+
 allFilesIn dir = getDirectoryContents dir
 
+-- | Traverse from 'top' directory and return all the files by
+-- filtering out the 'exclude' predicate.
+traverseDir :: FilePath -> IO [FilePath]
+traverseDir top = do
+  ds <- getDirectoryContents top
+  paths <- forM (ds) $ \d -> do
+    let path = top </> d
+    if takeExtension path == ""
+      then traverseDir path
+      else return [path]
+  return (concat paths)
+
+
+
+generateMissingDirectories :: String -> String -> IO()
+generateMissingDirectories inputDir outputDir = do
+  allFilesIn inputDir >>= mapM (\inputLoc ->
+    do
+      createDirectoryIfMissing True outputDir
+      when (takeExtension inputLoc == "") $ do
+        generateMissingDirectories (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
+    )
+  return ()
+
+
+generateAST :: FilePath -> String -> ASTData
+generateAST inputFile code = do
+
+   let parseResult = parseTree (Split.splitOn "/" $ takeDirectory inputFile) code
+   let symbolTable = SymbolTable [generateClassSymbolTable parseResult]
+
+   let ast = case parseResult of
+               Left  e -> Error
+               Right x -> x
+
+   ASTData inputFile symbolTable ast
+
+{--
 generateASTs :: String -> String -> SymbolTable -> IO [Expr]
 generateASTs inputDir outputDir symbolTable = do
   createDirectoryIfMissing True outputDir
@@ -62,7 +128,7 @@ generateAST inputFile outputFile classSymbolTable = do
   -- parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    writeFile outputFile generatedCode
-
+--}
 
 
 compileDir :: String -> String -> SymbolTable -> IO ()
