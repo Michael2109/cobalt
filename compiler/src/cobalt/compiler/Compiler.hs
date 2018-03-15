@@ -5,6 +5,7 @@ There are functions for compiling directories or individual strings etc.
 -}
 module Compiler where
 
+import Control.Monad
 import Data.Text
 import Data.Text.Internal.Lazy
 import Data.List
@@ -14,6 +15,7 @@ import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
 import ABBlock
+import Block
 import Parser
 import SymbolTable
 import CodeGenerator
@@ -26,7 +28,44 @@ generateClassSymbolTable ast =
 
 allFilesIn dir = getDirectoryContents dir
 
-compileDir :: String -> String -> SymbolTable -> IO()
+generateASTs :: String -> String -> SymbolTable -> IO [Expr]
+generateASTs inputDir outputDir symbolTable = do
+  createDirectoryIfMissing True outputDir
+  allFilesIn inputDir >>= foldM (\inputLoc ->
+    if (takeExtension inputLoc == "")
+      then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/") symbolTable
+      else
+        if(takeExtension inputLoc == ".cobalt")
+        then [(compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java") symbolTable)]
+        else return ()
+    )
+  return ()
+
+
+generateAST :: String -> String -> SymbolTable -> IO Expr
+generateAST inputFile outputFile classSymbolTable = do
+   fileData <- readFile inputFile
+
+   let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
+   --let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
+
+   pPrint "Generating symbol table"
+
+   -- todo this should combine the found class symbol table with the current symbol table
+   let symbolTable = SymbolTable [generateClassSymbolTable compiledTree]
+
+   let generatedCode = compileAST compiledTree symbolTable
+   pPrint symbolTable
+   pPrint generatedCode
+
+   --pPrint compiledTree
+  -- parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
+
+   writeFile outputFile generatedCode
+
+
+
+compileDir :: String -> String -> SymbolTable -> IO ()
 compileDir inputDir outputDir symbolTable = do
   createDirectoryIfMissing True outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
@@ -40,7 +79,7 @@ compileDir inputDir outputDir symbolTable = do
   putStrLn ""
 
 
-compile :: String -> String -> SymbolTable -> IO()
+compile :: String -> String -> SymbolTable -> IO ()
 compile inputFile outputFile classSymbolTable = do
    fileData <- readFile inputFile
 

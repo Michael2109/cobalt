@@ -8,6 +8,7 @@ extra-deps:
 - ansi-terminal-0.8
 - attoparsec-0.13.2.2
 - base-compat-0.9.3
+- bytestring-0.10.8.1
 - case-insensitive-1.2.0.10
 - colour-2.3.4
 - dlist-0.8.0.3
@@ -29,6 +30,7 @@ extra-deps:
 - regex-posix-0.95.2
 - scientific-0.3.5.2
 - split-0.2.3.2
+- directory-tree-0.12.1
 - tagged-0.8.5
 - text-1.2.3.0
 - th-abstraction-0.2.6.0
