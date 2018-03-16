@@ -42,39 +42,24 @@ generateClassSymbolTable ast =
 compile :: String -> String -> IO ()
 compile inputDir outputDir = do
 
-  --generateMissingDirectories inputDir outputDir
+  generateMissingDirectories inputDir outputDir
   filePaths <- traverseDir inputDir ""
 
   let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (takeExtension filePath == ".cobalt")) filePaths
-  --let inputFilePaths = map (\filePath -> inputDir ++ filePath) filteredFilePaths
-  --let outputFilePaths = map (\filePath -> outputDir ++ filePath) filteredFilePaths
 
-  print "Input paths"
-  pPrint inputFilePaths
+  fileDatas <- mapM (\filePath -> readFile $ (inputDir ++ filePath)) filteredFilePaths
 
-  print "Output paths"
-  pPrint outputFilePaths
+  let astDatas = zipWith (\filePath fileData -> generateAST inputDir filePath fileData) filteredFilePaths fileDatas
 
-  fileDatas <- mapM (readFile) inputFilePaths
-
-
-  let astDatas = zipWith (\filePath fileData -> generateAST (inputDir ++ filePath fileData)) filteredFilePaths fileDatas
-
-  -- Combines all class symbol tables
+  -- Combines all class symbol tables for all ASTs
   let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
-
-  --pPrint symbolTable
 
   let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatas
 
-  pPrint compiledCodes
-
-  map (\ compiledCode -> writeFile (outputDir ++ location compiledCode) (code compiledCode)) compiledCodes
+  sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ location compiledCode) ++ ".java") (code compiledCode)) compiledCodes
 
   return ()
 
-
---inputToOutputFilePath inputFile outputDir =
 
 allFilesIn dir = getDirectoryContents dir
 
@@ -103,10 +88,10 @@ generateMissingDirectories inputDir outputDir = do
   return ()
 
 
-generateAST :: FilePath -> String -> ASTData
-generateAST inputFile code = do
+generateAST :: FilePath -> FilePath -> String -> ASTData
+generateAST inputDir inputFile code = do
 
-   let parseResult = parseTree (Split.splitOn "/" $ takeDirectory inputFile) code
+   let parseResult = parseTree (Split.splitOn "/" $ (inputDir ++ (takeDirectory inputFile))) code
    let symbolTable = SymbolTable [generateClassSymbolTable parseResult]
 
    let ast = case parseResult of
@@ -114,80 +99,3 @@ generateAST inputFile code = do
                Right x -> x
 
    ASTData inputFile symbolTable ast
-
-{--
-generateASTs :: String -> String -> SymbolTable -> IO [Expr]
-generateASTs inputDir outputDir symbolTable = do
-  createDirectoryIfMissing True outputDir
-  allFilesIn inputDir >>= foldM (\inputLoc ->
-    if (takeExtension inputLoc == "")
-      then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/") symbolTable
-      else
-        if(takeExtension inputLoc == ".cobalt")
-        then [(compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java") symbolTable)]
-        else return ()
-    )
-  return ()
-
-
-generateAST :: String -> String -> SymbolTable -> IO Expr
-generateAST inputFile outputFile classSymbolTable = do
-   fileData <- readFile inputFile
-
-   let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
-   --let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
-
-   pPrint "Generating symbol table"
-
-   -- todo this should combine the found class symbol table with the current symbol table
-   let symbolTable = SymbolTable [generateClassSymbolTable compiledTree]
-
-   let generatedCode = compileAST compiledTree symbolTable
-   pPrint symbolTable
-   pPrint generatedCode
-
-   --pPrint compiledTree
-  -- parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
-
-   writeFile outputFile generatedCode
---}
-
-{--
-
-
-compileDir :: String -> String -> SymbolTable -> IO ()
-compileDir inputDir outputDir symbolTable = do
-  createDirectoryIfMissing True outputDir
-  allFilesIn inputDir >>= mapM (\inputLoc ->
-    if (takeExtension inputLoc == "")
-      then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/") symbolTable
-      else
-        if(takeExtension inputLoc == ".cobalt")
-        then (compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java") symbolTable)
-        else putStrLn ""
-    )
-  putStrLn ""
-
-
-compile :: String -> String -> SymbolTable -> IO ()
-compile inputFile outputFile classSymbolTable = do
-   fileData <- readFile inputFile
-
-   let compiledTree = parseTree (Split.splitOn "/" $ takeDirectory inputFile) fileData
-   --let compiledString = parseString (Split.splitOn "/" $ takeDirectory inputFile) fileData
-
-   pPrint "Generating symbol table"
-
-   -- todo this should combine the found class symbol table with the current symbol table
-   let symbolTable = SymbolTable [generateClassSymbolTable compiledTree]
-
-   let generatedCode = compileAST compiledTree symbolTable
-   pPrint symbolTable
-   pPrint generatedCode
-
-   --pPrint compiledTree
-  -- parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
-
-   writeFile outputFile generatedCode
-
---}
