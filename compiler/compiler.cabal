@@ -36,7 +36,7 @@ library
       src/cobalt/error_checking,
       src/cobalt/compiler
   build-depends:
-      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, process
+      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, process, directory-tree, bytestring
   exposed-modules:
       BaseParser
       ABExprParser
