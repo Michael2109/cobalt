@@ -46,7 +46,7 @@ compile inputDir outputDir = do
   generateMissingDirectories inputDir outputDir
   filePaths <- traverseDir inputDir ""
 
-  let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (takeExtension filePath == ".cobalt")) filePaths
+  let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) filePaths
 
   fileDatas <- mapM (\filePath -> readFile $ (inputDir ++ filePath)) filteredFilePaths
 

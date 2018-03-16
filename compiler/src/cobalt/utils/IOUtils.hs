@@ -30,7 +30,7 @@ traverseDir inputDir top = do
   ds <- getDirectoryContents $ inputDir ++ top
   paths <- forM (ds) $ \d -> do
     let path = top </> d
-    if takeExtension (inputDir ++ path) == ""
+    if endsWith "" (inputDir ++ path)
       then traverseDir (inputDir) path
       else return [path]
   return (concat paths)
@@ -42,7 +42,7 @@ generateMissingDirectories inputDir outputDir = do
   allFilesIn inputDir >>= mapM (\inputLoc ->
     do
       createDirectoryIfMissing True outputDir
-      when (takeExtension inputLoc == "") $ do
+      when (endsWith "" inputLoc) $ do
         generateMissingDirectories (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
       )
   return ()
