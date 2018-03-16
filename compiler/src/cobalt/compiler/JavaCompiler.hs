@@ -13,7 +13,6 @@ import IOUtils
 
 compileJavaDir :: String -> String -> String -> IO()
 compileJavaDir classpath inputDir outputDir = do
-  createDirectoryIfMissing True outputDir
   cleanDir (endsWith ".class") outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
     if (endsWith "" inputLoc)

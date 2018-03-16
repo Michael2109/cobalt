@@ -11,6 +11,8 @@ main = do
     let classOutputDir = "cobalt_generated_classes/"
     let javaClasspath = "cobalt_generated_java/"
 
+    cleanDir (endsWith ".java") javaOutputDir
+
     putStrLn "Compiling - Cobalt -> Java"
     compile inputDir javaOutputDir
     putStrLn "Complete."
