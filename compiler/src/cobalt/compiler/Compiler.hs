@@ -23,48 +23,70 @@ import CodeGenerator
 data ASTData = ASTData FilePath SymbolTable Expr
   deriving (Show)
 
+
+extractASTFilePath :: ASTData -> FilePath
+extractASTFilePath (ASTData filePath _ _) = filePath
+
 extractASTSymbolTable :: ASTData -> SymbolTable
 extractASTSymbolTable (ASTData _ symbolTable _) = symbolTable
+
+extractASTExpr :: ASTData -> Expr
+extractASTExpr (ASTData _ _ expr) = expr
+
 
 generateClassSymbolTable ast =
   case ast of
    Left  e -> ClassSymbolTable "ERROR" [] []
    Right x -> genClassSymbolTable x
 
-compileTest :: String -> String -> IO ()
-compileTest inputDir outputDir = do
+compile :: String -> String -> IO ()
+compile inputDir outputDir = do
 
-  generateMissingDirectories inputDir outputDir
-  filePaths <- (traverseDir inputDir)
+  --generateMissingDirectories inputDir outputDir
+  filePaths <- traverseDir inputDir ""
 
   let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (takeExtension filePath == ".cobalt")) filePaths
-  fileDatas <- mapM (readFile) filteredFilePaths
+  --let inputFilePaths = map (\filePath -> inputDir ++ filePath) filteredFilePaths
+  --let outputFilePaths = map (\filePath -> outputDir ++ filePath) filteredFilePaths
 
-  let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredFilePaths fileDatas
+  print "Input paths"
+  pPrint inputFilePaths
+
+  print "Output paths"
+  pPrint outputFilePaths
+
+  fileDatas <- mapM (readFile) inputFilePaths
+
+
+  let astDatas = zipWith (\filePath fileData -> generateAST (inputDir ++ filePath fileData)) filteredFilePaths fileDatas
 
   -- Combines all class symbol tables
-  let symbolTable = map (extractASTSymbolTable) astDatas
+  let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
-  pPrint symbolTable
+  --pPrint symbolTable
 
-  --let generatedCode = compileAST compiledTree symbolTable
+  let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatas
+
+  pPrint compiledCodes
+
+  map (\ compiledCode -> writeFile (outputDir ++ location compiledCode) (code compiledCode)) compiledCodes
 
   return ()
 
 
-
+--inputToOutputFilePath inputFile outputDir =
 
 allFilesIn dir = getDirectoryContents dir
 
 -- | Traverse from 'top' directory and return all the files by
 -- filtering out the 'exclude' predicate.
-traverseDir :: FilePath -> IO [FilePath]
-traverseDir top = do
-  ds <- getDirectoryContents top
+traverseDir :: FilePath -> FilePath -> IO [FilePath]
+traverseDir inputDir top = do
+  ds <- getDirectoryContents $ inputDir ++ top
   paths <- forM (ds) $ \d -> do
     let path = top </> d
-    if takeExtension path == ""
-      then traverseDir path
+    if takeExtension (inputDir ++ path) == ""
+      then traverseDir (inputDir) path
       else return [path]
   return (concat paths)
 
@@ -130,6 +152,8 @@ generateAST inputFile outputFile classSymbolTable = do
    writeFile outputFile generatedCode
 --}
 
+{--
+
 
 compileDir :: String -> String -> SymbolTable -> IO ()
 compileDir inputDir outputDir symbolTable = do
@@ -166,3 +190,4 @@ compile inputFile outputFile classSymbolTable = do
 
    writeFile outputFile generatedCode
 
+--}
