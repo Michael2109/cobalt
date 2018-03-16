@@ -294,7 +294,7 @@ instance CodeGen Expr where
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
-    genCode (ThisVar varName) symbolTable currentState = getDebug "ThisVar" ++ show varName ++ "this." ++ show varName
+    genCode (ThisVar varName) symbolTable currentState = getDebug "ThisVar" ++ "this." ++ show varName
     genCode (ThisMethodCall methodName args) symbolTable currentState = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (SuperMethodCall objectName methodName args) symbolTable currentState = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = do
