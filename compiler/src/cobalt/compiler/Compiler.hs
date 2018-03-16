@@ -26,15 +26,13 @@ generateClassSymbolTable ast =
 
 compileDir :: String -> String -> SymbolTable -> IO()
 compileDir inputDir outputDir symbolTable = do
-  let javaExtension = ".java"
-
   createDirectoryIfMissing True outputDir
-  cleanDir (endsWith javaExtension) outputDir
+  cleanDir (endsWith ".java") outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
-    if (takeExtension inputLoc == "")
+    if (endsWith "" inputLoc)
       then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/") symbolTable
       else
-        if(takeExtension inputLoc == ".cobalt")
+        if(endsWith ".cobalt" inputLoc)
         then (compile (inputDir ++ inputLoc) (outputDir ++ (dropExtension inputLoc) ++ ".java") symbolTable)
         else putStrLn ""
     )

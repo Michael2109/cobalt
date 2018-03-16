@@ -12,7 +12,7 @@ endsWith extension file = takeExtension file == extension
 cleanDir :: (FilePath -> Bool) -> String -> IO()
 cleanDir extensionPredicate directory = do
   allFilesIn directory >>= mapM (\inputLoc ->
-    if (takeExtension inputLoc == "")
+    if (endsWith "" inputLoc)
       then cleanDir extensionPredicate (directory ++ inputLoc ++ "/")
       else
         if(extensionPredicate inputLoc)
