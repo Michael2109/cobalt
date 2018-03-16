@@ -9,13 +9,14 @@ import Data.List
 import System.Directory
 import System.FilePath.Posix
 import System.Process
-
-
-allFilesIn dir = getDirectoryContents dir
+import IOUtils
 
 compileJavaDir :: String -> String -> String -> IO()
 compileJavaDir classpath inputDir outputDir = do
+  let classExtension = ".class"
+
   createDirectoryIfMissing True outputDir
+  cleanDir (endsWith classExtension) outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
     if (takeExtension inputLoc == "")
       then compileJavaDir classpath (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")

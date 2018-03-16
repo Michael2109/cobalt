@@ -17,18 +17,19 @@ import ABBlock
 import Parser
 import SymbolTable
 import CodeGenerator
-
+import IOUtils
 
 generateClassSymbolTable ast =
   case ast of
    Left  e -> ClassSymbolTable "ERROR" [] []
    Right x -> genClassSymbolTable x
 
-allFilesIn dir = getDirectoryContents dir
-
 compileDir :: String -> String -> SymbolTable -> IO()
 compileDir inputDir outputDir symbolTable = do
+  let javaExtension = ".java"
+
   createDirectoryIfMissing True outputDir
+  cleanDir (endsWith javaExtension) outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
     if (takeExtension inputLoc == "")
       then compileDir (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/") symbolTable
@@ -60,4 +61,3 @@ compile inputFile outputFile classSymbolTable = do
   -- parsePrint (Split.splitOn "/" $ takeDirectory inputFile) fileData
 
    writeFile outputFile generatedCode
-

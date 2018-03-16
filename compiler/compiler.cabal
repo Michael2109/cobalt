@@ -35,6 +35,7 @@ library
       src/cobalt/parsers,
       src/cobalt/error_checking,
       src/cobalt/compiler
+      src/cobalt/utils
   build-depends:
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, process
   exposed-modules:
@@ -50,8 +51,9 @@ library
       ErrorChecker
       SymbolTable
       CodeGenerator
+      IOUtils
   other-modules:
-      
+
   default-language: Haskell2010
 
 executable compiler-exe
@@ -63,7 +65,7 @@ executable compiler-exe
       base >=4.7 && <5,
       compiler
   other-modules:
-      
+
   default-language: Haskell2010
 
 test-suite compiler-test
