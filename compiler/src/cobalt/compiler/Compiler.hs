@@ -3,7 +3,7 @@ Module      : Compiler
 Description : Functions for compiling and generating code.
 There are functions for compiling directories or individual strings etc.
 -}
-module Compiler where
+module Compiler (module Compiler, module IOUtils) where
 
 import Control.Monad
 import Data.Text.Internal.Lazy
@@ -18,6 +18,7 @@ import Block
 import Parser
 import SymbolTable
 import CodeGenerator
+import IOUtils
 
 
 data ASTData = ASTData FilePath SymbolTable Expr
@@ -45,7 +46,7 @@ compile inputDir outputDir = do
   generateMissingDirectories inputDir outputDir
   filePaths <- traverseDir inputDir ""
 
-  let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (takeExtension filePath == ".cobalt")) filePaths
+  let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) filePaths
 
   fileDatas <- mapM (\filePath -> readFile $ (inputDir ++ filePath)) filteredFilePaths
 
@@ -59,34 +60,6 @@ compile inputDir outputDir = do
   sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ location compiledCode) ++ ".java") (code compiledCode)) compiledCodes
 
   return ()
-
-
-allFilesIn dir = getDirectoryContents dir
-
--- | Traverse from 'top' directory and return all the files by
--- filtering out the 'exclude' predicate.
-traverseDir :: FilePath -> FilePath -> IO [FilePath]
-traverseDir inputDir top = do
-  ds <- getDirectoryContents $ inputDir ++ top
-  paths <- forM (ds) $ \d -> do
-    let path = top </> d
-    if takeExtension (inputDir ++ path) == ""
-      then traverseDir (inputDir) path
-      else return [path]
-  return (concat paths)
-
-
-
-generateMissingDirectories :: String -> String -> IO()
-generateMissingDirectories inputDir outputDir = do
-  allFilesIn inputDir >>= mapM (\inputLoc ->
-    do
-      createDirectoryIfMissing True outputDir
-      when (takeExtension inputLoc == "") $ do
-        generateMissingDirectories (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
-    )
-  return ()
-
 
 generateAST :: FilePath -> FilePath -> String -> ASTData
 generateAST inputDir inputFile code = do

@@ -9,18 +9,16 @@ import Data.List
 import System.Directory
 import System.FilePath.Posix
 import System.Process
-
-
-allFilesIn dir = getDirectoryContents dir
+import IOUtils
 
 compileJavaDir :: String -> String -> String -> IO()
 compileJavaDir classpath inputDir outputDir = do
-  createDirectoryIfMissing True outputDir
+  cleanDir (endsWith ".class") outputDir
   allFilesIn inputDir >>= mapM (\inputLoc ->
-    if (takeExtension inputLoc == "")
+    if (endsWith "" inputLoc)
       then compileJavaDir classpath (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
       else
-        if(takeExtension inputLoc == ".java")
+        if(endsWith ".java" inputLoc)
         then (compileJava classpath outputDir (inputDir ++ (dropExtension inputLoc) ++ ".java"))
         else putStrLn ""
     )
