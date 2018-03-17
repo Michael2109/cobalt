@@ -21,7 +21,7 @@ testClassParser = do
         "class Test"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" (Nothing) Nothing Nothing [] [] [] [])
+    (Class [] "Test" (Nothing) Nothing [] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -32,7 +32,7 @@ testClassParserExtends = do
         "class Test extends ParentClass"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" (Nothing) (Just "ParentClass") Nothing [] [] [] [])
+    (Class [] "Test" (Nothing) (Just "ParentClass") [] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -44,7 +44,7 @@ testClassParserImplements = do
         "class Test implements Interface"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" (Nothing) Nothing (Just "Interface") [] [] [] [])
+    (Class [] "Test" (Nothing) Nothing ["Interface"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -56,7 +56,7 @@ testClassParserExtendsImplements = do
         "class Test extends ParentClass implements Interface"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" (Nothing) (Just "ParentClass") (Just "Interface") [] [] [] [])
+    (Class [] "Test" (Nothing) (Just "ParentClass") ["Interface"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -69,7 +69,7 @@ testClassParserImports = do
         ]
   let imports = [Import ["dir", "sub_dir", "ClassName"]]
   TestCase $ assertEqual code
-    (Class [] "Test" (Nothing) (Just "ParentClass") (Just "Interface") imports [] [] [])
+    (Class [] "Test" (Nothing) (Just "ParentClass") ["Interface"] imports [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -100,7 +100,7 @@ testClassParserModifierBlock = do
   let imports = [Import ["dir", "sub_dir", "ClassName"]]
   let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [Argument $ ArithExpr (IntConst 5)]]]
   TestCase $ assertEqual code
-    (Class [] "Test" (Nothing) (Just "ParentClass") (Just "Interface") imports modifierBlocks [] [])
+    (Class [] "Test" (Nothing) (Just "ParentClass") ["Interface"] imports modifierBlocks [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
