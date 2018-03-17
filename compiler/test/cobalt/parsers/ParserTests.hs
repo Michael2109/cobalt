@@ -87,7 +87,9 @@ parserTestList = TestList [
         testClassParser,
         testClassParserExtends,
         testClassParserImplements,
+        testClassParserImplementsMultiple,
         testClassParserExtendsImplements,
+        testClassParserExtendsImplementsMultiple,
         testClassParserImports,
         testClassParserImportsFail,
         testClassParserModifierBlock,
@@ -101,5 +103,3 @@ parserTestList = TestList [
 
 
        ]
-
-

@@ -49,6 +49,16 @@ testClassParserImplements = do
       Left  e -> Error
       Right x -> x)
 
+testClassParserImplementsMultiple :: Test
+testClassParserImplementsMultiple = do
+  let code = unlines [
+        "class Test implements Interface1, Interface2"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Nothing) Nothing ["Interface1","Interface2"] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
 
 testClassParserExtendsImplements :: Test
 testClassParserExtendsImplements = do
@@ -57,6 +67,17 @@ testClassParserExtendsImplements = do
         ]
   TestCase $ assertEqual code
     (Class [] "Test" (Nothing) (Just "ParentClass") ["Interface"] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testClassParserExtendsImplementsMultiple :: Test
+testClassParserExtendsImplementsMultiple = do
+  let code = unlines [
+        "class Test extends ParentClass implements Interface1, Interface2, Interface3"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Nothing) (Just "ParentClass") ["Interface1","Interface2","Interface3"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
