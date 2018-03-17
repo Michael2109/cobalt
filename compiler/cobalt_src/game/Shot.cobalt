@@ -1,8 +1,10 @@
 import game.Sprite
 
-class Shot(x: int, y: int) extends Sprite
+class Shot(x: int, y: int)
 
 private
+  val width: int = 10
+  val height: int = 10
   val VSpace: int = 1
   val HSpace: int = 6
 

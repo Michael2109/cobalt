@@ -1,11 +1,13 @@
 import java.awt.event.KeyEvent
 
-class Player(x: int, y: int) extends Sprite
+class Player(x: int, y: int)
 
 private
   val startX: int = 270
   val startY: int = 280
   val width: int = 32
+  var dx: int = 0
+  var dy: int = 0
 
 initPlayer()
 
@@ -21,8 +23,10 @@ act =
   if(x < 2)
     x = 2
 
-  if(x > Constants.BoardWidth - 2 * width)
-    x = Constants.BoardWidth - 2 * width
+  val boardWidth: int = Constants.BoardWidth
+
+  if(x > boardWidth - 2 * width)
+    x = boardWidth - 2 * width
 
 keyPressed : KeyEvent -> void
 keyPressed e =

@@ -4,14 +4,14 @@ import Test.HUnit
 
 import SymbolTable
 
-generateClassSymbolTable1 = ClassSymbolTable "ClassName"
+generateClassSymbolTable1 = ClassSymbolTable "ClassName" ClassType
   [("x", "int"),
    ("y", "int"),
    ("z", "double"),
    ("obj", "Object")]
    [("method1", MethodSymbolTable "int" [("i", "int"), ("j", "int"), ("obj", "Object")])]
 
-generateClassSymbolTable2 = ClassSymbolTable "ClassName"
+generateClassSymbolTable2 = ClassSymbolTable "ClassName" ClassType
   [("a", "int"),
    ("b", "int"),
    ("c", "double"),
@@ -90,4 +90,6 @@ testSymbolTableGetClassSymbolTable :: Test
 testSymbolTableGetClassSymbolTable = do
   TestCase $ assertEqual "Get class symbol table from symbol table"
     "ClassName" $
-    className (getClassSymbolTable generateSymbolTable1 "ClassName")
+    case getClassSymbolTable generateSymbolTable1 "ClassName" of
+      Just a -> className (a)
+      Nothing -> ""

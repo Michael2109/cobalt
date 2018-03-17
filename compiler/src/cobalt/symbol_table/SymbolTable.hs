@@ -47,45 +47,63 @@ data CurrentState
 
 extractReturnType :: SymbolTable -> String -> String -> String
 extractReturnType symbolTable className mName = do
-  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (getClassSymbolTable symbolTable className) )
+  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (classSymbolTable) )
   if null matchingMethods
     then error ("No method found: " ++ className ++ "::" ++ mName)
     else returnType $ matchingMethods!!0
-
+  where
+      classSymbolTable = case getClassSymbolTable symbolTable className of
+        Just a -> a
+        Nothing -> error ("No class found: " ++ className)
 
 extractMethodArgs :: SymbolTable -> String -> String -> [(String, String)]
 extractMethodArgs symbolTable className mName = do
-  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (getClassSymbolTable symbolTable className) )
+  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (classSymbolTable) )
   if null matchingMethods
     then error ("No method found: " ++ className ++ "::" ++ mName)
     else methodArgs $ matchingMethods!!0
+  where
+    classSymbolTable = case getClassSymbolTable symbolTable className of
+      Just a -> a
+      Nothing -> error ("No class found: " ++ className)
 
 methodExists :: SymbolTable -> String -> String -> Bool
 methodExists symbolTable className mName = do
-  let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (getClassSymbolTable symbolTable className) )
-  if null matchingMethods
-    then False
-    else True
+  case getClassSymbolTable symbolTable className of
+    Just a -> do
+      let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (a) )
+      if null matchingMethods
+        then False
+        else True
+    Nothing -> False
+
 
 instanceVariableExists :: SymbolTable -> String -> String -> Bool
 instanceVariableExists symbolTable className varName = do
-  elem varName (map fst (publicVariables (getClassSymbolTable symbolTable className)))
+  case getClassSymbolTable symbolTable className of
+    Just a -> elem varName (map fst (publicVariables (a)))
+    Nothing -> False
 
 methodParamExists :: SymbolTable -> String -> String -> String -> Bool
 methodParamExists symbolTable className methodName varName = do
-  let methodList = map (snd) (filter (\x -> fst x == (methodName)) (methods (getClassSymbolTable symbolTable className)))
-  if null methodList
-    then False
-    else if (elem (varName) (map fst (methodArgs (methodList!!0))))
-      then True
-      else False
+  case getClassSymbolTable symbolTable className of
+    Just a ->
+      do
+        let methodList = map (snd) (filter (\x -> fst x == (methodName)) (methods (a)))
+        if null methodList
+          then False
+          else if (elem (varName) (map fst (methodArgs (methodList!!0))))
+            then True
+            else False
+    Nothing -> False
 
-getClassSymbolTable :: SymbolTable -> String -> ClassSymbolTable
+
+getClassSymbolTable :: SymbolTable -> String -> Maybe (ClassSymbolTable)
 getClassSymbolTable symbolTable symbolTableClassName = do
   let matchingClasses = filter (\x -> symbolTableClassName == (className x)) (classSymbolTables symbolTable)
   if null matchingClasses
-    then error ("Class not found: " ++ symbolTableClassName)
-    else matchingClasses!!0
+    then Nothing
+    else Just $ matchingClasses!!0
 
 
 -- todo combine if the class names are the same

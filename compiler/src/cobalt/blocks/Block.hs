@@ -312,15 +312,23 @@ instance CodeGen Expr where
       --else if(not (elem objectName (map (fst) $ publicVariables symbolTable ))) then getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "ObjectMethodCall" ++ objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
       objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
-    genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++className ++ "." ++ varName
+    genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++
+      if(instanceVariableExists symbolTable (currentClassName currentState) varName)
+        then varName ++ "()"
+        else if(instanceVariableExists symbolTable className varName)
+          then className ++ ".getInstance()." ++ varName ++ "()"
+          else className ++ "." ++ varName
     genCode (BooleanExpr expr) symbolTable currentState = getDebug "BooleanExpr" ++ genCode expr symbolTable currentState
     genCode (Identifier name) symbolTable currentState = do
+      if(instanceVariableExists symbolTable (currentClassName currentState) name)
+        then name ++ "()"
+        else name
       -- todo
       --let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
       --if(length methodList > 0)
       --then if (elem (name) (map fst (methodArgs (methodList!!0)))) then getDebug "Identifier" ++ name ++ "" else getDebug "Identifier" ++ (name)
       --else getDebug "Identifier" ++ name
-      name
+
     genCode (Annotation name) symbolTable currentState = getDebug "Annotation" ++ "@" ++ name
     genCode (ModifierBlock exprs) symbolTable currentState = getDebug "ModifierBlock" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)
     genCode (This) symbolTable currentState = getDebug "This" ++ "this"
