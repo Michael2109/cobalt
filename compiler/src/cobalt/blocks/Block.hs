@@ -76,13 +76,13 @@ data Expr
   | Error
 
   -- Module specific
-  | Object [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
+  | Object [String]String (Maybe [Expr]) (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
 
   -- Class specific
-  | Class [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
+  | Class [String]String (Maybe [Expr]) (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
 
   -- Trait specific
-  | Trait [String]String (Maybe [Expr]) (Maybe String) (Maybe String) [Expr] [Expr] [Expr] [Expr]
+  | Trait [String]String (Maybe [Expr]) (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   deriving (Eq)
 
 instance ErrorCheck Expr where
@@ -144,8 +144,8 @@ instance CodeGen Expr where
               Just a -> "extends " ++ a
               Nothing -> ""
           implementSection = case interfaces of
-              Just a -> "implements " ++ a
-              Nothing -> ""
+              [] -> ""
+              ws -> "implements " ++ (intercalate "," ws)
     genCode (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable currentState =
         getDebug "interface " ++
         (if(length packageLocs > 0)
@@ -190,8 +190,8 @@ instance CodeGen Expr where
               Just a -> "extends " ++ a
               Nothing -> ""
           implementSection = case interfaces of
-              Just a -> "implements " ++ a
-              Nothing -> ""
+              [] -> ""
+              ws -> "implements " ++ (intercalate "," ws)
     genCode (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable currentState =
         getDebug "Module" ++
         (if(length packageLocs > 0)
@@ -222,8 +222,8 @@ instance CodeGen Expr where
               Just a -> "extends " ++ a
               Nothing -> ""
           implementSection = case interfaces of
-              Just a -> "implements " ++ a
-              Nothing -> ""
+              [] -> ""
+              ws -> "implements " ++ (intercalate "," ws)
     genCode (Import locs) symbolTable currentState = getDebug "Import" ++ "import " ++ intercalate "." locs ++ ";"
     genCode (GlobalVar modifier final static varType varName exprs) symbolTable currentState =
       getDebug "GlobalVar" ++

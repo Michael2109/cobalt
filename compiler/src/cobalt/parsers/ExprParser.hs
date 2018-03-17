@@ -46,7 +46,7 @@ objectParser relativeDir = try $ L.nonIndented scn p
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
-      interfaces <- optional (identifier)
+      interfaces <- sepBy identifier (symbol ",")
       modifierBlocks <- many (try (modifierBlockParser True))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (functionParser name True <|> expr')
@@ -64,7 +64,7 @@ classParser relativeDir = try $ L.nonIndented scn p
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
-      interfaces <- optional (identifier)
+      interfaces <- sepBy identifier (symbol ",")
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (functionParser name False <|> expr')
@@ -82,12 +82,12 @@ traitParser relativeDir = try $ L.nonIndented scn p
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
-      interfaces <- optional (identifier)
+      interfaces <- sepBy identifier (symbol ",")
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (functionParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Trait (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 importParser :: Parser Expr
 importParser = try $ L.nonIndented scn p
