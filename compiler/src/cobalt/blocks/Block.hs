@@ -11,7 +11,6 @@ import Text.Show.Functions
 import Data.Char
 import Data.Maybe
 
-import BlockUtils
 import ABBlock
 import SymbolTable
 
