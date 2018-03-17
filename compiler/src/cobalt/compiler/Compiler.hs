@@ -37,7 +37,7 @@ extractASTExpr (ASTData _ _ expr) = expr
 
 generateClassSymbolTable ast =
   case ast of
-   Left  e -> ClassSymbolTable "ERROR" [] []
+   Left  e -> ClassSymbolTable "ERROR" NoType [] []
    Right x -> genClassSymbolTable x
 
 compile :: String -> String -> IO ()

@@ -2,7 +2,6 @@ import javax.swing.JFrame
 
 class Frame extends JFrame
 
-val game: Game = new Game()
 add(new Board())
 setTitle("Game")
 setResizable(False)

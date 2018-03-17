@@ -90,14 +90,17 @@ instance ErrorCheck Expr where
   errorCheck (_) = "<Unimplemented error check>"
 
 instance SymbolTableGen Expr where
-  genClassSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name [] []) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+  genClassSymbolTable (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ClassType [] []) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+  genClassSymbolTable (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name TraitType [] []) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+  genClassSymbolTable (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ObjectType [] []) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+
   genClassSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineClassSymbolTable x y) (map genClassSymbolTable exprs)
-  genClassSymbolTable (GlobalVar modifier final static varType varName exprs) = (ClassSymbolTable "" [(show varName, show varType)] [])
-  genClassSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
-  genClassSymbolTable (_) = ClassSymbolTable "" [] []
+  genClassSymbolTable (GlobalVar modifier final static varType varName exprs) = (ClassSymbolTable "" NoType [(show varName, show varType)] [])
+  genClassSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" NoType [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
+  genClassSymbolTable (_) = ClassSymbolTable "" NoType [] []
 
 instance Show Expr where
-  show (e) = genCode e (SymbolTable [(ClassSymbolTable "" [] [])]) (CurrentState "" "")
+  show (e) = genCode e (SymbolTable [(ClassSymbolTable "" NoType [] [])]) (CurrentState "" "")
 
 instance CodeGen Expr where
     genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable currentState =
@@ -200,6 +203,10 @@ instance CodeGen Expr where
         ++
         intercalate "\n" (map (\x -> genCode x symbolTable currentState) imports) ++
         "public final class " ++ name ++ " " ++ extendSection ++ " " ++ implementSection ++ "{\n" ++
+
+        "private final static " ++ name ++ " instance = new " ++ name ++ "();" ++
+        "public final static " ++ name ++ " getInstance(){return instance;}" ++
+
         intercalate "\n" (map (\x -> genCode x symbolTable currentState) modifierBlocks) ++
 
         intercalate " " (map (\x -> "private final " ++ genCode x symbolTable currentState ++ ";") paramList) ++
@@ -227,11 +234,11 @@ instance CodeGen Expr where
     genCode (Import locs) symbolTable currentState = getDebug "Import" ++ "import " ++ intercalate "." locs ++ ";"
     genCode (GlobalVar modifier final static varType varName exprs) symbolTable currentState =
       getDebug "GlobalVar" ++
-      "private " ++ (if (static) then "static " else "") ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ ";" ++ -- ++ "=" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs) ++ ";" ++
+      "private " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ ";" ++ -- ++ "=" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs) ++ ";" ++
       -- Bool to store if the value has been set yet
-      "private " ++ (if (static) then "static " else "") ++ "boolean " ++ genCode varName symbolTable currentState ++ "Bool=false;" ++
+      "private boolean " ++ genCode varName symbolTable currentState ++ "Bool=false;" ++
       -- Create getter method
-      modifier ++ (if (static) then " static " else "") ++ " " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ "(){ if(!" ++ genCode varName symbolTable currentState ++ "Bool){" ++ genCode varName symbolTable currentState ++ "Bool=true;" ++ genCode varName symbolTable currentState ++ "=" ++ intercalate " " (map (\e -> genCode e symbolTable currentState ++ ";") exprs)  ++ "}return " ++ genCode varName symbolTable currentState ++ ";}" ++
+      modifier ++ " " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ "(){ if(!" ++ genCode varName symbolTable currentState ++ "Bool){" ++ genCode varName symbolTable currentState ++ "Bool=true;" ++ genCode varName symbolTable currentState ++ "=" ++ intercalate " " (map (\e -> genCode e symbolTable currentState ++ ";") exprs)  ++ "}return " ++ genCode varName symbolTable currentState ++ ";}" ++
       -- If it isn't final create a setter method
       if(not final)
         then modifier ++ " void " ++ genCode varName symbolTable currentState ++ "_(final " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ "){this." ++ genCode varName symbolTable currentState ++ "Bool=true;" ++ "this." ++ genCode varName symbolTable currentState ++ "=" ++ genCode varName symbolTable currentState ++ ";}"

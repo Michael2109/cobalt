@@ -421,7 +421,7 @@ expr' :: Parser Expr
 expr' = try dataParser
   <|> booleanParser
 
-  -- If else
+  <|> forLoopParser
   <|> ifStmtParser
   <|> elseIfStmtParser
   <|> elseStmtParser

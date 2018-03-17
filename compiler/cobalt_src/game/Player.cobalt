@@ -21,8 +21,8 @@ act =
   if(x < 2)
     x = 2
 
-  if(x > BoardWidth - 2 * width)
-    x = BoardWidth - 2 * width
+  if(x > Constants.BoardWidth - 2 * width)
+    x = Constants.BoardWidth - 2 * width
 
 keyPressed : KeyEvent -> void
 keyPressed e =

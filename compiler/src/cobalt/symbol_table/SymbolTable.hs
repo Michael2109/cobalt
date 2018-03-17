@@ -14,17 +14,22 @@ data ClassSymbolTable
     = ClassSymbolTable
       {
           className       :: String -- class name
+        , classType       :: ClassType
         , publicVariables :: [(String, String)] -- (variable name, variable type name) list of variable
         , methods         :: [(String, MethodSymbolTable)] -- (method name, method symbol) list of methods
       }
       deriving (Eq)
+
+-- Class, Trait, Object
+data ClassType = ClassType | TraitType | ObjectType | NoType
+  deriving (Eq)
 
 
 instance Show SymbolTable where
     show (SymbolTable classSymbolTables) = intercalate "" (map show classSymbolTables)
 
 instance Show ClassSymbolTable where
-    show (ClassSymbolTable cName vars methods) = show cName ++ intercalate " " (map show vars) ++ intercalate " " (map show methods)
+    show (ClassSymbolTable cName cType vars methods) = show cName ++ intercalate " " (map show vars) ++ intercalate " " (map show methods)
 
 data MethodSymbolTable = MethodSymbolTable {
       returnType :: String
@@ -97,10 +102,10 @@ combineSymbolTableList list = SymbolTable []
 
 
 combineClassSymbolTable :: ClassSymbolTable -> ClassSymbolTable -> ClassSymbolTable
-combineClassSymbolTable a b = ClassSymbolTable (className a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
+combineClassSymbolTable a b = ClassSymbolTable (className a) (classType a) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
 
 combineClassSymbolTableList :: [ClassSymbolTable] -> ClassSymbolTable
 combineClassSymbolTableList list = do
   if length list > 0
     then foldl1 (\x y -> combineClassSymbolTable x y) list
-    else ClassSymbolTable "" [] []
+    else ClassSymbolTable "" ClassType [] []
