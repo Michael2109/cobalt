@@ -111,7 +111,6 @@ instance CodeGen Expr where
         intercalate "\n" (map (\x -> genCode x symbolTable currentState) imports) ++
         "public class " ++ name ++ " " ++ extendSection ++ " " ++ implementSection ++ "{\n" ++
         intercalate "\n" (map (\x -> genCode x symbolTable currentState) modifierBlocks) ++
-
         intercalate " " (map (\x -> "private " ++ genCode x symbolTable currentState ++ ";") params) ++
 
        -- Create getter methods for constructor params
@@ -157,9 +156,7 @@ instance CodeGen Expr where
         "public " ++ name ++ "("++ intercalate ", " (map (\x -> genCode x symbolTable currentState) params) ++"){" ++
 
         intercalate " " (map (\x -> "this." ++ genCode (varName x) symbolTable currentState ++ "=" ++ genCode (varName x) symbolTable currentState ++ ";") params) ++
-
         intercalate " " (map (\x -> genCode x symbolTable currentState) constructorExprs) ++ "}" ++
-
         intercalate "\n" (map (\x -> genCode x symbolTable currentState) (filter (not . isImportStatement) bodyArray))  ++
         "}"
         where
@@ -233,10 +230,6 @@ instance CodeGen Expr where
     genCode (FunctionCall name exprs) symbolTable currentState = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map (\x -> genCode x symbolTable currentState) exprs)) ++ ");"
     genCode (Type b) symbolTable currentState = getDebug "Type" ++ genCode b symbolTable currentState
     genCode (Argument b) symbolTable currentState = getDebug "Argument" ++ genCode b symbolTable currentState
-        -- let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
-        --if(length methodList > 0)
-        --then if (elem (show b) (map fst (methodArgs (methodList!!0)))) then  getDebug "Argument" ++ show b else  getDebug "Argument" ++ (show b ++ "")
-        --else  getDebug "Argument" ++ show b
     genCode (ArgumentType b) symbolTable currentState = getDebug "ArgumentType" ++ b
     genCode (ReturnType b) symbolTable currentState = getDebug "ReturnType" ++ b
     genCode (AssignArith mutable vType name value) symbolTable currentState = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ genCode vType symbolTable currentState ++ " " ++ name ++ "=" ++ genCode value symbolTable currentState ++ ";"
@@ -275,13 +268,7 @@ instance CodeGen Expr where
     genCode (ThisVar varName) symbolTable currentState = getDebug "ThisVar" ++ "this." ++ show varName
     genCode (ThisMethodCall methodName args) symbolTable currentState = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (SuperMethodCall objectName methodName args) symbolTable currentState = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
-    genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = do
-      -- todo
-      --let methodList = map (snd) (filter (\x -> fst x == (method currentState)) (methods symbolTable))
-      --if(length methodList > 0)
-      --then (if (elem objectName (map fst (methodArgs (methodList!!0))) || not (elem objectName (map (fst) $ publicVariables symbolTable ))) then  getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "Argument" ++ (objectName ++ "()") ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");")
-      --else if(not (elem objectName (map (fst) $ publicVariables symbolTable ))) then getDebug "ObjectMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");" else getDebug "ObjectMethodCall" ++ objectName ++ "()." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
-      objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
+    genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
     genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++
       case (instanceVariableType symbolTable (currentClassName currentState) className) of
