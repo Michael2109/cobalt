@@ -32,24 +32,24 @@ data Expr
   | ArrayElementSelect String
   | ArrayType String
   | ArrayValues [String]
-  | AssignArith Bool Expr String Expr
   | Assign Expr Expr Expr
+  | AssignArith Bool Expr String Expr
   | BooleanExpr BExpr
   | Catch (Maybe [Expr]) [Expr]
-  | ClassParam {varType :: Expr, varName :: Expr}
   -- Class specific
   | Class [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | ClassParam {varType :: Expr, varName :: Expr}
   | ClassVariable String String
   | Constructor String [Expr] [Expr] [Expr]
+  | Data String [Expr]
   | DataElement String String [String] [String]
   | DataInstance Expr [Expr]
-  | Data String [Expr]
   | Else [Expr]
   | ElseIf Expr [Expr]
   | Error
   | For String Expr Expr [Expr]
-  | FunctionCall String [Expr]
   | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
+  | FunctionCall String [Expr]
   | GlobalVar String Bool Bool Expr Expr [Expr]
   | Identifier String
   | If Expr [Expr]
@@ -58,9 +58,9 @@ data Expr
   | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | ModifierBlock [Expr]
   | NewClassInstance String [Expr]
-  | ObjectMethodCall String String [Expr]
   -- Module specific
   | Object [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | ObjectMethodCall String String [Expr]
   | Print Expr
   | Reassign Expr Expr
   | Return Expr
@@ -109,8 +109,8 @@ instance CodeGen Expr where
     genCode (ArrayElementSelect i) symbolTable currentState = getDebug "ArrayElementSelect" ++ "[" ++ i ++ "];"
     genCode (ArrayType arrType) symbolTable currentState = getDebug "ArrayType" ++ arrType ++ "[]"
     genCode (ArrayValues exprs) symbolTable currentState = getDebug "ArrayValues" ++ "{" ++ intercalate ", " exprs ++ "};"
-    genCode (AssignArith mutable vType name value) symbolTable currentState = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ genCode vType symbolTable currentState ++ " " ++ name ++ "=" ++ genCode value symbolTable currentState ++ ";"
     genCode (Assign vType name value) symbolTable currentState = getDebug "Assign" ++ genCode vType symbolTable currentState ++ " " ++ genCode name symbolTable currentState ++ "=" ++ genCode value symbolTable currentState ++ ";"
+    genCode (AssignArith mutable vType name value) symbolTable currentState = getDebug "AssignArith" ++ (if mutable then "" else "final ") ++ genCode vType symbolTable currentState ++ " " ++ name ++ "=" ++ genCode value symbolTable currentState ++ ";"
     genCode (BooleanExpr expr) symbolTable currentState = getDebug "BooleanExpr" ++ genCode expr symbolTable currentState
     genCode (Catch params exprs) symbolTable currentState = getDebug "Catch" ++ "catch(" ++  intercalate ", " (map (\x -> "final " ++ genCode x symbolTable currentState) paramList)  ++ "){" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs) ++ "}"
       where
@@ -118,7 +118,6 @@ instance CodeGen Expr where
             Just a -> a
             Nothing -> []
 
-    genCode (ClassParam varType varName) symbolTable currentState = getDebug "ClassParam" ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState
     genCode (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState =
         getDebug "Class" ++
         (if(length packageLocs > 0)
@@ -149,6 +148,8 @@ instance CodeGen Expr where
           implementSection = case interfaces of
               [] -> ""
               ws -> "implements " ++ (intercalate "," ws)
+
+    genCode (ClassParam varType varName) symbolTable currentState = getDebug "ClassParam" ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState
     genCode (ClassVariable className varName) symbolTable currentState = getDebug "ClassVariable" ++
       case (instanceVariableType symbolTable (currentClassName currentState) className) of
         Just varType -> do
@@ -167,17 +168,16 @@ instance CodeGen Expr where
               else className ++ "." ++ varName
 
     genCode (Constructor name argTypes args body) symbolTable currentState = getDebug "Constructor" ++ "public " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable currentState) argTypes) (map (\x -> genCode x symbolTable currentState) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) body) ++ "}"
+    genCode (Data name exprs) symbolTable currentState = getDebug "Data" ++ "class " ++ name ++ "{}" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)
     genCode (DataElement superName name argTypes args) symbolTable currentState = getDebug "DataElement" ++ "final class " ++ name ++ " extends "++ superName ++ " { " ++
       intercalate " "(zipWith (\x y -> "final " ++ x ++ " " ++ y ++ ";") argTypes args) ++ " public " ++ name ++ "(" ++ intercalate ", " (zipWith (\x y -> "final " ++ x ++ " " ++ y) argTypes args) ++
       "){" ++
       intercalate " " (map (\x ->"this." ++ x ++ "=" ++ x ++ ";") args) ++
       "} }"
 
-    genCode (Data name exprs) symbolTable currentState = getDebug "Data" ++ "class " ++ name ++ "{}" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)
     genCode (Else statement) symbolTable currentState = getDebug "Else" ++ " else {\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) statement) ++ "}"
     genCode (ElseIf condition statement) symbolTable currentState = getDebug "ElseIf" ++ " else if(" ++ genCode condition symbolTable currentState ++ "){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable currentState) statement) ++ "}"
     genCode (For varName start end exprs) symbolTable currentState = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
-    genCode (FunctionCall name exprs) symbolTable currentState = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map (\x -> genCode x symbolTable currentState) exprs)) ++ ");"
     genCode (Function name annotations argTypes args returnType static body) symbolTable currentState =
       getDebug "Function" ++
       annotationString ++ " public " ++ (if(static) then "static " else "") ++ genCode returnType symbolTable (CurrentState (currentClassName currentState) name) ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> genCode x symbolTable (CurrentState (currentClassName currentState) name)) argTypes) (map (\x -> genCode x symbolTable (CurrentState (currentClassName currentState) name)) args)) ++"){\n" ++ intercalate "\n" (map (\x -> genCode x symbolTable (CurrentState (currentClassName currentState) name)) body) ++ "}"
@@ -186,6 +186,7 @@ instance CodeGen Expr where
               Just a -> genCode a symbolTable currentState
               Nothing -> ""
 
+    genCode (FunctionCall name exprs) symbolTable currentState = getDebug "FunctionCall" ++ name ++ "(" ++ (intercalate ", " (map (\x -> genCode x symbolTable currentState) exprs)) ++ ");"
     genCode (GlobalVar modifier final static varType varName exprs) symbolTable currentState =
       getDebug "GlobalVar" ++
       "private " ++ genCode varType symbolTable currentState ++ " " ++ genCode varName symbolTable currentState ++ ";" ++ -- ++ "=" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs) ++ ";" ++
@@ -217,7 +218,6 @@ instance CodeGen Expr where
               Nothing -> ""
     genCode (ModifierBlock exprs) symbolTable currentState = getDebug "ModifierBlock" ++ intercalate " " (map (\x -> genCode x symbolTable currentState) exprs)
     genCode (NewClassInstance className args) symbolTable currentState = getDebug "NewClassInstance" ++ "new " ++ className ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ")"
-    genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState =
         getDebug "Module" ++
         (if(length packageLocs > 0)
@@ -250,6 +250,7 @@ instance CodeGen Expr where
               [] -> ""
               ws -> "implements " ++ (intercalate "," ws)
 
+    genCode (ObjectMethodCall objectName methodName args) symbolTable currentState = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> genCode x symbolTable currentState) args) ++ ");"
     genCode (Print exprs) symbolTable currentState = getDebug "Print" ++ "System.out.println(" ++ genCode exprs symbolTable currentState ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
     genCode (Reassign name value) symbolTable currentState = getDebug "Reassign" ++ show name ++ "_(" ++ genCode value symbolTable currentState++ ");"
     genCode (Return expr) symbolTable currentState = getDebug "Return" ++ "return " ++ genCode expr symbolTable currentState ++ ";"
