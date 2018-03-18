@@ -16,11 +16,11 @@ import javax.swing.JPanel
 
 class Board extends JPanel implements Runnable
 
-private
+public
   val d: Dimension = new Dimension(Constants.BoardWidth, Constants.BoardHeight)
   #val aliens: [Alien] = [test]
-  val player: Player = new Player()
-  val shot: Shot = new Shot()
+  val player: Player = new Player(100, 100)
+  val shot: Shot = new Shot(50, 50)
 
   val ALIEN_INIT_X: int = 150
   val ALIEN_INIT_Y: int = 5
@@ -36,7 +36,7 @@ private
 initBoard : void
 initBoard =
   animator.start()
-  addKeyListener(new TAdapter())
+  #addKeyListener(new TAdapter())
   setFocusable(True)
   #setBackground(Color.BLACK)
   setDoubleBuffered(True)
@@ -78,3 +78,11 @@ paintComponent g =
     drawPlayer(g)
     drawShot(g)
     drawBombing(g)
+
+@Override
+run : void
+run =
+  #var beforeTime: long = System.currentTimeMillis()
+  var timeDiff: long = 0
+  var sleep: long = 0
+

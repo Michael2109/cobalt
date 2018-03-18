@@ -42,7 +42,10 @@ objectParser relativeDir = try $ L.nonIndented scn p
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "object")
       name <- identifier
-      params <- optional (parens (sepBy parameterParser (symbol ",")))
+      fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+      let params = case fullParams of
+                  Just ps -> ps
+                  Nothing -> []
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
@@ -60,7 +63,10 @@ classParser relativeDir = try $ L.nonIndented scn p
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
-      params <- optional (parens (sepBy parameterParser (symbol ",")))
+      fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+      let params = case fullParams of
+                  Just ps -> ps
+                  Nothing -> []
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
@@ -78,7 +84,10 @@ traitParser relativeDir = try $ L.nonIndented scn p
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "trait")
       name <- identifier
-      params <- optional (parens (sepBy parameterParser (symbol ",")))
+      fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+      let params = case fullParams of
+                  Just ps -> ps
+                  Nothing -> []
       extendsKeyword <- optional (rword "extends")
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
@@ -88,6 +97,8 @@ traitParser relativeDir = try $ L.nonIndented scn p
       exprs <- many (functionParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Trait (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
+
+
 
 importParser :: Parser Expr
 importParser = try $ L.nonIndented scn p

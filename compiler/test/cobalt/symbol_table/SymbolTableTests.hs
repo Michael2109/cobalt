@@ -16,6 +16,7 @@ symbolTableTestList = TestList [
     testClassSymbolTableCombineList,
     testSymbolTableMethodExists,
     testSymbolTableVariableExists,
+    testSymbolTableVariableType,
     testSymbolTableVariableExistsFail,
     testSymbolTableGetClassSymbolTable
   ]

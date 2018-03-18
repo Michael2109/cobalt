@@ -74,11 +74,20 @@ testSymbolTableMethodExists = do
     True $
     methodExists generateSymbolTable1 "ClassName" "method1"
 
-testSymbolTableVariableExists:: Test
+testSymbolTableVariableExists :: Test
 testSymbolTableVariableExists = do
   TestCase $ assertEqual "Variable exists"
     True $
     instanceVariableExists generateSymbolTable1 "ClassName" "x"
+
+testSymbolTableVariableType :: Test
+testSymbolTableVariableType = do
+  TestCase $ assertEqual "Variable type"
+    "double" $
+    case (instanceVariableType generateSymbolTable2 "ClassName" "c") of
+      Just varType -> varType
+      Nothing -> "Error"
+
 
 testSymbolTableVariableExistsFail:: Test
 testSymbolTableVariableExistsFail = do

@@ -59,6 +59,8 @@ compile inputDir outputDir = do
 
   sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ location compiledCode) ++ ".java") (code compiledCode)) compiledCodes
 
+  pPrint symbolTable
+
   return ()
 
 generateAST :: FilePath -> FilePath -> String -> ASTData

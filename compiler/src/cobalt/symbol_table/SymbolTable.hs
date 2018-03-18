@@ -84,6 +84,16 @@ instanceVariableExists symbolTable className varName = do
     Just a -> elem varName (map fst (publicVariables (a)))
     Nothing -> False
 
+instanceVariableType :: SymbolTable -> String -> String -> Maybe(String)
+instanceVariableType symbolTable className varName = do
+  case getClassSymbolTable symbolTable className of
+    Just a -> do
+      let matchingVars = filter (\var -> varName == fst var) (publicVariables a)
+      if (length matchingVars > 0)
+        then Just $ snd $ matchingVars!!0
+        else Nothing
+    Nothing -> Nothing
+
 methodParamExists :: SymbolTable -> String -> String -> String -> Bool
 methodParamExists symbolTable className methodName varName = do
   case getClassSymbolTable symbolTable className of

@@ -2,12 +2,14 @@ import java.awt.event.KeyEvent
 
 class Player(x: int, y: int)
 
-private
+public
   val startX: int = 270
   val startY: int = 280
   val width: int = 32
+  val height: int = 32
   var dx: int = 0
   var dy: int = 0
+  var visible: boolean = True
 
 initPlayer()
 
