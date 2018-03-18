@@ -31,6 +31,7 @@ library
       src/cobalt,
       src/cobalt/symbol_table,
       src/cobalt/code_generator,
+      src/cobalt/ir,
       src/cobalt/blocks,
       src/cobalt/parsers,
       src/cobalt/error_checking,
@@ -44,6 +45,7 @@ library
       ExprParser
       Parser
       Block
+      IRNode
       ABBlock
       BlockUtils
       Compiler
@@ -76,6 +78,7 @@ test-suite compiler-test
       src/cobalt,
       src/cobalt/symbol_table,
       src/cobalt/code_generator,
+      src/cobalt/ir,
       src/cobalt/blocks,
       src/cobalt/parsers,
       src/cobalt/error_checking,
@@ -106,6 +109,7 @@ test-suite compiler-test
       ExprParser
       Parser
       Block
+      IRNode
       ABBlock
       BlockUtils
       Compiler

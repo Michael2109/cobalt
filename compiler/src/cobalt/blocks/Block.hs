@@ -21,7 +21,6 @@ getDebug :: String -> String
 getDebug message = (if debug then "<" ++ message ++ "> " else "")
 
 
--- Statements
 data Expr
   = Seq [Expr]
   | Import {locs ::[String]}
