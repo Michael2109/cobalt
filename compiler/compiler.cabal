@@ -29,31 +29,31 @@ source-repository head
 library
   hs-source-dirs:
       src/cobalt,
-      src/cobalt/symbol_table,
-      src/cobalt/code_generator,
-      src/cobalt/ir,
       src/cobalt/blocks,
-      src/cobalt/parsers,
+      src/cobalt/code_generator,
+      src/cobalt/compiler,
       src/cobalt/error_checking,
-      src/cobalt/compiler
+      src/cobalt/ir,
+      src/cobalt/parsers,
+      src/cobalt/symbol_table,
       src/cobalt/utils
   build-depends:
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, process, directory-tree, bytestring
   exposed-modules:
-      BaseParser
-      ABExprParser
-      ExprParser
-      Parser
-      Block
-      IRNode
       ABBlock
+      ABExprParser
+      BaseParser
+      Block
       BlockUtils
-      Compiler
-      JavaCompiler
-      ErrorChecker
-      SymbolTable
       CodeGenerator
+      Compiler
+      ErrorChecker
+      ExprParser
       IOUtils
+      IRNode
+      JavaCompiler
+      Parser
+      SymbolTable
   other-modules:
 
   default-language: Haskell2010
@@ -76,25 +76,25 @@ test-suite compiler-test
   hs-source-dirs:
 
       src/cobalt,
-      src/cobalt/symbol_table,
-      src/cobalt/code_generator,
-      src/cobalt/ir,
       src/cobalt/blocks,
-      src/cobalt/parsers,
+      src/cobalt/code_generator,
+      src/cobalt/compiler,
       src/cobalt/error_checking,
-      src/cobalt/compiler
+      src/cobalt/ir,
+      src/cobalt/parsers,
+      src/cobalt/symbol_table
 
       test,
       test/cobalt,
-      test/cobalt/symbol_table,
-      test/cobalt/code_generator,
       test/cobalt/blocks,
+      test/cobalt/code_generator,
+      test/cobalt/compiler,
+      test/cobalt/error_checking,
       test/cobalt/parsers,
       test/cobalt/parsers/ab_expr_parsers,
       test/cobalt/parsers/base_parsers,
       test/cobalt/parsers/expr_parsers,
-      test/cobalt/error_checking,
-      test/cobalt/compiler
+      test/cobalt/symbol_table
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5,
@@ -104,18 +104,18 @@ test-suite compiler-test
       containers == 0.5.*,
       base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split
   other-modules:
-      BaseParser
-      ABExprParser
-      ExprParser
-      Parser
-      Block
-      IRNode
       ABBlock
+      ABExprParser
+      BaseParser
+      Block
       BlockUtils
+      CodeGenerator
       Compiler
       ErrorChecker
+      ExprParser
+      IRNode
+      Parser
       SymbolTable
-      CodeGenerator
 
       ParserTests
       SymbolTableTests
@@ -163,7 +163,5 @@ test-suite compiler-test
       ThisVarParserTest
       TraitParserTest
       ValueTypeParserTest
-
-
 
   default-language: Haskell2010
