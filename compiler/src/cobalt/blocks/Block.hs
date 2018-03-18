@@ -22,66 +22,63 @@ getDebug message = (if debug then "<" ++ message ++ "> " else "")
 
 
 data Expr
-  = Seq [Expr]
-  | Import {locs ::[String]}
-  | GlobalVar String Bool Bool Expr Expr [Expr]
-  | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
-  | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
-  | Constructor String [Expr] [Expr] [Expr]
-  | FunctionCall String [Expr]
-  | Type Expr
+  = Annotation String
   | Argument Expr
   | ArgumentType String
-  | ReturnType String
-  | AssignArith Bool Expr String Expr
   | ArithExpr AExpr
-  | ArrayType String
   | ArrayAppend [Expr]
-  | Assign Expr Expr Expr
-  | Reassign Expr Expr
-  | If Expr [Expr]
-  | ElseIf Expr [Expr]
-  | Else [Expr]
-  | Try [Expr]
-  | Catch (Maybe [Expr]) [Expr]
-  | While Expr [Expr]
-  | For String Expr Expr [Expr]
-  | Print Expr
-  | Return Expr
-  | ArrayValues [String]
-  | ArrayDef String String
   | ArrayAssignment Expr Expr
+  | ArrayDef String String
   | ArrayElementSelect String
-  | Where [Expr]
-  | StringLiteral String
-  | Data String [Expr]
-  | DataElement String String [String] [String]
-  | DataInstance Expr [Expr]
-  | SuperMethodCall String String [Expr]
-  | ObjectMethodCall String String [Expr]
-  | ThisVar Expr
-  | ThisMethodCall String [Expr]
-  | NewClassInstance String [Expr]
-  | ClassVariable String String
+  | ArrayType String
+  | ArrayValues [String]
+  | AssignArith Bool Expr String Expr
+  | Assign Expr Expr Expr
   | BooleanExpr BExpr
-  | Identifier String
-  | Annotation String
-  | ModifierBlock [Expr]
-  | This
-  | Super
-  | Lambda String [Expr]
+  | Catch (Maybe [Expr]) [Expr]
   | ClassParam {varType :: Expr, varName :: Expr}
-  | Skip
-  | Error
-
-  -- Module specific
-  | Object [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-
   -- Class specific
   | Class [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-
+  | ClassVariable String String
+  | Constructor String [Expr] [Expr] [Expr]
+  | DataElement String String [String] [String]
+  | DataInstance Expr [Expr]
+  | Data String [Expr]
+  | Else [Expr]
+  | ElseIf Expr [Expr]
+  | Error
+  | For String Expr Expr [Expr]
+  | FunctionCall String [Expr]
+  | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
+  | GlobalVar String Bool Bool Expr Expr [Expr]
+  | Identifier String
+  | If Expr [Expr]
+  | Import {locs ::[String]}
+  | Lambda String [Expr]
+  | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
+  | ModifierBlock [Expr]
+  | NewClassInstance String [Expr]
+  | ObjectMethodCall String String [Expr]
+  -- Module specific
+  | Object [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | Print Expr
+  | Reassign Expr Expr
+  | Return Expr
+  | ReturnType String
+  | Seq [Expr]
+  | Skip
+  | StringLiteral String
+  | Super
+  | SuperMethodCall String String [Expr]
+  | This
+  | ThisMethodCall String [Expr]
+  | ThisVar Expr
   -- Trait specific
   | Trait [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | Try [Expr]
+  | Type Expr
+  | Where [Expr]
+  | While Expr [Expr]
   deriving (Eq)
 
 instance ErrorCheck Expr where
