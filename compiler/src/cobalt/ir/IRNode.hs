@@ -1,8 +1,17 @@
 module IRNode where
 
 import Data.List
+import Data.Maybe
+import Data.Char
 
+import BlockUtils
 import SymbolTable
+
+debug :: Bool
+debug = False
+
+getDebug :: String -> String
+getDebug message = (if debug then "<" ++ message ++ "> " else "")
 
 {--import Text.PrettyPrint.ANSI.Leijen
        ( Doc
@@ -11,76 +20,73 @@ import SymbolTable
        , parens
        )--}
 
-import ABBlock
-import Block
-
 
 class Pretty a where
   pretty :: a -> SymbolTable -> CurrentState -> String -- Pretty document type
 
 
-data IRTree
-  = SeqIR IRInfo [Expr]
-  | ImportIR IRInfo [String]
-  | GlobalVarIR IRInfo  String Bool Bool Expr Expr [Expr]
-  | MainFunctionIR IRInfo String (Maybe Expr) [Expr] [Expr] Expr [Expr]
-  | FunctionIR IRInfo  String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
-  | ConstructorIR IRInfo  String [Expr] [Expr] [Expr]
-  | FunctionCallIR IRInfo  String [Expr]
-  | TypeIR IRInfo  Expr
-  | ArgumentIR IRInfo  Expr
-  | ArgumentTypeIR IRInfo  String
-  | ReturnTypeIR IRInfo  String
-  | AssignArithIR IRInfo  Bool Expr String Expr
-  | ArithExprIR IRInfo  AExpr
-  | ArrayTypeIR IRInfo  String
-  | ArrayAppendIR IRInfo  [Expr]
-  | AssignIR IRInfo  Expr Expr Expr
-  | ReassignIR IRInfo  Expr Expr
-  | IfIR IRInfo  Expr [Expr]
-  | ElseIfIR IRInfo  Expr [Expr]
-  | ElseIR IRInfo  [Expr]
-  | TryIR IRInfo  [Expr]
-  | CatchIR IRInfo  (Maybe [Expr]) [Expr]
-  | WhileIR IRInfo  Expr [Expr]
-  | ForIR IRInfo  String Expr Expr [Expr]
-  | PrintIR IRInfo  Expr
-  | ReturnIR IRInfo  Expr
-  | ArrayValuesIR IRInfo  [String]
-  | ArrayDefIR IRInfo  String String
-  | ArrayAssignmentIR IRInfo  Expr Expr
-  | ArrayElementSelectIR IRInfo  String
-  | WhereIR IRInfo  [Expr]
-  | StringLiteralIR IRInfo  String
-  | DataIR IRInfo  String [Expr]
-  | DataElementIR IRInfo  String String [String] [String]
-  | DataInstanceIR IRInfo  Expr [Expr]
-  | SuperMethodCallIR IRInfo  String String [Expr]
-  | ObjectMethodCallIR IRInfo  String String [Expr]
-  | ThisVarIR IRInfo  Expr
-  | ThisMethodCallIR IRInfo  String [Expr]
-  | NewClassInstanceIR IRInfo  String [Expr]
-  | ClassVariableIR IRInfo  String String
-  | BooleanExprIR IRInfo  BExpr
-  | IdentifierIR IRInfo  String
-  | AnnotationIR IRInfo  String
-  | ModifierBlockIR IRInfo  [Expr]
-  | ThisIR IRInfo
-  | SuperIR IRInfo
-  | LambdaIR IRInfo  String [Expr]
-  | ClassParamIR IRInfo Expr Expr
-  | SkipIR IRInfo
+data IRNode
+  = AnnotationIR IRInfo String
+  | ArgumentIR IRInfo IRNode
+  | ArgumentTypeIR IRInfo String
+  | ArithExprIR IRInfo IRNode
+  | ArrayAppendIR IRInfo [IRNode]
+  | ArrayAssignmentIR IRInfo IRNode IRNode
+  | ArrayDefIR IRInfo String String
+  | ArrayElementSelectIR IRInfo String
+  | ArrayTypeIR IRInfo String
+  | ArrayValuesIR IRInfo [String]
+  | AssignIR IRInfo IRNode IRNode IRNode
+  | AssignArithIR IRInfo Bool IRNode String IRNode
+  | BooleanExprIR IRInfo IRNode
+  | CatchIR IRInfo (Maybe [IRNode]) [IRNode]
+  | ClassIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+  | ClassParamIR {classPIRInfo :: IRInfo, varType :: IRNode, varName :: IRNode}
+  | ClassVariableIR IRInfo String String
+  | ConstructorIR IRInfo String [IRNode] [IRNode] [IRNode]
+  | DataIR IRInfo String [IRNode]
+  | DataElementIR IRInfo String String [String] [String]
+  | DataInstanceIR IRInfo IRNode [IRNode]
+  | ElseIR IRInfo [IRNode]
+  | ElseIfIR IRInfo IRNode [IRNode]
   | ErrorIR IRInfo
-  | ObjectIR IRInfo [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-  | ClassIR IRInfo  [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-  | TraitIR IRInfo  [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | ForIR IRInfo String IRNode IRNode [IRNode]
+  | FunctionIR IRInfo String (Maybe IRNode) [IRNode] [IRNode] IRNode Bool [IRNode]
+  | FunctionCallIR IRInfo String [IRNode]
+  | GlobalVarIR IRInfo String Bool Bool IRNode IRNode [IRNode]
+  | IdentifierIR IRInfo String
+  | IfIR IRInfo IRNode [IRNode]
+  | ImportIR {importIRInfo:: IRInfo, locs ::[String]}
+  | LambdaIR IRInfo String [IRNode]
+  | MainFunctionIR {mainFunctionIRInfoVal :: IRInfo, name ::String, annotations :: (Maybe IRNode), argTypes:: [IRNode], args::[IRNode], returnType::IRNode, body::[IRNode]}
+  | ModifierBlockIR IRInfo [IRNode]
+  | NewClassInstanceIR IRInfo String [IRNode]
+  | ObjectIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+  | ObjectMethodCallIR IRInfo String String [IRNode]
+  | PrintIR IRInfo IRNode
+  | ReassignIR IRInfo IRNode IRNode
+  | ReturnIR IRInfo IRNode
+  | ReturnTypeIR IRInfo String
+  | SeqIR IRInfo [IRNode]
+  | SkipIR IRInfo
+  | StringLiteralIR IRInfo String
+  | SuperIR IRInfo
+  | SuperMethodCallIR IRInfo String String [IRNode]
+  | ThisIR IRInfo
+  | ThisMethodCallIR IRInfo String [IRNode]
+  | ThisVarIR IRInfo IRNode
+  | TraitIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+  | TryIR IRInfo [IRNode]
+  | TypeIR IRInfo IRNode
+  | WhereIR IRInfo [IRNode]
+  | WhileIR IRInfo IRNode [IRNode]
   deriving (Eq)
 
 data IRInfo = IRInfo String
   deriving (Eq)
 
 
-instance Pretty IRTree where
+instance Pretty IRNode where
     pretty (AnnotationIR irInfo name) symbolTable currentState = getDebug "Annotation" ++ "@" ++ name
     pretty (ArgumentIR irInfo b) symbolTable currentState = getDebug "Argument" ++ pretty b symbolTable currentState
     pretty (ArgumentTypeIR irInfo b) symbolTable currentState = getDebug "ArgumentType" ++ b
@@ -159,7 +165,7 @@ instance Pretty IRTree where
 
     pretty (ElseIR irInfo statement) symbolTable currentState = getDebug "Else" ++ " else {\n" ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) statement) ++ "}"
     pretty (ElseIfIR irInfo condition statement) symbolTable currentState = getDebug "ElseIf" ++ " else if(" ++ pretty condition symbolTable currentState ++ "){\n" ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) statement) ++ "}"
-    pretty (ForIR irInfo varName start end exprs) symbolTable currentState = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ show start ++ ";" ++ varName ++ "<" ++ show end ++ ";" ++ varName ++ "++){" ++ intercalate " " (map show exprs) ++ "}"
+    pretty (ForIR irInfo varName start end exprs) symbolTable currentState = getDebug "For" ++ "for(" ++ "int " ++ varName ++ "=" ++ pretty start symbolTable currentState ++ ";" ++ varName ++ "<" ++ pretty end symbolTable currentState ++ ";" ++ varName ++ "++){" ++ intercalate " " (map (\e -> pretty e symbolTable currentState) exprs) ++ "}"
     pretty (FunctionIR irInfo name annotations argTypes args returnType static body) symbolTable currentState =
       getDebug "Function" ++
       annotationString ++ " public " ++ (if(static) then "static " else "") ++ pretty returnType symbolTable (CurrentState (currentClassName currentState) name) ++ " " ++ name ++ "("++ intercalate ", " (zipWith (\x y -> x ++ " " ++ y) (map (\x -> pretty x symbolTable (CurrentState (currentClassName currentState) name)) argTypes) (map (\x -> pretty x symbolTable (CurrentState (currentClassName currentState) name)) args)) ++"){\n" ++ intercalate "\n" (map (\x -> pretty x symbolTable (CurrentState (currentClassName currentState) name)) body) ++ "}"
@@ -234,7 +240,7 @@ instance Pretty IRTree where
 
     pretty (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> pretty x symbolTable currentState) args) ++ ");"
     pretty (PrintIR irInfo exprs) symbolTable currentState = getDebug "Print" ++ "System.out.println(" ++ pretty exprs symbolTable currentState ++ ");" --"System.out.println(" ++ intercalate " " (map show exprs) ++ ");"
-    pretty (ReassignIR irInfo name value) symbolTable currentState = getDebug "Reassign" ++ show name ++ "_(" ++ pretty value symbolTable currentState++ ");"
+    pretty (ReassignIR irInfo name value) symbolTable currentState = getDebug "Reassign" ++ pretty name symbolTable currentState ++ "_(" ++ pretty value symbolTable currentState++ ");"
     pretty (ReturnIR irInfo expr) symbolTable currentState = getDebug "Return" ++ "return " ++ pretty expr symbolTable currentState ++ ";"
     pretty (ReturnTypeIR irInfo b) symbolTable currentState = getDebug "ReturnType" ++ b
     pretty (SeqIR irInfo s) symbolTable currentState = getDebug "Seq" ++ "[seq]"
@@ -244,7 +250,7 @@ instance Pretty IRTree where
     pretty (SuperMethodCallIR irInfo objectName methodName args) symbolTable currentState = getDebug "SuperMethodCall" ++ objectName ++ "." ++ methodName ++ "(" ++ intercalate ", " (map (\x -> pretty x symbolTable currentState) args) ++ ");"
     pretty (ThisIR irInfo) symbolTable currentState = getDebug "This" ++ "this"
     pretty (ThisMethodCallIR irInfo methodName args) symbolTable currentState = getDebug "ThisMethodCall" ++methodName ++ "(" ++ intercalate ", " (map (\x -> pretty x symbolTable currentState) args) ++ ");"
-    pretty (ThisVarIR irInfo varName) symbolTable currentState = getDebug "ThisVar" ++ "this." ++ show varName
+    pretty (ThisVarIR irInfo varName) symbolTable currentState = getDebug "ThisVar" ++ "this." ++ pretty varName symbolTable currentState
     pretty (TraitIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState =
         getDebug "interface " ++
         (if(length packageLocs > 0)
@@ -284,3 +290,13 @@ instance Pretty IRTree where
     pretty (WhereIR irInfo exprs) symbolTable currentState = getDebug "Where" ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) exprs)
     pretty (WhileIR irInfo condition statement) symbolTable currentState = getDebug "While" ++ "while(" ++ pretty condition symbolTable currentState ++ "){\n" ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) statement) ++ "}"
     pretty (_) symbolTable currentState = "<unknown>"
+
+
+lowerString str = [ toLower loweredString | loweredString <- str]
+
+extractImportStatement :: IRNode -> Maybe [String]
+extractImportStatement (ImportIR _ m) = Just m
+extractImportStatement _ = Nothing
+
+isImportStatement :: IRNode -> Bool
+isImportStatement e = isJust $ extractImportStatement e

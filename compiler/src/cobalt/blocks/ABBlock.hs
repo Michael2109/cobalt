@@ -18,7 +18,7 @@ module ABBlock (
 ) where
 
 import SymbolTable
-import BlockUtils
+import IRNode
 
 class Debug a where
   debug :: a -> String
@@ -30,7 +30,7 @@ class SymbolTableGen a where
   genClassSymbolTable :: a -> ClassSymbolTable
 
 class CodeGen a where
-  genCode :: a -> SymbolTable -> CurrentState -> String
+  genCode :: a -> SymbolTable -> CurrentState -> IRNode
 
 -- Arithmetic expressions
 data AExpr
@@ -49,8 +49,8 @@ instance CodeGen AExpr where
       --if(length methodList > 0)
       --then if (elem v (map fst (methodArgs (methodList!!0)))) then v else (v ++ "()")
       --else v
-      v
-    genCode (IntConst i) symbolTable currentState = show i
+      VarIR (IRInfo "var") v
+    genCode (IntConst i) symbolTable currentState = IntConstIR (IRInfo "IntConst") i
     genCode (Neg aExpr) symbolTable currentState = "-" ++ genCode aExpr symbolTable currentState
     genCode (ABinary aBinOp aExpr1 aExpr2) symbolTable currentState = genCode aExpr1 symbolTable currentState ++ " " ++ genCode aBinOp symbolTable currentState ++ " " ++ genCode aExpr2 symbolTable currentState
     genCode (Parenthesis aExpr) symbolTable currentState = "(" ++ genCode aExpr symbolTable currentState ++ ")"
