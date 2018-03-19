@@ -13,12 +13,12 @@ import System.FilePath.Posix
 import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
-import ABBlock
 import Block
 import Parser
 import SymbolTable
 import CodeGenerator
 import IOUtils
+import IRNode
 
 
 data ASTData = ASTData FilePath SymbolTable Expr
