@@ -1,8 +1,8 @@
 module CodeGenerator where
 
-import ABBlock
 import Block
 import SymbolTable
+import IRNode
 
 data GeneratedCode = GeneratedCode {
     location :: FilePath, -- Where the code will be written to
@@ -10,6 +10,5 @@ data GeneratedCode = GeneratedCode {
     }
     deriving (Show)
 
-
-compileAST ast symbolTable =
-  genCode ast symbolTable (CurrentState "" "")
+compileAST :: Expr -> SymbolTable -> String
+compileAST ast symbolTable = pretty (genIR ast symbolTable (CurrentState "" ""))  symbolTable (CurrentState "" "")
