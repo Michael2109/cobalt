@@ -96,10 +96,24 @@ parserTestList = TestList [
 
         testClassVariableParser,
 
+        testForLoopParser,
+
         testIfStmtParserBooleanTrue,
         testIfStmtParserBooleanFalse,
 
-        testForLoopParser
 
+
+        testStringLiteralSimple,
+        testStringLiteralSimpleWhitespace,
+        testStringLiteralEscapeTab,
+        testStringLiteralEmpty,
+        testStringLiteralNewLine,
+        testStringLiteralMultipleNewLine,
+        testStringLiteralUnescapedSingleQuote,
+        testStringLiteralEscapedSingleQuote,
+        testStringLiteralEscapedDoubleQuote,
+        testStringLiteralDoubleQuoteMultiple,
+        testStringLiteralUnfinishedFail,
+        testStringLiteralMultiLineDoubleFail
 
        ]
