@@ -44,7 +44,7 @@ data IRNode
   | AssignIR IRInfo IRNode IRNode IRNode
   | AssignArithIR IRInfo Bool IRNode String IRNode
   | BooleanExprIR IRInfo IRNode
-  | CatchIR IRInfo (Maybe [IRNode]) [IRNode]
+  | CatchIR IRInfo [IRNode] [IRNode]
   | ClassIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | ClassParamIR {classPIRInfo :: IRInfo, varType :: IRNode, varName :: IRNode}
   | ClassVariableIR IRInfo String String
@@ -106,12 +106,7 @@ instance Pretty IRNode where
     pretty (AssignIR irInfo vType name value) symbolTable currentState = show irInfo ++ pretty vType symbolTable currentState ++ " " ++ pretty name symbolTable currentState ++ "=" ++ pretty value symbolTable currentState ++ ";"
     pretty (AssignArithIR irInfo mutable vType name value) symbolTable currentState = show irInfo ++ (if mutable then "" else "final ") ++ pretty vType symbolTable currentState ++ " " ++ name ++ "=" ++ pretty value symbolTable currentState ++ ";"
     pretty (BooleanExprIR irInfo expr) symbolTable currentState = show irInfo ++ pretty expr symbolTable currentState
-    pretty (CatchIR irInfo params exprs) symbolTable currentState = show irInfo ++ "catch(" ++  intercalate ", " (map (\x -> "final " ++ pretty x symbolTable currentState) paramList)  ++ "){" ++ intercalate " " (map (\x -> pretty x symbolTable currentState) exprs) ++ "}"
-      where
-        paramList = case params of
-            Just a -> a
-            Nothing -> []
-
+    pretty (CatchIR irInfo params exprs) symbolTable currentState = show irInfo ++ "catch(" ++  intercalate ", " (map (\x -> "final " ++ pretty x symbolTable currentState) params)  ++ "){" ++ intercalate " " (map (\x -> pretty x symbolTable currentState) exprs) ++ "}"
     pretty (ClassIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState =
         show irInfo ++
         (if(length packageLocs > 0)
