@@ -167,7 +167,7 @@ data Expr
   | BooleanExpr BExpr
   | Catch (Maybe [Expr]) [Expr]
   | Class [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-  | ClassParam {classParamVarType :: Expr, classParamVarName :: Expr}
+  | ClassParam Expr Expr
   | ClassVariable String String
   | Constructor String [Expr] [Expr] [Expr]
   | Data String [Expr]
@@ -226,17 +226,17 @@ instance IRGen Expr where
     genIR (ArgumentType aType) symbolTable currentState = ArgumentTypeIR (IRInfo $ "Argument Type") aType
     genIR (ArithExpr aExpr) symbolTable currentState = ArithExprIR (IRInfo $ "Arith Expr") (genIR aExpr symbolTable currentState)
     genIR (ArrayAppend arrays) symbolTable currentState = ArrayAppendIR (IRInfo $ "Array Append") (map (\a -> genIR a symbolTable currentState) arrays)
-    genIR (ArrayAssignment arr values) symbolTable currentState = Empty
-    genIR (ArrayDef arrType name) symbolTable currentState = Empty
-    genIR (ArrayElementSelect i) symbolTable currentState = Empty
-    genIR (ArrayType arrType) symbolTable currentState = Empty
-    genIR (ArrayValues exprs) symbolTable currentState = Empty
-    genIR (Assign vType name value) symbolTable currentState = Empty
-    genIR (AssignArith mutable vType name value) symbolTable currentState = Empty
-    genIR (BooleanExpr expr) symbolTable currentState = Empty
+    genIR (ArrayAssignment arr values) symbolTable currentState = ArrayAssignmentIR (IRInfo $ "Array Assignment") (genIR arr symbolTable currentState) (genIR values symbolTable currentState)
+    genIR (ArrayDef arrType name) symbolTable currentState = ArrayDefIR (IRInfo $ "Array Def") arrType name
+    genIR (ArrayElementSelect index) symbolTable currentState = ArrayElementSelectIR (IRInfo $ "Array Element Select") index
+    genIR (ArrayType arrType) symbolTable currentState = ArrayTypeIR (IRInfo $ "Array Type") arrType
+    genIR (ArrayValues exprs) symbolTable currentState = ArrayValuesIR (IRInfo $ "Array Values") exprs
+    genIR (Assign vType name value) symbolTable currentState = AssignIR (IRInfo $ "Assign") (genIR vType symbolTable currentState) (genIR name symbolTable currentState) (genIR value symbolTable currentState)
+    genIR (AssignArith mutable vType name value) symbolTable currentState = AssignArithIR (IRInfo $ "Assign Arith") mutable (genIR vType symbolTable currentState) name (genIR value symbolTable currentState)
+    genIR (BooleanExpr expr) symbolTable currentState = BooleanExprIR (IRInfo $ "BooleanExpr") (genIR expr symbolTable currentState)
     genIR (Catch params exprs) symbolTable currentState = Empty
-    genIR (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = Empty
-    genIR (ClassParam varType varName) symbolTable currentState = Empty
+    genIR (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable currentState = ClassIR (IRInfo $ "Class") packageLocs name (map (\a -> genIR a symbolTable currentState) params) parent interfaces (map (\a -> genIR a symbolTable currentState) imports) (map (\a -> genIR a symbolTable currentState) modifierBlocks) (map (\a -> genIR a symbolTable currentState) constructorExprs) (map (\a -> genIR a symbolTable currentState) bodyArray)
+    genIR (ClassParam varType varName) symbolTable currentState = ClassParamIR (IRInfo $ "Class Param")
     genIR (ClassVariable className varName) symbolTable currentState = Empty
     genIR (Constructor name argTypes args body) symbolTable currentState = Empty
     genIR (Data name exprs) symbolTable currentState = Empty
@@ -246,13 +246,13 @@ instance IRGen Expr where
     genIR (For varName start end exprs) symbolTable currentState = Empty
     genIR (Function name annotations argTypes args returnType static body) symbolTable currentState = Empty
     genIR (FunctionCall name exprs) symbolTable currentState = Empty
-    genIR (GlobalVar modifier final static varType varName exprs) symbolTable currentState = Empty
+    genIR (GlobalVar modifier final static varType varName exprs) symbolTable currentState = GlobalVarIR (IRInfo $ "Global Var") modifier final static (genIR varType symbolTable currentState) (genIR varName symbolTable currentState)  (map (\e -> genIR e symbolTable currentState) exprs)
     genIR (Identifier name) symbolTable currentState = Empty
     genIR (If condition statement) symbolTable currentState = Empty
     genIR (Import locs) symbolTable currentState = Empty
     genIR (Lambda varName exprs) symbolTable currentState = Empty
     genIR (MainFunction name annotations argTypes args returnType body) symbolTable currentState = Empty
-    genIR (ModifierBlock exprs) symbolTable currentState = Empty
+    genIR (ModifierBlock exprs) symbolTable currentState = ModifierBlockIR (IRInfo $ "ModifierBlock") (map (\e -> genIR e symbolTable currentState) exprs)
     genIR (NewClassInstance className args) symbolTable currentState = Empty
     genIR (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = Empty
     genIR (ObjectMethodCall objectName methodName args) symbolTable currentState = Empty
@@ -273,4 +273,3 @@ instance IRGen Expr where
     genIR (Type b) symbolTable currentState = Empty
     genIR (Where exprs) symbolTable currentState = Empty
     genIR (While condition statement) symbolTable currentState = Empty
-    genIR (_) symbolTable currentState = Empty

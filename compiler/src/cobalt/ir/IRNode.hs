@@ -27,8 +27,7 @@ data IRInfo = IRInfo String
   deriving (Eq)
 
 instance Show IRInfo where
-  show (IRInfo info) = format "/* {0} */" [info]
-
+  show (IRInfo info) = format "/*{0}*/" [info]
 
 
 data IRNode
@@ -297,7 +296,7 @@ instance Pretty IRNode where
     pretty (TypeIR irInfo b) symbolTable currentState = show irInfo ++ pretty b symbolTable currentState
     pretty (WhereIR irInfo exprs) symbolTable currentState = show irInfo ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) exprs)
     pretty (WhileIR irInfo condition statement) symbolTable currentState = show irInfo ++ "while(" ++ pretty condition symbolTable currentState ++ "){\n" ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) statement) ++ "}"
-    pretty (Empty) symbolTable currentState = "<CodeGen Unimplemented>"
+    pretty (Empty) symbolTable currentState = "/*CodeGen Unimplemented*/"
 
 
 
