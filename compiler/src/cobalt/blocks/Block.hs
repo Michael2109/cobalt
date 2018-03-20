@@ -1,31 +1,17 @@
 {-|
 Module      : Block
 Description : Data types that store general expressions.
-These are used to store the data and specify how the code is generated.
+These are used to store the data and be converted into IRNodes
 -}
-
 module Block where
 
 import Data.List
 import Text.Show.Functions
 import Data.Char
 
-
 import SymbolTable
 import IRNode
 
-
-
-
-
-
-
-
-
-
-
-class Debug a where
-  debug :: a -> String
 
 class ErrorCheck a where
   errorCheck :: a -> String
@@ -36,126 +22,17 @@ class SymbolTableGen a where
 class IRGen a where
   genIR :: a -> SymbolTable -> CurrentState -> IRNode
 
--- Arithmetic expressions
-data AExpr
-  = Var String
-  | IntConst Integer
-  | Neg AExpr
-  | ABinary ABinOp AExpr AExpr
-  | Parenthesis AExpr
-  | AError
-  deriving (Eq)
-
-instance IRGen AExpr where
-    genIR (Var v) symbolTable currentState = do
-      -- todo
-      --let methodList = map (snd) (filter (\x -> fst x == (currentMethodName currentState)) (methods symbolTable))
-      --if(length methodList > 0)
-      --then if (elem v (map fst (methodArgs (methodList!!0)))) then v else (v ++ "()")
-      --else v
-      Empty
-    genIR (IntConst i) symbolTable currentState = Empty
-    genIR (Neg aExpr) symbolTable currentState = Empty
-    genIR (ABinary aBinOp aExpr1 aExpr2) symbolTable currentState = Empty
-    genIR (Parenthesis aExpr) symbolTable currentState = Empty
-
-instance Show AExpr where
-  show (Var v) = v
-  show (IntConst i) = show i
-  show (Neg aExpr) = show aExpr
-  show (ABinary aBinOp aExpr1 aExpr2) = show aBinOp ++ show aExpr1 ++ show aExpr2
-  show (Parenthesis aExpr) = show aExpr
-  show (AError) = "<AError>"
-
--- Arithmetic ops
-data ABinOp
-  = OpeningParenthesis
-  | ClosingParenthesis
-  | Add
-  | Subtract
-  | Multiply
-  | Divide
-  | ABinOpError
-  deriving (Eq)
-
-instance IRGen ABinOp where
-    genIR (Add) symbolTable currentState = Empty
-    genIR (Subtract) symbolTable currentState = Empty
-    genIR (Multiply) symbolTable currentState = Empty
-    genIR (Divide) symbolTable currentState = Empty
-    genIR (OpeningParenthesis) currentState symbolTable = Empty
-    genIR (ClosingParenthesis) currentState symbolTable = Empty
-
-instance Show ABinOp where
-  show (Add) = "+"
-  show (Subtract) = "-"
-  show (Multiply) = "*"
-  show (Divide) = "/"
-  show (OpeningParenthesis) = "("
-  show (ClosingParenthesis) = ")"
-  show (ABinOpError) = "<ABinOpError>"
-
--- Boolean expressions
-data BExpr
-  = BoolConst Bool
-  | Not BExpr
-  | BBinary BBinOp BExpr BExpr
-  | RBinary RBinOp AExpr AExpr
-  | BError
-  deriving (Eq)
-
-instance IRGen BExpr where
-    genIR (BoolConst b) symbolTable currentState = Empty
-    genIR (Not n) symbolTable currentState = Empty
-    genIR (BBinary bbinop bExpr1 bExpr2) symbolTable currentState = Empty
-    genIR (RBinary rbinop aExpr1 aExpr2) symbolTable currentState = Empty
-
-instance Show BExpr where
-  show (BoolConst v) = if v then "true" else "false"
-  show (RBinary rbinop aExpr1 aExpr2) = show rbinop ++ show aExpr1 ++ show aExpr2
-  show (BError) = "<BError>"
-  show (_) = "<UNKNOWN SHOW BEXPR>"
-
--- Boolean ops
-data BBinOp
-  = And
-  | Or
-  | BBinOpError
-  deriving (Eq)
-
-instance IRGen BBinOp where
-    genIR (And) symbolTable currentState = Empty
-    genIR (Or) symbolTable currentState = Empty
-
--- R binary ops
-data RBinOp
-  = Greater
-  | GreaterEqual
-  | Less
-  | LessEqual
-  | RBinOpError
-  deriving (Eq)
-
-instance IRGen RBinOp where
-    genIR (Greater) symbolTable currentState = Empty
-    genIR (Less) symbolTable currentState = Empty
-    genIR (GreaterEqual) symbolTable currentState = Empty
-    genIR (LessEqual) symbolTable currentState = Empty
-
-instance Show RBinOp where
-  show (Greater) = ">"
-  show (Less) = "<"
-  show (GreaterEqual) = ">="
-  show (LessEqual) = "<="
-  show (RBinOpError) = "<RBinOpError>"
-
-
 
 data Expr
-  = Annotation String
+  = ABinary Expr Expr Expr
+  | ABinOpError
+  | Add
+  | AError
+  | And
+  | Annotation String
   | Argument Expr
   | ArgumentType String
-  | ArithExpr AExpr
+  | ArithExpr Expr
   | ArrayAppend [Expr]
   | ArrayAssignment Expr Expr
   | ArrayDef String String
@@ -164,15 +41,18 @@ data Expr
   | ArrayValues [String]
   | Assign Expr Expr Expr
   | AssignArith Bool Expr String Expr
-  | BooleanExpr BExpr
-  | Catch (Maybe [Expr]) [Expr]
+  | BBinary Expr Expr Expr
+  | BBinOpError
+  | BError
+  | BoolConst Bool
+  | BooleanExpr Expr
+  | Catch [Expr] [Expr]
   | Class [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-  | ClassParam {classParamVarType :: Expr, classParamVarName :: Expr}
+  | ClassParam Expr Expr
   | ClassVariable String String
+  | ClosingParenthesis
   | Constructor String [Expr] [Expr] [Expr]
-  | Data String [Expr]
-  | DataElement String String [String] [String]
-  | DataInstance Expr [Expr]
+  | Divide
   | Else [Expr]
   | ElseIf Expr [Expr]
   | Error
@@ -180,22 +60,35 @@ data Expr
   | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
   | FunctionCall String [Expr]
   | GlobalVar String Bool Bool Expr Expr [Expr]
+  | Greater
+  | GreaterEqual
   | Identifier String
   | If Expr [Expr]
   | Import {locs ::[String]}
-  | Lambda String [Expr]
+  | IntConst Integer
+  | Less
+  | LessEqual
   | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
   | ModifierBlock [Expr]
+  | Multiply
+  | Neg Expr
   | NewClassInstance String [Expr]
+  | Not Expr
   | Object [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   | ObjectMethodCall String String [Expr]
+  | OpeningParenthesis
+  | Or
+  | Parenthesis Expr
   | Print Expr
+  | RBinary Expr Expr Expr
   | Reassign Expr Expr
   | Return Expr
   | ReturnType String
+  | RBinOpError
   | Seq [Expr]
   | Skip
   | StringLiteral String
+  | Subtract
   | Super
   | SuperMethodCall String String [Expr]
   | This
@@ -204,6 +97,7 @@ data Expr
   | Trait [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   | Try [Expr]
   | Type Expr
+  | Var String
   | Where [Expr]
   | While Expr [Expr]
   deriving (Eq, Show)
@@ -221,56 +115,86 @@ instance SymbolTableGen Expr where
 
 
 instance IRGen Expr where
-    genIR (Annotation name) symbolTable currentState = AnnotationIR (IRInfo $ "Annotation") name
-    genIR (Argument a) symbolTable currentState = ArgumentIR (IRInfo $ "Argument") (genIR a symbolTable currentState)
-    genIR (ArgumentType aType) symbolTable currentState = ArgumentTypeIR (IRInfo $ "Argument Type") aType
-    genIR (ArithExpr aExpr) symbolTable currentState = ArithExprIR (IRInfo $ "Arith Expr") (genIR aExpr symbolTable currentState)
-    genIR (ArrayAppend arrays) symbolTable currentState = ArrayAppendIR (IRInfo $ "Array Append") (map (\a -> genIR a symbolTable currentState) arrays)
-    genIR (ArrayAssignment arr values) symbolTable currentState = Empty
-    genIR (ArrayDef arrType name) symbolTable currentState = Empty
-    genIR (ArrayElementSelect i) symbolTable currentState = Empty
-    genIR (ArrayType arrType) symbolTable currentState = Empty
-    genIR (ArrayValues exprs) symbolTable currentState = Empty
-    genIR (Assign vType name value) symbolTable currentState = Empty
-    genIR (AssignArith mutable vType name value) symbolTable currentState = Empty
-    genIR (BooleanExpr expr) symbolTable currentState = Empty
-    genIR (Catch params exprs) symbolTable currentState = Empty
-    genIR (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = Empty
-    genIR (ClassParam varType varName) symbolTable currentState = Empty
-    genIR (ClassVariable className varName) symbolTable currentState = Empty
-    genIR (Constructor name argTypes args body) symbolTable currentState = Empty
-    genIR (Data name exprs) symbolTable currentState = Empty
-    genIR (DataElement superName name argTypes args) symbolTable currentState = Empty
-    genIR (Else statement) symbolTable currentState = Empty
-    genIR (ElseIf condition statement) symbolTable currentState = Empty
-    genIR (For varName start end exprs) symbolTable currentState = Empty
-    genIR (Function name annotations argTypes args returnType static body) symbolTable currentState = Empty
-    genIR (FunctionCall name exprs) symbolTable currentState = Empty
-    genIR (GlobalVar modifier final static varType varName exprs) symbolTable currentState = Empty
-    genIR (Identifier name) symbolTable currentState = Empty
-    genIR (If condition statement) symbolTable currentState = Empty
-    genIR (Import locs) symbolTable currentState = Empty
-    genIR (Lambda varName exprs) symbolTable currentState = Empty
-    genIR (MainFunction name annotations argTypes args returnType body) symbolTable currentState = Empty
-    genIR (ModifierBlock exprs) symbolTable currentState = Empty
-    genIR (NewClassInstance className args) symbolTable currentState = Empty
-    genIR (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = Empty
-    genIR (ObjectMethodCall objectName methodName args) symbolTable currentState = Empty
-    genIR (Print exprs) symbolTable currentState = Empty
-    genIR (Reassign name value) symbolTable currentState = Empty
-    genIR (Return expr) symbolTable currentState = Empty
-    genIR (ReturnType b) symbolTable currentState = Empty
-    genIR (Seq s) symbolTable currentState = Empty
-    genIR (Skip) symbolTable currentState = Empty
-    genIR (StringLiteral value) symbolTable currentState = Empty
-    genIR (Super) symbolTable currentState = Empty
-    genIR (SuperMethodCall objectName methodName args) symbolTable currentState = Empty
-    genIR (This) symbolTable currentState = Empty
-    genIR (ThisMethodCall methodName args) symbolTable currentState = Empty
-    genIR (ThisVar varName) symbolTable currentState = Empty
-    genIR (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = Empty
-    genIR (Try exprs) symbolTable currentState = Empty
-    genIR (Type b) symbolTable currentState = Empty
-    genIR (Where exprs) symbolTable currentState = Empty
-    genIR (While condition statement) symbolTable currentState = Empty
-    genIR (_) symbolTable currentState = Empty
+
+    -- To organise alphabetically
+    genIR (Greater) symbolTable currentState = GreaterIR (IRInfo $ "Greater")
+    genIR (Less) symbolTable currentState = LessIR (IRInfo $ "Less")
+    genIR (GreaterEqual) symbolTable currentState = GreaterEqualIR (IRInfo $ "GreaterEqual")
+    genIR (LessEqual) symbolTable currentState = LessEqualIR (IRInfo $ "LessEqual")
+    genIR (And) symbolTable currentState = AndIR (IRInfo $ "And")
+    genIR (Or) symbolTable currentState = OrIR (IRInfo $ "Or")
+    genIR (BoolConst b) st cs = BoolConstIR (IRInfo $ "BoolConst") b
+    genIR (Not n) st cs = NotIR (IRInfo $ "Not") $ genIR n st cs
+    genIR (BBinary bbinop bExpr1 bExpr2) st cs = BBinaryIR (IRInfo $ "BBinaryIR") (genIR bbinop st cs) (genIR bExpr1 st cs) (genIR bExpr2 st cs)
+    genIR (RBinary rbinop aExpr1 aExpr2) st cs = RBinaryIR (IRInfo $ "RBinaryIR") (genIR rbinop st cs) (genIR aExpr1 st cs) (genIR aExpr2 st cs)
+    genIR (Add) symbolTable currentState = Empty (IRInfo $ "Add")
+    genIR (Subtract) symbolTable currentState = Empty (IRInfo $ "Subtract")
+    genIR (Multiply) symbolTable currentState = Empty (IRInfo $ "Multiply")
+    genIR (Divide) symbolTable currentState = Empty (IRInfo $ "Divide")
+    genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
+    genIR (ClosingParenthesis) currentState symbolTable = Empty (IRInfo $ "ClosingParenthesis")
+    genIR (Var v) symbolTable currentState = Empty (IRInfo $ "Var")
+    genIR (IntConst i) symbolTable currentState = Empty (IRInfo $ "IntConst")
+    genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")
+    genIR (ABinary aBinOp aExpr1 aExpr2) symbolTable currentState = Empty (IRInfo $ "ABinary")
+    genIR (Parenthesis aExpr) symbolTable currentState = Empty (IRInfo $ "Parenthesis")
+
+
+
+    genIR (Annotation name) st cs = AnnotationIR (IRInfo $ "Annotation") name
+    genIR (Argument a) st cs = ArgumentIR (IRInfo $ "Argument") (genIR a st cs)
+    genIR (ArgumentType aType) st cs = ArgumentTypeIR (IRInfo $ "ArgumentType") aType
+    genIR (ArithExpr aExpr) st cs = ArithExprIR (IRInfo $ "ArithExpr") (genIR aExpr st cs)
+    genIR (ArrayAppend arrays) st cs = ArrayAppendIR (IRInfo $ "ArrayAppend") (exprArrToIRArray arrays st cs)
+    genIR (ArrayAssignment arr values) st cs = ArrayAssignmentIR (IRInfo $ "ArrayAssignment") (genIR arr st cs) (genIR values st cs)
+    genIR (ArrayDef arrType name) st cs = ArrayDefIR (IRInfo $ "ArrayDef") arrType name
+    genIR (ArrayElementSelect index) st cs = ArrayElementSelectIR (IRInfo $ "Array Element Select") index
+    genIR (ArrayType arrType) st cs = ArrayTypeIR (IRInfo $ "ArrayType") arrType
+    genIR (ArrayValues exprs) st cs = ArrayValuesIR (IRInfo $ "ArrayValues") exprs
+    genIR (Assign vType name value) st cs = AssignIR (IRInfo $ "Assign") (genIR vType st cs) (genIR name st cs) (genIR value st cs)
+    genIR (AssignArith mutable vType name value) st cs = AssignArithIR (IRInfo $ "AssignArith") mutable (genIR vType st cs) name (genIR value st cs)
+    genIR (BooleanExpr expr) st cs = BooleanExprIR (IRInfo $ "BooleanExpr") (genIR expr st cs)
+    genIR (Catch params exprs) st cs = CatchIR (IRInfo $ "Catch") (exprArrToIRArray params st cs) (exprArrToIRArray exprs st cs)
+    genIR (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ClassIR (IRInfo $ "Class") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (ClassParam varType varName) st cs = ClassParamIR (IRInfo $ "ClassParam") (genIR varType st cs) (genIR varName st cs)
+    genIR (ClassVariable className varName) st cs = ClassVariableIR (IRInfo $ "ClassVariable") className varName
+    genIR (Constructor name argTypes args exprs) st cs = ConstructorIR (IRInfo $ "Constructor") name (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (exprArrToIRArray exprs st cs)
+    genIR (Else exprs) st cs = ElseIR (IRInfo $ "Else") (exprArrToIRArray exprs st cs)
+    genIR (ElseIf condition exprs) st cs = ElseIfIR (IRInfo $ "ElseIf") (genIR condition st cs) (exprArrToIRArray exprs st cs)
+    genIR (For varName start end exprs) st cs = ForIR (IRInfo $ "For") varName (genIR start st cs) (genIR end st cs) (exprArrToIRArray exprs st cs)
+    genIR (Function name annotations argTypes args returnType static exprs) st cs = FunctionIR (IRInfo $ "Function") name (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (genIR returnType st cs) static (exprArrToIRArray exprs st cs)
+    genIR (FunctionCall name exprs) st cs = FunctionCallIR (IRInfo $ "FunctionCall") name $ exprArrToIRArray exprs st cs
+    genIR (GlobalVar modifier final static varType varName exprs) st cs = GlobalVarIR (IRInfo $ "GlobalVar") modifier final static (genIR varType st cs) (genIR varName st cs)  (map (\e -> genIR e st cs) exprs)
+    genIR (Identifier name) st cs = IdentifierIR (IRInfo $ "Identifier") name
+    genIR (If condition exprs) st cs = IfIR (IRInfo $ "If") (genIR condition st cs) $ exprArrToIRArray exprs st cs
+    genIR (Import locs) st cs = ImportIR (IRInfo $ "Import") locs
+    genIR (MainFunction name annotations argTypes args returnType exprs) st cs = MainFunctionIR (IRInfo $ "MainFunction") name (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (genIR returnType st cs) (exprArrToIRArray exprs st cs)
+    genIR (ModifierBlock exprs) st cs = ModifierBlockIR (IRInfo $ "ModifierBlock") (map (\e -> genIR e st cs) exprs)
+    genIR (NewClassInstance className args) st cs = NewClassInstanceIR (IRInfo $ "NewClassInstance") className $ exprArrToIRArray args st cs
+    genIR (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR (IRInfo $ "Object") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR (IRInfo $ "ObjectMethodCall") objectName methodName (exprArrToIRArray args st cs)
+    genIR (Print expr) st cs = PrintIR (IRInfo $ "Print") $ genIR expr st cs
+    genIR (Reassign name value) st cs = ReassignIR (IRInfo $ "Reassign") (genIR name st cs) (genIR value st cs)
+    genIR (Return expr) st cs = ReturnIR (IRInfo $ "Return") (genIR expr st cs)
+    genIR (ReturnType returnType) st cs = ReturnTypeIR (IRInfo $ "ReturnType") returnType
+    genIR (Seq s) st cs = SeqIR (IRInfo $ "Seq") (exprArrToIRArray s st cs)
+    genIR (Skip) st cs = SkipIR (IRInfo $ "Skip")
+    genIR (StringLiteral value) st cs = StringLiteralIR (IRInfo $ "StringLiteral") value
+    genIR (Super) st cs = SuperIR (IRInfo $ "Super")
+    genIR (SuperMethodCall objectName methodName args) st cs = SuperMethodCallIR (IRInfo $ "SuperMethodCall")  objectName methodName (exprArrToIRArray args st cs)
+    genIR (This) st cs = ThisIR (IRInfo $ "This")
+    genIR (ThisMethodCall methodName args) st cs = ThisMethodCallIR (IRInfo $ "ThisMethodCall") methodName (exprArrToIRArray args st cs)
+    genIR (ThisVar varName) st cs = ThisVarIR (IRInfo $ "ThisVar") $ genIR varName st cs
+    genIR (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR (IRInfo $ "Trait") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (Try exprs) st cs = TryIR (IRInfo $ "Try") (exprArrToIRArray exprs st cs)
+    genIR (Type b) st cs = TypeIR (IRInfo $ "Type") (genIR b st cs)
+    genIR (Where exprs) st cs = WhereIR (IRInfo $ "Where") $ exprArrToIRArray exprs st cs
+    genIR (While condition exprs) st cs = WhileIR (IRInfo $ "While") (genIR condition st cs) $ exprArrToIRArray exprs st cs
+
+maybeExprToMaybeIRNode :: Maybe Expr -> SymbolTable -> CurrentState -> Maybe IRNode
+maybeExprToMaybeIRNode mExpr st cs = case mExpr of
+                                       Just e -> Just $ genIR e st cs
+                                       Nothing -> Nothing
+
+exprArrToIRArray :: [Expr] -> SymbolTable -> CurrentState -> [IRNode]
+exprArrToIRArray exprs st cs = (map (\a -> genIR a st cs) exprs)

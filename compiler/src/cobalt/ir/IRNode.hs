@@ -22,17 +22,23 @@ getDebug message = (if debug then "<" ++ message ++ "> " else "")
        )--}
 
 
+class Pretty a where
+  pretty :: a -> SymbolTable -> CurrentState -> String -- Pretty document type
 
 data IRInfo = IRInfo String
   deriving (Eq)
 
 instance Show IRInfo where
-  show (IRInfo info) = format "/* {0} */" [info]
-
+  show (IRInfo info) = if debug then format "/*{0}*/" [info] else ""
 
 
 data IRNode
-  = AnnotationIR IRInfo String
+  = ABinaryIR IRInfo IRNode IRNode IRNode
+  | ABinOpErrorIR IRInfo
+  | AddIR IRInfo
+  | AndIR IRInfo
+  | AErrorIR IRInfo
+  | AnnotationIR IRInfo String
   | ArgumentIR IRInfo IRNode
   | ArgumentTypeIR IRInfo String
   | ArithExprIR IRInfo IRNode
@@ -44,38 +50,59 @@ data IRNode
   | ArrayValuesIR IRInfo [String]
   | AssignIR IRInfo IRNode IRNode IRNode
   | AssignArithIR IRInfo Bool IRNode String IRNode
+  | BBinaryIR IRInfo IRNode IRNode IRNode
+  | BBinOpErrorIR IRInfo
+  | BErrorIR IRInfo
+  | BoolConstIR IRInfo Bool
   | BooleanExprIR IRInfo IRNode
-  | CatchIR IRInfo (Maybe [IRNode]) [IRNode]
+  | CatchIR IRInfo [IRNode] [IRNode]
   | ClassIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | ClassParamIR {classPIRInfo :: IRInfo, varType :: IRNode, varName :: IRNode}
   | ClassVariableIR IRInfo String String
+  | ClosingParenthesisIR IRInfo
   | ConstructorIR IRInfo String [IRNode] [IRNode] [IRNode]
   | DataIR IRInfo String [IRNode]
   | DataElementIR IRInfo String String [String] [String]
   | DataInstanceIR IRInfo IRNode [IRNode]
+  | DivideIR IRInfo
   | ElseIR IRInfo [IRNode]
   | ElseIfIR IRInfo IRNode [IRNode]
+  | Empty IRInfo
   | ErrorIR IRInfo
   | ForIR IRInfo String IRNode IRNode [IRNode]
   | FunctionIR IRInfo String (Maybe IRNode) [IRNode] [IRNode] IRNode Bool [IRNode]
   | FunctionCallIR IRInfo String [IRNode]
   | GlobalVarIR IRInfo String Bool Bool IRNode IRNode [IRNode]
+  | GreaterEqualIR IRInfo
+  | GreaterIR IRInfo
   | IdentifierIR IRInfo String
   | IfIR IRInfo IRNode [IRNode]
   | ImportIR {importIRInfo:: IRInfo, locs ::[String]}
   | LambdaIR IRInfo String [IRNode]
+  | LessIR IRInfo
+  | LessEqualIR IRInfo
+  | IntConstIR IRInfo Integer
   | MainFunctionIR {mainFunctionIRInfoVal :: IRInfo, name ::String, annotations :: (Maybe IRNode), argTypes:: [IRNode], args::[IRNode], returnType::IRNode, body::[IRNode]}
   | ModifierBlockIR IRInfo [IRNode]
+  | MultiplyIR IRInfo
+  | NegIR IRInfo IRNode
   | NewClassInstanceIR IRInfo String [IRNode]
+  | NotIR IRInfo IRNode
   | ObjectIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | ObjectMethodCallIR IRInfo String String [IRNode]
+  | OpeningParenthesisIR IRInfo
+  | OrIR IRInfo
+  | ParenthesisIR IRInfo IRNode
   | PrintIR IRInfo IRNode
   | ReassignIR IRInfo IRNode IRNode
   | ReturnIR IRInfo IRNode
   | ReturnTypeIR IRInfo String
+  | RBinaryIR IRInfo IRNode IRNode IRNode
+  | RBinOpErrorIR IRInfo
   | SeqIR IRInfo [IRNode]
   | SkipIR IRInfo
   | StringLiteralIR IRInfo String
+  | SubtractIR IRInfo
   | SuperIR IRInfo
   | SuperMethodCallIR IRInfo String String [IRNode]
   | ThisIR IRInfo
@@ -84,14 +111,11 @@ data IRNode
   | TraitIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | TryIR IRInfo [IRNode]
   | TypeIR IRInfo IRNode
+  | VarIR IRInfo String
   | WhereIR IRInfo [IRNode]
   | WhileIR IRInfo IRNode [IRNode]
-  | Empty
-  deriving (Eq)
+  deriving (Eq, Show)
 
-
-class Pretty a where
-  pretty :: a -> SymbolTable -> CurrentState -> String -- Pretty document type
 
 instance Pretty IRNode where
     pretty (AnnotationIR irInfo name) symbolTable currentState = show irInfo ++ "@" ++ name
@@ -107,12 +131,7 @@ instance Pretty IRNode where
     pretty (AssignIR irInfo vType name value) symbolTable currentState = show irInfo ++ pretty vType symbolTable currentState ++ " " ++ pretty name symbolTable currentState ++ "=" ++ pretty value symbolTable currentState ++ ";"
     pretty (AssignArithIR irInfo mutable vType name value) symbolTable currentState = show irInfo ++ (if mutable then "" else "final ") ++ pretty vType symbolTable currentState ++ " " ++ name ++ "=" ++ pretty value symbolTable currentState ++ ";"
     pretty (BooleanExprIR irInfo expr) symbolTable currentState = show irInfo ++ pretty expr symbolTable currentState
-    pretty (CatchIR irInfo params exprs) symbolTable currentState = show irInfo ++ "catch(" ++  intercalate ", " (map (\x -> "final " ++ pretty x symbolTable currentState) paramList)  ++ "){" ++ intercalate " " (map (\x -> pretty x symbolTable currentState) exprs) ++ "}"
-      where
-        paramList = case params of
-            Just a -> a
-            Nothing -> []
-
+    pretty (CatchIR irInfo params exprs) symbolTable currentState = show irInfo ++ "catch(" ++  intercalate ", " (map (\x -> "final " ++ pretty x symbolTable currentState) params)  ++ "){" ++ intercalate " " (map (\x -> pretty x symbolTable currentState) exprs) ++ "}"
     pretty (ClassIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState =
         show irInfo ++
         (if(length packageLocs > 0)
@@ -297,7 +316,31 @@ instance Pretty IRNode where
     pretty (TypeIR irInfo b) symbolTable currentState = show irInfo ++ pretty b symbolTable currentState
     pretty (WhereIR irInfo exprs) symbolTable currentState = show irInfo ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) exprs)
     pretty (WhileIR irInfo condition statement) symbolTable currentState = show irInfo ++ "while(" ++ pretty condition symbolTable currentState ++ "){\n" ++ intercalate "\n" (map (\x -> pretty x symbolTable currentState) statement) ++ "}"
-    pretty (Empty) symbolTable currentState = "<CodeGen Unimplemented>"
+    pretty (Empty irInfo) symbolTable currentState = show irInfo
+
+    -- To organise alphabetically
+    pretty (VarIR irInfo v) symbolTable currentState = ""
+    pretty (IntConstIR irInfo i) symbolTable currentState = ""
+    pretty (NegIR irInfo aExpr) symbolTable currentState = ""
+    pretty (ABinaryIR irInfo aBinOp aExpr1 aExpr2) symbolTable currentState = ""
+    pretty (ParenthesisIR irInfo aExpr) symbolTable currentState = ""
+    pretty (AddIR irInfo) symbolTable currentState = ""
+    pretty (SubtractIR irInfo) symbolTable currentState = ""
+    pretty (MultiplyIR irInfo) symbolTable currentState = ""
+    pretty (DivideIR irInfo) symbolTable currentState = ""
+    pretty (OpeningParenthesisIR irInfo) currentState symbolTable = ""
+    pretty (ClosingParenthesisIR irInfo) currentState symbolTable = ""
+    pretty (BoolConstIR irInfo  b) st cs = ""
+    pretty (NotIR irInfo  n) st cs = ""
+    pretty (BBinaryIR irInfo  bbinop bExpr1 bExpr2) st cs = ""
+    pretty (RBinaryIR irInfo  rbinop aExpr1 aExpr2) st cs = ""
+    pretty (AndIR irInfo) symbolTable currentState = ""
+    pretty (OrIR irInfo) symbolTable currentState = ""
+    pretty (GreaterIR irInfo) symbolTable currentState = ""
+    pretty (LessIR irInfo) symbolTable currentState = ""
+    pretty (GreaterEqualIR irInfo) symbolTable currentState = ""
+    pretty (LessEqualIR irInfo) symbolTable currentState = ""
+
 
 
 

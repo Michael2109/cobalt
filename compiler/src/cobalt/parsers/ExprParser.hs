@@ -41,13 +41,13 @@ import SymbolTable
 --
 --
 
-aTerm :: Parser AExpr
+aTerm :: Parser Expr
 aTerm = parens aExpr
   <|> Var      <$> identifier
   <|> IntConst <$> integer
 
 
-aOperators :: [[Operator Parser AExpr]]
+aOperators :: [[Operator Parser Expr]]
 aOperators =
   [ [Prefix (Neg <$ symbol "-") ]
   , [ InfixL (ABinary Multiply <$ symbol "*")
@@ -57,7 +57,7 @@ aOperators =
   ]
 
 
-aExpr :: Parser AExpr
+aExpr :: Parser Expr
 aExpr = makeExprParser aTerm aOperators
 
 
@@ -65,14 +65,14 @@ aExpr = makeExprParser aTerm aOperators
 --
 --
 
-bTerm :: Parser BExpr
+bTerm :: Parser Expr
 bTerm = BoolConst True  <$ rword "True"
   <|> BoolConst False <$ rword "False"
   <|> parens bExpr
   <|> rExpr
 
 
-bOperators :: [[Operator Parser BExpr]]
+bOperators :: [[Operator Parser Expr]]
 bOperators =
   [ [Prefix (Not <$ rword "not") ]
   , [InfixL (BBinary And <$ rword "and")
@@ -80,11 +80,11 @@ bOperators =
   ]
 
 
-bExpr :: Parser BExpr
+bExpr :: Parser Expr
 bExpr = makeExprParser bTerm bOperators
 
 
-rExpr :: Parser BExpr
+rExpr :: Parser Expr
 rExpr = do
   a1 <- aExpr
   op <- relation
@@ -92,7 +92,7 @@ rExpr = do
   return (RBinary op a1 a2)
 
 
-relation :: Parser RBinOp
+relation :: Parser Expr
 relation = (symbol ">=" *> pure GreaterEqual)
   <|> (symbol "<=" *> pure LessEqual)
   <|> (symbol ">" *> pure Greater)
@@ -369,40 +369,11 @@ argumentParser = do
   value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstance <|> stringLiteral <|> identifierParser <|> arithmeticParser
   return $ Argument value
 
-
--- data A = B String | C Integer
-dataElementParser :: String -> Parser Expr
-dataElementParser superName = do
-  name <- identifier
-  argTypes <- many identifier
-  let args = map (\x -> "var" ++ show x) [0..((length argTypes)-1)]
-  return $ DataElement superName name argTypes args
-
-lambdaParser :: Parser Expr
-lambdaParser  = do
-  try (symbol "\\")
-  varName <- identifier
-  symbol "->"
-  es <- some (expr' )
-  return $ Lambda varName es
-
-dataParser :: Parser Expr
-dataParser = L.nonIndented scn p
-  where
-    p = do
-      rword "data"
-      name <- identifier
-      symbol "="
-      dataElements <- sepBy (dataElementParser name) (symbol "|")
-      return $ Data name dataElements
-
-
 printParser :: Parser Expr
 printParser  = do
   try $ rword "println"
   e <- parens argumentParser
   return $ Print e
-
 
 ifStmtParser :: Parser Expr
 ifStmtParser  = try $ L.indentBlock scn p
@@ -464,7 +435,10 @@ catchParser  = try $ L.indentBlock scn p
    where
      p = do
        rword "catch"
-       params <- optional (parens (sepBy parameterParser (symbol ",")))
+       fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+       let params = case fullParams of
+                      Just ps -> ps
+                      Nothing -> []
        return (L.IndentMany Nothing (return . (Catch params)) (expr' ))
 
 whereStmt :: Parser Expr
@@ -493,8 +467,7 @@ expr = f <$> sepBy1 (expr') (symbol ";")
 
 
 expr' :: Parser Expr
-expr' = try dataParser
-  <|> booleanParser
+expr' = booleanParser
 
   <|> forLoopParser
   <|> ifStmtParser
@@ -512,7 +485,6 @@ expr' = try dataParser
   <|> newClassInstance
   <|> classVariableParser
   <|> try arrayElementSelect
-  <|> lambdaParser
 
   <|> assignParser
   <|> reassignParser
