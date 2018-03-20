@@ -81,6 +81,7 @@ test-suite compiler-test
       src/cobalt/ir,
       src/cobalt/parsers,
       src/cobalt/symbol_table
+      src/cobalt/utils
 
       test,
       test/cobalt,
@@ -89,7 +90,6 @@ test-suite compiler-test
       test/cobalt/compiler,
       test/cobalt/error_checking,
       test/cobalt/parsers,
-      test/cobalt/parsers/ab_expr_parsers,
       test/cobalt/parsers/base_parsers,
       test/cobalt/parsers/expr_parsers,
       test/cobalt/symbol_table
@@ -112,6 +112,7 @@ test-suite compiler-test
       IRNode
       Parser
       SymbolTable
+      IOUtils
 
       ParserTests
       SymbolTableTests

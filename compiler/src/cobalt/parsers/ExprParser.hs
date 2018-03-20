@@ -5,6 +5,8 @@ The highest level parser that uses functions in the BaseParser and ABExprParser 
 -}
 module ExprParser (Parser,
                     expr,
+                    aExpr,
+                    bExpr,
                     objectParser,
                     classParser,
                     traitParser,
