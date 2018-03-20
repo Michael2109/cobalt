@@ -41,13 +41,13 @@ import SymbolTable
 --
 --
 
-aTerm :: Parser AExpr
+aTerm :: Parser Expr
 aTerm = parens aExpr
   <|> Var      <$> identifier
   <|> IntConst <$> integer
 
 
-aOperators :: [[Operator Parser AExpr]]
+aOperators :: [[Operator Parser Expr]]
 aOperators =
   [ [Prefix (Neg <$ symbol "-") ]
   , [ InfixL (ABinary Multiply <$ symbol "*")
@@ -57,7 +57,7 @@ aOperators =
   ]
 
 
-aExpr :: Parser AExpr
+aExpr :: Parser Expr
 aExpr = makeExprParser aTerm aOperators
 
 
@@ -65,14 +65,14 @@ aExpr = makeExprParser aTerm aOperators
 --
 --
 
-bTerm :: Parser BExpr
+bTerm :: Parser Expr
 bTerm = BoolConst True  <$ rword "True"
   <|> BoolConst False <$ rword "False"
   <|> parens bExpr
   <|> rExpr
 
 
-bOperators :: [[Operator Parser BExpr]]
+bOperators :: [[Operator Parser Expr]]
 bOperators =
   [ [Prefix (Not <$ rword "not") ]
   , [InfixL (BBinary And <$ rword "and")
@@ -80,11 +80,11 @@ bOperators =
   ]
 
 
-bExpr :: Parser BExpr
+bExpr :: Parser Expr
 bExpr = makeExprParser bTerm bOperators
 
 
-rExpr :: Parser BExpr
+rExpr :: Parser Expr
 rExpr = do
   a1 <- aExpr
   op <- relation
@@ -92,7 +92,7 @@ rExpr = do
   return (RBinary op a1 a2)
 
 
-relation :: Parser RBinOp
+relation :: Parser Expr
 relation = (symbol ">=" *> pure GreaterEqual)
   <|> (symbol "<=" *> pure LessEqual)
   <|> (symbol ">" *> pure Greater)
