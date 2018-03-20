@@ -30,4 +30,6 @@ compileJava classpath outputDir inputFile = do
   print ("classpath " ++ classpath ++ " outputDir " ++ outputDir ++ " inputFile " ++ inputFile)
   absoluteOutputDir <- makeAbsolute outputDir
   absoluteInputFile <- makeAbsolute inputFile
-  callCommand ("javac -classpath \"" ++ init classpath ++ "\" -d \"" ++ init absoluteOutputDir ++ "\" \"" ++ absoluteInputFile ++ "\"")
+  let command = "javac -classpath \"" ++ init classpath ++ "\" -d \"" ++ init absoluteOutputDir ++ "\" \"" ++ absoluteInputFile ++ "\""
+  putStrLn command
+  callCommand command
