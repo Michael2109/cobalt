@@ -114,6 +114,7 @@ parserTestList = TestList [
         testStringLiteralEscapedDoubleQuote,
         testStringLiteralDoubleQuoteMultiple,
         testStringLiteralUnfinishedFail,
-        testStringLiteralMultiLineDoubleFail
+        testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
+        testStringLiteralUnfinishedDoubleLineFail
 
        ]

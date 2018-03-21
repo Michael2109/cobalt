@@ -137,8 +137,17 @@ testStringLiteralUnfinishedFail = do
       Left  e -> Error
       Right x -> x)
 
-testStringLiteralMultiLineDoubleFail :: Test
-testStringLiteralMultiLineDoubleFail = do
+testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail :: Test
+testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail = do
+  let code =  "\"first line \n \t\t\tsecond line\""
+  TestCase $ assertEqual code
+    (Error)
+    (case (parse (stringLiteral) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testStringLiteralUnfinishedDoubleLineFail :: Test
+testStringLiteralUnfinishedDoubleLineFail = do
   let code = "\"first line \n second line\""
   TestCase $ assertEqual code
     (Error)
