@@ -116,31 +116,9 @@ instance SymbolTableGen Expr where
 
 instance IRGen Expr where
 
-    -- To organise alphabetically
-    genIR (Greater) symbolTable currentState = GreaterIR (IRInfo $ "Greater")
-    genIR (Less) symbolTable currentState = LessIR (IRInfo $ "Less")
-    genIR (GreaterEqual) symbolTable currentState = GreaterEqualIR (IRInfo $ "GreaterEqual")
-    genIR (LessEqual) symbolTable currentState = LessEqualIR (IRInfo $ "LessEqual")
-    genIR (And) symbolTable currentState = AndIR (IRInfo $ "And")
-    genIR (Or) symbolTable currentState = OrIR (IRInfo $ "Or")
-    genIR (BoolConst b) st cs = BoolConstIR (IRInfo $ "BoolConst") b
-    genIR (Not n) st cs = NotIR (IRInfo $ "Not") $ genIR n st cs
-    genIR (BBinary bbinop bExpr1 bExpr2) st cs = BBinaryIR (IRInfo $ "BBinaryIR") (genIR bbinop st cs) (genIR bExpr1 st cs) (genIR bExpr2 st cs)
-    genIR (RBinary rbinop aExpr1 aExpr2) st cs = RBinaryIR (IRInfo $ "RBinaryIR") (genIR rbinop st cs) (genIR aExpr1 st cs) (genIR aExpr2 st cs)
-    genIR (Add) symbolTable currentState = Empty (IRInfo $ "Add")
-    genIR (Subtract) symbolTable currentState = Empty (IRInfo $ "Subtract")
-    genIR (Multiply) symbolTable currentState = Empty (IRInfo $ "Multiply")
-    genIR (Divide) symbolTable currentState = Empty (IRInfo $ "Divide")
-    genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
-    genIR (ClosingParenthesis) currentState symbolTable = Empty (IRInfo $ "ClosingParenthesis")
-    genIR (Var v) symbolTable currentState = Empty (IRInfo $ "Var")
-    genIR (IntConst i) symbolTable currentState = Empty (IRInfo $ "IntConst")
-    genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")
     genIR (ABinary aBinOp aExpr1 aExpr2) symbolTable currentState = Empty (IRInfo $ "ABinary")
-    genIR (Parenthesis aExpr) symbolTable currentState = Empty (IRInfo $ "Parenthesis")
-
-
-
+    genIR (Add) symbolTable currentState = Empty (IRInfo $ "Add")
+    genIR (And) symbolTable currentState = AndIR (IRInfo $ "And")
     genIR (Annotation name) st cs = AnnotationIR (IRInfo $ "Annotation") name
     genIR (Argument a) st cs = ArgumentIR (IRInfo $ "Argument") (genIR a st cs)
     genIR (ArgumentType aType) st cs = ArgumentTypeIR (IRInfo $ "ArgumentType") aType
@@ -153,33 +131,50 @@ instance IRGen Expr where
     genIR (ArrayValues exprs) st cs = ArrayValuesIR (IRInfo $ "ArrayValues") exprs
     genIR (Assign vType name value) st cs = AssignIR (IRInfo $ "Assign") (genIR vType st cs) (genIR name st cs) (genIR value st cs)
     genIR (AssignArith mutable vType name value) st cs = AssignArithIR (IRInfo $ "AssignArith") mutable (genIR vType st cs) name (genIR value st cs)
+    genIR (BBinary bbinop bExpr1 bExpr2) st cs = BBinaryIR (IRInfo $ "BBinaryIR") (genIR bbinop st cs) (genIR bExpr1 st cs) (genIR bExpr2 st cs)
+    genIR (BoolConst b) st cs = BoolConstIR (IRInfo $ "BoolConst") b
     genIR (BooleanExpr expr) st cs = BooleanExprIR (IRInfo $ "BooleanExpr") (genIR expr st cs)
     genIR (Catch params exprs) st cs = CatchIR (IRInfo $ "Catch") (exprArrToIRArray params st cs) (exprArrToIRArray exprs st cs)
     genIR (Class packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ClassIR (IRInfo $ "Class") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ClassParam varType varName) st cs = ClassParamIR (IRInfo $ "ClassParam") (genIR varType st cs) (genIR varName st cs)
     genIR (ClassVariable className varName) st cs = ClassVariableIR (IRInfo $ "ClassVariable") className varName
+    genIR (ClosingParenthesis) currentState symbolTable = Empty (IRInfo $ "ClosingParenthesis")
     genIR (Constructor name argTypes args exprs) st cs = ConstructorIR (IRInfo $ "Constructor") name (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (exprArrToIRArray exprs st cs)
+    genIR (Divide) symbolTable currentState = Empty (IRInfo $ "Divide")
     genIR (Else exprs) st cs = ElseIR (IRInfo $ "Else") (exprArrToIRArray exprs st cs)
     genIR (ElseIf condition exprs) st cs = ElseIfIR (IRInfo $ "ElseIf") (genIR condition st cs) (exprArrToIRArray exprs st cs)
     genIR (For varName start end exprs) st cs = ForIR (IRInfo $ "For") varName (genIR start st cs) (genIR end st cs) (exprArrToIRArray exprs st cs)
     genIR (Function name annotations argTypes args returnType static exprs) st cs = FunctionIR (IRInfo $ "Function") name (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (genIR returnType st cs) static (exprArrToIRArray exprs st cs)
     genIR (FunctionCall name exprs) st cs = FunctionCallIR (IRInfo $ "FunctionCall") name $ exprArrToIRArray exprs st cs
+    genIR (GreaterEqual) symbolTable currentState = GreaterEqualIR (IRInfo $ "GreaterEqual")
+    genIR (Greater) symbolTable currentState = GreaterIR (IRInfo $ "Greater")
     genIR (GlobalVar modifier final static varType varName exprs) st cs = GlobalVarIR (IRInfo $ "GlobalVar") modifier final static (genIR varType st cs) (genIR varName st cs)  (map (\e -> genIR e st cs) exprs)
     genIR (Identifier name) st cs = IdentifierIR (IRInfo $ "Identifier") name
     genIR (If condition exprs) st cs = IfIR (IRInfo $ "If") (genIR condition st cs) $ exprArrToIRArray exprs st cs
     genIR (Import locs) st cs = ImportIR (IRInfo $ "Import") locs
+    genIR (IntConst i) symbolTable currentState = Empty (IRInfo $ "IntConst")
+    genIR (LessEqual) symbolTable currentState = LessEqualIR (IRInfo $ "LessEqual")
+    genIR (Less) symbolTable currentState = LessIR (IRInfo $ "Less")
     genIR (MainFunction name annotations argTypes args returnType exprs) st cs = MainFunctionIR (IRInfo $ "MainFunction") name (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (genIR returnType st cs) (exprArrToIRArray exprs st cs)
     genIR (ModifierBlock exprs) st cs = ModifierBlockIR (IRInfo $ "ModifierBlock") (map (\e -> genIR e st cs) exprs)
+    genIR (Multiply) symbolTable currentState = Empty (IRInfo $ "Multiply")
+    genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")
     genIR (NewClassInstance className args) st cs = NewClassInstanceIR (IRInfo $ "NewClassInstance") className $ exprArrToIRArray args st cs
+    genIR (Not n) st cs = NotIR (IRInfo $ "Not") $ genIR n st cs
     genIR (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR (IRInfo $ "Object") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR (IRInfo $ "ObjectMethodCall") objectName methodName (exprArrToIRArray args st cs)
+    genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
+    genIR (Or) symbolTable currentState = OrIR (IRInfo $ "Or")
+    genIR (Parenthesis aExpr) symbolTable currentState = Empty (IRInfo $ "Parenthesis")
     genIR (Print expr) st cs = PrintIR (IRInfo $ "Print") $ genIR expr st cs
     genIR (Reassign name value) st cs = ReassignIR (IRInfo $ "Reassign") (genIR name st cs) (genIR value st cs)
     genIR (Return expr) st cs = ReturnIR (IRInfo $ "Return") (genIR expr st cs)
     genIR (ReturnType returnType) st cs = ReturnTypeIR (IRInfo $ "ReturnType") returnType
+    genIR (RBinary rbinop aExpr1 aExpr2) st cs = RBinaryIR (IRInfo $ "RBinaryIR") (genIR rbinop st cs) (genIR aExpr1 st cs) (genIR aExpr2 st cs)
     genIR (Seq s) st cs = SeqIR (IRInfo $ "Seq") (exprArrToIRArray s st cs)
     genIR (Skip) st cs = SkipIR (IRInfo $ "Skip")
     genIR (StringLiteral value) st cs = StringLiteralIR (IRInfo $ "StringLiteral") value
+    genIR (Subtract) symbolTable currentState = Empty (IRInfo $ "Subtract")
     genIR (Super) st cs = SuperIR (IRInfo $ "Super")
     genIR (SuperMethodCall objectName methodName args) st cs = SuperMethodCallIR (IRInfo $ "SuperMethodCall")  objectName methodName (exprArrToIRArray args st cs)
     genIR (This) st cs = ThisIR (IRInfo $ "This")
@@ -188,6 +183,7 @@ instance IRGen Expr where
     genIR (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR (IRInfo $ "Trait") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (Try exprs) st cs = TryIR (IRInfo $ "Try") (exprArrToIRArray exprs st cs)
     genIR (Type b) st cs = TypeIR (IRInfo $ "Type") (genIR b st cs)
+    genIR (Var v) symbolTable currentState = Empty (IRInfo $ "Var")
     genIR (Where exprs) st cs = WhereIR (IRInfo $ "Where") $ exprArrToIRArray exprs st cs
     genIR (While condition exprs) st cs = WhileIR (IRInfo $ "While") (genIR condition st cs) $ exprArrToIRArray exprs st cs
 
