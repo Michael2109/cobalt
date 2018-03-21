@@ -46,3 +46,8 @@ generateMissingDirectories inputDir outputDir = do
         generateMissingDirectories (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
       )
   return ()
+
+flags:: [String] -> (String,String,String,String)
+flags args = if (length args) == 4 then tuplify4 args else defaultArgs
+  where defaultArgs = ("cobalt_src/","cobalt_generated_java/","cobalt_generated_classes/","cobalt_generated_java/")
+        tuplify4 [x,y,z,q] = (x,y,z,q)
