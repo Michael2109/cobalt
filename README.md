@@ -29,9 +29,9 @@ https://docs.haskellstack.org/en/stable/README/
 
 ### Known Problems and Fixes 
 1. 
-#####Stack error
+##### Stack error
 `The program 'cpphs' is required but it could not be found.`
-#####Fix
+##### Fix
 `stack install cpphs`
 
 #### Setting up
