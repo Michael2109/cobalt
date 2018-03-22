@@ -38,7 +38,28 @@ library
       src/cobalt/symbol_table,
       src/cobalt/utils
   build-depends:
-      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, process, directory-tree, bytestring, ansi-wl-pprint, text-format-simple
+      base >=4.7 && <5,
+      mtl,
+      containers,
+      parsec,
+      regex-compat,
+      regex-posix,
+      indentation-parsec,
+      text,
+      haskell-lexer,
+      pretty-simple,
+      either-unwrap,
+      megaparsec,
+      text,
+      directory,
+      filepath,
+      split,
+      process,
+      directory-tree,
+      bytestring,
+      ansi-wl-pprint,
+      text-format-simple,
+      scientific
   exposed-modules:
       BaseParser
       Block
@@ -100,7 +121,25 @@ test-suite compiler-test
       test-framework-hunit,
       HUnit,
       containers == 0.5.*,
-      base >=4.7 && <5, mtl, containers, parsec, regex-compat, regex-posix, indentation-parsec, text, haskell-lexer, pretty-simple, either-unwrap, megaparsec, text, directory, filepath, split, ansi-wl-pprint, text-format-simple
+      base >=4.7 && <5,
+      mtl,
+      containers,
+      parsec,
+      regex-compat,
+      regex-posix,
+      indentation-parsec,
+      text,
+      haskell-lexer,
+      pretty-simple,
+      either-unwrap,
+      megaparsec,
+      text,
+      directory,
+      filepath,
+      split,
+      ansi-wl-pprint,
+      text-format-simple,
+      scientific
   other-modules:
       BaseParser
       Block

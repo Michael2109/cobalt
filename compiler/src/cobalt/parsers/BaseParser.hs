@@ -3,7 +3,18 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module BaseParser (Parser, scn, symbol, integer, rword, rws, parens, word, identifier) where
+module BaseParser (
+  Parser,
+  scn,
+  symbol,
+  integerParser,
+  doubleParser,
+  rword,
+  rws,
+  parens,
+  word,
+  identifier
+  ) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -14,6 +25,7 @@ import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
+import Data.Scientific
 
 type Parser = Parsec Void String
 
@@ -87,8 +99,14 @@ lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
 
-integer :: Parser Integer
-integer = lexeme L.decimal
+doubleParser :: Parser Scientific
+doubleParser = do
+  try $ do
+    let value = lexeme L.scientific
+    value
+
+integerParser :: Parser Integer
+integerParser = lexeme L.decimal
 
 
 parens :: Parser a -> Parser a

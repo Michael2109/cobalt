@@ -50,6 +50,8 @@ parserTestList = TestList [
        testReservedWord,
        testIdentifier,
        testIdentifierFail,
+       testFloat,
+       testInteger,
 
         -- AExprParser
         testAExprParserVar,

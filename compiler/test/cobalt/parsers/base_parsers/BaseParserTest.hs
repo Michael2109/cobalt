@@ -4,7 +4,10 @@ import Test.HUnit
 
 import Text.Megaparsec
 
+import Block
+
 import BaseParser
+
 
 -- Symbols
 
@@ -64,4 +67,23 @@ testIdentifierFail = do
     "Error"
     (case (parse identifier "" code) of
       Left  e -> "Error"
+      Right x -> x)
+
+-- Numbers
+testFloat :: Test
+testFloat = do
+  let code = "100.50988678"
+  TestCase $ assertEqual code
+    (100.50988678)
+    (case (parse doubleParser "" code) of
+      Left  e -> -1
+      Right x -> x)
+
+testInteger :: Test
+testInteger = do
+  let code = "100"
+  TestCase $ assertEqual code
+    (100)
+    (case (parse integerParser "" code) of
+      Left  e -> -1
       Right x -> x)

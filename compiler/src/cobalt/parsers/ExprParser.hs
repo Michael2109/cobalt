@@ -45,7 +45,8 @@ import SymbolTable
 aTerm :: Parser Expr
 aTerm = parens aExpr
   <|> Var      <$> identifier
-  <|> IntConst <$> integer
+  <|> IntConst <$> integerParser
+  <|> DoubleConst <$> doubleParser
 
 
 aOperators :: [[Operator Parser Expr]]

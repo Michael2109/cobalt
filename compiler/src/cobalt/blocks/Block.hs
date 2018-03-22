@@ -8,6 +8,7 @@ module Block where
 import Data.List
 import Text.Show.Functions
 import Data.Char
+import Data.Scientific
 
 import SymbolTable
 import IRNode
@@ -53,6 +54,7 @@ data Expr
   | ClosingParenthesis
   | Constructor String [Expr] [Expr] [Expr]
   | Divide
+  | DoubleConst Scientific
   | Else [Expr]
   | ElseIf Expr [Expr]
   | Error
