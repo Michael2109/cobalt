@@ -98,6 +98,12 @@ word = (lexeme . try) (p >>= check)
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
+floatParser :: Parser Double
+floatParser = do
+  try $ do
+    let value = lexeme L.float
+    symbol "f"
+    value
 
 doubleParser :: Parser Scientific
 doubleParser = do
@@ -107,6 +113,13 @@ doubleParser = do
 
 integerParser :: Parser Integer
 integerParser = lexeme L.decimal
+
+longParser :: Parser Scientific
+longParser = do
+  try $ do
+    let value = lexeme L.scientific
+    symbol "l"
+    value
 
 
 parens :: Parser a -> Parser a
