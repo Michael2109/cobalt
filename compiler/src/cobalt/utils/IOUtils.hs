@@ -3,6 +3,36 @@ module IOUtils where
 import Control.Monad
 import System.FilePath.Posix
 import System.Directory
+import System.Console.GetOpt
+import Data.Maybe (fromMaybe)
+
+
+data CommandlineArgument = ClassPath String
+          | DestinationDir String
+          | FileToCompile  String
+          deriving Show
+
+commandlineOptions :: [OptDescr CommandlineArgument]
+commandlineOptions =
+  [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "DIR")  "destination DIR"
+  , Option ['p']     ["class-path"]             (ReqArg ClassPath "DIR")  "classpath DIR"
+  ]
+
+flags :: [String] -> IO([CommandlineArgument],[String])
+flags args =
+  case getOpt Permute commandlineOptions args of
+    (f,d,[]  ) -> return (f,d) -- contents of d are arguments not options
+    (_,_,errors) -> ioError $ userError $ concat errors ++ usageInfo header commandlineOptions
+    where header = "Usage: compiler-exec [OPTIONS]... FILE [FILE]..."
+
+commandlineArgs :: [String] -> IO([CommandlineArgument])
+commandlineArgs args = do
+  (options, arguments) <- flags args
+  return (options ++ (map FileToCompile arguments))
+
+defaultHead :: a -> [a] -> a
+defaultHead x [] = x
+defaultHead _ xs = head xs
 
 allFilesIn :: FilePath -> IO [FilePath]
 allFilesIn dir = getDirectoryContents dir
@@ -46,8 +76,3 @@ generateMissingDirectories inputDir outputDir = do
         generateMissingDirectories (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
       )
   return ()
-
-flags:: [String] -> (String,String,String,String)
-flags args = if (length args) == 4 then tuplify4 args else defaultArgs
-  where defaultArgs = ("cobalt_src/","cobalt_generated_java/","cobalt_generated_classes/","cobalt_generated_java/")
-        tuplify4 [x,y,z,q] = (x,y,z,q)
