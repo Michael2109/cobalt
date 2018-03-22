@@ -193,6 +193,7 @@ test-suite compiler-test
       ObjectMethodCallParserTest
       ObjectParserTest
       ParamParserTest
+      ParenthesesParserTest
       ReassignParserTest
       StringLiteralParserTest
       ThisMethodCallParserTest
