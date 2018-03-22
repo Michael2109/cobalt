@@ -33,6 +33,7 @@ import NewClassInstanceParserTest
 import ObjectMethodCallParserTest
 import ObjectParserTest
 import ParamParserTest
+import ParenthesesParserTest
 import ReassignParserTest
 import StringLiteralParserTest
 import ThisMethodCallParserTest
@@ -115,6 +116,10 @@ parserTestList = TestList [
         testStringLiteralDoubleQuoteMultiple,
         testStringLiteralUnfinishedFail,
         testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
-        testStringLiteralUnfinishedDoubleLineFail
+        testStringLiteralUnfinishedDoubleLineFail,
 
+        testParenthesesVar,
+        testParenthesesNested,
+        testParenthesesNoOpenFail,
+        testParenthesesNoCloseFail
        ]
