@@ -4,7 +4,6 @@ import Control.Monad
 import System.FilePath.Posix
 import System.Directory
 import System.Console.GetOpt
-import Data.Maybe (fromMaybe)
 
 
 data CommandlineArgument = ClassPath String
