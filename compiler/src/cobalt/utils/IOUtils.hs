@@ -9,12 +9,16 @@ import System.Console.GetOpt
 data CommandlineArgument = ClassPath String
           | DestinationDir String
           | FileToCompile  String
-          deriving Show
+          | Version
+          | Help
+          deriving (Show, Eq)
 
 commandlineOptions :: [OptDescr CommandlineArgument]
 commandlineOptions =
-  [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "DIR")  "destination DIR"
-  , Option ['p']     ["class-path"]             (ReqArg ClassPath "DIR")  "classpath DIR"
+  [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "DIR")   "destination DIR"
+  , Option ['p']     ["class-path"]             (ReqArg ClassPath "DIR")        "classpath DIR"
+  , Option ['h','H'] ["help"]                   (NoArg Help)                    "show help message"
+  , Option ['v','V'] ["version"]                (NoArg Version)                 "show version info"
   ]
 
 flags :: [String] -> IO([CommandlineArgument],[String])
@@ -63,8 +67,6 @@ traverseDir inputDir top = do
       then traverseDir (inputDir) path
       else return [path]
   return (concat paths)
-
-
 
 generateMissingDirectories :: String -> String -> IO()
 generateMissingDirectories inputDir outputDir = do
