@@ -74,7 +74,6 @@ library
       IOUtils
       Utils
       IRNode
-      JavaCompiler
       Parser
       SymbolTable
   other-modules:
@@ -159,7 +158,6 @@ test-suite compiler-test
       ErrorChecker
       ExprParser
       IRNode
-      JavaCompiler
       Parser
       SymbolTable
       CommandLineUtils
