@@ -8,4 +8,3 @@ main :: IO ()
 main = do
   args <- getArgs
   execute args
-
