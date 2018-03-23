@@ -18,6 +18,7 @@ import Parser
 import SymbolTable
 import CodeGenerator
 import IOUtils
+import Utils (endsWith)
 import IRNode
 
 

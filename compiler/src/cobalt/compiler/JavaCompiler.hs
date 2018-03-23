@@ -10,6 +10,7 @@ import System.Directory
 import System.FilePath.Posix
 import System.Process
 import IOUtils
+import Utils (endsWith)
 
 compileJavaDir :: String -> String -> String -> IO()
 compileJavaDir classpath inputDir outputDir = do
