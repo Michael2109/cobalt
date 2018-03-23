@@ -6,5 +6,6 @@ import System.Environment
 
 main :: IO ()
 main = do
-  execute
+  args <- getArgs
+  execute args
 
