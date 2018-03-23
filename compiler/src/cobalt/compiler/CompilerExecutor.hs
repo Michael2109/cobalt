@@ -11,8 +11,9 @@ import JavaCompiler
 import SymbolTable
 import IOUtils
 
-execute :: [String] ->IO ()
-execute args = do
+execute :: IO ()
+execute = do
+    args <- getArgs
     options <- commandlineArgs args
     let isFileToCompile (FileToCompile _ ) = True
         isFileToCompile _ = False
