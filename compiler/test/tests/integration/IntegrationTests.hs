@@ -11,5 +11,5 @@ integrationTestList = do
 
        -- Compiler
 
-       "create file"   ~: testCompiler
+       "An example integration test"   ~: exampleCompilerTest
        ]
