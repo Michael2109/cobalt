@@ -70,7 +70,9 @@ library
       CompilerExecutor
       ErrorChecker
       ExprParser
+      CommandLineUtils
       IOUtils
+      Utils
       IRNode
       JavaCompiler
       Parser
@@ -158,7 +160,9 @@ test-suite compiler-test
       IRNode
       Parser
       SymbolTable
+      CommandLineUtils
       IOUtils
+      Utils
 
       ParserTests
       SymbolTableTests

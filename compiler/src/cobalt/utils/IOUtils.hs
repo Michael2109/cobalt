@@ -3,45 +3,20 @@ module IOUtils where
 import Control.Monad
 import System.FilePath.Posix
 import System.Directory
-import System.Console.GetOpt
+import System.Console.GetOpt (getOpt, ArgOrder( Permute ))
+
+import Utils (endsWith)
+import CommandLineUtils (helpInfo)
 
 
-data CommandlineArgument = ClassPath String
-          | DestinationDir String
-          | FileToCompile  String
-          | Version
-          | Help
-          deriving (Show, Eq)
+printVersion :: IO()
+printVersion = putStrLn "cobalt 0.1.x"
 
-commandlineOptions :: [OptDescr CommandlineArgument]
-commandlineOptions =
-  [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "DIR")   "destination DIR"
-  , Option ['p']     ["class-path"]             (ReqArg ClassPath "DIR")        "classpath DIR"
-  , Option ['h','H'] ["help"]                   (NoArg Help)                    "show help message"
-  , Option ['v','V'] ["version"]                (NoArg Version)                 "show version info"
-  ]
-
-flags :: [String] -> IO([CommandlineArgument],[String])
-flags args =
-  case getOpt Permute commandlineOptions args of
-    (f,d,[]  ) -> return (f,d) -- contents of d are arguments not options
-    (_,_,errors) -> ioError $ userError $ concat errors ++ usageInfo header commandlineOptions
-    where header = "Usage: compiler-exec [OPTIONS]... FILE [FILE]..."
-
-commandlineArgs :: [String] -> IO([CommandlineArgument])
-commandlineArgs args = do
-  (options, arguments) <- flags args
-  return (options ++ (map FileToCompile arguments))
-
-defaultHead :: a -> [a] -> a
-defaultHead x [] = x
-defaultHead _ xs = head xs
+printHelpInfo :: IO()
+printHelpInfo = putStrLn helpInfo
 
 allFilesIn :: FilePath -> IO [FilePath]
 allFilesIn dir = getDirectoryContents dir
-
-endsWith :: String -> FilePath -> Bool
-endsWith extension file = takeExtension file == extension
 
 cleanDir :: (FilePath -> Bool) -> String -> IO()
 cleanDir extensionPredicate directory = do
