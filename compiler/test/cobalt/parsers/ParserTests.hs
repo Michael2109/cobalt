@@ -35,6 +35,7 @@ import ObjectParserTest
 import ParamParserTest
 import ParenthesesParserTest
 import ReassignParserTest
+import RExprParserTest
 import StringLiteralParserTest
 import ThisMethodCallParserTest
 import ThisVarParserTest
@@ -63,6 +64,16 @@ parserTestList = TestList [
         testBExprParserTrue,
         testBExprParserFalse,
         testBExprParserFail,
+
+        -- RExprParser
+        testRExprParserGreaterVar,
+        testRExprParserLessVar,
+        testRExprParserGreaterEqualVar,
+        testRExprParserLessEqualVar,
+        testRExprParserGreaterInt,
+        testRExprParserLessInt,
+        testRExprParserGreaterEqualInt,
+        testRExprParserLessEqualInt,
 
         -- ExprParser
         testAnnotationParserUpper,
