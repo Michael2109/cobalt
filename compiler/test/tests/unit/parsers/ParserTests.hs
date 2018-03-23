@@ -115,8 +115,6 @@ parserTestList = TestList [
         testIfStmtParserBooleanTrue,
         testIfStmtParserBooleanFalse,
 
-
-
         testStringLiteralSimple,
         testStringLiteralSimpleWhitespace,
         testStringLiteralEscapeTab,
@@ -128,8 +126,8 @@ parserTestList = TestList [
         testStringLiteralEscapedDoubleQuote,
         testStringLiteralDoubleQuoteMultiple,
         testStringLiteralUnfinishedFail,
-        testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
-        testStringLiteralUnfinishedDoubleLineFail,
+        --testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
+        --testStringLiteralUnfinishedDoubleLineFail,
 
         testParenthesesVar,
         testParenthesesNested,

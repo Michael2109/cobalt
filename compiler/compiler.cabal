@@ -59,13 +59,15 @@ library
       bytestring,
       ansi-wl-pprint,
       text-format-simple,
-      scientific
+      scientific,
+      temporary
   exposed-modules:
       BaseParser
       Block
       BlockUtils
       CodeGenerator
       Compiler
+      CompilerExecutor
       ErrorChecker
       ExprParser
       IOUtils
@@ -105,15 +107,18 @@ test-suite compiler-test
       src/cobalt/utils
 
       test,
-      test/cobalt,
-      test/cobalt/blocks,
-      test/cobalt/code_generator,
-      test/cobalt/compiler,
-      test/cobalt/error_checking,
-      test/cobalt/parsers,
-      test/cobalt/parsers/base_parsers,
-      test/cobalt/parsers/expr_parsers,
-      test/cobalt/symbol_table
+      test/tests/unit,
+      test/tests/unit/blocks,
+      test/tests/unit/code_generator,
+      test/tests/unit/compiler,
+      test/tests/unit/error_checking,
+      test/tests/unit/parsers,
+      test/tests/unit/parsers/base_parsers,
+      test/tests/unit/parsers/expr_parsers,
+      test/tests/unit/symbol_table
+
+      test/tests/integration
+
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5,
@@ -139,13 +144,15 @@ test-suite compiler-test
       split,
       ansi-wl-pprint,
       text-format-simple,
-      scientific
+      scientific,
+      temporary
   other-modules:
       BaseParser
       Block
       BlockUtils
       CodeGenerator
       Compiler
+      CompilerExecutor
       ErrorChecker
       ExprParser
       IRNode
@@ -158,7 +165,6 @@ test-suite compiler-test
 
       BlocksTest
       CodeGeneratorTest
-      CompilerTest
       ErrorCheckingTest
       SymbolTableTest
 
@@ -201,5 +207,8 @@ test-suite compiler-test
       ThisVarParserTest
       TraitParserTest
       ValueTypeParserTest
+
+      -- Integration
+      CompilerTest
 
   default-language: Haskell2010

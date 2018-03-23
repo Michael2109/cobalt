@@ -137,6 +137,7 @@ testStringLiteralUnfinishedFail = do
       Left  e -> Error
       Right x -> x)
 
+{--
 testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail :: Test
 testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail = do
   let code =  "\"first line \n \t\t\tsecond line\""
@@ -145,7 +146,9 @@ testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail = do
     (case (parse (stringLiteral) "" code) of
       Left  e -> Error
       Right x -> x)
+--}
 
+{--
 testStringLiteralUnfinishedDoubleLineFail :: Test
 testStringLiteralUnfinishedDoubleLineFail = do
   let code = "\"first line \n second line\""
@@ -154,5 +157,6 @@ testStringLiteralUnfinishedDoubleLineFail = do
     (case (parse (stringLiteral) "" code) of
       Left  e -> Error
       Right x -> x)
+--}
 
 {-- after resolving multiline literal semantics more tests for leading whitespace need to be added --}
