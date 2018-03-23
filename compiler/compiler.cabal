@@ -59,7 +59,8 @@ library
       bytestring,
       ansi-wl-pprint,
       text-format-simple,
-      scientific
+      scientific,
+      hs-java
   exposed-modules:
       BaseParser
       Block
@@ -139,7 +140,8 @@ test-suite compiler-test
       split,
       ansi-wl-pprint,
       text-format-simple,
-      scientific
+      scientific,
+      hs-java
   other-modules:
       BaseParser
       Block
