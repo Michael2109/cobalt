@@ -40,33 +40,30 @@ generateClassSymbolTable ast =
    Left  e -> ClassSymbolTable "ERROR" NoType [] []
    Right x -> genClassSymbolTable x
 
-compile :: String -> String -> IO ()
-compile inputDir outputDir = do
-
-  generateMissingDirectories inputDir outputDir
-  filePaths <- traverseDir inputDir ""
-
+compile :: [String] -> String -> IO ()
+compile filePaths outputDir = do
+  --Allows only files ending with ".cobalt" from those specified in commandline
+  --it can be made more permissive by omittinig following filtering
   let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) filePaths
+  fileDatas <- mapM (\filePath -> readFile $ (filePath)) filteredFilePaths
 
-  fileDatas <- mapM (\filePath -> readFile $ (inputDir ++ filePath)) filteredFilePaths
-
-  let astDatas = zipWith (\filePath fileData -> generateAST inputDir filePath fileData) filteredFilePaths fileDatas
-
+  let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredFilePaths fileDatas
   -- Combines all class symbol tables for all ASTs
   let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
   let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatas
-
-  sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ location compiledCode) ++ ".java") (code compiledCode)) compiledCodes
+  -- the output class files are stored in single directory without creating subdirectories reflecting the source filepaths. Might cause problems with duplicates
+  -- (javac seems to do this too, unless compiling a package). Also, currently class, object and trait parsers use inputFilePath for package info.
+  sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ (takeFileName (location compiledCode))) ++ ".java") (code compiledCode)) compiledCodes
 
   pPrint symbolTable
 
   return ()
 
-generateAST :: FilePath -> FilePath -> String -> ASTData
-generateAST inputDir inputFile code = do
+generateAST :: FilePath -> String -> ASTData
+generateAST inputFile code = do
 
-   let parseResult = parseTree (Split.splitOn "/" $ (inputDir ++ (takeDirectory inputFile))) code
+   let parseResult = parseTree (Split.splitOn "/" $ (takeDirectory inputFile)) code
    let symbolTable = SymbolTable [generateClassSymbolTable parseResult]
 
    let ast = case parseResult of
