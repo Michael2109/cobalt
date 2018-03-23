@@ -147,7 +147,8 @@ test-suite compiler-test
       ansi-wl-pprint,
       text-format-simple,
       scientific,
-      temporary
+      temporary,
+      process
   other-modules:
       BaseParser
       Block
@@ -158,12 +159,14 @@ test-suite compiler-test
       ErrorChecker
       ExprParser
       IRNode
+      JavaCompiler
       Parser
       SymbolTable
       CommandLineUtils
       IOUtils
       Utils
 
+      IntegrationTests
       ParserTests
       SymbolTableTests
 
