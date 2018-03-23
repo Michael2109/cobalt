@@ -67,6 +67,7 @@ library
       BlockUtils
       CodeGenerator
       Compiler
+      CompilerExecutor
       ErrorChecker
       ExprParser
       IOUtils
@@ -151,6 +152,7 @@ test-suite compiler-test
       BlockUtils
       CodeGenerator
       Compiler
+      CompilerExecutor
       ErrorChecker
       ExprParser
       IRNode
