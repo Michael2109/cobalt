@@ -72,6 +72,15 @@ testIdentifierFail = do
 -- Numbers
 testFloat :: Test
 testFloat = do
+  let code = "100.50988678f"
+  TestCase $ assertEqual code
+    (100.50988678)
+    (case (parse doubleParser "" code) of
+      Left  e -> -1
+      Right x -> x)
+
+testDouble :: Test
+testDouble = do
   let code = "100.50988678"
   TestCase $ assertEqual code
     (100.50988678)
@@ -82,6 +91,15 @@ testFloat = do
 testInteger :: Test
 testInteger = do
   let code = "100"
+  TestCase $ assertEqual code
+    (100)
+    (case (parse integerParser "" code) of
+      Left  e -> -1
+      Right x -> x)
+
+testLong :: Test
+testLong = do
+  let code = "100l"
   TestCase $ assertEqual code
     (100)
     (case (parse integerParser "" code) of

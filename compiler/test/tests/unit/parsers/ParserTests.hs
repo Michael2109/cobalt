@@ -53,7 +53,9 @@ parserTestList = TestList [
        testIdentifier,
        testIdentifierFail,
        testFloat,
+       testDouble,
        testInteger,
+       testLong,
 
         -- AExprParser
         testAExprParserVar,
