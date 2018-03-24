@@ -65,7 +65,6 @@ rws = [
   "private",
   "this",
   "mutable",
-  "True",
   "new",
   "package",
   "println",
