@@ -57,8 +57,6 @@ compile filePaths outputDir = do
   -- (javac seems to do this too, unless compiling a package). Also, currently class, object and trait parsers use inputFilePath for package info.
   sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ (takeFileName (location compiledCode))) ++ ".java") (code compiledCode)) compiledCodes
 
-  pPrint symbolTable
-
   return ()
 
 generateAST :: FilePath -> String -> ASTData

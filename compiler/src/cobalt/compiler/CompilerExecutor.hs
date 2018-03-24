@@ -46,6 +46,4 @@ execute = do
           return ()
         else do
           cleanDir (endsWith ".class") classOutputDir
-          putStrLn "Compiling - Cobalt -> Bytecode"
           compile inputFiles classOutputDir
-          putStrLn "Complete."
