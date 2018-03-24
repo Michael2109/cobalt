@@ -9,7 +9,7 @@ import Control.Monad
 
 import Compiler
 import SymbolTable
-import CommandLineUtils
+import CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
 import IOUtils
 import Utils
 
@@ -25,19 +25,25 @@ execute = do
 
   options <- commandLineArgs args
 
-  let isHelpPresent = elem (Help) options
-  let isVersionPresent = elem (Version) options
+  let helpPresent = elem (Help) options
+  let versionPresent = elem (Version) options
+  let debugModeOn = elem (DebugMode) options
+  let verboseModeOn = elem (VerboseMode) options
+  let generateDebugSymbolsOn = elem (GenerateDebugSymbols) options
+
   let inputFiles = map (\(FileToCompile x) -> x) (filter isFileToCompile options)
 
   -- if multiple class paths or destination dirs are provided, first is taken instead of throwing error
   -- Note: javac takes the last and does not produce error either
   -- classpath is set to "cobalt_generated_java/" temporarly until we stop compiling to java. Original default was "./"
   let classOutputDir = (\(DestinationDir dd) -> dd) . (defaultHead (DestinationDir "cobalt_generated_classes/")) $ filter isDestinationDir options
-  when isVersionPresent printVersion
-  when isHelpPresent printHelpInfo
+
+  when debugModeOn (putStrLn "Running compiler in debug mode")
+  when versionPresent printVersion
+  when helpPresent printHelpInfo
 
   -- in case of using help option the compiler itself is not run, only appropiate message is produced
-  if isHelpPresent
+  if helpPresent
     then return ()
     else
       if (inputFiles == [])

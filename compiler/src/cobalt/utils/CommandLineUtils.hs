@@ -7,6 +7,9 @@ data CommandLineArgument = ClassPath String
           | FileToCompile  String
           | Version
           | Help
+          | DebugMode
+          | GenerateDebugSymbols
+          | VerboseMode
           deriving (Show, Eq)
 
 commandLineOptions :: [OptDescr CommandLineArgument]
@@ -14,7 +17,10 @@ commandLineOptions =
   [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "DIR")   "destination DIR"
   , Option ['p']     ["class-path"]             (ReqArg ClassPath "DIR")        "classpath DIR"
   , Option ['h','H'] ["help"]                   (NoArg Help)                    "show help message"
-  , Option ['v','V'] ["version"]                (NoArg Version)                 "show version info"
+  , Option []        ["version"]                (NoArg Version)                 "show version info"
+  , Option ['v','V'] ["verbose","verbose-mode"] (NoArg VerboseMode)             "run compiler in verbose mode"
+  , Option ['g']     ["generate-debug"]         (NoArg GenerateDebugSymbols)    "generate debugging information to resulting bytecode"
+  , Option []        ["debug-mode"]             (NoArg DebugMode)               "run compiler in debug mode"
   ]
 
 helpInfo :: String
