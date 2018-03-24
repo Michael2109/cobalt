@@ -13,18 +13,23 @@ data CommandLineArgument = ClassPath FilePath
 
 commandLineOptions :: [OptDescr CommandLineArgument]
 commandLineOptions =
-  [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "DIR")   "destination DIR"
-  , Option ['p']     ["class-path"]             (ReqArg ClassPath "DIR")        "classpath DIR"
-  , Option ['h','H'] ["help"]                   (NoArg Help)                    "show help message"
-  , Option []        ["version"]                (NoArg Version)                 "show version info"
-  , Option ['v','V'] ["verbose","verbose-mode"] (NoArg VerboseMode)             "run compiler in verbose mode"
-  , Option ['g']     ["generate-debug"]         (NoArg GenerateDebugSymbols)    "generate debugging information to resulting bytecode"
-  , Option []        ["debug-mode"]             (NoArg DebugMode)               "run compiler in debug mode"
+  [ Option ['d']     ["destination-directory"]  (ReqArg DestinationDir "<directory>") "Specify where to place generated class files"
+  , Option ['p']     ["class-path"]             (ReqArg ClassPath "<directory>")      "Specify where to find user class files and annotation processors"
+  , Option ['h','H'] ["help"]                   (NoArg Help)                          "Print a synopsis of standard options"
+  , Option []        ["version"]                (NoArg Version)                       "Version information"
+  , Option ['v','V'] ["verbose","verbose-mode"] (NoArg VerboseMode)                   "Output messages about what the compiler is doing"
+  , Option ['g']     ["generate-debug"]         (NoArg GenerateDebugSymbols)          "Generate debugging information to resulting bytecode"
+  , Option []        ["debug-mode"]             (NoArg DebugMode)                     "Run compiler in debug mode"
   ]
 
 helpInfo :: String
 helpInfo = usageInfo header commandLineOptions
-  where header = "Usage: compiler-exec [OPTIONS]... FILE [FILE]..."
+  -- In fact, the options work correctly even if they are interleaved with source files.
+  -- The order is not enforced (to do so, simply replace Permute with RequireOrder in flags)
+  -- because it would cause problems with checking wether there are some trailing options
+  -- (they would be parsed as source files which might cause unintuitive exceptions)
+  -- javac does it this way too.
+  where header = "Usage: compiler-exec <options> <source files>\nwhere possible options include:"
 
 flags :: [String] -> IO([CommandLineArgument],[FilePath])
 flags args =
