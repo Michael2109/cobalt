@@ -4,6 +4,7 @@ import Data.List
 import Data.Maybe
 import Data.Char
 import Text.Format
+import Text.PrettyPrint.Annotated.Leijen
 
 import BlockUtils
 import SymbolTable
@@ -23,7 +24,7 @@ getDebug message = (if debug then "<" ++ message ++ "> " else "")
 
 
 class Pretty a where
-  pretty :: a -> SymbolTable -> CurrentState -> String -- Pretty document type
+  pretty :: a -> SymbolTable -> CurrentState -> (Doc String) -- Pretty document type
 
 data IRInfo = IRInfo String
   deriving (Eq)
@@ -118,81 +119,86 @@ data IRNode
 
 
 instance Pretty IRNode where
-    pretty (ABinaryIR irInfo aBinOp aExpr1 aExpr2) symbolTable currentState = ""
-    pretty (AddIR irInfo) symbolTable currentState = ""
-    pretty (AndIR irInfo) symbolTable currentState = ""
-    pretty (AnnotationIR irInfo name) symbolTable currentState = show irInfo
-    pretty (ArgumentIR irInfo b) symbolTable currentState = show irInfo
-    pretty (ArgumentTypeIR irInfo b) symbolTable currentState = show irInfo
-    pretty (ArithExprIR irInfo aExpr) symbolTable currentState = show irInfo
-    pretty (ArrayAppendIR irInfo arrays) symbolTable currentState = show irInfo
-    pretty (ArrayAssignmentIR irInfo arr values) symbolTable currentState = show irInfo
-    pretty (ArrayDefIR irInfo arrType name) symbolTable currentState = show irInfo
-    pretty (ArrayElementSelectIR irInfo i) symbolTable currentState = show irInfo
-    pretty (ArrayTypeIR irInfo arrType) symbolTable currentState = show irInfo
-    pretty (ArrayValuesIR irInfo exprs) symbolTable currentState = show irInfo
-    pretty (AssignIR irInfo vType name value) symbolTable currentState = show irInfo
-    pretty (AssignArithIR irInfo mutable vType name value) symbolTable currentState = show irInfo
-    pretty (BBinaryIR irInfo  bbinop bExpr1 bExpr2) st cs = ""
-    pretty (BoolConstIR irInfo  b) st cs = ""
-    pretty (BooleanExprIR irInfo expr) symbolTable currentState = show irInfo
-    pretty (CatchIR irInfo params exprs) symbolTable currentState = show irInfo
-    pretty (ClassIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = show irInfo
-    pretty (ClassParamIR irInfo varType varName) symbolTable currentState = show irInfo ++ pretty varType symbolTable currentState ++ " " ++ pretty varName symbolTable currentState
-    pretty (ClassVariableIR irInfo className varName) symbolTable currentState = show irInfo
-    pretty (ClosingParenthesisIR irInfo) currentState symbolTable = ""
-    pretty (ConstructorIR irInfo name argTypes args body) symbolTable currentState = show irInfo
-    pretty (DataIR irInfo name exprs) symbolTable currentState = show irInfo
-    pretty (DataElementIR irInfo superName name argTypes args) symbolTable currentState = show irInfo
-    pretty (DivideIR irInfo) symbolTable currentState = ""
-    pretty (ElseIR irInfo statement) symbolTable currentState = show irInfo
-    pretty (ElseIfIR irInfo condition statement) symbolTable currentState = show irInfo
-    pretty (ForIR irInfo varName start end exprs) symbolTable currentState = show irInfo
-    pretty (FunctionIR irInfo name annotations argTypes args returnType static body) symbolTable currentState = show irInfo
-    pretty (FunctionCallIR irInfo name exprs) symbolTable currentState = show irInfo
-    pretty (GlobalVarIR irInfo modifier final static varType varName exprs) symbolTable currentState = show irInfo
-    pretty (GreaterEqualIR irInfo) symbolTable currentState = ""
-    pretty (GreaterIR irInfo) symbolTable currentState = ""
-    pretty (IdentifierIR irInfo name) symbolTable currentState = show irInfo
-    pretty (IfIR irInfo condition statement) symbolTable currentState = show irInfo
-    pretty (ImportIR irInfo locs) symbolTable currentState = show irInfo
-    pretty (IntConstIR irInfo i) symbolTable currentState = ""
-    pretty (LambdaIR irInfo varName exprs) symbolTable currentState = show irInfo
-    pretty (LessEqualIR irInfo) symbolTable currentState = ""
-    pretty (LessIR irInfo) symbolTable currentState = ""
-    pretty (MainFunctionIR irInfo name annotations argTypes args returnType body) symbolTable currentState = show irInfo
-    pretty (ModifierBlockIR irInfo exprs) symbolTable currentState = show irInfo
-    pretty (MultiplyIR irInfo) symbolTable currentState = ""
-    pretty (NegIR irInfo aExpr) symbolTable currentState = ""
-    pretty (NewClassInstanceIR irInfo className args) symbolTable currentState = show irInfo
-    pretty (NotIR irInfo  n) st cs = ""
-    pretty (ObjectIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = show irInfo
-    pretty (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = show irInfo
-    pretty (OrIR irInfo) symbolTable currentState = ""
-    pretty (OpeningParenthesisIR irInfo) currentState symbolTable = ""
-    pretty (ParenthesisIR irInfo aExpr) symbolTable currentState = ""
-    pretty (PrintIR irInfo exprs) symbolTable currentState = show irInfo
-    pretty (RBinaryIR irInfo  rbinop aExpr1 aExpr2) st cs = ""
-    pretty (ReassignIR irInfo name value) symbolTable currentState = show irInfo
-    pretty (ReturnIR irInfo expr) symbolTable currentState = show irInfo
-    pretty (ReturnTypeIR irInfo b) symbolTable currentState = show irInfo
-    pretty (SeqIR irInfo s) symbolTable currentState = show irInfo
-    pretty (SkipIR irInfo) symbolTable currentState = show irInfo
-    pretty (StringLiteralIR irInfo value) symbolTable currentState = show irInfo
-    pretty (SubtractIR irInfo) symbolTable currentState = ""
-    pretty (SuperIR irInfo) symbolTable currentState = show irInfo
-    pretty (SuperMethodCallIR irInfo objectName methodName args) symbolTable currentState = show irInfo
-    pretty (ThisIR irInfo) symbolTable currentState = show irInfo ++ "this"
-    pretty (ThisMethodCallIR irInfo methodName args) symbolTable currentState = show irInfo
-    pretty (ThisVarIR irInfo varName) symbolTable currentState = show irInfo
-    pretty (TraitIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = show irInfo
-    pretty (TryIR irInfo exprs) symbolTable currentState = show irInfo
-    pretty (TypeIR irInfo b) symbolTable currentState = show irInfo
-    pretty (VarIR irInfo v) symbolTable currentState = ""
-    pretty (WhereIR irInfo exprs) symbolTable currentState = show irInfo
-    pretty (WhileIR irInfo condition statement) symbolTable currentState = show irInfo
-    pretty (Empty irInfo) symbolTable currentState = show irInfo
+    pretty (ABinaryIR irInfo aBinOp aExpr1 aExpr2) symbolTable currentState = p $ show irInfo
+    pretty (AddIR irInfo) symbolTable currentState = p $ show irInfo
+    pretty (AndIR irInfo) symbolTable currentState = p $ show irInfo
+    pretty (AnnotationIR irInfo name) symbolTable currentState = p $ show irInfo
+    pretty (ArgumentIR irInfo b) symbolTable currentState = p $ show irInfo
+    pretty (ArgumentTypeIR irInfo b) symbolTable currentState = p $ show irInfo
+    pretty (ArithExprIR irInfo aExpr) symbolTable currentState = p $ show irInfo
+    pretty (ArrayAppendIR irInfo arrays) symbolTable currentState = p $ show irInfo
+    pretty (ArrayAssignmentIR irInfo arr values) symbolTable currentState = p $ show irInfo
+    pretty (ArrayDefIR irInfo arrType name) symbolTable currentState = p $ show irInfo
+    pretty (ArrayElementSelectIR irInfo i) symbolTable currentState = p $ show irInfo
+    pretty (ArrayTypeIR irInfo arrType) symbolTable currentState = p $ show irInfo
+    pretty (ArrayValuesIR irInfo exprs) symbolTable currentState = p $ show irInfo
+    pretty (AssignIR irInfo vType name value) symbolTable currentState = p $ show irInfo
+    pretty (AssignArithIR irInfo mutable vType name value) symbolTable currentState = p $ show irInfo
+    pretty (BBinaryIR irInfo  bbinop bExpr1 bExpr2) st cs = p $ ""
+    pretty (BoolConstIR irInfo  b) st cs = p $ ""
+    pretty (BooleanExprIR irInfo expr) symbolTable currentState = p $ show irInfo
+    pretty (CatchIR irInfo params exprs) symbolTable currentState = p $ show irInfo
+    pretty (ClassIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
+    pretty (ClassParamIR irInfo varType varName) symbolTable currentState = p $ show irInfo
+    pretty (ClassVariableIR irInfo className varName) symbolTable currentState = p $ show irInfo
+    pretty (ClosingParenthesisIR irInfo) currentState symbolTable = p $ ""
+    pretty (ConstructorIR irInfo name argTypes args body) symbolTable currentState = p $ show irInfo
+    pretty (DataIR irInfo name exprs) symbolTable currentState = p $ show irInfo
+    pretty (DataElementIR irInfo superName name argTypes args) symbolTable currentState = p $ show irInfo
+    pretty (DivideIR irInfo) symbolTable currentState = p $ ""
+    pretty (ElseIR irInfo statement) symbolTable currentState = p $ show irInfo
+    pretty (ElseIfIR irInfo condition statement) symbolTable currentState = p $ show irInfo
+    pretty (ForIR irInfo varName start end exprs) symbolTable currentState = p $ show irInfo
+    pretty (FunctionIR irInfo name annotations argTypes args returnType static body) symbolTable currentState = p $ show irInfo
+    pretty (FunctionCallIR irInfo name exprs) symbolTable currentState = p $ show irInfo
+    pretty (GlobalVarIR irInfo modifier final static varType varName exprs) symbolTable currentState = p $ show irInfo
+    pretty (GreaterEqualIR irInfo) symbolTable currentState = p $ ""
+    pretty (GreaterIR irInfo) symbolTable currentState = p $ ""
+    pretty (IdentifierIR irInfo name) symbolTable currentState = p $ show irInfo
+    pretty (IfIR irInfo condition statement) symbolTable currentState = p $ show irInfo
+    pretty (ImportIR irInfo locs) symbolTable currentState = p $ show irInfo
+    pretty (IntConstIR irInfo i) symbolTable currentState = p $ ""
+    pretty (LambdaIR irInfo varName exprs) symbolTable currentState = p $ show irInfo
+    pretty (LessEqualIR irInfo) symbolTable currentState = p $ ""
+    pretty (LessIR irInfo) symbolTable currentState = p $ ""
+    pretty (MainFunctionIR irInfo name annotations argTypes args returnType body) symbolTable currentState = p $ show irInfo
+    pretty (ModifierBlockIR irInfo exprs) symbolTable currentState = p $ show irInfo
+    pretty (MultiplyIR irInfo) symbolTable currentState = p $ ""
+    pretty (NegIR irInfo aExpr) symbolTable currentState = p $ ""
+    pretty (NewClassInstanceIR irInfo className args) symbolTable currentState = p $ show irInfo
+    pretty (NotIR irInfo  n) st cs = p $ ""
+    pretty (ObjectIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
+    pretty (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
+    pretty (OrIR irInfo) symbolTable currentState = p $ ""
+    pretty (OpeningParenthesisIR irInfo) currentState symbolTable = p $ ""
+    pretty (ParenthesisIR irInfo aExpr) symbolTable currentState = p $ ""
+    pretty (PrintIR irInfo exprs) symbolTable currentState = p $ show irInfo
+    pretty (RBinaryIR irInfo  rbinop aExpr1 aExpr2) st cs = p $ ""
+    pretty (ReassignIR irInfo name value) symbolTable currentState = p $ show irInfo
+    pretty (ReturnIR irInfo expr) symbolTable currentState = p $ show irInfo
+    pretty (ReturnTypeIR irInfo b) symbolTable currentState = p $ show irInfo
+    pretty (SeqIR irInfo s) symbolTable currentState = p $ show irInfo
+    pretty (SkipIR irInfo) symbolTable currentState = p $ show irInfo
+    pretty (StringLiteralIR irInfo value) symbolTable currentState = p $ show irInfo
+    pretty (SubtractIR irInfo) symbolTable currentState = p $ ""
+    pretty (SuperIR irInfo) symbolTable currentState = p $ show irInfo
+    pretty (SuperMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
+    pretty (ThisIR irInfo) symbolTable currentState = p $ show irInfo ++ "this"
+    pretty (ThisMethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
+    pretty (ThisVarIR irInfo varName) symbolTable currentState = p $ show irInfo
+    pretty (TraitIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
+    pretty (TryIR irInfo exprs) symbolTable currentState = p $ show irInfo
+    pretty (TypeIR irInfo b) symbolTable currentState = p $ show irInfo
+    pretty (VarIR irInfo v) symbolTable currentState = p $ show irInfo
+    pretty (WhereIR irInfo exprs) symbolTable currentState = p $ show irInfo
+    pretty (WhileIR irInfo condition statement) symbolTable currentState = p $ show irInfo
+    pretty (Empty irInfo) symbolTable currentState = p $ show irInfo
 
+
+-- | Pretty-print inside a precedence context to avoid parentheses.
+-- Consider + to be 6, * to be 7.
+p :: String -> Doc String
+p s = text s
 
 lowerString str = [ toLower loweredString | loweredString <- str]
 

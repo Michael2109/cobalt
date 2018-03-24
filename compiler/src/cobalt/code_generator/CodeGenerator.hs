@@ -11,4 +11,4 @@ data GeneratedCode = GeneratedCode {
     deriving (Show)
 
 compileAST :: Expr -> SymbolTable -> String
-compileAST ast symbolTable = pretty (genIR ast symbolTable (CurrentState "" ""))  symbolTable (CurrentState "" "")
+compileAST ast symbolTable = show $  pretty (genIR ast symbolTable (CurrentState "" ""))  symbolTable (CurrentState "" "")
