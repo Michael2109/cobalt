@@ -41,22 +41,26 @@ generateClassSymbolTable ast =
    Left  e -> ClassSymbolTable "ERROR" NoType [] []
    Right x -> genClassSymbolTable x
 
-compile :: [String] -> String -> IO ()
-compile filePaths outputDir = do
-  --Allows only files ending with ".cobalt" from those specified in commandline
-  --it can be made more permissive by omittinig following filtering
-  let filteredFilePaths = filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) filePaths
-  fileDatas <- mapM (\filePath -> readFile $ (filePath)) filteredFilePaths
+compile :: FilePath -> [FilePath] -> String -> IO ()
+compile classPath filePaths outputDir = do
 
-  let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredFilePaths fileDatas
+  classPathFilePaths <- traverseDir classPath ""
+  let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
-  -- Combines all class symbol tables for all ASTs
+  classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
+
+  let classPathAstDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
+  let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
+
+  let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
   let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
-  let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatas
-  -- the output class files are stored in single directory without creating subdirectories reflecting the source filepaths. Might cause problems with duplicates
-  -- (javac seems to do this too, unless compiling a package). Also, currently class, object and trait parsers use inputFilePath for package info.
-  sequence $ map (\ compiledCode -> writeFile (dropExtension (outputDir ++ (takeFileName (location compiledCode))) ++ ".java") (code compiledCode)) compiledCodes
+  -- Filter out only the ASTs that have been selected
+  let astDatasToCompile = filter (\x -> (extractASTFilePath x) `elem` filePaths) astDatas
+
+  let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
+
+  sequence $ map (\compiledCode -> writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
 
   return ()
 

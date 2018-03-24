@@ -2,9 +2,9 @@ module CommandLineUtils where
 
 import System.Console.GetOpt
 
-data CommandLineArgument = ClassPath String
-          | DestinationDir String
-          | FileToCompile  String
+data CommandLineArgument = ClassPath FilePath
+          | DestinationDir FilePath
+          | FileToCompile FilePath
           | Version
           | Help
           | DebugMode

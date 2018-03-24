@@ -36,7 +36,10 @@ execute = do
   -- if multiple class paths or destination dirs are provided, first is taken instead of throwing error
   -- Note: javac takes the last and does not produce error either
   -- classpath is set to "cobalt_generated_java/" temporarly until we stop compiling to java. Original default was "./"
+  let classPath = (\(ClassPath cp) -> cp) . (defaultHead (ClassPath "cobalt_generated_java/")) $ filter isClassPath options
   let classOutputDir = (\(DestinationDir dd) -> dd) . (defaultHead (DestinationDir "cobalt_generated_classes/")) $ filter isDestinationDir options
+
+  print $ "output dir " ++ classOutputDir
 
   when debugModeOn (putStrLn "Running compiler in debug mode")
   when versionPresent printVersion
@@ -52,4 +55,4 @@ execute = do
           return ()
         else do
           cleanDir (endsWith ".class") classOutputDir
-          compile inputFiles classOutputDir
+          compile classPath inputFiles classOutputDir
