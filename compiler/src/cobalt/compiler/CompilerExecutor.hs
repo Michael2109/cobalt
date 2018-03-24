@@ -9,29 +9,27 @@ import Control.Monad
 
 import Compiler
 import SymbolTable
-import CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
+import CommandLineUtils ({--commandLineArgs,--}flags, CommandLineArgument (..), raiseErrorsException )
 import IOUtils
 import Utils
 
 execute :: IO ()
 execute = do
   args <- getArgs
-  let isFileToCompile (FileToCompile _ ) = True
-      isFileToCompile _ = False
+  
   let isClassPath (ClassPath _ ) = True
       isClassPath _ = False
   let isDestinationDir (DestinationDir _ ) = True
       isDestinationDir _ = False
 
-  options <- commandLineArgs args
-
+  (options,filesToCompile) <- flags args--commandLineArgs
+  print options
+  print filesToCompile
   let helpPresent = elem (Help) options
   let versionPresent = elem (Version) options
   let debugModeOn = elem (DebugMode) options
   let verboseModeOn = elem (VerboseMode) options
   let generateDebugSymbolsOn = elem (GenerateDebugSymbols) options
-
-  let inputFiles = map (\(FileToCompile x) -> x) (filter isFileToCompile options)
 
   -- if multiple class paths or destination dirs are provided, first is taken instead of throwing error
   -- Note: javac takes the last and does not produce error either
@@ -49,10 +47,10 @@ execute = do
   if helpPresent
     then return ()
     else
-      if (inputFiles == [])
+      if (filesToCompile == [])
         then do
           _ <- raiseErrorsException ["no source files specified\n"]
           return ()
         else do
           cleanDir (endsWith ".class") classOutputDir
-          compile classPath inputFiles classOutputDir
+          compile classPath filesToCompile classOutputDir

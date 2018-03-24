@@ -4,7 +4,6 @@ import System.Console.GetOpt
 
 data CommandLineArgument = ClassPath FilePath
           | DestinationDir FilePath
-          | FileToCompile FilePath
           | Version
           | Help
           | DebugMode
@@ -27,16 +26,11 @@ helpInfo :: String
 helpInfo = usageInfo header commandLineOptions
   where header = "Usage: compiler-exec [OPTIONS]... FILE [FILE]..."
 
-flags :: [String] -> IO([CommandLineArgument],[String])
+flags :: [String] -> IO([CommandLineArgument],[FilePath])
 flags args =
   case getOpt Permute commandLineOptions args of
     (f,d,[]  ) -> return (f,d) -- contents of d are arguments not options
     (_,_,errors) -> raiseErrorsException errors
 
-commandLineArgs :: [String] -> IO([CommandLineArgument])
-commandLineArgs args = do
-  (options, arguments) <- flags args
-  return (options ++ (map FileToCompile arguments))
-
-raiseErrorsException :: [String] -> IO([CommandLineArgument],[String])
+raiseErrorsException :: [String] -> IO([CommandLineArgument],[FilePath])
 raiseErrorsException errors = ioError $ userError $ concat ("\n":errors) ++ ('\n':helpInfo)
