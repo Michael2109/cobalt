@@ -132,6 +132,7 @@ parserTestList = TestList [
         --testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
         --testStringLiteralUnfinishedDoubleLineFail,
 
+        {--
         testStringLiteralMultilineSimple,
         testStringLiteralMultilineSimpleWhitespace,
         testStringLiteralMultilineEscapeTab,
@@ -146,6 +147,7 @@ parserTestList = TestList [
         --testStringLiteralMultilineUnfinishedDoubleLineLeadingWhitespaceFail,
         --testStringLiteralMultilineUnfinishedDoubleLineFail,
         testStringLiteralMultilineExcludingLeft,
+        --}
 
         testParenthesesVar,
         testParenthesesNested,

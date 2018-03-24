@@ -49,6 +49,7 @@ compile filePaths outputDir = do
   fileDatas <- mapM (\filePath -> readFile $ (filePath)) filteredFilePaths
 
   let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredFilePaths fileDatas
+
   -- Combines all class symbol tables for all ASTs
   let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
