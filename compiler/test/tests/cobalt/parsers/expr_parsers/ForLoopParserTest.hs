@@ -17,7 +17,7 @@ testForLoopParser = do
         "  println(i)"
         ]
   TestCase $ assertEqual code
-    (For "i" (ArithExpr (IntConst 0)) (ArithExpr (IntConst 10)) [Print $ Argument $ Identifier "i"])
+    (For "i" (ArithExpr (IntConst 0)) (ArithExpr (IntConst 10)) [Print (Argument (BooleanExpr (Identifier "i")))])
     (case (parse (forLoopParser) "" code) of
       Left  e -> Error
       Right x -> x)

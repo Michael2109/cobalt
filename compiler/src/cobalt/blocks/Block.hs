@@ -99,7 +99,6 @@ data Expr
   | Trait [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   | Try [Expr]
   | Type Expr
-  | Var String
   | Where [Expr]
   | While Expr [Expr]
   deriving (Eq, Show)
@@ -185,7 +184,6 @@ instance IRGen Expr where
     genIR (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR (IRInfo $ "Trait") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (Try exprs) st cs = TryIR (IRInfo $ "Try") (exprArrToIRArray exprs st cs)
     genIR (Type b) st cs = TypeIR (IRInfo $ "Type") (genIR b st cs)
-    genIR (Var v) symbolTable currentState = Empty (IRInfo $ "Var")
     genIR (Where exprs) st cs = WhereIR (IRInfo $ "Where") $ exprArrToIRArray exprs st cs
     genIR (While condition exprs) st cs = WhileIR (IRInfo $ "While") (genIR condition st cs) $ exprArrToIRArray exprs st cs
 

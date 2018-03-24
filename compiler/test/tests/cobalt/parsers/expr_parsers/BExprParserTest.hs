@@ -31,7 +31,7 @@ testBExprParserFail :: Test
 testBExprParserFail = do
   let code = "true"
   TestCase $ assertEqual code
-    (BError)
+    (Identifier "true")
     (case (parse (bExpr) "" code) of
       Left  e -> BError
       Right x -> x)

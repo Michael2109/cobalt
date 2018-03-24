@@ -14,7 +14,7 @@ testRExprParserGreaterVar :: Test
 testRExprParserGreaterVar = do
   let code = "x > y"
   TestCase $ assertEqual code
-    (RBinary Greater (Var "x") (Var "y"))
+    (RBinary Greater (Identifier "x") (Identifier "y"))
     (case (parse rExpr "" code) of
       Left  e -> Error
       Right x -> x)
@@ -23,7 +23,7 @@ testRExprParserLessVar :: Test
 testRExprParserLessVar = do
   let code = "x < y"
   TestCase $ assertEqual code
-    (RBinary Less (Var "x") (Var "y"))
+    (RBinary Less (Identifier "x") (Identifier "y"))
     (case (parse rExpr "" code) of
       Left  e -> Error
       Right x -> x)
@@ -32,7 +32,7 @@ testRExprParserGreaterEqualVar :: Test
 testRExprParserGreaterEqualVar = do
   let code = "x >= y"
   TestCase $ assertEqual code
-    (RBinary GreaterEqual (Var "x") (Var "y"))
+    (RBinary GreaterEqual (Identifier "x") (Identifier "y"))
     (case (parse rExpr "" code) of
       Left  e -> Error
       Right x -> x)
@@ -41,7 +41,7 @@ testRExprParserLessEqualVar :: Test
 testRExprParserLessEqualVar = do
   let code = "x <= y"
   TestCase $ assertEqual code
-    (RBinary LessEqual (Var "x") (Var "y"))
+    (RBinary LessEqual (Identifier "x") (Identifier "y"))
     (case (parse rExpr "" code) of
       Left  e -> Error
       Right x -> x)

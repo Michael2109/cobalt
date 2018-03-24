@@ -14,7 +14,7 @@ testArgumentParserIdentifier :: Test
 testArgumentParserIdentifier = do
   let code = "Test"
   TestCase $ assertEqual code
-    (Argument (Identifier "Test"))
+    (Argument (BooleanExpr (Identifier "Test")))
     (case (parse (argumentParser) "" code) of
       Left  e -> Error
       Right x -> x)

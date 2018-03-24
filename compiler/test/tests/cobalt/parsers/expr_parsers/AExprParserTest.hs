@@ -14,7 +14,7 @@ testAExprParserVar :: Test
 testAExprParserVar = do
   let code = "x"
   TestCase $ assertEqual code
-    (Var "x")
+    (Identifier "x")
     (case (parse (aExpr) "" code) of
       Left  e -> AError
       Right x -> x)
@@ -32,7 +32,7 @@ testAExprParserNeg :: Test
 testAExprParserNeg = do
   let code = "-x"
   TestCase $ assertEqual code
-    (Neg (Var "x"))
+    (Neg (Identifier "x"))
     (case (parse (aExpr) "" code) of
       Left  e -> AError
       Right x -> x)

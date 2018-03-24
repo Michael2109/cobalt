@@ -47,7 +47,8 @@ import SymbolTable
 
 aTerm :: Parser Expr
 aTerm = parens aExpr
-  <|> Var      <$> identifier
+  <|> classVariableParser
+  <|> identifierParser
   <|> IntConst <$> integerParser
   <|> DoubleConst <$> doubleParser
 
@@ -74,7 +75,10 @@ bTerm :: Parser Expr
 bTerm = BoolConst True  <$ rword "True"
   <|> BoolConst False <$ rword "False"
   <|> parens bExpr
-  <|> rExpr
+  <|> try rExpr
+  <|> classVariableParser
+  <|> identifierParser
+
 
 
 bOperators :: [[Operator Parser Expr]]
@@ -91,10 +95,11 @@ bExpr = makeExprParser bTerm bOperators
 
 rExpr :: Parser Expr
 rExpr = do
-  a1 <- aExpr
-  op <- relation
-  a2 <- aExpr
-  return (RBinary op a1 a2)
+  try $ do
+    a1 <- aExpr
+    op <- relation
+    a2 <- aExpr
+    return (RBinary op a1 a2)
 
 
 relation :: Parser Expr

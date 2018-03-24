@@ -117,6 +117,7 @@ parserTestList = TestList [
 
         testIfStmtParserBooleanTrue,
         testIfStmtParserBooleanFalse,
+        testIfStmtParserObjectVar,
 
         testStringLiteralSimple,
         testStringLiteralSimpleWhitespace,

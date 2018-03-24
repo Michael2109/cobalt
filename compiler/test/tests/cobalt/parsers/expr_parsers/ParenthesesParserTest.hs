@@ -14,7 +14,7 @@ testParenthesesVar :: Test
 testParenthesesVar = do
   let code = "(x)"
   TestCase $ assertEqual code
-    (Var "x")
+    (Identifier "x")
     (case (parse (parens aExpr) "" code) of
       Left e -> Error
       Right x -> x)
@@ -23,7 +23,7 @@ testParenthesesNested :: Test
 testParenthesesNested = do
   let code = "(((((x)))))"
   TestCase $ assertEqual code
-    (Var "x")
+    (Identifier "x")
     (case (parse (parens aExpr) "" code) of
       Left e -> Error
       Right x -> x)

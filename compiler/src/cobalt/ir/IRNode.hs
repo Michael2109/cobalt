@@ -112,7 +112,6 @@ data IRNode
   | TraitIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | TryIR IRInfo [IRNode]
   | TypeIR IRInfo IRNode
-  | VarIR IRInfo String
   | WhereIR IRInfo [IRNode]
   | WhileIR IRInfo IRNode [IRNode]
   deriving (Eq, Show)
@@ -189,7 +188,6 @@ instance Pretty IRNode where
     pretty (TraitIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
     pretty (TryIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (TypeIR irInfo b) symbolTable currentState = p $ show irInfo
-    pretty (VarIR irInfo v) symbolTable currentState = p $ show irInfo
     pretty (WhereIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (WhileIR irInfo condition statement) symbolTable currentState = p $ show irInfo
     pretty (Empty irInfo) symbolTable currentState = p $ show irInfo

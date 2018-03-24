@@ -33,7 +33,7 @@ testBooleanParserIdentifier :: Test
 testBooleanParserIdentifier = do
   let code = "true"
   TestCase $ assertEqual code
-    (Error)
+    (BooleanExpr (Identifier "true"))
     (case (parse (booleanParser) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -44,7 +44,7 @@ testBooleanParserLessThanVar :: Test
 testBooleanParserLessThanVar = do
   let code = "x < y"
   TestCase $ assertEqual code
-    (BooleanExpr (RBinary Less (Var "x") (Var "y")))
+    (BooleanExpr (RBinary Less (Identifier "x") (Identifier "y")))
     (case (parse (booleanParser) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -64,7 +64,7 @@ testBooleanParserGreaterThanVar :: Test
 testBooleanParserGreaterThanVar = do
   let code = "x > y"
   TestCase $ assertEqual code
-    (BooleanExpr (RBinary Greater (Var "x") (Var "y")))
+    (BooleanExpr (RBinary Greater (Identifier "x") (Identifier "y")))
     (case (parse (booleanParser) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -84,7 +84,7 @@ testBooleanParserLessThanEqualVar :: Test
 testBooleanParserLessThanEqualVar = do
   let code = "x <= y"
   TestCase $ assertEqual code
-    (BooleanExpr (RBinary LessEqual (Var "x") (Var "y")))
+    (BooleanExpr (RBinary LessEqual (Identifier "x") (Identifier "y")))
     (case (parse (booleanParser) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -103,7 +103,7 @@ testBooleanParserGreaterThanEqualVar :: Test
 testBooleanParserGreaterThanEqualVar = do
   let code = "x >= y"
   TestCase $ assertEqual code
-    (BooleanExpr (RBinary GreaterEqual (Var "x") (Var "y")))
+    (BooleanExpr (RBinary GreaterEqual (Identifier "x") (Identifier "y")))
     (case (parse (booleanParser) "" code) of
       Left  e -> Error
       Right x -> x)
