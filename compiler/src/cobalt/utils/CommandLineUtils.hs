@@ -31,8 +31,8 @@ helpInfo = usageInfo header commandLineOptions
   -- javac does it this way too.
   where header = "Usage: compiler-exec <options> <source files>\nwhere possible options include:"
 
-flags :: [String] -> IO([CommandLineArgument],[FilePath])
-flags args =
+commandLineArgs :: [String] -> IO([CommandLineArgument],[FilePath])
+commandLineArgs args =
   case getOpt Permute commandLineOptions args of
     (f,d,[]  ) -> return (f,d) -- contents of d are arguments not options
     (_,_,errors) -> raiseErrorsException errors

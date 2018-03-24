@@ -9,22 +9,21 @@ import Control.Monad
 
 import Compiler
 import SymbolTable
-import CommandLineUtils ({--commandLineArgs,--}flags, CommandLineArgument (..), raiseErrorsException )
+import CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
 import IOUtils
 import Utils
 
 execute :: IO ()
 execute = do
   args <- getArgs
-  
+
   let isClassPath (ClassPath _ ) = True
       isClassPath _ = False
   let isDestinationDir (DestinationDir _ ) = True
       isDestinationDir _ = False
 
-  (options,filesToCompile) <- flags args--commandLineArgs
-  print options
-  print filesToCompile
+  (options,filesToCompile) <- commandLineArgs args
+
   let helpPresent = elem (Help) options
   let versionPresent = elem (Version) options
   let debugModeOn = elem (DebugMode) options
