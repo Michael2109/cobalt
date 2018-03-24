@@ -12,7 +12,6 @@ module ExprParser (Parser,
                     classParser,
                     traitParser,
                     parser,
-                    stringLiteral,
                     annotationParser,
                     argumentParser,
                     argumentTypeParser,
@@ -21,13 +20,16 @@ module ExprParser (Parser,
                     elseIfStmtParser,
                     elseStmtParser,
                     ifStmtParser,
-                    forLoopParser
+                    forLoopParser,
+                    stringLiteralParser,
+                    stringLiteralMultilineParser
                     ) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
 import Data.Void
 import Data.Char (isAlphaNum)
+import Data.List (intercalate)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
@@ -237,10 +239,17 @@ booleanParser = do
   bE <- try bExpr
   return $ BooleanExpr bE
 
-stringLiteral :: Parser Expr
-stringLiteral = do
+stringLiteralParser :: Parser Expr
+stringLiteralParser = do
   value <- char '"' >> manyTill L.charLiteral (char '"')
   return $ StringLiteral value
+
+stringLiteralMultilineParser :: Parser Expr
+stringLiteralMultilineParser = do
+  symbol "```"
+  contents <- many (L.lineFold scn $ \sp' -> some L.charLiteral)
+  symbol "```"
+  return $ StringLiteral $ intercalate "\n" contents
 
 
 assignParser :: Parser Expr
@@ -369,7 +378,7 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-  value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstance <|> stringLiteral <|> identifierParser <|> arithmeticParser
+  value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstance <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser <|> arithmeticParser
   return $ Argument value
 
 printParser :: Parser Expr
@@ -497,7 +506,8 @@ expr' = booleanParser
   <|> thisParser
 
   <|> try whereStmt
-  <|> try stringLiteral
+  <|> try stringLiteralParser
+  <|> try stringLiteralMultilineParser
 
 
 parser :: Parser Expr

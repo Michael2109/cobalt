@@ -15,7 +15,7 @@ testStringLiteralSimple = do
   let code = "\"foo\""
   TestCase $ assertEqual code
     (StringLiteral "foo")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -24,7 +24,7 @@ testStringLiteralSimpleWhitespace = do
   let code = "\"foo   bar\tbaz\""
   TestCase $ assertEqual code
     (StringLiteral "foo   bar\tbaz")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -33,7 +33,7 @@ testStringLiteralEscapeTab = do
   let code = "\"\\tfoo\""
   TestCase $ assertEqual code
     (StringLiteral "\tfoo")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -42,7 +42,7 @@ testStringLiteralEmpty = do
   let code = "\"\""
   TestCase $ assertEqual code
     (StringLiteral "")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -51,7 +51,7 @@ testStringLiteralNewLine = do
   let code = "\"foo\\n\""
   TestCase $ assertEqual code
     (StringLiteral "foo\n")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -60,7 +60,7 @@ testStringLiteralMultipleNewLine = do
   let code = "\"foo\\nbar\\nbaz\""
   TestCase $ assertEqual code
     (StringLiteral "foo\nbar\nbaz")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -90,7 +90,7 @@ testStringLiteralUnescapedSingleQuote = do
   let code = "\"foo\'\""
   TestCase $ assertEqual code
     (StringLiteral "foo\'")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -99,7 +99,7 @@ testStringLiteralEscapedSingleQuote = do
   let code = "\"foo\\\'\""
   TestCase $ assertEqual code
     (StringLiteral "foo\'")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -108,7 +108,7 @@ testStringLiteralEscapedDoubleQuote = do
   let code = "\"foo\\\"ending\""
   TestCase $ assertEqual code
     (StringLiteral "foo\"ending")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -118,7 +118,7 @@ testStringLiteralDoubleQuoteMultiple = do
   let code = "\"test:\\\"string inside string\\\" ending\""
   TestCase $ assertEqual code
     (StringLiteral "test:\"string inside string\" ending")
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -133,7 +133,7 @@ testStringLiteralUnfinishedFail = do
   let code = "\"ufinishedstring\n"
   TestCase $ assertEqual code
     (Error)
-    (case (parse (stringLiteral) "" code) of
+    (case (parse (stringLiteralParser) "" code) of
       Left  e -> Error
       Right x -> x)
 

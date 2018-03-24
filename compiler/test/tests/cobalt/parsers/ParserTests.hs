@@ -36,6 +36,7 @@ import ParamParserTest
 import ParenthesesParserTest
 import ReassignParserTest
 import RExprParserTest
+import StringLiteralMultilineParserTest
 import StringLiteralParserTest
 import ThisMethodCallParserTest
 import ThisVarParserTest
@@ -130,6 +131,21 @@ parserTestList = TestList [
         testStringLiteralUnfinishedFail,
         --testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
         --testStringLiteralUnfinishedDoubleLineFail,
+
+        testStringLiteralMultilineSimple,
+        testStringLiteralMultilineSimpleWhitespace,
+        testStringLiteralMultilineEscapeTab,
+        testStringLiteralMultilineEmpty,
+        testStringLiteralMultilineNewLine,
+        testStringLiteralMultilineMultipleNewLine,
+        testStringLiteralMultilineUnescapedSingleQuote,
+        testStringLiteralMultilineEscapedSingleQuote,
+        testStringLiteralMultilineEscapedDoubleQuote,
+        testStringLiteralMultilineDoubleQuoteMultiple,
+        testStringLiteralMultilineUnfinishedFail,
+        --testStringLiteralMultilineUnfinishedDoubleLineLeadingWhitespaceFail,
+        --testStringLiteralMultilineUnfinishedDoubleLineFail,
+        testStringLiteralMultilineExcludingLeft,
 
         testParenthesesVar,
         testParenthesesNested,

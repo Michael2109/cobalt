@@ -206,6 +206,7 @@ test-suite compiler-test
       ParenthesesParserTest
       ReassignParserTest
       RExprParserTest
+      StringLiteralMultilineParserTest
       StringLiteralParserTest
       ThisMethodCallParserTest
       ThisVarParserTest
