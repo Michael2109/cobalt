@@ -82,7 +82,8 @@ rws = [
   "False",
   "not",
   "and",
-  "or"
+  "or",
+  "super"
   ]
 
 

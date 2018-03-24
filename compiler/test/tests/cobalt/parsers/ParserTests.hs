@@ -119,6 +119,10 @@ parserTestList = TestList [
         testIfStmtParserBooleanFalse,
         testIfStmtParserObjectVar,
 
+        testObjectMethodCallParserThis,
+        testObjectMethodCallParserObject,
+        testObjectMethodCallParserSuper,
+
         testStringLiteralSimple,
         testStringLiteralSimpleWhitespace,
         testStringLiteralEscapeTab,

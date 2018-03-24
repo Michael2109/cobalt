@@ -92,7 +92,7 @@ data Expr
   | StringLiteral String
   | Subtract
   | Super
-  | SuperMethodCall String String [Expr]
+  | SuperMethodCall String [Expr]
   | This
   | ThisMethodCall String [Expr]
   | ThisVar Expr
@@ -177,9 +177,9 @@ instance IRGen Expr where
     genIR (StringLiteral value) st cs = StringLiteralIR (IRInfo $ "StringLiteral") value
     genIR (Subtract) symbolTable currentState = Empty (IRInfo $ "Subtract")
     genIR (Super) st cs = SuperIR (IRInfo $ "Super")
-    genIR (SuperMethodCall objectName methodName args) st cs = SuperMethodCallIR (IRInfo $ "SuperMethodCall")  objectName methodName (exprArrToIRArray args st cs)
+    genIR (SuperMethodCall methodName args) st cs = SuperMethodCallIR (IRInfo $ "SuperMethodCall") methodName (exprArrToIRArray args st cs)
     genIR (This) st cs = ThisIR (IRInfo $ "This")
-    genIR (ThisMethodCall methodName args) st cs = ThisMethodCallIR (IRInfo $ "ThisMethodCall") methodName (exprArrToIRArray args st cs)
+    genIR (ThisMethodCall methodName args) st cs = ThisMethodCallIR (IRInfo $ "ObjectMethodCall") methodName (exprArrToIRArray args st cs)
     genIR (ThisVar varName) st cs = ThisVarIR (IRInfo $ "ThisVar") $ genIR varName st cs
     genIR (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR (IRInfo $ "Trait") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (Try exprs) st cs = TryIR (IRInfo $ "Try") (exprArrToIRArray exprs st cs)

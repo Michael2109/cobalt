@@ -105,7 +105,7 @@ data IRNode
   | StringLiteralIR IRInfo String
   | SubtractIR IRInfo
   | SuperIR IRInfo
-  | SuperMethodCallIR IRInfo String String [IRNode]
+  | SuperMethodCallIR IRInfo String [IRNode]
   | ThisIR IRInfo
   | ThisMethodCallIR IRInfo String [IRNode]
   | ThisVarIR IRInfo IRNode
@@ -181,7 +181,7 @@ instance Pretty IRNode where
     pretty (StringLiteralIR irInfo value) symbolTable currentState = p $ show irInfo
     pretty (SubtractIR irInfo) symbolTable currentState = p $ ""
     pretty (SuperIR irInfo) symbolTable currentState = p $ show irInfo
-    pretty (SuperMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
+    pretty (SuperMethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
     pretty (ThisIR irInfo) symbolTable currentState = p $ show irInfo ++ "this"
     pretty (ThisMethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
     pretty (ThisVarIR irInfo varName) symbolTable currentState = p $ show irInfo

@@ -21,8 +21,11 @@ module ExprParser (Parser,
                     elseStmtParser,
                     ifStmtParser,
                     forLoopParser,
+                    objectMethodCallParser,
+                    superMethodCallParser,
                     stringLiteralParser,
-                    stringLiteralMultilineParser
+                    stringLiteralMultilineParser,
+                    thisMethodCallParser
                     ) where
 
 import Control.Applicative (empty)
@@ -303,27 +306,32 @@ arrayAppend = do
   arrays <- sepBy1 (expr') (symbol "++")
   return $ ArrayAppend arrays
 
-thisMethodCall :: Parser Expr
-thisMethodCall  =
+thisMethodCallParser :: Parser Expr
+thisMethodCallParser =
   try $ do
+    rword "this"
+    symbol "."
     methodName <- identifier
     args <- parens (sepBy (argumentParser) (symbol ","))
+    return $ ThisMethodCall methodName args
 
-    if methodName == "println"
-      then (return $ Print (head args))
-      else (return $ ThisMethodCall methodName args)
+superMethodCallParser :: Parser Expr
+superMethodCallParser =
+  try $ do
+    rword "super"
+    symbol "."
+    methodName <- identifier
+    args <- parens (sepBy (argumentParser) (symbol ","))
+    return $ SuperMethodCall methodName args
 
-
-objectMethodCall :: Parser Expr
-objectMethodCall =
+objectMethodCallParser :: Parser Expr
+objectMethodCallParser =
   try $ do
     objectName <- identifier
     symbol "."
     methodName <- identifier
     args <- parens (sepBy (argumentParser) (symbol ","))
-    if(objectName == "super")
-      then return $ SuperMethodCall objectName methodName args
-      else return $ ObjectMethodCall objectName methodName args
+    return $ ObjectMethodCall objectName methodName args
 
 
 newClassInstance :: Parser Expr
@@ -497,8 +505,9 @@ expr' = booleanParser
   <|> tryParser
   <|> catchParser
   <|> printParser
-  <|> objectMethodCall
-  <|> thisMethodCall
+  <|> thisMethodCallParser
+  <|> superMethodCallParser
+  <|> objectMethodCallParser
   <|> newClassInstance
   <|> classVariableParser
   <|> try arrayElementSelect
