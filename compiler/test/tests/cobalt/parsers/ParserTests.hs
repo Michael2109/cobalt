@@ -157,5 +157,10 @@ parserTestList = TestList [
         testParenthesesVar,
         testParenthesesNested,
         testParenthesesNoOpenFail,
-        testParenthesesNoCloseFail
+        testParenthesesNoCloseFail,
+
+        testSingleImport,
+        testEmptyImportFail,
+        testTwoImport,
+        testMultiImport
        ]
