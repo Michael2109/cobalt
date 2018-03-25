@@ -16,14 +16,14 @@ import Utils
 execute :: IO ()
 execute = do
   args <- getArgs
-  print args
+
   let isClassPath (ClassPath _ ) = True
       isClassPath _ = False
   let isDestinationDir (DestinationDir _ ) = True
       isDestinationDir _ = False
 
   (options,filesToCompile) <- commandLineArgs args
-  print options
+  
   let helpPresent = elem (Help) options
   let versionPresent = elem (Version) options
   let debugModeOn = elem (DebugMode) options
