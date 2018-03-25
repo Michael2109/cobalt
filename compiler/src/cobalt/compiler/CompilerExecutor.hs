@@ -36,8 +36,6 @@ execute = do
   let classPath = (\(ClassPath cp) -> cp) . (defaultHead (ClassPath "cobalt_generated_java/")) $ filter isClassPath options
   let classOutputDir = (\(DestinationDir dd) -> dd) . (defaultHead (DestinationDir "cobalt_generated_classes/")) $ filter isDestinationDir options
 
-  print $ "output dir " ++ classOutputDir
-
   when debugModeOn (putStrLn "Running compiler in debug mode")
   when versionPresent printVersion
   when helpPresent printHelpInfo
