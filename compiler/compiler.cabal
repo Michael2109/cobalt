@@ -166,6 +166,7 @@ test-suite compiler-test
       IntegrationTests
       ParserTests
       SymbolTableTests
+      UtilsTests
 
       BlocksTest
       CodeGeneratorTest
