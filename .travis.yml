@@ -1,3 +1,5 @@
+cache: directories: - $HOME/.stack
+
 before_install:
 # Download and unpack the stack executable
 - mkdir -p ~/.local/bin
