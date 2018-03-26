@@ -7,4 +7,4 @@ before_install:
 before_install: cd compiler
 
 script:
-  - stack --no-terminal --skip-ghc-check build --test ./compiler
+  - stack --no-terminal --skip-ghc-check build --test
