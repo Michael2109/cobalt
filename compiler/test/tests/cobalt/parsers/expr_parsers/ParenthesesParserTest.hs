@@ -10,8 +10,8 @@ import BaseParser
 import ExprParser
 
 
-testParenthesesVar :: Test
-testParenthesesVar = do
+testParenthesesParserVar :: Test
+testParenthesesParserVar = do
   let code = "(x)"
   TestCase $ assertEqual code
     (Identifier "x")
@@ -19,8 +19,8 @@ testParenthesesVar = do
       Left e -> Error
       Right x -> x)
 
-testParenthesesNested :: Test
-testParenthesesNested = do
+testParenthesesParserNested :: Test
+testParenthesesParserNested = do
   let code = "(((((x)))))"
   TestCase $ assertEqual code
     (Identifier "x")
@@ -28,8 +28,8 @@ testParenthesesNested = do
       Left e -> Error
       Right x -> x)
 
-testParenthesesNoOpenFail :: Test
-testParenthesesNoOpenFail = do
+testParenthesesParserNoOpenFail :: Test
+testParenthesesParserNoOpenFail = do
   let code = "x)"
   TestCase $ assertEqual code
     Error
@@ -37,8 +37,8 @@ testParenthesesNoOpenFail = do
       Left e -> Error
       Right x -> x)
 
-testParenthesesNoCloseFail :: Test
-testParenthesesNoCloseFail = do
+testParenthesesParserNoCloseFail :: Test
+testParenthesesParserNoCloseFail = do
   let code = "(x"
   TestCase $ assertEqual code
     Error
@@ -46,4 +46,3 @@ testParenthesesNoCloseFail = do
       Left e -> Error
       Right x -> x)
 
--- TODO more complex nesting patterns

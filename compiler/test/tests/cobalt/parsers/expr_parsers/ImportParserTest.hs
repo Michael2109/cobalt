@@ -10,8 +10,8 @@ import BaseParser
 import ExprParser
 import Parser
 
-testSingleImport :: Test
-testSingleImport = do
+testImportParserSingle :: Test
+testImportParserSingle = do
   let code = "import x"
   TestCase $ assertEqual code
     (Import ["x"])
@@ -19,8 +19,8 @@ testSingleImport = do
       Left  e -> Error
       Right x -> x)
 
-testEmptyImportFail :: Test
-testEmptyImportFail = do
+testImportParserEmptyFail :: Test
+testImportParserEmptyFail = do
   let code = "import "
   TestCase $ assertEqual code
     Error
@@ -28,8 +28,8 @@ testEmptyImportFail = do
       Left  e -> Error
       Right x -> x)
 
-testTwoImport :: Test
-testTwoImport = do
+testImportParserTwo :: Test
+testImportParserTwo = do
   let code = "import x.y"
   TestCase $ assertEqual code
     (Import ["x", "y"])
@@ -37,8 +37,8 @@ testTwoImport = do
       Left  e -> Error
       Right x -> x)
 
-testMultiImport :: Test
-testMultiImport = do
+testImportParserMultiple :: Test
+testImportParserMultiple = do
   let code = "import x.y.z.a.b.c"
   TestCase $ assertEqual code
     (Import ["x", "y", "z", "a", "b", "c"])

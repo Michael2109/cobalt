@@ -8,6 +8,7 @@ import BaseParserTest
 -- ABExprParserTests
 import AExprParserTest
 import BExprParserTest
+import RExprParserTest
 
 -- ExprParserTests
 import AnnotationParserTest
@@ -35,7 +36,6 @@ import ObjectParserTest
 import ParamParserTest
 import ParenthesesParserTest
 import ReassignParserTest
-import RExprParserTest
 import StringLiteralMultilineParserTest
 import StringLiteralParserTest
 import ThisMethodCallParserTest
@@ -119,9 +119,19 @@ parserTestList = TestList [
         testIfStmtParserBooleanFalse,
         testIfStmtParserObjectVar,
 
+        testImportParserSingle,
+        testImportParserEmptyFail,
+        testImportParserTwo,
+        testImportParserMultiple,
+
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
         testObjectMethodCallParserSuper,
+
+        testParenthesesParserVar,
+        testParenthesesParserNested,
+        testParenthesesParserNoOpenFail,
+        testParenthesesParserNoCloseFail,
 
         testStringLiteralSimple,
         testStringLiteralSimpleWhitespace,
@@ -133,7 +143,7 @@ parserTestList = TestList [
         testStringLiteralEscapedSingleQuote,
         testStringLiteralEscapedDoubleQuote,
         testStringLiteralDoubleQuoteMultiple,
-        testStringLiteralUnfinishedFail,
+        testStringLiteralUnfinishedFail
         --testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
         --testStringLiteralUnfinishedDoubleLineFail,
 
@@ -154,13 +164,4 @@ parserTestList = TestList [
         testStringLiteralMultilineExcludingLeft,
         --}
 
-        testParenthesesVar,
-        testParenthesesNested,
-        testParenthesesNoOpenFail,
-        testParenthesesNoCloseFail,
-
-        testSingleImport,
-        testEmptyImportFail,
-        testTwoImport,
-        testMultiImport
        ]
