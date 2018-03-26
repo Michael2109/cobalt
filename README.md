@@ -1,5 +1,7 @@
 # Cobalt
 
+[![Build Status](https://travis-ci.org/Michael2109/cobalt.svg?branch=0.1.x)](https://travis-ci.org/Michael2109/cobalt)
+
 Cobalt is an object-oriented and functional language that runs on the JVM.
 
 The syntax is similar to languages such as Haskell and Scala.  
