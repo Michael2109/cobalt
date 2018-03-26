@@ -115,6 +115,13 @@ parserTestList = TestList [
 
         testForLoopParser,
 
+        testIdentifierParserOneCharacter,
+        testIdentifierParserDigitFail,
+        testIdentifierParserContainsUnderscore,
+        testIdentifierParserContainsDigit,
+        testIdentifierParserStartsDigitFail,
+        testIdentifierParserCapital,
+
         testIfStmtParserBooleanTrue,
         testIfStmtParserBooleanFalse,
         testIfStmtParserObjectVar,
