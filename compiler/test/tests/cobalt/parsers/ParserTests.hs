@@ -123,6 +123,12 @@ parserTestList = TestList [
         testImportParserEmptyFail,
         testImportParserTwo,
         testImportParserMultiple,
+        testImportParserStartsDigitFail,
+        testImportParserStartsDigitMultipleFail,
+        testImportParserCapital,
+        testImportParserUnderscore,
+        testImportParserMultipleUnderscore,
+        testImportParserContainsDigit,
 
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
