@@ -80,6 +80,7 @@ data Expr
   | ObjectMethodCall String String [Expr]
   | OpeningParenthesis
   | Or
+  | ParameterizedType Expr Expr
   | Parenthesis Expr
   | Print Expr
   | RBinary Expr Expr Expr
@@ -165,8 +166,9 @@ instance IRGen Expr where
     genIR (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR (IRInfo $ "Object") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR (IRInfo $ "ObjectMethodCall") objectName methodName (exprArrToIRArray args st cs)
     genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
-    genIR (Or) symbolTable currentState = OrIR (IRInfo $ "Or")
-    genIR (Parenthesis aExpr) symbolTable currentState = Empty (IRInfo $ "Parenthesis")
+    genIR (Or) st cs = OrIR (IRInfo $ "Or")
+    genIR (ParameterizedType className typeName) st cs = ParameterizedTypeIR (IRInfo $ "ParameterizedType") (genIR className st cs) (genIR typeName st cs)
+    genIR (Parenthesis aExpr) st cs = Empty (IRInfo $ "Parenthesis")
     genIR (Print expr) st cs = PrintIR (IRInfo $ "Print") $ genIR expr st cs
     genIR (Reassign name value) st cs = ReassignIR (IRInfo $ "Reassign") (genIR name st cs) (genIR value st cs)
     genIR (Return expr) st cs = ReturnIR (IRInfo $ "Return") (genIR expr st cs)
@@ -175,7 +177,7 @@ instance IRGen Expr where
     genIR (Seq s) st cs = SeqIR (IRInfo $ "Seq") (exprArrToIRArray s st cs)
     genIR (Skip) st cs = SkipIR (IRInfo $ "Skip")
     genIR (StringLiteral value) st cs = StringLiteralIR (IRInfo $ "StringLiteral") value
-    genIR (Subtract) symbolTable currentState = Empty (IRInfo $ "Subtract")
+    genIR (Subtract) st cs = SubtractIR (IRInfo $ "Subtract")
     genIR (Super) st cs = SuperIR (IRInfo $ "Super")
     genIR (SuperMethodCall methodName args) st cs = SuperMethodCallIR (IRInfo $ "SuperMethodCall") methodName (exprArrToIRArray args st cs)
     genIR (This) st cs = ThisIR (IRInfo $ "This")

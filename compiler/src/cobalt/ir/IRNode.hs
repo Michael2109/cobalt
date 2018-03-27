@@ -93,6 +93,7 @@ data IRNode
   | ObjectMethodCallIR IRInfo String String [IRNode]
   | OpeningParenthesisIR IRInfo
   | OrIR IRInfo
+  | ParameterizedTypeIR IRInfo IRNode IRNode
   | ParenthesisIR IRInfo IRNode
   | PrintIR IRInfo IRNode
   | ReassignIR IRInfo IRNode IRNode
@@ -170,6 +171,7 @@ instance Pretty IRNode where
     pretty (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
     pretty (OrIR irInfo) symbolTable currentState = p $ ""
     pretty (OpeningParenthesisIR irInfo) currentState symbolTable = p $ ""
+    pretty (ParameterizedTypeIR irInfo className typeName) currentState symbolTable = p $ show irInfo
     pretty (ParenthesisIR irInfo aExpr) symbolTable currentState = p $ ""
     pretty (PrintIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (RBinaryIR irInfo  rbinop aExpr1 aExpr2) st cs = p $ ""

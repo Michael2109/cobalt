@@ -34,6 +34,7 @@ import ModifierBlockParserTest
 import NewClassInstanceParserTest
 import ObjectMethodCallParserTest
 import ObjectParserTest
+import ParameterizedTypeParserTest
 import ParamParserTest
 import ParenthesesParserTest
 import ReassignParserTest
@@ -159,6 +160,11 @@ parserTestList = TestList [
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
         testObjectMethodCallParserSuper,
+
+        testParameterizedTypeParser,
+        testParameterizedTypeParserLeftMissing,
+        testParameterizedTypeParserRightMissing,
+        testParameterizedTypeParserClassMissing,
 
         testParenthesesParserVar,
         testParenthesesParserNested,

@@ -26,6 +26,7 @@ module ExprParser (Parser,
                     forLoopParser,
                     modifierBlockParser,
                     objectMethodCallParser,
+                    parameterizedTypeParser,
                     superMethodCallParser,
                     stringLiteralParser,
                     stringLiteralMultilineParser,
@@ -381,8 +382,17 @@ annotationParser  = do
 
 valType :: Parser Expr
 valType = do
-    value <- identifierParser <|> arrayType
+    value <- parameterizedTypeParser <|> identifierParser
     return $ Type value
+
+parameterizedTypeParser :: Parser Expr
+parameterizedTypeParser = do
+  try $ do
+    className <- identifierParser
+    symbol "["
+    typeName <- identifierParser
+    symbol "]"
+    return $ ParameterizedType className typeName
 
 argumentTypeParser :: Parser Expr
 argumentTypeParser = do

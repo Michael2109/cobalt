@@ -204,6 +204,7 @@ test-suite compiler-test
       NewClassInstanceParserTest
       ObjectMethodCallParserTest
       ObjectParserTest
+      ParameterizedTypeParserTest
       ParamParserTest
       ParenthesesParserTest
       ReassignParserTest
