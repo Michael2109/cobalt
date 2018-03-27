@@ -137,6 +137,13 @@ parserTestList = TestList [
         testImportParserMultipleUnderscore,
         testImportParserContainsDigit,
 
+        testModifierBlockParserPrivate,
+        testModifierBlockParserProtected,
+        testModifierBlockParserPublic,
+        testModifierBlockParserPrivateEmpty,
+        testModifierBlockParserProtectedEmpty,
+        testModifierBlockParserPublicEmpty,
+
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
         testObjectMethodCallParserSuper,
