@@ -1,6 +1,9 @@
 :toc: macro
 :toc-title:
-:toclevels: 9
+:toclevels: 99
+
+toc::[]
+
 
 ### Language Specification
 
