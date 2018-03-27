@@ -1,6 +1,8 @@
 ### Language Specification
 
-
+:toc: macro
+:toc-title:
+:toclevels: 9
 
 ##### Methods
 
