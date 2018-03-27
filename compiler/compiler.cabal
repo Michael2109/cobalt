@@ -195,11 +195,11 @@ test-suite compiler-test
       ClassVariableParserTest
       ConstructorParserTest
       ForLoopParserTest
-      FunctionParserTest
       GlobalVariableParserTest
       IdentifierParserTest
       IfElseStatementParserTest
       ImportParserTest
+      MethodParserTest
       ModifierBlockParserTest
       NewClassInstanceParserTest
       ObjectMethodCallParserTest

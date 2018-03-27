@@ -71,7 +71,7 @@ data IRNode
   | Empty IRInfo
   | ErrorIR IRInfo
   | ForIR IRInfo String IRNode IRNode [IRNode]
-  | FunctionIR IRInfo String (Maybe IRNode) [IRNode] [IRNode] IRNode Bool [IRNode]
+  | FunctionIR IRInfo IRNode (Maybe IRNode) [IRNode] IRNode Bool [IRNode]
   | FunctionCallIR IRInfo String [IRNode]
   | GlobalVarIR IRInfo String Bool Bool IRNode IRNode [IRNode]
   | GreaterEqualIR IRInfo
@@ -83,7 +83,7 @@ data IRNode
   | LessIR IRInfo
   | LessEqualIR IRInfo
   | IntConstIR IRInfo Integer
-  | MainFunctionIR IRInfo String (Maybe IRNode) [IRNode] [IRNode] IRNode [IRNode]
+  | MainFunctionIR IRInfo IRNode (Maybe IRNode) [IRNode] IRNode [IRNode]
   | ModifierBlockIR IRInfo [IRNode]
   | MultiplyIR IRInfo
   | NegIR IRInfo IRNode
@@ -149,7 +149,7 @@ instance Pretty IRNode where
     pretty (ElseIR irInfo statement) symbolTable currentState = p $ show irInfo
     pretty (ElseIfIR irInfo condition statement) symbolTable currentState = p $ show irInfo
     pretty (ForIR irInfo varName start end exprs) symbolTable currentState = p $ show irInfo
-    pretty (FunctionIR irInfo name annotations argTypes args returnType static body) symbolTable currentState = p $ show irInfo
+    pretty (FunctionIR irInfo name annotations params returnType static body) symbolTable currentState = p $ show irInfo
     pretty (FunctionCallIR irInfo name exprs) symbolTable currentState = p $ show irInfo
     pretty (GlobalVarIR irInfo modifier final static varType varName exprs) symbolTable currentState = p $ show irInfo
     pretty (GreaterEqualIR irInfo) symbolTable currentState = p $ ""
@@ -161,7 +161,7 @@ instance Pretty IRNode where
     pretty (LambdaIR irInfo varName exprs) symbolTable currentState = p $ show irInfo
     pretty (LessEqualIR irInfo) symbolTable currentState = p $ ""
     pretty (LessIR irInfo) symbolTable currentState = p $ ""
-    pretty (MainFunctionIR irInfo name annotations argTypes args returnType body) symbolTable currentState = p $ show irInfo
+    pretty (MainFunctionIR irInfo name annotations params returnType body) symbolTable currentState = p $ show irInfo
     pretty (ModifierBlockIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (MultiplyIR irInfo) symbolTable currentState = p $ ""
     pretty (NegIR irInfo aExpr) symbolTable currentState = p $ ""

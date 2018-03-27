@@ -25,7 +25,7 @@ import ClassParserTest
 import ClassVariableParserTest
 import ConstructorParserTest
 import ForLoopParserTest
-import FunctionParserTest
+import MethodParserTest
 import GlobalVariableParserTest
 import IdentifierParserTest
 import IfElseStatementParserTest
@@ -149,6 +149,8 @@ parserTestList = TestList [
         testImportParserUnderscore,
         testImportParserMultipleUnderscore,
         testImportParserContainsDigit,
+
+        testMethodParser,
 
         testModifierBlockParserPrivate,
         testModifierBlockParserProtected,

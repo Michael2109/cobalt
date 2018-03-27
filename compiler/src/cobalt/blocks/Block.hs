@@ -59,7 +59,7 @@ data Expr
   | ElseIf Expr [Expr]
   | Error
   | For String Expr Expr [Expr]
-  | Function String (Maybe Expr) [Expr] [Expr] Expr Bool [Expr]
+  | Function Expr (Maybe Expr) [Expr] Expr Bool [Expr]
   | FunctionCall String [Expr]
   | GlobalVar String Bool Bool Expr Expr [Expr]
   | Greater
@@ -70,7 +70,7 @@ data Expr
   | IntConst Integer
   | Less
   | LessEqual
-  | MainFunction {name ::String, annotations :: (Maybe Expr), argTypes:: [Expr], args::[Expr], returnType::Expr, body::[Expr]}
+  | MainFunction Expr (Maybe Expr) [Expr] Expr [Expr]
   | ModifierBlock [Expr]
   | Multiply
   | Neg Expr
@@ -146,7 +146,7 @@ instance IRGen Expr where
     genIR (Else exprs) st cs = ElseIR (IRInfo $ "Else") (exprArrToIRArray exprs st cs)
     genIR (ElseIf condition exprs) st cs = ElseIfIR (IRInfo $ "ElseIf") (genIR condition st cs) (exprArrToIRArray exprs st cs)
     genIR (For varName start end exprs) st cs = ForIR (IRInfo $ "For") varName (genIR start st cs) (genIR end st cs) (exprArrToIRArray exprs st cs)
-    genIR (Function name annotations argTypes args returnType static exprs) st cs = FunctionIR (IRInfo $ "Function") name (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (genIR returnType st cs) static (exprArrToIRArray exprs st cs)
+    genIR (Function name annotations params returnType static exprs) st cs = FunctionIR (IRInfo $ "Function") (genIR name st cs) (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray params st cs) (genIR returnType st cs) static (exprArrToIRArray exprs st cs)
     genIR (FunctionCall name exprs) st cs = FunctionCallIR (IRInfo $ "FunctionCall") name $ exprArrToIRArray exprs st cs
     genIR (GreaterEqual) symbolTable currentState = GreaterEqualIR (IRInfo $ "GreaterEqual")
     genIR (Greater) symbolTable currentState = GreaterIR (IRInfo $ "Greater")
@@ -157,7 +157,7 @@ instance IRGen Expr where
     genIR (IntConst i) symbolTable currentState = Empty (IRInfo $ "IntConst")
     genIR (LessEqual) symbolTable currentState = LessEqualIR (IRInfo $ "LessEqual")
     genIR (Less) symbolTable currentState = LessIR (IRInfo $ "Less")
-    genIR (MainFunction name annotations argTypes args returnType exprs) st cs = MainFunctionIR (IRInfo $ "MainFunction") name (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (genIR returnType st cs) (exprArrToIRArray exprs st cs)
+    genIR (MainFunction name annotations params returnType exprs) st cs = MainFunctionIR (IRInfo $ "MainFunction") (genIR name st cs) (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray params st cs) (genIR returnType st cs) (exprArrToIRArray exprs st cs)
     genIR (ModifierBlock exprs) st cs = ModifierBlockIR (IRInfo $ "ModifierBlock") (map (\e -> genIR e st cs) exprs)
     genIR (Multiply) symbolTable currentState = Empty (IRInfo $ "Multiply")
     genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")

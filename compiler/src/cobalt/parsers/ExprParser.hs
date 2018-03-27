@@ -24,6 +24,7 @@ module ExprParser (Parser,
                     ifStmtParser,
                     importParser,
                     forLoopParser,
+                    methodParser,
                     modifierBlockParser,
                     objectMethodCallParser,
                     parameterizedTypeParser,
@@ -135,7 +136,7 @@ objectParser relativeDir = try $ L.nonIndented scn p
       interfaces <- sepBy identifier (symbol ",")
       modifierBlocks <- many (try (modifierBlockParser True))
       constructorExprs <- try (many $ try constructorExpr)
-      exprs <- many (functionParser name True <|> expr')
+      exprs <- many (methodParser name True <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Object (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
@@ -156,7 +157,7 @@ classParser relativeDir = try $ L.nonIndented scn p
       interfaces <- sepBy identifier (symbol ",")
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
-      exprs <- many (functionParser name False <|> expr')
+      exprs <- many (methodParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
@@ -177,7 +178,7 @@ traitParser relativeDir = try $ L.nonIndented scn p
       interfaces <- sepBy identifier (symbol ",")
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
-      exprs <- many (functionParser name False <|> expr')
+      exprs <- many (methodParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Trait (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
 
@@ -210,24 +211,19 @@ constructorExpr = try $ L.nonIndented scn p
 
 
 -- Function parser
-functionParser :: String -> Bool -> Parser Expr
-functionParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
+methodParser :: String -> Bool -> Parser Expr
+methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
       annotations <- try (optional annotationParser)
-      name <- L.lineFold scn $ \sp' -> identifier
+      name <- identifierParser
+      fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+      let params = case fullParams of
+                     Just ps -> ps
+                     Nothing -> []
       symbol ":"
-      aList <- sepBy (argumentTypeParser <|> identifierParser  <|> arrayType) (symbol "->")
-      let argTypes = take (length aList - 1) aList
-      let rType = last aList
-      nameDup <- L.lineFold scn $ \sp' -> identifier
-      args <- many argumentParser
-      symbol "="
-      if(name == "main")
-        then return (L.IndentMany Nothing (return . (MainFunction name annotations argTypes args rType)) (expr'))
-        else if name == moduleName
-          then return (L.IndentMany Nothing (return . (Constructor name argTypes args)) (expr'))
-          else return (L.IndentMany Nothing (return . (Function name annotations argTypes args rType static)) (expr'))
+      rType <- identifierParser
+      return (L.IndentMany Nothing (return . (Function name annotations params rType static)) (expr'))
 
 
 identifierParser :: Parser Expr
