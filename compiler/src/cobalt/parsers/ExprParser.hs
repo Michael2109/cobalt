@@ -27,7 +27,8 @@ module ExprParser (Parser,
                     superMethodCallParser,
                     stringLiteralParser,
                     stringLiteralMultilineParser,
-                    thisMethodCallParser
+                    thisMethodCallParser,
+                    thisVarParser
                     ) where
 
 import Control.Applicative (empty)

@@ -156,7 +156,7 @@ parserTestList = TestList [
         testStringLiteralEscapedSingleQuote,
         testStringLiteralEscapedDoubleQuote,
         testStringLiteralDoubleQuoteMultiple,
-        testStringLiteralUnfinishedFail
+        testStringLiteralUnfinishedFail,
         --testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
         --testStringLiteralUnfinishedDoubleLineFail,
 
@@ -176,5 +176,11 @@ parserTestList = TestList [
         --testStringLiteralMultilineUnfinishedDoubleLineFail,
         testStringLiteralMultilineExcludingLeft,
         --}
+
+        testThisVarParserStartsDigitFail,
+        testThisVarParserContainsCapital,
+        testThisVarParserContainsDigit,
+        testThisVarParserContainsUnderscore,
+        testThisVarParserNotThisFail
 
        ]
