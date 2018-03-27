@@ -1,1 +1,21 @@
 ### Language Specification
+
+
+##### Methods
+
+Inline
+```
+add (a: Int, b: Int): Int = a + b
+```
+
+Multi-line
+```
+add (a: Int, b: Int): Int 
+  // Do something
+  a + b
+```
+
+Type inference
+```
+add (a: Int, b: Int) = a + b
+```
