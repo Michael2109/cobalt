@@ -2,10 +2,9 @@
 :toc-title:
 :toclevels: 99
 
-toc::[]
-
-
 ### Language Specification
+
+toc::[]
 
 ##### Methods
 
