@@ -1,5 +1,4 @@
 :toc: macro
-:toc-title:Language Specification
 :toclevels: 99
 
 ### Language Specification
