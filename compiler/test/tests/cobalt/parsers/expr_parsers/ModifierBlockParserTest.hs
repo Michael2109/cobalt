@@ -61,7 +61,7 @@ testModifierBlockParserPrivateEmpty = do
         ]
 
   TestCase $ assertEqual code
-    Error
+    (ModifierBlock [])
     (case (parse (modifierBlockParser True) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -73,7 +73,7 @@ testModifierBlockParserProtectedEmpty = do
         ]
 
   TestCase $ assertEqual code
-    Error
+    (ModifierBlock [])
     (case (parse (modifierBlockParser True) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -85,7 +85,7 @@ testModifierBlockParserPublicEmpty = do
         ]
 
   TestCase $ assertEqual code
-    Error
+    (ModifierBlock [])
     (case (parse (modifierBlockParser True) "" code) of
       Left  e -> Error
       Right x -> x)

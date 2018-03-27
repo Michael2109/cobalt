@@ -125,6 +125,9 @@ parserTestList = TestList [
         testIfStmtParserBooleanTrue,
         testIfStmtParserBooleanFalse,
         testIfStmtParserObjectVar,
+        testIfStmtParserAnd,
+        testIfStmtParserOr,
+        testIfStmtParserAndOr,
 
         testImportParserSingle,
         testImportParserEmptyFail,
