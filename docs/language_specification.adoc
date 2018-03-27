@@ -1,4 +1,5 @@
 :toc: macro
+:toc-title:
 :toclevels: 99
 
 toc::[]
