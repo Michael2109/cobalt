@@ -1,9 +1,9 @@
-### Language Specification
-
 :toc: macro
 :toclevels: 99
 
 toc::[]
+
+### Language Specification
 
 ##### Methods
 
