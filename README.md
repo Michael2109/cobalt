@@ -29,13 +29,6 @@ http://haskforce.com/
 #### Install Stack 
 https://docs.haskellstack.org/en/stable/README/
 
-### Known Problems and Fixes 
-1. 
-##### Stack error
-`The program 'cpphs' is required but it could not be found.`
-##### Fix
-`stack install cpphs`
-
 #### Setting up
 1. `File -> New -> Project from version control -> Github`
 2. Using CMD/terminal navigate to the `cobalt/compiler` directory 
