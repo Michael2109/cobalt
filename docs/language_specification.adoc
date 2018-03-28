@@ -6,7 +6,7 @@ toc::[]
 
 ### Language Specification
 
-#### Classes
+### Classes
 Class
 ```
 class Example
@@ -37,7 +37,7 @@ Implements a trait
 class Example extends ParentClass with TraitName
 ```
 
-#### Methods
+### Methods
 
 Inline
 ```
