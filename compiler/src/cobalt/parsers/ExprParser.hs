@@ -35,7 +35,8 @@ module ExprParser (Parser,
                     stringLiteralMultilineParser,
                     thisMethodCallParser,
                     thisVarParser,
-                    typeParameterParser
+                    typeParameterParser,
+                    valueTypeParser
                     ) where
 
 import Control.Applicative (empty)
@@ -277,7 +278,7 @@ assignParser = do
   varName <- identifierParser
   varType <- optional $ do
     symbol ":"
-    vType <- valType
+    vType <- valueTypeParser
     return vType
   symbol "="
   e <- expr' <|> arithmeticParser <|> identifierParser
@@ -361,7 +362,7 @@ globalVarParser modifier static = do
   final <- try (rword "val" <|> rword "var")
   varName <- identifierParser
   symbol ":"
-  varType <- valType
+  varType <- valueTypeParser
   symbol "="
   es <- many (argumentParser)
   return $ GlobalVar modifier (final == "val") static varType varName es
@@ -373,8 +374,8 @@ annotationParser  = do
   return $ Annotation name
 
 
-valType :: Parser Expr
-valType = do
+valueTypeParser :: Parser Expr
+valueTypeParser = do
     value <- parameterizedTypeParser <|> identifierParser
     return $ Type value
 

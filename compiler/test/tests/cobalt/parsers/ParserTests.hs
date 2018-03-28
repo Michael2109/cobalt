@@ -263,6 +263,13 @@ parserTestList = TestList [
         testTypeParameterParser,
         testTypeParameterParserMissingLeft,
         testTypeParameterParserMissingRight,
-        testTypeParameterParserMissingBoth
+        testTypeParameterParserMissingBoth,
+
+        testValueTypeParserOneCharacter,
+        testValueTypeParserDigitFail,
+        testValueTypeParserContainsUnderscore,
+        testValueTypeParserContainsDigit,
+        testValueTypeParserStartsDigitFail,
+        testValueTypeParserCapital
 
        ]
