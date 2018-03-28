@@ -54,3 +54,21 @@ testAssignParserVarWithoutType = do
     (case (parse assignParser "" code) of
       Left  e -> Error
       Right x -> x)
+
+testAssignParserValWithParameterizedType :: Test
+testAssignParserValWithParameterizedType = do
+  let code = "val x: Array[String] = 1"
+  TestCase $ assertEqual code
+    (Assign True (Just (Type (ParameterizedType (Identifier "Array") (TypeParameter (Identifier "String"))))) (Identifier "x") (ArithExpr (IntConst 1)))
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testAssignParserVarWithParameterizedType :: Test
+testAssignParserVarWithParameterizedType = do
+  let code = "var x: Array[String] = 1"
+  TestCase $ assertEqual code
+    (Assign False (Just (Type (ParameterizedType (Identifier "Array") (TypeParameter (Identifier "String"))))) (Identifier "x") (ArithExpr (IntConst 1)))
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)

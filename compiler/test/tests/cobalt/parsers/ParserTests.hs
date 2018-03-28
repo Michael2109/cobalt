@@ -105,6 +105,8 @@ parserTestList = TestList [
         testAssignParserWithoutVal,
         testAssignParserVarWithType,
         testAssignParserVarWithoutType,
+        testAssignParserValWithParameterizedType,
+        testAssignParserVarWithParameterizedType,
 
         testBooleanParserTrue,
         testBooleanParserFalse,
