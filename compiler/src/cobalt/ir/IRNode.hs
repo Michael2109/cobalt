@@ -49,7 +49,7 @@ data IRNode
   | ArrayElementSelectIR IRInfo String
   | ArrayTypeIR IRInfo String
   | ArrayValuesIR IRInfo [String]
-  | AssignIR IRInfo IRNode IRNode IRNode
+  | AssignIR IRInfo Bool (Maybe IRNode) IRNode IRNode
   | AssignArithIR IRInfo Bool IRNode String IRNode
   | BBinaryIR IRInfo IRNode IRNode IRNode
   | BBinOpErrorIR IRInfo
@@ -133,7 +133,7 @@ instance Pretty IRNode where
     pretty (ArrayElementSelectIR irInfo i) symbolTable currentState = p $ show irInfo
     pretty (ArrayTypeIR irInfo arrType) symbolTable currentState = p $ show irInfo
     pretty (ArrayValuesIR irInfo exprs) symbolTable currentState = p $ show irInfo
-    pretty (AssignIR irInfo vType name value) symbolTable currentState = p $ show irInfo
+    pretty (AssignIR irInfo immutable vType name value) symbolTable currentState = p $ show irInfo
     pretty (AssignArithIR irInfo mutable vType name value) symbolTable currentState = p $ show irInfo
     pretty (BBinaryIR irInfo  bbinop bExpr1 bExpr2) st cs = p $ ""
     pretty (BoolConstIR irInfo  b) st cs = p $ ""

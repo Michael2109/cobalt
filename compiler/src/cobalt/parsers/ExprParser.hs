@@ -16,6 +16,7 @@ module ExprParser (Parser,
                     argumentParser,
                     argumentTypeParser,
                     arrayType,
+                    assignParser,
                     booleanParser,
                     classVariableParser,
                     elseIfStmtParser,
@@ -270,13 +271,17 @@ stringLiteralMultilineParser = do
 
 assignParser :: Parser Expr
 assignParser = do
-  try (rword "val" <|> rword "var")
+  valVar <- try (rword "val" <|> rword "var")
+  let immutable = valVar == "val"
+
   varName <- identifierParser
-  symbol ":"
-  varType <- valType
+  varType <- optional $ do
+    symbol ":"
+    vType <- valType
+    return vType
   symbol "="
   e <- expr' <|> arithmeticParser <|> identifierParser
-  return $ Assign varType varName e
+  return $ Assign immutable varType varName e
 
 
 reassignParser :: Parser Expr

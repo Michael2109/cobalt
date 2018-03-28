@@ -100,6 +100,12 @@ parserTestList = TestList [
         testArrayTypeParserContainsDigit,
         testArrayTypeParserContainsUnderscore,
 
+        testAssignParserValWithType,
+        testAssignParserValWithoutType,
+        testAssignParserWithoutVal,
+        testAssignParserVarWithType,
+        testAssignParserVarWithoutType,
+
         testBooleanParserTrue,
         testBooleanParserFalse,
         testBooleanParserIdentifier,
@@ -129,6 +135,12 @@ parserTestList = TestList [
         testClassParserModifierBlock,
 
         testClassVariableParser,
+
+        testClassVariableParser,
+        testClassVariableParserUnderscores,
+        testClassVariableParserStartCapitals,
+        testClassVariableParserMissingVar,
+        testClassVariableParserMissingClassName,
 
         testForLoopParser,
 

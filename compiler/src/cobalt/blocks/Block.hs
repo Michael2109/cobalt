@@ -40,7 +40,7 @@ data Expr
   | ArrayElementSelect String
   | ArrayType String
   | ArrayValues [String]
-  | Assign Expr Expr Expr
+  | Assign Bool (Maybe Expr) Expr Expr
   | AssignArith Bool Expr String Expr
   | BBinary Expr Expr Expr
   | BBinOpError
@@ -132,7 +132,7 @@ instance IRGen Expr where
     genIR (ArrayElementSelect index) st cs = ArrayElementSelectIR (IRInfo $ "Array Element Select") index
     genIR (ArrayType arrType) st cs = ArrayTypeIR (IRInfo $ "ArrayType") arrType
     genIR (ArrayValues exprs) st cs = ArrayValuesIR (IRInfo $ "ArrayValues") exprs
-    genIR (Assign vType name value) st cs = AssignIR (IRInfo $ "Assign") (genIR vType st cs) (genIR name st cs) (genIR value st cs)
+    genIR (Assign immutable vType name value) st cs = AssignIR (IRInfo $ "Assign") immutable (maybeExprToMaybeIRNode vType st cs) (genIR name st cs) (genIR value st cs)
     genIR (AssignArith mutable vType name value) st cs = AssignArithIR (IRInfo $ "AssignArith") mutable (genIR vType st cs) name (genIR value st cs)
     genIR (BBinary bbinop bExpr1 bExpr2) st cs = BBinaryIR (IRInfo $ "BBinaryIR") (genIR bbinop st cs) (genIR bExpr1 st cs) (genIR bExpr2 st cs)
     genIR (BoolConst b) st cs = BoolConstIR (IRInfo $ "BoolConst") b

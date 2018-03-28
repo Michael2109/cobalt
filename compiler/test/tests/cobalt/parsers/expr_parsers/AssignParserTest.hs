@@ -9,3 +9,48 @@ import Block
 import BaseParser
 import ExprParser
 import Parser
+
+testAssignParserValWithType :: Test
+testAssignParserValWithType = do
+  let code = "val x: Int = 1"
+  TestCase $ assertEqual code
+    (Assign True (Just (Type (Identifier "Int"))) (Identifier "x") (ArithExpr (IntConst 1)))
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testAssignParserValWithoutType :: Test
+testAssignParserValWithoutType = do
+  let code = "val x = 1"
+  TestCase $ assertEqual code
+    (Assign True Nothing (Identifier "x") (ArithExpr (IntConst 1)))
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testAssignParserWithoutVal :: Test
+testAssignParserWithoutVal = do
+  let code = "x = 1"
+  TestCase $ assertEqual code
+    Error
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testAssignParserVarWithType :: Test
+testAssignParserVarWithType = do
+  let code = "var x: Int = 1"
+  TestCase $ assertEqual code
+    (Assign False (Just (Type (Identifier "Int"))) (Identifier "x") (ArithExpr (IntConst 1)))
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testAssignParserVarWithoutType :: Test
+testAssignParserVarWithoutType = do
+  let code = "var x = 1"
+  TestCase $ assertEqual code
+    (Assign False Nothing (Identifier "x") (ArithExpr (IntConst 1)))
+    (case (parse assignParser "" code) of
+      Left  e -> Error
+      Right x -> x)
