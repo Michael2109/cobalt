@@ -214,6 +214,10 @@ parserTestList = TestList [
         testParenthesesParserNoOpenFail,
         testParenthesesParserNoCloseFail,
 
+        testReassignParserObject,
+        testReassignParserArithmetic,
+        testReassignParserClassVar,
+
         testStringLiteralSimple,
         testStringLiteralSimpleWhitespace,
         testStringLiteralEscapeTab,
