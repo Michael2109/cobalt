@@ -148,6 +148,7 @@ classParser relativeDir = try $ L.nonIndented scn p
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
+      typeParam <- optional typeParameterParser
       fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
       let params = case fullParams of
                   Just ps -> ps
@@ -160,7 +161,7 @@ classParser relativeDir = try $ L.nonIndented scn p
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (methodParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Class (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Class (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 traitParser :: [String] -> Parser Expr
 traitParser relativeDir = try $ L.nonIndented scn p

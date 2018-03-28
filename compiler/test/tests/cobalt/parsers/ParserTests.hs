@@ -113,6 +113,7 @@ parserTestList = TestList [
         testBooleanParserGreaterThanEqualInt,
 
         testClassParser,
+        testClassParserTypeParameter,
         testClassParserExtends,
         testClassParserImplements,
         testClassParserImplementsMultiple,

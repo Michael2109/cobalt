@@ -57,7 +57,7 @@ data IRNode
   | BoolConstIR IRInfo Bool
   | BooleanExprIR IRInfo IRNode
   | CatchIR IRInfo [IRNode] [IRNode]
-  | ClassIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+  | ClassIR IRInfo [String] String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | ClassParamIR IRInfo IRNode IRNode
   | ClassVariableIR IRInfo String String
   | ClosingParenthesisIR IRInfo
@@ -139,7 +139,7 @@ instance Pretty IRNode where
     pretty (BoolConstIR irInfo  b) st cs = p $ ""
     pretty (BooleanExprIR irInfo expr) symbolTable currentState = p $ show irInfo
     pretty (CatchIR irInfo params exprs) symbolTable currentState = p $ show irInfo
-    pretty (ClassIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
+    pretty (ClassIR irInfo packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
     pretty (ClassParamIR irInfo varType varName) symbolTable currentState = p $ show irInfo
     pretty (ClassVariableIR irInfo className varName) symbolTable currentState = p $ show irInfo
     pretty (ClosingParenthesisIR irInfo) currentState symbolTable = p $ ""

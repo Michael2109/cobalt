@@ -17,7 +17,18 @@ testClassParser = do
         "class Test"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" [] Nothing [] [] [] [] [])
+    (Class [] "Test" Nothing [] Nothing [] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testClassParserTypeParameter :: Test
+testClassParserTypeParameter = do
+  let code = unlines [
+        "class Test[String]"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing [] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -28,7 +39,7 @@ testClassParserExtends = do
         "class Test extends ParentClass"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" [] (Just "ParentClass") [] [] [] [] [])
+    (Class [] "Test" Nothing [] (Just "ParentClass") [] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -40,7 +51,7 @@ testClassParserImplements = do
         "class Test implements Interface"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" [] Nothing ["Interface"] [] [] [] [])
+    (Class [] "Test" Nothing [] Nothing ["Interface"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -51,7 +62,7 @@ testClassParserImplementsMultiple = do
         "class Test implements Interface1, Interface2"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" [] Nothing ["Interface1","Interface2"] [] [] [] [])
+    (Class [] "Test" Nothing [] Nothing ["Interface1","Interface2"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -62,7 +73,7 @@ testClassParserExtendsImplements = do
         "class Test extends ParentClass implements Interface"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" [] (Just "ParentClass") ["Interface"] [] [] [] [])
+    (Class [] "Test" Nothing [] (Just "ParentClass") ["Interface"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -73,7 +84,7 @@ testClassParserExtendsImplementsMultiple = do
         "class Test extends ParentClass implements Interface1, Interface2, Interface3"
         ]
   TestCase $ assertEqual code
-    (Class [] "Test" [] (Just "ParentClass") ["Interface1","Interface2","Interface3"] [] [] [] [])
+    (Class [] "Test" Nothing [] (Just "ParentClass") ["Interface1","Interface2","Interface3"] [] [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -86,7 +97,7 @@ testClassParserImports = do
         ]
   let imports = [Import ["dir", "sub_dir", "ClassName"]]
   TestCase $ assertEqual code
-    (Class [] "Test" [] (Just "ParentClass") ["Interface"] imports [] [] [])
+    (Class [] "Test" Nothing [] (Just "ParentClass") ["Interface"] imports [] [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
@@ -103,8 +114,6 @@ testClassParserImportsFail = do
       Left  e -> Error
       Right x -> x)
 
---GlobalVar modifier final static varType varName exprs
-
 testClassParserModifierBlock :: Test
 testClassParserModifierBlock = do
   let code = unlines [
@@ -117,7 +126,7 @@ testClassParserModifierBlock = do
   let imports = [Import ["dir", "sub_dir", "ClassName"]]
   let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [Argument $ ArithExpr (IntConst 5)]]]
   TestCase $ assertEqual code
-    (Class [] "Test" [] (Just "ParentClass") ["Interface"] imports modifierBlocks [] [])
+    (Class [] "Test" Nothing [] (Just "ParentClass") ["Interface"] imports modifierBlocks [] [])
     (case (parse (classParser []) "" code) of
       Left  e -> Error
       Right x -> x)
