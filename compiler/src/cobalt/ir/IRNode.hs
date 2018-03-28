@@ -44,10 +44,7 @@ data IRNode
   | ArgumentTypeIR IRInfo String
   | ArithExprIR IRInfo IRNode
   | ArrayAppendIR IRInfo [IRNode]
-  | ArrayAssignmentIR IRInfo IRNode IRNode
-  | ArrayDefIR IRInfo String String
   | ArrayElementSelectIR IRInfo String
-  | ArrayTypeIR IRInfo String
   | ArrayValuesIR IRInfo [String]
   | AssignIR IRInfo Bool (Maybe IRNode) IRNode IRNode
   | AssignArithIR IRInfo Bool IRNode String IRNode
@@ -128,10 +125,7 @@ instance Pretty IRNode where
     pretty (ArgumentTypeIR irInfo b) symbolTable currentState = p $ show irInfo
     pretty (ArithExprIR irInfo aExpr) symbolTable currentState = p $ show irInfo
     pretty (ArrayAppendIR irInfo arrays) symbolTable currentState = p $ show irInfo
-    pretty (ArrayAssignmentIR irInfo arr values) symbolTable currentState = p $ show irInfo
-    pretty (ArrayDefIR irInfo arrType name) symbolTable currentState = p $ show irInfo
     pretty (ArrayElementSelectIR irInfo i) symbolTable currentState = p $ show irInfo
-    pretty (ArrayTypeIR irInfo arrType) symbolTable currentState = p $ show irInfo
     pretty (ArrayValuesIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (AssignIR irInfo immutable vType name value) symbolTable currentState = p $ show irInfo
     pretty (AssignArithIR irInfo mutable vType name value) symbolTable currentState = p $ show irInfo

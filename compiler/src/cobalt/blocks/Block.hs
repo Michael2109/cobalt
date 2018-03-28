@@ -35,10 +35,7 @@ data Expr
   | ArgumentType String
   | ArithExpr Expr
   | ArrayAppend [Expr]
-  | ArrayAssignment Expr Expr
-  | ArrayDef String String
   | ArrayElementSelect String
-  | ArrayType String
   | ArrayValues [String]
   | Assign Bool (Maybe Expr) Expr Expr
   | AssignArith Bool Expr String Expr
@@ -127,10 +124,7 @@ instance IRGen Expr where
     genIR (ArgumentType aType) st cs = ArgumentTypeIR (IRInfo $ "ArgumentType") aType
     genIR (ArithExpr aExpr) st cs = ArithExprIR (IRInfo $ "ArithExpr") (genIR aExpr st cs)
     genIR (ArrayAppend arrays) st cs = ArrayAppendIR (IRInfo $ "ArrayAppend") (exprArrToIRArray arrays st cs)
-    genIR (ArrayAssignment arr values) st cs = ArrayAssignmentIR (IRInfo $ "ArrayAssignment") (genIR arr st cs) (genIR values st cs)
-    genIR (ArrayDef arrType name) st cs = ArrayDefIR (IRInfo $ "ArrayDef") arrType name
     genIR (ArrayElementSelect index) st cs = ArrayElementSelectIR (IRInfo $ "Array Element Select") index
-    genIR (ArrayType arrType) st cs = ArrayTypeIR (IRInfo $ "ArrayType") arrType
     genIR (ArrayValues exprs) st cs = ArrayValuesIR (IRInfo $ "ArrayValues") exprs
     genIR (Assign immutable vType name value) st cs = AssignIR (IRInfo $ "Assign") immutable (maybeExprToMaybeIRNode vType st cs) (genIR name st cs) (genIR value st cs)
     genIR (AssignArith mutable vType name value) st cs = AssignArithIR (IRInfo $ "AssignArith") mutable (genIR vType st cs) name (genIR value st cs)

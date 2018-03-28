@@ -187,8 +187,6 @@ test-suite compiler-test
       ArithmeticParserTest
       ArrayAppendParserTest
       ArrayElementSelectParserTest
-      ArrayTypeParserTest
-      ArrayValuesParserTest
       AssignParserTest
       BooleanParserTest
       ClassParserTest

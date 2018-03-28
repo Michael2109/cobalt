@@ -15,7 +15,6 @@ module ExprParser (Parser,
                     annotationParser,
                     argumentParser,
                     argumentTypeParser,
-                    arrayType,
                     assignParser,
                     booleanParser,
                     classVariableParser,
@@ -294,20 +293,6 @@ reassignParser = do
 
   value <- expr' <|> arithmeticParser <|> identifierParser
   return (Reassign name value)
-
-arrayType :: Parser Expr
-arrayType = do
-  symbol "["
-  arrType <- identifier
-  symbol "]"
-  return $ ArrayType arrType
-
-arrayValues :: Parser Expr
-arrayValues = do
-  try (symbol "[")
-  values <- many identifier
-  symbol "]"
-  return $ ArrayValues values
 
 arrayElementSelect :: Parser Expr
 arrayElementSelect = do

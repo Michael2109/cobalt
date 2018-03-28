@@ -17,8 +17,6 @@ import ArgumentTypeParserTest
 import ArithmeticParserTest
 import ArrayAppendParserTest
 import ArrayElementSelectParserTest
-import ArrayValuesParserTest
-import ArrayTypeParserTest
 import AssignParserTest
 import BooleanParserTest
 import ClassParserTest
@@ -91,14 +89,6 @@ parserTestList = TestList [
 
         testArgumentTypeParser,
         testArgumentTypeParserReservedWord,
-
-        testArrayTypeParser,
-        testArrayTypeParserEmptyFail,
-        testArrayTypeParserNoOpenFail,
-        testArrayTypeParserNoCloseFail,
-        testArrayTypeParserStartsDigitFail,
-        testArrayTypeParserContainsDigit,
-        testArrayTypeParserContainsUnderscore,
 
         testAssignParserValWithType,
         testAssignParserValWithoutType,
