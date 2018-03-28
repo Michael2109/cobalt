@@ -35,7 +35,7 @@ import NewClassInstanceParserTest
 import ObjectMethodCallParserTest
 import ObjectParserTest
 import ParameterizedTypeParserTest
-import ParamParserTest
+import ParameterParserTest
 import ParenthesesParserTest
 import ReassignParserTest
 import StringLiteralMultilineParserTest
@@ -186,6 +186,11 @@ parserTestList = TestList [
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
         testObjectMethodCallParserSuper,
+
+        testParameterParser,
+        testParameterParserMissingVar,
+        testParameterParserMissingType,
+        testParameterParserMissingColon,
 
         testParameterizedTypeParser,
         testParameterizedTypeParserLeftMissing,

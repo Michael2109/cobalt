@@ -16,7 +16,7 @@ testMethodParser = do
                       "  println(\"Hello world\")"
                      ]
   TestCase $ assertEqual code
-    (Function (Identifier "exampleMethod") Nothing [ClassParam (Identifier "Int") (Identifier "a"),ClassParam (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+    (Function (Identifier "exampleMethod") Nothing [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
     (case (parse (methodParser "ModuleName" False) "" code) of
       Left  e -> Error
       Right x -> x)

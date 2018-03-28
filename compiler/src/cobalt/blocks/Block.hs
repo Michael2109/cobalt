@@ -49,7 +49,6 @@ data Expr
   | BooleanExpr Expr
   | Catch [Expr] [Expr]
   | Class [String] String (Maybe Expr) [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
-  | ClassParam Expr Expr
   | ClassVariable String String
   | ClosingParenthesis
   | Constructor String [Expr] [Expr] [Expr]
@@ -81,6 +80,7 @@ data Expr
   | OpeningParenthesis
   | Or
   | ParameterizedType Expr Expr
+  | Parameter Expr Expr
   | Parenthesis Expr
   | Print Expr
   | RBinary Expr Expr Expr
@@ -139,7 +139,6 @@ instance IRGen Expr where
     genIR (BooleanExpr expr) st cs = BooleanExprIR (IRInfo $ "BooleanExpr") (genIR expr st cs)
     genIR (Catch params exprs) st cs = CatchIR (IRInfo $ "Catch") (exprArrToIRArray params st cs) (exprArrToIRArray exprs st cs)
     genIR (Class packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ClassIR (IRInfo $ "Class") packageLocs name (maybeExprToMaybeIRNode typeParam st cs) (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
-    genIR (ClassParam varType varName) st cs = ClassParamIR (IRInfo $ "ClassParam") (genIR varType st cs) (genIR varName st cs)
     genIR (ClassVariable className varName) st cs = ClassVariableIR (IRInfo $ "ClassVariable") className varName
     genIR (ClosingParenthesis) currentState symbolTable = Empty (IRInfo $ "ClosingParenthesis")
     genIR (Constructor name argTypes args exprs) st cs = ConstructorIR (IRInfo $ "Constructor") name (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (exprArrToIRArray exprs st cs)
@@ -169,6 +168,7 @@ instance IRGen Expr where
     genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
     genIR (Or) st cs = OrIR (IRInfo $ "Or")
     genIR (ParameterizedType className typeName) st cs = ParameterizedTypeIR (IRInfo $ "ParameterizedType") (genIR className st cs) (genIR typeName st cs)
+    genIR (Parameter varType varName) st cs = ParameterIR (IRInfo $ "Parameter") (genIR varType st cs) (genIR varName st cs)
     genIR (Parenthesis aExpr) st cs = Empty (IRInfo $ "Parenthesis")
     genIR (Print expr) st cs = PrintIR (IRInfo $ "Print") $ genIR expr st cs
     genIR (Reassign name value) st cs = ReassignIR (IRInfo $ "Reassign") (genIR name st cs) (genIR value st cs)

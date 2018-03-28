@@ -28,6 +28,7 @@ module ExprParser (Parser,
                     modifierBlockParser,
                     objectMethodCallParser,
                     parameterizedTypeParser,
+                    parameterParser,
                     superMethodCallParser,
                     stringLiteralParser,
                     stringLiteralMultilineParser,
@@ -208,7 +209,7 @@ parameterParser = do
   varName  <- identifierParser
   symbol ":"
   varType <- identifierParser
-  return $ ClassParam varType varName
+  return $ Parameter varType varName
 
 constructorExpr :: Parser Expr
 constructorExpr = try $ L.nonIndented scn p

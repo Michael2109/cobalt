@@ -205,7 +205,7 @@ test-suite compiler-test
       ObjectMethodCallParserTest
       ObjectParserTest
       ParameterizedTypeParserTest
-      ParamParserTest
+      ParameterParserTest
       ParenthesesParserTest
       ReassignParserTest
       RExprParserTest
