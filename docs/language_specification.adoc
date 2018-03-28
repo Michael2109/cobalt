@@ -37,8 +37,6 @@ Implements a trait
 class Example extends ParentClass with TraitName
 ```
 
-Class with 
-
 #### Methods
 
 Inline
