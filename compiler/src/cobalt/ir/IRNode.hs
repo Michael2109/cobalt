@@ -89,7 +89,7 @@ data IRNode
   | NegIR IRInfo IRNode
   | NewClassInstanceIR IRInfo String [IRNode]
   | NotIR IRInfo IRNode
-  | ObjectIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+  | ObjectIR IRInfo [String] String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | ObjectMethodCallIR IRInfo String String [IRNode]
   | OpeningParenthesisIR IRInfo
   | OrIR IRInfo
@@ -110,7 +110,7 @@ data IRNode
   | ThisIR IRInfo
   | ThisMethodCallIR IRInfo String [IRNode]
   | ThisVarIR IRInfo IRNode
-  | TraitIR IRInfo [String] String [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+  | TraitIR IRInfo [String] String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | TryIR IRInfo [IRNode]
   | TypeIR IRInfo IRNode
   | TypeParameterIR IRInfo IRNode
@@ -168,7 +168,7 @@ instance Pretty IRNode where
     pretty (NegIR irInfo aExpr) symbolTable currentState = p $ ""
     pretty (NewClassInstanceIR irInfo className args) symbolTable currentState = p $ show irInfo
     pretty (NotIR irInfo  n) st cs = p $ ""
-    pretty (ObjectIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
+    pretty (ObjectIR irInfo packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
     pretty (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
     pretty (OrIR irInfo) symbolTable currentState = p $ ""
     pretty (OpeningParenthesisIR irInfo) currentState symbolTable = p $ ""
@@ -188,7 +188,7 @@ instance Pretty IRNode where
     pretty (ThisIR irInfo) symbolTable currentState = p $ show irInfo ++ "this"
     pretty (ThisMethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
     pretty (ThisVarIR irInfo varName) symbolTable currentState = p $ show irInfo
-    pretty (TraitIR irInfo packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
+    pretty (TraitIR irInfo packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
     pretty (TryIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (TypeIR irInfo b) symbolTable currentState = p $ show irInfo
     pretty (TypeParameterIR irInfo typeName) symbolTable currentState = p $ show irInfo

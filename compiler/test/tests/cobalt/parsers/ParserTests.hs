@@ -119,7 +119,6 @@ parserTestList = TestList [
         testClassParserTypeParameterExtendsImplements,
         testClassParserTypeParameterImplements,
         testClassParserTypeParameterImplementsMultiple,
-
         testClassParserExtends,
         testClassParserImplements,
         testClassParserImplementsMultiple,
@@ -171,6 +170,19 @@ parserTestList = TestList [
         testModifierBlockParserProtectedEmpty,
         testModifierBlockParserPublicEmpty,
 
+        testObjectParserTypeParameterExtends,
+        testObjectParserTypeParameterExtendsImplements,
+        testObjectParserTypeParameterImplements,
+        testObjectParserTypeParameterImplementsMultiple,
+        testObjectParserExtends,
+        testObjectParserImplements,
+        testObjectParserImplementsMultiple,
+        testObjectParserExtendsImplements,
+        testObjectParserExtendsImplementsMultiple,
+        testObjectParserImports,
+        testObjectParserImportsFail,
+        testObjectParserModifierBlock,
+
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
         testObjectMethodCallParserSuper,
@@ -211,8 +223,8 @@ parserTestList = TestList [
         testStringLiteralMultilineEscapedDoubleQuote,
         testStringLiteralMultilineDoubleQuoteMultiple,
         testStringLiteralMultilineUnfinishedFail,
-        --testStringLiteralMultilineUnfinishedDoubleLineLeadingWhitespaceFail,
-        --testStringLiteralMultilineUnfinishedDoubleLineFail,
+        testStringLiteralMultilineUnfinishedDoubleLineLeadingWhitespaceFail,
+        testStringLiteralMultilineUnfinishedDoubleLineFail,
         testStringLiteralMultilineExcludingLeft,
         --}
 
@@ -221,6 +233,19 @@ parserTestList = TestList [
         testThisVarParserContainsDigit,
         testThisVarParserContainsUnderscore,
         testThisVarParserNotThisFail,
+
+        testTraitParserTypeParameterExtends,
+        testTraitParserTypeParameterExtendsImplements,
+        testTraitParserTypeParameterImplements,
+        testTraitParserTypeParameterImplementsMultiple,
+        testTraitParserExtends,
+        testTraitParserImplements,
+        testTraitParserImplementsMultiple,
+        testTraitParserExtendsImplements,
+        testTraitParserExtendsImplementsMultiple,
+        testTraitParserImports,
+        testTraitParserImportsFail,
+        testTraitParserModifierBlock,
 
         testTypeParameterParser,
         testTypeParameterParserMissingLeft,

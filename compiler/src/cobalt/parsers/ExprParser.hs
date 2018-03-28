@@ -127,6 +127,7 @@ objectParser relativeDir = try $ L.nonIndented scn p
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "object")
       name <- identifier
+      typeParam <- optional typeParameterParser
       fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
       let params = case fullParams of
                   Just ps -> ps
@@ -135,11 +136,11 @@ objectParser relativeDir = try $ L.nonIndented scn p
       parent <- optional (identifier)
       implementsKeyword <- optional (rword "implements")
       interfaces <- sepBy identifier (symbol ",")
-      modifierBlocks <- many (try (modifierBlockParser True))
+      modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
-      exprs <- many (methodParser name True <|> expr')
+      exprs <- many (methodParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Object (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Object (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 classParser :: [String] -> Parser Expr
 classParser relativeDir = try $ L.nonIndented scn p
@@ -170,6 +171,7 @@ traitParser relativeDir = try $ L.nonIndented scn p
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "trait")
       name <- identifier
+      typeParam <- optional typeParameterParser
       fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
       let params = case fullParams of
                   Just ps -> ps
@@ -182,7 +184,7 @@ traitParser relativeDir = try $ L.nonIndented scn p
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (methodParser name False <|> expr')
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Trait (packageDir) name params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Trait (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 
 

@@ -76,7 +76,7 @@ data Expr
   | Neg Expr
   | NewClassInstance String [Expr]
   | Not Expr
-  | Object [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | Object [String] String (Maybe Expr) [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   | ObjectMethodCall String String [Expr]
   | OpeningParenthesis
   | Or
@@ -98,7 +98,7 @@ data Expr
   | ThisMethodCall String [Expr]
   | ThisVar Expr
   | TypeParameter Expr
-  | Trait [String] String [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+  | Trait [String] String (Maybe Expr) [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   | Try [Expr]
   | Type Expr
   | Where [Expr]
@@ -112,8 +112,8 @@ instance SymbolTableGen Expr where
   --genClassSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" NoType [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
   --genClassSymbolTable (GlobalVar modifier final static varType varName exprs) = (ClassSymbolTable "" NoType [(show varName, show varType)] [])
   genClassSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineClassSymbolTable x y) (map genClassSymbolTable exprs)
-  genClassSymbolTable (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ObjectType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
-  genClassSymbolTable (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name TraitType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+  genClassSymbolTable (Object packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ClassType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+  genClassSymbolTable (Trait packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ClassType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
   genClassSymbolTable (_) = ClassSymbolTable "" NoType [] []
 
 
@@ -164,7 +164,7 @@ instance IRGen Expr where
     genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")
     genIR (NewClassInstance className args) st cs = NewClassInstanceIR (IRInfo $ "NewClassInstance") className $ exprArrToIRArray args st cs
     genIR (Not n) st cs = NotIR (IRInfo $ "Not") $ genIR n st cs
-    genIR (Object packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR (IRInfo $ "Object") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (Object packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR (IRInfo $ "Object") packageLocs name (maybeExprToMaybeIRNode typeParam st cs) (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR (IRInfo $ "ObjectMethodCall") objectName methodName (exprArrToIRArray args st cs)
     genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
     genIR (Or) st cs = OrIR (IRInfo $ "Or")
@@ -184,7 +184,7 @@ instance IRGen Expr where
     genIR (This) st cs = ThisIR (IRInfo $ "This")
     genIR (ThisMethodCall methodName args) st cs = ThisMethodCallIR (IRInfo $ "ObjectMethodCall") methodName (exprArrToIRArray args st cs)
     genIR (ThisVar varName) st cs = ThisVarIR (IRInfo $ "ThisVar") $ genIR varName st cs
-    genIR (Trait packageLocs name params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR (IRInfo $ "Trait") packageLocs name (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (Trait packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR (IRInfo $ "Trait") packageLocs name (maybeExprToMaybeIRNode typeParam st cs) (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (Try exprs) st cs = TryIR (IRInfo $ "Try") (exprArrToIRArray exprs st cs)
     genIR (Type b) st cs = TypeIR (IRInfo $ "Type") (genIR b st cs)
     genIR (TypeParameter typeName) st cs = TypeParameterIR (IRInfo $ "TypeParameter") (genIR typeName st cs)
