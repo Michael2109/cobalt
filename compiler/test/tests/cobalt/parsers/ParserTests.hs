@@ -43,6 +43,7 @@ import StringLiteralParserTest
 import ThisMethodCallParserTest
 import ThisVarParserTest
 import TraitParserTest
+import TypeParameterParserTest
 import ValueTypeParserTest
 
 
@@ -208,6 +209,11 @@ parserTestList = TestList [
         testThisVarParserContainsCapital,
         testThisVarParserContainsDigit,
         testThisVarParserContainsUnderscore,
-        testThisVarParserNotThisFail
+        testThisVarParserNotThisFail,
+
+        testTypeParameterParser,
+        testTypeParameterParserMissingLeft,
+        testTypeParameterParserMissingRight,
+        testTypeParameterParserMissingBoth
 
        ]

@@ -14,7 +14,7 @@ testParameterizedTypeParser :: Test
 testParameterizedTypeParser = do
   let code = "List[String]"
   TestCase $ assertEqual code
-    (ParameterizedType (Identifier "List") (Identifier "String"))
+    (ParameterizedType (Identifier "List") (TypeParameter (Identifier "String")))
     (case (parse (parameterizedTypeParser) "" code) of
       Left  e -> Error
       Right x -> x)

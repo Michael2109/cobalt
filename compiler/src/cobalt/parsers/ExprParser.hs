@@ -32,7 +32,8 @@ module ExprParser (Parser,
                     stringLiteralParser,
                     stringLiteralMultilineParser,
                     thisMethodCallParser,
-                    thisVarParser
+                    thisVarParser,
+                    typeParameterParser
                     ) where
 
 import Control.Applicative (empty)
@@ -191,6 +192,13 @@ importParser = try $ L.nonIndented scn p
       try (rword "import")
       locations <- sepBy1 identifier (symbol ".")
       return $ (Import locations)
+
+typeParameterParser :: Parser Expr
+typeParameterParser = do
+  try $ symbol "["
+  typeName <- identifierParser
+  symbol "]"
+  return $ TypeParameter typeName
 
 -- For the class parameters
 parameterParser :: Parser Expr
@@ -385,10 +393,8 @@ parameterizedTypeParser :: Parser Expr
 parameterizedTypeParser = do
   try $ do
     className <- identifierParser
-    symbol "["
-    typeName <- identifierParser
-    symbol "]"
-    return $ ParameterizedType className typeName
+    typeParameter <- typeParameterParser
+    return $ ParameterizedType className typeParameter
 
 argumentTypeParser :: Parser Expr
 argumentTypeParser = do
