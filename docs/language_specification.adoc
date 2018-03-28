@@ -6,7 +6,40 @@ toc::[]
 
 ### Language Specification
 
-##### Methods
+#### Classes
+Class
+```
+class Example
+```
+
+Type parameter
+```
+class Example[T]
+```
+
+Constructor parameters
+```
+class Example(a: Int, bL Int)
+```
+
+Type parameter and constructor parameters
+```
+class Example[T](a: Int, bL Int)
+```
+
+Extends parent class
+```
+class Example extends ParentClass
+```
+
+Implements a trait
+```
+class Example extends ParentClass with TraitName
+```
+
+Class with 
+
+#### Methods
 
 Inline
 ```
