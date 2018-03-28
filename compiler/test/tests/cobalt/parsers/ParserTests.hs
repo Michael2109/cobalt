@@ -114,6 +114,12 @@ parserTestList = TestList [
 
         testClassParser,
         testClassParserTypeParameter,
+
+        testClassParserTypeParameterExtends,
+        testClassParserTypeParameterExtendsImplements,
+        testClassParserTypeParameterImplements,
+        testClassParserTypeParameterImplementsMultiple,
+
         testClassParserExtends,
         testClassParserImplements,
         testClassParserImplementsMultiple,

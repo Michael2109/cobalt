@@ -33,6 +33,50 @@ testClassParserTypeParameter = do
       Left  e -> Error
       Right x -> x)
 
+testClassParserTypeParameterExtends :: Test
+testClassParserTypeParameterExtends = do
+  let code = unlines [
+        "class Test[String] extends ParentName"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") [] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testClassParserTypeParameterExtendsImplements :: Test
+testClassParserTypeParameterExtendsImplements = do
+  let code = unlines [
+        "class Test[String] extends ParentName implements TraitName"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") ["TraitName"] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testClassParserTypeParameterImplements :: Test
+testClassParserTypeParameterImplements = do
+  let code = unlines [
+        "class Test[String] implements TraitName"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName"] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
+testClassParserTypeParameterImplementsMultiple :: Test
+testClassParserTypeParameterImplementsMultiple = do
+  let code = unlines [
+        "class Test[String] implements TraitName1, TraitName2"
+        ]
+  TestCase $ assertEqual code
+    (Class [] "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName1","TraitName2"] [] [] [] [])
+    (case (parse (classParser []) "" code) of
+      Left  e -> Error
+      Right x -> x)
+
 testClassParserExtends :: Test
 testClassParserExtends = do
   let code = unlines [
