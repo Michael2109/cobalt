@@ -201,7 +201,6 @@ typeParameterParser = do
   symbol "]"
   return $ TypeParameter typeName
 
--- For the class parameters
 parameterParser :: Parser Expr
 parameterParser = do
   varName  <- identifierParser
@@ -209,7 +208,6 @@ parameterParser = do
   varType <- identifierParser
   return $ ClassParam varType varName
 
--- Constructor exprs
 constructorExpr :: Parser Expr
 constructorExpr = try $ L.nonIndented scn p
   where
@@ -217,9 +215,6 @@ constructorExpr = try $ L.nonIndented scn p
       e <- expr'
       return e
 
-
-
--- Function parser
 methodParser :: String -> Bool -> Parser Expr
 methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
@@ -233,7 +228,6 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
       symbol ":"
       rType <- identifierParser
       return (L.IndentMany Nothing (return . (Function name annotations params rType static)) (expr'))
-
 
 identifierParser :: Parser Expr
 identifierParser = do

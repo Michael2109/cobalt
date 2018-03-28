@@ -159,6 +159,10 @@ parserTestList = TestList [
         testImportParserContainsDigit,
 
         testMethodParser,
+        testMethodParserEmptyParams,
+        testMethodParserMissingParens,
+        testMethodParserMissingName,
+        testMethodParserMissingReturnType,
 
         testModifierBlockParserPrivate,
         testModifierBlockParserProtected,
