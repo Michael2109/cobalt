@@ -12,7 +12,7 @@ package dir.sub_dir
 ```
 
 ### Classes
-Class
+*Class*
 ```
 class Example
 ```
@@ -24,12 +24,12 @@ class Example[T]
 
 Constructor parameters
 ```
-class Example(a: Int, bL Int)
+class Example(a: Int, b: Int)
 ```
 
 Type parameter and constructor parameters
 ```
-class Example[T](a: Int, bL Int)
+class Example[T](a: Int, b; Int)
 ```
 
 Extends parent class
