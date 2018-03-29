@@ -6,6 +6,11 @@ toc::[]
 
 ### Language Specification
 
+### Package declaration
+```
+package dir.sub_dir
+```
+
 ### Classes
 Class
 ```
