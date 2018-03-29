@@ -81,6 +81,7 @@ data IRNode
   | LessEqualIR IRInfo
   | IntConstIR IRInfo Integer
   | MainFunctionIR IRInfo IRNode (Maybe IRNode) [IRNode] IRNode [IRNode]
+  | MethodCallIR IRInfo String [IRNode]
   | ModifierBlockIR IRInfo [IRNode]
   | MultiplyIR IRInfo
   | NegIR IRInfo IRNode
@@ -90,6 +91,7 @@ data IRNode
   | ObjectMethodCallIR IRInfo String String [IRNode]
   | OpeningParenthesisIR IRInfo
   | OrIR IRInfo
+  | PackageIR IRInfo [String]
   | ParameterizedTypeIR IRInfo IRNode IRNode
   | ParenthesisIR IRInfo IRNode
   | PrintIR IRInfo IRNode
@@ -156,6 +158,7 @@ instance Pretty IRNode where
     pretty (LessEqualIR irInfo) symbolTable currentState = p $ ""
     pretty (LessIR irInfo) symbolTable currentState = p $ ""
     pretty (MainFunctionIR irInfo name annotations params returnType body) symbolTable currentState = p $ show irInfo
+    pretty (MethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
     pretty (ModifierBlockIR irInfo exprs) symbolTable currentState = p $ show irInfo
     pretty (MultiplyIR irInfo) symbolTable currentState = p $ ""
     pretty (NegIR irInfo aExpr) symbolTable currentState = p $ ""
@@ -165,6 +168,7 @@ instance Pretty IRNode where
     pretty (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
     pretty (OrIR irInfo) symbolTable currentState = p $ ""
     pretty (OpeningParenthesisIR irInfo) currentState symbolTable = p $ ""
+    pretty (PackageIR irInfo locs) symbolTable currentState = p $ show irInfo
     pretty (ParameterizedTypeIR irInfo className typeName) currentState symbolTable = p $ show irInfo
     pretty (ParameterIR irInfo varType varName) symbolTable currentState = p $ show irInfo
     pretty (ParenthesisIR irInfo aExpr) symbolTable currentState = p $ ""

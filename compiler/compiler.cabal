@@ -197,11 +197,13 @@ test-suite compiler-test
       IdentifierParserTest
       IfElseStatementParserTest
       ImportParserTest
+      MethodCallParserTest
       MethodParserTest
       ModifierBlockParserTest
       NewClassInstanceParserTest
       ObjectMethodCallParserTest
       ObjectParserTest
+      PackageParserTest
       ParameterizedTypeParserTest
       ParameterParserTest
       ParenthesesParserTest

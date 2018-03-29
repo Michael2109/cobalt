@@ -28,10 +28,12 @@ import GlobalVariableParserTest
 import IdentifierParserTest
 import IfElseStatementParserTest
 import ImportParserTest
+import MethodCallParserTest
 import ModifierBlockParserTest
 import NewClassInstanceParserTest
 import ObjectMethodCallParserTest
 import ObjectParserTest
+import PackageParserTest
 import ParameterizedTypeParserTest
 import ParameterParserTest
 import ParenthesesParserTest
@@ -89,6 +91,15 @@ parserTestList = TestList [
 
         testArgumentTypeParser,
         testArgumentTypeParserReservedWord,
+
+        testArithmeticParserIdentifier,
+        testArithmeticParserClassVariable,
+        testArithmeticParserNewInstance,
+        testArithmeticParserMethodCall,
+        testArithmeticParserAdd,
+        testArithmeticParserSubtract,
+        testArithmeticParserMultiply,
+        testArithmeticParserDivide,
 
         testAssignParserValWithType,
         testAssignParserValWithoutType,
@@ -161,6 +172,8 @@ parserTestList = TestList [
         testImportParserMultipleUnderscore,
         testImportParserContainsDigit,
 
+        testMethodCallParser,
+
         testMethodParser,
         testMethodParserEmptyParams,
         testMethodParserMissingParens,
@@ -201,6 +214,8 @@ parserTestList = TestList [
         testObjectMethodCallParserThis,
         testObjectMethodCallParserObject,
         testObjectMethodCallParserSuper,
+
+        testPackageParser,
 
         testParameterParser,
         testParameterParserMissingVar,

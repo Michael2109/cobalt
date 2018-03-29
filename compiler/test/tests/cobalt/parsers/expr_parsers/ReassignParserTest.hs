@@ -32,7 +32,7 @@ testReassignParserClassVar :: Test
 testReassignParserClassVar = do
   let code = "Var_Name = ClassName.VarName"
   TestCase $ assertEqual code
-    (Reassign (Identifier "Var_Name") (BooleanExpr (ClassVariable "ClassName" "VarName")))
+    (Reassign (Identifier "Var_Name") (ClassVariable "ClassName" "VarName"))
     (case (parse reassignParser "" code) of
       Left  e -> Error
       Right x -> x)

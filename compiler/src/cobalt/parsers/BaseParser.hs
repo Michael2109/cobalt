@@ -68,6 +68,7 @@ rws = [
   "new",
   "package",
   "println",
+  "package",
   "import",
   "implements",
   "extends",

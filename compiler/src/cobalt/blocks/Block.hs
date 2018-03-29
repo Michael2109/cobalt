@@ -62,11 +62,12 @@ data Expr
   | GreaterEqual
   | Identifier String
   | If Expr [Expr]
-  | Import {locs ::[String]}
+  | Import [String]
   | IntConst Integer
   | Less
   | LessEqual
   | MainFunction Expr (Maybe Expr) [Expr] Expr [Expr]
+  | MethodCall String [Expr]
   | ModifierBlock [Expr]
   | Multiply
   | Neg Expr
@@ -76,6 +77,7 @@ data Expr
   | ObjectMethodCall String String [Expr]
   | OpeningParenthesis
   | Or
+  | Package [String]
   | ParameterizedType Expr Expr
   | Parameter Expr Expr
   | Parenthesis Expr
@@ -152,6 +154,7 @@ instance IRGen Expr where
     genIR (LessEqual) symbolTable currentState = LessEqualIR (IRInfo $ "LessEqual")
     genIR (Less) symbolTable currentState = LessIR (IRInfo $ "Less")
     genIR (MainFunction name annotations params returnType exprs) st cs = MainFunctionIR (IRInfo $ "MainFunction") (genIR name st cs) (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray params st cs) (genIR returnType st cs) (exprArrToIRArray exprs st cs)
+    genIR (MethodCall methodName args) st cs = MethodCallIR (IRInfo $ "ObjectMethodCall") methodName (exprArrToIRArray args st cs)
     genIR (ModifierBlock exprs) st cs = ModifierBlockIR (IRInfo $ "ModifierBlock") (map (\e -> genIR e st cs) exprs)
     genIR (Multiply) symbolTable currentState = Empty (IRInfo $ "Multiply")
     genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")
@@ -161,6 +164,7 @@ instance IRGen Expr where
     genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR (IRInfo $ "ObjectMethodCall") objectName methodName (exprArrToIRArray args st cs)
     genIR (OpeningParenthesis) currentState symbolTable = Empty (IRInfo $ "OpeningParenthesis")
     genIR (Or) st cs = OrIR (IRInfo $ "Or")
+    genIR (Package locs) st cs = PackageIR (IRInfo $ "Package") locs
     genIR (ParameterizedType className typeName) st cs = ParameterizedTypeIR (IRInfo $ "ParameterizedType") (genIR className st cs) (genIR typeName st cs)
     genIR (Parameter varType varName) st cs = ParameterIR (IRInfo $ "Parameter") (genIR varType st cs) (genIR varName st cs)
     genIR (Parenthesis aExpr) st cs = Empty (IRInfo $ "Parenthesis")

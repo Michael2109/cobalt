@@ -15,6 +15,7 @@ module ExprParser (Parser,
                     annotationParser,
                     argumentParser,
                     argumentTypeParser,
+                    arithmeticParser,
                     assignParser,
                     booleanParser,
                     classVariableParser,
@@ -24,10 +25,12 @@ module ExprParser (Parser,
                     ifStmtParser,
                     importParser,
                     forLoopParser,
+                    methodCallParser,
                     methodParser,
                     modifierBlockParser,
                     newClassInstanceParser,
                     objectMethodCallParser,
+                    packageParser,
                     parameterizedTypeParser,
                     parameterParser,
                     reassignParser,
@@ -63,6 +66,9 @@ import SymbolTable
 aTerm :: Parser Expr
 aTerm = parens aExpr
   <|> classVariableParser
+  <|> newClassInstanceParser
+  <|> objectMethodCallParser
+  <|> methodCallParser
   <|> identifierParser
   <|> IntConst <$> integerParser
   <|> DoubleConst <$> doubleParser
@@ -92,6 +98,9 @@ bTerm = BoolConst True  <$ rword "True"
   <|> parens bExpr
   <|> try rExpr
   <|> classVariableParser
+  <|> newClassInstanceParser
+  <|> objectMethodCallParser
+  <|> methodCallParser
   <|> identifierParser
 
 
@@ -190,7 +199,13 @@ traitParser relativeDir = try $ L.nonIndented scn p
       let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
       return (Trait (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
-
+packageParser :: Parser Expr
+packageParser = try $ L.nonIndented scn p
+  where
+    p = do
+      try (rword "package")
+      locations <- sepBy1 identifier (symbol ".")
+      return $ (Package locations)
 
 importParser :: Parser Expr
 importParser = try $ L.nonIndented scn p
@@ -282,7 +297,7 @@ assignParser = do
     vType <- valueTypeParser
     return vType
   symbol "="
-  e <- expr' <|> arithmeticParser <|> identifierParser
+  e <- expr' <|> identifierParser <|> arithmeticParser
   return $ Assign immutable varType varName e
 
 
@@ -293,7 +308,7 @@ reassignParser = do
     symbol "="
     return id
 
-  value <- expr' <|> arithmeticParser <|> identifierParser
+  value <- expr' <|>  identifierParser <|> arithmeticParser <|> booleanParser
   return (Reassign name value)
 
 arrayElementSelect :: Parser Expr
@@ -324,6 +339,13 @@ superMethodCallParser =
     methodName <- identifier
     args <- parens (sepBy (argumentParser) (symbol ","))
     return $ SuperMethodCall methodName args
+
+methodCallParser :: Parser Expr
+methodCallParser =
+  try $ do
+    methodName <- identifier
+    args <- parens (sepBy (argumentParser) (symbol ","))
+    return $ MethodCall methodName args
 
 objectMethodCallParser :: Parser Expr
 objectMethodCallParser =
@@ -500,9 +522,9 @@ expr = f <$> sepBy1 (expr') (symbol ";")
 
 
 expr' :: Parser Expr
-expr' = booleanParser
+expr' =
 
-  <|> forLoopParser
+  forLoopParser
   <|> ifStmtParser
   <|> elseIfStmtParser
   <|> elseStmtParser
