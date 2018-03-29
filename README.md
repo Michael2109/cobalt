@@ -33,7 +33,7 @@ https://docs.haskellstack.org/en/stable/README/
 1. `File -> New -> Project from version control -> Github`
 2. Using CMD/terminal navigate to the `cobalt/compiler` directory 
 3. Run `stack build` 
-4. Run `stack exec compiler-exe` to run the the main function in `app/Main`. This currently compiles to Java code, compiles with javac and executes.
+4. Run `stack exec compiler-exe` to execute the compiler. 
 5. Run `stack test` to execute all tests. 
 
 # Example 
