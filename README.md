@@ -72,8 +72,7 @@ private
 
 thread.start()
 
-update : void
-update =
+update()
   x = x + dx
   y = y + dy
 
@@ -82,15 +81,13 @@ update =
   if (y < 0 or y > 550)
     dy = dy * -1
 
-paint : Graphics -> void
-paint g =
+paint(g: Graphics)
   super.paintComponent(g)
 
   g.drawRect(x, y, 50, 50)
 
 @Override
-run : void
-run =
+run()
   try
     while(True)
       Thread.sleep(7)
@@ -103,8 +100,7 @@ run =
 # Main
 object Main
 
-main : [String] -> void
-main args =
+main(args: Array[String])
   val frame: Frame = new Frame()
 ```
 ```
