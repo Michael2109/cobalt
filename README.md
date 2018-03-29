@@ -16,7 +16,7 @@ The syntax is similar to languages such as Haskell and Scala.
 
 # Project Contributions
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
-Make sure to have a quick read through the wiki pages to get an idea of where everything is heading. The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
+The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
 
 # Getting Started
 
