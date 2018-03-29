@@ -7,6 +7,7 @@ toc::[]
 ### Language Specification
 
 ### Package declaration
+*Package*
 ```
 package dir.sub_dir
 ```
@@ -17,46 +18,46 @@ package dir.sub_dir
 class Example
 ```
 
-Type parameter
+*Type parameter*
 ```
 class Example[T]
 ```
 
-Constructor parameters
+*Constructor parameters*
 ```
 class Example(a: Int, b: Int)
 ```
 
-Type parameter and constructor parameters
+*Type parameter and constructor parameters*
 ```
 class Example[T](a: Int, b; Int)
 ```
 
-Extends parent class
+*Extend a parent class*
 ```
 class Example extends ParentClass
 ```
 
-Implements a trait
+*Implement a trait*
 ```
 class Example extends ParentClass with TraitName
 ```
 
 ### Methods
 
-Inline
+*Inline*
 ```
 add (a: Int, b: Int): Int = a + b
 ```
 
-Multi-line
+*Multi-line*
 ```
 add (a: Int, b: Int): Int 
   // Do something
   a + b
 ```
 
-Type inference
+*Type inference*
 ```
 add (a: Int, b: Int) = a + b
 ```
