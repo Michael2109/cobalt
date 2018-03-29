@@ -5,6 +5,7 @@ The highest level parser that uses functions in the BaseParser and ABExprParser 
 -}
 module ExprParser (Parser,
                     expr,
+                    expr',
                     aExpr,
                     bExpr,
                     rExpr,
@@ -133,10 +134,11 @@ relation = (symbol ">=" *> pure GreaterEqual)
   <|> (symbol "<" *> pure Less)
 
 
-objectParser :: [String] -> Parser Expr
-objectParser relativeDir = try $ L.nonIndented scn p
+objectParser :: Parser Expr
+objectParser = try $ L.nonIndented scn p
   where
     p = do
+      package <- optional packageParser
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "object")
       name <- identifier
@@ -152,13 +154,13 @@ objectParser relativeDir = try $ L.nonIndented scn p
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (methodParser name False <|> expr')
-      let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Object (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Object package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
-classParser :: [String] -> Parser Expr
-classParser relativeDir = try $ L.nonIndented scn p
+classParser :: Parser Expr
+classParser = try $ L.nonIndented scn p
   where
     p = do
+      package <- optional packageParser
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "class")
       name <- identifier
@@ -174,13 +176,13 @@ classParser relativeDir = try $ L.nonIndented scn p
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (methodParser name False <|> expr')
-      let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Class (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Class package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
-traitParser :: [String] -> Parser Expr
-traitParser relativeDir = try $ L.nonIndented scn p
+traitParser :: Parser Expr
+traitParser = try $ L.nonIndented scn p
   where
     p = do
+      package <- optional packageParser
       imports <- many importParser
       classT <- L.lineFold scn $ \sp' -> try (rword "trait")
       name <- identifier
@@ -196,8 +198,7 @@ traitParser relativeDir = try $ L.nonIndented scn p
       modifierBlocks <- many (try (modifierBlockParser False))
       constructorExprs <- try (many $ try constructorExpr)
       exprs <- many (methodParser name False <|> expr')
-      let packageDir = if (length relativeDir <= 1) then [] else (tail relativeDir)
-      return (Trait (packageDir) name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+      return (Trait package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 packageParser :: Parser Expr
 packageParser = try $ L.nonIndented scn p
@@ -523,8 +524,10 @@ expr = f <$> sepBy1 (expr') (symbol ";")
 
 expr' :: Parser Expr
 expr' =
-
-  forLoopParser
+  classParser
+  <|> objectParser
+  <|> traitParser
+  <|> forLoopParser
   <|> ifStmtParser
   <|> elseIfStmtParser
   <|> elseStmtParser

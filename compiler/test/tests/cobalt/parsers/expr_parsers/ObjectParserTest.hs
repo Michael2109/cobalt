@@ -17,8 +17,8 @@ testObjectParser = do
         "object Test"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] Nothing [] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] Nothing [] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -28,8 +28,8 @@ testObjectParserTypeParameter = do
         "object Test[String]"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing [] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing [] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -39,8 +39,8 @@ testObjectParserTypeParameterExtends = do
         "object Test[String] extends ParentName"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") [] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") [] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -50,8 +50,8 @@ testObjectParserTypeParameterExtendsImplements = do
         "object Test[String] extends ParentName implements TraitName"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") ["TraitName"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") ["TraitName"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -61,8 +61,8 @@ testObjectParserTypeParameterImplements = do
         "object Test[String] implements TraitName"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -72,8 +72,8 @@ testObjectParserTypeParameterImplementsMultiple = do
         "object Test[String] implements TraitName1, TraitName2"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName1","TraitName2"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName1","TraitName2"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -83,8 +83,8 @@ testObjectParserExtends = do
         "object Test extends ParentObject"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] (Just "ParentObject") [] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] (Just "ParentObject") [] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -95,8 +95,8 @@ testObjectParserImplements = do
         "object Test implements Interface"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] Nothing ["Interface"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] Nothing ["Interface"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -106,8 +106,8 @@ testObjectParserImplementsMultiple = do
         "object Test implements Interface1, Interface2"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] Nothing ["Interface1","Interface2"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] Nothing ["Interface1","Interface2"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -117,8 +117,8 @@ testObjectParserExtendsImplements = do
         "object Test extends ParentObject implements Interface"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] (Just "ParentObject") ["Interface"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -128,8 +128,8 @@ testObjectParserExtendsImplementsMultiple = do
         "object Test extends ParentObject implements Interface1, Interface2, Interface3"
         ]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] (Just "ParentObject") ["Interface1","Interface2","Interface3"] [] [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface1","Interface2","Interface3"] [] [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -141,8 +141,8 @@ testObjectParserImports = do
         ]
   let imports = [Import ["dir", "sub_dir", "ObjectName"]]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] (Just "ParentObject") ["Interface"] imports [] [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface"] imports [] [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -154,7 +154,7 @@ testObjectParserImportsFail = do
         ]
   TestCase $ assertEqual code
     (Error)
-    (case (parse (objectParser []) "" code) of
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
 
@@ -170,7 +170,7 @@ testObjectParserModifierBlock = do
   let imports = [Import ["dir", "sub_dir", "ObjectName"]]
   let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [Argument $ ArithExpr (IntConst 5)]]]
   TestCase $ assertEqual code
-    (Object [] "Test" Nothing [] (Just "ParentObject") ["Interface"] imports modifierBlocks [] [])
-    (case (parse (objectParser []) "" code) of
+    (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface"] imports modifierBlocks [] [])
+    (case (parse (objectParser) "" code) of
       Left  e -> Error
       Right x -> x)
