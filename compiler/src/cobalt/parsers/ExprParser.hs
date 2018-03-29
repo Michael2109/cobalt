@@ -26,6 +26,7 @@ module ExprParser (Parser,
                     forLoopParser,
                     methodParser,
                     modifierBlockParser,
+                    newClassInstanceParser,
                     objectMethodCallParser,
                     parameterizedTypeParser,
                     parameterParser,
@@ -334,10 +335,10 @@ objectMethodCallParser =
     return $ ObjectMethodCall objectName methodName args
 
 
-newClassInstance :: Parser Expr
-newClassInstance  = do
+newClassInstanceParser :: Parser Expr
+newClassInstanceParser  = do
   try (rword "new")
-  className <- identifier
+  className <- identifierParser
   arguments <- parens (sepBy (argumentParser) (symbol ","))
   return $ (NewClassInstance className arguments)
 
@@ -398,7 +399,7 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-  value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstance <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser <|> arithmeticParser
+  value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstanceParser <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser <|> arithmeticParser
   return $ Argument value
 
 printParser :: Parser Expr
@@ -515,7 +516,7 @@ expr' = booleanParser
   <|> thisMethodCallParser
   <|> superMethodCallParser
   <|> objectMethodCallParser
-  <|> newClassInstance
+  <|> newClassInstanceParser
   <|> classVariableParser
   <|> try arrayElementSelect
 

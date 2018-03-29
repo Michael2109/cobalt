@@ -84,7 +84,7 @@ data IRNode
   | ModifierBlockIR IRInfo [IRNode]
   | MultiplyIR IRInfo
   | NegIR IRInfo IRNode
-  | NewClassInstanceIR IRInfo String [IRNode]
+  | NewClassInstanceIR IRInfo IRNode [IRNode]
   | NotIR IRInfo IRNode
   | ObjectIR IRInfo [String] String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
   | ObjectMethodCallIR IRInfo String String [IRNode]

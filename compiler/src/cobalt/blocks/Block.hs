@@ -70,7 +70,7 @@ data Expr
   | ModifierBlock [Expr]
   | Multiply
   | Neg Expr
-  | NewClassInstance String [Expr]
+  | NewClassInstance Expr [Expr]
   | Not Expr
   | Object [String] String (Maybe Expr) [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
   | ObjectMethodCall String String [Expr]
@@ -155,7 +155,7 @@ instance IRGen Expr where
     genIR (ModifierBlock exprs) st cs = ModifierBlockIR (IRInfo $ "ModifierBlock") (map (\e -> genIR e st cs) exprs)
     genIR (Multiply) symbolTable currentState = Empty (IRInfo $ "Multiply")
     genIR (Neg aExpr) symbolTable currentState = Empty (IRInfo $ "Neg")
-    genIR (NewClassInstance className args) st cs = NewClassInstanceIR (IRInfo $ "NewClassInstance") className $ exprArrToIRArray args st cs
+    genIR (NewClassInstance className args) st cs = NewClassInstanceIR (IRInfo $ "NewClassInstance") (genIR className st cs) $ exprArrToIRArray args st cs
     genIR (Not n) st cs = NotIR (IRInfo $ "Not") $ genIR n st cs
     genIR (Object packageLocs name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR (IRInfo $ "Object") packageLocs name (maybeExprToMaybeIRNode typeParam st cs) (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR (IRInfo $ "ObjectMethodCall") objectName methodName (exprArrToIRArray args st cs)

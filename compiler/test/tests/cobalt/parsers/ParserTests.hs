@@ -174,6 +174,17 @@ parserTestList = TestList [
         testModifierBlockParserProtectedEmpty,
         testModifierBlockParserPublicEmpty,
 
+        testNewClassInstanceParserNoArgs,
+        testNewClassInstanceParserNoArgsUnderscore,
+        testNewClassInstanceParserNoArgsLowerCase,
+        testNewClassInstanceParserNewUpperCase,
+        testNewClassInstanceParserNoArgsNoParens,
+        testNewClassInstanceParserSingleArg,
+        testNewClassInstanceParserMultiArgs,
+        testNewClassInstanceParserMissingNew,
+        testNewClassInstanceParserMissingLeftParen,
+        testNewClassInstanceParserMissingRightParen,
+
         testObjectParserTypeParameterExtends,
         testObjectParserTypeParameterExtendsImplements,
         testObjectParserTypeParameterImplements,
