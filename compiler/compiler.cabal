@@ -37,7 +37,6 @@ library
       src/cobalt/parsers,
       src/cobalt/symbol_table,
       src/cobalt/utils
-
   build-depends:
       base >=4.7 && <5,
       mtl,
@@ -135,17 +134,6 @@ test-suite compiler-test
   main-is: RunTests.hs
   hs-source-dirs:
 
-      src/cobalt,
-      src/cobalt/blocks,
-      src/cobalt/code_generator,
-      src/cobalt/compiler,
-      src/cobalt/error_checking,
-      src/cobalt/ir,
-      src/cobalt/parsers,
-      src/cobalt/symbol_table
-      src/cobalt/utils
-
-
       test,
       test/tests/cobalt,
       test/tests/cobalt/blocks,
@@ -186,6 +174,7 @@ test-suite compiler-test
       scientific,
       temporary,
       process,
+
       binary,
       utf8-string,
       array,
@@ -197,7 +186,9 @@ test-suite compiler-test
       MissingH,
       zip,
       Glob,
-      parsec >= 3 && <4
+      parsec >= 3 && <4,
+
+      compiler
 
   other-modules:
       BaseParser
