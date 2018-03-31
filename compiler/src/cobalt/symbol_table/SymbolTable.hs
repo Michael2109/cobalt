@@ -46,8 +46,8 @@ extractReturnType symbolTable className mName = do
     else returnType $ matchingMethods!!0
   where
     classSymbolTable = case getClassSymbolTable symbolTable className of
-                        Just a -> a
-                        Nothing -> error ("No class found: " ++ className)
+                         Just a -> a
+                         Nothing -> error ("No class found: " ++ className)
 
 extractMethodArgs :: SymbolTable -> String -> String -> [(String, String)]
 extractMethodArgs symbolTable className mName = do
@@ -57,8 +57,8 @@ extractMethodArgs symbolTable className mName = do
     else methodArgs $ matchingMethods!!0
   where
     classSymbolTable = case getClassSymbolTable symbolTable className of
-                        Just a -> a
-                        Nothing -> error ("No class found: " ++ className)
+                         Just a -> a
+                         Nothing -> error ("No class found: " ++ className)
 
 methodExists :: SymbolTable -> String -> String -> Bool
 methodExists symbolTable className mName = do
