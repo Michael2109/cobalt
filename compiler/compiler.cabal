@@ -74,9 +74,6 @@ library
        zip,
        Glob,
        parsec >= 3 && <4
-
-
-
   exposed-modules:
       BaseParser
       Block
@@ -93,26 +90,26 @@ library
       ParserExecutor
       SymbolTable
 
-     JVM.Common
-     JVM.ClassFile
-     JVM.Assembler
-     JVM.Converter
-     JVM.Builder
-     JVM.Builder.Monad
-     JVM.Builder.Instructions
-     JVM.Dump
-     JVM.Exceptions
-     Java.Lang
-     Java.IO
-     Java.ClassPath
-     Java.ClassPath.Types
-     Java.ClassPath.Common
-     Java.JAR
-     Java.JAR.Archive
-     Java.META
-     Java.META.Types
-     Java.META.Spec
-     Java.META.Parser
+      JVM.Common
+      JVM.ClassFile
+      JVM.Assembler
+      JVM.Converter
+      JVM.Builder
+      JVM.Builder.Monad
+      JVM.Builder.Instructions
+      JVM.Dump
+      JVM.Exceptions
+      Java.Lang
+      Java.IO
+      Java.ClassPath
+      Java.ClassPath.Types
+      Java.ClassPath.Common
+      Java.JAR
+      Java.JAR.Archive
+      Java.META
+      Java.META.Types
+      Java.META.Spec
+      Java.META.Parser
   other-modules:
 
   default-language: Haskell2010
@@ -133,6 +130,16 @@ test-suite compiler-test
   type: exitcode-stdio-1.0
   main-is: RunTests.hs
   hs-source-dirs:
+
+      src/cobalt,
+      src/cobalt/blocks,
+      src/cobalt/code_generator,
+      src/cobalt/compiler,
+      src/cobalt/error_checking,
+      src/cobalt/ir,
+      src/cobalt/parsers,
+      src/cobalt/symbol_table
+      src/cobalt/utils
 
       test,
       test/tests/cobalt,
