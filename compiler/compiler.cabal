@@ -76,7 +76,6 @@ library
       IRNode
       Parser
       SymbolTable
-  other-modules:
 
   default-language: Haskell2010
 
@@ -88,7 +87,6 @@ executable compiler-exe
   build-depends:
       base >=4.7 && <5,
       compiler
-  other-modules:
 
   default-language: Haskell2010
 
@@ -96,16 +94,6 @@ test-suite compiler-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   hs-source-dirs:
-
-      src/cobalt,
-      src/cobalt/blocks,
-      src/cobalt/code_generator,
-      src/cobalt/compiler,
-      src/cobalt/error_checking,
-      src/cobalt/ir,
-      src/cobalt/parsers,
-      src/cobalt/symbol_table
-      src/cobalt/utils
 
       test,
       test/tests/cobalt,
@@ -146,22 +134,9 @@ test-suite compiler-test
       text-format-simple,
       scientific,
       temporary,
-      process
+      process,
+      compiler
   other-modules:
-      BaseParser
-      Block
-      BlockUtils
-      CodeGenerator
-      Compiler
-      CompilerExecutor
-      ErrorChecker
-      ExprParser
-      IRNode
-      Parser
-      SymbolTable
-      CommandLineUtils
-      IOUtils
-      Utils
 
       IntegrationTests
       ParserTests
@@ -224,6 +199,5 @@ test-suite compiler-test
 
       -- Compiler
       CompilerTest
-
 
   default-language: Haskell2010
