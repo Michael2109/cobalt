@@ -6,11 +6,19 @@ toc::[]
 
 ### Language Specification
 
+
+
+
+
 ### Package declaration
 *Package*
 ```
 package dir.sub_dir
 ```
+
+
+
+
 
 ### Classes
 *Class*
@@ -42,6 +50,10 @@ class Example extends ParentClass
 ```
 class Example extends ParentClass with TraitName
 ```
+
+
+
+
 
 ### Methods
 
