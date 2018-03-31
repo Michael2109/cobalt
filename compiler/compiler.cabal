@@ -140,7 +140,8 @@ test-suite compiler-test
       test/tests/cobalt/parsers/base_parsers,
       test/tests/cobalt/parsers/expr_parsers,
       test/tests/cobalt/symbol_table,
-      test/tests/cobalt/utils
+      test/tests/cobalt/utils,
+      test/tests/cobalt/JVM
 
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
@@ -248,5 +249,7 @@ test-suite compiler-test
 
       -- Integration
       CompilerTest
+      AssemblerTest
+
 
   default-language: Haskell2010

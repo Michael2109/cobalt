@@ -1,0 +1,2 @@
+module ClassPathTest where
+
