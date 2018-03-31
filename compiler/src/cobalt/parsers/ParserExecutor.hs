@@ -1,8 +1,8 @@
 {-|
-Module      : Parser
+Module      : ParserExecutor
 Description : Functions that call the ExprParser functions to generate the AST.
 -}
-module Parser where
+module ParserExecutor where
 
 import Control.Applicative (empty)
 import Control.Monad (void)

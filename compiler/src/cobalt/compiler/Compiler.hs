@@ -14,7 +14,7 @@ import Text.Pretty.Simple
 import qualified Data.List.Split as Split
 
 import Block
-import Parser
+import ParserExecutor
 import SymbolTable
 import CodeGenerator
 import IOUtils

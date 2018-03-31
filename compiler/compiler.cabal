@@ -37,6 +37,7 @@ library
       src/cobalt/parsers,
       src/cobalt/symbol_table,
       src/cobalt/utils
+
   build-depends:
       base >=4.7 && <5,
       mtl,
@@ -60,7 +61,23 @@ library
       annotated-wl-pprint,
       text-format-simple,
       scientific,
-      temporary
+      temporary,
+
+       binary,
+       utf8-string,
+       array,
+       bytestring,
+       data-binary-ieee754,
+       binary-state,
+       control-monad-exception,
+       data-default >= 0.5.0,
+       MissingH,
+       zip,
+       Glob,
+       parsec >= 3 && <4
+
+
+
   exposed-modules:
       BaseParser
       Block
@@ -74,8 +91,29 @@ library
       IOUtils
       Utils
       IRNode
-      Parser
+      ParserExecutor
       SymbolTable
+
+     JVM.Common
+     JVM.ClassFile
+     JVM.Assembler
+     JVM.Converter
+     JVM.Builder
+     JVM.Builder.Monad
+     JVM.Builder.Instructions
+     JVM.Dump
+     JVM.Exceptions
+     Java.Lang
+     Java.IO
+     Java.ClassPath
+     Java.ClassPath.Types
+     Java.ClassPath.Common
+     Java.JAR
+     Java.JAR.Archive
+     Java.META
+     Java.META.Types
+     Java.META.Spec
+     Java.META.Parser
   other-modules:
 
   default-language: Haskell2010
@@ -94,7 +132,7 @@ executable compiler-exe
 
 test-suite compiler-test
   type: exitcode-stdio-1.0
-  main-is: Spec.hs
+  main-is: RunTests.hs
   hs-source-dirs:
 
       src/cobalt,
@@ -106,6 +144,7 @@ test-suite compiler-test
       src/cobalt/parsers,
       src/cobalt/symbol_table
       src/cobalt/utils
+
 
       test,
       test/tests/cobalt,
@@ -146,7 +185,20 @@ test-suite compiler-test
       text-format-simple,
       scientific,
       temporary,
-      process
+      process,
+      binary,
+      utf8-string,
+      array,
+      bytestring,
+      data-binary-ieee754,
+      binary-state,
+      control-monad-exception,
+      data-default >= 0.5.0,
+      MissingH,
+      zip,
+      Glob,
+      parsec >= 3 && <4
+
   other-modules:
       BaseParser
       Block
@@ -157,11 +209,32 @@ test-suite compiler-test
       ErrorChecker
       ExprParser
       IRNode
-      Parser
+      ParserExecutor
       SymbolTable
       CommandLineUtils
       IOUtils
       Utils
+
+      JVM.Common
+      JVM.ClassFile
+      JVM.Assembler
+      JVM.Converter
+      JVM.Builder
+      JVM.Builder.Monad
+      JVM.Builder.Instructions
+      JVM.Dump
+      JVM.Exceptions
+      Java.Lang
+      Java.IO
+      Java.ClassPath
+      Java.ClassPath.Types
+      Java.ClassPath.Common
+      Java.JAR
+      Java.JAR.Archive
+      Java.META
+      Java.META.Types
+      Java.META.Spec
+      Java.META.Parser
 
       IntegrationTests
       ParserTests
@@ -224,6 +297,5 @@ test-suite compiler-test
 
       -- Compiler
       CompilerTest
-
 
   default-language: Haskell2010

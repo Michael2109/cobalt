@@ -8,7 +8,9 @@ import Block
 
 import BaseParser
 import ExprParser
-import Parser
+import ParserExecutor
+
+import JVM.Builder.Monad
 
 testTypeParameterParser :: Test
 testTypeParameterParser = do
