@@ -1,10 +1,10 @@
 -- | This module defines functions to read Java JAR files.
 module Java.JAR.Archive where
 
---import qualified Codec.Archive.LibZip as Zip
+import Codec.Archive.Zip
 import Data.Binary
 import Data.List
-import qualified Data.ByteString.Lazy as B
+import qualified Data.ByteString.Lazy
 import System.FilePath
 
 import Java.ClassPath.Types
@@ -15,7 +15,9 @@ import JVM.Converter
 {--
 readJAREntry :: (Enum a) => FilePath -> String -> IO (Maybe [a])
 readJAREntry jarfile path = do
-  Zip.catchZipError (Just `fmap` (Zip.withArchive [] jarfile $ Zip.fileContents [] path))
+  s        <- mkEntrySelector jarFile
+  content       <- withArchive path (getEntry s)
+  catchZipError (Just `fmap` (content))
                     (\_ -> return Nothing)
 
 -- | Read all entires from JAR file
@@ -25,14 +27,16 @@ readAllJAR jarfile = do
     return $ mapF (NotLoadedJAR jarfile) (buildTree $ filter good files)
   where
     good file = ".class" `isSuffixOf` file
-
+--}
 -- | Read one class from JAR file
+{--
 readFromJAR :: FilePath -> FilePath -> IO (Class Direct)
-readFromJAR jarfile path = do
-  content <- Zip.withArchive [] jarfile $ Zip.fileContents [] path
-  let bstr = B.pack content
-  return $ classFile2Direct (decode bstr)
-
+readFromJAR jarFile path = do
+  s        <- mkEntrySelector jarFile
+  content       <- withArchive path (getEntry s)
+  return $ classFile2Direct (decode $ toLazy content)
+--}
+{--
 checkClassTree :: [Tree CPEntry] -> IO [Tree (FilePath, Class Direct)]
 checkClassTree forest = mapFMF check forest
   where
