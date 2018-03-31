@@ -1,3 +1,7 @@
+{-|
+Module      : IRNode
+Description : Contains functions for working with intermediate representation tree.
+-}
 module IRNode where
 
 import Data.Char

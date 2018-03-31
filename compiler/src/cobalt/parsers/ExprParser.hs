@@ -3,46 +3,47 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module ExprParser (Parser,
-                    expr,
-                    expr',
-                    aExpr,
-                    bExpr,
-                    rExpr,
-                    objectParser,
-                    classParser,
-                    traitParser,
-                    parser,
-                    annotationParser,
-                    argumentParser,
-                    argumentTypeParser,
-                    arithmeticParser,
-                    assignParser,
-                    booleanParser,
-                    classVariableParser,
-                    elseIfStmtParser,
-                    elseStmtParser,
-                    identifierParser,
-                    ifStmtParser,
-                    importParser,
-                    forLoopParser,
-                    methodCallParser,
-                    methodParser,
-                    modifierBlockParser,
-                    newClassInstanceParser,
-                    objectMethodCallParser,
-                    packageParser,
-                    parameterizedTypeParser,
-                    parameterParser,
-                    reassignParser,
-                    superMethodCallParser,
-                    stringLiteralParser,
-                    stringLiteralMultilineParser,
-                    thisMethodCallParser,
-                    thisVarParser,
-                    typeParameterParser,
-                    valueTypeParser
-                    ) where
+module ExprParser
+  ( Parser
+  , expr
+  , expr'
+  , aExpr
+  , bExpr
+  , rExpr
+  , objectParser
+  , classParser
+  , traitParser
+  , parser
+  , annotationParser
+  , argumentParser
+  , argumentTypeParser
+  , arithmeticParser
+  , assignParser
+  , booleanParser
+  , classVariableParser
+  , elseIfStmtParser
+  , elseStmtParser
+  , identifierParser
+  , ifStmtParser
+  , importParser
+  , forLoopParser
+  , methodCallParser
+  , methodParser
+  , modifierBlockParser
+  , newClassInstanceParser
+  , objectMethodCallParser
+  , packageParser
+  , parameterizedTypeParser
+  , parameterParser
+  , reassignParser
+  , superMethodCallParser
+  , stringLiteralParser
+  , stringLiteralMultilineParser
+  , thisMethodCallParser
+  , thisVarParser
+  , typeParameterParser
+  , valueTypeParser
+  ) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)

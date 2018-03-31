@@ -3,17 +3,17 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module BaseParser (
-  Parser,
-  scn,
-  symbol,
-  integerParser,
-  doubleParser,
-  rword,
-  rws,
-  parens,
-  word,
-  identifier
+module BaseParser
+  ( Parser
+  , scn
+  , symbol
+  , integerParser
+  , doubleParser
+  , rword
+  , rws
+  , parens
+  , word
+  , identifier
   ) where
 
 import Control.Applicative (empty)

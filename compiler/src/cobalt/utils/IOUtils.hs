@@ -1,3 +1,7 @@
+{-|
+Module      : IOUtils
+Description : Contains functions used for working with IO.
+-}
 module IOUtils where
 
 import Control.Monad

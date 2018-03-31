@@ -1,3 +1,7 @@
+{-|
+Module      : SymbolTable
+Description : Contains functions used for working with symbol table.
+-}
 module SymbolTable where
 
 import Data.List
