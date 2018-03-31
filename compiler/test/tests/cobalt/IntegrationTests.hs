@@ -3,14 +3,13 @@ module IntegrationTests where
 import Test.HUnit
 
 import CompilerTest
+import AssemblerTest
 import IOUtils
 
 
 integrationTestList :: Test
 integrationTestList = do
   TestList [
-
-       -- Compiler
-
-       "An example integration test"   ~: exampleCompilerTest
+       "An example integration test"   ~: exampleCompilerTest,
+       "Assembler Test"   ~: assemblerTest
        ]
