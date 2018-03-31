@@ -46,18 +46,17 @@ module ExprParser (Parser,
 
 import Control.Applicative (empty)
 import Control.Monad (void)
-import Data.Void
 import Data.Char (isAlphaNum)
 import Data.List (intercalate)
+import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-
-import Block
 import BaseParser
+import Block
 import SymbolTable
 
 -- Arithmetic Expression Parsers
@@ -74,7 +73,6 @@ aTerm = parens aExpr
   <|> IntConst <$> integerParser
   <|> DoubleConst <$> doubleParser
 
-
 aOperators :: [[Operator Parser Expr]]
 aOperators =
   [ [Prefix (Neg <$ symbol "-") ]
@@ -84,10 +82,8 @@ aOperators =
     , InfixL (ABinary Subtract <$ symbol "-") ]
   ]
 
-
 aExpr :: Parser Expr
 aExpr = makeExprParser aTerm aOperators
-
 
 -- Boolean expression parsers
 --
@@ -104,8 +100,6 @@ bTerm = BoolConst True  <$ rword "True"
   <|> methodCallParser
   <|> identifierParser
 
-
-
 bOperators :: [[Operator Parser Expr]]
 bOperators =
   [ [Prefix (Not <$ rword "not") ]
@@ -113,10 +107,8 @@ bOperators =
     , InfixL (BBinary Or <$ rword "or") ]
   ]
 
-
 bExpr :: Parser Expr
 bExpr = makeExprParser bTerm bOperators
-
 
 rExpr :: Parser Expr
 rExpr = do
@@ -126,13 +118,11 @@ rExpr = do
     a2 <- aExpr
     return (RBinary op a1 a2)
 
-
 relation :: Parser Expr
 relation = (symbol ">=" *> pure GreaterEqual)
   <|> (symbol "<=" *> pure LessEqual)
   <|> (symbol ">" *> pure Greater)
   <|> (symbol "<" *> pure Less)
-
 
 objectParser :: Parser Expr
 objectParser = try $ L.nonIndented scn p
@@ -286,7 +276,6 @@ stringLiteralMultilineParser = do
   symbol "```"
   return $ StringLiteral $ intercalate "\n" contents
 
-
 assignParser :: Parser Expr
 assignParser = do
   valVar <- try (rword "val" <|> rword "var")
@@ -300,7 +289,6 @@ assignParser = do
   symbol "="
   e <- expr' <|> identifierParser <|> arithmeticParser
   return $ Assign immutable varType varName e
-
 
 reassignParser :: Parser Expr
 reassignParser = do
@@ -357,7 +345,6 @@ objectMethodCallParser =
     args <- parens (sepBy (argumentParser) (symbol ","))
     return $ ObjectMethodCall objectName methodName args
 
-
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser  = do
   try (rword "new")
@@ -380,7 +367,6 @@ modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
       modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
       return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser  modifier static))
 
-
 globalVarParser :: String -> Bool -> Parser Expr
 globalVarParser modifier static = do
   final <- try (rword "val" <|> rword "var")
@@ -396,7 +382,6 @@ annotationParser  = do
   try (symbol "@")
   name <- identifier
   return $ Annotation name
-
 
 valueTypeParser :: Parser Expr
 valueTypeParser = do
@@ -485,7 +470,6 @@ tryParser  = try $ L.indentBlock scn p
        rword "try"
        return (L.IndentMany Nothing (return . (Try)) (expr' ))
 
-
 catchParser :: Parser Expr
 catchParser  = try $ L.indentBlock scn p
    where
@@ -521,7 +505,6 @@ expr = f <$> sepBy1 (expr') (symbol ";")
     -- if there's only one expr return it without using ‘Seq’
     f l = if length l == 1 then head l else Seq l
 
-
 expr' :: Parser Expr
 expr' =
   classParser
@@ -533,7 +516,6 @@ expr' =
   <|> elseStmtParser
 
   <|> whileParser
-
 
   <|> tryParser
   <|> catchParser
@@ -548,14 +530,12 @@ expr' =
   <|> assignParser
   <|> reassignParser
 
-
   <|> thisVarParser
   <|> thisParser
 
   <|> try whereStmt
   <|> try stringLiteralParser
   <|> try stringLiteralMultilineParser
-
 
 parser :: Parser Expr
 parser = expr'

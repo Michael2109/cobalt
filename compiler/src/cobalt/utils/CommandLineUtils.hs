@@ -3,13 +3,13 @@ module CommandLineUtils where
 import System.Console.GetOpt
 
 data CommandLineArgument = ClassPath FilePath
-          | DestinationDir FilePath
-          | Version
-          | Help
-          | DebugMode
-          | GenerateDebugSymbols
-          | VerboseMode
-          deriving (Show, Eq)
+                         | DestinationDir FilePath
+                         | Version
+                         | Help
+                         | DebugMode
+                         | GenerateDebugSymbols
+                         | VerboseMode
+                         deriving (Show, Eq)
 
 commandLineOptions :: [OptDescr CommandLineArgument]
 commandLineOptions =
@@ -31,20 +31,17 @@ helpInfo = usageInfo header commandLineOptions
   -- javac does it this way too.
   where header = "Usage: compiler-exec <options> <source files>\nwhere possible options include:"
 
-
 commandLineArgsInternal :: [String] -> (Either [String] ([CommandLineArgument],[FilePath]))
 commandLineArgsInternal args =
   case getOpt Permute commandLineOptions args of
     (f,d,[]  ) -> Right (f,d) -- contents of d are arguments not options
     (_,_,errors) -> Left errors
 
-
 commandLineArgs :: [String] -> IO([CommandLineArgument],[FilePath])
 commandLineArgs args =
   case (commandLineArgsInternal args) of
     (Right x) -> return x  -- contents of d are arguments not options
     (Left errors) -> raiseErrorsException errors
-
 
 raiseErrorsException :: [String] -> IO([CommandLineArgument],[FilePath])
 raiseErrorsException errors = ioError $ userError $ concat ("\n":errors) ++ ('\n':helpInfo)

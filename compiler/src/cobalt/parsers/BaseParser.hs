@@ -18,41 +18,35 @@ module BaseParser (
 
 import Control.Applicative (empty)
 import Control.Monad (void)
-import Data.Void
 import Data.Char (isAlphaNum)
+import Data.Scientific
+import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
-import Data.Scientific
 
 type Parser = Parsec Void String
-
 
 lineComment :: Parser ()
 lineComment = L.skipLineComment "#"
 
-
 scn :: Parser ()
 scn = L.space space1 lineComment empty
-
 
 sc :: Parser ()
 sc = L.space (void $ takeWhile1P Nothing f) lineComment empty
   where
     f x = x == ' ' || x == '\t'
 
-
 symbol :: String -> Parser String
 symbol = L.symbol sc
-
 
 rword :: String -> Parser String
 rword word = do
   lexeme (string word *> notFollowedBy alphaNumChar)
   return word
-
 
 rws :: [String] -- list of reserved words
 rws = [
@@ -87,7 +81,6 @@ rws = [
   "super"
   ]
 
-
 word :: Parser String
 word = (lexeme . try) (p >>= check)
   where
@@ -121,7 +114,6 @@ longParser = do
     let value = lexeme L.scientific
     symbol "l"
     value
-
 
 parens :: Parser a -> Parser a
 parens = between (symbol "(") (symbol ")")
