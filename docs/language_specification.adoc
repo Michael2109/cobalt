@@ -5,9 +5,11 @@
 toc::[]
 
 ### Language Specification
+
 {nbsp} +
 {nbsp} +
 {nbsp} +
+
 ### Package declaration
 *Package*
 ```
@@ -16,6 +18,7 @@ package dir.sub_dir
 {nbsp} +
 {nbsp} +
 {nbsp} +
+
 ### Classes
 *Class*
 ```
@@ -49,6 +52,7 @@ class Example extends ParentClass with TraitName
 {nbsp} +
 {nbsp} +
 {nbsp} +
+
 ### Methods
 
 *Inline*
