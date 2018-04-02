@@ -7,67 +7,163 @@ toc::[]
 ### Language Specification
 
 {nbsp} +
-{nbsp} +
+
+### Comments
+Single line comments
+```
+# This is a single line comment
+```
+Multiline Comment
+```
+/* This is a
+   multiline
+   comment */
+```
+Documentation comments
+```
+/**
+ * Class Description
+ * @param nameInit The persons name
+ */
+class Person(nameInit: String)
+
+/** The age of the person **/
+public
+  val name:String = nameInit
+
+/**
+* Creates a greeting method for a perso
+*
+* @param otherPerson The person to greet
+* @return the greeting message
+*/
+greet :: String -> String
+greet otherPerson =
+  "Hello $otherPerson"
+```
 {nbsp} +
 
 ### Package declaration
-*Package*
+Package
 ```
 package dir.sub_dir
 ```
 {nbsp} +
-{nbsp} +
+
+### Imports
+Single import
+```
+import dir.subDir.ClassName
+```
+Multi import
+```
+import dir.subDir.{ClassName1, ClassName2}
+```
+Directory import
+```
+import dir.subDir.*
+```
 {nbsp} +
 
 ### Classes
-*Class*
+Class
 ```
 class Example
 ```
 
-*Type parameter*
+Type parameter
 ```
 class Example[T]
 ```
 
-*Constructor parameters*
+Constructor parameters
 ```
 class Example(a: Int, b: Int)
 ```
 
-*Type parameter and constructor parameters*
+Type parameter and constructor parameters
 ```
 class Example[T](a: Int, b; Int)
 ```
 
-*Extend a parent class*
+Extend a parent class
 ```
 class Example extends ParentClass
 ```
 
-*Implement a trait*
+Implement a trait
 ```
 class Example extends ParentClass with TraitName
 ```
 {nbsp} +
-{nbsp} +
-{nbsp} +
 
 ### Methods
 
-*Inline*
+Inline
 ```
 add (a: Int, b: Int): Int = a + b
 ```
 
-*Multi-line*
+Multi-line
 ```
 add (a: Int, b: Int): Int 
   // Do something
   a + b
 ```
 
-*Type inference*
+Type inference
 ```
 add (a: Int, b: Int) = a + b
 ```
+{nbsp} +
+
+### Strings
+Double quoted string
+```
+"This is a double quoted string"
+```
+{nbsp} +
+
+### Print statements
+Print
+```
+print ("Hello world!")
+```
+Print with new line
+```
+println ("Hello world!")
+```
+Print format
+```
+printf("Hello %s\n, "world")
+```
+{nbsp} +
+
+### Defining values/variables
+Value (Immutable)
+```
+val valName: ClassName = new ClassName()
+```
+Variable (Mutable)
+```
+var varName: ClassName = new ClassName()
+```
+Type inference
+```
+val x = 10              // Determines that x is an Int
+val y = new ClassName() // Determines that y is a ClassName instance
+```
+{nbsp} +
+
+### Modifiers
+Modifiers for values/variables is defined after the class definition
+```
+public
+  val x = "public"
+  val y = 20
+protected
+  val z = "
+```
+
+
+{nbsp} +
