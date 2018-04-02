@@ -84,7 +84,7 @@ Pattern matching is like a switch statement in Java but with many more features.
 ```
 val x = 2
 
-match value with
+match x with
     1 ->  // do something
     2 ->  // do something
     _ ->  print("Default Called")
