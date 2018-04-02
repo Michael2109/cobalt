@@ -6,25 +6,23 @@ There are functions for compiling directories or individual strings etc.
 module Compiler (module Compiler, module IOUtils) where
 
 import Control.Monad
-import Data.Text.Internal.Lazy
 import Data.List
+import qualified Data.List.Split as Split
+import Data.Text.Internal.Lazy
 import System.Directory
 import System.FilePath.Posix
 import Text.Pretty.Simple
-import qualified Data.List.Split as Split
 
 import Block
-import ParserExecutor
-import SymbolTable
 import CodeGenerator
 import IOUtils
-import Utils (endsWith)
 import IRNode
-
+import ParserExecutor
+import SymbolTable
+import Utils (endsWith)
 
 data ASTData = ASTData FilePath SymbolTable Expr
   deriving (Show)
-
 
 extractASTFilePath :: ASTData -> FilePath
 extractASTFilePath (ASTData filePath _ _) = filePath
@@ -35,15 +33,13 @@ extractASTSymbolTable (ASTData _ symbolTable _) = symbolTable
 extractASTExpr :: ASTData -> Expr
 extractASTExpr (ASTData _ _ expr) = expr
 
-
 generateClassSymbolTable ast =
   case ast of
-   Left  e -> ClassSymbolTable "ERROR" NoType [] []
-   Right x -> genClassSymbolTable x
+    Left  e -> ClassSymbolTable "ERROR" NoType [] []
+    Right x -> genClassSymbolTable x
 
 compile :: FilePath -> [FilePath] -> String -> IO ()
 compile classPath filePaths outputDir = do
-
   classPathFilePaths <- traverseDir classPath ""
   let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
@@ -66,7 +62,6 @@ compile classPath filePaths outputDir = do
 
 generateAST :: FilePath -> String -> ASTData
 generateAST inputFile code = do
-
    let parseResult = parseTree (Split.splitOn "/" $ (takeDirectory inputFile)) code
    let symbolTable = SymbolTable [generateClassSymbolTable parseResult]
 

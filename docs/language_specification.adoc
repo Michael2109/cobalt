@@ -43,6 +43,42 @@ greet otherPerson =
 ```
 {nbsp} +
 
+#### Comments
+
+Comments serve as program documentation. There are two forms:
+
+. _Single line comments_ start with character `#` and stop at the end of the line
+. _General comments_ start with character sequence `/\*` and end with first occurence of sequence `*/`
+
+Comments can't be nested or start inside string literals. *TODO* how do comments behave (skip entirely, space, newline...)
+
+#### Statements
+
+##### Conditional statement
+
+Conditional statements allow branching:
+```
+if Expression
+  Statements
+else
+  Statements
+```
+
+To avoid deep nesting it is possible to use following shortened form:
+
+```
+if Expression
+  Statements
+else if Expression
+  Statements
+else
+  Statements
+```
+
+Since statements in branches are indented, there is no ambiguity when deciding which `else` references which `if`.
+
+*TODO* test `else if` and putting statements in line after expression (since there is no `:` as stated in the wiki it is necessary to check if it does not break the indentation or expr. parsing).
+
 ### Package declaration
 Package
 ```
@@ -106,7 +142,7 @@ add (a: Int, b: Int): Int = a + b
 
 Multi-line
 ```
-add (a: Int, b: Int): Int 
+add (a: Int, b: Int): Int
   // Do something
   a + b
 ```
