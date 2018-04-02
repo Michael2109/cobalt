@@ -4,7 +4,7 @@ module Java.JAR.Archive where
 import Codec.Archive.Zip
 import Data.Binary
 import Data.List
-import qualified Data.ByteString.Lazy
+import Data.ByteString.Lazy
 import System.FilePath
 
 import Java.ClassPath.Types
@@ -49,12 +49,14 @@ checkClassTree forest = mapFMF check forest
        return (a </> path, cls)
     check a (LoadedJAR _ cls) =
        return (a </> show (thisClass cls), cls)
-
-zipJAR :: [Tree (FilePath, Class Direct)] -> Zip.Archive ()
+--}
+zipJAR :: [Tree (FilePath, Class Direct)] -> ZipArchive ()
 zipJAR forest = do
     mapFM go forest
     return ()
   where
-    go (path, cls) = Zip.addFile path =<< Zip.sourceBuffer (B.unpack $ encodeClass cls)
+    go (path, cls) = do
+      s <- mkEntrySelector path
+      let src = toStrict $ encodeClass cls
+      addEntry Store src s
 
---}
