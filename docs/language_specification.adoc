@@ -7,67 +7,689 @@ toc::[]
 ### Language Specification
 
 {nbsp} +
-{nbsp} +
+
+### Comments
+
+Comments serve as program documentation. There are two forms:
+
+. _Single line comments_ start with character `#` and stop at the end of the line
+. _General comments_ start with character sequence `/\*` and end with first occurence of sequence `*/`
+
+Comments can't be nested or start inside string literals. *TODO* how do comments behave (skip entirely, space, newline...)
+
+Single line comments
+```
+# This is a single line comment
+```
+Multiline Comment
+```
+/* This is a
+   multiline
+   comment */
+```
+Documentation comments
+```
+/**
+ * Class Description
+ * @param nameInit The persons name
+ */
+class Person(nameInit: String)
+
+/** The age of the person **/
+public
+  val name:String = nameInit
+
+/**
+* Creates a greeting method for a perso
+*
+* @param otherPerson The person to greet
+* @return the greeting message
+*/
+greet :: String -> String
+greet otherPerson =
+  "Hello $otherPerson"
+```
 {nbsp} +
 
+
+### Statements
+
+#### Conditional statement
+
+Conditional statements allow branching:
+```
+if Expression
+  Statements
+else
+  Statements
+```
+
+To avoid deep nesting it is possible to use following shortened form:
+
+```
+if Expression
+  Statements
+else if Expression
+  Statements
+else
+  Statements
+```
+
+Since statements in branches are indented, there is no ambiguity when deciding which `else` references which `if`.
+
+*TODO* test `else if` and putting statements in line after expression (since there is no `:` as stated in the wiki it is necessary to check if it does not break the indentation or expr. parsing).
+
+#### Pattern Matching
+Pattern matching is like a switch statement in Java but with many more features.
+```
+val x = 2
+
+match value with
+    1 ->  // do something
+    2 ->  // do something
+    _ ->  print("Default Called")
+```
+It could be worth looking into Haskell pattern matching to see other formats.
+
+#### Control Flow Statements
+
+##### While loop
+```
+val x = True
+
+# inline
+while (condition) doSomething
+
+# Block
+while (x)
+   doSomething
+```
+
+##### Do While Loop
+```
+do
+   // do something
+   while(condition)
+```
+
+##### For loop
+With index
+```
+# Inline
+for(element <- elements index i) doSomething(i)
+
+# Block
+for(element <- elements index i)
+  doSomething(i)
+```
+Using a map
+```
+for(element <- map)
+  println(element.key + " " + element.value)
+```
+Nested
+```
+for(l1Element <- list1 : l2Element <- list2)
+  println (l1Element + " " + l2Element)
+```
+Nested including index
+```
+for(l1Element <- list1 index x: l2Element <- list2 index y)
+    println(l1Element + " " + l2Element + " " + x + " " + y)
+```
+
+{nbsp} +
+
+##### For each
+```
+# Inline
+list.forEach doSomething
+
+# Block
+list.forEach
+  doSomething
+```
+
+#### Try, Catch, Finally
+```
+try
+  # do something
+catch
+    case foo: FooException => handleFooException(foo)
+    case bar: BarException => handleBarException(bar)
+    case _: Throwable => println("Got some other kind of exception")
+finally
+  # do something
+```
+
+
 ### Package declaration
-*Package*
+Package
 ```
 package dir.sub_dir
 ```
 {nbsp} +
-{nbsp} +
+
+### Imports
+Single import
+```
+import dir.subDir.ClassName
+```
+Multi import
+```
+import dir.subDir.{ClassName1, ClassName2}
+```
+Directory import
+```
+import dir.subDir.*
+```
 {nbsp} +
 
 ### Classes
-*Class*
+Class
 ```
 class Example
 ```
 
-*Type parameter*
+Type parameter
 ```
 class Example[T]
 ```
 
-*Constructor parameters*
+Constructor parameters
 ```
 class Example(a: Int, b: Int)
 ```
 
-*Type parameter and constructor parameters*
+Type parameter and constructor parameters
 ```
 class Example[T](a: Int, b; Int)
 ```
 
-*Extend a parent class*
+Extend a parent class
 ```
 class Example extends ParentClass
 ```
 
-*Implement a trait*
+Implement a trait
 ```
 class Example extends ParentClass with TraitName
 ```
 {nbsp} +
-{nbsp} +
-{nbsp} +
 
 ### Methods
 
-*Inline*
+Inline
 ```
 add (a: Int, b: Int): Int = a + b
 ```
 
-*Multi-line*
+Multi-line
 ```
-add (a: Int, b: Int): Int 
+add (a: Int, b: Int): Int
   // Do something
   a + b
 ```
 
-*Type inference*
+Type inference
 ```
 add (a: Int, b: Int) = a + b
 ```
+
+#### Nested methods
+Methods can be defined within other methods
+```
+add (a: Int, b: Int): Int
+  // Do something
+  exampleNested(i: Int): Int
+    // Do something
+  a + b
+```
+
+#### Automatically return "this"
+Automatically return "this"
+This would shorten code as in some situations a new object has to be defined to do this.
+Scala
+```
+val file = new File("example.txt")
+file.mkdirs
+file.createFile()
+```
+Cobalt
+```
+val file = new File("example.txt").mkdirs.createFile
+```
+{nbsp} +
+
+### Strings
+Double quoted string
+```
+"This is a double quoted string"
+```
+{nbsp} +
+
+### Print statements
+Print
+```
+print ("Hello world!")
+```
+Print with new line
+```
+println ("Hello world!")
+```
+Print format
+```
+printf("Hello %s\n, "world")
+```
+{nbsp} +
+
+### Defining values/variables
+Value (Immutable)
+```
+val valName: ClassName = new ClassName()
+```
+Variable (Mutable)
+```
+var varName: ClassName = new ClassName()
+```
+Type inference
+```
+val x = 10              // Determines that x is an Int
+val y = new ClassName() // Determines that y is a ClassName instance
+```
+{nbsp} +
+
+### Casting
+```
+val dog: Animal = new Dog()
+val animal: Animal = dog as Animal
+```
+{nbsp} +
+
+### Type Of
+Gets the type of an object. In an if statement it will automatically cast if true.
+```
+val obj: Object = new ExampleClass()
+
+# Checks instance of and casts to ExampleClass if true.
+if(obj is ExampleClass
+  # Automatically cast to ExampleClass if true
+  println (obj)
+```
+{nbsp} +
+
+### Modifiers
+Modifiers for values/variables are defined after the class definition. They are grouped to improve the organisation of the code.
+```
+class ClassName
+
+public
+  val publicVal = "This is a public value"
+protected
+  val protectedVal = "This is a protected value"
+private
+  val privateVal = "This is a private value"
+```
+{nbsp} +
+
+### Operators
+
+#### Arithmetic Operators
+
+```
+val a = 10
+val b = 20
+```
+
+|===
+|Operator |Description |Example|Result
+
+|+
+|Adds two operands
+|a + b
+|30
+
+|-
+|Subtracts two operands
+|a - b
+|-10
+
+|*
+|Multiplies two operands
+|a * b
+|200
+
+|/
+|Divides two operands
+|b / a
+|2
+
+|%
+|Finds the remainder after a division
+|b % a
+|0
+|===
+
+#### Relational Operators
+
+```
+val a = 10
+val b = 20
+```
+
+|===
+|Operator |Description |Example|Result
+
+|==
+|Checks if the values of two operands are equal
+|a == b
+|False
+
+|!=
+|Checks if the values of two operands are not equal
+|a != b
+|True
+
+|>
+|Checks if the values of the left operand is larger than the right operand
+|a > b
+|False
+
+|<
+|Checks if the values of the right operand is larger than the left operand
+|a < b
+|True
+
+|>=
+|Checks if the values of the left operand is larger than or equal to the right operand
+|a >= b
+|False
+
+|<=
+|Checks if the values of the right operand is larger than or equal to the left operand
+|a <= b
+|True
+
+|===
+
+#### Logical Operators
+
+```
+val a = True
+val b = False
+```
+
+|===
+|Operator |Description |Example|Result
+
+|&&
+|Checks if the values of the left and right operand are true
+|a && b
+|False
+
+|\|\|
+|Checks if the values of the left or right operand are true
+|a \|\| b
+|True
+
+|!
+|Reverses the logical state of an operand
+|!(a \|\| b)
+|False
+|===
+
+#### Bitwise Operators
+
+Truth tables
+|===
+|p |q |p & q |p\|q|p ^ q
+
+|0
+|0
+|0
+|0
+|0
+
+|0
+|1
+|0
+|1
+|1
+
+|1
+|1
+|1
+|1
+|0
+
+|1
+|0
+|0
+|1
+|1
+|===
+
+
+#### List Operators
+```
+val a = List(1,2,3)
+val b = List(4,5,6)
+```
+
+|===
+|Operator |Description |Example|Result
+
+|++
+|Combines two lists
+|a ++ b
+|List(1,2,3,4,5,6)
+
+|===
+
+### Asynchronous Multithreading
+Would start a new thread possible from a thread pool. This could either use default values or have config parameters for how many threads are in the pool etc.
+```
+// Default
+async:
+    // do something
+
+//Configured - Pass a map
+async(configMap):
+    // do something
+```
+{nbsp} +
+
+### XML and JSON
+#### Open type System
+When using Java I had to write programs that would return JSON to be decoded by PHP APIs. This would mean that external libraries would have to be used such as GSON etc. With GSON you would have to create a class structure that represents the JSON file you are reading in. This would take time and isn't very tidy if there are multiple nested lists.
+Instead an Open Type System could be used. This would allow for JSON (and other formats) to be treated as objects. The elements can be converted into variables and then be referenced which would be highly readable and would save generating unneeded classes.
+
+##### Example xml (JSON to use the same concept)
+*xml file -> Book.xml*
+```xml
+<?xml version="1.0"?>
+<catalog>
+   <book id="bk101">
+      <author>Gambardella, Matthew</author>
+      <title>XML Developer's Guide</title>
+      <genre>Computer</genre>
+      <price>44.95</price>
+      <publish_date>2000-10-01</publish_date>
+      <description>An in-depth look at creating applications
+      with XML.</description>
+   </book>
+   <book id="bk102">
+      <author>Ralls, Kim</author>
+      <title>Midnight Rain</title>
+      <genre>Fantasy</genre>
+      <price>5.95</price>
+      <publish_date>2000-12-16</publish_date>
+      <description>A former architect battles corporate zombies,
+      an evil sorceress, and her own childhood to become queen
+      of the world.</description>
+      </book>
+</catalog>
+```
+*Cobalt file*
+```
+var xml = new Book() // Define an xml object
+print(xml.catalog.book[0].author) // output "Gambardella, Matthew"
+```
+#### UTF-8 Encoded
+The source files should be UTF-8 encoded.
+
+#### Time class
+In Java
+```
+long start = System.currentTimeMillis();
+// Do Something
+System.out.println(System.currentTimeMillis() - start);
+```
+In Cobalt
+```
+var start:long = Time.now   // Call static method in Time class
+// Do Something
+println(Time.since*(start))
+```
+
+### Binary
+Allow use of binary values as integers.
+```
+val example:Int = 0100100101001b
+```
+{nbsp} +
+
+### Hexadecimal
+Allow the use of hexadecimal values as integers.
+```
+val example:int = 0xab
+```
+{nbsp} +
+
+### List Definitions
+```
+val list: List = List(1,2,3,4,5)
+```
+{nbsp} +
+
+### Map Definitions
+```
+val example:Map<String,Integer> = ("One"->1, "two"->2,
+                                   "three"->3, "four"->4)
+```
+{nbsp} +
+
+### Using Keyword
+Automatically dispose any open connections etc to tidy code and lower risks.
+
+### Improve immutability
+In some cases you don't know how many times a recursive method should be called. This means you are left with code that requires a while loop that performs a check each loop and also means immutability isn't possible.
+Here's an example with a line tokenizer.
+```
+val tokenizer = new Tokenizer("This is an example")
+val statementTokens = new ListBuffer[Token] // Extract information from within the parenthesis
+
+while(tokenizer.peek != null){
+    statementTokens += tokenizer.nextToken
+}
+```
+Cobalt example (Need to decide best method of solving this)
+```
+tokenizer = new Tokenizer("This is an example")
+statementTokens = while(tokenizer.peek != null) _ + tokenizer.nextToken
+```
+{nbsp} +
+
+### Properties
+
+#### Auto-property initializers
+```
+class TimePeriod:
+    var seconds:double;
+    val Hours:double
+        get:
+            seconds / 3600
+        set:
+            seconds = value * 3600
+```
+{nbsp} +
+
+#### Multiple Arguments
+Multiple arguments can be listed using the variable name. This could replace builders in some cases as it is much more readable and requires a lot less code.
+```
+new ExampleClass(
+    :exampleVar1 = "Example1"
+    :exampleVar2 = "Example2"
+)
+```
+{nbsp} +
+
+### Automatic Casting
+If a float is used when defining an integer it is automatically cast to an integer.
+```
+x:int = 5.0f
+```
+Equivalent
+```
+x:int = (int) 5.0f
+```
+{nbsp} +
+
+### Partial Application
+```
+Undefined
+```
+{nbsp} +
+
+### Anonymous Functions
+Very similar to Scala - New syntax to be defined with similar concepts
+#### Successor function for integers
+```
+(x: int) => x + 1
+```
+#### Function with multiple parameters
+```
+(x: int, y: int) => "(" + x + ", " + y + ")"
+```
+#### Function with no parameters
+```
+() => println("Hello World")
+```
+#### Defining a value as a function
+```
+val example:int = (x: int) => x + 1
+```
+{nbsp} +
+
+### Higher Order Functions
+Functions that take other functions as parameters, or whose result is a function.
+```
+apply(x:int => String, y:int) = f(v)
+```
+{nbsp} +
+
+### Currying
+```
+Undefined
+```
+{nbsp} +
+
+### Other functional features
+```
+val factor = 5
+val multiplier = (i:int) = i * factor
+```
+```
+power()<-int:
+  var i:int = 0
+  return
+    next: function():
+      var result:int = Math.pow(i, 2)
+      i++
+      return result
+
+var gen = power();
+print(gen.next()) // 0
+print(gen.next()) // 1
+```
+{nbsp} +
