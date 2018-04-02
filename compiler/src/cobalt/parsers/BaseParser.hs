@@ -32,8 +32,11 @@ type Parser = Parsec Void String
 lineComment :: Parser ()
 lineComment = L.skipLineComment "#"
 
+blockComment :: Parser ()
+blockComment = L.skipBlockComment "/*" "*/"
+
 scn :: Parser ()
-scn = L.space space1 lineComment empty
+scn = L.space space1 lineComment blockComment
 
 sc :: Parser ()
 sc = L.space (void $ takeWhile1P Nothing f) lineComment empty
