@@ -1,7 +1,11 @@
+{-|
+Module      : Utils
+Description : Contains various helper functions.
+-}
 module Utils where
 
 import System.FilePath.Posix (takeExtension)
-import Data.Char
+import Data.Char (toLower)
 
 defaultHead :: a -> [a] -> a
 defaultHead x [] = x
