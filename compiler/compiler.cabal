@@ -77,7 +77,6 @@ library
   exposed-modules:
       BaseParser
       Block
-      BlockUtils
       CodeGenerator
       Compiler
       CompilerExecutor

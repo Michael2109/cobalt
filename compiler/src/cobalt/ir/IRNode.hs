@@ -6,7 +6,7 @@ import Data.Char
 import Text.Format
 import Text.PrettyPrint.Annotated.Leijen
 
-import BlockUtils
+import Utils
 import SymbolTable
 
 debug :: Bool
