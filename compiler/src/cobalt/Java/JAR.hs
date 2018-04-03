@@ -1,5 +1,5 @@
 
-module Java.JAR 
+module Java.JAR
   (--readManifest,
    --readJAR,
    --readMainClass,

@@ -32,4 +32,3 @@ instance Show CPEntry where
 
 -- | ClassPath monad
 type ClassPath a = StateT [Tree CPEntry] IO a
-

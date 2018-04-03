@@ -30,4 +30,3 @@ dumpClass cls = do
                          in  forM_ (codeInstructions code) $ \i -> do
                                putStr "  "
                                print i
-

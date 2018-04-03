@@ -54,4 +54,3 @@ testThisVarParserNotThisFail = do
     (case (parse thisVarParser "" code) of
       Left  e -> Error
       Right x -> x)
-

@@ -3,7 +3,7 @@
    TypeSynonymInstances, MultiParamTypeClasses #-}
 -- | This module declares data type for JVM instructions, and BinaryState
 -- instances to read/write them.
-module JVM.Assembler 
+module JVM.Assembler
   (Instruction (..),
    ArrayType (..),
    CodeException (..),
@@ -182,7 +182,7 @@ data Instruction =
   | DUP_X1         -- ^ 90
   | DUP_X2         -- ^ 91
   | DUP2           -- ^ 92
-  | DUP2_X1        -- ^ 93 
+  | DUP2_X1        -- ^ 93
   | DUP2_X2        -- ^ 94
   | SWAP           -- ^ 95
   | IADD           -- ^ 96
@@ -415,7 +415,7 @@ instance BinaryState Integer Instruction where
   put  DUP_X1      = putByte 90
   put  DUP_X2      = putByte 91
   put  DUP2        = putByte 92
-  put  DUP2_X1     = putByte 93 
+  put  DUP2_X1     = putByte 93
   put  DUP2_X2     = putByte 94
   put  SWAP        = putByte 95
   put  IADD        = putByte 96
@@ -587,7 +587,7 @@ instance BinaryState Integer Instruction where
       90 -> return DUP_X1
       91 -> return DUP_X2
       92 -> return DUP2
-      93 -> return DUP2_X1 
+      93 -> return DUP2_X1
       94 -> return DUP2_X2
       95 -> return SWAP
       96 -> return IADD
@@ -717,7 +717,7 @@ encodeInstructions :: [Instruction] -> B.ByteString
 encodeInstructions code =
   let p list = forM_ list put
   in  encodeWith p (0 :: Integer) code
-  
+
 -- | Decode Java method
 decodeMethod :: B.ByteString -> Code
 decodeMethod str = decodeS (0 :: Integer) str

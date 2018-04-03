@@ -62,18 +62,18 @@ library
       scientific,
       temporary,
 
-      binary,
-      utf8-string,
-      array,
-      bytestring,
-      data-binary-ieee754,
-      binary-state,
-      control-monad-exception,
-      data-default >= 0.5.0,
-      MissingH,
-      zip,
-      Glob,
-      parsec >= 3 && <4
+       binary,
+       utf8-string,
+       array,
+       bytestring,
+       data-binary-ieee754,
+       binary-state,
+       control-monad-exception,
+       data-default >= 0.5.0,
+       MissingH,
+       zip,
+       Glob,
+       parsec >= 3 && <4
   exposed-modules:
       BaseParser
       Block
@@ -131,6 +131,7 @@ test-suite compiler-test
   hs-source-dirs:
 
       test,
+      test/tests/utils,
       test/tests/cobalt,
       test/tests/cobalt/blocks,
       test/tests/cobalt/code_generator,
@@ -188,6 +189,8 @@ test-suite compiler-test
       compiler
 
   other-modules:
+      TestUtils
+
       IntegrationTests
       ParserTests
       SymbolTableTests

@@ -20,5 +20,3 @@ symbolTableTestList = TestList [
     testSymbolTableVariableExistsFail,
     testSymbolTableGetClassSymbolTable
   ]
-
-
