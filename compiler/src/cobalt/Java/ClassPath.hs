@@ -2,7 +2,7 @@
 module Java.ClassPath
   (module Java.ClassPath.Types,
    module Java.ClassPath.Common,
- --  appendPath, addDirectory, loadClass,
+  appendPath, addDirectory--, loadClass,
  --  runClassPath, execClassPath,
 --   getEntry
   ) where

@@ -142,6 +142,7 @@ test-suite compiler-test
       src/cobalt/utils
 
       test,
+      test/tests/utils,
       test/tests/cobalt,
       test/tests/cobalt/blocks,
       test/tests/cobalt/code_generator,
@@ -153,6 +154,7 @@ test-suite compiler-test
       test/tests/cobalt/symbol_table,
       test/tests/cobalt/utils,
       test/tests/cobalt/JVM
+
 
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
@@ -234,6 +236,8 @@ test-suite compiler-test
       Java.META.Types
       Java.META.Spec
       Java.META.Parser
+
+      TestUtils
 
       IntegrationTests
       ParserTests
