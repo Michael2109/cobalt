@@ -45,4 +45,3 @@ testArgumentParserObjectVar = do
     (case (parse (argumentParser) "" code) of
       Left  e -> Error
       Right x -> x)
-

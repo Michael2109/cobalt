@@ -42,4 +42,3 @@ mapFindIndex check m =
   case find (check . snd) (M.assocs m) of
     Nothing -> Nothing
     Just (k,_) -> Just k
-

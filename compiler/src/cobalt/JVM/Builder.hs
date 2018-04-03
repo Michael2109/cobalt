@@ -15,4 +15,3 @@ arrayOf t = Array Nothing t
 
 sizedArray :: Int -> FieldType -> FieldType
 sizedArray n t = Array (Just n) t
-

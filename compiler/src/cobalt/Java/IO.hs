@@ -27,4 +27,3 @@ printf :: NameType (Method Direct)
 printf =
   NameType "printf" $ MethodSignature [Java.Lang.stringClass,
                                        Array Nothing Java.Lang.objectClass] (Returns printStreamClass)
-
