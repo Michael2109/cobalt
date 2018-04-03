@@ -89,7 +89,7 @@ type instance Link File a = Word16
 -- | At Direct stage, Link contain object itself.
 type instance Link Direct a = a
 
--- | Object (class, method, field …) access flags 
+-- | Object (class, method, field …) access flags
 type family AccessFlags stage
 
 -- | At File stage, access flags are represented as Word16
@@ -136,10 +136,10 @@ data AccessFlag =
   | ACC_FINAL 	     -- ^ 0x0010 No further subclassing or assignments
   | ACC_SYNCHRONIZED -- ^ 0x0020 Uses monitors
   | ACC_VOLATILE 	   -- ^ 0x0040 Could not be cached
-  | ACC_TRANSIENT 	 -- ^ 0x0080 
+  | ACC_TRANSIENT 	 -- ^ 0x0080
   | ACC_NATIVE 	     -- ^ 0x0100 Implemented in other language
   | ACC_INTERFACE 	 -- ^ 0x0200 Class is interface
-  | ACC_ABSTRACT 	   -- ^ 0x0400 
+  | ACC_ABSTRACT 	   -- ^ 0x0400
   deriving (Eq, Show, Ord, Enum)
 
 -- | Fields and methods have signatures.
@@ -562,7 +562,7 @@ fieldNameType f = NameType (fieldName f) (fieldSignature f)
 
 instance Binary (Field File) where
   put (Field {..}) = do
-    put fieldAccessFlags 
+    put fieldAccessFlags
     put fieldName
     put fieldSignature
     put fieldAttributesCount
@@ -605,7 +605,7 @@ instance Binary (Method File) where
     put methodAccessFlags
     put methodName
     put methodSignature
-    put methodAttributesCount 
+    put methodAttributesCount
     forM_ (attributesList methodAttributes) put
 
   get = do
@@ -654,4 +654,3 @@ instance HasAttributes Field where
 
 instance HasAttributes Method where
   attributes = methodAttributes
-

@@ -256,4 +256,3 @@ methodCode :: Class Direct
 methodCode cls name = do
   method <- methodByName cls name
   attrByName method "Code"
-

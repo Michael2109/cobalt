@@ -45,4 +45,3 @@ testParenthesesParserNoCloseFail = do
     (case (parse (parens aExpr) "" code) of
       Left e -> Error
       Right x -> x)
-

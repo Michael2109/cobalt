@@ -81,4 +81,3 @@ testIfStmtParserAndOr = do
     (case (parse (ifStmtParser) "" code) of
       Left  e -> Error
       Right x -> x)
-

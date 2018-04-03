@@ -26,7 +26,7 @@ pSection = do
   blankline <?> "blank line"
   return $ M.fromList list
 
-pHeader :: Parser (String, String) 
+pHeader :: Parser (String, String)
 pHeader = do
     name <- many1 headerChar <?> "header name"
     char ':'
@@ -63,4 +63,3 @@ parseMetaFile path = do
 
 parseMeta :: String -> Either ParseError META
 parseMeta str = parse pMETA "<META>" (str ++ "\n\n")
-

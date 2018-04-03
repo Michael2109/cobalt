@@ -30,4 +30,3 @@ string2bool :: String -> Bool
 string2bool s
   | map toLower s == "true" = True
   | otherwise = False
-

@@ -38,4 +38,3 @@ objectInit = NameType "<init>" $ MethodSignature [] ReturnsVoid
 -- | java.lang.Integer.valueOf() method
 valueOfInteger :: NameType (Method Direct)
 valueOfInteger = NameType "valueOf" $ MethodSignature [IntType] (Returns Java.Lang.integerClass)
-

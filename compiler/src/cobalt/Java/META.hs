@@ -78,4 +78,3 @@ instance MetaSpec Manifest where
           if meBean e
             then [("Java-Bean", "true")]
             else []
-
