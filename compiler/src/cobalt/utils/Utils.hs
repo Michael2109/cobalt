@@ -14,4 +14,5 @@ defaultHead _ xs = head xs
 endsWith :: String -> FilePath -> Bool
 endsWith extension file = takeExtension file == extension
 
+lowerString :: String -> String
 lowerString str = [ toLower loweredString | loweredString <- str]
