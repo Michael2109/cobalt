@@ -18,15 +18,16 @@ dumpClass cls = do
     B.putStrLn (thisClass cls)
     putStrLn "Constants pool:"
     forM_ (M.assocs $ constsPool cls) $ \(i, c) ->
-      putStrLn $ printf "  #%d:\t%s" i (show c)
+        putStrLn $ printf "  #%d:\t%s" i (show c)
     putStrLn "Methods:"
     forM_ (classMethods cls) $ \m -> do
-      putStr ">> Method "
-      B.putStr (methodName m)
-      print (methodSignature m)
-      case attrByName m "Code" of
-        Nothing -> putStrLn "(no code)\n"
-        Just bytecode -> let code = decodeMethod bytecode
-                         in  forM_ (codeInstructions code) $ \i -> do
-                               putStr "  "
-                               print i
+        putStr ">> Method "
+        B.putStr (methodName m)
+        print (methodSignature m)
+        case attrByName m "Code" of
+            Nothing -> putStrLn "(no code)\n"
+            Just bytecode ->
+                let code = decodeMethod bytecode
+                in  forM_ (codeInstructions code) $ \i -> do
+                    putStr "  "
+                    print i

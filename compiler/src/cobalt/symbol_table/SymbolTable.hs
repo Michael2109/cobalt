@@ -48,9 +48,10 @@ extractReturnType symbolTable className mName = do
         then error ("No method found: " ++ className ++ "::" ++ mName)
         else returnType $ matchingMethods!!0
   where
-    classSymbolTable = case getClassSymbolTable symbolTable className of
-                           Just a -> a
-                           Nothing -> error ("No class found: " ++ className)
+    classSymbolTable =
+        case getClassSymbolTable symbolTable className of
+             Just a -> a
+             Nothing -> error ("No class found: " ++ className)
 
 extractMethodArgs :: SymbolTable -> String -> String -> [(String, String)]
 extractMethodArgs symbolTable className mName = do
@@ -125,6 +126,6 @@ combineClassSymbolTable a b = ClassSymbolTable (className a) (classType a) (publ
 
 combineClassSymbolTableList :: [ClassSymbolTable] -> ClassSymbolTable
 combineClassSymbolTableList list = do
-  if length list > 0
-    then foldl1 (\x y -> combineClassSymbolTable x y) list
-    else ClassSymbolTable "" ClassType [] []
+    if length list > 0
+        then foldl1 (\x y -> combineClassSymbolTable x y) list
+        else ClassSymbolTable "" ClassType [] []

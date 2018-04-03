@@ -19,7 +19,7 @@ import Data.List
 import JVM.ClassFile
 
 instance Default B.ByteString where
-  def = B.empty
+    def = B.empty
 
 toCharList :: B.ByteString -> [Int]
 toCharList bstr = map fromIntegral $ B.unpack bstr
@@ -39,6 +39,6 @@ byteString x = runPut (put x)
 
 mapFindIndex :: (Num k) => (v -> Bool) -> M.Map k v -> Maybe k
 mapFindIndex check m =
-  case find (check . snd) (M.assocs m) of
-    Nothing -> Nothing
-    Just (k,_) -> Just k
+    case find (check . snd) (M.assocs m) of
+        Nothing -> Nothing
+        Just (k,_) -> Just k

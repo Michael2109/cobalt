@@ -238,92 +238,92 @@ deriving instance Show (Constant File)
 defaultClass :: (Default (AccessFlags stage), Default (Link stage B.ByteString), Default (Attributes stage))
              => Class stage
 defaultClass = Class {
-  magic = 0xCAFEBABE,
-  minorVersion = 0,
-  majorVersion = 50,
-  constsPoolSize = 0,
-  constsPool = def,
-  accessFlags = def,
-  thisClass = def,
-  superClass = def,
-  interfacesCount = 0,
-  interfaces = [],
-  classFieldsCount = 0,
-  classFields = [],
-  classMethodsCount = 0,
-  classMethods = [],
-  classAttributesCount = 0,
-  classAttributes = def }
+    magic = 0xCAFEBABE,
+    minorVersion = 0,
+    majorVersion = 50,
+    constsPoolSize = 0,
+    constsPool = def,
+    accessFlags = def,
+    thisClass = def,
+    superClass = def,
+    interfacesCount = 0,
+    interfaces = [],
+    classFieldsCount = 0,
+    classFields = [],
+    classMethodsCount = 0,
+    classMethods = [],
+    classAttributesCount = 0,
+    classAttributes = def }
 
 instance Binary (Class File) where
-  put (Class {..}) = do
-    put magic
-    put minorVersion
-    put majorVersion
-    putPool constsPool
-    put accessFlags
-    put thisClass
-    put superClass
-    put interfacesCount
-    forM_ interfaces put
-    put classFieldsCount
-    forM_ classFields put
-    put classMethodsCount
-    forM_ classMethods put
-    put classAttributesCount
-    forM_ (attributesList classAttributes) put
+    put (Class {..}) = do
+        put magic
+        put minorVersion
+        put majorVersion
+        putPool constsPool
+        put accessFlags
+        put thisClass
+        put superClass
+        put interfacesCount
+        forM_ interfaces put
+        put classFieldsCount
+        forM_ classFields put
+        put classMethodsCount
+        forM_ classMethods put
+        put classAttributesCount
+        forM_ (attributesList classAttributes) put
 
-  get = do
-    magic <- get
-    when (magic /= 0xCAFEBABE) $
-      fail $ "Invalid .class file MAGIC value: " ++ show magic
-    minor <- get
-    major <- get
-    when (major > 50) $
-      fail $ "Too new .class file format: " ++ show major
-    poolsize <- getWord16be
-    pool <- getPool (poolsize - 1)
-    af <-  get
-    this <- get
-    super <- get
-    interfacesCount <- get
-    ifaces <- replicateM (fromIntegral interfacesCount) get
-    classFieldsCount <- getWord16be
-    classFields <- replicateM (fromIntegral classFieldsCount) get
-    classMethodsCount <- get
-    classMethods <- replicateM (fromIntegral classMethodsCount) get
-    asCount <- get
-    as <- replicateM (fromIntegral $ asCount) get
-    return $ Class magic minor major poolsize pool af this super
-               interfacesCount ifaces classFieldsCount classFields
-               classMethodsCount classMethods asCount (AP as)
+    get = do
+        magic <- get
+        when (magic /= 0xCAFEBABE) $
+            fail $ "Invalid .class file MAGIC value: " ++ show magic
+        minor <- get
+        major <- get
+        when (major > 50) $
+            fail $ "Too new .class file format: " ++ show major
+        poolsize <- getWord16be
+        pool <- getPool (poolsize - 1)
+        af <-  get
+        this <- get
+        super <- get
+        interfacesCount <- get
+        ifaces <- replicateM (fromIntegral interfacesCount) get
+        classFieldsCount <- getWord16be
+        classFields <- replicateM (fromIntegral classFieldsCount) get
+        classMethodsCount <- get
+        classMethods <- replicateM (fromIntegral classMethodsCount) get
+        asCount <- get
+        as <- replicateM (fromIntegral $ asCount) get
+        return $ Class magic minor major poolsize pool af this super
+                   interfacesCount ifaces classFieldsCount classFields
+                   classMethodsCount classMethods asCount (AP as)
 
 -- | Field signature format
-data FieldType =
-    SignedByte -- ^ B
-  | CharByte   -- ^ C
-  | DoubleType -- ^ D
-  | FloatType  -- ^ F
-  | IntType    -- ^ I
-  | LongInt    -- ^ J
-  | ShortInt   -- ^ S
-  | BoolType   -- ^ Z
-  | ObjectType String -- ^ L @{class name}@
-  | Array (Maybe Int) FieldType -- ^ @[{type}@
-  deriving (Eq, Ord)
+data FieldType
+    = SignedByte -- ^ B
+    | CharByte   -- ^ C
+    | DoubleType -- ^ D
+    | FloatType  -- ^ F
+    | IntType    -- ^ I
+    | LongInt    -- ^ J
+    | ShortInt   -- ^ S
+    | BoolType   -- ^ Z
+    | ObjectType String -- ^ L @{class name}@
+    | Array (Maybe Int) FieldType -- ^ @[{type}@
+     deriving (Eq, Ord)
 
 instance Show FieldType where
-  show SignedByte = "byte"
-  show CharByte = "char"
-  show DoubleType = "double"
-  show FloatType = "float"
-  show IntType = "int"
-  show LongInt = "long"
-  show ShortInt = "short"
-  show BoolType = "bool"
-  show (ObjectType s) = "Object " ++ s
-  show (Array Nothing t) = show t ++ "[]"
-  show (Array (Just n) t) = show t ++ "[" ++ show n ++ "]"
+    show SignedByte = "byte"
+    show CharByte = "char"
+    show DoubleType = "double"
+    show FloatType = "float"
+    show IntType = "int"
+    show LongInt = "long"
+    show ShortInt = "short"
+    show BoolType = "bool"
+    show (ObjectType s) = "Object " ++ s
+    show (Array Nothing t) = show t ++ "[]"
+    show (Array (Just n) t) = show t ++ "[" ++ show n ++ "]"
 
 -- | Class field signature
 type FieldSignature = FieldType
@@ -338,108 +338,108 @@ getInt = do
   where
     getDigits :: Get [Char]
     getDigits = do
-      c <- lookAhead getChar8
-      if isDigit c
-        then do
-             skip 1
-             next <- getDigits
-             return (c: next)
-        else return []
+        c <- lookAhead getChar8
+        if isDigit c
+            then do
+                skip 1
+                next <- getDigits
+                return (c: next)
+            else return []
 
 putString :: String -> Put
 putString str = forM_ str put
 
 instance Binary FieldType where
-  put SignedByte = put 'B'
-  put CharByte   = put 'C'
-  put DoubleType = put 'D'
-  put FloatType  = put 'F'
-  put IntType    = put 'I'
-  put LongInt    = put 'J'
-  put ShortInt   = put 'S'
-  put BoolType   = put 'Z'
-  put (ObjectType name) = put 'L' >> putString name >> put ';'
-  put (Array Nothing sig) = put '[' >> put sig
-  put (Array (Just n) sig) = put '[' >> put (show n) >> put sig
+    put SignedByte = put 'B'
+    put CharByte   = put 'C'
+    put DoubleType = put 'D'
+    put FloatType  = put 'F'
+    put IntType    = put 'I'
+    put LongInt    = put 'J'
+    put ShortInt   = put 'S'
+    put BoolType   = put 'Z'
+    put (ObjectType name) = put 'L' >> putString name >> put ';'
+    put (Array Nothing sig) = put '[' >> put sig
+    put (Array (Just n) sig) = put '[' >> put (show n) >> put sig
 
-  get = do
-    b <- getChar8
-    case b of
-      'B' -> return SignedByte
-      'C' -> return CharByte
-      'D' -> return DoubleType
-      'F' -> return FloatType
-      'I' -> return IntType
-      'J' -> return LongInt
-      'S' -> return ShortInt
-      'Z' -> return BoolType
-      'L' -> do
-             name <- getToSemicolon
-             return (ObjectType name)
-      '[' -> do
-             mbSize <- getInt
-             sig <- get
-             return (Array mbSize sig)
-      _   -> fail $ "Unknown signature opening symbol: " ++ [b]
+    get = do
+        b <- getChar8
+        case b of
+            'B' -> return SignedByte
+            'C' -> return CharByte
+            'D' -> return DoubleType
+            'F' -> return FloatType
+            'I' -> return IntType
+            'J' -> return LongInt
+            'S' -> return ShortInt
+            'Z' -> return BoolType
+            'L' -> do
+                name <- getToSemicolon
+                return (ObjectType name)
+            '[' -> do
+                mbSize <- getInt
+                sig <- get
+                return (Array mbSize sig)
+            _   -> fail $ "Unknown signature opening symbol: " ++ [b]
 
 -- | Read string up to `;'
 getToSemicolon :: Get String
 getToSemicolon = do
-  x <- get
-  if x == ';'
-    then return []
-    else do
-         next <- getToSemicolon
-         return (x: next)
+    x <- get
+    if x == ';'
+        then return []
+        else do
+            next <- getToSemicolon
+            return (x: next)
 
 -- | Return value signature
-data ReturnSignature =
-    Returns FieldType
-  | ReturnsVoid
-  deriving (Eq, Ord)
+data ReturnSignature
+    = Returns FieldType
+    | ReturnsVoid
+        deriving (Eq, Ord)
 
 instance Show ReturnSignature where
-  show (Returns t) = show t
-  show ReturnsVoid = "Void"
+    show (Returns t) = show t
+    show ReturnsVoid = "Void"
 
 instance Binary ReturnSignature where
-  put (Returns sig) = put sig
-  put ReturnsVoid   = put 'V'
+    put (Returns sig) = put sig
+    put ReturnsVoid   = put 'V'
 
-  get = do
-    x <- lookAhead getChar8
-    case x of
-      'V' -> skip 1 >> return ReturnsVoid
-      _   -> Returns <$> get
+    get = do
+        x <- lookAhead getChar8
+        case x of
+            'V' -> skip 1 >> return ReturnsVoid
+            _   -> Returns <$> get
 
 -- | Method argument signature
 type ArgumentSignature = FieldType
 
 -- | Class method argument signature
-data MethodSignature =
-    MethodSignature [ArgumentSignature] ReturnSignature
-  deriving (Eq, Ord)
+data MethodSignature
+    = MethodSignature [ArgumentSignature] ReturnSignature
+        deriving (Eq, Ord)
 
 instance Show MethodSignature where
-  show (MethodSignature args ret) = "(" ++ intercalate ", " (map show args) ++ ") returns " ++ show ret
+    show (MethodSignature args ret) = "(" ++ intercalate ", " (map show args) ++ ") returns " ++ show ret
 
 instance Binary MethodSignature where
-  put (MethodSignature args ret) = do
-    put '('
-    forM_ args put
-    put ')'
-    put ret
+    put (MethodSignature args ret) = do
+        put '('
+        forM_ args put
+        put ')'
+        put ret
 
-  get =  do
-    x <- getChar8
-    when (x /= '(') $
-      fail "Cannot parse method signature: no starting `(' !"
-    args <- getArgs
-    y <- getChar8
-    when (y /= ')') $
-      fail "Internal error: method signature without `)' !?"
-    ret <- get
-    return (MethodSignature args ret)
+    get =  do
+        x <- getChar8
+        when (x /= '(') $
+            fail "Cannot parse method signature: no starting `(' !"
+        args <- getArgs
+        y <- getChar8
+        when (y /= ')') $
+            fail "Internal error: method signature without `)' !?"
+        ret <- get
+        return (MethodSignature args ret)
 
 -- | Read arguments signatures (up to `)')
 getArgs :: Get [ArgumentSignature]
@@ -447,19 +447,19 @@ getArgs = whileJust getArg
   where
     getArg :: Get (Maybe ArgumentSignature)
     getArg = do
-      x <- lookAhead getChar8
-      if x == ')'
-        then return Nothing
-        else Just <$> get
+        x <- lookAhead getChar8
+        if x == ')'
+            then return Nothing
+            else Just <$> get
 
 whileJust :: (Monad m) => m (Maybe a) -> m [a]
 whileJust m = do
-  r <- m
-  case r of
-    Just x -> do
+    r <- m
+    case r of
+        Just x -> do
               next <- whileJust m
               return (x: next)
-    Nothing -> return []
+        Nothing -> return []
 
 long :: Constant stage -> Bool
 long (CLong _)   = True
@@ -499,50 +499,50 @@ getPool n = do
   where
     go :: St.StateT Word16 Get [(Word16, Constant File)]
     go = do
-      i <- St.get
-      if i > n
-        then return []
-        else do
-          c <- lift getC
-          let i' = if long c
-                      then i+2
-                      else i+1
-          St.put i'
-          next <- go
-          return $ (i,c): next
+        i <- St.get
+        if i > n
+            then return []
+            else do
+                c <- lift getC
+                let i' = if long c
+                    then i+2
+                    else i+1
+                St.put i'
+                next <- go
+                return $ (i,c): next
 
     getC = do
-      !offset <- bytesRead
-      tag <- getWord8
-      case tag of
-        1 -> do
-          l <- get
-          bs <- getLazyByteString (fromIntegral (l :: Word16))
-          return $ CUTF8 bs
-        2 -> do
-          l <- get
-          bs <- getLazyByteString (fromIntegral (l :: Word16))
-          return $ CUnicode bs
-        3  -> CInteger   <$> get
-        4  -> CFloat     <$> getFloat32be
-        5  -> CLong      <$> get
-        6  -> CDouble    <$> getFloat64be
-        7  -> CClass     <$> get
-        8  -> CString    <$> get
-        9  -> CField     <$> get <*> get
-        10 -> CMethod    <$> get <*> get
-        11 -> CIfaceMethod <$> get <*> get
-        12 -> CNameType    <$> get <*> get
-        _  -> fail $ "Unknown constants pool entry tag: " ++ show tag
+        !offset <- bytesRead
+        tag <- getWord8
+        case tag of
+            1 -> do
+                l <- get
+                bs <- getLazyByteString (fromIntegral (l :: Word16))
+                return $ CUTF8 bs
+            2 -> do
+                l <- get
+                bs <- getLazyByteString (fromIntegral (l :: Word16))
+                return $ CUnicode bs
+            3  -> CInteger   <$> get
+            4  -> CFloat     <$> getFloat32be
+            5  -> CLong      <$> get
+            6  -> CDouble    <$> getFloat64be
+            7  -> CClass     <$> get
+            8  -> CString    <$> get
+            9  -> CField     <$> get <*> get
+            10 -> CMethod    <$> get <*> get
+            11 -> CIfaceMethod <$> get <*> get
+            12 -> CNameType    <$> get <*> get
+            _  -> fail $ "Unknown constants pool entry tag: " ++ show tag
 --         _ -> return $ CInteger 0
 
 -- | Class field format
 data Field stage = Field {
-  fieldAccessFlags :: AccessFlags stage,
-  fieldName :: Link stage B.ByteString,
-  fieldSignature :: Link stage FieldSignature,
-  fieldAttributesCount :: Word16,
-  fieldAttributes :: Attributes stage }
+    fieldAccessFlags :: AccessFlags stage,
+    fieldName :: Link stage B.ByteString,
+    fieldSignature :: Link stage FieldSignature,
+    fieldAttributesCount :: Word16,
+    fieldAttributes :: Attributes stage }
 
 deriving instance Eq (Field File)
 deriving instance Eq (Field Direct)
@@ -554,35 +554,35 @@ lookupField name cls = look (classFields cls)
   where
     look [] = Nothing
     look (f:fs)
-      | fieldName f == name = Just f
-      | otherwise           = look fs
+        | fieldName f == name = Just f
+        | otherwise           = look fs
 
 fieldNameType :: Field Direct -> NameType (Field Direct)
 fieldNameType f = NameType (fieldName f) (fieldSignature f)
 
 instance Binary (Field File) where
-  put (Field {..}) = do
-    put fieldAccessFlags
-    put fieldName
-    put fieldSignature
-    put fieldAttributesCount
-    forM_ (attributesList fieldAttributes) put
+    put (Field {..}) = do
+        put fieldAccessFlags
+        put fieldName
+        put fieldSignature
+        put fieldAttributesCount
+        forM_ (attributesList fieldAttributes) put
 
-  get = do
-    af <- get
-    ni <- getWord16be
-    si <- get
-    n <- getWord16be
-    as <- replicateM (fromIntegral n) get
-    return $ Field af ni si n (AP as)
+    get = do
+        af <- get
+        ni <- getWord16be
+        si <- get
+        n <- getWord16be
+        as <- replicateM (fromIntegral n) get
+        return $ Field af ni si n (AP as)
 
 -- | Class method format
 data Method stage = Method {
-  methodAccessFlags :: AccessFlags stage,
-  methodName :: Link stage B.ByteString,
-  methodSignature :: Link stage MethodSignature,
-  methodAttributesCount :: Word16,
-  methodAttributes :: Attributes stage }
+    methodAccessFlags :: AccessFlags stage,
+    methodName :: Link stage B.ByteString,
+    methodSignature :: Link stage MethodSignature,
+    methodAttributesCount :: Word16,
+    methodAttributes :: Attributes stage }
 
 deriving instance Eq (Method File)
 deriving instance Eq (Method Direct)
@@ -597,60 +597,60 @@ lookupMethod name cls = look (classMethods cls)
   where
     look [] = Nothing
     look (f:fs)
-      | methodName f == name = Just f
-      | otherwise           = look fs
+        | methodName f == name = Just f
+        | otherwise           = look fs
 
 instance Binary (Method File) where
-  put (Method {..}) = do
-    put methodAccessFlags
-    put methodName
-    put methodSignature
-    put methodAttributesCount
-    forM_ (attributesList methodAttributes) put
+    put (Method {..}) = do
+        put methodAccessFlags
+        put methodName
+        put methodSignature
+        put methodAttributesCount
+        forM_ (attributesList methodAttributes) put
 
-  get = do
-    offset <- bytesRead
-    af <- get
-    ni <- get
-    si <- get
-    n <- get
-    as <- replicateM (fromIntegral n) get
-    return $ Method {
-               methodAccessFlags = af,
-               methodName = ni,
-               methodSignature = si,
-               methodAttributesCount = n,
-               methodAttributes = AP as }
+    get = do
+        offset <- bytesRead
+        af <- get
+        ni <- get
+        si <- get
+        n <- get
+        as <- replicateM (fromIntegral n) get
+        return $ Method {
+                   methodAccessFlags = af,
+                   methodName = ni,
+                   methodSignature = si,
+                   methodAttributesCount = n,
+                   methodAttributes = AP as }
 
 -- | Any (class/ field/ method/ ...) attribute format.
 -- Some formats specify special formats for @attributeValue@.
 data Attribute = Attribute {
-  attributeName :: Word16,
-  attributeLength :: Word32,
-  attributeValue :: B.ByteString }
-  deriving (Eq, Show)
+    attributeName :: Word16,
+    attributeLength :: Word32,
+    attributeValue :: B.ByteString }
+    deriving (Eq, Show)
 
 instance Binary Attribute where
-  put (Attribute {..}) = do
-    put attributeName
-    putWord32be attributeLength
-    putLazyByteString attributeValue
+    put (Attribute {..}) = do
+        put attributeName
+        putWord32be attributeLength
+        putLazyByteString attributeValue
 
-  get = do
-    offset <- bytesRead
-    name <- getWord16be
-    len <- getWord32be
-    value <- getLazyByteString (fromIntegral len)
-    return $ Attribute name len value
+    get = do
+        offset <- bytesRead
+        name <- getWord16be
+        len <- getWord32be
+        value <- getLazyByteString (fromIntegral len)
+        return $ Attribute name len value
 
 class HasAttributes a where
-  attributes :: a stage -> Attributes stage
+    attributes :: a stage -> Attributes stage
 
 instance HasAttributes Class where
-  attributes = classAttributes
+    attributes = classAttributes
 
 instance HasAttributes Field where
-  attributes = fieldAttributes
+    attributes = fieldAttributes
 
 instance HasAttributes Method where
-  attributes = methodAttributes
+    attributes = methodAttributes
