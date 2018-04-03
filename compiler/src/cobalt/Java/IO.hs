@@ -25,5 +25,4 @@ out = NameType "out" printStreamClass
 
 printf :: NameType (Method Direct)
 printf =
-  NameType "printf" $ MethodSignature [Java.Lang.stringClass,
-                                       Array Nothing Java.Lang.objectClass] (Returns printStreamClass)
+    NameType "printf" $ MethodSignature [Java.Lang.stringClass, Array Nothing Java.Lang.objectClass] (Returns printStreamClass)

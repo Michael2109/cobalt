@@ -9,7 +9,6 @@ module Java.JAR
 import Control.Monad.Trans (liftIO)
 import qualified Control.Monad.State as St
 import Data.List
---import qualified Codec.Archive.LibZip as Zip
 
 import Java.ClassPath
 import Java.JAR.Archive

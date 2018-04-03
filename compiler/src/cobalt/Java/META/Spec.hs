@@ -5,18 +5,18 @@ import Data.Char (toLower)
 import Java.META.Types
 
 class MetaSpec s where
-  loadFirstSection :: Section -> s
+    loadFirstSection :: Section -> s
 
-  loadOtherSection :: s -> Section -> s
-  loadOtherSection s _ = s
+    loadOtherSection :: s -> Section -> s
+    loadOtherSection s _ = s
 
-  storeMeta :: s -> META
+    storeMeta :: s -> META
 
 loadSpec :: (MetaSpec s) => META -> s
 loadSpec [] = error "Cannot load empty metadata"
 loadSpec (s:ss) =
-  let x = loadFirstSection s
-  in  foldl loadOtherSection x ss
+    let x = loadFirstSection s
+    in  foldl loadOtherSection x ss
 
 lookupList :: String -> Maybe String -> [(String, String)]
 lookupList _ Nothing = []
@@ -28,5 +28,5 @@ bool2string False = "false"
 
 string2bool :: String -> Bool
 string2bool s
-  | map toLower s == "true" = True
-  | otherwise = False
+    | map toLower s == "true" = True
+    | otherwise = False
