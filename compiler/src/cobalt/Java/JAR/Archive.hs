@@ -1,44 +1,37 @@
 -- | This module defines functions to read Java JAR files.
 module Java.JAR.Archive where
 
-import qualified Data.Map as M
-import Codec.Archive.Zip
+--import qualified Codec.Archive.LibZip as Zip
 import Data.Binary
 import Data.List
-import Data.ByteString.Internal
-import Data.ByteString.Lazy (ByteString, toStrict, fromStrict)
+import qualified Data.ByteString.Lazy as B
 import System.FilePath
-import Data.Text (unpack)
 
 import Java.ClassPath.Types
 import Java.ClassPath.Common
 import JVM.ClassFile
 import JVM.Converter
 
+{--
+readJAREntry :: (Enum a) => FilePath -> String -> IO (Maybe [a])
+readJAREntry jarfile path = do
+  Zip.catchZipError (Just `fmap` (Zip.withArchive [] jarfile $ Zip.fileContents [] path))
+                    (\_ -> return Nothing)
 
-readJAREntry :: FilePath -> String -> IO Data.ByteString.Internal.ByteString
-readJAREntry jarFile path = do
-  s        <- mkEntrySelector jarFile
-  content       <- withArchive path (getEntry s)
-  return content
-
-
--- | Read all entries from JAR file
+-- | Read all entires from JAR file
 readAllJAR :: FilePath -> IO [Tree CPEntry]
-readAllJAR jarFile = do
-    entries <- withArchive jarFile (M.keys <$> getEntries)
-    return $ mapF (NotLoadedJAR jarFile) (buildTree $ map unEntrySelector $ filter good entries)
+readAllJAR jarfile = do
+    files <- Zip.withArchive [] jarfile $ Zip.fileNames []
+    return $ mapF (NotLoadedJAR jarfile) (buildTree $ filter good files)
   where
-    good file = ".class" `isSuffixOf` (unpack $ getEntryName file)
-
+    good file = ".class" `isSuffixOf` file
 
 -- | Read one class from JAR file
 readFromJAR :: FilePath -> FilePath -> IO (Class Direct)
-readFromJAR jarFile path = do
-  s        <- mkEntrySelector jarFile
-  content       <- withArchive path (getEntry s)
-  return $ classFile2Direct (decode $ fromStrict content)
-
+readFromJAR jarfile path = do
+  content <- Zip.withArchive [] jarfile $ Zip.fileContents [] path
+  let bstr = B.pack content
+  return $ classFile2Direct (decode bstr)
 
 checkClassTree :: [Tree CPEntry] -> IO [Tree (FilePath, Class Direct)]
 checkClassTree forest = mapFMF check forest
@@ -53,13 +46,11 @@ checkClassTree forest = mapFMF check forest
     check a (LoadedJAR _ cls) =
        return (a </> show (thisClass cls), cls)
 
-zipJAR :: [Tree (FilePath, Class Direct)] -> ZipArchive ()
+zipJAR :: [Tree (FilePath, Class Direct)] -> Zip.Archive ()
 zipJAR forest = do
     mapFM go forest
     return ()
   where
-    go (path, cls) = do
-      s <- mkEntrySelector path
-      let src = toStrict $ encodeClass cls
-      addEntry Store src s
+    go (path, cls) = Zip.addFile path =<< Zip.sourceBuffer (B.unpack $ encodeClass cls)
 
+--}

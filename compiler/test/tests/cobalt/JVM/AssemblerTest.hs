@@ -36,7 +36,6 @@ assemblerTest = do
   let file = (generatedDirectory ++ "Test")
   B.writeFile (file ++ ".class") (encodeClass testClass)
   results <- executeBytecode "Test"
-
   removeFile (file ++ ".class")
 
   -- Return if there is any error

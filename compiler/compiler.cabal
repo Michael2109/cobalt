@@ -131,6 +131,7 @@ test-suite compiler-test
   hs-source-dirs:
 
       test,
+      test/tests/utils,
       test/tests/cobalt,
       test/tests/cobalt/blocks,
       test/tests/cobalt/code_generator,
@@ -188,6 +189,8 @@ test-suite compiler-test
       compiler
 
   other-modules:
+      TestUtils
+
       IntegrationTests
       ParserTests
       SymbolTableTests

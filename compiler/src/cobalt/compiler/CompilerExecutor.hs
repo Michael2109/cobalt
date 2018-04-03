@@ -4,13 +4,13 @@ Description : Calls all of the functions to compile and generate the code.
 -}
 module CompilerExecutor where
 
-import Control.Monad
 import System.Environment
+import Control.Monad
 
-import CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
 import Compiler
-import IOUtils
 import SymbolTable
+import CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
+import IOUtils
 import Utils
 
 execute :: IO ()
@@ -23,7 +23,7 @@ execute = do
       isDestinationDir _ = False
 
   (options,filesToCompile) <- commandLineArgs args
-
+  
   let helpPresent = elem (Help) options
   let versionPresent = elem (Version) options
   let debugModeOn = elem (DebugMode) options
