@@ -269,36 +269,36 @@ wide fn c = do
 
 new :: Generator e g => B.ByteString -> g e ()
 new cls =
-  i1 NEW (CClass cls)
+    i1 NEW (CClass cls)
 
 newArray :: Generator e g => ArrayType -> g e ()
 newArray t =
-  i0 (NEWARRAY $ atype2byte t)
+    i0 (NEWARRAY $ atype2byte t)
 
 allocNewArray :: Generator e g => B.ByteString -> g e ()
 allocNewArray cls =
-  i1 ANEWARRAY (CClass cls)
+    i1 ANEWARRAY (CClass cls)
 
 invokeVirtual :: Generator e g => B.ByteString -> NameType (Method Direct) -> g e ()
 invokeVirtual cls sig =
-  i1 INVOKEVIRTUAL (CMethod cls sig)
+    i1 INVOKEVIRTUAL (CMethod cls sig)
 
 invokeStatic :: Generator e g => B.ByteString -> NameType (Method Direct) -> g e ()
 invokeStatic cls sig =
-  i1 INVOKESTATIC (CMethod cls sig)
+    i1 INVOKESTATIC (CMethod cls sig)
 
 invokeSpecial :: Generator e g => B.ByteString -> NameType (Method Direct) -> g e ()
 invokeSpecial cls sig =
-  i1 INVOKESPECIAL (CMethod cls sig)
+    i1 INVOKESPECIAL (CMethod cls sig)
 
 getStaticField :: Generator e g => B.ByteString -> NameType (Field Direct) -> g e ()
 getStaticField cls sig =
-  i1 GETSTATIC (CField cls sig)
+    i1 GETSTATIC (CField cls sig)
 
 loadString :: Generator e g => String -> g e ()
 loadString str =
-  i8 LDC1 (CString $ fromString $ encodeString $ str)
+    i8 LDC1 (CString $ fromString $ encodeString $ str)
 
 allocArray :: Generator e g => B.ByteString -> g e ()
 allocArray cls =
-  i1 ANEWARRAY (CClass cls)
+    i1 ANEWARRAY (CClass cls)
