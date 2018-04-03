@@ -103,8 +103,8 @@ bTerm = BoolConst True  <$ rword "True"
 
 bOperators :: [[Operator Parser Expr]]
 bOperators =
-    [ [Prefix (Not <$ rword "not") ]
-    , [InfixL (BBinary And <$ rword "and")
+    [ [ Prefix (Not <$ rword "not") ]
+    , [ InfixL (BBinary And <$ rword "and")
       , InfixL (BBinary Or <$ rword "or") ]
     ]
 
