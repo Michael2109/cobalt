@@ -1,4 +1,3 @@
-
 module Java.ClassPath.Common where
 
 import Data.List
@@ -38,21 +37,21 @@ mapT fn (File a) = File (fn a)
 -- For example, ["org/haskell", "org/java"] --> [org/{haskell, java}]
 buildTree :: [FilePath] -> [Tree FilePath]
 buildTree strs =
-  let build :: [[String]] -> [Tree FilePath]
-      build [[name]] = [File name]
-      build ss = map node $ groupBy eq (sort ss)
+    let build :: [[String]] -> [Tree FilePath]
+        build [[name]] = [File name]
+        build ss = map node $ groupBy eq (sort ss)
 
-      node [] = error "Impossible: groupBy give an empty group!"
-      node ([]:l) = node l
-      node l | all (null . tail) l = File (head $ head l)
+        node [] = error "Impossible: groupBy give an empty group!"
+        node ([]:l) = node l
+        node l | all (null . tail) l = File (head $ head l)
              | otherwise           = Directory (head $ head l) (build $ map tail l)
 
-      ls = map (split "/") strs
+        ls = map (split "/") strs
 
-      eq [] []       = True
-      eq (x:_) (y:_) = x == y
+        eq [] []       = True
+        eq (x:_) (y:_) = x == y
 
-  in  build ls
+    in  build ls
 
 -- | Merge ClassPath forest.
 -- For example, [org/haskell, org/java] --> [org/{haskell, java}].
@@ -69,5 +68,5 @@ merge1 (x@(File e): es) y@(File e') | e == e'   = x: es
 merge1 (d@(Directory _ _):es) f@(File _) = d: merge1 es f
 merge1 (f@(File _):es) d@(Directory _ _) = f: merge1 es d
 merge1 (x@(Directory dir f):es) y@(Directory dir' f')
-  | dir == dir' = Directory dir (merge $ f ++ f'): es
-  | otherwise   = x: merge1 es y
+    | dir == dir' = Directory dir (merge $ f ++ f'): es
+    | otherwise   = x: merge1 es y
