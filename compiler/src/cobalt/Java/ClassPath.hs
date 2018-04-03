@@ -2,9 +2,9 @@
 module Java.ClassPath
   (module Java.ClassPath.Types,
    module Java.ClassPath.Common,
-  appendPath, addDirectory--, loadClass,
- --  runClassPath, execClassPath,
---   getEntry
+   appendPath, addDirectory, loadClass,
+   runClassPath, execClassPath,
+   getEntry
   ) where
 
 import qualified Control.Monad.State as St
@@ -45,7 +45,6 @@ execClassPath :: ClassPath () -> IO [Tree CPEntry]
 execClassPath m = St.execStateT m []
 
 -- | Load one class in current ClassPath
-{--
 loadClass :: String -> ClassPath ()
 loadClass path = do
     cp <- St.get
@@ -70,9 +69,9 @@ loadClass path = do
                                return (File $ LoadedJAR jarfile cls)
       | otherwise = return t
     load ps (File _) = fail $ "Found file when expecting directory! " ++ show ps
---}
+
 -- | Get one ClassPath entry
-{--
+
 getEntry :: [Tree CPEntry] -> String -> IO (Maybe CPEntry)
 getEntry cp path = get cp (split "/" path)
   where
@@ -99,4 +98,3 @@ getEntry cp path = get cp (split "/" path)
       | toString (thisClass c) == path = return (Just i)
       | otherwise = get es [p]
     get x y = fail $ "Unexpected arguments for ClassPath.getEntry.get: " ++ show x ++ ", " ++ show y
---}
