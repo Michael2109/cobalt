@@ -26,164 +26,162 @@ import qualified Java.IO
 class CodeGen a where
    genCode :: a -> Generate e ()
 
-{--
 data CodeGenNode
-  = ABinaryIR IRInfo IRNode IRNode IRNode
-  | ABinOpErrorIR IRInfo
-  | AddIR IRInfo
-  | AndIR IRInfo
-  | AErrorIR IRInfo
-  | AnnotationIR IRInfo String
-  | ArgumentIR IRInfo IRNode
-  | ArgumentTypeIR IRInfo String
-  | ArithExprIR IRInfo IRNode
-  | ArrayAppendIR IRInfo [IRNode]
-  | ArrayElementSelectIR IRInfo String
-  | ArrayValuesIR IRInfo [String]
-  | AssignIR IRInfo Bool (Maybe IRNode) IRNode IRNode
-  | AssignArithIR IRInfo Bool IRNode String IRNode
-  | BBinaryIR IRInfo IRNode IRNode IRNode
-  | BBinOpErrorIR IRInfo
-  | BErrorIR IRInfo
-  | BoolConstIR IRInfo Bool
-  | BooleanExprIR IRInfo IRNode
-  | CatchIR IRInfo [IRNode] [IRNode]
-  | ClassIR IRInfo (Maybe IRNode) String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
-  | ParameterIR IRInfo IRNode IRNode
-  | ClassVariableIR IRInfo String String
-  | ClosingParenthesisIR IRInfo
-  | ConstructorIR IRInfo String [IRNode] [IRNode] [IRNode]
-  | DataIR IRInfo String [IRNode]
-  | DataElementIR IRInfo String String [String] [String]
-  | DataInstanceIR IRInfo IRNode [IRNode]
-  | DivideIR IRInfo
-  | ElseIR IRInfo [IRNode]
-  | ElseIfIR IRInfo IRNode [IRNode]
-  | Empty IRInfo
-  | ErrorIR IRInfo
-  | ForIR IRInfo String IRNode IRNode [IRNode]
-  | FunctionIR IRInfo IRNode (Maybe IRNode) [IRNode] IRNode Bool [IRNode]
-  | FunctionCallIR IRInfo String [IRNode]
-  | GlobalVarIR IRInfo String Bool Bool IRNode IRNode [IRNode]
-  | GreaterEqualIR IRInfo
-  | GreaterIR IRInfo
-  | IdentifierIR IRInfo String
-  | IfIR IRInfo IRNode [IRNode]
-  | ImportIR IRInfo [String]
-  | LambdaIR IRInfo String [IRNode]
-  | LessIR IRInfo
-  | LessEqualIR IRInfo
-  | IntConstIR IRInfo Integer
-  | MainFunctionIR IRInfo IRNode (Maybe IRNode) [IRNode] IRNode [IRNode]
-  | MethodCallIR IRInfo String [IRNode]
-  | ModifierBlockIR IRInfo [IRNode]
-  | MultiplyIR IRInfo
-  | NegIR IRInfo IRNode
-  | NewClassInstanceIR IRInfo IRNode [IRNode]
-  | NotIR IRInfo IRNode
-  | ObjectIR IRInfo (Maybe IRNode) String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
-  | ObjectMethodCallIR IRInfo String String [IRNode]
-  | OpeningParenthesisIR IRInfo
-  | OrIR IRInfo
-  | PackageIR IRInfo [String]
-  | ParameterizedTypeIR IRInfo IRNode IRNode
-  | ParenthesisIR IRInfo IRNode
-  | PrintIR IRInfo IRNode
-  | ReassignIR IRInfo IRNode IRNode
-  | ReturnIR IRInfo IRNode
-  | ReturnTypeIR IRInfo String
-  | RBinaryIR IRInfo IRNode IRNode IRNode
-  | RBinOpErrorIR IRInfo
-  | SeqIR IRInfo [IRNode]
-  | SkipIR IRInfo
-  | StringLiteralIR IRInfo String
-  | SubtractIR IRInfo
-  | SuperIR IRInfo
-  | SuperMethodCallIR IRInfo String [IRNode]
-  | ThisIR IRInfo
-  | ThisMethodCallIR IRInfo String [IRNode]
-  | ThisVarIR IRInfo IRNode
-  | TraitIR IRInfo (Maybe IRNode) String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
-  | TryIR IRInfo [IRNode]
-  | TypeIR IRInfo IRNode
-  | TypeParameterIR IRInfo IRNode
-  | WhereIR IRInfo [IRNode]
-  | WhileIR IRInfo IRNode [IRNode]
-  deriving (Eq, Show)
+    = ABinaryCodeGen CodeGenNode CodeGenNode CodeGenNode
+    | ABinOpErrorCodeGen
+    | AddCodeGen
+    | AndCodeGen
+    | AErrorCodeGen
+    | AnnotationCodeGen  String
+    | ArgumentCodeGen  CodeGenNode
+    | ArgumentTypeCodeGen  String
+    | ArithExprCodeGen  CodeGenNode
+    | ArrayAppendCodeGen  [CodeGenNode]
+    | ArrayElementSelectCodeGen  String
+    | ArrayValuesCodeGen  [String]
+    | AssignCodeGen  Bool (Maybe CodeGenNode) CodeGenNode CodeGenNode
+    | AssignArithCodeGen  Bool CodeGenNode String CodeGenNode
+    | BBinaryCodeGen  CodeGenNode CodeGenNode CodeGenNode
+    | BBinOpErrorCodeGen
+    | BErrorCodeGen
+    | BoolConstCodeGen  Bool
+    | BooleanExprCodeGen  CodeGenNode
+    | CatchCodeGen  [CodeGenNode] [CodeGenNode]
+    | ClassCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | ParameterCodeGen  CodeGenNode CodeGenNode
+    | ClassVariableCodeGen  String String
+    | ClosingParenthesisCodeGen
+    | ConstructorCodeGen  String [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | DataCodeGen  String [CodeGenNode]
+    | DataElementCodeGen  String String [String] [String]
+    | DataInstanceCodeGen  CodeGenNode [CodeGenNode]
+    | DivideCodeGen
+    | ElseCodeGen  [CodeGenNode]
+    | ElseIfCodeGen  CodeGenNode [CodeGenNode]
+    | Empty
+    | ErrorCodeGen
+    | ForCodeGen  String CodeGenNode CodeGenNode [CodeGenNode]
+    | FunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode Bool [CodeGenNode]
+    | FunctionCallCodeGen  String [CodeGenNode]
+    | GlobalVarCodeGen  String Bool Bool CodeGenNode CodeGenNode [CodeGenNode]
+    | GreaterEqualCodeGen
+    | GreaterCodeGen
+    | IdentifierCodeGen  String
+    | IfCodeGen  CodeGenNode [CodeGenNode]
+    | ImportCodeGen  [String]
+    | LambdaCodeGen  String [CodeGenNode]
+    | LessCodeGen
+    | LessEqualCodeGen
+    | IntConstCodeGen  Integer
+    | MainFunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode [CodeGenNode]
+    | MethodCallCodeGen  String [CodeGenNode]
+    | ModifierBlockCodeGen  [CodeGenNode]
+    | MultiplyCodeGen
+    | NegCodeGen  CodeGenNode
+    | NewClassInstanceCodeGen  CodeGenNode [CodeGenNode]
+    | NotCodeGen  CodeGenNode
+    | ObjectCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | ObjectMethodCallCodeGen  String String [CodeGenNode]
+    | OpeningParenthesisCodeGen
+    | OrCodeGen
+    | PackageCodeGen  [String]
+    | ParameterizedTypeCodeGen  CodeGenNode CodeGenNode
+    | ParenthesisCodeGen  CodeGenNode
+    | PrintCodeGen  CodeGenNode
+    | ReassignCodeGen  CodeGenNode CodeGenNode
+    | ReturnCodeGen  CodeGenNode
+    | ReturnTypeCodeGen  String
+    | RBinaryCodeGen  CodeGenNode CodeGenNode CodeGenNode
+    | RBinOpErrorCodeGen
+    | SeqCodeGen  [CodeGenNode]
+    | SkipCodeGen
+    | StringLiteralCodeGen  String
+    | SubtractCodeGen
+    | SuperCodeGen
+    | SuperMethodCallCodeGen  String [CodeGenNode]
+    | ThisCodeGen
+    | ThisMethodCallCodeGen  String [CodeGenNode]
+    | ThisVarCodeGen  CodeGenNode
+    | TraitCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | TryCodeGen  [CodeGenNode]
+    | TypeCodeGen  CodeGenNode
+    | TypeParameterCodeGen  CodeGenNode
+    | WhereCodeGen  [CodeGenNode]
+    | WhileCodeGen  CodeGenNode [CodeGenNode]
+        deriving (Eq, Show)
 
-instance CodeGen IRNode where
-  genCode (ABinaryIR irInfo aBinOp aExpr1 aExpr2) symbolTable currentState = p $ show irInfo
-  genCode (AddIR irInfo) symbolTable currentState = p $ show irInfo
-  genCode (AndIR irInfo) symbolTable currentState = p $ show irInfo
-  genCode (AnnotationIR irInfo name) symbolTable currentState = p $ show irInfo
-  genCode (ArgumentIR irInfo b) symbolTable currentState = p $ show irInfo
-  genCode (ArgumentTypeIR irInfo b) symbolTable currentState = p $ show irInfo
-  genCode (ArithExprIR irInfo aExpr) symbolTable currentState = p $ show irInfo
-  genCode (ArrayAppendIR irInfo arrays) symbolTable currentState = p $ show irInfo
-  genCode (ArrayElementSelectIR irInfo i) symbolTable currentState = p $ show irInfo
-  genCode (ArrayValuesIR irInfo exprs) symbolTable currentState = p $ show irInfo
-  genCode (AssignIR irInfo immutable vType name value) symbolTable currentState = p $ show irInfo
-  genCode (AssignArithIR irInfo mutable vType name value) symbolTable currentState = p $ show irInfo
-  genCode (BBinaryIR irInfo  bbinop bExpr1 bExpr2) st cs = p $ ""
-  genCode (BoolConstIR irInfo  b) st cs = p $ ""
-  genCode (BooleanExprIR irInfo expr) symbolTable currentState = p $ show irInfo
-  genCode (CatchIR irInfo params exprs) symbolTable currentState = p $ show irInfo
-  genCode (ClassIR irInfo package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
-  genCode (ClassVariableIR irInfo className varName) symbolTable currentState = p $ show irInfo
-  genCode (ClosingParenthesisIR irInfo) currentState symbolTable = p $ ""
-  genCode (ConstructorIR irInfo name argTypes args body) symbolTable currentState = p $ show irInfo
-  genCode (DataIR irInfo name exprs) symbolTable currentState = p $ show irInfo
-  genCode (DataElementIR irInfo superName name argTypes args) symbolTable currentState = p $ show irInfo
-  genCode (DivideIR irInfo) symbolTable currentState = p $ ""
-  genCode (ElseIR irInfo statement) symbolTable currentState = p $ show irInfo
-  genCode (ElseIfIR irInfo condition statement) symbolTable currentState = p $ show irInfo
-  genCode (ForIR irInfo varName start end exprs) symbolTable currentState = p $ show irInfo
-  genCode (FunctionIR irInfo name annotations params returnType static body) symbolTable currentState = p $ show irInfo
-  genCode (FunctionCallIR irInfo name exprs) symbolTable currentState = p $ show irInfo
-  genCode (GlobalVarIR irInfo modifier final static varType varName exprs) symbolTable currentState = p $ show irInfo
-  genCode (GreaterEqualIR irInfo) symbolTable currentState = p $ ""
-  genCode (GreaterIR irInfo) symbolTable currentState = p $ ""
-  genCode (IdentifierIR irInfo name) symbolTable currentState = p $ show irInfo
-  genCode (IfIR irInfo condition statement) symbolTable currentState = p $ show irInfo
-  genCode (ImportIR irInfo locs) symbolTable currentState = p $ show irInfo
-  genCode (IntConstIR irInfo i) symbolTable currentState = p $ ""
-  genCode (LambdaIR irInfo varName exprs) symbolTable currentState = p $ show irInfo
-  genCode (LessEqualIR irInfo) symbolTable currentState = p $ ""
-  genCode (LessIR irInfo) symbolTable currentState = p $ ""
-  genCode (MainFunctionIR irInfo name annotations params returnType body) symbolTable currentState = p $ show irInfo
-  genCode (MethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
-  genCode (ModifierBlockIR irInfo exprs) symbolTable currentState = p $ show irInfo
-  genCode (MultiplyIR irInfo) symbolTable currentState = p $ ""
-  genCode (NegIR irInfo aExpr) symbolTable currentState = p $ ""
-  genCode (NewClassInstanceIR irInfo className args) symbolTable currentState = p $ show irInfo
-  genCode (NotIR irInfo  n) st cs = p $ ""
-  genCode (ObjectIR irInfo package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
-  genCode (ObjectMethodCallIR irInfo objectName methodName args) symbolTable currentState = p $ show irInfo
-  genCode (OrIR irInfo) symbolTable currentState = p $ ""
-  genCode (OpeningParenthesisIR irInfo) currentState symbolTable = p $ ""
-  genCode (PackageIR irInfo locs) symbolTable currentState = p $ show irInfo
-  genCode (ParameterizedTypeIR irInfo className typeName) currentState symbolTable = p $ show irInfo
-  genCode (ParameterIR irInfo varType varName) symbolTable currentState = p $ show irInfo
-  genCode (ParenthesisIR irInfo aExpr) symbolTable currentState = p $ ""
-  genCode (PrintIR irInfo exprs) symbolTable currentState = p $ show irInfo
-  genCode (RBinaryIR irInfo  rbinop aExpr1 aExpr2) st cs = p $ ""
-  genCode (ReassignIR irInfo name value) symbolTable currentState = p $ show irInfo
-  genCode (ReturnIR irInfo expr) symbolTable currentState = p $ show irInfo
-  genCode (ReturnTypeIR irInfo b) symbolTable currentState = p $ show irInfo
-  genCode (SeqIR irInfo s) symbolTable currentState = p $ show irInfo
-  genCode (SkipIR irInfo) symbolTable currentState = p $ show irInfo
-  genCode (StringLiteralIR irInfo value) symbolTable currentState = p $ show irInfo
-  genCode (SubtractIR irInfo) symbolTable currentState = p $ ""
-  genCode (SuperIR irInfo) symbolTable currentState = p $ show irInfo
-  genCode (SuperMethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
-  genCode (ThisIR irInfo) symbolTable currentState = p $ show irInfo ++ "this"
-  genCode (ThisMethodCallIR irInfo methodName args) symbolTable currentState = p $ show irInfo
-  genCode (ThisVarIR irInfo varName) symbolTable currentState = p $ show irInfo
-  genCode (TraitIR irInfo package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) symbolTable originalState = p $ show irInfo
-  genCode (TryIR irInfo exprs) symbolTable currentState = p $ show irInfo
-  genCode (TypeIR irInfo b) symbolTable currentState = p $ show irInfo
-  genCode (TypeParameterIR irInfo typeName) symbolTable currentState = p $ show irInfo
-  genCode (WhereIR irInfo exprs) symbolTable currentState = p $ show irInfo
-  genCode (WhileIR irInfo condition statement) symbolTable currentState = p $ show irInfo
-  genCode (Empty irInfo) symbolTable currentState = p $ show irInfo
---}
+instance CodeGen CodeGenNode where
+    genCode (ABinaryCodeGen aBinOp aExpr1 aExpr2) = return ()
+    genCode (AddCodeGen ) = return ()
+    genCode (AndCodeGen ) = return ()
+    genCode (AnnotationCodeGen  name)  = return ()
+    genCode (ArgumentCodeGen  b) = return ()
+    genCode (ArgumentTypeCodeGen  b) = return ()
+    genCode (ArithExprCodeGen  aExpr) = return ()
+    genCode (ArrayAppendCodeGen  arrays)  = return ()
+    genCode (ArrayElementSelectCodeGen  i)  = return ()
+    genCode (ArrayValuesCodeGen  exprs)  = return ()
+    genCode (AssignCodeGen  immutable vType name value)  = return ()
+    genCode (AssignArithCodeGen  mutable vType name value)  = return ()
+    genCode (BBinaryCodeGen   bbinop bExpr1 bExpr2) = return ()
+    genCode (BoolConstCodeGen   b) = return ()
+    genCode (BooleanExprCodeGen  expr)  = return ()
+    genCode (CatchCodeGen  params exprs)  = return ()
+    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ClassVariableCodeGen  className varName)  = return ()
+    genCode (ClosingParenthesisCodeGen ) = return ()
+    genCode (ConstructorCodeGen  name argTypes args body)  = return ()
+    genCode (DataCodeGen  name exprs)  = return ()
+    genCode (DataElementCodeGen  superName name argTypes args)  = return ()
+    genCode (DivideCodeGen )  = return ()
+    genCode (ElseCodeGen  statement)  = return ()
+    genCode (ElseIfCodeGen  condition statement)  = return ()
+    genCode (ForCodeGen  varName start end exprs)  = return ()
+    genCode (FunctionCodeGen  name annotations params returnType static body)  = return ()
+    genCode (FunctionCallCodeGen  name exprs)  = return ()
+    genCode (GlobalVarCodeGen  modifier final static varType varName exprs)  = return ()
+    genCode (GreaterEqualCodeGen )  = return ()
+    genCode (GreaterCodeGen )  = return ()
+    genCode (IdentifierCodeGen  name)  = return ()
+    genCode (IfCodeGen  condition statement)  = return ()
+    genCode (ImportCodeGen  locs)  = return ()
+    genCode (IntConstCodeGen  i)  = return ()
+    genCode (LambdaCodeGen  varName exprs)  = return ()
+    genCode (LessEqualCodeGen )  = return ()
+    genCode (LessCodeGen )  = return ()
+    genCode (MainFunctionCodeGen  name annotations params returnType body)  = return ()
+    genCode (MethodCallCodeGen  methodName args)  = return ()
+    genCode (ModifierBlockCodeGen  exprs)  = return ()
+    genCode (MultiplyCodeGen )  = return ()
+    genCode (NegCodeGen  aExpr)  = return ()
+    genCode (NewClassInstanceCodeGen  className args)  = return ()
+    genCode (NotCodeGen   n) = return ()
+    genCode (ObjectCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ObjectMethodCallCodeGen  objectName methodName args)  = return ()
+    genCode (OrCodeGen) = return ()
+    genCode (OpeningParenthesisCodeGen ) = return ()
+    genCode (PackageCodeGen  locs)  = return ()
+    genCode (ParameterizedTypeCodeGen  className typeName) = return ()
+    genCode (ParameterCodeGen  varType varName)  = return ()
+    genCode (ParenthesisCodeGen  aExpr)  = return ()
+    genCode (PrintCodeGen  exprs)  = return ()
+    genCode (RBinaryCodeGen   rbinop aExpr1 aExpr2) = return ()
+    genCode (ReassignCodeGen  name value)  = return ()
+    genCode (ReturnCodeGen  expr)  = return ()
+    genCode (ReturnTypeCodeGen  b)  = return ()
+    genCode (SeqCodeGen  s)  = return ()
+    genCode (SkipCodeGen )  = return ()
+    genCode (StringLiteralCodeGen  value)  = return ()
+    genCode (SubtractCodeGen )  = return ()
+    genCode (SuperCodeGen )  = return ()
+    genCode (SuperMethodCallCodeGen  methodName args)  = return ()
+    genCode (ThisCodeGen )  = return ()
+    genCode (ThisMethodCallCodeGen  methodName args)  = return ()
+    genCode (ThisVarCodeGen  varName)  = return ()
+    genCode (TraitCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (TryCodeGen  exprs)  = return ()
+    genCode (TypeCodeGen  b)  = return ()
+    genCode (TypeParameterCodeGen  typeName)  = return ()
+    genCode (WhereCodeGen  exprs)  = return ()
+    genCode (WhileCodeGen  condition statement)  = return ()
+    genCode (Empty )  = return ()
