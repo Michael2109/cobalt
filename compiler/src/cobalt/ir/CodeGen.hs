@@ -128,7 +128,7 @@ instance CodeGen CodeGenNode where
     genCode (BoolConstCodeGen   b) = return ()
     genCode (BooleanExprCodeGen  expr)  = return ()
     genCode (CatchCodeGen  params exprs)  = return ()
-    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = map genCode bodyArray
+    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (ClassVariableCodeGen  className varName)  = return ()
     genCode (ClosingParenthesisCodeGen ) = return ()
     genCode (ConstructorCodeGen  name argTypes args body)  = return ()
