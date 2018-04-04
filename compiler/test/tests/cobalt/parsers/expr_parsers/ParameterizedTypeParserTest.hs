@@ -12,36 +12,36 @@ import ParserExecutor
 
 testParameterizedTypeParser :: Test
 testParameterizedTypeParser = do
-  let code = "List[String]"
-  TestCase $ assertEqual code
-    (ParameterizedType (Identifier "List") (TypeParameter (Identifier "String")))
-    (case (parse (parameterizedTypeParser) "" code) of
-      Left  e -> Error
-      Right x -> x)
+    let code = "List[String]"
+    TestCase $ assertEqual code
+        (ParameterizedType (Identifier "List") (TypeParameter (Identifier "String")))
+        (case (parse (parameterizedTypeParser) "" code) of
+             Left  e -> Error
+             Right x -> x)
 
 testParameterizedTypeParserLeftMissing :: Test
 testParameterizedTypeParserLeftMissing = do
-  let code = "ListString]"
-  TestCase $ assertEqual code
-    Error
-    (case (parse (parameterizedTypeParser) "" code) of
-      Left  e -> Error
-      Right x -> x)
+    let code = "ListString]"
+    TestCase $ assertEqual code
+        Error
+        (case (parse (parameterizedTypeParser) "" code) of
+             Left  e -> Error
+             Right x -> x)
 
 testParameterizedTypeParserRightMissing :: Test
 testParameterizedTypeParserRightMissing = do
-  let code = "List[String"
-  TestCase $ assertEqual code
-    Error
-    (case (parse (parameterizedTypeParser) "" code) of
-      Left  e -> Error
-      Right x -> x)
+    let code = "List[String"
+    TestCase $ assertEqual code
+        Error
+        (case (parse (parameterizedTypeParser) "" code) of
+             Left  e -> Error
+             Right x -> x)
 
 testParameterizedTypeParserClassMissing :: Test
 testParameterizedTypeParserClassMissing = do
-  let code = "[String]"
-  TestCase $ assertEqual code
-    Error
-    (case (parse (parameterizedTypeParser) "" code) of
-      Left  e -> Error
-      Right x -> x)
+    let code = "[String]"
+    TestCase $ assertEqual code
+        Error
+        (case (parse (parameterizedTypeParser) "" code) of
+             Left  e -> Error
+             Right x -> x)
