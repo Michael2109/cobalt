@@ -24,7 +24,7 @@ import qualified Java.Lang
 import qualified Java.IO
 
 class CodeGen a where
-   genCode :: a -> Generate e ()
+    genCode :: a -> Generate e ()
 
 data CodeGenNode
     = ABinaryCodeGen CodeGenNode CodeGenNode CodeGenNode
