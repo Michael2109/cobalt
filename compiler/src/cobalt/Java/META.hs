@@ -28,9 +28,9 @@ data Manifest = Manifest
 
 -- | Manifest entry
 data ManifestEntry = ManifestEntry
-    { meName :: String,
-    , meSealed :: Bool,
-    , meContentType :: Maybe String,
+    { meName :: String
+    , meSealed :: Bool
+    , meContentType :: Maybe String
     , meBean :: Bool
     } deriving (Eq, Show)
 
