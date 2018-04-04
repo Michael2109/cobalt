@@ -1,12 +1,12 @@
 -- | This module declares functions and data types for
 -- JAR meta-information classes, such as MANIFEST.MF etc.
 module Java.META
-  (module Java.META.Types,
-   module Java.META.Parser,
-   module Java.META.Spec,
-   Manifest (..),
-   ManifestEntry (..))
-  where
+    ( module Java.META.Types
+    , module Java.META.Parser
+    , module Java.META.Spec
+    , Manifest (..)
+    , ManifestEntry (..)
+    ) where
 
 import qualified Data.Map as M
 import Data.Map ((!))
@@ -16,23 +16,23 @@ import Java.META.Parser
 import Java.META.Spec
 
 -- | JAR MANIFEST.MF
-data Manifest = Manifest {
-    manifestVersion :: String,
-    createdBy :: String,
-    sealed :: Bool,
-    signatureVersion :: Maybe String,
-    classPath :: [String],
-    mainClass :: Maybe String,
-    manifestEntries :: [ManifestEntry]}
-    deriving (Eq, Show)
+data Manifest = Manifest
+    { manifestVersion :: String
+    , createdBy :: String
+    , sealed :: Bool
+    , signatureVersion :: Maybe String
+    , classPath :: [String]
+    , mainClass :: Maybe String
+    , manifestEntries :: [ManifestEntry]
+    } deriving (Eq, Show)
 
 -- | Manifest entry
-data ManifestEntry = ManifestEntry {
-    meName :: String,
-    meSealed :: Bool,
-    meContentType :: Maybe String,
-    meBean :: Bool }
-        deriving (Eq, Show)
+data ManifestEntry = ManifestEntry
+    { meName :: String,
+    , meSealed :: Bool,
+    , meContentType :: Maybe String,
+    , meBean :: Bool
+    } deriving (Eq, Show)
 
 instance MetaSpec Manifest where
     loadFirstSection s = Manifest {
