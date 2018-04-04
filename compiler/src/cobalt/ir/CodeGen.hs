@@ -12,6 +12,7 @@ import Text.PrettyPrint.Annotated.Leijen
 import Control.Monad
 import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
+import Data.ByteString.Lazy.Char8 (pack)
 
 import SymbolTable
 import Utils
@@ -58,7 +59,7 @@ data CodeGenNode
     | DivideCodeGen
     | ElseCodeGen  [CodeGenNode]
     | ElseIfCodeGen  CodeGenNode [CodeGenNode]
-    | Empty
+    | EmptyCodeGen
     | ErrorCodeGen
     | ForCodeGen  String CodeGenNode CodeGenNode [CodeGenNode]
     | FunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode Bool [CodeGenNode]
@@ -127,7 +128,7 @@ instance CodeGen CodeGenNode where
     genCode (BoolConstCodeGen   b) = return ()
     genCode (BooleanExprCodeGen  expr)  = return ()
     genCode (CatchCodeGen  params exprs)  = return ()
-    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = map genCode bodyArray
     genCode (ClassVariableCodeGen  className varName)  = return ()
     genCode (ClosingParenthesisCodeGen ) = return ()
     genCode (ConstructorCodeGen  name argTypes args body)  = return ()
@@ -136,6 +137,7 @@ instance CodeGen CodeGenNode where
     genCode (DivideCodeGen )  = return ()
     genCode (ElseCodeGen  statement)  = return ()
     genCode (ElseIfCodeGen  condition statement)  = return ()
+    genCode (EmptyCodeGen)  = return ()
     genCode (ForCodeGen  varName start end exprs)  = return ()
     genCode (FunctionCodeGen  name annotations params returnType static body)  = return ()
     genCode (FunctionCallCodeGen  name exprs)  = return ()
@@ -184,4 +186,3 @@ instance CodeGen CodeGenNode where
     genCode (TypeParameterCodeGen  typeName)  = return ()
     genCode (WhereCodeGen  exprs)  = return ()
     genCode (WhileCodeGen  condition statement)  = return ()
-    genCode (Empty )  = return ()
