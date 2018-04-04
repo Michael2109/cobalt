@@ -23,8 +23,8 @@ import JVM.Exceptions
 import qualified Java.Lang
 import qualified Java.IO
 
---class CodeGen a where
---  genCode :: (Throws UnexpectedEndMethod e) => GenerateIO e ()
+class CodeGen a where
+   genCode :: a -> Generate e ()
 
 {--
 data CodeGenNode
