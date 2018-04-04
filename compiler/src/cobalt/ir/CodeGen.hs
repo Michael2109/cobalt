@@ -1,5 +1,5 @@
 {-|
-Module      : IRNode
+Module      : CodeGen
 Description : Contains functions for working with intermediate representation tree.
 -}
 module CodeGen where
