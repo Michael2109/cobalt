@@ -4,17 +4,17 @@ Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
 module BaseParser
-  ( Parser
-  , scn
-  , symbol
-  , integerParser
-  , doubleParser
-  , rword
-  , rws
-  , parens
-  , word
-  , identifier
-  ) where
+    ( Parser
+    , scn
+    , symbol
+    , integerParser
+    , doubleParser
+    , rword
+    , rws
+    , parens
+    , word
+    , identifier
+    ) where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -45,75 +45,75 @@ symbol = L.symbol sc
 
 rword :: String -> Parser String
 rword word = do
-  lexeme (string word *> notFollowedBy alphaNumChar)
-  return word
+    lexeme (string word *> notFollowedBy alphaNumChar)
+    return word
 
 rws :: [String] -- list of reserved words
-rws = [
-  "val",
-  "var",
-  "object",
-  "class",
-  "public",
-  "protected",
-  "private",
-  "this",
-  "mutable",
-  "new",
-  "package",
-  "println",
-  "package",
-  "import",
-  "implements",
-  "extends",
-  "let",
-  "if",
-  "then",
-  "else",
-  "while",
-  "do",
-  "skip",
-  "True",
-  "False",
-  "not",
-  "and",
-  "or",
-  "super"
-  ]
+rws =
+    [ "val"
+    , "var"
+    , "object"
+    , "class"
+    , "public"
+    , "protected"
+    , "private"
+    , "this"
+    , "mutable"
+    , "new"
+    , "package"
+    , "println"
+    , "package"
+    , "import"
+    , "implements"
+    , "extends"
+    , "let"
+    , "if"
+    , "then"
+    , "else"
+    , "while"
+    , "do"
+    , "skip"
+    , "True"
+    , "False"
+    , "not"
+    , "and"
+    , "or"
+    , "super"
+    ]
 
 word :: Parser String
 word = (lexeme . try) (p >>= check)
   where
     p       = (:) <$> alphaNumChar <*> many alphaNumChar
     check x = if x `elem` rws
-                then fail $ "keyword " ++ show x ++ " cannot be an word"
-                else return x
+                  then fail $ "keyword " ++ show x ++ " cannot be an word"
+                  else return x
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
 floatParser :: Parser Double
 floatParser = do
-  try $ do
-    let value = lexeme L.float
-    symbol "f"
-    value
+    try $ do
+        let value = lexeme L.float
+        symbol "f"
+        value
 
 doubleParser :: Parser Scientific
 doubleParser = do
-  try $ do
-    let value = lexeme L.scientific
-    value
+    try $ do
+        let value = lexeme L.scientific
+        value
 
 integerParser :: Parser Integer
 integerParser = lexeme L.decimal
 
 longParser :: Parser Scientific
 longParser = do
-  try $ do
-    let value = lexeme L.scientific
-    symbol "l"
-    value
+    try $ do
+        let value = lexeme L.scientific
+        symbol "l"
+        value
 
 parens :: Parser a -> Parser a
 parens = between (symbol "(") (symbol ")")
@@ -123,5 +123,5 @@ identifier = (lexeme . try) (p >>= check)
   where
     p       = (:) <$> letterChar <*> many (alphaNumChar <|> char '_')
     check x = if x `elem` rws
-                then fail $ "keyword " ++ show x ++ " cannot be an identifier"
-                else return x
+                  then fail $ "keyword " ++ show x ++ " cannot be an identifier"
+                  else return x

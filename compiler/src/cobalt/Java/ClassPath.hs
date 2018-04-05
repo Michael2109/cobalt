@@ -1,10 +1,9 @@
-
 module Java.ClassPath
-  (module Java.ClassPath.Types,
-   module Java.ClassPath.Common,
-   appendPath, addDirectory, loadClass,
-   runClassPath, execClassPath,
-   getEntry
+  ( module Java.ClassPath.Types
+  , module Java.ClassPath.Common
+  , appendPath, addDirectory, loadClass
+  , runClassPath, execClassPath
+  , getEntry
   ) where
 
 import qualified Control.Monad.State as St
