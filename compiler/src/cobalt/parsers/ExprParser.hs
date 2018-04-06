@@ -10,9 +10,7 @@ module ExprParser
     , aExpr
     , bExpr
     , rExpr
-    , objectParser
-    , classParser
-    , traitParser
+    , modelParser
     , parser
     , annotationParser
     , argumentParser
@@ -125,13 +123,13 @@ relation = (symbol ">=" *> pure GreaterEqual)
     <|> (symbol ">" *> pure Greater)
     <|> (symbol "<" *> pure Less)
 
-objectParser :: Parser Expr
-objectParser = try $ L.nonIndented scn p
+modelParser :: Parser Expr
+modelParser = try $ L.nonIndented scn p
   where
     p = do
         package <- optional packageParser
         imports <- many importParser
-        classT <- L.lineFold scn $ \sp' -> try (rword "object")
+        modelType <- L.lineFold scn $ \sp' -> rword "class" <|> rword "object" <|> rword "trait"
         name <- identifier
         typeParam <- optional typeParameterParser
         fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
@@ -145,51 +143,13 @@ objectParser = try $ L.nonIndented scn p
         modifierBlocks <- many $ try $ modifierBlockParser False
         constructorExprs <- try $ many $ try constructorExpr
         exprs <- many (methodParser name False <|> expr')
-        return (Object package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
-classParser :: Parser Expr
-classParser = try $ L.nonIndented scn p
-  where
-    p = do
-        package <- optional packageParser
-        imports <- many importParser
-        classT <- L.lineFold scn $ \sp' -> try (rword "class")
-        name <- identifier
-        typeParam <- optional typeParameterParser
-        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case fullParams of
-                         Just ps -> ps
-                         Nothing -> []
-        extendsKeyword <- optional $ rword "extends"
-        parent <- optional $ identifier
-        implementsKeyword <- optional $ rword "implements"
-        interfaces <- sepBy identifier (symbol ",")
-        modifierBlocks <- many $ try $ modifierBlockParser False
-        constructorExprs <- try $ many $ try constructorExpr
-        exprs <- many (methodParser name False <|> expr')
-        return (Class package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-
-traitParser :: Parser Expr
-traitParser = try $ L.nonIndented scn p
-  where
-    p = do
-        package <- optional packageParser
-        imports <- many importParser
-        classT <- L.lineFold scn $ \sp' -> try $ rword "trait"
-        name <- identifier
-        typeParam <- optional typeParameterParser
-        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case fullParams of
-                         Just ps -> ps
-                         Nothing -> []
-        extendsKeyword <- optional $ rword "extends"
-        parent <- optional $ identifier
-        implementsKeyword <- optional $ rword "implements"
-        interfaces <- sepBy identifier (symbol ",")
-        modifierBlocks <- many $ try $ modifierBlockParser False
-        constructorExprs <- try $ many $ try constructorExpr
-        exprs <- many (methodParser name False <|> expr')
-        return (Trait package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+        return $
+            case modelType of
+                "class"  -> (Class package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+                "object" -> (Object package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+                "trait"  -> (Trait package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
+                (_)      -> error ("Error Message: " ++ name)
 
 packageParser :: Parser Expr
 packageParser = try $ L.nonIndented scn p
@@ -504,9 +464,7 @@ expr = f <$> sepBy1 (expr') (symbol ";")
 
 expr' :: Parser Expr
 expr' =
-    classParser
-    <|> objectParser
-    <|> traitParser
+    modelParser
     <|> forLoopParser
     <|> ifStmtParser
     <|> elseIfStmtParser
