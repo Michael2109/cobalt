@@ -31,12 +31,12 @@ import qualified Java.Lang
 import qualified Java.IO
 
 data ASTData = ASTData FilePath SymbolTable Expr
-  deriving (Show)
+    deriving (Show)
 
 data GeneratedCode = GeneratedCode
-  { location :: FilePath -- Where the code will be written to
-  , code :: B.ByteString        -- The generated code
-  } deriving (Show)
+    { location :: FilePath -- Where the code will be written to
+    , code :: B.ByteString        -- The generated code
+    } deriving (Show)
 
 
 extractASTFilePath :: ASTData -> FilePath
@@ -49,31 +49,31 @@ extractASTExpr :: ASTData -> Expr
 extractASTExpr (ASTData _ _ expr) = expr
 
 generateClassSymbolTable ast =
-  case ast of
-    Left  e -> ClassSymbolTable "ERROR" NoType [] []
-    Right x -> genClassSymbolTable x
+    case ast of
+        Left  e -> ClassSymbolTable "ERROR" NoType [] []
+        Right x -> genClassSymbolTable x
 
 compile :: FilePath -> [FilePath] -> String -> IO ()
 compile classPath filePaths outputDir = do
-  classPathFilePaths <- traverseDir classPath ""
-  let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
+    classPathFilePaths <- traverseDir classPath ""
+    let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
-  classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
+    classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
 
-  let classPathAstDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
-  let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
+    let classPathAstDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
+    let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
 
-  let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
-  let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
+    let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
+    let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
-  -- Filter out only the ASTs that have been selected
-  let astDatasToCompile = filter (\x -> (extractASTFilePath x) `elem` filePaths) astDatas
+    -- Filter out only the ASTs that have been selected
+    let astDatasToCompile = filter (\x -> (extractASTFilePath x) `elem` filePaths) astDatas
 
-  let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
+    let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
 
-  sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
+    sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
 
-  return ()
+    return ()
 
 generateAST :: FilePath -> String -> ASTData
 generateAST inputFile code = do
@@ -81,8 +81,8 @@ generateAST inputFile code = do
    let symbolTable = SymbolTable [generateClassSymbolTable parseResult]
 
    let ast = case parseResult of
-               Left  e -> Error
-               Right x -> x
+                 Left  e -> Error
+                 Right x -> x
 
    ASTData inputFile symbolTable ast
 
