@@ -30,7 +30,6 @@ library
   hs-source-dirs:
       src/cobalt,
       src/cobalt/blocks,
-      src/cobalt/code_generator,
       src/cobalt/compiler,
       src/cobalt/error_checking,
       src/cobalt/ir,
@@ -77,7 +76,7 @@ library
   exposed-modules:
       BaseParser
       Block
-      CodeGenerator
+      CodeGen
       Compiler
       CompilerExecutor
       ErrorChecker
@@ -134,7 +133,6 @@ test-suite compiler-test
       test/tests/utils,
       test/tests/cobalt,
       test/tests/cobalt/blocks,
-      test/tests/cobalt/code_generator,
       test/tests/cobalt/compiler,
       test/tests/cobalt/error_checking,
       test/tests/cobalt/parsers,
@@ -197,7 +195,6 @@ test-suite compiler-test
       UtilsTests
 
       BlocksTest
-      CodeGeneratorTest
       ErrorCheckingTest
       SymbolTableTest
 

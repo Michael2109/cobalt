@@ -12,18 +12,32 @@ import Data.Text.Internal.Lazy
 import System.Directory
 import System.FilePath.Posix
 import Text.Pretty.Simple
+import qualified Data.ByteString.Lazy as B
+import Data.ByteString.Lazy.Char8 (pack)
 
 import Block
-import CodeGenerator
 import IOUtils
 import IRNode
+import CodeGen
 import ParserExecutor
 import SymbolTable
 import Utils (endsWith)
+import JVM.ClassFile
+import JVM.Converter
+import JVM.Assembler
+import JVM.Builder
+import JVM.Exceptions
+import qualified Java.Lang
+import qualified Java.IO
 
-data ASTData =
-    ASTData FilePath SymbolTable Expr
+data ASTData = ASTData FilePath SymbolTable Expr
     deriving (Show)
+
+data GeneratedCode = GeneratedCode
+    { location :: FilePath -- Where the code will be written to
+    , code :: B.ByteString        -- The generated code
+    } deriving (Show)
+
 
 extractASTFilePath :: ASTData -> FilePath
 extractASTFilePath (ASTData filePath _ _) = filePath
@@ -57,7 +71,7 @@ compile classPath filePaths outputDir = do
 
     let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
 
-    sequence $ map (\compiledCode -> writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
+    sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
 
     return ()
 
@@ -71,3 +85,6 @@ generateAST inputFile code = do
                  Right x -> x
 
    ASTData inputFile symbolTable ast
+
+compileAST :: Expr -> SymbolTable -> B.ByteString
+compileAST ast symbolTable = encodeClass (generate [] (pack "Test") (genCode $ genCodeGenIR (genIR ast symbolTable (CurrentState "" ""))))

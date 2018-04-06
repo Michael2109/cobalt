@@ -24,7 +24,7 @@ assemblerTest = do
 
     when (not $ generatedDirExists) $ createDirectory generatedDirectory
 
-    testClass <- generateIO [] "Test" test
+    let testClass = generate [] "Test" test
 
     let file = (generatedDirectory ++ "Test")
 
@@ -37,7 +37,7 @@ assemblerTest = do
 
 
 
-test :: (Throws UnexpectedEndMethod e) => GenerateIO e ()
+test :: (Throws UnexpectedEndMethod e) => Generate e ()
 test = do
 
     -- withClassPath $ do
