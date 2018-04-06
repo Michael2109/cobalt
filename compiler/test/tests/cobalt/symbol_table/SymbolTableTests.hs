@@ -6,17 +6,17 @@ import SymbolTable
 
 import SymbolTableTest
 
-symbolTableTestList = TestList [
-    testSymbolTableExtractReturnType1,
-    testSymbolTableExtractReturnType2,
-    testSymbolTableExtractMethodArgs,
-    testSymbolTableCombine,
-    testSymbolTableCombineList,
-    testClassSymbolTableCombine,
-    testClassSymbolTableCombineList,
-    testSymbolTableMethodExists,
-    testSymbolTableVariableExists,
-    testSymbolTableVariableType,
-    testSymbolTableVariableExistsFail,
-    testSymbolTableGetClassSymbolTable
-  ]
+symbolTableTestList = TestList
+    [ testSymbolTableExtractReturnType1
+    , testSymbolTableExtractReturnType2
+    , testSymbolTableExtractMethodArgs
+    , testSymbolTableCombine
+    , testSymbolTableCombineList
+    , testClassSymbolTableCombine
+    , testClassSymbolTableCombineList
+    , testSymbolTableMethodExists
+    , testSymbolTableVariableExists
+    , testSymbolTableVariableType
+    , testSymbolTableVariableExistsFail
+    , testSymbolTableGetClassSymbolTable
+    ]

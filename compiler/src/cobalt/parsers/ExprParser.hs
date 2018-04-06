@@ -134,16 +134,16 @@ objectParser = try $ L.nonIndented scn p
         classT <- L.lineFold scn $ \sp' -> try (rword "object")
         name <- identifier
         typeParam <- optional typeParameterParser
-        fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
                          Just ps -> ps
                          Nothing -> []
-        extendsKeyword <- optional (rword "extends")
-        parent <- optional (identifier)
-        implementsKeyword <- optional (rword "implements")
+        extendsKeyword <- optional $ rword "extends"
+        parent <- optional $ identifier
+        implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy identifier (symbol ",")
-        modifierBlocks <- many (try (modifierBlockParser False))
-        constructorExprs <- try (many $ try constructorExpr)
+        modifierBlocks <- many $ try $ modifierBlockParser False
+        constructorExprs <- try $ many $ try constructorExpr
         exprs <- many (methodParser name False <|> expr')
         return (Object package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
@@ -156,16 +156,16 @@ classParser = try $ L.nonIndented scn p
         classT <- L.lineFold scn $ \sp' -> try (rword "class")
         name <- identifier
         typeParam <- optional typeParameterParser
-        fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
                          Just ps -> ps
                          Nothing -> []
-        extendsKeyword <- optional (rword "extends")
-        parent <- optional (identifier)
-        implementsKeyword <- optional (rword "implements")
+        extendsKeyword <- optional $ rword "extends"
+        parent <- optional $ identifier
+        implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy identifier (symbol ",")
-        modifierBlocks <- many (try (modifierBlockParser False))
-        constructorExprs <- try (many $ try constructorExpr)
+        modifierBlocks <- many $ try $ modifierBlockParser False
+        constructorExprs <- try $ many $ try constructorExpr
         exprs <- many (methodParser name False <|> expr')
         return (Class package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
@@ -175,19 +175,19 @@ traitParser = try $ L.nonIndented scn p
     p = do
         package <- optional packageParser
         imports <- many importParser
-        classT <- L.lineFold scn $ \sp' -> try (rword "trait")
+        classT <- L.lineFold scn $ \sp' -> try $ rword "trait"
         name <- identifier
         typeParam <- optional typeParameterParser
-        fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
                          Just ps -> ps
                          Nothing -> []
-        extendsKeyword <- optional (rword "extends")
-        parent <- optional (identifier)
-        implementsKeyword <- optional (rword "implements")
+        extendsKeyword <- optional $ rword "extends"
+        parent <- optional $ identifier
+        implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy identifier (symbol ",")
-        modifierBlocks <- many (try (modifierBlockParser False))
-        constructorExprs <- try (many $ try constructorExpr)
+        modifierBlocks <- many $ try $ modifierBlockParser False
+        constructorExprs <- try $ many $ try constructorExpr
         exprs <- many (methodParser name False <|> expr')
         return (Trait package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
 
@@ -232,7 +232,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
     p = do
         annotations <- try (optional annotationParser)
         name <- identifierParser
-        fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
                          Just ps -> ps
                          Nothing -> []
@@ -271,7 +271,7 @@ stringLiteralParser = do
 stringLiteralMultilineParser :: Parser Expr
 stringLiteralMultilineParser = do
     symbol "```"
-    contents <- many (L.lineFold scn $ \sp' -> some L.charLiteral)
+    contents <- many $ L.lineFold scn $ \sp' -> some L.charLiteral
     symbol "```"
     return $ StringLiteral $ intercalate "\n" contents
 
@@ -314,7 +314,7 @@ thisMethodCallParser =
         rword "this"
         symbol "."
         methodName <- identifier
-        args <- parens (sepBy (argumentParser) (symbol ","))
+        args <- parens $ sepBy (argumentParser) (symbol ",")
         return $ ThisMethodCall methodName args
 
 superMethodCallParser :: Parser Expr
@@ -323,14 +323,14 @@ superMethodCallParser =
         rword "super"
         symbol "."
         methodName <- identifier
-        args <- parens (sepBy (argumentParser) (symbol ","))
+        args <- parens $ sepBy (argumentParser) (symbol ",")
         return $ SuperMethodCall methodName args
 
 methodCallParser :: Parser Expr
 methodCallParser =
     try $ do
         methodName <- identifier
-        args <- parens (sepBy (argumentParser) (symbol ","))
+        args <- parens $ sepBy (argumentParser) (symbol ",")
         return $ MethodCall methodName args
 
 objectMethodCallParser :: Parser Expr
@@ -339,14 +339,14 @@ objectMethodCallParser =
         objectName <- identifier
         symbol "."
         methodName <- identifier
-        args <- parens (sepBy (argumentParser) (symbol ","))
+        args <- parens $ sepBy (argumentParser) (symbol ",")
         return $ ObjectMethodCall objectName methodName args
 
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser  = do
     try (rword "new")
     className <- identifierParser
-    arguments <- parens (sepBy (argumentParser) (symbol ","))
+    arguments <- parens $ sepBy (argumentParser) (symbol ",")
     return $ (NewClassInstance className arguments)
 
 classVariableParser ::Parser Expr
@@ -371,7 +371,7 @@ globalVarParser modifier static = do
     symbol ":"
     varType <- valueTypeParser
     symbol "="
-    es <- many (argumentParser)
+    es <- many $ argumentParser
     return $ GlobalVar modifier (final == "val") static varType varName es
 
 annotationParser :: Parser Expr
@@ -472,7 +472,7 @@ catchParser  = try $ L.indentBlock scn p
   where
     p = do
         rword "catch"
-        fullParams <- optional (parens (sepBy parameterParser (symbol ",")))
+        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
                          Just ps -> ps
                          Nothing -> []
