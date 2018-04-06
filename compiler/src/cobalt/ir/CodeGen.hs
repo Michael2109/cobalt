@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 {-|
 Module      : CodeGen
 Description : Contains functions for working with intermediate representation tree.
@@ -25,7 +27,7 @@ import qualified Java.Lang
 import qualified Java.IO
 
 class CodeGen a where
-    genCode :: a -> Generate e ()
+    genCode :: Throws UnexpectedEndMethod e => a -> Generate e ()
 
 data CodeGenNode
     = ABinaryCodeGen CodeGenNode CodeGenNode CodeGenNode
@@ -128,7 +130,29 @@ instance CodeGen CodeGenNode where
     genCode (BoolConstCodeGen   b) = return ()
     genCode (BooleanExprCodeGen  expr)  = return ()
     genCode (CatchCodeGen  params exprs)  = return ()
-    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = do
+        mapM genCode bodyArray
+        newMethod [ACC_PUBLIC, ACC_STATIC] (pack "hello") [IntType] ReturnsVoid $ do
+                    setStackSize 8
+
+                    getStaticField Java.Lang.system Java.IO.out
+                    loadString "Hello World"
+                    invokeVirtual Java.IO.printStream Java.IO.println
+                    getStaticField Java.Lang.system Java.IO.out
+                    loadString "Argument: %d\n"
+                    iconst_1
+                    allocArray Java.Lang.object
+                    dup
+                    iconst_0
+                    iload_ I0
+                    invokeStatic Java.Lang.integer Java.Lang.valueOfInteger
+                    aastore
+                    invokeVirtual Java.IO.printStream Java.IO.printf
+                    -- Call Hello.hello()
+                    --invokeStatic "Hello" helloJava
+                    pop
+                    i0 RETURN
+        return ()
     genCode (ClassVariableCodeGen  className varName)  = return ()
     genCode (ClosingParenthesisCodeGen ) = return ()
     genCode (ConstructorCodeGen  name argTypes args body)  = return ()
