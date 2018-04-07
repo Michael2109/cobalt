@@ -4,7 +4,6 @@ import Test.HUnit
 
 import CompilerTest
 import AssemblerTest
-import IOUtils
 
 integrationTestList :: Test
 integrationTestList = do

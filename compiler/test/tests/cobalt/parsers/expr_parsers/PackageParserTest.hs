@@ -1,14 +1,10 @@
 module PackageParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testPackageParser :: Test
 testPackageParser = do
@@ -16,5 +12,5 @@ testPackageParser = do
     TestCase $ assertEqual code
         (Package ["dir","sub_dir"])
         (case (parse (packageParser) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)

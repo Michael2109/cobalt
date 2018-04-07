@@ -1,14 +1,10 @@
 module ImportParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testImportParserSingle :: Test
 testImportParserSingle = do
@@ -16,7 +12,7 @@ testImportParserSingle = do
     TestCase $ assertEqual code
         (Import ["x"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserEmptyFail :: Test
@@ -25,7 +21,7 @@ testImportParserEmptyFail = do
     TestCase $ assertEqual code
         Error
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserTwo :: Test
@@ -34,7 +30,7 @@ testImportParserTwo = do
     TestCase $ assertEqual code
         (Import ["x", "y"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserMultiple :: Test
@@ -43,7 +39,7 @@ testImportParserMultiple = do
     TestCase $ assertEqual code
         (Import ["x", "y", "z", "a", "b", "c"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserStartsDigitFail :: Test
@@ -52,7 +48,7 @@ testImportParserStartsDigitFail = do
     TestCase $ assertEqual code
         Error
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserStartsDigitMultipleFail :: Test
@@ -61,7 +57,7 @@ testImportParserStartsDigitMultipleFail = do
     TestCase $ assertEqual code
         Error
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserCapital :: Test
@@ -70,7 +66,7 @@ testImportParserCapital = do
     TestCase $ assertEqual code
         (Import ["abc", "xyz", "Name"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserUnderscore :: Test
@@ -79,7 +75,7 @@ testImportParserUnderscore = do
     TestCase $ assertEqual code
         (Import ["abc", "xy_z", "Name"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserMultipleUnderscore :: Test
@@ -88,7 +84,7 @@ testImportParserMultipleUnderscore = do
     TestCase $ assertEqual code
         (Import ["dir", "sub_dir", "Class_Name"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testImportParserContainsDigit :: Test
@@ -97,5 +93,5 @@ testImportParserContainsDigit = do
     TestCase $ assertEqual code
         (Import ["abc", "x1y2z3"])
         (case (parse importParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

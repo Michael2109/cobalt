@@ -1,14 +1,10 @@
 module IfElseStatementParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testIfStmtParserBooleanTrue :: Test
 testIfStmtParserBooleanTrue = do
@@ -18,7 +14,7 @@ testIfStmtParserBooleanTrue = do
     TestCase $ assertEqual code
         (If (Argument $ BooleanExpr (BoolConst True)) [Print (Argument $ StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIfStmtParserBooleanFalse :: Test
@@ -29,7 +25,7 @@ testIfStmtParserBooleanFalse = do
     TestCase $ assertEqual code
         (If (Argument $ BooleanExpr (BoolConst True)) [Print (Argument $ StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIfStmtParserObjectVar :: Test
@@ -40,7 +36,7 @@ testIfStmtParserObjectVar = do
     TestCase $ assertEqual code
         (If (Argument $ BooleanExpr (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))) [Print (Argument $ StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIfStmtParserAnd :: Test
@@ -51,7 +47,7 @@ testIfStmtParserAnd = do
     TestCase $ assertEqual code
         (If (Argument (BooleanExpr (BBinary And (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))(Identifier "varName")))) [Print (Argument (StringLiteral "Test"))])
         (case (parse (ifStmtParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIfStmtParserOr :: Test
@@ -62,7 +58,7 @@ testIfStmtParserOr = do
     TestCase $ assertEqual code
         (If (Argument (BooleanExpr (BBinary Or (BoolConst True) (ClassVariable "objName" "varName")))) [Print (Argument (StringLiteral "Test"))])
         (case (parse (ifStmtParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIfStmtParserAndOr :: Test
@@ -73,5 +69,5 @@ testIfStmtParserAndOr = do
     TestCase $ assertEqual code
         (If (Argument (BooleanExpr (BBinary Or (BBinary And (BoolConst True) (Identifier "varName")) (ClassVariable "objName" "varName")))) [Print (Argument (StringLiteral "Test"))])
         (case (parse (ifStmtParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

@@ -1,14 +1,10 @@
 module ArgumentTypeParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testArgumentTypeParser :: Test
 testArgumentTypeParser = do
@@ -16,7 +12,7 @@ testArgumentTypeParser = do
     TestCase $ assertEqual code
         (ArgumentType "ClassName")
         (case (parse (argumentTypeParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 
@@ -26,5 +22,5 @@ testArgumentTypeParserReservedWord = do
     TestCase $ assertEqual code
         Error
         (case (parse (argumentTypeParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

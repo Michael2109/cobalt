@@ -1,14 +1,10 @@
 module AExprParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-
 
 testAExprParserVar :: Test
 testAExprParserVar = do
@@ -16,7 +12,7 @@ testAExprParserVar = do
     TestCase $ assertEqual code
         (Identifier "x")
         (case (parse (aExpr) "" code) of
-             Left  e -> AError
+             Left  _ -> AError
              Right x -> x)
 
 testAExprParserInt :: Test
@@ -25,7 +21,7 @@ testAExprParserInt = do
     TestCase $ assertEqual code
         (IntConst 1000)
         (case (parse (aExpr) "" code) of
-             Left  e -> AError
+             Left  _ -> AError
              Right x -> x)
 
 testAExprParserNeg :: Test
@@ -34,7 +30,7 @@ testAExprParserNeg = do
     TestCase $ assertEqual code
         (Neg (Identifier "x"))
         (case (parse (aExpr) "" code) of
-             Left  e -> AError
+             Left  _ -> AError
              Right x -> x)
 
 -- TODO write test for parenthesis

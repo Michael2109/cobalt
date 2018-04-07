@@ -1,14 +1,10 @@
 module StringLiteralParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testStringLiteralSimple :: Test
 testStringLiteralSimple = do
@@ -16,7 +12,7 @@ testStringLiteralSimple = do
     TestCase $ assertEqual code
         (StringLiteral "foo")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralSimpleWhitespace :: Test
@@ -25,7 +21,7 @@ testStringLiteralSimpleWhitespace = do
     TestCase $ assertEqual code
         (StringLiteral "foo   bar\tbaz")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralEscapeTab :: Test
@@ -34,7 +30,7 @@ testStringLiteralEscapeTab = do
     TestCase $ assertEqual code
         (StringLiteral "\tfoo")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralEmpty :: Test
@@ -43,7 +39,7 @@ testStringLiteralEmpty = do
     TestCase $ assertEqual code
         (StringLiteral "")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralNewLine :: Test
@@ -52,7 +48,7 @@ testStringLiteralNewLine = do
     TestCase $ assertEqual code
         (StringLiteral "foo\n")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralMultipleNewLine :: Test
@@ -61,7 +57,7 @@ testStringLiteralMultipleNewLine = do
     TestCase $ assertEqual code
         (StringLiteral "foo\nbar\nbaz")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 {--
@@ -91,7 +87,7 @@ testStringLiteralUnescapedSingleQuote = do
     TestCase $ assertEqual code
         (StringLiteral "foo\'")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralEscapedSingleQuote :: Test
@@ -100,7 +96,7 @@ testStringLiteralEscapedSingleQuote = do
     TestCase $ assertEqual code
         (StringLiteral "foo\'")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testStringLiteralEscapedDoubleQuote :: Test
@@ -109,7 +105,7 @@ testStringLiteralEscapedDoubleQuote = do
     TestCase $ assertEqual code
         (StringLiteral "foo\"ending")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 
@@ -119,7 +115,7 @@ testStringLiteralDoubleQuoteMultiple = do
     TestCase $ assertEqual code
         (StringLiteral "test:\"string inside string\" ending")
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 {--
@@ -134,7 +130,7 @@ testStringLiteralUnfinishedFail = do
     TestCase $ assertEqual code
         (Error)
         (case (parse (stringLiteralParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 {--
@@ -144,7 +140,7 @@ testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail = do
     TestCase $ assertEqual code
         (Error)
         (case (parse (stringLiteral) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 --}
 
@@ -155,7 +151,7 @@ testStringLiteralUnfinishedDoubleLineFail = do
     TestCase $ assertEqual code
         (Error)
         (case (parse (stringLiteral) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 --}
 

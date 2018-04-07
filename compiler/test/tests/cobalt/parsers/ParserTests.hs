@@ -15,15 +15,11 @@ import AnnotationParserTest
 import ArgumentParserTest
 import ArgumentTypeParserTest
 import ArithmeticParserTest
-import ArrayAppendParserTest
-import ArrayElementSelectParserTest
 import AssignParserTest
 import BooleanParserTest
 import ClassParserTest
 import ClassVariableParserTest
-import ConstructorParserTest
 import ForLoopParserTest
-import GlobalVariableParserTest
 import IdentifierParserTest
 import IfElseStatementParserTest
 import ImportParserTest
@@ -38,15 +34,13 @@ import ParameterizedTypeParserTest
 import ParameterParserTest
 import ParenthesesParserTest
 import ReassignParserTest
-import StringLiteralMultilineParserTest
 import StringLiteralParserTest
-import ThisMethodCallParserTest
 import ThisVarParserTest
 import TraitParserTest
 import TypeParameterParserTest
 import ValueTypeParserTest
 
-
+parserTestList :: Test
 parserTestList = TestList
     -- BaseParser
     [ testSymbolSingle

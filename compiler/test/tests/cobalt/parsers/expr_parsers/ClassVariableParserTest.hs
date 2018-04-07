@@ -1,14 +1,10 @@
 module ClassVariableParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testClassVariableParser :: Test
 testClassVariableParser = do
@@ -16,7 +12,7 @@ testClassVariableParser = do
     TestCase $ assertEqual code
         (ClassVariable "objName" "varName")
         (case (parse (classVariableParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testClassVariableParserUnderscores :: Test
@@ -25,7 +21,7 @@ testClassVariableParserUnderscores = do
     TestCase $ assertEqual code
         (ClassVariable "obj_name" "var_name")
         (case (parse (classVariableParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testClassVariableParserStartCapitals :: Test
@@ -34,7 +30,7 @@ testClassVariableParserStartCapitals = do
     TestCase $ assertEqual code
         (ClassVariable "Obj_name" "Var_name")
         (case (parse (classVariableParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testClassVariableParserMissingVar :: Test
@@ -43,7 +39,7 @@ testClassVariableParserMissingVar = do
     TestCase $ assertEqual code
         Error
         (case (parse (classVariableParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testClassVariableParserMissingClassName :: Test
@@ -52,5 +48,5 @@ testClassVariableParserMissingClassName = do
     TestCase $ assertEqual code
         Error
         (case (parse (classVariableParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

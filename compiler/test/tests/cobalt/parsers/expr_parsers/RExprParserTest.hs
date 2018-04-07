@@ -1,12 +1,9 @@
 module RExprParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
 
 testRExprParserGreaterVar :: Test
@@ -15,7 +12,7 @@ testRExprParserGreaterVar = do
     TestCase $ assertEqual code
         (RBinary Greater (Identifier "x") (Identifier "y"))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserLessVar :: Test
@@ -24,7 +21,7 @@ testRExprParserLessVar = do
     TestCase $ assertEqual code
         (RBinary Less (Identifier "x") (Identifier "y"))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserGreaterEqualVar :: Test
@@ -33,7 +30,7 @@ testRExprParserGreaterEqualVar = do
     TestCase $ assertEqual code
         (RBinary GreaterEqual (Identifier "x") (Identifier "y"))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserLessEqualVar :: Test
@@ -42,7 +39,7 @@ testRExprParserLessEqualVar = do
     TestCase $ assertEqual code
         (RBinary LessEqual (Identifier "x") (Identifier "y"))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserGreaterInt :: Test
@@ -51,7 +48,7 @@ testRExprParserGreaterInt = do
     TestCase $ assertEqual code
         (RBinary Greater (IntConst 100) (IntConst 200))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserLessInt :: Test
@@ -60,7 +57,7 @@ testRExprParserLessInt = do
     TestCase $ assertEqual code
         (RBinary Less (IntConst 100) (IntConst 200))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserGreaterEqualInt :: Test
@@ -69,7 +66,7 @@ testRExprParserGreaterEqualInt = do
     TestCase $ assertEqual code
         (RBinary GreaterEqual (IntConst 100) (IntConst 200))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testRExprParserLessEqualInt :: Test
@@ -78,5 +75,5 @@ testRExprParserLessEqualInt = do
     TestCase $ assertEqual code
         (RBinary LessEqual (IntConst 100) (IntConst 200))
         (case (parse rExpr "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

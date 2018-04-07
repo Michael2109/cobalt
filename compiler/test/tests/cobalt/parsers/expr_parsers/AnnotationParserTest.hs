@@ -1,14 +1,10 @@
 module AnnotationParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testAnnotationParserUpper :: Test
 testAnnotationParserUpper = do
@@ -16,7 +12,7 @@ testAnnotationParserUpper = do
     TestCase $ assertEqual code
         (Annotation "ANNOTATION")
         (case (parse (annotationParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testAnnotationParserLower :: Test
@@ -25,5 +21,5 @@ testAnnotationParserLower = do
     TestCase $ assertEqual code
         (Annotation "annotation")
         (case (parse (annotationParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

@@ -5,10 +5,7 @@ import Test.HUnit
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testReassignParserObject :: Test
 testReassignParserObject = do
@@ -16,7 +13,7 @@ testReassignParserObject = do
     TestCase $ assertEqual code
         (Reassign (Identifier "x") (NewClassInstance (Identifier "ClassName") [Argument (ArithExpr (IntConst 10))]))
         (case (parse reassignParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testReassignParserArithmetic :: Test
@@ -25,7 +22,7 @@ testReassignParserArithmetic = do
     TestCase $ assertEqual code
         (Reassign (Identifier "varName") (ArithExpr (ABinary Subtract (IntConst 100) (Identifier "y"))))
         (case (parse reassignParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testReassignParserClassVar :: Test
@@ -34,5 +31,5 @@ testReassignParserClassVar = do
     TestCase $ assertEqual code
         (Reassign (Identifier "Var_Name") (ClassVariable "ClassName" "VarName"))
         (case (parse reassignParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

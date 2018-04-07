@@ -1,14 +1,10 @@
 module NewClassInstanceParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testNewClassInstanceParserNoArgs :: Test
 testNewClassInstanceParserNoArgs = do
@@ -16,7 +12,7 @@ testNewClassInstanceParserNoArgs = do
     TestCase $ assertEqual code
         (NewClassInstance (Identifier "ClassName") [])
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserNoArgsUnderscore :: Test
@@ -25,7 +21,7 @@ testNewClassInstanceParserNoArgsUnderscore = do
     TestCase $ assertEqual code
         (NewClassInstance (Identifier "Class_Name") [])
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserNoArgsLowerCase :: Test
@@ -34,7 +30,7 @@ testNewClassInstanceParserNoArgsLowerCase = do
     TestCase $ assertEqual code
         (NewClassInstance (Identifier "className") [])
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserNewUpperCase :: Test
@@ -43,7 +39,7 @@ testNewClassInstanceParserNewUpperCase = do
     TestCase $ assertEqual code
         Error
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserNoArgsNoParens :: Test
@@ -52,7 +48,7 @@ testNewClassInstanceParserNoArgsNoParens = do
     TestCase $ assertEqual code
         Error
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserSingleArg :: Test
@@ -61,7 +57,7 @@ testNewClassInstanceParserSingleArg = do
     TestCase $ assertEqual code
         (NewClassInstance (Identifier "ClassName") [Argument (ArithExpr (IntConst 1000))])
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserMultiArgs :: Test
@@ -70,7 +66,7 @@ testNewClassInstanceParserMultiArgs = do
     TestCase $ assertEqual code
         Error
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserMissingNew :: Test
@@ -79,7 +75,7 @@ testNewClassInstanceParserMissingNew = do
     TestCase $ assertEqual code
         Error
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserMissingLeftParen :: Test
@@ -88,7 +84,7 @@ testNewClassInstanceParserMissingLeftParen = do
     TestCase $ assertEqual code
         Error
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testNewClassInstanceParserMissingRightParen :: Test
@@ -97,5 +93,5 @@ testNewClassInstanceParserMissingRightParen = do
     TestCase $ assertEqual code
         Error
         (case (parse newClassInstanceParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

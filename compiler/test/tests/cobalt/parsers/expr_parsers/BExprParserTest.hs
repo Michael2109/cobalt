@@ -1,12 +1,9 @@
 module BExprParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
 
 testBExprParserTrue :: Test
@@ -15,7 +12,7 @@ testBExprParserTrue = do
     TestCase $ assertEqual code
         (BoolConst True)
         (case (parse (bExpr) "" code) of
-             Left  e -> BError
+             Left  _ -> BError
              Right x -> x)
 
 testBExprParserFalse :: Test
@@ -24,7 +21,7 @@ testBExprParserFalse = do
     TestCase $ assertEqual code
         (BoolConst False)
         (case (parse (bExpr) "" code) of
-             Left  e -> BError
+             Left  _ -> BError
              Right x -> x)
 
 testBExprParserFail :: Test
@@ -33,5 +30,5 @@ testBExprParserFail = do
     TestCase $ assertEqual code
         (Identifier "true")
         (case (parse (bExpr) "" code) of
-             Left  e -> BError
+             Left  _ -> BError
              Right x -> x)
