@@ -124,6 +124,8 @@ parserTestList = TestList
     , testClassParserImports
     , testClassParserImportsFail
     , testClassParserModifierBlock
+    , testClassParserConstructorBody
+    , testClassParserMethods
 
     , testClassVariableParser
 
@@ -221,6 +223,7 @@ parserTestList = TestList
 
     , testReassignParserObject
     , testReassignParserArithmetic
+    , testReassignParserArithmeticTwoVars
     , testReassignParserClassVar
 
     , testStringLiteralSimple

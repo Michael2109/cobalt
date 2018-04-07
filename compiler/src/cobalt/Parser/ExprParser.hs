@@ -141,7 +141,7 @@ modelParser = try $ L.nonIndented scn p
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy identifier (symbol ",")
         modifierBlocks <- many $ try $ modifierBlockParser False
-        constructorExprs <- try $ many $ try constructorExpr
+        constructorExprs <- many $ expr'
         exprs <- many (methodParser name False <|> expr')
 
         return $
@@ -180,11 +180,6 @@ parameterParser = do
     symbol ":"
     varType <- identifierParser
     return $ Parameter varType varName
-
-constructorExpr :: Parser Expr
-constructorExpr = try $ L.nonIndented scn p
-  where
-    p = expr'
 
 methodParser :: String -> Bool -> Parser Expr
 methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
@@ -478,6 +473,7 @@ expr' =
     <|> thisMethodCallParser
     <|> superMethodCallParser
     <|> objectMethodCallParser
+    <|> methodCallParser
     <|> newClassInstanceParser
     <|> classVariableParser
     <|> try arrayElementSelect
