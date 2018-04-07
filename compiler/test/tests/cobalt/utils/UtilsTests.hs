@@ -4,6 +4,7 @@ import Test.HUnit
 
 import CommandLineUtilsTest
 
+utilsTestList :: Test
 utilsTestList = TestList
     [ testCommandLineOptionsEmpty
     , testCommandLineOptionsSingleSourceFile

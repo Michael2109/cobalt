@@ -1,14 +1,10 @@
 module MethodParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testMethodParser :: Test
 testMethodParser = do
@@ -18,7 +14,7 @@ testMethodParser = do
     TestCase $ assertEqual code
         (Function (Identifier "exampleMethod") Nothing [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testMethodParserEmptyParams :: Test
@@ -29,7 +25,7 @@ testMethodParserEmptyParams = do
     TestCase $ assertEqual code
         (Function (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testMethodParserMissingParens :: Test
@@ -40,7 +36,7 @@ testMethodParserMissingParens = do
     TestCase $ assertEqual code
         (Function (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testMethodParserMissingName :: Test
@@ -51,7 +47,7 @@ testMethodParserMissingName = do
     TestCase $ assertEqual code
         Error
         (case (parse (methodParser "ModuleName" False) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testMethodParserMissingReturnType :: Test
@@ -62,5 +58,5 @@ testMethodParserMissingReturnType = do
     TestCase $ assertEqual code
         Error
         (case (parse (methodParser "ModuleName" False) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

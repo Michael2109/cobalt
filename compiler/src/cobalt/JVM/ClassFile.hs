@@ -129,17 +129,17 @@ apsize (AP list) = length list
 
 -- | Access flags. Used for classess, methods, variables.
 data AccessFlag =
-    ACC_PUBLIC 	     -- ^ 0x0001 Visible for all
-  | ACC_PRIVATE 	   -- ^ 0x0002 Visible only for defined class
-  | ACC_PROTECTED 	 -- ^ 0x0004 Visible only for subclasses
-  | ACC_STATIC 	     -- ^ 0x0008 Static method or variable
-  | ACC_FINAL 	     -- ^ 0x0010 No further subclassing or assignments
+    ACC_PUBLIC       -- ^ 0x0001 Visible for all
+  | ACC_PRIVATE      -- ^ 0x0002 Visible only for defined class
+  | ACC_PROTECTED    -- ^ 0x0004 Visible only for subclasses
+  | ACC_STATIC       -- ^ 0x0008 Static method or variable
+  | ACC_FINAL        -- ^ 0x0010 No further subclassing or assignments
   | ACC_SYNCHRONIZED -- ^ 0x0020 Uses monitors
-  | ACC_VOLATILE 	   -- ^ 0x0040 Could not be cached
-  | ACC_TRANSIENT 	 -- ^ 0x0080
-  | ACC_NATIVE 	     -- ^ 0x0100 Implemented in other language
-  | ACC_INTERFACE 	 -- ^ 0x0200 Class is interface
-  | ACC_ABSTRACT 	   -- ^ 0x0400
+  | ACC_VOLATILE     -- ^ 0x0040 Could not be cached
+  | ACC_TRANSIENT    -- ^ 0x0080
+  | ACC_NATIVE       -- ^ 0x0100 Implemented in other language
+  | ACC_INTERFACE    -- ^ 0x0200 Class is interface
+  | ACC_ABSTRACT     -- ^ 0x0400
   deriving (Eq, Show, Ord, Enum)
 
 -- | Fields and methods have signatures.

@@ -4,6 +4,7 @@ import Test.HUnit
 
 import SymbolTable
 
+generateClassSymbolTable1 :: ClassSymbolTable
 generateClassSymbolTable1 = ClassSymbolTable "ClassName" ClassType
     [("x", "int")
     , ("y", "int")
@@ -11,6 +12,7 @@ generateClassSymbolTable1 = ClassSymbolTable "ClassName" ClassType
     , ("obj", "Object")]
     [("method1", MethodSymbolTable "int" [("i", "int"), ("j", "int"), ("obj", "Object")])]
 
+generateClassSymbolTable2 :: ClassSymbolTable
 generateClassSymbolTable2 = ClassSymbolTable "ClassName" ClassType
     [("a", "int")
     , ("b", "int")
@@ -19,8 +21,10 @@ generateClassSymbolTable2 = ClassSymbolTable "ClassName" ClassType
     [("method2", MethodSymbolTable "String" [("e", "int"), ("f", "int"), ("g", "Object")])
     , ("method1", MethodSymbolTable "int" [("r", "int"), ("p", "int"), ("u", "Object")])]
 
+generateSymbolTable1 :: SymbolTable
 generateSymbolTable1 = SymbolTable [generateClassSymbolTable1]
 
+generateSymbolTable2 :: SymbolTable
 generateSymbolTable2 = SymbolTable [generateClassSymbolTable2]
 
 testSymbolTableExtractReturnType1 :: Test
@@ -88,7 +92,7 @@ testSymbolTableVariableType = do
 
 testSymbolTableVariableExistsFail:: Test
 testSymbolTableVariableExistsFail = do
-    TestCase $ assertEqual "Variable doesn't exists"
+    TestCase $ assertEqual "Variable doesn't exist"
         False $
         instanceVariableExists generateSymbolTable1 "ClassName" "unknownVarName"
 

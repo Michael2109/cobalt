@@ -5,11 +5,11 @@ public
 
 initAlien(x,y)
 
-initAlien : int -> int -> void
-initAlien x y =
+exampleMethod (a: Int, b: Int): Int
+
+initAlien (x: int, y: int): void
   this.x = x
   this.y = y
 
-act : int -> void
-act direction =
+act (direction: int): void
   x = x + direction

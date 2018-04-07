@@ -1,16 +1,10 @@
 module TypeParameterParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
-
-import JVM.Builder.Monad
 
 testTypeParameterParser :: Test
 testTypeParameterParser = do
@@ -18,7 +12,7 @@ testTypeParameterParser = do
     TestCase $ assertEqual code
         (TypeParameter (Identifier "String"))
         (case (parse (typeParameterParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testTypeParameterParserMissingLeft :: Test
@@ -27,7 +21,7 @@ testTypeParameterParserMissingLeft = do
     TestCase $ assertEqual code
         Error
         (case (parse (typeParameterParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testTypeParameterParserMissingRight :: Test
@@ -36,7 +30,7 @@ testTypeParameterParserMissingRight = do
     TestCase $ assertEqual code
         Error
         (case (parse (typeParameterParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testTypeParameterParserMissingBoth :: Test
@@ -45,5 +39,5 @@ testTypeParameterParserMissingBoth = do
     TestCase $ assertEqual code
         Error
         (case (parse (typeParameterParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

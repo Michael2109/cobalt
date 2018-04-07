@@ -4,20 +4,16 @@ import Test.HUnit
 
 import Text.Megaparsec
 
-import Block
-
 import BaseParser
 
-
 -- Symbols
-
 testSymbolSingle :: Test
 testSymbolSingle = do
     let code = "%"
     TestCase $ assertEqual code
         "%"
         (case (parse (symbol "%") "" code) of
-             Left  e -> "Error"
+             Left  _ -> "Error"
              Right x -> x)
 
 testSymbolMultiple :: Test
@@ -26,7 +22,7 @@ testSymbolMultiple = do
     TestCase $ assertEqual code
         "#@$"
         (case (parse (symbol "#@$") "" code) of
-             Left  e -> "Error"
+             Left  _ -> "Error"
              Right x -> x)
 
 testSymbolFail :: Test
@@ -35,29 +31,27 @@ testSymbolFail = do
     TestCase $ assertEqual code
         "Error"
         (case (parse (symbol "#@") "" code) of
-             Left  e -> "Error"
+             Left  _ -> "Error"
              Right x -> x)
 
 -- Reserved word
-
 testReservedWord :: Test
 testReservedWord = do
     let code = "module"
     TestCase $ assertEqual code
         "module"
         (case (parse (rword "module") "" code) of
-             Left  e -> "Error"
+             Left  _ -> "Error"
              Right x -> x)
 
 -- Identifier
-
 testIdentifier :: Test
 testIdentifier = do
     let code = "identifier"
     TestCase $ assertEqual code
         "identifier"
         (case (parse identifier "" code) of
-             Left  e -> "Error"
+             Left  _ -> "Error"
              Right x -> x)
 
 testIdentifierFail :: Test
@@ -66,7 +60,7 @@ testIdentifierFail = do
     TestCase $ assertEqual code
         "Error"
         (case (parse identifier "" code) of
-             Left  e -> "Error"
+             Left  _ -> "Error"
              Right x -> x)
 
 -- Numbers
@@ -76,7 +70,7 @@ testFloat = do
     TestCase $ assertEqual code
         (100.50988678)
         (case (parse doubleParser "" code) of
-             Left  e -> -1
+             Left  _ -> -1
              Right x -> x)
 
 testDouble :: Test
@@ -85,7 +79,7 @@ testDouble = do
   TestCase $ assertEqual code
     (100.50988678)
     (case (parse doubleParser "" code) of
-      Left  e -> -1
+      Left  _ -> -1
       Right x -> x)
 
 testInteger :: Test
@@ -94,7 +88,7 @@ testInteger = do
     TestCase $ assertEqual code
         (100)
         (case (parse integerParser "" code) of
-             Left  e -> -1
+             Left  _ -> -1
              Right x -> x)
 
 testLong :: Test
@@ -103,5 +97,5 @@ testLong = do
     TestCase $ assertEqual code
         (100)
         (case (parse integerParser "" code) of
-             Left  e -> -1
+             Left  _ -> -1
              Right x -> x)

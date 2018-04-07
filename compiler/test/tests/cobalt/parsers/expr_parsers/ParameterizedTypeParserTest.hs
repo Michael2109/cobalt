@@ -1,14 +1,10 @@
 module ParameterizedTypeParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testParameterizedTypeParser :: Test
 testParameterizedTypeParser = do
@@ -16,7 +12,7 @@ testParameterizedTypeParser = do
     TestCase $ assertEqual code
         (ParameterizedType (Identifier "List") (TypeParameter (Identifier "String")))
         (case (parse (parameterizedTypeParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParameterizedTypeParserLeftMissing :: Test
@@ -25,7 +21,7 @@ testParameterizedTypeParserLeftMissing = do
     TestCase $ assertEqual code
         Error
         (case (parse (parameterizedTypeParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParameterizedTypeParserRightMissing :: Test
@@ -34,7 +30,7 @@ testParameterizedTypeParserRightMissing = do
     TestCase $ assertEqual code
         Error
         (case (parse (parameterizedTypeParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParameterizedTypeParserClassMissing :: Test
@@ -43,5 +39,5 @@ testParameterizedTypeParserClassMissing = do
     TestCase $ assertEqual code
         Error
         (case (parse (parameterizedTypeParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

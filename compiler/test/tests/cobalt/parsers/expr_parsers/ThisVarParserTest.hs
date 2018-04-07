@@ -1,14 +1,10 @@
 module ThisVarParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testThisVarParserStartsDigitFail :: Test
 testThisVarParserStartsDigitFail = do
@@ -16,7 +12,7 @@ testThisVarParserStartsDigitFail = do
     TestCase $ assertEqual code
         Error
         (case (parse thisVarParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testThisVarParserContainsCapital :: Test
@@ -25,7 +21,7 @@ testThisVarParserContainsCapital = do
     TestCase $ assertEqual code
         (ThisVar $ Identifier "ABC")
         (case (parse thisVarParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testThisVarParserContainsDigit :: Test
@@ -34,7 +30,7 @@ testThisVarParserContainsDigit = do
     TestCase $ assertEqual code
         (ThisVar $ Identifier "a1b2c3")
         (case (parse thisVarParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testThisVarParserContainsUnderscore :: Test
@@ -43,7 +39,7 @@ testThisVarParserContainsUnderscore = do
     TestCase $ assertEqual code
         (ThisVar $ Identifier "my_var")
         (case (parse thisVarParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testThisVarParserNotThisFail :: Test
@@ -52,5 +48,5 @@ testThisVarParserNotThisFail = do
     TestCase $ assertEqual code
         Error
         (case (parse thisVarParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

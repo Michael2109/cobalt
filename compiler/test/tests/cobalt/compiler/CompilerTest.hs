@@ -1,7 +1,6 @@
 module CompilerTest where
 
 import Test.HUnit (Assertion, assertBool)
-import System.IO
 import System.Directory (removeFile, removeDirectory, doesFileExist, doesDirectoryExist, createDirectory)
 import System.IO.Temp (createTempDirectory, writeTempFile)
 import System.Environment (withArgs)

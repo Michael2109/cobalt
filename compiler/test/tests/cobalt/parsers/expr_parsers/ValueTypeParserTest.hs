@@ -1,14 +1,10 @@
 module ValueTypeParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testValueTypeParserOneCharacter :: Test
 testValueTypeParserOneCharacter = do
@@ -16,7 +12,7 @@ testValueTypeParserOneCharacter = do
     TestCase $ assertEqual code
         (Type (Identifier "x"))
         (case (parse valueTypeParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testValueTypeParserDigitFail :: Test
@@ -25,7 +21,7 @@ testValueTypeParserDigitFail = do
     TestCase $ assertEqual code
         Error
         (case (parse valueTypeParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testValueTypeParserContainsUnderscore :: Test
@@ -34,7 +30,7 @@ testValueTypeParserContainsUnderscore = do
     TestCase $ assertEqual code
         (Type (Identifier "an_ValueType"))
         (case (parse valueTypeParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testValueTypeParserContainsDigit :: Test
@@ -43,7 +39,7 @@ testValueTypeParserContainsDigit = do
     TestCase $ assertEqual code
         (Type (Identifier "a1b2c3"))
         (case (parse valueTypeParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testValueTypeParserStartsDigitFail :: Test
@@ -52,7 +48,7 @@ testValueTypeParserStartsDigitFail = do
     TestCase $ assertEqual code
         Error
         (case (parse valueTypeParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testValueTypeParserCapital :: Test
@@ -61,5 +57,5 @@ testValueTypeParserCapital = do
     TestCase $ assertEqual code
         (Type (Identifier "ID"))
         (case (parse valueTypeParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

@@ -1,11 +1,9 @@
 module ParenthesesParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
 import BaseParser
 import ExprParser
 
@@ -15,7 +13,7 @@ testParenthesesParserVar = do
     TestCase $ assertEqual code
         (Identifier "x")
         (case (parse (parens aExpr) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParenthesesParserNested :: Test
@@ -24,7 +22,7 @@ testParenthesesParserNested = do
     TestCase $ assertEqual code
         (Identifier "x")
         (case (parse (parens aExpr) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParenthesesParserNoOpenFail :: Test
@@ -33,7 +31,7 @@ testParenthesesParserNoOpenFail = do
     TestCase $ assertEqual code
         Error
         (case (parse (parens aExpr) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParenthesesParserNoCloseFail :: Test
@@ -42,5 +40,5 @@ testParenthesesParserNoCloseFail = do
     TestCase $ assertEqual code
         Error
         (case (parse (parens aExpr) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)

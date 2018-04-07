@@ -1,14 +1,10 @@
 module ParameterParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testParameterParser :: Test
 testParameterParser = do
@@ -16,7 +12,7 @@ testParameterParser = do
     TestCase $ assertEqual code
         (Parameter (Identifier "Int") (Identifier "x"))
         (case (parse (parameterParser) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParameterParserMissingVar :: Test
@@ -25,7 +21,7 @@ testParameterParserMissingVar = do
     TestCase $ assertEqual code
         Error
         (case (parse (parameterParser) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParameterParserMissingType :: Test
@@ -34,7 +30,7 @@ testParameterParserMissingType = do
     TestCase $ assertEqual code
         Error
         (case (parse (parameterParser) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testParameterParserMissingColon :: Test
@@ -43,5 +39,5 @@ testParameterParserMissingColon = do
     TestCase $ assertEqual code
         Error
         (case (parse (parameterParser) "" code) of
-             Left e -> Error
+             Left  _ -> Error
              Right x -> x)

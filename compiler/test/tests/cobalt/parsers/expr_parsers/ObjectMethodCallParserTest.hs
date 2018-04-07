@@ -1,14 +1,10 @@
 module ObjectMethodCallParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testObjectMethodCallParserThis :: Test
 testObjectMethodCallParserThis = do
@@ -16,7 +12,7 @@ testObjectMethodCallParserThis = do
     TestCase $ assertEqual code
         (ThisMethodCall "methodCall" [])
         (case (parse (thisMethodCallParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectMethodCallParserObject :: Test
@@ -25,7 +21,7 @@ testObjectMethodCallParserObject = do
     TestCase $ assertEqual code
         (ObjectMethodCall "obj" "methodCall" [])
         (case (parse (objectMethodCallParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectMethodCallParserSuper :: Test
@@ -34,5 +30,5 @@ testObjectMethodCallParserSuper = do
     TestCase $ assertEqual code
         (SuperMethodCall "methodCall" [])
         (case (parse (superMethodCallParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

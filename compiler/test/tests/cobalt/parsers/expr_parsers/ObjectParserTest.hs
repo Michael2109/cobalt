@@ -1,14 +1,10 @@
 module ObjectParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testObjectParser :: Test
 testObjectParser = do
@@ -16,7 +12,7 @@ testObjectParser = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] Nothing [] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserTypeParameter :: Test
@@ -25,7 +21,7 @@ testObjectParserTypeParameter = do
     TestCase $ assertEqual code
         (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing [] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserTypeParameterExtends :: Test
@@ -34,7 +30,7 @@ testObjectParserTypeParameterExtends = do
     TestCase $ assertEqual code
         (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") [] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserTypeParameterExtendsImplements :: Test
@@ -43,7 +39,7 @@ testObjectParserTypeParameterExtendsImplements = do
     TestCase $ assertEqual code
         (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] (Just "ParentName") ["TraitName"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserTypeParameterImplements :: Test
@@ -52,7 +48,7 @@ testObjectParserTypeParameterImplements = do
     TestCase $ assertEqual code
         (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserTypeParameterImplementsMultiple :: Test
@@ -61,7 +57,7 @@ testObjectParserTypeParameterImplementsMultiple = do
     TestCase $ assertEqual code
         (Object Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] Nothing ["TraitName1","TraitName2"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserExtends :: Test
@@ -70,7 +66,7 @@ testObjectParserExtends = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] (Just "ParentObject") [] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserImplements :: Test
@@ -79,7 +75,7 @@ testObjectParserImplements = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] Nothing ["Interface"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserImplementsMultiple :: Test
@@ -88,7 +84,7 @@ testObjectParserImplementsMultiple = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] Nothing ["Interface1","Interface2"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserExtendsImplements :: Test
@@ -97,7 +93,7 @@ testObjectParserExtendsImplements = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserExtendsImplementsMultiple :: Test
@@ -106,7 +102,7 @@ testObjectParserExtendsImplementsMultiple = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface1","Interface2","Interface3"] [] [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserImports :: Test
@@ -118,7 +114,7 @@ testObjectParserImports = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface"] imports [] [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserImportsFail :: Test
@@ -129,7 +125,7 @@ testObjectParserImportsFail = do
     TestCase $ assertEqual code
         (Error)
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testObjectParserModifierBlock :: Test
@@ -144,5 +140,5 @@ testObjectParserModifierBlock = do
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] (Just "ParentObject") ["Interface"] imports modifierBlocks [] [])
         (case (parse (modelParser) "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)

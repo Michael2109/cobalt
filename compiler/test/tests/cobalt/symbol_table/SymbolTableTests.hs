@@ -2,10 +2,9 @@ module SymbolTableTests where
 
 import Test.HUnit
 
-import SymbolTable
-
 import SymbolTableTest
 
+symbolTableTestList :: Test
 symbolTableTestList = TestList
     [ testSymbolTableExtractReturnType1
     , testSymbolTableExtractReturnType2

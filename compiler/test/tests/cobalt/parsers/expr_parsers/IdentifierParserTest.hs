@@ -1,14 +1,10 @@
 module IdentifierParserTest where
 
 import Test.HUnit
-
 import Text.Megaparsec
 
 import Block
-
-import BaseParser
 import ExprParser
-import ParserExecutor
 
 testIdentifierParserOneCharacter :: Test
 testIdentifierParserOneCharacter = do
@@ -16,7 +12,7 @@ testIdentifierParserOneCharacter = do
     TestCase $ assertEqual code
         (Identifier "x")
         (case (parse identifierParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIdentifierParserDigitFail :: Test
@@ -25,7 +21,7 @@ testIdentifierParserDigitFail = do
     TestCase $ assertEqual code
         Error
         (case (parse identifierParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIdentifierParserContainsUnderscore :: Test
@@ -34,7 +30,7 @@ testIdentifierParserContainsUnderscore = do
     TestCase $ assertEqual code
         (Identifier "an_identifier")
         (case (parse identifierParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIdentifierParserContainsDigit :: Test
@@ -43,7 +39,7 @@ testIdentifierParserContainsDigit = do
     TestCase $ assertEqual code
         (Identifier "a1b2c3")
         (case (parse identifierParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIdentifierParserStartsDigitFail :: Test
@@ -52,7 +48,7 @@ testIdentifierParserStartsDigitFail = do
     TestCase $ assertEqual code
         Error
         (case (parse identifierParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
 
 testIdentifierParserCapital :: Test
@@ -61,5 +57,5 @@ testIdentifierParserCapital = do
     TestCase $ assertEqual code
         (Identifier "ID")
         (case (parse identifierParser "" code) of
-             Left  e -> Error
+             Left  _ -> Error
              Right x -> x)
