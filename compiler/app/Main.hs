@@ -1,6 +1,6 @@
 module Main where
 
-import CompilerExecutor
+import Compiler.CompilerExecutor
 
 main :: IO ()
 main = do

@@ -2,8 +2,8 @@ module IntegrationTests where
 
 import Test.HUnit
 
-import CompilerTest
-import AssemblerTest
+import Compiler.CompilerTest
+import JVM.AssemblerTest
 
 integrationTestList :: Test
 integrationTestList = do

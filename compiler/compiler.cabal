@@ -28,13 +28,7 @@ source-repository head
 
 library
   hs-source-dirs:
-      src/cobalt,
-      src/cobalt/ast,
-      src/cobalt/compiler,
-      src/cobalt/error_checking,
-      src/cobalt/parsers,
-      src/cobalt/symbol_table,
-      src/cobalt/utils
+      src/cobalt
   build-depends:
       base >=4.7 && <5,
       mtl,
@@ -59,7 +53,6 @@ library
       text-format-simple,
       scientific,
       temporary,
-
        binary,
        utf8-string,
        array,
@@ -73,20 +66,11 @@ library
        Glob,
        parsec >= 3 && <4
   exposed-modules:
-      BaseParser
-      Block
-      CodeGen
-      Compiler
-      CompilerExecutor
-      ErrorChecker
-      ExprParser
-      CommandLineUtils
-      IOUtils
-      Utils
-      IRNode
-      ParserExecutor
-      SymbolTable
-
+      AST.Block
+      AST.CodeGenNode
+      AST.IRNode
+      Compiler.Compiler
+      Compiler.CompilerExecutor
       JVM.Common
       JVM.ClassFile
       JVM.Assembler
@@ -107,6 +91,13 @@ library
       Java.META.Types
       Java.META.Spec
       Java.META.Parser
+      Parser.BaseParser
+      Parser.ExprParser
+      Parser.ParserExecutor
+      Util.CommandLineUtil
+      Util.IOUtil
+      Util.GeneralUtil
+      SymbolTable.SymbolTable
   other-modules:
 
   default-language: Haskell2010
@@ -127,20 +118,9 @@ test-suite compiler-test
   type: exitcode-stdio-1.0
   main-is: RunTests.hs
   hs-source-dirs:
-
-      test,
-      test/tests/utils,
-      test/tests/cobalt,
-      test/tests/cobalt/ast,
-      test/tests/cobalt/compiler,
-      test/tests/cobalt/error_checking,
-      test/tests/cobalt/parsers,
-      test/tests/cobalt/parsers/base_parsers,
-      test/tests/cobalt/parsers/expr_parsers,
-      test/tests/cobalt/symbol_table,
-      test/tests/cobalt/utils,
-      test/tests/cobalt/JVM
-
+      test
+      test/tests
+      test/tests/cobalt
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       base >=4.7 && <5,
@@ -169,7 +149,6 @@ test-suite compiler-test
       scientific,
       temporary,
       process,
-
       binary,
       utf8-string,
       array,
@@ -182,73 +161,57 @@ test-suite compiler-test
       zip,
       Glob,
       parsec >= 3 && <4,
-
       compiler
-
   other-modules:
-      TestUtils
-
+      AST.BlocksTest
+      Compiler.CompilerTest
       IntegrationTests
-      ParserTests
-      SymbolTableTests
-      UtilsTests
-
-      BlocksTest
-      ErrorCheckingTest
-      SymbolTableTest
-
-      -- Base parser
-      BaseParserTest
-
-      -- ABExprParser tests
-      AExprParserTest
-      BExprParserTest
-
-      -- ExprParser tests
-      AnnotationParserTest
-      ArgumentParserTest
-      ArgumentTypeParserTest
-      ArithmeticParserTest
-      ArrayAppendParserTest
-      ArrayElementSelectParserTest
-      AssignParserTest
-      BooleanParserTest
-      ClassParserTest
-      ClassVariableParserTest
-      ConstructorParserTest
-      ForLoopParserTest
-      GlobalVariableParserTest
-      IdentifierParserTest
-      IfElseStatementParserTest
-      ImportParserTest
-      MethodCallParserTest
-      MethodParserTest
-      ModifierBlockParserTest
-      NewClassInstanceParserTest
-      ObjectMethodCallParserTest
-      ObjectParserTest
-      PackageParserTest
-      ParameterizedTypeParserTest
-      ParameterParserTest
-      ParenthesesParserTest
-      ReassignParserTest
-      RExprParserTest
-      StringLiteralMultilineParserTest
-      StringLiteralParserTest
-      ThisMethodCallParserTest
-      ThisVarParserTest
-      TraitParserTest
-      TypeParameterParserTest
-      ValueTypeParserTest
-
-      -- Utils
-      CommandLineUtilsTest
-      IOUtilsTest
-      UtilsTest
-
-      -- Integration
-      CompilerTest
-      AssemblerTest
-
+      JVM.AssemblerTest
+      Parser.BaseParserTest
+      Parser.AExprParserTest
+      Parser.BExprParserTest
+      Parser.AnnotationParserTest
+      Parser.ArgumentParserTest
+      Parser.ArgumentTypeParserTest
+      Parser.ArithmeticParserTest
+      Parser.ArrayAppendParserTest
+      Parser.ArrayElementSelectParserTest
+      Parser.AssignParserTest
+      Parser.BooleanParserTest
+      Parser.ClassParserTest
+      Parser.ClassVariableParserTest
+      Parser.ConstructorParserTest
+      Parser.ForLoopParserTest
+      Parser.GlobalVariableParserTest
+      Parser.IdentifierParserTest
+      Parser.IfElseStatementParserTest
+      Parser.ImportParserTest
+      Parser.MethodCallParserTest
+      Parser.MethodParserTest
+      Parser.ModifierBlockParserTest
+      Parser.NewClassInstanceParserTest
+      Parser.ObjectMethodCallParserTest
+      Parser.ObjectParserTest
+      Parser.PackageParserTest
+      Parser.ParserTests
+      Parser.ParameterizedTypeParserTest
+      Parser.ParameterParserTest
+      Parser.ParenthesesParserTest
+      Parser.ReassignParserTest
+      Parser.RExprParserTest
+      Parser.StringLiteralMultilineParserTest
+      Parser.StringLiteralParserTest
+      Parser.ThisMethodCallParserTest
+      Parser.ThisVarParserTest
+      Parser.TraitParserTest
+      Parser.TypeParameterParserTest
+      Parser.ValueTypeParserTest
+      SymbolTable.SymbolTableTest
+      SymbolTable.SymbolTableTests
+      TestUtil.TestUtil
+      Util.CommandLineUtilTest
+      Util.IOUtilTest
+      Util.GeneralUtilTest
+      Util.UtilTests
 
   default-language: Haskell2010
