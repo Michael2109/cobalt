@@ -198,7 +198,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
                          Nothing -> []
         symbol ":"
         rType <- identifierParser
-        return (L.IndentMany Nothing (return . (Function name annotations params rType static)) (expr'))
+        return (L.IndentMany Nothing (return . (Method name annotations params rType static)) (expr'))
 
 identifierParser :: Parser Expr
 identifierParser = do

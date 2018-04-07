@@ -12,7 +12,7 @@ testMethodParser = do
                        , "  println(\"Hello world\")"
                        ]
     TestCase $ assertEqual code
-        (Function (Identifier "exampleMethod") Nothing [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (Method (Identifier "exampleMethod") Nothing [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -23,7 +23,7 @@ testMethodParserEmptyParams = do
                        , "  println(\"Hello world\")"
                        ]
     TestCase $ assertEqual code
-        (Function (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (Method (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -34,7 +34,7 @@ testMethodParserMissingParens = do
                        , "  println(\"Hello world\")"
                        ]
     TestCase $ assertEqual code
-        (Function (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (Method (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
