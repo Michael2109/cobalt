@@ -4,7 +4,7 @@
 Module      : CodeGen
 Description : Contains functions for working with intermediate representation tree.
 -}
-module CodeGen where
+module AST.CodeGenNode where
 
 import Data.Char
 import Data.List
@@ -16,8 +16,6 @@ import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 
-import SymbolTable
-import Utils
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -25,6 +23,8 @@ import JVM.Builder
 import JVM.Exceptions
 import qualified Java.Lang
 import qualified Java.IO
+import SymbolTable.SymbolTable
+import Utils.GeneralUtils
 
 class CodeGen a where
     genCode :: Throws UnexpectedEndMethod e => a -> Generate e ()

@@ -2,7 +2,7 @@
 Module      : CommandLineUtils
 Description : Contains functions used for working with command line arguments and options.
 -}
-module CommandLineUtils where
+module Utils.CommandLineUtils where
 
 import System.Console.GetOpt
 

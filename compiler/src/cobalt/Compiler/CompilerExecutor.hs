@@ -2,16 +2,16 @@
 Module      : CompilerExecutor
 Description : Calls all of the functions to compile and generate the code.
 -}
-module CompilerExecutor where
+module Compiler.CompilerExecutor where
 
 import Control.Monad
 import System.Environment
 
-import CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
-import Compiler
-import IOUtils
-import SymbolTable
-import Utils
+import Compiler.Compiler
+import Utils.CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
+import Utils.IOUtils
+import Utils.GeneralUtils
+import SymbolTable.SymbolTable
 
 execute :: IO ()
 execute = do

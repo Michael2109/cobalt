@@ -2,7 +2,7 @@
 Module      : ParserExecutor
 Description : Functions that call the ExprParser functions to generate the AST.
 -}
-module ParserExecutor where
+module Parsers.ParserExecutor where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -14,7 +14,7 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import ExprParser
+import Parsers.ExprParser
 
 parseTree relativeDir input = parse (expr') "" input
 

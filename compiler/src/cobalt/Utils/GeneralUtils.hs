@@ -2,7 +2,7 @@
 Module      : Utils
 Description : Contains various helper functions.
 -}
-module Utils where
+module Utils.GeneralUtils where
 
 import System.FilePath.Posix (takeExtension)
 import Data.Char (toLower)

@@ -3,7 +3,7 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module BaseParser
+module Parsers.BaseParser
     ( Parser
     , scn
     , symbol

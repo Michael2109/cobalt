@@ -2,7 +2,7 @@
 Module      : IRNode
 Description : Contains functions for working with intermediate representation tree.
 -}
-module IRNode where
+module AST.IRNode where
 
 import Data.Char
 import Data.List
@@ -10,9 +10,9 @@ import Data.Maybe
 import Text.Format
 import Text.PrettyPrint.Annotated.Leijen
 
-import SymbolTable
-import Utils
-import CodeGen
+import AST.CodeGenNode
+import SymbolTable.SymbolTable
+import Utils.GeneralUtils
 
 class CodeGenIR a where
     genCodeGenIR :: a -> CodeGenNode

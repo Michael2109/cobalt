@@ -3,15 +3,15 @@ Module      : Block
 Description : Data types that store general expressions.
 These are used to store the data and be converted into IRNodes
 -}
-module Block where
+module AST.Block where
 
 import Data.Char
 import Data.List
 import Data.Scientific
 import Text.Show.Functions
 
-import IRNode
-import SymbolTable
+import AST.IRNode
+import SymbolTable.SymbolTable
 
 class ErrorCheck a where
     errorCheck :: a -> String

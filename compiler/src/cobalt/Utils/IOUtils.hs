@@ -2,15 +2,15 @@
 Module      : IOUtils
 Description : Contains functions used for working with IO.
 -}
-module IOUtils where
+module Utils.IOUtils where
 
 import Control.Monad
 import System.Console.GetOpt (getOpt, ArgOrder( Permute ))
 import System.Directory
 import System.FilePath.Posix
 
-import CommandLineUtils (helpInfo)
-import Utils (endsWith)
+import Utils.CommandLineUtils (helpInfo)
+import Utils.GeneralUtils (endsWith)
 
 printVersion :: IO()
 printVersion = putStrLn "cobalt 0.1.x"

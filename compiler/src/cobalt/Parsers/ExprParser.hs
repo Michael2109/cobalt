@@ -3,7 +3,7 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module ExprParser
+module Parsers.ExprParser
     ( Parser
     , expr
     , expr'
@@ -54,9 +54,9 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import BaseParser
-import Block
-import SymbolTable
+import AST.Block
+import Parsers.BaseParser
+import SymbolTable.SymbolTable
 
 -- Arithmetic Expression Parsers
 --
