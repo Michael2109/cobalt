@@ -49,10 +49,8 @@ data IRNode
     | DivideIR
     | ElseIR [IRNode]
     | ElseIfIR IRNode [IRNode]
-    | EmptyIR
     | ErrorIR
     | ForIR String IRNode IRNode [IRNode]
-    | FunctionIR IRNode (Maybe IRNode) [IRNode] IRNode Bool [IRNode]
     | FunctionCallIR String [IRNode]
     | GlobalVarIR String Bool Bool IRNode IRNode [IRNode]
     | GreaterEqualIR
@@ -66,6 +64,7 @@ data IRNode
     | IntConstIR Integer
     | MainFunctionIR IRNode (Maybe IRNode) [IRNode] IRNode [IRNode]
     | MethodCallIR String [IRNode]
+    | MethodIR IRNode (Maybe IRNode) [IRNode] IRNode Bool [IRNode]
     | ModifierBlockIR [IRNode]
     | MultiplyIR
     | NegIR IRNode
@@ -102,8 +101,8 @@ data IRNode
     deriving (Eq, Show)
 
 instance CodeGenIR IRNode where
-    genCodeGenIR (ABinaryIR aBinOp aExpr1 aExpr2)  = EmptyCodeGen
-    genCodeGenIR (AddIR)  = EmptyCodeGen
+    genCodeGenIR (ABinaryIR aBinOp aExpr1 aExpr2)  = ABinaryCodeGen (genCodeGenIR aBinOp) (genCodeGenIR aExpr1) (genCodeGenIR aExpr2)
+    genCodeGenIR (AddIR)  = AddCodeGen
     genCodeGenIR (AndIR)  = AndCodeGen
     genCodeGenIR (AnnotationIR name)  = AnnotationCodeGen  name
     genCodeGenIR (ArgumentIR a)  = ArgumentCodeGen  (genCodeGenIR a )
@@ -120,38 +119,38 @@ instance CodeGenIR IRNode where
     genCodeGenIR (CatchIR params exprs)  = CatchCodeGen  (irNodeArrToCodeGenNodeArray params ) (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (ClassIR package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ClassCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam ) (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
     genCodeGenIR (ClassVariableIR className varName)  = ClassVariableCodeGen  className varName
-    genCodeGenIR (ClosingParenthesisIR) = EmptyCodeGen
+    genCodeGenIR (ClosingParenthesisIR) = ClosingParenthesisCodeGen
     genCodeGenIR (ConstructorIR name argTypes args exprs)  = ConstructorCodeGen  name (irNodeArrToCodeGenNodeArray argTypes ) (irNodeArrToCodeGenNodeArray args ) (irNodeArrToCodeGenNodeArray exprs )
-    genCodeGenIR (DivideIR)  = EmptyCodeGen
+    genCodeGenIR (DivideIR)  = DivideCodeGen
     genCodeGenIR (ElseIR exprs)  = ElseCodeGen  (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (ElseIfIR condition exprs)  = ElseIfCodeGen  (genCodeGenIR condition ) (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (ForIR varName start end exprs)  = ForCodeGen  varName (genCodeGenIR start ) (genCodeGenIR end ) (irNodeArrToCodeGenNodeArray exprs )
-    genCodeGenIR (FunctionIR name annotations params returnType static exprs)  = FunctionCodeGen  (genCodeGenIR name ) (maybeIRNodeToMaybeCodeGenNode annotations ) (irNodeArrToCodeGenNodeArray params ) (genCodeGenIR returnType ) static (irNodeArrToCodeGenNodeArray exprs )
-    genCodeGenIR (FunctionCallIR name exprs)  = FunctionCallCodeGen  name $ irNodeArrToCodeGenNodeArray exprs 
+    genCodeGenIR (FunctionCallIR name exprs)  = FunctionCallCodeGen  name $ irNodeArrToCodeGenNodeArray exprs
     genCodeGenIR (GreaterEqualIR)  = GreaterEqualCodeGen
     genCodeGenIR (GreaterIR)  = GreaterCodeGen
     genCodeGenIR (GlobalVarIR modifier final static varType varName exprs)  = GlobalVarCodeGen  modifier final static (genCodeGenIR varType ) (genCodeGenIR varName )  (map (\e -> genCodeGenIR e ) exprs)
     genCodeGenIR (IdentifierIR name)  = IdentifierCodeGen  name
     genCodeGenIR (IfIR condition exprs)  = IfCodeGen  (genCodeGenIR condition ) $ irNodeArrToCodeGenNodeArray exprs 
     genCodeGenIR (ImportIR locs)  = ImportCodeGen  locs
-    genCodeGenIR (IntConstIR i)  = EmptyCodeGen
+    genCodeGenIR (IntConstIR i)  = IntConstCodeGen i
     genCodeGenIR (LessEqualIR)  = LessEqualCodeGen
     genCodeGenIR (LessIR)  = LessCodeGen
     genCodeGenIR (MainFunctionIR name annotations params returnType exprs)  = MainFunctionCodeGen  (genCodeGenIR name ) (maybeIRNodeToMaybeCodeGenNode annotations ) (irNodeArrToCodeGenNodeArray params ) (genCodeGenIR returnType ) (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (MethodCallIR methodName args)  = MethodCallCodeGen  methodName (irNodeArrToCodeGenNodeArray args )
+    genCodeGenIR (MethodIR name annotations params returnType static exprs)  = MethodCodeGen  (genCodeGenIR name ) (maybeIRNodeToMaybeCodeGenNode annotations ) (irNodeArrToCodeGenNodeArray params ) (genCodeGenIR returnType ) static (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (ModifierBlockIR exprs)  = ModifierBlockCodeGen  (map (\e -> genCodeGenIR e ) exprs)
-    genCodeGenIR (MultiplyIR)  = EmptyCodeGen
-    genCodeGenIR (NegIR aExpr)  = EmptyCodeGen
+    genCodeGenIR (MultiplyIR)  = MultiplyCodeGen
+    genCodeGenIR (NegIR aExpr)  = NegCodeGen (genCodeGenIR aExpr)
     genCodeGenIR (NewClassInstanceIR className args)  = NewClassInstanceCodeGen  (genCodeGenIR className ) $ irNodeArrToCodeGenNodeArray args 
     genCodeGenIR (NotIR n)  = NotCodeGen  $ genCodeGenIR n 
     genCodeGenIR (ObjectIR package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ObjectCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam ) (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
     genCodeGenIR (ObjectMethodCallIR objectName methodName args)  = ObjectMethodCallCodeGen  objectName methodName (irNodeArrToCodeGenNodeArray args )
-    genCodeGenIR (OpeningParenthesisIR) = EmptyCodeGen
+    genCodeGenIR (OpeningParenthesisIR) = OpeningParenthesisCodeGen
     genCodeGenIR (OrIR)  = OrCodeGen
     genCodeGenIR (PackageIR locs)  = PackageCodeGen  locs
     genCodeGenIR (ParameterizedTypeIR className typeName)  = ParameterizedTypeCodeGen  (genCodeGenIR className ) (genCodeGenIR typeName )
     genCodeGenIR (ParameterIR varType varName)  = ParameterCodeGen  (genCodeGenIR varType ) (genCodeGenIR varName )
-    genCodeGenIR (ParenthesisIR aExpr)  = EmptyCodeGen
+    genCodeGenIR (ParenthesisIR aExpr)  = ParenthesisCodeGen (genCodeGenIR aExpr)
     genCodeGenIR (PrintIR expr)  = PrintCodeGen  $ genCodeGenIR expr 
     genCodeGenIR (ReassignIR name value)  = ReassignCodeGen  (genCodeGenIR name ) (genCodeGenIR value )
     genCodeGenIR (ReturnIR expr)  = ReturnCodeGen  (genCodeGenIR expr )

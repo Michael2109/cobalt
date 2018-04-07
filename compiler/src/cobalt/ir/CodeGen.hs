@@ -61,10 +61,8 @@ data CodeGenNode
     | DivideCodeGen
     | ElseCodeGen  [CodeGenNode]
     | ElseIfCodeGen  CodeGenNode [CodeGenNode]
-    | EmptyCodeGen
     | ErrorCodeGen
     | ForCodeGen  String CodeGenNode CodeGenNode [CodeGenNode]
-    | FunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode Bool [CodeGenNode]
     | FunctionCallCodeGen  String [CodeGenNode]
     | GlobalVarCodeGen  String Bool Bool CodeGenNode CodeGenNode [CodeGenNode]
     | GreaterEqualCodeGen
@@ -78,6 +76,7 @@ data CodeGenNode
     | IntConstCodeGen  Integer
     | MainFunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode [CodeGenNode]
     | MethodCallCodeGen  String [CodeGenNode]
+    | MethodCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode Bool [CodeGenNode]
     | ModifierBlockCodeGen  [CodeGenNode]
     | MultiplyCodeGen
     | NegCodeGen  CodeGenNode
@@ -139,9 +138,7 @@ instance CodeGen CodeGenNode where
     genCode (DivideCodeGen )  = return ()
     genCode (ElseCodeGen  statement)  = return ()
     genCode (ElseIfCodeGen  condition statement)  = return ()
-    genCode (EmptyCodeGen)  = return ()
     genCode (ForCodeGen  varName start end exprs)  = return ()
-    genCode (FunctionCodeGen  name annotations params returnType static body)  = return ()
     genCode (FunctionCallCodeGen  name exprs)  = return ()
     genCode (GlobalVarCodeGen  modifier final static varType varName exprs)  = return ()
     genCode (GreaterEqualCodeGen )  = return ()
@@ -155,6 +152,7 @@ instance CodeGen CodeGenNode where
     genCode (LessCodeGen )  = return ()
     genCode (MainFunctionCodeGen  name annotations params returnType body)  = return ()
     genCode (MethodCallCodeGen  methodName args) = return ()
+    genCode (MethodCodeGen  name annotations params returnType static body)  = return ()
     genCode (ModifierBlockCodeGen  exprs)  = return ()
     genCode (MultiplyCodeGen )  = return ()
     genCode (NegCodeGen  aExpr)  = return ()
