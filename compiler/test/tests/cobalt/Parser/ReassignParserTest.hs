@@ -25,6 +25,15 @@ testReassignParserArithmetic = do
              Left  _ -> Error
              Right x -> x)
 
+testReassignParserArithmeticTwoVars :: Test
+testReassignParserArithmeticTwoVars = do
+    let code = "x = x + direction"
+    TestCase $ assertEqual code
+        (Reassign (Identifier "x") (Identifier "x"))
+        (case (parse reassignParser "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
 testReassignParserClassVar :: Test
 testReassignParserClassVar = do
     let code = "Var_Name = ClassName.VarName"
