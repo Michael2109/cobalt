@@ -3,7 +3,7 @@ Module      : Compiler
 Description : Functions for compiling and generating code.
 There are functions for compiling directories or individual strings etc.
 -}
-module Compiler.Compiler (module Compiler.Compiler, module Utils.IOUtils) where
+module Compiler.Compiler (module Compiler.Compiler, module Util.IOUtil) where
 
 import Control.Monad
 import Data.List
@@ -18,7 +18,7 @@ import Data.ByteString.Lazy.Char8 (pack)
 import AST.Block
 import AST.IRNode
 import AST.CodeGenNode
-import Parsers.ParserExecutor
+import Parser.ParserExecutor
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -26,8 +26,8 @@ import JVM.Builder
 import JVM.Exceptions
 import qualified Java.Lang
 import qualified Java.IO
-import Utils.GeneralUtils (endsWith)
-import Utils.IOUtils
+import Util.GeneralUtil (endsWith)
+import Util.IOUtil
 import SymbolTable.SymbolTable
 
 data ASTData = ASTData FilePath SymbolTable Expr

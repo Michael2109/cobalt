@@ -12,7 +12,7 @@ import Text.PrettyPrint.Annotated.Leijen
 
 import AST.CodeGenNode
 import SymbolTable.SymbolTable
-import Utils.GeneralUtils
+import Util.GeneralUtil
 
 class CodeGenIR a where
     genCodeGenIR :: a -> CodeGenNode

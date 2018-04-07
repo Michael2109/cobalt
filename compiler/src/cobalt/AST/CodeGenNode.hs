@@ -24,7 +24,7 @@ import JVM.Exceptions
 import qualified Java.Lang
 import qualified Java.IO
 import SymbolTable.SymbolTable
-import Utils.GeneralUtils
+import Util.GeneralUtil
 
 class CodeGen a where
     genCode :: Throws UnexpectedEndMethod e => a -> Generate e ()

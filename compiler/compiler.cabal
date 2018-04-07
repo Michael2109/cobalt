@@ -91,12 +91,12 @@ library
       Java.META.Types
       Java.META.Spec
       Java.META.Parser
-      Parsers.BaseParser
-      Parsers.ExprParser
-      Parsers.ParserExecutor
-      Utils.CommandLineUtils
-      Utils.IOUtils
-      Utils.GeneralUtils
+      Parser.BaseParser
+      Parser.ExprParser
+      Parser.ParserExecutor
+      Util.CommandLineUtil
+      Util.IOUtil
+      Util.GeneralUtil
       SymbolTable.SymbolTable
   other-modules:
 
@@ -167,51 +167,51 @@ test-suite compiler-test
       Compiler.CompilerTest
       IntegrationTests
       JVM.AssemblerTest
-      Parsers.BaseParserTest
-      Parsers.AExprParserTest
-      Parsers.BExprParserTest
-      Parsers.AnnotationParserTest
-      Parsers.ArgumentParserTest
-      Parsers.ArgumentTypeParserTest
-      Parsers.ArithmeticParserTest
-      Parsers.ArrayAppendParserTest
-      Parsers.ArrayElementSelectParserTest
-      Parsers.AssignParserTest
-      Parsers.BooleanParserTest
-      Parsers.ClassParserTest
-      Parsers.ClassVariableParserTest
-      Parsers.ConstructorParserTest
-      Parsers.ForLoopParserTest
-      Parsers.GlobalVariableParserTest
-      Parsers.IdentifierParserTest
-      Parsers.IfElseStatementParserTest
-      Parsers.ImportParserTest
-      Parsers.MethodCallParserTest
-      Parsers.MethodParserTest
-      Parsers.ModifierBlockParserTest
-      Parsers.NewClassInstanceParserTest
-      Parsers.ObjectMethodCallParserTest
-      Parsers.ObjectParserTest
-      Parsers.PackageParserTest
-      Parsers.ParserTests
-      Parsers.ParameterizedTypeParserTest
-      Parsers.ParameterParserTest
-      Parsers.ParenthesesParserTest
-      Parsers.ReassignParserTest
-      Parsers.RExprParserTest
-      Parsers.StringLiteralMultilineParserTest
-      Parsers.StringLiteralParserTest
-      Parsers.ThisMethodCallParserTest
-      Parsers.ThisVarParserTest
-      Parsers.TraitParserTest
-      Parsers.TypeParameterParserTest
-      Parsers.ValueTypeParserTest
+      Parser.BaseParserTest
+      Parser.AExprParserTest
+      Parser.BExprParserTest
+      Parser.AnnotationParserTest
+      Parser.ArgumentParserTest
+      Parser.ArgumentTypeParserTest
+      Parser.ArithmeticParserTest
+      Parser.ArrayAppendParserTest
+      Parser.ArrayElementSelectParserTest
+      Parser.AssignParserTest
+      Parser.BooleanParserTest
+      Parser.ClassParserTest
+      Parser.ClassVariableParserTest
+      Parser.ConstructorParserTest
+      Parser.ForLoopParserTest
+      Parser.GlobalVariableParserTest
+      Parser.IdentifierParserTest
+      Parser.IfElseStatementParserTest
+      Parser.ImportParserTest
+      Parser.MethodCallParserTest
+      Parser.MethodParserTest
+      Parser.ModifierBlockParserTest
+      Parser.NewClassInstanceParserTest
+      Parser.ObjectMethodCallParserTest
+      Parser.ObjectParserTest
+      Parser.PackageParserTest
+      Parser.ParserTests
+      Parser.ParameterizedTypeParserTest
+      Parser.ParameterParserTest
+      Parser.ParenthesesParserTest
+      Parser.ReassignParserTest
+      Parser.RExprParserTest
+      Parser.StringLiteralMultilineParserTest
+      Parser.StringLiteralParserTest
+      Parser.ThisMethodCallParserTest
+      Parser.ThisVarParserTest
+      Parser.TraitParserTest
+      Parser.TypeParameterParserTest
+      Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
-      TestUtils.TestUtils
-      Utils.CommandLineUtilsTest
-      Utils.IOUtilsTest
-      Utils.GeneralUtilsTest
-      Utils.UtilsTests
+      TestUtil.TestUtil
+      Util.CommandLineUtilTest
+      Util.IOUtilTest
+      Util.GeneralUtilTest
+      Util.UtilTests
 
   default-language: Haskell2010

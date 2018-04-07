@@ -1,2 +1,0 @@
-module Parsers.ConstructorParserTest where
-

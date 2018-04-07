@@ -8,7 +8,7 @@ import Control.Monad
 import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
 
-import TestUtils.TestUtils
+import TestUtil.TestUtil
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler

@@ -8,9 +8,9 @@ import Control.Monad
 import System.Environment
 
 import Compiler.Compiler
-import Utils.CommandLineUtils (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
-import Utils.IOUtils
-import Utils.GeneralUtils
+import Util.CommandLineUtil (commandLineArgs, CommandLineArgument (..), raiseErrorsException )
+import Util.IOUtil
+import Util.GeneralUtil
 import SymbolTable.SymbolTable
 
 execute :: IO ()
