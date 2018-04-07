@@ -1,10 +1,10 @@
-module Parser.ArgumentParserTest where
+module Parsers.ArgumentParserTest where
 
 import Test.HUnit
 import Text.Megaparsec
 
 import AST.Block
-import Parser.ExprParser
+import Parsers.ExprParser
 
 testArgumentParserIdentifier :: Test
 testArgumentParserIdentifier = do
