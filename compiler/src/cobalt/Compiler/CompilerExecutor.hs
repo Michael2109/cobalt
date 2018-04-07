@@ -50,4 +50,4 @@ execute = do
                     return ()
                 else do
                     cleanDir (endsWith ".class") classOutputDir
-                    compile classPath filesToCompile classOutputDir
+                    compile options classPath filesToCompile classOutputDir
