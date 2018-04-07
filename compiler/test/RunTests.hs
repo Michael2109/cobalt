@@ -2,9 +2,9 @@ import Test.HUnit
 import System.Exit
 
 import IntegrationTests
-import ParserTests
-import SymbolTableTests
-import UtilsTests
+import Parsers.ParserTests
+import SymbolTable.SymbolTableTests
+import Utils.UtilsTests
 
 main :: IO Counts
 main = do

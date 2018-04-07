@@ -53,7 +53,6 @@ library
       text-format-simple,
       scientific,
       temporary,
-
        binary,
        utf8-string,
        array,
@@ -119,20 +118,9 @@ test-suite compiler-test
   type: exitcode-stdio-1.0
   main-is: RunTests.hs
   hs-source-dirs:
-
-      test,
-      test/tests/utils,
-      test/tests/cobalt,
-      test/tests/cobalt/ast,
-      test/tests/cobalt/compiler,
-      test/tests/cobalt/error_checking,
-      test/tests/cobalt/parsers,
-      test/tests/cobalt/parsers/base_parsers,
-      test/tests/cobalt/parsers/expr_parsers,
-      test/tests/cobalt/symbol_table,
-      test/tests/cobalt/utils,
-      test/tests/cobalt/JVM
-
+      test
+      test/tests
+      test/tests/cobalt
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       base >=4.7 && <5,
@@ -161,7 +149,6 @@ test-suite compiler-test
       scientific,
       temporary,
       process,
-
       binary,
       utf8-string,
       array,
@@ -174,73 +161,57 @@ test-suite compiler-test
       zip,
       Glob,
       parsec >= 3 && <4,
-
       compiler
-
   other-modules:
-      TestUtils
-
+      AST.BlocksTest
+      Compiler.CompilerTest
       IntegrationTests
-      ParserTests
-      SymbolTableTests
-      UtilsTests
-
-      BlocksTest
-      ErrorCheckingTest
-      SymbolTableTest
-
-      -- Base parser
-      BaseParserTest
-
-      -- ABExprParser tests
-      AExprParserTest
-      BExprParserTest
-
-      -- ExprParser tests
-      AnnotationParserTest
-      ArgumentParserTest
-      ArgumentTypeParserTest
-      ArithmeticParserTest
-      ArrayAppendParserTest
-      ArrayElementSelectParserTest
-      AssignParserTest
-      BooleanParserTest
-      ClassParserTest
-      ClassVariableParserTest
-      ConstructorParserTest
-      ForLoopParserTest
-      GlobalVariableParserTest
-      IdentifierParserTest
-      IfElseStatementParserTest
-      ImportParserTest
-      MethodCallParserTest
-      MethodParserTest
-      ModifierBlockParserTest
-      NewClassInstanceParserTest
-      ObjectMethodCallParserTest
-      ObjectParserTest
-      PackageParserTest
-      ParameterizedTypeParserTest
-      ParameterParserTest
-      ParenthesesParserTest
-      ReassignParserTest
-      RExprParserTest
-      StringLiteralMultilineParserTest
-      StringLiteralParserTest
-      ThisMethodCallParserTest
-      ThisVarParserTest
-      TraitParserTest
-      TypeParameterParserTest
-      ValueTypeParserTest
-
-      -- GeneralUtils
-      CommandLineUtilsTest
-      IOUtilsTest
-      UtilsTest
-
-      -- Integration
-      CompilerTest
-      AssemblerTest
-
+      JVM.AssemblerTest
+      Parsers.BaseParserTest
+      Parsers.AExprParserTest
+      Parsers.BExprParserTest
+      Parsers.AnnotationParserTest
+      Parsers.ArgumentParserTest
+      Parsers.ArgumentTypeParserTest
+      Parsers.ArithmeticParserTest
+      Parsers.ArrayAppendParserTest
+      Parsers.ArrayElementSelectParserTest
+      Parsers.AssignParserTest
+      Parsers.BooleanParserTest
+      Parsers.ClassParserTest
+      Parsers.ClassVariableParserTest
+      Parsers.ConstructorParserTest
+      Parsers.ForLoopParserTest
+      Parsers.GlobalVariableParserTest
+      Parsers.IdentifierParserTest
+      Parsers.IfElseStatementParserTest
+      Parsers.ImportParserTest
+      Parsers.MethodCallParserTest
+      Parsers.MethodParserTest
+      Parsers.ModifierBlockParserTest
+      Parsers.NewClassInstanceParserTest
+      Parsers.ObjectMethodCallParserTest
+      Parsers.ObjectParserTest
+      Parsers.PackageParserTest
+      Parsers.ParserTests
+      Parsers.ParameterizedTypeParserTest
+      Parsers.ParameterParserTest
+      Parsers.ParenthesesParserTest
+      Parsers.ReassignParserTest
+      Parsers.RExprParserTest
+      Parsers.StringLiteralMultilineParserTest
+      Parsers.StringLiteralParserTest
+      Parsers.ThisMethodCallParserTest
+      Parsers.ThisVarParserTest
+      Parsers.TraitParserTest
+      Parsers.TypeParameterParserTest
+      Parsers.ValueTypeParserTest
+      SymbolTable.SymbolTableTest
+      SymbolTable.SymbolTableTests
+      TestUtils.TestUtils
+      Utils.CommandLineUtilsTest
+      Utils.IOUtilsTest
+      Utils.GeneralUtilsTest
+      Utils.UtilsTests
 
   default-language: Haskell2010

@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings, FlexibleContexts #-}
 
-module AssemblerTest where
+module JVM.AssemblerTest where
 
 import Test.HUnit (Assertion, assertBool)
 import System.Directory (removeFile, doesDirectoryExist, createDirectory)
@@ -8,7 +8,7 @@ import Control.Monad
 import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
 
-import TestUtils
+import TestUtils.TestUtils
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
