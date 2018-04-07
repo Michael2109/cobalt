@@ -29,10 +29,9 @@ source-repository head
 library
   hs-source-dirs:
       src/cobalt,
-      src/cobalt/blocks,
+      src/cobalt/ast,
       src/cobalt/compiler,
       src/cobalt/error_checking,
-      src/cobalt/ir,
       src/cobalt/parsers,
       src/cobalt/symbol_table,
       src/cobalt/utils
@@ -132,7 +131,7 @@ test-suite compiler-test
       test,
       test/tests/utils,
       test/tests/cobalt,
-      test/tests/cobalt/blocks,
+      test/tests/cobalt/ast,
       test/tests/cobalt/compiler,
       test/tests/cobalt/error_checking,
       test/tests/cobalt/parsers,
