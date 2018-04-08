@@ -186,6 +186,11 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
         annotations <- try (optional annotationParser)
+        modifierFound <- optional modifierParser
+        let modifier = case modifierFound of
+                          Just m -> m
+                          Nothing -> NoModifier
+
         name <- identifierParser
         fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
@@ -193,7 +198,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
                          Nothing -> []
         symbol ":"
         rType <- identifierParser
-        return (L.IndentMany Nothing (return . (Method name annotations params rType static)) (expr'))
+        return (L.IndentMany Nothing (return . (Method name annotations modifier params rType static)) (expr'))
 
 identifierParser :: Parser Expr
 identifierParser = do
@@ -311,6 +316,24 @@ classVariableParser  =
         symbol "."
         varName <- identifier
         return $ ClassVariable className varName
+
+publicModifierParser :: Parser Modifier
+publicModifierParser = do
+    rword "public"
+    return Public
+
+protectedModifierParser :: Parser Modifier
+protectedModifierParser = do
+    rword "protected"
+    return Protected
+
+privateModifierParser :: Parser Modifier
+privateModifierParser = do
+    rword "private"
+    return Private
+
+modifierParser :: Parser Modifier
+modifierParser = publicModifierParser <|> protectedModifierParser <|> privateModifierParser
 
 modifierBlockParser :: Bool -> Parser Expr
 modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
