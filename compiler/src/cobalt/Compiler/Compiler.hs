@@ -26,6 +26,7 @@ import JVM.Builder
 import JVM.Exceptions
 import qualified Java.Lang
 import qualified Java.IO
+import Util.CommandLineUtil (CommandLineArgument (..))
 import Util.GeneralUtil (endsWith)
 import Util.IOUtil
 import SymbolTable.SymbolTable
@@ -53,8 +54,8 @@ generateClassSymbolTable ast =
         Left  e -> ClassSymbolTable "ERROR" NoType [] []
         Right x -> genClassSymbolTable x
 
-compile :: FilePath -> [FilePath] -> String -> IO ()
-compile classPath filePaths outputDir = do
+compile :: [CommandLineArgument] -> FilePath -> [FilePath] -> String -> IO ()
+compile commandLineArguments classPath filePaths outputDir = do
     classPathFilePaths <- traverseDir classPath ""
     let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
@@ -68,6 +69,9 @@ compile classPath filePaths outputDir = do
 
     -- Filter out only the ASTs that have been selected
     let astDatasToCompile = filter (\x -> (extractASTFilePath x) `elem` filePaths) astDatas
+
+    -- Print out the AST when in debug
+    when (elem (DebugMode) commandLineArguments) $ pPrint astDatasToCompile
 
     let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
 
