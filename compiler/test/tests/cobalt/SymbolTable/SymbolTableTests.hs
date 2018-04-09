@@ -11,11 +11,11 @@ symbolTableTestList = TestList
     , testSymbolTableExtractMethodArgs
     , testSymbolTableCombine
     , testSymbolTableCombineList
-    , testClassSymbolTableCombine
-    , testClassSymbolTableCombineList
+    , testModelSymbolTableCombine
+    , testModelSymbolTableCombineList
     , testSymbolTableMethodExists
     , testSymbolTableVariableExists
     , testSymbolTableVariableType
     , testSymbolTableVariableExistsFail
-    , testSymbolTableGetClassSymbolTable
+    , testSymbolTableGetModelSymbolTable
     ]

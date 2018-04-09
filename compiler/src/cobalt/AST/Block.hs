@@ -18,7 +18,7 @@ class ErrorCheck a where
     errorCheck :: a -> String
 
 class SymbolTableGen a where
-    genClassSymbolTable :: a -> ClassSymbolTable
+    genModelSymbolTable :: a -> ModelSymbolTable
 
 class IRGen a where
     genIR :: a -> SymbolTable -> CurrentState -> IRNode
@@ -104,14 +104,14 @@ data Expr
         deriving (Eq, Show)
 
 instance SymbolTableGen Expr where
-    genClassSymbolTable (Class packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ClassType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
+    genModelSymbolTable (Class packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name ClassType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
     --genClassSymbolTable (ClassParam varType varName) = (ClassSymbolTable "" NoType [(show varName, show varType)] [])
     --genClassSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" NoType [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
     --genClassSymbolTable (GlobalVar modifier final static varType varName exprs) = (ClassSymbolTable "" NoType [(show varName, show varType)] [])
-    genClassSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineClassSymbolTable x y) (map genClassSymbolTable exprs)
-    genClassSymbolTable (Object packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ClassType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
-    genClassSymbolTable (Trait packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineClassSymbolTable (combineClassSymbolTable (combineClassSymbolTable (ClassSymbolTable name ClassType [] []) (combineClassSymbolTableList (map genClassSymbolTable params))) (combineClassSymbolTableList (map genClassSymbolTable modifierBlocks))) (combineClassSymbolTableList (map genClassSymbolTable bodyArray))
-    genClassSymbolTable (_) = ClassSymbolTable "" NoType [] []
+    genModelSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineModelSymbolTable x y) (map genModelSymbolTable exprs)
+    genModelSymbolTable (Object packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name ObjectType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
+    genModelSymbolTable (Trait packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name TraitType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
+    genModelSymbolTable (_) = ModelSymbolTable "" NoType [] [] []
 
 instance IRGen Expr where
     genIR (ABinary aBinOp aExpr1 aExpr2) st cs = ABinaryIR (genIR aBinOp st cs) (genIR aExpr1 st cs) (genIR aExpr2 st cs)

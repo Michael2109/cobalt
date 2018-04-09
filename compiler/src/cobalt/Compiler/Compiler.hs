@@ -49,10 +49,10 @@ extractASTSymbolTable (ASTData _ symbolTable _) = symbolTable
 extractASTExpr :: ASTData -> Expr
 extractASTExpr (ASTData _ _ expr) = expr
 
-generateClassSymbolTable ast =
+generateModelSymbolTable ast =
     case ast of
-        Left  e -> ClassSymbolTable "ERROR" NoType [] []
-        Right x -> genClassSymbolTable x
+        Left  e -> ModelSymbolTable "ERROR" NoType [] [] []
+        Right x -> genModelSymbolTable x
 
 compile :: [CommandLineArgument] -> FilePath -> [FilePath] -> String -> IO ()
 compile commandLineArguments classPath filePaths outputDir = do
@@ -62,10 +62,10 @@ compile commandLineArguments classPath filePaths outputDir = do
     classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
 
     let classPathAstDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
-    let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
+    let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
 
     let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
-    let symbolTable = SymbolTable $ concat $ map (\ sTable -> classSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
+    let symbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
     -- Filter out only the ASTs that have been selected
     let astDatasToCompile = filter (\x -> (extractASTFilePath x) `elem` filePaths) astDatas
@@ -82,7 +82,7 @@ compile commandLineArguments classPath filePaths outputDir = do
 generateAST :: FilePath -> String -> ASTData
 generateAST inputFile code = do
    let parseResult = parseTree (Split.splitOn "/" $ (takeDirectory inputFile)) code
-   let symbolTable = SymbolTable [generateClassSymbolTable parseResult]
+   let symbolTable = SymbolTable [generateModelSymbolTable parseResult]
 
    let ast = case parseResult of
                  Left  e -> Error
