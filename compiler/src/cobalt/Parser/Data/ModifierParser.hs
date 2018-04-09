@@ -1,8 +1,8 @@
-module Parser.ModifierParser where
+module Parser.Data.ModifierParser where
 
 import Text.Megaparsec
 
-import AST.Modifier
+import AST.Data.Modifier
 import Parser.BaseParser (rword)
 import Parser.ParserType
 

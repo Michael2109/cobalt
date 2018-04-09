@@ -16,7 +16,7 @@ import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 
-import AST.Modifier
+import AST.Data.Modifier
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -51,7 +51,7 @@ data CodeGenNode
     | BoolConstCodeGen  Bool
     | BooleanExprCodeGen  CodeGenNode
     | CatchCodeGen  [CodeGenNode] [CodeGenNode]
-    | ClassCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | ClassCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | ParameterCodeGen  CodeGenNode CodeGenNode
     | ClassVariableCodeGen  String String
     | ClosingParenthesisCodeGen
@@ -83,7 +83,7 @@ data CodeGenNode
     | NegCodeGen  CodeGenNode
     | NewClassInstanceCodeGen  CodeGenNode [CodeGenNode]
     | NotCodeGen  CodeGenNode
-    | ObjectCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | ObjectCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | ObjectMethodCallCodeGen  String String [CodeGenNode]
     | OpeningParenthesisCodeGen
     | OrCodeGen
@@ -105,7 +105,7 @@ data CodeGenNode
     | ThisCodeGen
     | ThisMethodCallCodeGen  String [CodeGenNode]
     | ThisVarCodeGen  CodeGenNode
-    | TraitCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | TraitCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | TryCodeGen  [CodeGenNode]
     | TypeCodeGen  CodeGenNode
     | TypeParameterCodeGen  CodeGenNode
@@ -130,7 +130,7 @@ instance CodeGen CodeGenNode where
     genCode (BoolConstCodeGen   b) = return ()
     genCode (BooleanExprCodeGen  expr)  = return ()
     genCode (CatchCodeGen  params exprs)  = return ()
-    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ClassCodeGen  package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (ClassVariableCodeGen  className varName)  = return ()
     genCode (ClosingParenthesisCodeGen ) = return ()
     genCode (ConstructorCodeGen  name argTypes args body)  = return ()
@@ -159,7 +159,7 @@ instance CodeGen CodeGenNode where
     genCode (NegCodeGen  aExpr)  = return ()
     genCode (NewClassInstanceCodeGen  className args)  = return ()
     genCode (NotCodeGen   n) = return ()
-    genCode (ObjectCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ObjectCodeGen  package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (ObjectMethodCallCodeGen  objectName methodName args)  = return ()
     genCode (OrCodeGen) = return ()
     genCode (OpeningParenthesisCodeGen ) = return ()
@@ -181,7 +181,7 @@ instance CodeGen CodeGenNode where
     genCode (ThisCodeGen )  = return ()
     genCode (ThisMethodCallCodeGen  methodName args)  = return ()
     genCode (ThisVarCodeGen  varName)  = return ()
-    genCode (TraitCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (TraitCodeGen  package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (TryCodeGen  exprs)  = return ()
     genCode (TypeCodeGen  b)  = return ()
     genCode (TypeParameterCodeGen  typeName)  = return ()

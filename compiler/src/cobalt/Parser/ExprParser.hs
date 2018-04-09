@@ -17,9 +17,11 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import AST.Block
-import AST.Modifier
+import AST.Data.ModelType
+import AST.Data.Modifier
 import Parser.BaseParser
-import Parser.ModifierParser
+import Parser.Data.ModelTypeParser
+import Parser.Data.ModifierParser
 import Parser.ParserType
 import SymbolTable.SymbolTable
 
@@ -94,7 +96,9 @@ modelParser = try $ L.nonIndented scn p
     p = do
         package <- optional packageParser
         imports <- many importParser
-        modelType <- L.lineFold scn $ \sp' -> rword "class" <|> rword "object" <|> rword "trait"
+        L.lineFold scn $ \sp' -> return ()
+        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+        modelType <- modelTypeParser
         name <- identifier
         typeParam <- optional typeParameterParser
         fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
@@ -111,10 +115,9 @@ modelParser = try $ L.nonIndented scn p
 
         return $
             case modelType of
-                "class"  -> (Class package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-                "object" -> (Object package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-                "trait"  -> (Trait package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-                (_)      -> error ("Error Message: " ++ name)
+                ClassModel  -> (Class package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs exprs)
+                ObjectModel -> (Object package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs exprs)
+                TraitModel  -> (Trait package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs exprs)
 
 packageParser :: Parser Expr
 packageParser = try $ L.nonIndented scn p

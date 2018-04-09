@@ -1,4 +1,4 @@
-module AST.Modifier where
+module AST.Data.Modifier where
 
 data Modifier
     = Public

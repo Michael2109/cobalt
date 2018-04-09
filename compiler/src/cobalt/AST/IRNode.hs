@@ -10,7 +10,7 @@ import Data.Maybe
 import Text.Format
 import Text.PrettyPrint.Annotated.Leijen
 
-import AST.Modifier
+import AST.Data.Modifier
 import AST.CodeGenNode
 import SymbolTable.SymbolTable
 import Util.GeneralUtil
@@ -39,7 +39,7 @@ data IRNode
     | BoolConstIR Bool
     | BooleanExprIR IRNode
     | CatchIR [IRNode] [IRNode]
-    | ClassIR (Maybe IRNode) String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+    | ClassIR (Maybe IRNode) String (Maybe IRNode) [Modifier] [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
     | ParameterIR IRNode IRNode
     | ClassVariableIR String String
     | ClosingParenthesisIR
@@ -71,7 +71,7 @@ data IRNode
     | NegIR IRNode
     | NewClassInstanceIR IRNode [IRNode]
     | NotIR IRNode
-    | ObjectIR (Maybe IRNode) String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+    | ObjectIR (Maybe IRNode) String (Maybe IRNode) [Modifier] [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
     | ObjectMethodCallIR String String [IRNode]
     | OpeningParenthesisIR
     | OrIR
@@ -93,7 +93,7 @@ data IRNode
     | ThisIR
     | ThisMethodCallIR String [IRNode]
     | ThisVarIR IRNode
-    | TraitIR (Maybe IRNode) String (Maybe IRNode) [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
+    | TraitIR (Maybe IRNode) String (Maybe IRNode) [Modifier] [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
     | TryIR [IRNode]
     | TypeIR IRNode
     | TypeParameterIR IRNode
@@ -118,7 +118,7 @@ instance CodeGenIR IRNode where
     genCodeGenIR (BoolConstIR b)  = BoolConstCodeGen  b
     genCodeGenIR (BooleanExprIR expr)  = BooleanExprCodeGen  (genCodeGenIR expr )
     genCodeGenIR (CatchIR params exprs)  = CatchCodeGen  (irNodeArrToCodeGenNodeArray params ) (irNodeArrToCodeGenNodeArray exprs )
-    genCodeGenIR (ClassIR package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ClassCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam ) (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
+    genCodeGenIR (ClassIR package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ClassCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam) modifiers (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
     genCodeGenIR (ClassVariableIR className varName)  = ClassVariableCodeGen  className varName
     genCodeGenIR (ClosingParenthesisIR) = ClosingParenthesisCodeGen
     genCodeGenIR (ConstructorIR name argTypes args exprs)  = ConstructorCodeGen  name (irNodeArrToCodeGenNodeArray argTypes ) (irNodeArrToCodeGenNodeArray args ) (irNodeArrToCodeGenNodeArray exprs )
@@ -144,7 +144,7 @@ instance CodeGenIR IRNode where
     genCodeGenIR (NegIR aExpr)  = NegCodeGen (genCodeGenIR aExpr)
     genCodeGenIR (NewClassInstanceIR className args)  = NewClassInstanceCodeGen  (genCodeGenIR className ) $ irNodeArrToCodeGenNodeArray args 
     genCodeGenIR (NotIR n)  = NotCodeGen  $ genCodeGenIR n 
-    genCodeGenIR (ObjectIR package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ObjectCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam ) (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
+    genCodeGenIR (ObjectIR package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ObjectCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam) modifiers (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
     genCodeGenIR (ObjectMethodCallIR objectName methodName args)  = ObjectMethodCallCodeGen  objectName methodName (irNodeArrToCodeGenNodeArray args )
     genCodeGenIR (OpeningParenthesisIR) = OpeningParenthesisCodeGen
     genCodeGenIR (OrIR)  = OrCodeGen
@@ -166,7 +166,7 @@ instance CodeGenIR IRNode where
     genCodeGenIR (ThisIR)  = ThisCodeGen
     genCodeGenIR (ThisMethodCallIR methodName args)  = ThisMethodCallCodeGen  methodName (irNodeArrToCodeGenNodeArray args )
     genCodeGenIR (ThisVarIR varName)  = ThisVarCodeGen  $ genCodeGenIR varName 
-    genCodeGenIR (TraitIR package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = TraitCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam ) (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
+    genCodeGenIR (TraitIR package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = TraitCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam) modifiers (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
     genCodeGenIR (TryIR exprs)  = TryCodeGen  (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (TypeIR b)  = TypeCodeGen  (genCodeGenIR b )
     genCodeGenIR (TypeParameterIR typeName)  = TypeParameterCodeGen  (genCodeGenIR typeName )
