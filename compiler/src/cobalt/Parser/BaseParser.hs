@@ -3,18 +3,7 @@ Module      : BaseParser
 Description : Contains parsing functions used in all other parsers.
 Generally a lower level parser for words etc.
 -}
-module Parser.BaseParser
-    ( Parser
-    , scn
-    , symbol
-    , integerParser
-    , doubleParser
-    , rword
-    , rws
-    , parens
-    , word
-    , identifier
-    ) where
+module Parser.BaseParser where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -27,7 +16,7 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-type Parser = Parsec Void String
+import Parser.ParserType
 
 lineComment :: Parser ()
 lineComment = L.skipLineComment "#"

@@ -94,7 +94,9 @@ library
       Java.META.Parser
       Parser.BaseParser
       Parser.ExprParser
+      Parser.ModifierParser
       Parser.ParserExecutor
+      Parser.ParserType
       Util.CommandLineUtil
       Util.IOUtil
       Util.GeneralUtil

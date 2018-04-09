@@ -3,45 +3,7 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module Parser.ExprParser
-    ( Parser
-    , expr
-    , expr'
-    , aExpr
-    , bExpr
-    , rExpr
-    , modelParser
-    , parser
-    , annotationParser
-    , argumentParser
-    , argumentTypeParser
-    , arithmeticParser
-    , assignParser
-    , booleanParser
-    , classVariableParser
-    , elseIfStmtParser
-    , elseStmtParser
-    , identifierParser
-    , ifStmtParser
-    , importParser
-    , forLoopParser
-    , methodCallParser
-    , methodParser
-    , modifierBlockParser
-    , newClassInstanceParser
-    , objectMethodCallParser
-    , packageParser
-    , parameterizedTypeParser
-    , parameterParser
-    , reassignParser
-    , superMethodCallParser
-    , stringLiteralParser
-    , stringLiteralMultilineParser
-    , thisMethodCallParser
-    , thisVarParser
-    , typeParameterParser
-    , valueTypeParser
-    ) where
+module Parser.ExprParser where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -57,6 +19,8 @@ import Text.Pretty.Simple (pShow)
 import AST.Block
 import AST.Modifier
 import Parser.BaseParser
+import Parser.ModifierParser
+import Parser.ParserType
 import SymbolTable.SymbolTable
 
 -- Arithmetic Expression Parser
@@ -314,18 +278,6 @@ classVariableParser  =
         symbol "."
         varName <- identifier
         return $ ClassVariable className varName
-
-accessModifierParser :: Parser Modifier
-accessModifierParser
-    =   Public    <$ rword "public"
-    <|> Protected <$ rword "protected"
-    <|> Private   <$ rword "private"
-
-abstractModifierParser :: Parser Modifier
-abstractModifierParser = Abstract <$ rword "abstract"
-
-finalModifierParser :: Parser Modifier
-finalModifierParser = Abstract <$ rword "final"
 
 modifierBlockParser :: Bool -> Parser Expr
 modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
