@@ -69,6 +69,7 @@ library
       AST.Block
       AST.CodeGenNode
       AST.IRNode
+      AST.Modifier
       Compiler.Compiler
       Compiler.CompilerExecutor
       JVM.Common
@@ -188,6 +189,7 @@ test-suite compiler-test
       Parser.ImportParserTest
       Parser.MethodCallParserTest
       Parser.MethodParserTest
+      Parser.ModifierParserTest
       Parser.ModifierBlockParserTest
       Parser.NewClassInstanceParserTest
       Parser.ObjectMethodCallParserTest

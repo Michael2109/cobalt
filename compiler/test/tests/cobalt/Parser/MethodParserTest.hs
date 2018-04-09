@@ -4,6 +4,7 @@ import Test.HUnit
 import Text.Megaparsec
 
 import AST.Block
+import AST.Modifier
 import Parser.ExprParser
 
 testMethodParser :: Test
@@ -12,7 +13,7 @@ testMethodParser = do
                        , "  println(\"Hello world\")"
                        ]
     TestCase $ assertEqual code
-        (Method (Identifier "exampleMethod") Nothing [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (Method (Identifier "exampleMethod") Nothing [] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -23,7 +24,7 @@ testMethodParserEmptyParams = do
                        , "  println(\"Hello world\")"
                        ]
     TestCase $ assertEqual code
-        (Method (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (Method (Identifier "exampleMethod") Nothing [] [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -34,7 +35,7 @@ testMethodParserMissingParens = do
                        , "  println(\"Hello world\")"
                        ]
     TestCase $ assertEqual code
-        (Method (Identifier "exampleMethod") Nothing [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (Method (Identifier "exampleMethod") Nothing [] [] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -57,6 +58,161 @@ testMethodParserMissingReturnType = do
                        ]
     TestCase $ assertEqual code
         Error
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+-- Modifier tests
+testMethodParserModifierPublic :: Test
+testMethodParserModifierPublic = do
+    let code = unlines [ "public exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierProtected :: Test
+testMethodParserModifierProtected = do
+    let code = unlines [ "protected exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierPrivate :: Test
+testMethodParserModifierPrivate = do
+    let code = unlines [ "private exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierPublicAbstract :: Test
+testMethodParserModifierPublicAbstract = do
+    let code = unlines [ "public abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierProtectedAbstract :: Test
+testMethodParserModifierProtectedAbstract = do
+    let code = unlines [ "private abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierPrivateAbstract :: Test
+testMethodParserModifierPrivateAbstract = do
+    let code = unlines [ "private abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierAbstract :: Test
+testMethodParserModifierAbstract = do
+    let code = unlines [ "abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierPublicFinal :: Test
+testMethodParserModifierPublicFinal = do
+    let code = unlines [ "public abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierProtectedFinal :: Test
+testMethodParserModifierProtectedFinal = do
+    let code = unlines [ "private abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierPrivateFinal:: Test
+testMethodParserModifierPrivateFinal = do
+    let code = unlines [ "private abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierFinal :: Test
+testMethodParserModifierFinal = do
+    let code = unlines [ "abstract exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierReordered1 :: Test
+testMethodParserModifierReordered1 = do
+    let code = unlines [ "abstract public exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierReordered2 :: Test
+testMethodParserModifierReordered2 = do
+    let code = unlines [ "final abstract public exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
+        (case (parse (methodParser "ModuleName" False) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testMethodParserModifierReordered3 :: Test
+testMethodParserModifierReordered3 = do
+    let code = unlines [ "abstract private final exampleMethod (a: Int, b: Int): Int"
+                       , "  println(\"Hello world\")"
+                       ]
+    TestCase $ assertEqual code
+        (Method (Identifier "exampleMethod") Nothing [Public] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (Argument (StringLiteral "Hello world"))])
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)

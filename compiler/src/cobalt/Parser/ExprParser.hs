@@ -55,6 +55,7 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import AST.Block
+import AST.Modifier
 import Parser.BaseParser
 import SymbolTable.SymbolTable
 
@@ -186,10 +187,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
         annotations <- try (optional annotationParser)
-        modifierFound <- optional modifierParser
-        let modifier = case modifierFound of
-                          Just m -> m
-                          Nothing -> NoModifier
+        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
 
         name <- identifierParser
         fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
@@ -198,7 +196,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
                          Nothing -> []
         symbol ":"
         rType <- identifierParser
-        return (L.IndentMany Nothing (return . (Method name annotations modifier params rType static)) (expr'))
+        return (L.IndentMany Nothing (return . (Method name annotations modifiers params rType static)) (expr'))
 
 identifierParser :: Parser Expr
 identifierParser = do
@@ -317,23 +315,17 @@ classVariableParser  =
         varName <- identifier
         return $ ClassVariable className varName
 
-publicModifierParser :: Parser Modifier
-publicModifierParser = do
-    rword "public"
-    return Public
+accessModifierParser :: Parser Modifier
+accessModifierParser
+    =   Public    <$ rword "public"
+    <|> Protected <$ rword "protected"
+    <|> Private   <$ rword "private"
 
-protectedModifierParser :: Parser Modifier
-protectedModifierParser = do
-    rword "protected"
-    return Protected
+abstractModifierParser :: Parser Modifier
+abstractModifierParser = Abstract <$ rword "abstract"
 
-privateModifierParser :: Parser Modifier
-privateModifierParser = do
-    rword "private"
-    return Private
-
-modifierParser :: Parser Modifier
-modifierParser = publicModifierParser <|> protectedModifierParser <|> privateModifierParser
+finalModifierParser :: Parser Modifier
+finalModifierParser = Abstract <$ rword "final"
 
 modifierBlockParser :: Bool -> Parser Expr
 modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)

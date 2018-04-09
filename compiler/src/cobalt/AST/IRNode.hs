@@ -10,6 +10,7 @@ import Data.Maybe
 import Text.Format
 import Text.PrettyPrint.Annotated.Leijen
 
+import AST.Modifier
 import AST.CodeGenNode
 import SymbolTable.SymbolTable
 import Util.GeneralUtil
@@ -64,7 +65,7 @@ data IRNode
     | IntConstIR Integer
     | MainFunctionIR IRNode (Maybe IRNode) [IRNode] IRNode [IRNode]
     | MethodCallIR String [IRNode]
-    | MethodIR IRNode (Maybe IRNode) [IRNode] IRNode Bool [IRNode]
+    | MethodIR IRNode (Maybe IRNode) [Modifier] [IRNode] IRNode Bool [IRNode]
     | ModifierBlockIR [IRNode]
     | MultiplyIR
     | NegIR IRNode
@@ -137,7 +138,7 @@ instance CodeGenIR IRNode where
     genCodeGenIR (LessIR)  = LessCodeGen
     genCodeGenIR (MainFunctionIR name annotations params returnType exprs)  = MainFunctionCodeGen  (genCodeGenIR name ) (maybeIRNodeToMaybeCodeGenNode annotations ) (irNodeArrToCodeGenNodeArray params ) (genCodeGenIR returnType ) (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (MethodCallIR methodName args)  = MethodCallCodeGen  methodName (irNodeArrToCodeGenNodeArray args )
-    genCodeGenIR (MethodIR name annotations params returnType static exprs)  = MethodCodeGen  (genCodeGenIR name ) (maybeIRNodeToMaybeCodeGenNode annotations ) (irNodeArrToCodeGenNodeArray params ) (genCodeGenIR returnType ) static (irNodeArrToCodeGenNodeArray exprs )
+    genCodeGenIR (MethodIR name annotations modifiers params returnType static exprs)  = MethodCodeGen  (genCodeGenIR name ) (maybeIRNodeToMaybeCodeGenNode annotations ) modifiers (irNodeArrToCodeGenNodeArray params ) (genCodeGenIR returnType ) static (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (ModifierBlockIR exprs)  = ModifierBlockCodeGen  (map (\e -> genCodeGenIR e ) exprs)
     genCodeGenIR (MultiplyIR)  = MultiplyCodeGen
     genCodeGenIR (NegIR aExpr)  = NegCodeGen (genCodeGenIR aExpr)

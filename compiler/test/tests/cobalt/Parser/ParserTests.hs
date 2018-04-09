@@ -20,6 +20,7 @@ import Parser.IfElseStatementParserTest
 import Parser.ImportParserTest
 import Parser.MethodCallParserTest
 import Parser.MethodParserTest
+import Parser.ModifierParserTest
 import Parser.ModifierBlockParserTest
 import Parser.NewClassInstanceParserTest
 import Parser.ObjectMethodCallParserTest
@@ -168,6 +169,26 @@ parserTestList = TestList
     , testMethodParserMissingParens
     , testMethodParserMissingName
     , testMethodParserMissingReturnType
+    , testMethodParserModifierPublic
+    , testMethodParserModifierProtected
+    , testMethodParserModifierPrivate
+    , testMethodParserModifierPublicAbstract
+    , testMethodParserModifierProtectedAbstract
+    , testMethodParserModifierPrivateAbstract
+    , testMethodParserModifierAbstract
+    , testMethodParserModifierPublicFinal
+    , testMethodParserModifierProtectedFinal
+    , testMethodParserModifierPrivateFinal
+    , testMethodParserModifierFinal
+    , testMethodParserModifierReordered1
+    , testMethodParserModifierReordered2
+    , testMethodParserModifierReordered3
+
+    , testAccessModifierParserPublic
+    , testAccessModifierParserProtected
+    , testAccessModifierParserPrivate
+    , testAbstractModifierParser
+    , testFinalModifierParser
 
     , testModifierBlockParserPrivate
     , testModifierBlockParserProtected
