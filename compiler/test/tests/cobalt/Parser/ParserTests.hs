@@ -20,7 +20,8 @@ import Parser.IfElseStatementParserTest
 import Parser.ImportParserTest
 import Parser.MethodCallParserTest
 import Parser.MethodParserTest
-import Parser.ModifierParserTest
+import Parser.Data.ModelTypeParserTest
+import Parser.Data.ModifierParserTest
 import Parser.ModifierBlockParserTest
 import Parser.NewClassInstanceParserTest
 import Parser.ObjectMethodCallParserTest
@@ -128,6 +129,21 @@ parserTestList = TestList
     , testClassParserConstructorBody
     , testClassParserMethods
 
+    , testClassParserPublic
+    , testClassParserProtected
+    , testClassParserPrivate
+    , testClassParserPublicAbstract
+    , testClassParserPrivate
+    , testClassParserPrivateAbstract
+    , testClassParserAbstract
+    , testClassParserPublicFinal
+    , testClassParserProtectedFinal
+    , testClassParserPrivateFinal
+    , testClassParserFinal
+    , testClassParserReordered1
+    , testClassParserReordered2
+    , testClassParserReordered3
+
     , testClassVariableParser
 
     , testClassVariableParser
@@ -190,6 +206,10 @@ parserTestList = TestList
     , testAbstractModifierParser
     , testFinalModifierParser
 
+    , testModelTypeParserClass
+    , testModelTypeParserObject
+    , testModelTypeParserTrait
+
     , testModifierBlockParserPrivate
     , testModifierBlockParserProtected
     , testModifierBlockParserPublic
@@ -220,6 +240,20 @@ parserTestList = TestList
     , testObjectParserImports
     , testObjectParserImportsFail
     , testObjectParserModifierBlock
+    , testObjectParserPublic
+    , testObjectParserProtected
+    , testObjectParserPrivate
+    , testObjectParserPublicAbstract
+    , testObjectParserProtectedAbstract
+    , testObjectParserPrivateAbstract
+    , testObjectParserAbstract
+    , testObjectParserPublicFinal
+    , testObjectParserProtectedFinal
+    , testObjectParserPrivateFinal
+    , testObjectParserFinal
+    , testObjectParserReordered1
+    , testObjectParserReordered2
+    , testObjectParserReordered3
 
     , testObjectMethodCallParserThis
     , testObjectMethodCallParserObject
@@ -296,6 +330,20 @@ parserTestList = TestList
     , testTraitParserImports
     , testTraitParserImportsFail
     , testTraitParserModifierBlock
+    , testTraitParserPublic
+    , testTraitParserProtected
+    , testTraitParserPrivate
+    , testTraitParserPublicAbstract
+    , testTraitParserProtectedAbstract
+    , testTraitParserPrivateAbstract
+    , testTraitParserAbstract
+    , testTraitParserPublicFinal
+    , testTraitParserProtectedFinal
+    , testTraitParserPrivateFinal
+    , testTraitParserFinal
+    , testTraitParserReordered1
+    , testTraitParserReordered2
+    , testTraitParserReordered3
 
     , testTypeParameterParser
     , testTypeParameterParserMissingLeft

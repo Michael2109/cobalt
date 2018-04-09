@@ -4,7 +4,7 @@ import Test.HUnit
 import Text.Megaparsec
 
 import AST.Block
-import AST.Modifier
+import AST.Data.Modifier
 import Parser.ExprParser
 
 testMethodParser :: Test
