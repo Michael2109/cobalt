@@ -3,45 +3,7 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module Parser.ExprParser
-    ( Parser
-    , expr
-    , expr'
-    , aExpr
-    , bExpr
-    , rExpr
-    , modelParser
-    , parser
-    , annotationParser
-    , argumentParser
-    , argumentTypeParser
-    , arithmeticParser
-    , assignParser
-    , booleanParser
-    , classVariableParser
-    , elseIfStmtParser
-    , elseStmtParser
-    , identifierParser
-    , ifStmtParser
-    , importParser
-    , forLoopParser
-    , methodCallParser
-    , methodParser
-    , modifierBlockParser
-    , newClassInstanceParser
-    , objectMethodCallParser
-    , packageParser
-    , parameterizedTypeParser
-    , parameterParser
-    , reassignParser
-    , superMethodCallParser
-    , stringLiteralParser
-    , stringLiteralMultilineParser
-    , thisMethodCallParser
-    , thisVarParser
-    , typeParameterParser
-    , valueTypeParser
-    ) where
+module Parser.ExprParser where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -55,7 +17,10 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import AST.Block
+import AST.Modifier
 import Parser.BaseParser
+import Parser.ModifierParser
+import Parser.ParserType
 import SymbolTable.SymbolTable
 
 -- Arithmetic Expression Parser
@@ -186,6 +151,8 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
         annotations <- try (optional annotationParser)
+        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+
         name <- identifierParser
         fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
@@ -193,7 +160,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
                          Nothing -> []
         symbol ":"
         rType <- identifierParser
-        return (L.IndentMany Nothing (return . (Method name annotations params rType static)) (expr'))
+        return (L.IndentMany Nothing (return . (Method name annotations modifiers params rType static)) (expr'))
 
 identifierParser :: Parser Expr
 identifierParser = do

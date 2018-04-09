@@ -11,6 +11,7 @@ import Data.Scientific
 import Text.Show.Functions
 
 import AST.IRNode
+import AST.Modifier
 import SymbolTable.SymbolTable
 
 class ErrorCheck a where
@@ -65,7 +66,7 @@ data Expr
     | LessEqual
     | MainFunction Expr (Maybe Expr) [Expr] Expr [Expr]
     | MethodCall String [Expr]
-    | Method Expr (Maybe Expr) [Expr] Expr Bool [Expr]
+    | Method Expr (Maybe Expr) [Modifier] [Expr] Expr Bool [Expr]
     | ModifierBlock [Expr]
     | Multiply
     | Neg Expr
@@ -149,7 +150,7 @@ instance IRGen Expr where
     genIR (Less) st cs = LessIR
     genIR (MainFunction name annotations params returnType exprs) st cs = MainFunctionIR  (genIR name st cs) (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray params st cs) (genIR returnType st cs) (exprArrToIRArray exprs st cs)
     genIR (MethodCall methodName args) st cs = MethodCallIR  methodName (exprArrToIRArray args st cs)
-    genIR (Method name annotations params returnType static exprs) st cs = MethodIR  (genIR name st cs) (maybeExprToMaybeIRNode annotations st cs) (exprArrToIRArray params st cs) (genIR returnType st cs) static (exprArrToIRArray exprs st cs)
+    genIR (Method name annotations modifiers params returnType static exprs) st cs = MethodIR  (genIR name st cs) (maybeExprToMaybeIRNode annotations st cs) modifiers (exprArrToIRArray params st cs) (genIR returnType st cs) static (exprArrToIRArray exprs st cs)
     genIR (ModifierBlock exprs) st cs = ModifierBlockIR  (map (\e -> genIR e st cs) exprs)
     genIR (Multiply) st cs = MultiplyIR
     genIR (Neg aExpr) st cs = NegIR (genIR aExpr st cs)

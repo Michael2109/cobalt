@@ -236,6 +236,24 @@ Type inference
 add (a: Int, b: Int) = a + b
 ```
 
+#### Modifiers
+Access modifiers are `public`, `protected` and `abstract` and are added before the method name.
+```
+public add (a: Int, b: Int) = a + b
+```
+Abstract modifier allows for unimplemented methods. These methods must be overridden by a sub-class.
+```
+abstract add (a: Int, b: Int)
+```
+Final modifier makes the method unable to be overridden.
+```
+final add (a: Int, b: Int) = a + b
+```
+Multiple modifiers can be added.
+```
+public abstract add (a: Int, b: Int) = a + b
+```
+
 #### Nested methods
 Methods can be defined within other methods
 ```

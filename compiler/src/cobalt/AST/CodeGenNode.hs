@@ -16,6 +16,7 @@ import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 
+import AST.Modifier
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -76,7 +77,7 @@ data CodeGenNode
     | IntConstCodeGen  Integer
     | MainFunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode [CodeGenNode]
     | MethodCallCodeGen  String [CodeGenNode]
-    | MethodCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode Bool [CodeGenNode]
+    | MethodCodeGen  CodeGenNode (Maybe CodeGenNode) [Modifier] [CodeGenNode] CodeGenNode Bool [CodeGenNode]
     | ModifierBlockCodeGen  [CodeGenNode]
     | MultiplyCodeGen
     | NegCodeGen  CodeGenNode
@@ -152,7 +153,7 @@ instance CodeGen CodeGenNode where
     genCode (LessCodeGen )  = return ()
     genCode (MainFunctionCodeGen  name annotations params returnType body)  = return ()
     genCode (MethodCallCodeGen  methodName args) = return ()
-    genCode (MethodCodeGen  name annotations params returnType static body)  = return ()
+    genCode (MethodCodeGen name annotations modifiers params returnType static body)  = return ()
     genCode (ModifierBlockCodeGen  exprs)  = return ()
     genCode (MultiplyCodeGen )  = return ()
     genCode (NegCodeGen  aExpr)  = return ()
