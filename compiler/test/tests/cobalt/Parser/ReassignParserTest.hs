@@ -11,7 +11,7 @@ testReassignParserObject :: Test
 testReassignParserObject = do
     let code = "x = new ClassName(10)"
     TestCase $ assertEqual code
-        (Reassign (Identifier "x") (NewClassInstance (Identifier "ClassName") [ArithExpr (IntConst 10)]))
+        (Reassign (Identifier "x") (NewClassInstance (Identifier "ClassName") [IntConst 10]))
         (case (parse reassignParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -20,7 +20,7 @@ testReassignParserArithmetic :: Test
 testReassignParserArithmetic = do
     let code = "varName = 100 - y"
     TestCase $ assertEqual code
-        (Reassign (Identifier "varName") (ArithExpr (ABinary Subtract (IntConst 100) (Identifier "y"))))
+        (Reassign (Identifier "varName") (ABinary Subtract (IntConst 100) (Identifier "y")))
         (case (parse reassignParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -29,7 +29,7 @@ testReassignParserArithmeticTwoVars :: Test
 testReassignParserArithmeticTwoVars = do
     let code = "x = x + direction"
     TestCase $ assertEqual code
-        (Reassign (Identifier "x") (Identifier "x"))
+        (Reassign (Identifier "x") (ABinary Add (Identifier "x") (Identifier "direction")))
         (case (parse reassignParser "" code) of
              Left  _ -> Error
              Right x -> x)

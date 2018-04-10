@@ -32,7 +32,6 @@ data Expr
     | Annotation String
     | Argument Expr
     | ArgumentType String
-    | ArithExpr Expr
     | ArrayAppend [Expr]
     | ArrayElementSelect String
     | ArrayValues [String]
@@ -42,7 +41,6 @@ data Expr
     | BBinOpError
     | BError
     | BoolConst Bool
-    | BooleanExpr Expr
     | Catch [Expr] [Expr]
     | Class (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
     | ClassVariable String String
@@ -121,7 +119,6 @@ instance IRGen Expr where
     genIR (Annotation name) st cs = AnnotationIR name
     genIR (Argument a) st cs = ArgumentIR (genIR a st cs)
     genIR (ArgumentType aType) st cs = ArgumentTypeIR  aType
-    genIR (ArithExpr aExpr) st cs = ArithExprIR (genIR aExpr st cs)
     genIR (ArrayAppend arrays) st cs = ArrayAppendIR (exprArrToIRArray arrays st cs)
     genIR (ArrayElementSelect index) st cs = ArrayElementSelectIR index
     genIR (ArrayValues exprs) st cs = ArrayValuesIR exprs
@@ -129,7 +126,6 @@ instance IRGen Expr where
     genIR (AssignArith mutable vType name value) st cs = AssignArithIR  mutable (genIR vType st cs) name (genIR value st cs)
     genIR (BBinary bbinop bExpr1 bExpr2) st cs = BBinaryIR  (genIR bbinop st cs) (genIR bExpr1 st cs) (genIR bExpr2 st cs)
     genIR (BoolConst b) st cs = BoolConstIR  b
-    genIR (BooleanExpr expr) st cs = BooleanExprIR  (genIR expr st cs)
     genIR (Catch params exprs) st cs = CatchIR  (exprArrToIRArray params st cs) (exprArrToIRArray exprs st cs)
     genIR (Class package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ClassIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ClassVariable className varName) st cs = ClassVariableIR  className varName

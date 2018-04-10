@@ -10,7 +10,7 @@ testArgumentParserIdentifier :: Test
 testArgumentParserIdentifier = do
     let code = "Test"
     TestCase $ assertEqual code
-        (BooleanExpr (Identifier "Test"))
+        (Identifier "Test")
         (case (parse (argumentParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -19,7 +19,7 @@ testArgumentParserBoolTrue :: Test
 testArgumentParserBoolTrue = do
     let code = "True"
     TestCase $ assertEqual code
-        (BooleanExpr $ BoolConst True)
+        (BoolConst True)
         (case (parse (argumentParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -28,7 +28,7 @@ testArgumentParserBoolFalse :: Test
 testArgumentParserBoolFalse = do
     let code = "False"
     TestCase $ assertEqual code
-        (BooleanExpr $ BoolConst False)
+        (BoolConst False)
         (case (parse (argumentParser) "" code) of
              Left  _ -> Error
              Right x -> x)

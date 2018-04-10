@@ -99,6 +99,10 @@ parserTestList = TestList
     , testAssignParserValWithParameterizedType
     , testAssignParserVarWithParameterizedType
 
+    , testAssignParserTwoVars
+    , testAssignParserThreeVars
+    , testAssignParserFourVars
+
     , testBooleanParserTrue
     , testBooleanParserFalse
     , testBooleanParserIdentifier

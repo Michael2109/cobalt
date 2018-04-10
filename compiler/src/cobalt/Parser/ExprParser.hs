@@ -181,12 +181,12 @@ thisVarParser = do
 arithmeticParser :: Parser Expr
 arithmeticParser = do
     aE <- aExpr
-    return $ ArithExpr aE
+    return aE
 
 booleanParser :: Parser Expr
 booleanParser = do
     bE <- try bExpr
-    return $ BooleanExpr bE
+    return bE
 
 stringLiteralParser :: Parser Expr
 stringLiteralParser = do
@@ -210,7 +210,7 @@ assignParser = do
         vType <- valueTypeParser
         return vType
     symbol "="
-    e <- expr' <|> identifierParser <|> arithmeticParser
+    e <- argumentParser
     return $ Assign immutable varType varName e
 
 reassignParser :: Parser Expr
@@ -219,7 +219,7 @@ reassignParser = do
         id <- identifierParser <|> thisVarParser
         symbol "="
         return id
-    value <- expr' <|>  identifierParser <|> arithmeticParser <|> booleanParser
+    value <- argumentParser
     return (Reassign name value)
 
 arrayElementSelect :: Parser Expr
@@ -329,7 +329,7 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-    value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstanceParser <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser <|> arithmeticParser
+    value <- thisParser <|> classVariableParser <|> arithmeticParser <|> booleanParser <|> newClassInstanceParser <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser
     return value
 
 printParser :: Parser Expr

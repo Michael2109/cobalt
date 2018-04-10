@@ -10,7 +10,7 @@ testArithmeticParserIdentifier :: Test
 testArithmeticParserIdentifier = do
     let code = "varName"
     TestCase $ assertEqual code
-        (ArithExpr (Identifier "varName"))
+        (Identifier "varName")
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -19,7 +19,7 @@ testArithmeticParserClassVariable :: Test
 testArithmeticParserClassVariable = do
     let code = "ClassName.varName"
     TestCase $ assertEqual code
-        (ArithExpr (ClassVariable "ClassName" "varName"))
+        (ClassVariable "ClassName" "varName")
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -28,7 +28,7 @@ testArithmeticParserNewInstance :: Test
 testArithmeticParserNewInstance = do
     let code = "new Integer(10)"
     TestCase $ assertEqual code
-        (ArithExpr (NewClassInstance (Identifier "Integer") [ArithExpr (IntConst 10)]))
+        (NewClassInstance (Identifier "Integer") [IntConst 10])
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -37,7 +37,7 @@ testArithmeticParserMethodCall :: Test
 testArithmeticParserMethodCall = do
     let code = "methodName(1,2,3)"
     TestCase $ assertEqual code
-        (ArithExpr (MethodCall "methodName" [ArithExpr (IntConst 1),ArithExpr (IntConst 2), ArithExpr (IntConst 3)]))
+        (MethodCall "methodName" [IntConst 1, IntConst 2, IntConst 3])
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -46,7 +46,7 @@ testArithmeticParserAdd :: Test
 testArithmeticParserAdd = do
     let code = "x + 100"
     TestCase $ assertEqual code
-        (ArithExpr (ABinary Add (Identifier "x") (IntConst 100)))
+        (ABinary Add (Identifier "x") (IntConst 100))
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -55,7 +55,7 @@ testArithmeticParserSubtract :: Test
 testArithmeticParserSubtract = do
     let code = "x - 100"
     TestCase $ assertEqual code
-        (ArithExpr (ABinary Subtract (Identifier "x") (IntConst 100)))
+        (ABinary Subtract (Identifier "x") (IntConst 100))
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -64,7 +64,7 @@ testArithmeticParserMultiply :: Test
 testArithmeticParserMultiply = do
     let code = "x * 100"
     TestCase $ assertEqual code
-        (ArithExpr (ABinary Multiply (Identifier "x") (IntConst 100)))
+        (ABinary Multiply (Identifier "x") (IntConst 100))
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -73,7 +73,7 @@ testArithmeticParserDivide :: Test
 testArithmeticParserDivide = do
     let code = "x / 100"
     TestCase $ assertEqual code
-        (ArithExpr (ABinary Divide (Identifier "x") (IntConst 100)))
+        (ABinary Divide (Identifier "x") (IntConst 100))
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)

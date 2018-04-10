@@ -136,10 +136,8 @@ testTraitParserModifierBlock = do
                        , "public"
                        , "  val x: int = 5"
                        ]
-    let imports = [Import ["dir", "sub_dir", "ClassName"]]
-    let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [ArithExpr (IntConst 5)]]]
     TestCase $ assertEqual code
-        (Trait Nothing "Test" Nothing [] [] (Just "ParentClass") ["Interface"] imports modifierBlocks [] [])
+        (Trait Nothing "Test" Nothing [] [] (Just "ParentClass") ["Interface"] [Import ["dir","sub_dir","ClassName"]] [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [IntConst 5]]] [] [])
         (case (parse (modelParser) "" code) of
              Left  _ -> Error
              Right x -> x)

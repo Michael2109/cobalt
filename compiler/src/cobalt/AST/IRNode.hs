@@ -27,7 +27,6 @@ data IRNode
     | AnnotationIR String
     | ArgumentIR IRNode
     | ArgumentTypeIR String
-    | ArithExprIR IRNode
     | ArrayAppendIR [IRNode]
     | ArrayElementSelectIR String
     | ArrayValuesIR [String]
@@ -37,7 +36,6 @@ data IRNode
     | BBinOpErrorIR
     | BErrorIR
     | BoolConstIR Bool
-    | BooleanExprIR IRNode
     | CatchIR [IRNode] [IRNode]
     | ClassIR (Maybe IRNode) String (Maybe IRNode) [Modifier] [IRNode] (Maybe String) [String] [IRNode] [IRNode] [IRNode] [IRNode]
     | ParameterIR IRNode IRNode
@@ -109,7 +107,6 @@ instance CodeGenIR IRNode where
     genCodeGenIR (AnnotationIR name)  = AnnotationCodeGen  name
     genCodeGenIR (ArgumentIR a)  = ArgumentCodeGen  (genCodeGenIR a )
     genCodeGenIR (ArgumentTypeIR aType)  = ArgumentTypeCodeGen  aType
-    genCodeGenIR (ArithExprIR aExpr)  = ArithExprCodeGen  (genCodeGenIR aExpr )
     genCodeGenIR (ArrayAppendIR arrays)  = ArrayAppendCodeGen  (irNodeArrToCodeGenNodeArray arrays )
     genCodeGenIR (ArrayElementSelectIR index)  = ArrayElementSelectCodeGen index
     genCodeGenIR (ArrayValuesIR exprs)  = ArrayValuesCodeGen  exprs
@@ -117,7 +114,6 @@ instance CodeGenIR IRNode where
     genCodeGenIR (AssignArithIR mutable vType name value)  = AssignArithCodeGen  mutable (genCodeGenIR vType ) name (genCodeGenIR value )
     genCodeGenIR (BBinaryIR bbinop bExpr1 bExpr2)  = BBinaryCodeGen  (genCodeGenIR bbinop ) (genCodeGenIR bExpr1 ) (genCodeGenIR bExpr2 )
     genCodeGenIR (BoolConstIR b)  = BoolConstCodeGen  b
-    genCodeGenIR (BooleanExprIR expr)  = BooleanExprCodeGen  (genCodeGenIR expr )
     genCodeGenIR (CatchIR params exprs)  = CatchCodeGen  (irNodeArrToCodeGenNodeArray params ) (irNodeArrToCodeGenNodeArray exprs )
     genCodeGenIR (ClassIR package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray)  = ClassCodeGen  (maybeIRNodeToMaybeCodeGenNode package ) name (maybeIRNodeToMaybeCodeGenNode typeParam) modifiers (map (\a -> genCodeGenIR a ) params) parent interfaces (map (\a -> genCodeGenIR a ) imports) (map (\a -> genCodeGenIR a ) modifierBlocks) (map (\a -> genCodeGenIR a ) constructorExprs) (map (\a -> genCodeGenIR a ) bodyArray)
     genCodeGenIR (ClassVariableIR className varName)  = ClassVariableCodeGen  className varName

@@ -13,7 +13,7 @@ testIfStmtParserBooleanTrue = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])
+        (If (BoolConst True) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -24,7 +24,7 @@ testIfStmtParserBooleanFalse = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])
+        (If (BoolConst True) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -35,7 +35,7 @@ testIfStmtParserObjectVar = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (BooleanExpr (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))) [Print (StringLiteral "Test")])
+        (If (BBinary And (BoolConst True) (ClassVariable "objName" "varName")) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -46,7 +46,7 @@ testIfStmtParserAnd = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (BooleanExpr (BBinary And (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))(Identifier "varName"))) [Print (StringLiteral "Test")])
+        (If (BBinary And (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))(Identifier "varName")) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -57,7 +57,7 @@ testIfStmtParserOr = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (BooleanExpr (BBinary Or (BoolConst True) (ClassVariable "objName" "varName"))) [Print (StringLiteral "Test")])
+        (If (BBinary Or (BoolConst True) (ClassVariable "objName" "varName")) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -68,7 +68,7 @@ testIfStmtParserAndOr = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (BooleanExpr (BBinary Or (BBinary And (BoolConst True) (Identifier "varName")) (ClassVariable "objName" "varName"))) [Print (StringLiteral "Test")])
+        (If (BBinary Or (BBinary And (BoolConst True) (Identifier "varName")) (ClassVariable "objName" "varName")) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -79,7 +79,7 @@ testIfStmtParserElif = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (ElseIf (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])
+        (ElseIf (BoolConst True) [Print (StringLiteral "Test")])
         (case (parse (elifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -102,12 +102,12 @@ testIfStmtParserBlockIf = do
                        , "  println(\"Test\")"
                        ]
     let test1 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) Nothing Nothing)
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) Nothing Nothing)
                     (case (parse (ifStatementBlockParser) "" code) of
                          Left  _ -> Error
                          Right x -> x)
     let test2 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) Nothing Nothing)
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) Nothing Nothing)
                     (case (parse (expr') "" code) of
                          Left  _ -> Error
                          Right x -> x)
@@ -121,12 +121,12 @@ testIfStmtParserBlockElif = do
                        , "  println(\"Test\")"
                        ]
     let test1 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) (Just (ElseIf (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])) Nothing)
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) (Just (ElseIf (BoolConst True) [Print (StringLiteral "Test")])) Nothing)
                     (case (parse (ifStatementBlockParser) "" code) of
                          Left  _ -> Error
                          Right x -> x)
     let test2 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) (Just (ElseIf (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])) Nothing)
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) (Just (ElseIf (BoolConst True) [Print (StringLiteral "Test")])) Nothing)
                     (case (parse (expr') "" code) of
                          Left  _ -> Error
                          Right x -> x)
@@ -142,12 +142,12 @@ testIfStmtParserBlockElifElse = do
                        , "  println(\"Test\")"
                        ]
     let test1 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) (Just (ElseIf (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])) (Just (Else [Print (StringLiteral "Test")])))
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) (Just (ElseIf (BoolConst True) [Print (StringLiteral "Test")])) (Just (Else [Print (StringLiteral "Test")])))
                     (case (parse (ifStatementBlockParser) "" code) of
                          Left  _ -> Error
                          Right x -> x)
     let test2 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) (Just (ElseIf (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])) (Just (Else [Print (StringLiteral "Test")])))
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) (Just (ElseIf (BoolConst True) [Print (StringLiteral "Test")])) (Just (Else [Print (StringLiteral "Test")])))
                     (case (parse (expr') "" code) of
                          Left  _ -> Error
                          Right x -> x)
@@ -161,12 +161,12 @@ testIfStmtParserBlockElse = do
                        , "  println(\"Test\")"
                        ]
     let test1 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) Nothing (Just (Else [Print (StringLiteral "Test")])))
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) Nothing (Just (Else [Print (StringLiteral "Test")])))
                     (case (parse (ifStatementBlockParser) "" code) of
                          Left  _ -> Error
                          Right x -> x)
     let test2 = TestCase $ assertEqual code
-                    (IfStatement (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")]) Nothing (Just (Else [Print (StringLiteral "Test")])))
+                    (IfStatement (If (BoolConst True) [Print (StringLiteral "Test")]) Nothing (Just (Else [Print (StringLiteral "Test")])))
                     (case (parse (expr') "" code) of
                          Left  _ -> Error
                          Right x -> x)

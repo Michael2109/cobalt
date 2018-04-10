@@ -39,7 +39,6 @@ data CodeGenNode
     | AnnotationCodeGen  String
     | ArgumentCodeGen  CodeGenNode
     | ArgumentTypeCodeGen  String
-    | ArithExprCodeGen  CodeGenNode
     | ArrayAppendCodeGen  [CodeGenNode]
     | ArrayElementSelectCodeGen  String
     | ArrayValuesCodeGen  [String]
@@ -49,7 +48,6 @@ data CodeGenNode
     | BBinOpErrorCodeGen
     | BErrorCodeGen
     | BoolConstCodeGen  Bool
-    | BooleanExprCodeGen  CodeGenNode
     | CatchCodeGen  [CodeGenNode] [CodeGenNode]
     | ClassCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | ParameterCodeGen  CodeGenNode CodeGenNode
@@ -121,7 +119,6 @@ instance CodeGen CodeGenNode where
     genCode (AnnotationCodeGen  name)  = return ()
     genCode (ArgumentCodeGen  b) = return ()
     genCode (ArgumentTypeCodeGen  b) = return ()
-    genCode (ArithExprCodeGen  aExpr) = return ()
     genCode (ArrayAppendCodeGen  arrays)  = return ()
     genCode (ArrayElementSelectCodeGen  i)  = return ()
     genCode (ArrayValuesCodeGen  exprs)  = return ()
@@ -129,7 +126,6 @@ instance CodeGen CodeGenNode where
     genCode (AssignArithCodeGen  mutable vType name value)  = return ()
     genCode (BBinaryCodeGen   bbinop bExpr1 bExpr2) = return ()
     genCode (BoolConstCodeGen   b) = return ()
-    genCode (BooleanExprCodeGen  expr)  = return ()
     genCode (CatchCodeGen  params exprs)  = return ()
     genCode (ClassCodeGen  package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (ClassVariableCodeGen  className varName)  = return ()
