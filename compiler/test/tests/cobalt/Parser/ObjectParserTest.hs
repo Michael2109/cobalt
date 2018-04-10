@@ -137,7 +137,7 @@ testObjectParserModifierBlock = do
                        , "  val x: int = 5"
                        ]
     let imports = [Import ["dir", "sub_dir", "ObjectName"]]
-    let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [Argument $ ArithExpr (IntConst 5)]]]
+    let modifierBlocks = [ModifierBlock [GlobalVar "public" True False (Type (Identifier "int")) (Identifier "x") [ArithExpr (IntConst 5)]]]
     TestCase $ assertEqual code
         (Object Nothing "Test" Nothing [] [] (Just "ParentObject") ["Interface"] imports modifierBlocks [] [])
         (case (parse (modelParser) "" code) of

@@ -55,7 +55,7 @@ testNewClassInstanceParserSingleArg :: Test
 testNewClassInstanceParserSingleArg = do
     let code = "new ClassName(1000)"
     TestCase $ assertEqual code
-        (NewClassInstance (Identifier "ClassName") [Argument (ArithExpr (IntConst 1000))])
+        (NewClassInstance (Identifier "ClassName") [ArithExpr (IntConst 1000)])
         (case (parse newClassInstanceParser "" code) of
              Left  _ -> Error
              Right x -> x)

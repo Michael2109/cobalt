@@ -11,7 +11,7 @@ testReassignParserObject :: Test
 testReassignParserObject = do
     let code = "x = new ClassName(10)"
     TestCase $ assertEqual code
-        (Reassign (Identifier "x") (NewClassInstance (Identifier "ClassName") [Argument (ArithExpr (IntConst 10))]))
+        (Reassign (Identifier "x") (NewClassInstance (Identifier "ClassName") [ArithExpr (IntConst 10)]))
         (case (parse reassignParser "" code) of
              Left  _ -> Error
              Right x -> x)

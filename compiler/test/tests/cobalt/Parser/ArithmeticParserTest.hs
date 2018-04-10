@@ -28,7 +28,7 @@ testArithmeticParserNewInstance :: Test
 testArithmeticParserNewInstance = do
     let code = "new Integer(10)"
     TestCase $ assertEqual code
-        (ArithExpr (NewClassInstance (Identifier "Integer") [Argument (ArithExpr (IntConst 10))]))
+        (ArithExpr (NewClassInstance (Identifier "Integer") [ArithExpr (IntConst 10)]))
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -37,7 +37,7 @@ testArithmeticParserMethodCall :: Test
 testArithmeticParserMethodCall = do
     let code = "methodName(1,2,3)"
     TestCase $ assertEqual code
-        (ArithExpr (MethodCall "methodName" [Argument (ArithExpr (IntConst 1)),Argument (ArithExpr (IntConst 2)),Argument (ArithExpr (IntConst 3))]))
+        (ArithExpr (MethodCall "methodName" [ArithExpr (IntConst 1),ArithExpr (IntConst 2), ArithExpr (IntConst 3)]))
         (case (parse arithmeticParser "" code) of
              Left  _ -> Error
              Right x -> x)

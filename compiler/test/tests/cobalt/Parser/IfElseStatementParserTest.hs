@@ -12,7 +12,7 @@ testIfStmtParserBooleanTrue = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (Argument $ BooleanExpr (BoolConst True)) [Print (Argument $ StringLiteral "Test")])
+        (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -23,7 +23,7 @@ testIfStmtParserBooleanFalse = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (Argument $ BooleanExpr (BoolConst True)) [Print (Argument $ StringLiteral "Test")])
+        (If (BooleanExpr (BoolConst True)) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -34,7 +34,7 @@ testIfStmtParserObjectVar = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (Argument $ BooleanExpr (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))) [Print (Argument $ StringLiteral "Test")])
+        (If (BooleanExpr (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -45,7 +45,7 @@ testIfStmtParserAnd = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (Argument (BooleanExpr (BBinary And (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))(Identifier "varName")))) [Print (Argument (StringLiteral "Test"))])
+        (If (BooleanExpr (BBinary And (BBinary And (BoolConst True) (ClassVariable "objName" "varName"))(Identifier "varName"))) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -56,7 +56,7 @@ testIfStmtParserOr = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (Argument (BooleanExpr (BBinary Or (BoolConst True) (ClassVariable "objName" "varName")))) [Print (Argument (StringLiteral "Test"))])
+        (If (BooleanExpr (BBinary Or (BoolConst True) (ClassVariable "objName" "varName"))) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -67,7 +67,7 @@ testIfStmtParserAndOr = do
                        , "  println(\"Test\")"
                        ]
     TestCase $ assertEqual code
-        (If (Argument (BooleanExpr (BBinary Or (BBinary And (BoolConst True) (Identifier "varName")) (ClassVariable "objName" "varName")))) [Print (Argument (StringLiteral "Test"))])
+        (If (BooleanExpr (BBinary Or (BBinary And (BoolConst True) (Identifier "varName")) (ClassVariable "objName" "varName"))) [Print (StringLiteral "Test")])
         (case (parse (ifStmtParser) "" code) of
              Left  _ -> Error
              Right x -> x)

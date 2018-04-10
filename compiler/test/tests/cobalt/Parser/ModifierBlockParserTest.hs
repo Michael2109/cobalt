@@ -13,7 +13,7 @@ testModifierBlockParserPrivate = do
                        , "  val y: int = 10"
                        ]
     TestCase $ assertEqual code
-        (ModifierBlock [GlobalVar "private" True True (Type (Identifier "int")) (Identifier "x") [Argument (ArithExpr (IntConst 5))],GlobalVar "private" True True (Type (Identifier "int")) (Identifier "y") [Argument (ArithExpr (IntConst 10))]])
+        (ModifierBlock [GlobalVar "private" True True (Type (Identifier "int")) (Identifier "x") [ArithExpr (IntConst 5)],GlobalVar "private" True True (Type (Identifier "int")) (Identifier "y") [ArithExpr (IntConst 10)]])
         (case (parse (modifierBlockParser True) "" code) of
               Left  _ -> Error
               Right x -> x)
@@ -25,7 +25,7 @@ testModifierBlockParserProtected = do
                        , "  val y: int = 10"
                        ]
     TestCase $ assertEqual code
-        (ModifierBlock [GlobalVar "protected" True True (Type (Identifier "int")) (Identifier "x") [Argument (ArithExpr (IntConst 5))],GlobalVar "protected" True True (Type (Identifier "int")) (Identifier "y") [Argument (ArithExpr (IntConst 10))]])
+        (ModifierBlock [GlobalVar "protected" True True (Type (Identifier "int")) (Identifier "x") [ArithExpr (IntConst 5)],GlobalVar "protected" True True (Type (Identifier "int")) (Identifier "y") [ArithExpr (IntConst 10)]])
         (case (parse (modifierBlockParser True) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -37,7 +37,7 @@ testModifierBlockParserPublic = do
                        , "  val y: int = 10"
                        ]
     TestCase $ assertEqual code
-        (ModifierBlock [GlobalVar "public" True True (Type (Identifier "int")) (Identifier "x") [Argument (ArithExpr (IntConst 5))],GlobalVar "public" True True (Type (Identifier "int")) (Identifier "y") [Argument (ArithExpr (IntConst 10))]])
+        (ModifierBlock [GlobalVar "public" True True (Type (Identifier "int")) (Identifier "x") [ArithExpr (IntConst 5)],GlobalVar "public" True True (Type (Identifier "int")) (Identifier "y") [ArithExpr (IntConst 10)]])
         (case (parse (modifierBlockParser True) "" code) of
              Left  _ -> Error
              Right x -> x)
