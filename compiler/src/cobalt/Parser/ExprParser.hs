@@ -357,8 +357,7 @@ elifStmtParser :: Parser Expr
 elifStmtParser  = try $ L.indentBlock scn p
   where
     p = do
-        try $ do
-            rword "elif"
+        rword "elif"
         cond  <- parens argumentParser
         return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
 
@@ -366,7 +365,7 @@ elseStmtParser :: Parser Expr
 elseStmtParser  = try $ L.indentBlock scn p
   where
     p = do
-        try $ rword "else"
+        rword "else"
         return (L.IndentMany Nothing (return . (Else)) (expr' <|> argumentParser))
 
 whileParser :: Parser Expr
