@@ -183,7 +183,6 @@ test-suite compiler-test
       Parser.ArrayElementSelectParserTest
       Parser.AssignParserTest
       Parser.BooleanParserTest
-      Parser.ClassParserTest
       Parser.ClassVariableParserTest
       Parser.ConstructorParserTest
       Parser.ForLoopParserTest
@@ -195,10 +194,10 @@ test-suite compiler-test
       Parser.MethodParserTest
       Parser.Data.ModelTypeParserTest
       Parser.Data.ModifierParserTest
+      Parser.ModelParserTest
       Parser.ModifierBlockParserTest
       Parser.NewClassInstanceParserTest
       Parser.ObjectMethodCallParserTest
-      Parser.ObjectParserTest
       Parser.PackageParserTest
       Parser.ParserTests
       Parser.ParameterizedTypeParserTest
@@ -210,7 +209,6 @@ test-suite compiler-test
       Parser.StringLiteralParserTest
       Parser.ThisMethodCallParserTest
       Parser.ThisVarParserTest
-      Parser.TraitParserTest
       Parser.TypeParameterParserTest
       Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest

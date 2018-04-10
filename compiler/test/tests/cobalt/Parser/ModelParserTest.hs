@@ -1,4 +1,4 @@
-module Parser.ClassParserTest where
+module Parser.ModelParserTest where
 
 import Test.HUnit
 import Text.Megaparsec
@@ -7,8 +7,8 @@ import AST.Block
 import AST.Data.Modifier
 import Parser.ExprParser
 
-testClassParser :: Test
-testClassParser = do
+testModelParserClass :: Test
+testModelParserClass = do
     let code = unlines [ "class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [] [] Nothing [] [] [] [] [])
@@ -16,8 +16,26 @@ testClassParser = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserTypeParameter :: Test
-testClassParserTypeParameter = do
+testModelParserTrait :: Test
+testModelParserTrait = do
+    let code = unlines [ "trait Test" ]
+    TestCase $ assertEqual code
+        (Trait Nothing "Test" Nothing [] [] Nothing [] [] [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testModelParserObject :: Test
+testModelParserObject = do
+    let code = unlines [ "object Test" ]
+    TestCase $ assertEqual code
+        (Object Nothing "Test" Nothing [] [] Nothing [] [] [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testModelParserTypeParameter :: Test
+testModelParserTypeParameter = do
     let code = unlines [ "class Test[String]" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] [] Nothing [] [] [] [] [])
@@ -25,8 +43,8 @@ testClassParserTypeParameter = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserTypeParameterExtends :: Test
-testClassParserTypeParameterExtends = do
+testModelParserTypeParameterExtends :: Test
+testModelParserTypeParameterExtends = do
     let code = unlines [ "class Test[String] extends ParentName" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] [] (Just "ParentName") [] [] [] [] [])
@@ -34,8 +52,8 @@ testClassParserTypeParameterExtends = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserTypeParameterExtendsImplements :: Test
-testClassParserTypeParameterExtendsImplements = do
+testModelParserTypeParameterExtendsImplements :: Test
+testModelParserTypeParameterExtendsImplements = do
     let code = unlines [ "class Test[String] extends ParentName implements TraitName" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] [] (Just "ParentName") ["TraitName"] [] [] [] [])
@@ -43,8 +61,8 @@ testClassParserTypeParameterExtendsImplements = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserTypeParameterImplements :: Test
-testClassParserTypeParameterImplements = do
+testModelParserTypeParameterImplements :: Test
+testModelParserTypeParameterImplements = do
     let code = unlines [ "class Test[String] implements TraitName" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] [] Nothing ["TraitName"] [] [] [] [])
@@ -52,8 +70,8 @@ testClassParserTypeParameterImplements = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserTypeParameterImplementsMultiple :: Test
-testClassParserTypeParameterImplementsMultiple = do
+testModelParserTypeParameterImplementsMultiple :: Test
+testModelParserTypeParameterImplementsMultiple = do
     let code = unlines [ "class Test[String] implements TraitName1, TraitName2" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" (Just (TypeParameter (Identifier "String"))) [] [] Nothing ["TraitName1","TraitName2"] [] [] [] [])
@@ -61,8 +79,8 @@ testClassParserTypeParameterImplementsMultiple = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserExtends :: Test
-testClassParserExtends = do
+testModelParserExtends :: Test
+testModelParserExtends = do
     let code = unlines [ "class Test extends ParentClass" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] [] [] [] [])
@@ -70,8 +88,8 @@ testClassParserExtends = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserImplements :: Test
-testClassParserImplements = do
+testModelParserImplements :: Test
+testModelParserImplements = do
     let code = unlines [ "class Test implements Interface" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [] [] Nothing ["Interface"] [] [] [] [])
@@ -79,8 +97,8 @@ testClassParserImplements = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserImplementsMultiple :: Test
-testClassParserImplementsMultiple = do
+testModelParserImplementsMultiple :: Test
+testModelParserImplementsMultiple = do
     let code = unlines [ "class Test implements Interface1, Interface2" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [] [] Nothing ["Interface1","Interface2"] [] [] [] [])
@@ -88,8 +106,8 @@ testClassParserImplementsMultiple = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserExtendsImplements :: Test
-testClassParserExtendsImplements = do
+testModelParserExtendsImplements :: Test
+testModelParserExtendsImplements = do
     let code = unlines [ "class Test extends ParentClass implements Interface" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [] [] (Just "ParentClass") ["Interface"] [] [] [] [])
@@ -97,8 +115,8 @@ testClassParserExtendsImplements = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserExtendsImplementsMultiple :: Test
-testClassParserExtendsImplementsMultiple = do
+testModelParserExtendsImplementsMultiple :: Test
+testModelParserExtendsImplementsMultiple = do
     let code = unlines [ "class Test extends ParentClass implements Interface1, Interface2, Interface3" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [] [] (Just "ParentClass") ["Interface1","Interface2","Interface3"] [] [] [] [])
@@ -106,8 +124,8 @@ testClassParserExtendsImplementsMultiple = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserImports :: Test
-testClassParserImports = do
+testModelParserImports :: Test
+testModelParserImports = do
     let code = unlines [ "import dir.sub_dir.ClassName"
                        , "class Test extends ParentClass implements Interface"
                        ]
@@ -118,8 +136,8 @@ testClassParserImports = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserImportsFail :: Test
-testClassParserImportsFail = do
+testModelParserImportsFail :: Test
+testModelParserImportsFail = do
     let code = unlines [ "import -dir.sub_dir.ClassName"
                        , "class Test extends ParentClass implements Interface"
                        ]
@@ -129,8 +147,8 @@ testClassParserImportsFail = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserModifierBlock :: Test
-testClassParserModifierBlock = do
+testModelParserModifierBlock :: Test
+testModelParserModifierBlock = do
     let code = unlines [ "import dir.sub_dir.ClassName"
                        , "class Test extends ParentClass implements Interface"
                        , "public"
@@ -144,8 +162,8 @@ testClassParserModifierBlock = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserConstructorBody :: Test
-testClassParserConstructorBody = do
+testModelParserConstructorBody :: Test
+testModelParserConstructorBody = do
     let code = unlines [ "import dir.sub_dir.ClassName"
                        , "class Test extends ParentClass implements Interface"
                        , "public"
@@ -158,8 +176,8 @@ testClassParserConstructorBody = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserMethods :: Test
-testClassParserMethods = do
+testModelParserMethods :: Test
+testModelParserMethods = do
     let code = unlines [ "import dir.sub_dir.ClassName"
                        , "class Test extends ParentClass implements Interface"
                        , "public"
@@ -178,8 +196,8 @@ testClassParserMethods = do
              Right x -> x)
 
 -- Modifiers
-testClassParserPublic :: Test
-testClassParserPublic = do
+testModelParserPublic :: Test
+testModelParserPublic = do
     let code = unlines [ "public class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Public] [] Nothing [] [] [] [] [])
@@ -187,8 +205,8 @@ testClassParserPublic = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserProtected :: Test
-testClassParserProtected = do
+testModelParserProtected :: Test
+testModelParserProtected = do
     let code = unlines [ "protected class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Protected] [] Nothing [] [] [] [] [])
@@ -196,8 +214,8 @@ testClassParserProtected = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserPrivate :: Test
-testClassParserPrivate = do
+testModelParserPrivate :: Test
+testModelParserPrivate = do
     let code = unlines [ "private class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Private] [] Nothing [] [] [] [] [])
@@ -205,8 +223,8 @@ testClassParserPrivate = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserPublicAbstract :: Test
-testClassParserPublicAbstract = do
+testModelParserPublicAbstract :: Test
+testModelParserPublicAbstract = do
     let code = unlines [ "public abstract class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Public, Abstract] [] Nothing [] [] [] [] [])
@@ -214,8 +232,8 @@ testClassParserPublicAbstract = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserProtectedAbstract :: Test
-testClassParserProtectedAbstract = do
+testModelParserProtectedAbstract :: Test
+testModelParserProtectedAbstract = do
     let code = unlines [ "protected abstract class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Protected, Abstract] [] Nothing [] [] [] [] [])
@@ -223,8 +241,8 @@ testClassParserProtectedAbstract = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserPrivateAbstract :: Test
-testClassParserPrivateAbstract = do
+testModelParserPrivateAbstract :: Test
+testModelParserPrivateAbstract = do
     let code = unlines [ "private abstract class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Private, Abstract] [] Nothing [] [] [] [] [])
@@ -232,8 +250,8 @@ testClassParserPrivateAbstract = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserAbstract :: Test
-testClassParserAbstract = do
+testModelParserAbstract :: Test
+testModelParserAbstract = do
     let code = unlines [ "abstract class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Abstract] [] Nothing [] [] [] [] [])
@@ -241,8 +259,8 @@ testClassParserAbstract = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserPublicFinal :: Test
-testClassParserPublicFinal = do
+testModelParserPublicFinal :: Test
+testModelParserPublicFinal = do
     let code = unlines [ "public final class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Public, Final] [] Nothing [] [] [] [] [])
@@ -250,8 +268,8 @@ testClassParserPublicFinal = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserProtectedFinal :: Test
-testClassParserProtectedFinal = do
+testModelParserProtectedFinal :: Test
+testModelParserProtectedFinal = do
     let code = unlines [ "protected final class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Protected, Final] [] Nothing [] [] [] [] [])
@@ -259,8 +277,8 @@ testClassParserProtectedFinal = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserPrivateFinal :: Test
-testClassParserPrivateFinal = do
+testModelParserPrivateFinal :: Test
+testModelParserPrivateFinal = do
     let code = unlines [ "private final class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Private, Final] [] Nothing [] [] [] [] [])
@@ -268,8 +286,8 @@ testClassParserPrivateFinal = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserFinal :: Test
-testClassParserFinal = do
+testModelParserFinal :: Test
+testModelParserFinal = do
     let code = unlines [ "final class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Final] [] Nothing [] [] [] [] [])
@@ -277,8 +295,8 @@ testClassParserFinal = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserReordered1 :: Test
-testClassParserReordered1 = do
+testModelParserReordered1 :: Test
+testModelParserReordered1 = do
     let code = unlines [ "abstract public class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Abstract, Public] [] Nothing [] [] [] [] [])
@@ -286,8 +304,8 @@ testClassParserReordered1 = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserReordered2 :: Test
-testClassParserReordered2 = do
+testModelParserReordered2 :: Test
+testModelParserReordered2 = do
     let code = unlines [ "final abstract public class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Final, Abstract, Public] [] Nothing [] [] [] [] [])
@@ -295,8 +313,8 @@ testClassParserReordered2 = do
              Left  _ -> Error
              Right x -> x)
 
-testClassParserReordered3 :: Test
-testClassParserReordered3 = do
+testModelParserReordered3 :: Test
+testModelParserReordered3 = do
     let code = unlines [ "abstract private final class Test" ]
     TestCase $ assertEqual code
         (Class Nothing "Test" Nothing [Abstract, Private, Final] [] Nothing [] [] [] [] [])
