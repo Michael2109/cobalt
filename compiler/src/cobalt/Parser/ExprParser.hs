@@ -338,6 +338,13 @@ printParser  = do
     e <- parens argumentParser
     return $ Print e
 
+ifStatementBlockParser :: Parser Expr
+ifStatementBlockParser = do
+    ifStmt <- ifStmtParser
+    elifStmt <- optional elifStmtParser
+    elseStmt <- optional elseStmtParser
+    return $ IfStatement ifStmt elifStmt elseStmt
+
 ifStmtParser :: Parser Expr
 ifStmtParser  = try $ L.indentBlock scn p
   where
@@ -346,13 +353,12 @@ ifStmtParser  = try $ L.indentBlock scn p
         cond  <- parens argumentParser
         return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
 
-elseIfStmtParser :: Parser Expr
-elseIfStmtParser  = try $ L.indentBlock scn p
+elifStmtParser :: Parser Expr
+elifStmtParser  = try $ L.indentBlock scn p
   where
     p = do
         try $ do
-            rword "else"
-            rword "if"
+            rword "elif"
         cond  <- parens argumentParser
         return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
 
@@ -431,9 +437,7 @@ expr' :: Parser Expr
 expr' =
     modelParser
     <|> forLoopParser
-    <|> ifStmtParser
-    <|> elseIfStmtParser
-    <|> elseStmtParser
+    <|> ifStatementBlockParser
 
     <|> whileParser
 

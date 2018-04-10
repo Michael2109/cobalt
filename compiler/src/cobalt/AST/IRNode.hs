@@ -58,6 +58,7 @@ data IRNode
     | GreaterIR
     | IdentifierIR String
     | IfIR IRNode [IRNode]
+    | IfStatementIR IRNode (Maybe IRNode) (Maybe IRNode)
     | ImportIR [String]
     | LambdaIR String [IRNode]
     | LessIR
@@ -131,7 +132,8 @@ instance CodeGenIR IRNode where
     genCodeGenIR (GreaterIR)  = GreaterCodeGen
     genCodeGenIR (GlobalVarIR modifier final static varType varName exprs)  = GlobalVarCodeGen  modifier final static (genCodeGenIR varType ) (genCodeGenIR varName )  (map (\e -> genCodeGenIR e ) exprs)
     genCodeGenIR (IdentifierIR name)  = IdentifierCodeGen  name
-    genCodeGenIR (IfIR condition exprs)  = IfCodeGen  (genCodeGenIR condition ) $ irNodeArrToCodeGenNodeArray exprs 
+    genCodeGenIR (IfIR condition exprs)  = IfCodeGen  (genCodeGenIR condition ) $ irNodeArrToCodeGenNodeArray exprs
+    genCodeGenIR (IfStatementIR ifBlock elseIfBlock elseBlock) = IfStatementCodeGen (genCodeGenIR ifBlock) (maybeIRNodeToMaybeCodeGenNode elseIfBlock) (maybeIRNodeToMaybeCodeGenNode elseBlock)
     genCodeGenIR (ImportIR locs)  = ImportCodeGen  locs
     genCodeGenIR (IntConstIR i)  = IntConstCodeGen i
     genCodeGenIR (LessEqualIR)  = LessEqualCodeGen

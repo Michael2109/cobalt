@@ -70,6 +70,7 @@ data CodeGenNode
     | GreaterCodeGen
     | IdentifierCodeGen  String
     | IfCodeGen  CodeGenNode [CodeGenNode]
+    | IfStatementCodeGen CodeGenNode (Maybe CodeGenNode) (Maybe CodeGenNode)
     | ImportCodeGen  [String]
     | LambdaCodeGen  String [CodeGenNode]
     | LessCodeGen
@@ -146,6 +147,7 @@ instance CodeGen CodeGenNode where
     genCode (GreaterCodeGen )  = return ()
     genCode (IdentifierCodeGen  name)  = return ()
     genCode (IfCodeGen  condition statement)  = return ()
+    genCode (IfStatementCodeGen ifBlock elseIfBlock elseBlock) = return ()
     genCode (ImportCodeGen  locs)  = return ()
     genCode (IntConstCodeGen  i)  = return ()
     genCode (LambdaCodeGen  varName exprs)  = return ()

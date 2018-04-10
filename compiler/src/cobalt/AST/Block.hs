@@ -60,6 +60,7 @@ data Expr
     | GreaterEqual
     | Identifier String
     | If Expr [Expr]
+    | IfStatement Expr (Maybe Expr) (Maybe Expr)
     | Import [String]
     | IntConst Integer
     | Less
@@ -144,6 +145,7 @@ instance IRGen Expr where
     genIR (GlobalVar modifier final static varType varName exprs) st cs = GlobalVarIR  modifier final static (genIR varType st cs) (genIR varName st cs)  (map (\e -> genIR e st cs) exprs)
     genIR (Identifier name) st cs = IdentifierIR  name
     genIR (If condition exprs) st cs = IfIR  (genIR condition st cs) $ exprArrToIRArray exprs st cs
+    genIR (IfStatement ifBlock elseIfBlock elseBlock) st cs = IfStatementIR (genIR ifBlock st cs) (maybeExprToMaybeIRNode elseIfBlock st cs) (maybeExprToMaybeIRNode elseBlock st cs)
     genIR (Import locs) st cs = ImportIR  locs
     genIR (IntConst i) st cs = IntConstIR i
     genIR (LessEqual) st cs = LessEqualIR

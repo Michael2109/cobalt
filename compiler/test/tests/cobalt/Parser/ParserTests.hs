@@ -167,6 +167,12 @@ parserTestList = TestList
     , testIfStmtParserAnd
     , testIfStmtParserOr
     , testIfStmtParserAndOr
+    , testIfStmtParserElif
+    , testIfStmtParserElse
+    , testIfStmtParserBlockIf
+    , testIfStmtParserBlockElif
+    , testIfStmtParserBlockElifElse
+    , testIfStmtParserBlockElse
 
     , testImportParserSingle
     , testImportParserEmptyFail
