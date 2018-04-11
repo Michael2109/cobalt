@@ -34,6 +34,33 @@ testModelParserObject = do
              Left  _ -> Error
              Right x -> x)
 
+testModelParserParamsEmpty :: Test
+testModelParserParamsEmpty = do
+    let code = unlines [ "class Test ()" ]
+    TestCase $ assertEqual code
+        (Class Nothing "Test" Nothing [] [] Nothing [] [] [] [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testModelParserParamsSingle :: Test
+testModelParserParamsSingle = do
+    let code = unlines [ "class Test (x: Int)" ]
+    TestCase $ assertEqual code
+        (Class Nothing "Test" Nothing [] [Parameter (Identifier "Int") (Identifier "x")] Nothing [] [] [] [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testModelParserParamsMultiple :: Test
+testModelParserParamsMultiple = do
+    let code = unlines [ "class Test (x: Int, y: String, z: Object)" ]
+    TestCase $ assertEqual code
+        (Class Nothing "Test" Nothing [] [Parameter (Identifier "Int") (Identifier "x"),Parameter (Identifier "String") (Identifier "y"),Parameter (Identifier "Object") (Identifier "z")] Nothing [] [] [] [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
 testModelParserTypeParameter :: Test
 testModelParserTypeParameter = do
     let code = unlines [ "class Test[String]" ]

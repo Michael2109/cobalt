@@ -96,12 +96,15 @@ modelParser = try $ L.nonIndented scn p
     p = do
         package <- optional packageParser
         imports <- many importParser
-        L.lineFold scn $ \sp' -> return ()
+        optional $ L.lineFold scn $ \sp' -> return ()
         modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
         modelType <- modelTypeParser
         name <- identifier
         typeParam <- optional typeParameterParser
-        params <- sepBy parameterParser (symbol ",")
+        paramsOpt <- optional $ parens $ sepBy parameterParser (symbol ",")
+        let params = case paramsOpt of
+                             Just ps -> ps
+                             Nothing -> []
         extendsKeyword <- optional $ rword "extends"
         parent <- optional $ identifier
         parentArgsOpt <- optional $ parens $ sepBy argumentParser (symbol ",")
