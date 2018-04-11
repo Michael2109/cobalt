@@ -206,8 +206,11 @@ stringLiteralMultilineParser = do
 
 assignParser :: Parser Expr
 assignParser = do
-    valVar <- try (rword "val" <|> rword "var")
-    let immutable = valVar == "val"
+    try (rword "let")
+    mutableOpt <- optional $ rword "mutable"
+    let immutable = case mutableOpt of
+                        Nothing -> True
+                        Just _  -> False
     varName <- identifierParser
     varType <- optional $ do
         symbol ":"
@@ -291,17 +294,7 @@ modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
         modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
-        return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser  modifier static))
-
-globalVarParser :: String -> Bool -> Parser Expr
-globalVarParser modifier static = do
-    final <- try (rword "val" <|> rword "var")
-    varName <- identifierParser
-    symbol ":"
-    varType <- valueTypeParser
-    symbol "="
-    es <- many $ argumentParser
-    return $ GlobalVar modifier (final == "val") static varType varName es
+        return (L.IndentMany Nothing (return . (ModifierBlock)) (assignParser))
 
 annotationParser :: Parser Expr
 annotationParser  = do
