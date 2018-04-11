@@ -37,7 +37,7 @@ aTerm = parens aExpr
     <|> methodCallParser
     <|> identifierParser
     <|> IntConst <$> integerParser
-    <|> DoubleConst <$> doubleParser
+    <|> DoubleConstant <$> doubleParser
 
 aOperators :: [[Operator Parser Expr]]
 aOperators =
@@ -96,17 +96,21 @@ modelParser = try $ L.nonIndented scn p
     p = do
         package <- optional packageParser
         imports <- many importParser
-        L.lineFold scn $ \sp' -> return ()
+        optional $ L.lineFold scn $ \sp' -> return ()
         modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
         modelType <- modelTypeParser
         name <- identifier
         typeParam <- optional typeParameterParser
-        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case fullParams of
-                         Just ps -> ps
-                         Nothing -> []
+        paramsOpt <- optional $ parens $ sepBy parameterParser (symbol ",")
+        let params = case paramsOpt of
+                             Just ps -> ps
+                             Nothing -> []
         extendsKeyword <- optional $ rword "extends"
         parent <- optional $ identifier
+        parentArgsOpt <- optional $ parens $ sepBy argumentParser (symbol ",")
+        let parentArgs = case parentArgsOpt of
+                             Just ps -> ps
+                             Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy identifier (symbol ",")
         modifierBlocks <- many $ try $ modifierBlockParser False
@@ -115,9 +119,9 @@ modelParser = try $ L.nonIndented scn p
 
         return $
             case modelType of
-                ClassModel  -> (Class package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs exprs)
-                ObjectModel -> (Object package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs exprs)
-                TraitModel  -> (Trait package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs exprs)
+                ClassModel  -> (Class package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
+                ObjectModel -> (Object package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
+                TraitModel  -> (Trait package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
 
 packageParser :: Parser Expr
 packageParser = try $ L.nonIndented scn p

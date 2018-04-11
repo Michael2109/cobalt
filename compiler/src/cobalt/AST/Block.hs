@@ -42,20 +42,20 @@ data Expr
     | BError
     | BoolConst Bool
     | Catch [Expr] [Expr]
-    | Class (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+    | Class (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [Expr] [String] [Expr] [Expr] [Expr] [Expr]
     | ClassVariable String String
     | ClosingParenthesis
     | Constructor String [Expr] [Expr] [Expr]
     | Divide
-    | DoubleConst Scientific
+    | DoubleConstant Scientific
     | Else [Expr]
     | ElseIf Expr [Expr]
     | Error
     | For String Expr Expr [Expr]
     | FunctionCall String [Expr]
-    | GlobalVar String Bool Bool Expr Expr [Expr]
     | Greater
     | GreaterEqual
+    | GlobalVar String Bool Bool Expr Expr [Expr]
     | Identifier String
     | If Expr [Expr]
     | IfStatement Expr (Maybe Expr) (Maybe Expr)
@@ -71,7 +71,7 @@ data Expr
     | Neg Expr
     | NewClassInstance Expr [Expr]
     | Not Expr
-    | Object (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+    | Object (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [Expr] [String] [Expr] [Expr] [Expr] [Expr]
     | ObjectMethodCall String String [Expr]
     | OpeningParenthesis
     | Or
@@ -95,26 +95,28 @@ data Expr
     | ThisMethodCall String [Expr]
     | ThisVar Expr
     | TypeParameter Expr
-    | Trait (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [String] [Expr] [Expr] [Expr] [Expr]
+    | Trait (Maybe Expr) String (Maybe Expr) [Modifier] [Expr] (Maybe String) [Expr] [String] [Expr] [Expr] [Expr] [Expr]
     | Try [Expr]
     | Type Expr
     | Where [Expr]
     | While Expr [Expr]
         deriving (Eq, Show)
 
+-- Unimplemented
 instance SymbolTableGen Expr where
-    genModelSymbolTable (Class packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) = combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name ClassType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
+    genModelSymbolTable (Class packageLocs name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) = combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name ClassType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
     --genClassSymbolTable (ClassParam varType varName) = (ClassSymbolTable "" NoType [(show varName, show varType)] [])
     --genClassSymbolTable (Function name annotations argTypes args returnType static body) = ClassSymbolTable "" NoType [] [(name, (MethodSymbolTable (show returnType) (zip (map show args) (map show argTypes))))]
     --genClassSymbolTable (GlobalVar modifier final static varType varName exprs) = (ClassSymbolTable "" NoType [(show varName, show varType)] [])
     genModelSymbolTable (ModifierBlock exprs) =  foldl1 (\x y -> combineModelSymbolTable x y) (map genModelSymbolTable exprs)
-    genModelSymbolTable (Object packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name ObjectType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
-    genModelSymbolTable (Trait packageLocs name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) =  combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name TraitType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
+    genModelSymbolTable (Object packageLocs name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) =  combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name ObjectType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
+    genModelSymbolTable (Trait packageLocs name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) =  combineModelSymbolTable (combineModelSymbolTable (combineModelSymbolTable (ModelSymbolTable name TraitType [] [] []) (combineModelSymbolTableList (map genModelSymbolTable params))) (combineModelSymbolTableList (map genModelSymbolTable modifierBlocks))) (combineModelSymbolTableList (map genModelSymbolTable bodyArray))
     genModelSymbolTable (_) = ModelSymbolTable "" NoType [] [] []
 
 instance IRGen Expr where
     genIR (ABinary aBinOp aExpr1 aExpr2) st cs = ABinaryIR (genIR aBinOp st cs) (genIR aExpr1 st cs) (genIR aExpr2 st cs)
     genIR (Add) st cs = AddIR
+    genIR (AError) st cs = AErrorIR
     genIR (And) st cs = AndIR
     genIR (Annotation name) st cs = AnnotationIR name
     genIR (Argument a) st cs = ArgumentIR (genIR a st cs)
@@ -127,16 +129,17 @@ instance IRGen Expr where
     genIR (BBinary bbinop bExpr1 bExpr2) st cs = BBinaryIR  (genIR bbinop st cs) (genIR bExpr1 st cs) (genIR bExpr2 st cs)
     genIR (BoolConst b) st cs = BoolConstIR  b
     genIR (Catch params exprs) st cs = CatchIR  (exprArrToIRArray params st cs) (exprArrToIRArray exprs st cs)
-    genIR (Class package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ClassIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (Class package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ClassIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent (exprArrToIRArray parentArgs st cs) interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ClassVariable className varName) st cs = ClassVariableIR  className varName
     genIR (ClosingParenthesis) st cs = ClosingParenthesisIR
     genIR (Constructor name argTypes args exprs) st cs = ConstructorIR  name (exprArrToIRArray argTypes st cs) (exprArrToIRArray args st cs) (exprArrToIRArray exprs st cs)
     genIR (Divide) st cs = DivideIR
+    genIR (DoubleConstant value) st cs = DoubleConstantIR value
     genIR (Else exprs) st cs = ElseIR  (exprArrToIRArray exprs st cs)
     genIR (ElseIf condition exprs) st cs = ElseIfIR  (genIR condition st cs) (exprArrToIRArray exprs st cs)
     genIR (For varName start end exprs) st cs = ForIR  varName (genIR start st cs) (genIR end st cs) (exprArrToIRArray exprs st cs)
     genIR (FunctionCall name exprs) st cs = FunctionCallIR  name $ exprArrToIRArray exprs st cs
-    genIR (GreaterEqual) symbolTable currentState = GreaterEqualIR 
+    genIR (GreaterEqual) symbolTable currentState = GreaterEqualIR
     genIR (Greater) symbolTable currentState = GreaterIR 
     genIR (GlobalVar modifier final static varType varName exprs) st cs = GlobalVarIR  modifier final static (genIR varType st cs) (genIR varName st cs)  (map (\e -> genIR e st cs) exprs)
     genIR (Identifier name) st cs = IdentifierIR  name
@@ -154,7 +157,7 @@ instance IRGen Expr where
     genIR (Neg aExpr) st cs = NegIR (genIR aExpr st cs)
     genIR (NewClassInstance className args) st cs = NewClassInstanceIR  (genIR className st cs) $ exprArrToIRArray args st cs
     genIR (Not n) st cs = NotIR  $ genIR n st cs
-    genIR (Object package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (Object package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) st cs = ObjectIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent (exprArrToIRArray parentArgs st cs) interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (ObjectMethodCall objectName methodName args) st cs = ObjectMethodCallIR  objectName methodName (exprArrToIRArray args st cs)
     genIR (OpeningParenthesis) st cs = OpeningParenthesisIR
     genIR (Or) st cs = OrIR 
@@ -176,7 +179,7 @@ instance IRGen Expr where
     genIR (This) st cs = ThisIR 
     genIR (ThisMethodCall methodName args) st cs = ThisMethodCallIR  methodName (exprArrToIRArray args st cs)
     genIR (ThisVar varName) st cs = ThisVarIR  $ genIR varName st cs
-    genIR (Trait package name typeParam modifiers params parent interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
+    genIR (Trait package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) st cs = TraitIR  (maybeExprToMaybeIRNode package st cs) name (maybeExprToMaybeIRNode typeParam st cs) modifiers (map (\a -> genIR a st cs) params) parent (exprArrToIRArray parentArgs st cs) interfaces (map (\a -> genIR a st cs) imports) (map (\a -> genIR a st cs) modifierBlocks) (map (\a -> genIR a st cs) constructorExprs) (map (\a -> genIR a st cs) bodyArray)
     genIR (Try exprs) st cs = TryIR  (exprArrToIRArray exprs st cs)
     genIR (Type b) st cs = TypeIR  (genIR b st cs)
     genIR (TypeParameter typeName) st cs = TypeParameterIR  (genIR typeName st cs)

@@ -116,12 +116,18 @@ parserTestList = TestList
     , testModelParserClass
     , testModelParserTrait
     , testModelParserObject
+    , testModelParserParamsEmpty
+    , testModelParserParamsSingle
+    , testModelParserParamsMultiple
     , testModelParserTypeParameter
     , testModelParserTypeParameterExtends
     , testModelParserTypeParameterExtendsImplements
     , testModelParserTypeParameterImplements
     , testModelParserTypeParameterImplementsMultiple
     , testModelParserExtends
+    , testModelParserParentArgsEmpty
+    , testModelParserParentArgsSingle
+    , testModelParserParentArgsMultiple
     , testModelParserImplements
     , testModelParserImplementsMultiple
     , testModelParserExtendsImplements
