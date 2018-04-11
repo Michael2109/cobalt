@@ -64,8 +64,7 @@ library
        MissingH,
        zip,
        Glob,
-       parsec >= 3 && <4,
-       pretty-error
+       parsec >= 3 && <4
   exposed-modules:
       AST.Block
       AST.CodeGenNode
@@ -167,7 +166,6 @@ test-suite compiler-test
       zip,
       Glob,
       parsec >= 3 && <4,
-      pretty-error,
       compiler
   other-modules:
       AST.BlocksTest

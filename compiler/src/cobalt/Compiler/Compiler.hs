@@ -12,7 +12,6 @@ import Data.Text.Internal.Lazy
 import System.Directory
 import System.FilePath.Posix
 import Text.Pretty.Simple
-import PrettyError
 import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 
@@ -86,7 +85,7 @@ generateAST inputFile code = do
    let symbolTable = SymbolTable [generateModelSymbolTable parseResult]
 
    let ast = case parseResult of
-                 Left  e -> prettyError e
+                 Left  e -> error $ show e
                  Right x -> x
 
    ASTData inputFile symbolTable ast
