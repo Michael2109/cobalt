@@ -1,0 +1,38 @@
+### Example
+This is a proposal for the language syntax.
+```
+# A singleton (Equivalent of the `object` we currently have
+module
+
+  # Indent out by one. This allows for modules within modules.
+
+  # This is a single-line comment (Alternative could be `#`)
+
+  /*
+   * This is a multi-line comment
+   */
+
+  # Value
+  exampleValue: Double = 10.54
+
+  # Variable
+  mutable exampleVariable: Int = 10
+
+  # Reassigning a variable
+  exampleVariable <- 20
+
+  # Method without parameters
+  methodWithoutParams (): Int = 100 * exampleVariable
+
+  # Method with parameters
+  methodWithParameters (a: Int, b: Int): Int = a + b
+
+  # Nested method
+  getEven (list: List[Int]): List[Int] = do
+    isEven (num: Int) = num % 2 == 0
+    list.filter(isEven)
+
+  # Calling a method
+  getTotalEven (list: List[Int]) = do
+    getEven(list).size
+```
