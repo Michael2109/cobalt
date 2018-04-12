@@ -21,6 +21,9 @@ module
   # Reassigning a variable
   exampleVariable <- 20
 
+  # Lazy value
+  lazy exampleLazyValue: Double = 1004.34
+
   # Method without parameters
   methodWithoutParams (): Int = 100 * exampleVariable
 
