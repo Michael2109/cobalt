@@ -31,12 +31,20 @@ module
   methodWithParameters (a: Int, b: Int): Int = a + b
 
   # Nested method
-  getEven (list: List[Int]): List[Int] = do
+  getEven (list: List[Int]): List[Int]
     isEven (num: Int) = num % 2 == 0
     list.filter(isEven)
 
+  # Inline method
+  exampleInline (): Int = 50
+
+  # Block method
+  exampleBlock (): Int
+    // Do something
+    50
+
   # Calling a method
-  getTotalEven (list: List[Int]) = do
+  getTotalEven (list: List[Int])
     getEven(list).size()
 
   # Setting a value to reference a method
@@ -59,13 +67,13 @@ module
   exampleLambda(x: Int): Int => x + 1
 
   # Partial Application
-  examplePartialApplication(): Unit = do
+  examplePartialApplication(): Unit
     add (x: Int, y: Int) = x + y
     z = add 42 # z = add(42, y:Int)
     println (z(58)) # Prints 100
 
   # Higher-order functions
-  exampleHigherOrderFunctions(): Unit = do
+  exampleHigherOrderFunctions(): Unit
     list: List[Int] = List(2,6,3,8,9)
 
     # Multiply the list elements by 2
@@ -77,7 +85,7 @@ module
     filtered = multiplied.filter(_ < 10)
 
   # If statements
-  exampleIf(): Unit = do
+  exampleIf(): Unit
     if(True)
       println ("if")
     elif(False)
