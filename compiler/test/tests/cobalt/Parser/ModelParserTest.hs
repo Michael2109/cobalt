@@ -237,8 +237,8 @@ testModelParserMethods = do
                        , "initAlien(10, 20)"
                        , "exampleMethod (a: Int, b: Int): Int"
                        , "initAlien (x: int, y: int): void"
-                       , "    this.x = x"
-                       , "    this.y = y"
+                       , "    this.x <- x"
+                       , "    this.y <- y"
                        , "act (direction: int): void"
                        ]
     TestCase $ assertEqual code

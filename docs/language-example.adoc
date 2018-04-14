@@ -64,7 +64,7 @@ module
       apply(x: Int): Int = x + 1
 
   # Lambdas (Shorthand for anonymous functions)
-  exampleLambda(x: Int): Int => x + 1
+  exampleLambda = (x: Int): Int => x + 1
 
   # Partial Application
   examplePartialApplication(): Unit

@@ -90,6 +90,12 @@ relation = (symbol ">=" *> pure GreaterEqual)
     <|> (symbol ">" *> pure Greater)
     <|> (symbol "<" *> pure Less)
 
+fileParser :: Parser Expr
+fileParser = try $ L.nonIndented scn p
+  where
+    p = do
+
+
 modelParser :: Parser Expr
 modelParser = try $ L.nonIndented scn p
   where
@@ -224,7 +230,7 @@ reassignParser :: Parser Expr
 reassignParser = do
     name  <- try $ do
         id <- identifierParser <|> thisVarParser
-        symbol "="
+        symbol "<-"
         return id
     value <- argumentParser
     return (Reassign name value)
