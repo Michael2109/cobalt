@@ -66,6 +66,7 @@ library
        Glob,
        parsec >= 3 && <4
   exposed-modules:
+      AST.AST
       AST.Block
       AST.CodeGenNode
       AST.IRNode
