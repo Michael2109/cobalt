@@ -33,14 +33,14 @@ data Def = Def Name DefExpr
 data DefExpr
     = ConstDef Expr
     | ClassDef Class
-    | FunDef Function
+    | MethodDef Method
     deriving (Show, Eq)
 
-data Function = Function
-    { funName :: Name
-    , funAnns :: [Annotation]
-    , funParams :: [Param]
-    , funBody :: Expr
+data Method = Method
+    { methodName :: Name
+    , methodAnns :: [Annotation]
+    , methodParams :: [Param]
+    , methodBody :: Expr
     }
     deriving (Show, Eq)
 
@@ -54,7 +54,7 @@ data Constant = Constant
 data Class = Class
     { className :: Name
     , classFields :: [Field]
-    , classMethods :: [Function]
+    , classMethods :: [Method]
     }
     deriving (Show, Eq)
 
@@ -147,6 +147,7 @@ data Stmt
     | BareExpr Expr
     | Return Expr
     | DefStmt Name DefExpr
+    | Identifier Name
     deriving (Show, Eq)
     -- | ...
 
@@ -184,10 +185,6 @@ data Stmt
 --
 -- anonInstance = new anon("test");
 -- anoninstance.getStr(); => "dummytest"
-
--- I would advise against making an extra node for `main`, simply look
--- through the definitions in a module to find a function named `main`
--- when code generating
 
 -- stuff like `Parentheses` don't need to be in the ast. They are only
 -- important during parsing.

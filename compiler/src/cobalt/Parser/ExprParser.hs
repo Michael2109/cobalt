@@ -451,6 +451,27 @@ expr' =
    <|> try whereStmt
 --}
 
+expressionParser :: Parser Expr
+expressionParser = do
+    statements <- many statementParser
+    return $ Block statements
+
+identifierParser :: Parser Stmt
+identifierParser = do
+    name <- identifier
+    return $ Identifier $ Name name
+
+methodParser :: Parser Method
+methodParser = try $ L.nonIndented scn p
+  where
+    p = do
+      name <- identifier
+      parameters <- parens $ sepBy identifier $ symbol ","
+      let annotations = []
+      let parameters = []
+      expressions <- expressionParser
+      return $ Method (Name name) annotations parameters expressions
+
 modelParser :: Parser Class
 modelParser = try $ L.nonIndented scn p
   where
@@ -458,6 +479,19 @@ modelParser = try $ L.nonIndented scn p
         rword "class"
         name <- identifier
         return $ Class (Name name) [] []
+
+
+returnStatementParser :: Parser Stmt
+returnStatementParser = do
+    rword "return"
+    name <- identifier
+    expression <- expressionParser
+    return $ Return expression
+
+statementParser :: Parser Stmt
+statementParser = returnStatementParser
+    <|> identifierParser
+
 
 parser :: Parser Def
 parser = do
