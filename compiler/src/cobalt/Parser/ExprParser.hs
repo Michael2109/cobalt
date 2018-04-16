@@ -16,19 +16,17 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import AST.Block
-import AST.Data.ModelType
-import AST.Data.Modifier
+import AST.AST
+--import AST.Block
+--import AST.Data.ModelType
+--import AST.Data.Modifier
 import Parser.BaseParser
 import Parser.Data.ModelTypeParser
 import Parser.Data.ModifierParser
 import Parser.ParserType
 import SymbolTable.SymbolTable
 
--- Arithmetic Expression Parser
---
---
-
+{--
 aTerm :: Parser Expr
 aTerm = parens aExpr
     <|> classVariableParser
@@ -50,10 +48,6 @@ aOperators =
 
 aExpr :: Parser Expr
 aExpr = makeExprParser aTerm aOperators
-
--- Boolean expression parsers
---
---
 
 bTerm :: Parser Expr
 bTerm = BoolConst True  <$ rword "True"
@@ -455,7 +449,17 @@ expr' =
     <|> thisParser
 
    <|> try whereStmt
+--}
 
+modelParser :: Parser Class
+modelParser = try $ L.nonIndented scn p
+  where
+    p = do
+        rword "class"
+        name <- identifier
+        return $ Class (Name name) [] []
 
-parser :: Parser Expr
-parser = expr'
+parser :: Parser Def
+parser = do
+  model <- modelParser
+  return $ Def (Name "UNKNOWN") (ClassDef model)

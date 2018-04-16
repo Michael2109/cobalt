@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.ExprParser
 
+{-
 -- Individual if, elif, and else parser tests
 testIfStmtParserBooleanTrue :: Test
 testIfStmtParserBooleanTrue = do
@@ -170,4 +171,4 @@ testIfStmtParserBlockElse = do
                     (case (parse (expr') "" code) of
                          Left  _ -> Error
                          Right x -> x)
-    TestList[test1, test2]
+    TestList[test1, test2]-}

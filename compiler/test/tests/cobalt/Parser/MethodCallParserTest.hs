@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.ExprParser
 
+{-
 testMethodCallParser :: Test
 testMethodCallParser = do
     let code = "methodCall()"
@@ -14,3 +15,4 @@ testMethodCallParser = do
         (case (parse (methodCallParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

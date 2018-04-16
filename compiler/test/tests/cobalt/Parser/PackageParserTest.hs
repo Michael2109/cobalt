@@ -5,6 +5,7 @@ import Text.Megaparsec
 
 import AST.Block
 import Parser.ExprParser
+{-
 
 testPackageParser :: Test
 testPackageParser = do
@@ -14,3 +15,4 @@ testPackageParser = do
         (case (parse (packageParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

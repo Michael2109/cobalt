@@ -11,6 +11,7 @@ data ModHeader = ModHeader
     { modName :: NameSpace
     , modImports :: [Import]
     }
+    deriving (Show, Eq)
 {--
 data Def = Def Name (DefExpr e)
 
@@ -27,11 +28,13 @@ data Function = Function
     }
 --}
 data Def = Def Name DefExpr
+    deriving (Show, Eq)
 
 data DefExpr
     = ConstDef Expr
     | ClassDef Class
     | FunDef Function
+    deriving (Show, Eq)
 
 data Function = Function
     { funName :: Name
@@ -39,40 +42,52 @@ data Function = Function
     , funParams :: [Param]
     , funBody :: Expr
     }
+    deriving (Show, Eq)
+
 
 data Param = Param Name Type
+    deriving (Show, Eq)
 
-data Constant
+data Constant = Constant
+    deriving (Show, Eq)
 
 data Class = Class
     { className :: Name
-    , classFields :: Field
-    , classMethods :: Function
+    , classFields :: [Field]
+    , classMethods :: [Function]
     }
+    deriving (Show, Eq)
 
 data Field = Field
     { fieldName :: Name
     , fieldTy :: Type
     , fieldInit :: Maybe Expr
     }
+    deriving (Show, Eq)
 
 data Type
     = TyRef Ref
     | TyApp Ref [Type] -- type application, aka Map<A,B> -> `TyApp (RefLocal "Map") [TyRef (RefLocal "A"), TyRef (RefLocal "B")]`
     | TyRel TyRel Type Type -- this allows things like <T extends Something> which would be `TyRel Extends (TyRef (RefLocal "T")) (TyRef (RefLocal "Something"))`
+    deriving (Show, Eq)
 
 data TyRel
     = Inherits
     | Extends
     | Equals
+    deriving (Show, Eq)
 
-data NameSpace
+data NameSpace = NameSpace
+    deriving (Show, Eq)
 
-data Name
+data Name = Name String
+    deriving (Show, Eq)
 
 data Import = Import [String]
+    deriving (Show, Eq)
 
-data Annotation
+data Annotation = Annotation
+    deriving (Show, Eq)
 
 
 {--
@@ -89,17 +104,22 @@ data Ref
     | RefLocal Name
     | RefQual QualName
     | RefOp Operator
+    deriving (Show, Eq)
 
 data SpecialRef
     = Super
     | This
+    deriving (Show, Eq)
 
 data QualName = QualName NameSpace Name
+    deriving (Show, Eq)
+
 data Operator
     -- either make them fixed:
     = Plus
     | Minus
     | Shift
+    deriving (Show, Eq)
     -- | ...
     -- or allow user built operators
     -- = Operator QualName -- (for instance)
@@ -118,6 +138,7 @@ data Expr
     | Ternary Expr Expr Expr
     -- | ...
     | Block [Stmt]
+    deriving (Show, Eq)
 
 data Stmt
     = For Expr
@@ -126,6 +147,7 @@ data Stmt
     | BareExpr Expr
     | Return Expr
     | DefStmt Name DefExpr
+    deriving (Show, Eq)
     -- | ...
 
 -- and funBody would then be of type [Stmt]

@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import AST.Data.Modifier
 import Parser.ExprParser
+{-
 
 testMethodParser :: Test
 testMethodParser = do
@@ -216,3 +217,4 @@ testMethodParserModifierReordered3 = do
         (case (parse (methodParser "ModuleName" False) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

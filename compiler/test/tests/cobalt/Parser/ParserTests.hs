@@ -38,7 +38,10 @@ import Parser.ValueTypeParserTest
 parserTestList :: Test
 parserTestList = TestList
     -- BaseParser
-    [ testSymbolSingle
+    [
+      testModelParserNew
+    {--
+      testSymbolSingle
     , testSymbolMultiple
     , testSymbolFail
     , testReservedWord
@@ -112,31 +115,6 @@ parserTestList = TestList
     , testBooleanParserLessThanEqualInt
     , testBooleanParserGreaterThanEqualVar
     , testBooleanParserGreaterThanEqualInt
-
-    , testModelParserClass
-    , testModelParserTrait
-    , testModelParserObject
-    , testModelParserParamsEmpty
-    , testModelParserParamsSingle
-    , testModelParserParamsMultiple
-    , testModelParserTypeParameter
-    , testModelParserTypeParameterExtends
-    , testModelParserTypeParameterExtendsImplements
-    , testModelParserTypeParameterImplements
-    , testModelParserTypeParameterImplementsMultiple
-    , testModelParserExtends
-    , testModelParserParentArgsEmpty
-    , testModelParserParentArgsSingle
-    , testModelParserParentArgsMultiple
-    , testModelParserImplements
-    , testModelParserImplementsMultiple
-    , testModelParserExtendsImplements
-    , testModelParserExtendsImplementsMultiple
-    , testModelParserImports
-    , testModelParserImportsFail
-    , testModelParserModifierBlock
-    , testModelParserConstructorBody
-    , testModelParserMethods
 
     , testModelParserPublic
     , testModelParserProtected
@@ -220,6 +198,31 @@ parserTestList = TestList
     , testAccessModifierParserPrivate
     , testAbstractModifierParser
     , testFinalModifierParser
+
+    , testModelParserClass
+    , testModelParserTrait
+    , testModelParserObject
+    , testModelParserParamsEmpty
+    , testModelParserParamsSingle
+    , testModelParserParamsMultiple
+    , testModelParserTypeParameter
+    , testModelParserTypeParameterExtends
+    , testModelParserTypeParameterExtendsImplements
+    , testModelParserTypeParameterImplements
+    , testModelParserTypeParameterImplementsMultiple
+    , testModelParserExtends
+    , testModelParserParentArgsEmpty
+    , testModelParserParentArgsSingle
+    , testModelParserParentArgsMultiple
+    , testModelParserImplements
+    , testModelParserImplementsMultiple
+    , testModelParserExtendsImplements
+    , testModelParserExtendsImplementsMultiple
+    , testModelParserImports
+    , testModelParserImportsFail
+    , testModelParserModifierBlock
+    , testModelParserConstructorBody
+    , testModelParserMethods
 
     , testModelTypeParserClass
     , testModelTypeParserObject
@@ -316,5 +319,5 @@ parserTestList = TestList
     , testValueTypeParserContainsUnderscore
     , testValueTypeParserContainsDigit
     , testValueTypeParserStartsDigitFail
-    , testValueTypeParserCapital
+    , testValueTypeParserCapital --}
     ]

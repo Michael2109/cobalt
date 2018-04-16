@@ -5,6 +5,7 @@ import Text.Megaparsec
 
 import AST.Block
 import Parser.ExprParser
+{-
 
 testClassVariableParser :: Test
 testClassVariableParser = do
@@ -50,3 +51,4 @@ testClassVariableParserMissingClassName = do
         (case (parse (classVariableParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

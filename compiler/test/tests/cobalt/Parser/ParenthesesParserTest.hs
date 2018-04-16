@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.BaseParser
 import Parser.ExprParser
+{-
 
 testParenthesesParserVar :: Test
 testParenthesesParserVar = do
@@ -42,3 +43,4 @@ testParenthesesParserNoCloseFail = do
         (case (parse (parens aExpr) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

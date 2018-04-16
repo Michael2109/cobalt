@@ -6,6 +6,7 @@ import Text.Megaparsec
 
 import Parser.BaseParser
 
+{-
 -- Symbols
 testSymbolSingle :: Test
 testSymbolSingle = do
@@ -99,3 +100,4 @@ testLong = do
         (case (parse integerParser "" code) of
              Left  _ -> -1
              Right x -> x)
+-}

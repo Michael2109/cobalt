@@ -5,6 +5,7 @@ import Text.Megaparsec
 
 import AST.Block
 import Parser.ExprParser
+{-
 
 testThisVarParserStartsDigitFail :: Test
 testThisVarParserStartsDigitFail = do
@@ -50,3 +51,4 @@ testThisVarParserNotThisFail = do
         (case (parse thisVarParser "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

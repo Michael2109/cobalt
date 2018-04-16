@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.ExprParser
 
+{-
 testArgumentParserIdentifier :: Test
 testArgumentParserIdentifier = do
     let code = "Test"
@@ -41,3 +42,4 @@ testArgumentParserObjectVar = do
         (case (parse (argumentParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

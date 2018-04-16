@@ -5,6 +5,7 @@ import Text.Megaparsec
 
 import AST.Block
 import Parser.ExprParser
+{-
 
 testParameterizedTypeParser :: Test
 testParameterizedTypeParser = do
@@ -41,3 +42,4 @@ testParameterizedTypeParserClassMissing = do
         (case (parse (parameterizedTypeParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

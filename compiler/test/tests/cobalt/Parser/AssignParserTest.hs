@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.ExprParser
 
+{-
 testAssignParserValWithType :: Test
 testAssignParserValWithType = do
     let code = "let x: Int = 1"
@@ -95,3 +96,4 @@ testAssignParserFourVars = do
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

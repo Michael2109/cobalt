@@ -5,6 +5,7 @@ import Text.Megaparsec
 
 import AST.Block
 import Parser.ExprParser
+{-
 
 testObjectMethodCallParserThis :: Test
 testObjectMethodCallParserThis = do
@@ -32,3 +33,4 @@ testObjectMethodCallParserSuper = do
         (case (parse (superMethodCallParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

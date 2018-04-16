@@ -6,6 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.ExprParser
 
+{-
 testNewClassInstanceParserNoArgs :: Test
 testNewClassInstanceParserNoArgs = do
     let code = "new ClassName()"
@@ -95,3 +96,4 @@ testNewClassInstanceParserMissingRightParen = do
         (case (parse newClassInstanceParser "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

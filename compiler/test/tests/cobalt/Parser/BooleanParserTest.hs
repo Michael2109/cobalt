@@ -6,7 +6,7 @@ import Text.Megaparsec
 import AST.Block
 import Parser.ExprParser
 
--- Boolean Expression tests
+{--- Boolean Expression tests
 testBooleanParserTrue :: Test
 testBooleanParserTrue = do
     let code = "True"
@@ -111,4 +111,4 @@ testBooleanParserGreaterThanEqualInt = do
         (RBinary GreaterEqual (IntConst 100) (IntConst 300))
         (case (parse (booleanParser) "" code) of
              Left  _ -> Error
-             Right x -> x)
+             Right x -> x)-}
