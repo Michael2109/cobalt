@@ -70,7 +70,7 @@ data NameSpace
 
 data Name
 
-data Import [String]
+data Import = Import [String]
 
 data Annotation
 
