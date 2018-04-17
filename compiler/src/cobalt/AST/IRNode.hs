@@ -3,6 +3,7 @@ Module      : IRNode
 Description : Contains functions for working with intermediate representation tree.
 -}
 module AST.IRNode where
+{-
 
 import Data.Char
 import Data.List
@@ -11,7 +12,7 @@ import Text.Format
 import Text.PrettyPrint.Annotated.Leijen
 import Data.Scientific
 
-import AST.Data.Modifier
+import AST.AST
 import AST.CodeGenNode
 import SymbolTable.SymbolTable
 import Util.GeneralUtil
@@ -182,3 +183,4 @@ maybeIRNodeToMaybeCodeGenNode mExpr  =
 
 irNodeArrToCodeGenNodeArray :: [IRNode] -> [CodeGenNode]
 irNodeArrToCodeGenNodeArray exprs  = (map (\a -> genCodeGenIR a ) exprs)
+-}

@@ -21,8 +21,6 @@ import AST.AST
 --import AST.Data.ModelType
 --import AST.Data.Modifier
 import Parser.BaseParser
-import Parser.Data.ModelTypeParser
-import Parser.Data.ModifierParser
 import Parser.ParserType
 import SymbolTable.SymbolTable
 
@@ -451,10 +449,34 @@ expr' =
    <|> try whereStmt
 --}
 
+accessModifierParser :: Parser Modifier
+accessModifierParser
+    =   Public    <$ rword "public"
+    <|> Protected <$ rword "protected"
+    <|> Private   <$ rword "private"
+
+abstractModifierParser :: Parser Modifier
+abstractModifierParser = Abstract <$ rword "abstract"
+
+finalModifierParser :: Parser Modifier
+finalModifierParser = Final <$ rword "final"
+
+annotationParser :: Parser Annotation
+annotationParser = do
+    symbol "@"
+    name <- identifier
+    return $ Annotation $ Name name
+
 expressionParser :: Parser Expr
-expressionParser = do
-    statements <- many statementParser
-    return $ Block statements
+expressionParser
+    = Block <$> many statementParser
+
+fieldParser :: Parser Field
+fieldParser = do
+    name <- identifier
+    symbol ":"
+    varType <- identifier
+    return $ Field (Name name) (TypeRef $ RefLocal $ Name varType) Nothing
 
 identifierParser :: Parser Stmt
 identifierParser = do
@@ -462,15 +484,25 @@ identifierParser = do
     return $ Identifier $ Name name
 
 methodParser :: Parser Method
-methodParser = try $ L.nonIndented scn p
+methodParser = try $ L.indentBlock scn p
   where
     p = do
+      annotations <- many annotationParser
+      modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+
       name <- identifier
-      parameters <- parens $ sepBy identifier $ symbol ","
-      let annotations = []
-      let parameters = []
-      expressions <- expressionParser
-      return $ Method (Name name) annotations parameters expressions
+      fields <- parens $ sepBy fieldParser $ symbol ","
+      symbol ":"
+      returnType <- identifier
+      --expressions <- expressionParser
+      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields)) expressionParser)
+
+ifStmtParser  = try $ L.indentBlock scn p
+  where
+    p = do
+        rword "if"
+        cond  <- parens argumentParser
+        return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
 
 modelParser :: Parser Class
 modelParser = try $ L.nonIndented scn p
@@ -480,6 +512,11 @@ modelParser = try $ L.nonIndented scn p
         name <- identifier
         return $ Class (Name name) [] []
 
+modelTypeParser :: Parser ModelType
+modelTypeParser
+    =   ClassModel    <$ rword "class"
+    <|> ObjectModel   <$ rword "object"
+    <|> TraitModel    <$ rword "trait"
 
 returnStatementParser :: Parser Stmt
 returnStatementParser = do
@@ -491,7 +528,6 @@ returnStatementParser = do
 statementParser :: Parser Stmt
 statementParser = returnStatementParser
     <|> identifierParser
-
 
 parser :: Parser Def
 parser = do

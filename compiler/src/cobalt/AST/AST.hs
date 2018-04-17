@@ -39,17 +39,28 @@ data DefExpr
 data Method = Method
     { methodName :: Name
     , methodAnns :: [Annotation]
-    , methodParams :: [Param]
+    , methodParams :: [Field]
     , methodBody :: Expr
     }
     deriving (Show, Eq)
 
-
-data Param = Param Name Type
-    deriving (Show, Eq)
-
 data Constant = Constant
     deriving (Show, Eq)
+
+data ModelType
+    = ClassModel
+    | ObjectModel
+    | TraitModel
+    | UnknownModel
+    deriving (Eq, Show)
+
+data Modifier
+    = Public
+    | Protected
+    | Private
+    | Abstract
+    | Final
+    deriving (Eq, Show)
 
 data Class = Class
     { className :: Name
@@ -60,18 +71,30 @@ data Class = Class
 
 data Field = Field
     { fieldName :: Name
-    , fieldTy :: Type
+    , fieldType :: Type
     , fieldInit :: Maybe Expr
     }
     deriving (Show, Eq)
 
 data Type
-    = TyRef Ref
-    | TyApp Ref [Type] -- type application, aka Map<A,B> -> `TyApp (RefLocal "Map") [TyRef (RefLocal "A"), TyRef (RefLocal "B")]`
-    | TyRel TyRel Type Type -- this allows things like <T extends Something> which would be `TyRel Extends (TyRef (RefLocal "T")) (TyRef (RefLocal "Something"))`
+    = TypeRef Ref
+    | TypeApp Ref [Type] -- type application, aka Map<A,B> -> `TyApp (RefLocal "Map") [TyRef (RefLocal "A"), TyRef (RefLocal "B")]`
+    | TypeRel TypeRel Type Type -- this allows things like <T extends Something> which would be `TyRel Extends (TyRef (RefLocal "T")) (TyRef (RefLocal "Something"))`
     deriving (Show, Eq)
 
-data TyRel
+data Ref
+    = RefSpecial SpecialRef
+    | RefLocal Name
+    | RefQual QualName
+    | RefOp Operator
+    deriving (Show, Eq)
+
+data SpecialRef
+    = Super
+    | This
+    deriving (Show, Eq)
+
+data TypeRel
     = Inherits
     | Extends
     | Equals
@@ -86,7 +109,7 @@ data Name = Name String
 data Import = Import [String]
     deriving (Show, Eq)
 
-data Annotation = Annotation
+data Annotation = Annotation Name
     deriving (Show, Eq)
 
 
@@ -98,18 +121,6 @@ data Expr
     | For ...
     | DefE Name DefExpr
     | ... --}
-
-data Ref
-    = RefSpecial SpecialRef
-    | RefLocal Name
-    | RefQual QualName
-    | RefOp Operator
-    deriving (Show, Eq)
-
-data SpecialRef
-    = Super
-    | This
-    deriving (Show, Eq)
 
 data QualName = QualName NameSpace Name
     deriving (Show, Eq)

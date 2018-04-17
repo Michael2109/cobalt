@@ -5,6 +5,7 @@ Module      : CodeGen
 Description : Contains functions for working with intermediate representation tree.
 -}
 module AST.CodeGenNode where
+{-
 
 import Data.Char
 import Data.List
@@ -17,7 +18,7 @@ import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 import Data.Scientific
 
-import AST.Data.Modifier
+import AST.AST
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -188,3 +189,4 @@ instance CodeGen CodeGenNode where
     genCode (TypeParameterCodeGen  typeName)  = return ()
     genCode (WhereCodeGen  exprs)  = return ()
     genCode (WhileCodeGen  condition statement)  = return ()
+-}

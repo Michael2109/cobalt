@@ -7,6 +7,8 @@ module SymbolTable.SymbolTable where
 import Data.List
 import Data.Maybe
 
+import AST.AST
+
 data SymbolTable = SymbolTable
     { modelSymbolTables :: [ModelSymbolTable] -- All class symbol tables for all classes to be compiled
     } deriving (Eq, Show)
@@ -18,14 +20,6 @@ data ModelSymbolTable = ModelSymbolTable
     , publicVariables :: [(String, String)] -- (variable name, variable type name) list of variable
     , methods         :: [(String, MethodSymbolTable)] -- (method name, method symbol) list of methods
     } deriving (Eq, Show)
-
--- Class, Trait, Object
-data ModelType
-    = ClassType
-    | TraitType
-    | ObjectType
-    | NoType
-        deriving (Eq, Show)
 
 data ModelImport = ModelImport [String]
     deriving (Eq, Show)
@@ -127,4 +121,4 @@ combineModelSymbolTableList :: [ModelSymbolTable] -> ModelSymbolTable
 combineModelSymbolTableList list = do
     if length list > 0
         then foldl1 (\x y -> combineModelSymbolTable x y) list
-        else ModelSymbolTable "" NoType [] [] []
+        else ModelSymbolTable "" UnknownModel [] [] []

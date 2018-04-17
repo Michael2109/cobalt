@@ -5,13 +5,14 @@ These are used to store the data and be converted into IRNodes
 -}
 module AST.Block where
 
+{--
 import Data.Char
 import Data.List
 import Data.Scientific
 import Text.Show.Functions
 
+import AST.AST
 import AST.IRNode
-import AST.Data.Modifier
 import SymbolTable.SymbolTable
 
 class ErrorCheck a where
@@ -194,3 +195,4 @@ maybeExprToMaybeIRNode mExpr st cs =
 
 exprArrToIRArray :: [Expr] -> SymbolTable -> CurrentState -> [IRNode]
 exprArrToIRArray exprs st cs = (map (\a -> genIR a st cs) exprs)
+-}

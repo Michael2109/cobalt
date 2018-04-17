@@ -19,8 +19,8 @@ import Parser.IfElseStatementParserTest
 import Parser.ImportParserTest
 import Parser.MethodCallParserTest
 import Parser.MethodParserTest
-import Parser.Data.ModelTypeParserTest
-import Parser.Data.ModifierParserTest
+import Parser.ModelTypeParserTest
+import Parser.ModifierParserTest
 import Parser.ModelParserTest
 import Parser.ModifierBlockParserTest
 import Parser.NewClassInstanceParserTest
@@ -40,249 +40,250 @@ parserTestList = TestList
     -- BaseParser
     [
       testModelParserNew
-    {--
-      testSymbolSingle
-    , testSymbolMultiple
-    , testSymbolFail
-    , testReservedWord
-    , testIdentifier
-    , testIdentifierFail
-    , testFloat
-    , testDouble
-    , testInteger
-    , testLong
+
+      ,testSymbolSingle
+      , testSymbolMultiple
+      , testSymbolFail
+      , testReservedWord
+      , testIdentifier
+      , testIdentifierFail
+      , testFloat
+      , testDouble
+      , testInteger
+      , testLong
 
     -- AExprParser
-    , testAExprParserVar
-    , testAExprParserInt
-    , testAExprParserNeg
+    --, testAExprParserVar
+    --, testAExprParserInt
+    --, testAExprParserNeg
 
     -- BExprParser
-    , testBExprParserTrue
-    , testBExprParserFalse
-    , testBExprParserFail
+    --, testBExprParserTrue
+    --, testBExprParserFalse
+    --, testBExprParserFail
 
     -- RExprParser
-    , testRExprParserGreaterVar
-    , testRExprParserLessVar
-    , testRExprParserGreaterEqualVar
-    , testRExprParserLessEqualVar
-    , testRExprParserGreaterInt
-    , testRExprParserLessInt
-    , testRExprParserGreaterEqualInt
-    , testRExprParserLessEqualInt
+    --, testRExprParserGreaterVar
+    --, testRExprParserLessVar
+    --, testRExprParserGreaterEqualVar
+    --, testRExprParserLessEqualVar
+    --, testRExprParserGreaterInt
+    --, testRExprParserLessInt
+    --, testRExprParserGreaterEqualInt
+    --, testRExprParserLessEqualInt
 
     -- ExprParser
-    , testAnnotationParserUpper
-    , testAnnotationParserLower
+    --, testAnnotationParserUpper
+    --, testAnnotationParserLower
 
-    , testArgumentParserIdentifier
-    , testArgumentParserBoolTrue
-    , testArgumentParserBoolFalse
+    --, testArgumentParserIdentifier
+    --, testArgumentParserBoolTrue
+    --, testArgumentParserBoolFalse
 
-    , testArgumentTypeParser
-    , testArgumentTypeParserReservedWord
+    --, testArgumentTypeParser
+    --, testArgumentTypeParserReservedWord
 
-    , testArithmeticParserIdentifier
-    , testArithmeticParserClassVariable
-    , testArithmeticParserNewInstance
-    , testArithmeticParserMethodCall
-    , testArithmeticParserAdd
-    , testArithmeticParserSubtract
-    , testArithmeticParserMultiply
-    , testArithmeticParserDivide
+    --, testArithmeticParserIdentifier
+    --, testArithmeticParserClassVariable
+    --, testArithmeticParserNewInstance
+    --, testArithmeticParserMethodCall
+    --, testArithmeticParserAdd
+    --, testArithmeticParserSubtract
+    --, testArithmeticParserMultiply
+    --, testArithmeticParserDivide
 
-    , testAssignParserValWithType
-    , testAssignParserValWithoutType
-    , testAssignParserWithoutVal
-    , testAssignParserVarWithType
-    , testAssignParserVarWithoutType
-    , testAssignParserValWithParameterizedType
-    , testAssignParserVarWithParameterizedType
+    --, testAssignParserValWithType
+    --, testAssignParserValWithoutType
+    --, testAssignParserWithoutVal
+    --, testAssignParserVarWithType
+    --, testAssignParserVarWithoutType
+    --, testAssignParserValWithParameterizedType
+    --, testAssignParserVarWithParameterizedType
 
-    , testAssignParserTwoVars
-    , testAssignParserThreeVars
-    , testAssignParserFourVars
+    --, testAssignParserTwoVars
+    --, testAssignParserThreeVars
+    --, testAssignParserFourVars
 
-    , testBooleanParserTrue
-    , testBooleanParserFalse
-    , testBooleanParserIdentifier
-    , testBooleanParserLessThanVar
-    , testBooleanParserLessThanInt
-    , testBooleanParserGreaterThanVar
-    , testBooleanParserGreaterThanInt
-    , testBooleanParserLessThanEqualVar
-    , testBooleanParserLessThanEqualInt
-    , testBooleanParserGreaterThanEqualVar
-    , testBooleanParserGreaterThanEqualInt
+    --, testBooleanParserTrue
+    --, testBooleanParserFalse
+    --, testBooleanParserIdentifier
+    --, testBooleanParserLessThanVar
+    --, testBooleanParserLessThanInt
+    --, testBooleanParserGreaterThanVar
+    --, testBooleanParserGreaterThanInt
+    --, testBooleanParserLessThanEqualVar
+    --, testBooleanParserLessThanEqualInt
+    --, testBooleanParserGreaterThanEqualVar
+    --, testBooleanParserGreaterThanEqualInt
 
-    , testModelParserPublic
-    , testModelParserProtected
-    , testModelParserPrivate
-    , testModelParserPublicAbstract
-    , testModelParserPrivate
-    , testModelParserPrivateAbstract
-    , testModelParserAbstract
-    , testModelParserPublicFinal
-    , testModelParserProtectedFinal
-    , testModelParserPrivateFinal
-    , testModelParserFinal
-    , testModelParserReordered1
-    , testModelParserReordered2
-    , testModelParserReordered3
+    --, testModelParserPublic
+    --, testModelParserProtected
+    --, testModelParserPrivate
+    --, testModelParserPublicAbstract
+    --, testModelParserPrivate
+    --, testModelParserPrivateAbstract
+    --, testModelParserAbstract
+    --, testModelParserPublicFinal
+    --, testModelParserProtectedFinal
+    --, testModelParserPrivateFinal
+    --, testModelParserFinal
+    --, testModelParserReordered1
+    --, testModelParserReordered2
+    --, testModelParserReordered3
 
-    , testClassVariableParser
+    --, testClassVariableParser
 
-    , testClassVariableParser
-    , testClassVariableParserUnderscores
-    , testClassVariableParserStartCapitals
-    , testClassVariableParserMissingVar
-    , testClassVariableParserMissingClassName
+    --, testClassVariableParser
+    --, testClassVariableParserUnderscores
+    --, testClassVariableParserStartCapitals
+    --, testClassVariableParserMissingVar
+    --, testClassVariableParserMissingClassName
 
-    , testForLoopParser
+    --, testForLoopParser
 
-    , testIdentifierParserOneCharacter
-    , testIdentifierParserDigitFail
-    , testIdentifierParserContainsUnderscore
-    , testIdentifierParserContainsDigit
-    , testIdentifierParserStartsDigitFail
-    , testIdentifierParserCapital
+    --, testIdentifierParserOneCharacter
+    --, testIdentifierParserDigitFail
+    --, testIdentifierParserContainsUnderscore
+    --, testIdentifierParserContainsDigit
+    --, testIdentifierParserStartsDigitFail
+    --, testIdentifierParserCapital
 
-    , testIfStmtParserBooleanTrue
-    , testIfStmtParserBooleanFalse
-    , testIfStmtParserObjectVar
-    , testIfStmtParserAnd
-    , testIfStmtParserOr
-    , testIfStmtParserAndOr
-    , testIfStmtParserElif
-    , testIfStmtParserElse
-    , testIfStmtParserBlockIf
-    , testIfStmtParserBlockElif
-    , testIfStmtParserBlockElifElse
-    , testIfStmtParserBlockElse
+    --, testIfStmtParserBooleanTrue
+    --, testIfStmtParserBooleanFalse
+    --, testIfStmtParserObjectVar
+    --, testIfStmtParserAnd
+    --, testIfStmtParserOr
+    --, testIfStmtParserAndOr
+    --, testIfStmtParserElif
+    --, testIfStmtParserElse
+    --, testIfStmtParserBlockIf
+    --, testIfStmtParserBlockElif
+    --, testIfStmtParserBlockElifElse
+    --, testIfStmtParserBlockElse
 
-    , testImportParserSingle
-    , testImportParserEmptyFail
-    , testImportParserTwo
-    , testImportParserMultiple
-    , testImportParserStartsDigitFail
-    , testImportParserStartsDigitMultipleFail
-    , testImportParserCapital
-    , testImportParserUnderscore
-    , testImportParserMultipleUnderscore
-    , testImportParserContainsDigit
+    --, testImportParserSingle
+    --, testImportParserEmptyFail
+    --, testImportParserTwo
+    --, testImportParserMultiple
+    --, testImportParserStartsDigitFail
+    --, testImportParserStartsDigitMultipleFail
+    --, testImportParserCapital
+    --, testImportParserUnderscore
+    --, testImportParserMultipleUnderscore
+    --, testImportParserContainsDigit
 
-    , testMethodCallParser
+    --, testMethodCallParser
+
     , testMethodParser
-    , testMethodParserEmptyParams
-    , testMethodParserMissingParens
-    , testMethodParserMissingName
-    , testMethodParserMissingReturnType
-    , testMethodParserModifierPublic
-    , testMethodParserModifierProtected
-    , testMethodParserModifierPrivate
-    , testMethodParserModifierPublicAbstract
-    , testMethodParserModifierProtectedAbstract
-    , testMethodParserModifierPrivateAbstract
-    , testMethodParserModifierAbstract
-    , testMethodParserModifierPublicFinal
-    , testMethodParserModifierProtectedFinal
-    , testMethodParserModifierPrivateFinal
-    , testMethodParserModifierFinal
-    , testMethodParserModifierReordered1
-    , testMethodParserModifierReordered2
-    , testMethodParserModifierReordered3
+    --, testMethodParserEmptyParams
+    --, testMethodParserMissingParens
+    --, testMethodParserMissingName
+    --, testMethodParserMissingReturnType
+    --, testMethodParserModifierPublic
+    --, testMethodParserModifierProtected
+    --, testMethodParserModifierPrivate
+    --, testMethodParserModifierPublicAbstract
+    --, testMethodParserModifierProtectedAbstract
+    --, testMethodParserModifierPrivateAbstract
+    --, testMethodParserModifierAbstract
+    --, testMethodParserModifierPublicFinal
+    --, testMethodParserModifierProtectedFinal
+    --, testMethodParserModifierPrivateFinal
+    --, testMethodParserModifierFinal
+    --, testMethodParserModifierReordered1
+    --, testMethodParserModifierReordered2
+    --, testMethodParserModifierReordered3
 
-    , testAccessModifierParserPublic
-    , testAccessModifierParserProtected
-    , testAccessModifierParserPrivate
-    , testAbstractModifierParser
-    , testFinalModifierParser
+    --, testAccessModifierParserPublic
+    --, testAccessModifierParserProtected
+    --, testAccessModifierParserPrivate
+    --, testAbstractModifierParser
+    --, testFinalModifierParser
 
-    , testModelParserClass
-    , testModelParserTrait
-    , testModelParserObject
-    , testModelParserParamsEmpty
-    , testModelParserParamsSingle
-    , testModelParserParamsMultiple
-    , testModelParserTypeParameter
-    , testModelParserTypeParameterExtends
-    , testModelParserTypeParameterExtendsImplements
-    , testModelParserTypeParameterImplements
-    , testModelParserTypeParameterImplementsMultiple
-    , testModelParserExtends
-    , testModelParserParentArgsEmpty
-    , testModelParserParentArgsSingle
-    , testModelParserParentArgsMultiple
-    , testModelParserImplements
-    , testModelParserImplementsMultiple
-    , testModelParserExtendsImplements
-    , testModelParserExtendsImplementsMultiple
-    , testModelParserImports
-    , testModelParserImportsFail
-    , testModelParserModifierBlock
-    , testModelParserConstructorBody
-    , testModelParserMethods
+    --, testModelParserClass
+    --, testModelParserTrait
+    --, testModelParserObject
+    --, testModelParserParamsEmpty
+    --, testModelParserParamsSingle
+    --, testModelParserParamsMultiple
+    --, testModelParserTypeParameter
+    --, testModelParserTypeParameterExtends
+    --, testModelParserTypeParameterExtendsImplements
+    --, testModelParserTypeParameterImplements
+    --, testModelParserTypeParameterImplementsMultiple
+    --, testModelParserExtends
+    --, testModelParserParentArgsEmpty
+    --, testModelParserParentArgsSingle
+    --, testModelParserParentArgsMultiple
+    --, testModelParserImplements
+    --, testModelParserImplementsMultiple
+    --, testModelParserExtendsImplements
+    --, testModelParserExtendsImplementsMultiple
+    --, testModelParserImports
+    --, testModelParserImportsFail
+    --, testModelParserModifierBlock
+    --, testModelParserConstructorBody
+    --, testModelParserMethods
 
-    , testModelTypeParserClass
-    , testModelTypeParserObject
-    , testModelTypeParserTrait
+    --, testModelTypeParserClass
+    --, testModelTypeParserObject
+    --, testModelTypeParserTrait
 
-    , testModifierBlockParserPrivate
-    , testModifierBlockParserProtected
-    , testModifierBlockParserPublic
-    , testModifierBlockParserPrivateEmpty
-    , testModifierBlockParserProtectedEmpty
-    , testModifierBlockParserPublicEmpty
+    --, testModifierBlockParserPrivate
+    --, testModifierBlockParserProtected
+    --, testModifierBlockParserPublic
+    --, testModifierBlockParserPrivateEmpty
+    --, testModifierBlockParserProtectedEmpty
+    --, testModifierBlockParserPublicEmpty
 
-    , testNewClassInstanceParserNoArgs
-    , testNewClassInstanceParserNoArgsUnderscore
-    , testNewClassInstanceParserNoArgsLowerCase
-    , testNewClassInstanceParserNewUpperCase
-    , testNewClassInstanceParserNoArgsNoParens
-    , testNewClassInstanceParserSingleArg
-    , testNewClassInstanceParserMultiArgs
-    , testNewClassInstanceParserMissingNew
-    , testNewClassInstanceParserMissingLeftParen
-    , testNewClassInstanceParserMissingRightParen
+    --, testNewClassInstanceParserNoArgs
+    --, testNewClassInstanceParserNoArgsUnderscore
+    --, testNewClassInstanceParserNoArgsLowerCase
+    --, testNewClassInstanceParserNewUpperCase
+    --, testNewClassInstanceParserNoArgsNoParens
+    --, testNewClassInstanceParserSingleArg
+    --, testNewClassInstanceParserMultiArgs
+    --, testNewClassInstanceParserMissingNew
+    --, testNewClassInstanceParserMissingLeftParen
+    --, testNewClassInstanceParserMissingRightParen
 
-    , testObjectMethodCallParserThis
-    , testObjectMethodCallParserObject
-    , testObjectMethodCallParserSuper
+    --, testObjectMethodCallParserThis
+    --, testObjectMethodCallParserObject
+    --, testObjectMethodCallParserSuper
 
-    , testPackageParser
+    --, testPackageParser
 
-    , testParameterParser
-    , testParameterParserMissingVar
-    , testParameterParserMissingType
-    , testParameterParserMissingColon
+    --, testParameterParser
+    --, testParameterParserMissingVar
+    --, testParameterParserMissingType
+    --, testParameterParserMissingColon
 
-    , testParameterizedTypeParser
-    , testParameterizedTypeParserLeftMissing
-    , testParameterizedTypeParserRightMissing
-    , testParameterizedTypeParserClassMissing
+    --, testParameterizedTypeParser
+    --, testParameterizedTypeParserLeftMissing
+    --, testParameterizedTypeParserRightMissing
+    --, testParameterizedTypeParserClassMissing
 
-    , testParenthesesParserVar
-    , testParenthesesParserNested
-    , testParenthesesParserNoOpenFail
-    , testParenthesesParserNoCloseFail
+    --, testParenthesesParserVar
+    --, testParenthesesParserNested
+    --, testParenthesesParserNoOpenFail
+    --, testParenthesesParserNoCloseFail
 
-    , testReassignParserObject
-    , testReassignParserArithmetic
-    , testReassignParserArithmeticTwoVars
-    , testReassignParserClassVar
+    --, testReassignParserObject
+    --, testReassignParserArithmetic
+    --, testReassignParserArithmeticTwoVars
+    --, testReassignParserClassVar
 
-    , testStringLiteralSimple
-    , testStringLiteralSimpleWhitespace
-    , testStringLiteralEscapeTab
-    , testStringLiteralEmpty
-    , testStringLiteralNewLine
-    , testStringLiteralMultipleNewLine
-    , testStringLiteralUnescapedSingleQuote
-    , testStringLiteralEscapedSingleQuote
-    , testStringLiteralEscapedDoubleQuote
-    , testStringLiteralDoubleQuoteMultiple
-    , testStringLiteralUnfinishedFail
+    --, testStringLiteralSimple
+    --, testStringLiteralSimpleWhitespace
+    --, testStringLiteralEscapeTab
+    --, testStringLiteralEmpty
+    --, testStringLiteralNewLine
+    --, testStringLiteralMultipleNewLine
+    --, testStringLiteralUnescapedSingleQuote
+    --, testStringLiteralEscapedSingleQuote
+    --, testStringLiteralEscapedDoubleQuote
+    --, testStringLiteralDoubleQuoteMultiple
+    --, testStringLiteralUnfinishedFail
     --testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail,
     --testStringLiteralUnfinishedDoubleLineFail,
 
@@ -303,21 +304,21 @@ parserTestList = TestList
     , testStringLiteralMultilineExcludingLeft,
     --}
 
-    , testThisVarParserStartsDigitFail
-    , testThisVarParserContainsCapital
-    , testThisVarParserContainsDigit
-    , testThisVarParserContainsUnderscore
-    , testThisVarParserNotThisFail
+    --, testThisVarParserStartsDigitFail
+    --, testThisVarParserContainsCapital
+    --, testThisVarParserContainsDigit
+    --, testThisVarParserContainsUnderscore
+    --, testThisVarParserNotThisFail
 
-    , testTypeParameterParser
-    , testTypeParameterParserMissingLeft
-    , testTypeParameterParserMissingRight
-    , testTypeParameterParserMissingBoth
+    --, testTypeParameterParser
+    --, testTypeParameterParserMissingLeft
+    --, testTypeParameterParserMissingRight
+    --, testTypeParameterParserMissingBoth
 
-    , testValueTypeParserOneCharacter
-    , testValueTypeParserDigitFail
-    , testValueTypeParserContainsUnderscore
-    , testValueTypeParserContainsDigit
-    , testValueTypeParserStartsDigitFail
-    , testValueTypeParserCapital --}
+    --, testValueTypeParserOneCharacter
+    --, testValueTypeParserDigitFail
+    --, testValueTypeParserContainsUnderscore
+    --, testValueTypeParserContainsDigit
+    --, testValueTypeParserStartsDigitFail
+    --, testValueTypeParserCapital
     ]

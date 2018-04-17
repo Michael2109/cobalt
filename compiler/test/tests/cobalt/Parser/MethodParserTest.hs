@@ -4,21 +4,18 @@ import Test.HUnit
 import Text.Megaparsec
 
 import AST.Block
-import AST.Data.Modifier
+import AST.AST
 import Parser.ExprParser
-{-
 
 testMethodParser :: Test
 testMethodParser = do
-    let code = unlines [ "exampleMethod (a: Int, b: Int): Int"
-                       , "  println(\"Hello world\")"
-                       ]
+    let code = "exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (Method (Identifier "exampleMethod") Nothing [] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [Print (StringLiteral "Hello world")])
-        (case (parse (methodParser "ModuleName" False) "" code) of
-             Left  _ -> Error
+        ( Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodBody = Block []})
+        (case (parse methodParser "" code) of
+             Left  e -> error $ show e
              Right x -> x)
-
+{-
 testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do
     let code = unlines [ "exampleMethod (): Int"
