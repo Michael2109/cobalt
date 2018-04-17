@@ -175,7 +175,7 @@ parserTestList = TestList
     --, testMethodCallParser
 
     , testMethodParser
-    --, testMethodParserEmptyParams
+    , testMethodParserEmptyParams
     --, testMethodParserMissingParens
     --, testMethodParserMissingName
     --, testMethodParserMissingReturnType

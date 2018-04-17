@@ -11,10 +11,20 @@ testMethodParser :: Test
 testMethodParser = do
     let code = "exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        ( Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodBody = Block []})
+        ( Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
         (case (parse methodParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
+
+testMethodParserEmptyParams :: Test
+testMethodParserEmptyParams = do
+    let code = "exampleMethod (): Int"
+    TestCase $ assertEqual code
+        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
+        (case (parse methodParser "" code) of
+             Left  e -> error $ show e
+             Right x -> x)
+
 {-
 testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do

@@ -449,17 +449,16 @@ expr' =
    <|> try whereStmt
 --}
 
+
+
+abstractModifierParser :: Parser Modifier
+abstractModifierParser = Abstract <$ rword "abstract"
+
 accessModifierParser :: Parser Modifier
 accessModifierParser
     =   Public    <$ rword "public"
     <|> Protected <$ rword "protected"
     <|> Private   <$ rword "private"
-
-abstractModifierParser :: Parser Modifier
-abstractModifierParser = Abstract <$ rword "abstract"
-
-finalModifierParser :: Parser Modifier
-finalModifierParser = Final <$ rword "final"
 
 annotationParser :: Parser Annotation
 annotationParser = do
@@ -478,6 +477,9 @@ fieldParser = do
     varType <- identifier
     return $ Field (Name name) (TypeRef $ RefLocal $ Name varType) Nothing
 
+finalModifierParser :: Parser Modifier
+finalModifierParser = Final <$ rword "final"
+
 identifierParser :: Parser Stmt
 identifierParser = do
     name <- identifier
@@ -489,20 +491,11 @@ methodParser = try $ L.indentBlock scn p
     p = do
       annotations <- many annotationParser
       modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
-
       name <- identifier
       fields <- parens $ sepBy fieldParser $ symbol ","
       symbol ":"
-      returnType <- identifier
-      --expressions <- expressionParser
-      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields)) expressionParser)
-
-ifStmtParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "if"
-        cond  <- parens argumentParser
-        return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
+      returnType <- typeRefParser
+      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields returnType) . Block) statementParser)
 
 modelParser :: Parser Class
 modelParser = try $ L.nonIndented scn p
@@ -528,6 +521,12 @@ returnStatementParser = do
 statementParser :: Parser Stmt
 statementParser = returnStatementParser
     <|> identifierParser
+
+typeRefParser :: Parser Type
+typeRefParser = do
+    name <- identifier
+    return (TypeRef $ RefLocal (Name name))
+
 
 parser :: Parser Def
 parser = do

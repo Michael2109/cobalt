@@ -40,6 +40,7 @@ data Method = Method
     { methodName :: Name
     , methodAnns :: [Annotation]
     , methodParams :: [Field]
+    , methodReturnType :: Type
     , methodBody :: Expr
     }
     deriving (Show, Eq)
