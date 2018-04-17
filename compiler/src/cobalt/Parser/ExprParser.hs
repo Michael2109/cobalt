@@ -17,9 +17,6 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import AST.AST
---import AST.Block
---import AST.Data.ModelType
---import AST.Data.Modifier
 import Parser.BaseParser
 import Parser.ParserType
 import SymbolTable.SymbolTable
