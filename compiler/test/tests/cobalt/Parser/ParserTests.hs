@@ -174,12 +174,13 @@ parserTestList = TestList
 
     --, testMethodCallParser
 
-    , testMethodParser
     , testMethodParserEmptyParams
+    , testMethodParserMultipleParams
+    --, testMethodParserMissingNameError
     --, testMethodParserMissingParens
     --, testMethodParserMissingName
     --, testMethodParserMissingReturnType
-    --, testMethodParserModifierPublic
+    , testMethodParserModifierPublic
     --, testMethodParserModifierProtected
     --, testMethodParserModifierPrivate
     --, testMethodParserModifierPublicAbstract

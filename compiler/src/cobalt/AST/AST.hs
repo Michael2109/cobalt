@@ -40,6 +40,7 @@ data Method = Method
     { methodName :: Name
     , methodAnns :: [Annotation]
     , methodParams :: [Field]
+    , methodModifiers :: [Modifier]
     , methodReturnType :: Type
     , methodBody :: Expr
     }
@@ -59,6 +60,7 @@ data Modifier
     = Public
     | Protected
     | Private
+    | PackageLocal
     | Abstract
     | Final
     deriving (Eq, Show)

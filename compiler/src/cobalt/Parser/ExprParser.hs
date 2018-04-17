@@ -306,26 +306,11 @@ parameterizedTypeParser = do
         typeParameter <- typeParameterParser
         return $ ParameterizedType className typeParameter
 
-argumentTypeParser :: Parser Expr
-argumentTypeParser = do
-    value <- identifier
-    return $ ArgumentType value
 
 returnType :: Parser Expr
 returnType = do
     value <- identifier
     return $ ReturnType value
-
-argumentParser :: Parser Expr
-argumentParser = do
-    value <- thisParser <|> classVariableParser <|> arithmeticParser <|> booleanParser <|> newClassInstanceParser <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser
-    return value
-
-printParser :: Parser Expr
-printParser  = do
-    try $ rword "println"
-    e <- parens argumentParser
-    return $ Print e
 
 ifStatementBlockParser :: Parser Expr
 ifStatementBlockParser = do
@@ -405,15 +390,7 @@ whereStmt = do
     symbol "}"
     return $ (Where exprs)
 
-thisParser :: Parser Expr
-thisParser = do
-    try (rword "this")
-    return This
 
-superParser :: Parser Expr
-superParser = do
-    rword "super"
-    return Super
 
 expr :: Parser Expr
 expr = f <$> sepBy1 (expr') (symbol ";")
@@ -456,9 +433,10 @@ abstractModifierParser = Abstract <$ rword "abstract"
 
 accessModifierParser :: Parser Modifier
 accessModifierParser
-    =   Public    <$ rword "public"
+    =   Public    <$ rword "member"
     <|> Protected <$ rword "protected"
     <|> Private   <$ rword "private"
+    <|> PackageLocal <$ rword "local"
 
 annotationParser :: Parser Annotation
 annotationParser = do
@@ -495,7 +473,7 @@ methodParser = try $ L.indentBlock scn p
       fields <- parens $ sepBy fieldParser $ symbol ","
       symbol ":"
       returnType <- typeRefParser
-      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields returnType) . Block) statementParser)
+      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
 
 modelParser :: Parser Class
 modelParser = try $ L.nonIndented scn p
@@ -521,6 +499,19 @@ returnStatementParser = do
 statementParser :: Parser Stmt
 statementParser = returnStatementParser
     <|> identifierParser
+
+superParser :: Parser SpecialRef
+superParser = Super <$ rword "super"
+
+thisParser :: Parser SpecialRef
+thisParser = This <$ rword "this"
+
+typeParameterParser :: Parser [Type]
+typeParameterParser = do
+    try $ symbol "["
+    types <- sepBy typeRefParser (symbol ",")
+    symbol "]"
+    return types
 
 typeRefParser :: Parser Type
 typeRefParser = do

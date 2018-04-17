@@ -2,29 +2,53 @@ module Parser.MethodParserTest where
 
 import Test.HUnit
 import Text.Megaparsec
+import Text.Megaparsec.Pos
+import Data.List.NonEmpty
 
 import AST.Block
 import AST.AST
 import Parser.ExprParser
 
-testMethodParser :: Test
-testMethodParser = do
-    let code = "exampleMethod (a: Int, b: Int): Int"
-    TestCase $ assertEqual code
-        ( Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
-        (case (parse methodParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
-
 testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do
     let code = "exampleMethod (): Int"
     TestCase $ assertEqual code
-        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
+        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
         (case (parse methodParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
 
+testMethodParserMultipleParams :: Test
+testMethodParserMultipleParams = do
+    let code = "exampleMethod (a: Int, b: Int): Int"
+    TestCase $ assertEqual code
+        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (case (parse methodParser "" code) of
+             Left  e -> error $ show e
+             Right x -> x)
+
+-- Modifiers
+testMethodParserModifierPublic :: Test
+testMethodParserModifierPublic = do
+    let code = "member exampleMethod (a: Int, b: Int): Int"
+    TestCase $ assertEqual code
+        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (case (parse (methodParser) "" code) of
+             Left  e -> error (show e)
+             Right x -> x)
+
+
+-- Test correctly produces error messages
+{--
+testMethodParserMissingNameError :: Test
+testMethodParserMissingNameError = do
+    let code = "(): Int"
+    TestCase $ assertEqual code
+        (FancyError (SourcePos {sourceName = "", sourceLine = mkPos 1, sourceColumn = mkPos 7} :| []) (fromList [ErrorFail "keyword \"public\" cannot be an identifier"]))
+        (case (parse methodParser "" code) of
+             Left  e -> e
+             Right x -> error (show x))
+-}
 {-
 testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do
