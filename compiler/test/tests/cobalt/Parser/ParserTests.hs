@@ -148,6 +148,7 @@ parserTestList = TestList
     --, testIdentifierParserStartsDigitFail
     --, testIdentifierParserCapital
 
+    , testIfStmtParser
     --, testIfStmtParserBooleanTrue
     --, testIfStmtParserBooleanFalse
     --, testIfStmtParserObjectVar

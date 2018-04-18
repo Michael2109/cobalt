@@ -1,9 +1,11 @@
 module AST.AST where
 
+
+import Data.Scientific
+
 -- Yes, definitely split into related groups. This is a rough cut of
 -- what it *could* look like
 data Module = Module ModHeader [Def]
-
 
 -- data Module e = Module ModHeader [Def e]
 
@@ -89,7 +91,7 @@ data Ref
     = RefSpecial SpecialRef
     | RefLocal Name
     | RefQual QualName
-    | RefOp Operator
+    | RefOp AOperator
     deriving (Show, Eq)
 
 data SpecialRef
@@ -128,7 +130,9 @@ data Expr
 data QualName = QualName NameSpace Name
     deriving (Show, Eq)
 
-data Operator
+data IntConstant = IntConstant Integer
+
+data AOperator
     -- either make them fixed:
     = Plus
     | Minus
@@ -157,6 +161,7 @@ data Expr
 data Stmt
     = For Expr
     | While Expr
+    | If Conditional (Maybe Conditional) (Maybe Conditional)
     | Assign Name Expr
     | BareExpr Expr
     | Return Expr
@@ -164,6 +169,49 @@ data Stmt
     | Identifier Name
     deriving (Show, Eq)
     -- | ...
+
+
+-- Unsure of the best way to separate out this or if this is okay.
+data Conditional
+    = IfStatement BExpr Expr
+    | ElifStatement BExpr Expr
+    | ElseStatement Expr
+    deriving (Show, Eq)
+
+
+data BExpr
+    = BoolConst Bool
+    | Not BExpr
+    | BBinary BBinOp BExpr BExpr
+    | RBinary RBinOp AExpr AExpr
+    deriving (Show, Eq)
+
+data BBinOp
+    = And
+    | Or
+    deriving (Show, Eq)
+
+data RBinOp
+    = Greater
+    | Less
+    deriving (Show, Eq)
+
+data AExpr
+    = Var String
+    | IntConst Integer
+    | DoubleConst Scientific
+    | FloatConst Float
+    | LongConst Integer
+    | Neg AExpr
+    | ABinary ABinOp AExpr AExpr
+    deriving (Show, Eq)
+
+data ABinOp
+    = Add
+    | Subtract
+    | Multiply
+    | Divide
+    deriving (Show, Eq)
 
 -- and funBody would then be of type [Stmt]
 

@@ -379,16 +379,6 @@ catchParser  = try $ L.indentBlock scn p
                          Nothing -> []
         return (L.IndentMany Nothing (return . (Catch params)) (expr' ))
 
-whereStmt :: Parser Expr
-whereStmt = do
-    rword "where"
-    symbol "{"
-    exprs <- many expr
-    symbol "}"
-    return $ (Where exprs)
-
-
-
 expr :: Parser Expr
 expr = f <$> sepBy1 (expr') (symbol ";")
   where
@@ -441,6 +431,53 @@ annotationParser = do
     name <- identifier
     return $ Annotation $ Name name
 
+aExpr :: Parser AExpr
+aExpr = makeExprParser aTerm aOperators
+
+bExpr :: Parser BExpr
+bExpr = makeExprParser bTerm bOperators
+
+aOperators :: [[Operator Parser AExpr]]
+aOperators =
+  [ [Prefix (Neg <$ symbol "-") ]
+  , [ InfixL (ABinary Multiply <$ symbol "*")
+    , InfixL (ABinary Divide   <$ symbol "/") ]
+  , [ InfixL (ABinary Add      <$ symbol "+")
+    , InfixL (ABinary Subtract <$ symbol "-") ]
+  ]
+
+bOperators :: [[Operator Parser BExpr]]
+bOperators =
+  [ [Prefix (Not <$ rword "not") ]
+  , [InfixL (BBinary And <$ rword "and")
+    , InfixL (BBinary Or <$ rword "or") ]
+  ]
+
+aTerm :: Parser AExpr
+aTerm = parens aExpr
+  <|> Var      <$> identifier
+  <|> IntConst <$> integerParser
+  <|> IntConst <$> integerParser
+  <|> IntConst <$> integerParser
+  <|> IntConst <$> integerParser
+
+bTerm :: Parser BExpr
+bTerm =  parens bExpr
+  <|> (BoolConst True  <$ rword "True")
+  <|> (BoolConst False <$ rword "False")
+  <|> rExpr
+
+rExpr :: Parser BExpr
+rExpr = do
+  a1 <- aExpr
+  op <- relation
+  a2 <- aExpr
+  return (RBinary op a1 a2)
+
+relation :: Parser RBinOp
+relation = (symbol ">" *> pure Greater)
+  <|> (symbol "<" *> pure Less)
+
 expressionParser :: Parser Expr
 expressionParser
     = Block <$> many statementParser
@@ -459,6 +496,26 @@ identifierParser :: Parser Stmt
 identifierParser = do
     name <- identifier
     return $ Identifier $ Name name
+
+ifStatementParser :: Parser Stmt
+ifStatementParser  = do
+    ifSection   <- L.indentBlock scn ifP
+    elifSection <- optional $ L.indentBlock scn elifP
+    elseSection <- optional $ L.indentBlock scn elseP
+    return $ If ifSection elifSection elseSection
+  where
+    ifP = do
+      rword "if"
+      condition  <- parens bExpr
+      return (L.IndentMany Nothing (return . (IfStatement condition) . Block) statementParser)
+    elifP = do
+      rword "elif"
+      condition  <- parens bExpr
+      return (L.IndentMany Nothing (return . (ElifStatement condition) . Block) statementParser)
+    elseP = do
+      rword "else"
+      return (L.IndentMany Nothing (return . (ElseStatement) . Block) statementParser)
+
 
 methodParser :: Parser Method
 methodParser = try $ L.indentBlock scn p
