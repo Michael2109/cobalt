@@ -102,5 +102,5 @@ testSymbolTableGetModelSymbolTable = do
     TestCase $ assertEqual "Get model symbol table from symbol table"
         "ModelName" $
         case getModelSymbolTable generateSymbolTable1 "ModelName" of
-            Just a -> modelName (a)
+            Just a -> stModelName (a)
             Nothing -> ""

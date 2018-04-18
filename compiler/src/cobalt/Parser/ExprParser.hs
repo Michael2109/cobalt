@@ -22,63 +22,6 @@ import Parser.ParserType
 import SymbolTable.SymbolTable
 
 {--
-aTerm :: Parser Expr
-aTerm = parens aExpr
-    <|> classVariableParser
-    <|> newClassInstanceParser
-    <|> objectMethodCallParser
-    <|> methodCallParser
-    <|> identifierParser
-    <|> IntConst <$> integerParser
-    <|> DoubleConstant <$> doubleParser
-
-aOperators :: [[Operator Parser Expr]]
-aOperators =
-    [ [Prefix (Neg <$ symbol "-") ]
-    , [ InfixL (ABinary Multiply <$ symbol "*")
-      , InfixL (ABinary Divide   <$ symbol "/") ]
-    , [ InfixL (ABinary Add      <$ symbol "+")
-      , InfixL (ABinary Subtract <$ symbol "-") ]
-    ]
-
-aExpr :: Parser Expr
-aExpr = makeExprParser aTerm aOperators
-
-bTerm :: Parser Expr
-bTerm = BoolConst True  <$ rword "True"
-    <|> BoolConst False <$ rword "False"
-    <|> parens bExpr
-    <|> try rExpr
-    <|> classVariableParser
-    <|> newClassInstanceParser
-    <|> objectMethodCallParser
-    <|> methodCallParser
-    <|> identifierParser
-
-bOperators :: [[Operator Parser Expr]]
-bOperators =
-    [ [ Prefix (Not <$ rword "not") ]
-    , [ InfixL (BBinary And <$ rword "and")
-      , InfixL (BBinary Or <$ rword "or") ]
-    ]
-
-bExpr :: Parser Expr
-bExpr = makeExprParser bTerm bOperators
-
-rExpr :: Parser Expr
-rExpr = do
-    try $ do
-        a1 <- aExpr
-        op <- relation
-        a2 <- aExpr
-        return (RBinary op a1 a2)
-
-relation :: Parser Expr
-relation = (symbol ">=" *> pure GreaterEqual)
-    <|> (symbol "<=" *> pure LessEqual)
-    <|> (symbol ">" *> pure Greater)
-    <|> (symbol "<" *> pure Less)
-
 modelParser :: Parser Expr
 modelParser = try $ L.nonIndented scn p
   where
@@ -112,21 +55,6 @@ modelParser = try $ L.nonIndented scn p
                 ObjectModel -> (Object package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
                 TraitModel  -> (Trait package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
 
-packageParser :: Parser Expr
-packageParser = try $ L.nonIndented scn p
-  where
-    p = do
-        try (rword "package")
-        locations <- sepBy1 identifier (symbol ".")
-        return $ (Package locations)
-
-importParser :: Parser Expr
-importParser = try $ L.nonIndented scn p
-  where
-    p = do
-        try (rword "import")
-        locations <- sepBy1 identifier (symbol ".")
-        return $ (Import locations)
 
 typeParameterParser :: Parser Expr
 typeParameterParser = do
@@ -516,6 +444,13 @@ ifStatementParser  = do
       rword "else"
       return (L.IndentMany Nothing (return . (ElseStatement) . Block) statementParser)
 
+importParser :: Parser Import
+importParser = try $ L.nonIndented scn p
+  where
+    p = do
+        try (rword "import")
+        locations <- sepBy1 identifier (symbol ".")
+        return $ (Import locations)
 
 methodParser :: Parser Method
 methodParser = try $ L.indentBlock scn p
@@ -529,19 +464,27 @@ methodParser = try $ L.indentBlock scn p
       returnType <- typeRefParser
       return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
 
-modelParser :: Parser Class
+modelParser :: Parser Model
 modelParser = try $ L.nonIndented scn p
   where
     p = do
         rword "class"
         name <- identifier
-        return $ Class (Name name) [] []
+        return $ Model (Name name) [] []
 
 modelTypeParser :: Parser ModelType
 modelTypeParser
     =   ClassModel    <$ rword "class"
     <|> ObjectModel   <$ rword "object"
     <|> TraitModel    <$ rword "trait"
+
+nameSpaceParser :: Parser NameSpace
+nameSpaceParser = try $ L.nonIndented scn p
+  where
+    p = do
+        try (rword "package")
+        locations <- sepBy1 identifier (symbol ".")
+        return $ (NameSpace locations)
 
 returnStatementParser :: Parser Stmt
 returnStatementParser = do
@@ -572,8 +515,9 @@ typeRefParser = do
     name <- identifier
     return (TypeRef $ RefLocal (Name name))
 
-
-parser :: Parser Def
+parser :: Parser Module
 parser = do
-  model <- modelParser
-  return $ Def (Name "UNKNOWN") (ClassDef model)
+    nameSpace <- nameSpaceParser
+    imports <- many importParser
+    models <- many modelParser
+    return $ Module (ModuleHeader nameSpace imports) models

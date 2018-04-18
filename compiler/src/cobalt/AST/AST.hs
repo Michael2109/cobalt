@@ -1,41 +1,14 @@
 module AST.AST where
 
-
 import Data.Scientific
 
--- Yes, definitely split into related groups. This is a rough cut of
--- what it *could* look like
-data Module = Module ModHeader [Def]
+data Module = Module ModuleHeader [Model]
+    deriving (Show)
 
--- data Module e = Module ModHeader [Def e]
-
-data ModHeader = ModHeader
+data ModuleHeader = ModuleHeader
     { modName :: NameSpace
     , modImports :: [Import]
     }
-    deriving (Show, Eq)
-{--
-data Def = Def Name (DefExpr e)
-
-data DefExpr e
-    = ConstDef e
-    | ClassDef (Class e)
-    | FunDef (Function e)
-
-data Function = Function
-    { funName :: Name
-    , funAnns :: [Annotation]
-    , funParams :: [Param]
-    , funBody :: e
-    }
---}
-data Def = Def Name DefExpr
-    deriving (Show, Eq)
-
-data DefExpr
-    = ConstDef Expr
-    | ClassDef Class
-    | MethodDef Method
     deriving (Show, Eq)
 
 data Method = Method
@@ -67,10 +40,11 @@ data Modifier
     | Final
     deriving (Eq, Show)
 
-data Class = Class
-    { className :: Name
-    , classFields :: [Field]
-    , classMethods :: [Method]
+
+data Model = Model
+    { modelName :: Name
+    , modelFields :: [Field]
+    , modelMethods :: [Method]
     }
     deriving (Show, Eq)
 
@@ -91,7 +65,7 @@ data Ref
     = RefSpecial SpecialRef
     | RefLocal Name
     | RefQual QualName
-    | RefOp AOperator
+    -- | RefOp AOperator
     deriving (Show, Eq)
 
 data SpecialRef
@@ -105,7 +79,7 @@ data TypeRel
     | Equals
     deriving (Show, Eq)
 
-data NameSpace = NameSpace
+data NameSpace = NameSpace [String]
     deriving (Show, Eq)
 
 data Name = Name String
@@ -117,21 +91,12 @@ data Import = Import [String]
 data Annotation = Annotation Name
     deriving (Show, Eq)
 
-
-{--
-data Expr
-    = Call Expr [Expr]
-    | Assign Name Expr Expr
-    | While Expr Expr
-    | For ...
-    | DefE Name DefExpr
-    | ... --}
-
 data QualName = QualName NameSpace Name
     deriving (Show, Eq)
 
 data IntConstant = IntConstant Integer
 
+{-
 data AOperator
     -- either make them fixed:
     = Plus
@@ -141,7 +106,7 @@ data AOperator
     -- | ...
     -- or allow user built operators
     -- = Operator QualName -- (for instance)
-
+-}
 {--builtinNS :: NameSpace
 builtinNS = "<BUILTIN>"
 plus, minus, shift :: Operator
@@ -165,7 +130,7 @@ data Stmt
     | Assign Name Expr
     | BareExpr Expr
     | Return Expr
-    | DefStmt Name DefExpr
+    -- | DefStmt Name DefExpr
     | Identifier Name
     deriving (Show, Eq)
     -- | ...

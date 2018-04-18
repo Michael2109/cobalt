@@ -32,7 +32,7 @@ import Util.GeneralUtil (endsWith)
 import Util.IOUtil
 import SymbolTable.SymbolTable
 
-data ASTData = ASTData FilePath SymbolTable Def
+data ASTData = ASTData FilePath SymbolTable Module
     deriving (Show)
 
 data GeneratedCode = GeneratedCode
@@ -47,7 +47,7 @@ extractASTFilePath (ASTData filePath _ _) = filePath
 extractASTSymbolTable :: ASTData -> SymbolTable
 extractASTSymbolTable (ASTData _ symbolTable _) = symbolTable
 
-extractASTExpr :: ASTData -> Def
+extractASTExpr :: ASTData -> Module
 extractASTExpr (ASTData _ _ expr) = expr
 
 generateModelSymbolTable ast = error "Needs reimplementing"
@@ -96,5 +96,5 @@ generateAST inputFile code = do
     --}
     error "Needs reimplementing"
 
-compileAST :: Def -> SymbolTable -> B.ByteString
+compileAST :: Module -> SymbolTable -> B.ByteString
 compileAST ast symbolTable = error "Needs reimplementing" -- encodeClass (generate [] (pack "Test") (genCode $ genCodeGenIR (genIR ast symbolTable (CurrentState "" ""))))
