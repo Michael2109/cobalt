@@ -96,26 +96,6 @@ data QualName = QualName NameSpace Name
 
 data IntConstant = IntConstant Integer
 
-{-
-data AOperator
-    -- either make them fixed:
-    = Plus
-    | Minus
-    | Shift
-    deriving (Show, Eq)
-    -- | ...
-    -- or allow user built operators
-    -- = Operator QualName -- (for instance)
--}
-{--builtinNS :: NameSpace
-builtinNS = "<BUILTIN>"
-plus, minus, shift :: Operator
-plus = QualName builtinNS "+"
-minus = QualName builtinNS "-"
-shift = QualName builtinNS ">>" --}
-
--- or if you prefer statement based programming
-
 data Expr
     = Call Expr [Expr]
     | Ternary Expr Expr Expr
@@ -127,22 +107,28 @@ data Stmt
     = For Expr
     | While Expr
     | If Conditional (Maybe Conditional) (Maybe Conditional)
+    | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name Expr
+    | Reassign Name Expr
     | BareExpr Expr
     | Return Expr
-    -- | DefStmt Name DefExpr
     | Identifier Name
+    | MethodCall Name Expr
+    | StringLiteral String
     deriving (Show, Eq)
-    -- | ...
 
-
--- Unsure of the best way to separate out this or if this is okay.
 data Conditional
     = IfStatement BExpr Expr
     | ElifStatement BExpr Expr
     | ElseStatement Expr
     deriving (Show, Eq)
 
+-- This needs a better name
+data ExceptionHandler
+    = TryStatement Expr
+    | CatchStatement [Field] Expr
+    | FinallyStatement Expr
+    deriving (Show, Eq)
 
 data BExpr
     = BoolConst Bool
@@ -177,47 +163,3 @@ data ABinOp
     | Multiply
     | Divide
     deriving (Show, Eq)
-
--- and funBody would then be of type [Stmt]
-
-
--- important to note is the `Call` stuff in the `Expr` types. It can
--- be used to implement *both* regular function calls as well as
--- operator uses. For instance `a + b` is `Call (RefOp Plus) [RefLocal
--- "a", RefLocal "b"]`. You still have to perhaps handle some ops and
--- functions specially (builtins) but you can reuse a lot of code gen
--- machinery.
-
--- You can even make `Call` do `new` by having another kind of
--- `SpecialRef` and then `new ClsExpr(params)` becomes `Call
--- (RefSpecial New) [params]`
-
-
--- On stuff like class declarations, imports etc: What I did here was
--- separate them. You *can* make them `Expr`, that allows users to
--- define them inline, in a function for instance, which is cool as it
--- unifies structural elements, like classes and "regular" code, and
--- it enables a lot of cool stuff but is hard to implement (right). I
--- included those here with `DefStmt` and `DefExpr`.
--- You could then write something like
---
-
--- someVal = "dummy"
--- anon = class {
---            private a String;
---            constructor (String a) { this.a = a; }
---            public String getStr() { return someVal + a; }
---        };
--- and then you can use that as a regular class
---
--- anonInstance = new anon("test");
--- anoninstance.getStr(); => "dummytest"
-
--- stuff like `Parentheses` don't need to be in the ast. They are only
--- important during parsing.
-
--- If you cannot immediately parse into this simplified IR then try
--- using multiple passes, gradually simplifying different types of
--- `Expr`s etc.  This is relatively easy when you make `Function`
--- `Module` etc polymorphic over the type of expression, like so
-

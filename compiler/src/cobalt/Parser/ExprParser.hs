@@ -56,96 +56,6 @@ modelParser = try $ L.nonIndented scn p
                 TraitModel  -> (Trait package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
 
 
-typeParameterParser :: Parser Expr
-typeParameterParser = do
-    try $ symbol "["
-    typeName <- identifierParser
-    symbol "]"
-    return $ TypeParameter typeName
-
-parameterParser :: Parser Expr
-parameterParser = do
-    varName  <- identifierParser
-    symbol ":"
-    varType <- identifierParser
-    return $ Parameter varType varName
-
-methodParser :: String -> Bool -> Parser Expr
-methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
-  where
-    p = do
-        annotations <- try (optional annotationParser)
-        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
-
-        name <- identifierParser
-        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case fullParams of
-                         Just ps -> ps
-                         Nothing -> []
-        symbol ":"
-        rType <- identifierParser
-        return (L.IndentMany Nothing (return . (Method name annotations modifiers params rType static)) (expr'))
-
-identifierParser :: Parser Expr
-identifierParser = do
-    name <- identifier
-    return $ Identifier name
-
-thisVarParser :: Parser Expr
-thisVarParser = do
-    try $ do
-        rword "this"
-        symbol "."
-    name <- identifierParser
-    return $ ThisVar name
-
-arithmeticParser :: Parser Expr
-arithmeticParser = do
-    aE <- aExpr
-    return aE
-
-booleanParser :: Parser Expr
-booleanParser = do
-    bE <- try bExpr
-    return bE
-
-stringLiteralParser :: Parser Expr
-stringLiteralParser = do
-    value <- char '"' >> manyTill L.charLiteral (char '"')
-    return $ StringLiteral value
-
-stringLiteralMultilineParser :: Parser Expr
-stringLiteralMultilineParser = do
-    symbol "```"
-    contents <- many $ L.lineFold scn $ \sp' -> some L.charLiteral
-    symbol "```"
-    return $ StringLiteral $ intercalate "\n" contents
-
-assignParser :: Parser Expr
-assignParser = do
-    try (rword "let")
-    mutableOpt <- optional $ rword "mutable"
-    let immutable = case mutableOpt of
-                        Nothing -> True
-                        Just _  -> False
-    varName <- identifierParser
-    varType <- optional $ do
-        symbol ":"
-        vType <- valueTypeParser
-        return vType
-    symbol "="
-    e <- argumentParser
-    return $ Assign immutable varType varName e
-
-reassignParser :: Parser Expr
-reassignParser = do
-    name  <- try $ do
-        id <- identifierParser <|> thisVarParser
-        symbol "<-"
-        return id
-    value <- argumentParser
-    return (Reassign name value)
-
 arrayElementSelect :: Parser Expr
 arrayElementSelect = do
     symbol "!!"
@@ -157,30 +67,7 @@ arrayAppend = do
     arrays <- sepBy1 (expr') (symbol "++")
     return $ ArrayAppend arrays
 
-thisMethodCallParser :: Parser Expr
-thisMethodCallParser =
-    try $ do
-        rword "this"
-        symbol "."
-        methodName <- identifier
-        args <- parens $ sepBy (argumentParser) (symbol ",")
-        return $ ThisMethodCall methodName args
 
-superMethodCallParser :: Parser Expr
-superMethodCallParser =
-    try $ do
-        rword "super"
-        symbol "."
-        methodName <- identifier
-        args <- parens $ sepBy (argumentParser) (symbol ",")
-        return $ SuperMethodCall methodName args
-
-methodCallParser :: Parser Expr
-methodCallParser =
-    try $ do
-        methodName <- identifier
-        args <- parens $ sepBy (argumentParser) (symbol ",")
-        return $ MethodCall methodName args
 
 objectMethodCallParser :: Parser Expr
 objectMethodCallParser =
@@ -194,7 +81,7 @@ objectMethodCallParser =
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser  = do
     try (rword "new")
-    className <- identifierParser
+    className <- nameParser
     arguments <- parens $ sepBy (argumentParser) (symbol ",")
     return $ (NewClassInstance className arguments)
 
@@ -205,67 +92,6 @@ classVariableParser  =
         symbol "."
         varName <- identifier
         return $ ClassVariable className varName
-
-modifierBlockParser :: Bool -> Parser Expr
-modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
-  where
-    p = do
-        modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
-        return (L.IndentMany Nothing (return . (ModifierBlock)) (assignParser))
-
-annotationParser :: Parser Expr
-annotationParser  = do
-    try (symbol "@")
-    name <- identifier
-    return $ Annotation name
-
-valueTypeParser :: Parser Expr
-valueTypeParser = do
-    value <- parameterizedTypeParser <|> identifierParser
-    return $ Type value
-
-parameterizedTypeParser :: Parser Expr
-parameterizedTypeParser = do
-    try $ do
-        className <- identifierParser
-        typeParameter <- typeParameterParser
-        return $ ParameterizedType className typeParameter
-
-
-returnType :: Parser Expr
-returnType = do
-    value <- identifier
-    return $ ReturnType value
-
-ifStatementBlockParser :: Parser Expr
-ifStatementBlockParser = do
-    ifStmt <- ifStmtParser
-    elifStmt <- optional elifStmtParser
-    elseStmt <- optional elseStmtParser
-    return $ IfStatement ifStmt elifStmt elseStmt
-
-ifStmtParser :: Parser Expr
-ifStmtParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "if"
-        cond  <- parens argumentParser
-        return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
-
-elifStmtParser :: Parser Expr
-elifStmtParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "elif"
-        cond  <- parens argumentParser
-        return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
-
-elseStmtParser :: Parser Expr
-elseStmtParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "else"
-        return (L.IndentMany Nothing (return . (Else)) (expr' <|> argumentParser))
 
 whileParser :: Parser Expr
 whileParser  = try $ L.indentBlock scn p
@@ -288,59 +114,7 @@ forLoopParser  = try $ L.indentBlock scn p
         end <- arithmeticParser
         symbol ")"
         return (L.IndentMany Nothing (return . (For varName start end)) (expr' ))
-
-tryParser :: Parser Expr
-tryParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "try"
-        return (L.IndentMany Nothing (return . (Try)) (expr' ))
-
-catchParser :: Parser Expr
-catchParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "catch"
-        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case fullParams of
-                         Just ps -> ps
-                         Nothing -> []
-        return (L.IndentMany Nothing (return . (Catch params)) (expr' ))
-
-expr :: Parser Expr
-expr = f <$> sepBy1 (expr') (symbol ";")
-  where
-    -- if there's only one expr return it without using ‘Seq’
-    f l = if length l == 1 then head l else Seq l
-
-expr' :: Parser Expr
-expr' =
-    modelParser
-    <|> forLoopParser
-    <|> ifStatementBlockParser
-
-    <|> whileParser
-
-    <|> tryParser
-    <|> catchParser
-    <|> printParser
-    <|> thisMethodCallParser
-    <|> superMethodCallParser
-    <|> objectMethodCallParser
-    <|> methodCallParser
-    <|> newClassInstanceParser
-    <|> classVariableParser
-    <|> try arrayElementSelect
-
-    <|> assignParser
-    <|> reassignParser
-
-    <|> thisVarParser
-    <|> thisParser
-
-   <|> try whereStmt
 --}
-
 
 
 abstractModifierParser :: Parser Modifier
@@ -358,6 +132,22 @@ annotationParser = do
     symbol "@"
     name <- identifier
     return $ Annotation $ Name name
+
+assignParser :: Parser Stmt
+assignParser = do
+    try (rword "let")
+    mutableOpt <- optional $ rword "mutable"
+    let immutable = case mutableOpt of
+                        Nothing -> True
+                        Just _  -> False
+    varName <- identifier
+    varType <- optional $ do
+        symbol ":"
+        vType <- typeRefParser
+        return vType
+    symbol "="
+    expression <- expressionParser
+    return $ Assign (Name varName) expression
 
 aExpr :: Parser AExpr
 aExpr = makeExprParser aTerm aOperators
@@ -422,8 +212,8 @@ finalModifierParser = Final <$ rword "final"
 
 identifierParser :: Parser Stmt
 identifierParser = do
-    name <- identifier
-    return $ Identifier $ Name name
+    name <- nameParser
+    return $ Identifier name
 
 ifStatementParser :: Parser Stmt
 ifStatementParser  = do
@@ -452,6 +242,12 @@ importParser = try $ L.nonIndented scn p
         locations <- sepBy1 identifier (symbol ".")
         return $ (Import locations)
 
+inlineExpressionParser :: Parser Expr
+inlineExpressionParser = f <$> sepBy1 (statementParser) (symbol ";")
+  where
+    -- if there's only one expr return it without using ‘Seq’
+    f l = if length l == 1 then Block [head l] else Block l
+
 methodParser :: Parser Method
 methodParser = try $ L.indentBlock scn p
   where
@@ -463,6 +259,13 @@ methodParser = try $ L.indentBlock scn p
       symbol ":"
       returnType <- typeRefParser
       return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
+
+methodCallParser :: Parser Stmt
+methodCallParser =
+    try $ do
+        methodName <- nameParser
+        args <- parens $ sepBy statementParser (symbol ",")
+        return $ MethodCall methodName (Block args)
 
 modelParser :: Parser Model
 modelParser = try $ L.nonIndented scn p
@@ -478,6 +281,11 @@ modelTypeParser
     <|> ObjectModel   <$ rword "object"
     <|> TraitModel    <$ rword "trait"
 
+nameParser :: Parser Name
+nameParser = do
+    id <- identifier
+    return $ Name id
+
 nameSpaceParser :: Parser NameSpace
 nameSpaceParser = try $ L.nonIndented scn p
   where
@@ -485,6 +293,15 @@ nameSpaceParser = try $ L.nonIndented scn p
         try (rword "package")
         locations <- sepBy1 identifier (symbol ".")
         return $ (NameSpace locations)
+
+reassignParser :: Parser Stmt
+reassignParser = do
+    name <- try $ do
+        id <- identifier
+        symbol "<-"
+        return (Name id)
+    value <- expressionParser
+    return (Reassign name value)
 
 returnStatementParser :: Parser Stmt
 returnStatementParser = do
@@ -497,11 +314,41 @@ statementParser :: Parser Stmt
 statementParser = returnStatementParser
     <|> identifierParser
 
+stringLiteralParser :: Parser Stmt
+stringLiteralParser = do
+    value <- char '"' >> manyTill L.charLiteral (char '"')
+    return $ StringLiteral value
+
+stringLiteralMultilineParser :: Parser Stmt
+stringLiteralMultilineParser = do
+    symbol "```"
+    contents <- many $ L.lineFold scn $ \sp' -> some L.charLiteral
+    symbol "```"
+    return $ StringLiteral $ intercalate "\n" contents
+
 superParser :: Parser SpecialRef
 superParser = Super <$ rword "super"
 
 thisParser :: Parser SpecialRef
 thisParser = This <$ rword "this"
+
+tryBlockParser :: Parser Stmt
+tryBlockParser  = do
+    trySection   <- L.indentBlock scn tryP
+    catchSection <- optional $ L.indentBlock scn catchP
+    finallySection <- optional $ L.indentBlock scn finallyP
+    return $ TryBlock trySection catchSection finallySection
+  where
+    tryP = do
+      rword "try"
+      return (L.IndentMany Nothing (return . (TryStatement) . Block) statementParser)
+    catchP = do
+      rword "catch"
+      fields <- parens $ sepBy fieldParser $ symbol ","
+      return (L.IndentMany Nothing (return . (CatchStatement fields) . Block) statementParser)
+    finallyP = do
+      rword "finally"
+      return (L.IndentMany Nothing (return . (FinallyStatement) . Block) statementParser)
 
 typeParameterParser :: Parser [Type]
 typeParameterParser = do
