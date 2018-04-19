@@ -33,7 +33,7 @@ execute = do
     -- if multiple class paths or destination dirs are provided, first is taken instead of throwing error
     -- Note: javac takes the last and does not produce error either
     -- classpath is set to "cobalt_generated_java/" temporarly until we stop compiling to java. Original default was "./"
-    let classPath = (\(ClassPath cp) -> cp) . (defaultHead (ClassPath "cobalt_generated_java/")) $ filter isClassPath options
+    let classPath = (\(ClassPath cp) -> cp) . (defaultHead (ClassPath "./")) $ filter isClassPath options
     let classOutputDir = (\(DestinationDir dd) -> dd) . (defaultHead (DestinationDir "./")) $ filter isDestinationDir options
 
     when debugModeOn (putStrLn "Running compiler in debug mode")
