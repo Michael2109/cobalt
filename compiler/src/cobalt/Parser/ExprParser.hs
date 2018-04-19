@@ -3,45 +3,7 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module Parser.ExprParser
-    ( Parser
-    , expr
-    , expr'
-    , aExpr
-    , bExpr
-    , rExpr
-    , modelParser
-    , parser
-    , annotationParser
-    , argumentParser
-    , argumentTypeParser
-    , arithmeticParser
-    , assignParser
-    , booleanParser
-    , classVariableParser
-    , elseIfStmtParser
-    , elseStmtParser
-    , identifierParser
-    , ifStmtParser
-    , importParser
-    , forLoopParser
-    , methodCallParser
-    , methodParser
-    , modifierBlockParser
-    , newClassInstanceParser
-    , objectMethodCallParser
-    , packageParser
-    , parameterizedTypeParser
-    , parameterParser
-    , reassignParser
-    , superMethodCallParser
-    , stringLiteralParser
-    , stringLiteralMultilineParser
-    , thisMethodCallParser
-    , thisVarParser
-    , typeParameterParser
-    , valueTypeParser
-    ) where
+module Parser.ExprParser where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -55,7 +17,12 @@ import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
 import AST.Block
+import AST.Data.ModelType
+import AST.Data.Modifier
 import Parser.BaseParser
+import Parser.Data.ModelTypeParser
+import Parser.Data.ModifierParser
+import Parser.ParserType
 import SymbolTable.SymbolTable
 
 -- Arithmetic Expression Parser
@@ -70,7 +37,7 @@ aTerm = parens aExpr
     <|> methodCallParser
     <|> identifierParser
     <|> IntConst <$> integerParser
-    <|> DoubleConst <$> doubleParser
+    <|> DoubleConstant <$> doubleParser
 
 aOperators :: [[Operator Parser Expr]]
 aOperators =
@@ -123,33 +90,44 @@ relation = (symbol ">=" *> pure GreaterEqual)
     <|> (symbol ">" *> pure Greater)
     <|> (symbol "<" *> pure Less)
 
+fileParser :: Parser Expr
+fileParser = try $ L.nonIndented scn p
+  where
+    p = do
+
+
 modelParser :: Parser Expr
 modelParser = try $ L.nonIndented scn p
   where
     p = do
         package <- optional packageParser
         imports <- many importParser
-        modelType <- L.lineFold scn $ \sp' -> rword "class" <|> rword "object" <|> rword "trait"
+        optional $ L.lineFold scn $ \sp' -> return ()
+        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+        modelType <- modelTypeParser
         name <- identifier
         typeParam <- optional typeParameterParser
-        fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case fullParams of
-                         Just ps -> ps
-                         Nothing -> []
+        paramsOpt <- optional $ parens $ sepBy parameterParser (symbol ",")
+        let params = case paramsOpt of
+                             Just ps -> ps
+                             Nothing -> []
         extendsKeyword <- optional $ rword "extends"
         parent <- optional $ identifier
+        parentArgsOpt <- optional $ parens $ sepBy argumentParser (symbol ",")
+        let parentArgs = case parentArgsOpt of
+                             Just ps -> ps
+                             Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy identifier (symbol ",")
         modifierBlocks <- many $ try $ modifierBlockParser False
-        constructorExprs <- try $ many $ try constructorExpr
+        constructorExprs <- many $ expr'
         exprs <- many (methodParser name False <|> expr')
 
         return $
             case modelType of
-                "class"  -> (Class package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-                "object" -> (Object package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-                "trait"  -> (Trait package name typeParam params parent interfaces imports modifierBlocks constructorExprs exprs)
-                (_)      -> error ("Error Message: " ++ name)
+                ClassModel  -> (Class package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
+                ObjectModel -> (Object package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
+                TraitModel  -> (Trait package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
 
 packageParser :: Parser Expr
 packageParser = try $ L.nonIndented scn p
@@ -181,16 +159,13 @@ parameterParser = do
     varType <- identifierParser
     return $ Parameter varType varName
 
-constructorExpr :: Parser Expr
-constructorExpr = try $ L.nonIndented scn p
-  where
-    p = expr'
-
 methodParser :: String -> Bool -> Parser Expr
 methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
         annotations <- try (optional annotationParser)
+        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+
         name <- identifierParser
         fullParams <- optional $ parens $ sepBy parameterParser (symbol ",")
         let params = case fullParams of
@@ -198,7 +173,7 @@ methodParser moduleName static = try $ L.nonIndented scn (L.indentBlock scn p)
                          Nothing -> []
         symbol ":"
         rType <- identifierParser
-        return (L.IndentMany Nothing (return . (Method name annotations params rType static)) (expr'))
+        return (L.IndentMany Nothing (return . (Method name annotations modifiers params rType static)) (expr'))
 
 identifierParser :: Parser Expr
 identifierParser = do
@@ -216,12 +191,12 @@ thisVarParser = do
 arithmeticParser :: Parser Expr
 arithmeticParser = do
     aE <- aExpr
-    return $ ArithExpr aE
+    return aE
 
 booleanParser :: Parser Expr
 booleanParser = do
     bE <- try bExpr
-    return $ BooleanExpr bE
+    return bE
 
 stringLiteralParser :: Parser Expr
 stringLiteralParser = do
@@ -237,24 +212,27 @@ stringLiteralMultilineParser = do
 
 assignParser :: Parser Expr
 assignParser = do
-    valVar <- try (rword "val" <|> rword "var")
-    let immutable = valVar == "val"
+    try (rword "let")
+    mutableOpt <- optional $ rword "mutable"
+    let immutable = case mutableOpt of
+                        Nothing -> True
+                        Just _  -> False
     varName <- identifierParser
     varType <- optional $ do
         symbol ":"
         vType <- valueTypeParser
         return vType
     symbol "="
-    e <- expr' <|> identifierParser <|> arithmeticParser
+    e <- argumentParser
     return $ Assign immutable varType varName e
 
 reassignParser :: Parser Expr
 reassignParser = do
     name  <- try $ do
         id <- identifierParser <|> thisVarParser
-        symbol "="
+        symbol "<-"
         return id
-    value <- expr' <|>  identifierParser <|> arithmeticParser <|> booleanParser
+    value <- argumentParser
     return (Reassign name value)
 
 arrayElementSelect :: Parser Expr
@@ -322,17 +300,7 @@ modifierBlockParser static = try $ L.nonIndented scn (L.indentBlock scn p)
   where
     p = do
         modifier <- try (rword "public") <|> try (rword "protected") <|> try (rword "private")
-        return (L.IndentMany Nothing (return . (ModifierBlock)) (globalVarParser  modifier static))
-
-globalVarParser :: String -> Bool -> Parser Expr
-globalVarParser modifier static = do
-    final <- try (rword "val" <|> rword "var")
-    varName <- identifierParser
-    symbol ":"
-    varType <- valueTypeParser
-    symbol "="
-    es <- many $ argumentParser
-    return $ GlobalVar modifier (final == "val") static varType varName es
+        return (L.IndentMany Nothing (return . (ModifierBlock)) (assignParser))
 
 annotationParser :: Parser Expr
 annotationParser  = do
@@ -364,14 +332,21 @@ returnType = do
 
 argumentParser :: Parser Expr
 argumentParser = do
-    value <- thisParser <|> classVariableParser <|> booleanParser <|> newClassInstanceParser <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser <|> arithmeticParser
-    return $ Argument value
+    value <- thisParser <|> classVariableParser <|> arithmeticParser <|> booleanParser <|> newClassInstanceParser <|> stringLiteralParser <|> stringLiteralMultilineParser <|> identifierParser
+    return value
 
 printParser :: Parser Expr
 printParser  = do
     try $ rword "println"
     e <- parens argumentParser
     return $ Print e
+
+ifStatementBlockParser :: Parser Expr
+ifStatementBlockParser = do
+    ifStmt <- ifStmtParser
+    elifStmt <- optional elifStmtParser
+    elseStmt <- optional elseStmtParser
+    return $ IfStatement ifStmt elifStmt elseStmt
 
 ifStmtParser :: Parser Expr
 ifStmtParser  = try $ L.indentBlock scn p
@@ -381,13 +356,11 @@ ifStmtParser  = try $ L.indentBlock scn p
         cond  <- parens argumentParser
         return (L.IndentMany Nothing (return . (If cond)) (expr' <|> argumentParser))
 
-elseIfStmtParser :: Parser Expr
-elseIfStmtParser  = try $ L.indentBlock scn p
+elifStmtParser :: Parser Expr
+elifStmtParser  = try $ L.indentBlock scn p
   where
     p = do
-        try $ do
-            rword "else"
-            rword "if"
+        rword "elif"
         cond  <- parens argumentParser
         return (L.IndentMany Nothing (return . (ElseIf cond)) (expr' <|> argumentParser))
 
@@ -395,7 +368,7 @@ elseStmtParser :: Parser Expr
 elseStmtParser  = try $ L.indentBlock scn p
   where
     p = do
-        try $ rword "else"
+        rword "else"
         return (L.IndentMany Nothing (return . (Else)) (expr' <|> argumentParser))
 
 whileParser :: Parser Expr
@@ -466,9 +439,7 @@ expr' :: Parser Expr
 expr' =
     modelParser
     <|> forLoopParser
-    <|> ifStmtParser
-    <|> elseIfStmtParser
-    <|> elseStmtParser
+    <|> ifStatementBlockParser
 
     <|> whileParser
 
@@ -478,6 +449,7 @@ expr' =
     <|> thisMethodCallParser
     <|> superMethodCallParser
     <|> objectMethodCallParser
+    <|> methodCallParser
     <|> newClassInstanceParser
     <|> classVariableParser
     <|> try arrayElementSelect

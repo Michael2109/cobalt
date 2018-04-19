@@ -1,0 +1,104 @@
+### Example
+This is an example for the language syntax.
+```
+# A singleton (Equivalent of the `object` we currently have
+module
+
+  # Indent out by one. This allows for modules within modules.
+
+  # This is a single-line comment (Alternative could be `#`)
+
+  /*
+   * This is a multi-line comment
+   */
+
+  # Value
+  exampleValue: Double = 10.54
+
+  # Variable
+  mutable exampleVariable: Int = 10
+
+  # Reassigning a variable
+  exampleVariable <- 20
+
+  # Lazy value
+  lazy exampleLazyValue: Double = 1004.34
+
+  # Method without parameters
+  methodWithoutParams (): Int = 100 * exampleVariable
+
+  # Method with parameters
+  methodWithParameters (a: Int, b: Int): Int = a + b
+
+  # Nested method
+  getEven (list: List[Int]): List[Int]
+    isEven (num: Int) = num % 2 == 0
+    list.filter(isEven)
+
+  # Inline method
+  exampleInline (): Int = 50
+
+  # Block method
+  exampleBlock (): Int
+    // Do something
+    50
+
+  # Calling a method
+  getTotalEven (list: List[Int])
+    getEven(list).size()
+
+  # Setting a value to reference a method
+  exampleValMethod = getTotalEven
+
+  # Case
+  exampleCase (obj: Object) =
+    # Pattern matching must be exhaustive
+    match obj with
+      ClassName1 -> println ("Is type ClassName1")
+      ClassName2 -> println ("Is type ClassName2")
+      (_)        -> println ("Default option")
+
+  # Anonymous functions
+  exampleAnonymousFunction(x: Int) =
+    new Function1[Int, Int]
+      apply(x: Int): Int = x + 1
+
+  # Lambdas (Shorthand for anonymous functions)
+  exampleLambda = (x: Int): Int => x + 1
+
+  # Partial Application
+  examplePartialApplication(): Unit
+    add (x: Int, y: Int) = x + y
+    z = add 42 # z = add(42, y:Int)
+    println (z(58)) # Prints 100
+
+  # Higher-order functions
+  exampleHigherOrderFunctions(): Unit
+    list: List[Int] = List(2,6,3,8,9)
+
+    # Multiply the list elements by 2
+    # (4, 12, 6, 16,18)
+    multiplied = list.map (_ * 2)
+
+    # Filter all elements lower than 10
+    # (4, 6)
+    filtered = multiplied.filter(_ < 10)
+
+  # If statements
+  exampleIf(): Unit
+    if(True)
+      println ("if")
+    elif(False)
+      println ("elif")
+    else
+      println ("else")
+
+  # Modifiers (Methods and values are private by default)
+  member publicValue: String = "This is a public value"
+  member publicMethod(): String = "This is a public method"
+
+  protected member protectedValue: String = "This is a protected value"
+  protected member protectedMethod(): String = "This is a protected method"
+
+
+```

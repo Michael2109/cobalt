@@ -69,6 +69,8 @@ library
       AST.Block
       AST.CodeGenNode
       AST.IRNode
+      AST.Data.ModelType
+      AST.Data.Modifier
       Compiler.Compiler
       Compiler.CompilerExecutor
       JVM.Common
@@ -93,7 +95,10 @@ library
       Java.META.Parser
       Parser.BaseParser
       Parser.ExprParser
+      Parser.Data.ModelTypeParser
+      Parser.Data.ModifierParser
       Parser.ParserExecutor
+      Parser.ParserType
       Util.CommandLineUtil
       Util.IOUtil
       Util.GeneralUtil
@@ -178,7 +183,6 @@ test-suite compiler-test
       Parser.ArrayElementSelectParserTest
       Parser.AssignParserTest
       Parser.BooleanParserTest
-      Parser.ClassParserTest
       Parser.ClassVariableParserTest
       Parser.ConstructorParserTest
       Parser.ForLoopParserTest
@@ -188,10 +192,12 @@ test-suite compiler-test
       Parser.ImportParserTest
       Parser.MethodCallParserTest
       Parser.MethodParserTest
+      Parser.Data.ModelTypeParserTest
+      Parser.Data.ModifierParserTest
+      Parser.ModelParserTest
       Parser.ModifierBlockParserTest
       Parser.NewClassInstanceParserTest
       Parser.ObjectMethodCallParserTest
-      Parser.ObjectParserTest
       Parser.PackageParserTest
       Parser.ParserTests
       Parser.ParameterizedTypeParserTest
@@ -203,7 +209,6 @@ test-suite compiler-test
       Parser.StringLiteralParserTest
       Parser.ThisMethodCallParserTest
       Parser.ThisVarParserTest
-      Parser.TraitParserTest
       Parser.TypeParameterParserTest
       Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest

@@ -8,18 +8,18 @@ import Parser.ExprParser
 
 testAssignParserValWithType :: Test
 testAssignParserValWithType = do
-    let code = "val x: Int = 1"
+    let code = "let x: Int = 1"
     TestCase $ assertEqual code
-        (Assign True (Just (Type (Identifier "Int"))) (Identifier "x") (ArithExpr (IntConst 1)))
+        (Assign True (Just (Type (Identifier "Int"))) (Identifier "x") (IntConst 1))
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)
 
 testAssignParserValWithoutType :: Test
 testAssignParserValWithoutType = do
-    let code = "val x = 1"
+    let code = "let x = 1"
     TestCase $ assertEqual code
-        (Assign True Nothing (Identifier "x") (ArithExpr (IntConst 1)))
+        (Assign True Nothing (Identifier "x") (IntConst 1))
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -35,36 +35,63 @@ testAssignParserWithoutVal = do
 
 testAssignParserVarWithType :: Test
 testAssignParserVarWithType = do
-    let code = "var x: Int = 1"
+    let code = "let mutable x: Int = 1"
     TestCase $ assertEqual code
-        (Assign False (Just (Type (Identifier "Int"))) (Identifier "x") (ArithExpr (IntConst 1)))
+        (Assign False (Just (Type (Identifier "Int"))) (Identifier "x") (IntConst 1))
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)
 
 testAssignParserVarWithoutType :: Test
 testAssignParserVarWithoutType = do
-    let code = "var x = 1"
+    let code = "let mutable x = 1"
     TestCase $ assertEqual code
-        (Assign False Nothing (Identifier "x") (ArithExpr (IntConst 1)))
+        (Assign False Nothing (Identifier "x") (IntConst 1))
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)
 
 testAssignParserValWithParameterizedType :: Test
 testAssignParserValWithParameterizedType = do
-    let code = "val x: Array[String] = 1"
+    let code = "let x: Array[String] = 1"
     TestCase $ assertEqual code
-        (Assign True (Just (Type (ParameterizedType (Identifier "Array") (TypeParameter (Identifier "String"))))) (Identifier "x") (ArithExpr (IntConst 1)))
+        (Assign True (Just (Type (ParameterizedType (Identifier "Array") (TypeParameter (Identifier "String"))))) (Identifier "x") (IntConst 1))
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)
 
 testAssignParserVarWithParameterizedType :: Test
 testAssignParserVarWithParameterizedType = do
-    let code = "var x: Array[String] = 1"
+    let code = "let mutable x: Array[String] = 1"
     TestCase $ assertEqual code
-        (Assign False (Just (Type (ParameterizedType (Identifier "Array") (TypeParameter (Identifier "String"))))) (Identifier "x") (ArithExpr (IntConst 1)))
+        (Assign False (Just (Type (ParameterizedType (Identifier "Array") (TypeParameter (Identifier "String"))))) (Identifier "x") (IntConst 1))
+        (case (parse assignParser "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testAssignParserTwoVars :: Test
+testAssignParserTwoVars = do
+    let code = "let mutable x = x + y"
+    TestCase $ assertEqual code
+        (Assign False Nothing (Identifier "x") (ABinary Add (Identifier "x") (Identifier "y")))
+        (case (parse assignParser "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testAssignParserThreeVars :: Test
+testAssignParserThreeVars = do
+    let code = "let mutable x = x + y - z"
+    TestCase $ assertEqual code
+        (Assign False Nothing (Identifier "x") (ABinary Subtract (ABinary Add (Identifier "x") (Identifier "y")) (Identifier "z")))
+        (case (parse assignParser "" code) of
+             Left  _ -> Error
+             Right x -> x)
+
+testAssignParserFourVars :: Test
+testAssignParserFourVars = do
+    let code = "let mutable x = x + y * q - z"
+    TestCase $ assertEqual code
+        (Assign False Nothing (Identifier "x") (ABinary Subtract (ABinary Add (Identifier "x") (ABinary Multiply (Identifier "y") (Identifier "q"))) (Identifier "z")))
         (case (parse assignParser "" code) of
              Left  _ -> Error
              Right x -> x)

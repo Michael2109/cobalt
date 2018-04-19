@@ -9,11 +9,11 @@ import Parser.ExprParser
 testModifierBlockParserPrivate :: Test
 testModifierBlockParserPrivate = do
     let code = unlines [ "private"
-                       , "  val x: int = 5"
-                       , "  val y: int = 10"
+                       , "  let x: int = 5"
+                       , "  let y: int = 10"
                        ]
     TestCase $ assertEqual code
-        (ModifierBlock [GlobalVar "private" True True (Type (Identifier "int")) (Identifier "x") [Argument (ArithExpr (IntConst 5))],GlobalVar "private" True True (Type (Identifier "int")) (Identifier "y") [Argument (ArithExpr (IntConst 10))]])
+        (ModifierBlock [Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5),Assign True (Just (Type (Identifier "int"))) (Identifier "y") (IntConst 10)])
         (case (parse (modifierBlockParser True) "" code) of
               Left  _ -> Error
               Right x -> x)
@@ -21,11 +21,11 @@ testModifierBlockParserPrivate = do
 testModifierBlockParserProtected :: Test
 testModifierBlockParserProtected = do
     let code = unlines [ "protected"
-                       , "  val x: int = 5"
-                       , "  val y: int = 10"
+                       , "  let x: int = 5"
+                       , "  let y: int = 10"
                        ]
     TestCase $ assertEqual code
-        (ModifierBlock [GlobalVar "protected" True True (Type (Identifier "int")) (Identifier "x") [Argument (ArithExpr (IntConst 5))],GlobalVar "protected" True True (Type (Identifier "int")) (Identifier "y") [Argument (ArithExpr (IntConst 10))]])
+        (ModifierBlock [Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5),Assign True (Just (Type (Identifier "int"))) (Identifier "y") (IntConst 10)])
         (case (parse (modifierBlockParser True) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -33,11 +33,11 @@ testModifierBlockParserProtected = do
 testModifierBlockParserPublic :: Test
 testModifierBlockParserPublic = do
     let code = unlines [ "public"
-                       , "  val x: int = 5"
-                       , "  val y: int = 10"
+                       , "  let x: int = 5"
+                       , "  let y: int = 10"
                        ]
     TestCase $ assertEqual code
-        (ModifierBlock [GlobalVar "public" True True (Type (Identifier "int")) (Identifier "x") [Argument (ArithExpr (IntConst 5))],GlobalVar "public" True True (Type (Identifier "int")) (Identifier "y") [Argument (ArithExpr (IntConst 10))]])
+        (ModifierBlock [Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5),Assign True (Just (Type (Identifier "int"))) (Identifier "y") (IntConst 10)])
         (case (parse (modifierBlockParser True) "" code) of
              Left  _ -> Error
              Right x -> x)

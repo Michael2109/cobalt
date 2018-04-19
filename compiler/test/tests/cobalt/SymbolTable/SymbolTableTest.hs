@@ -4,16 +4,16 @@ import Test.HUnit
 
 import SymbolTable.SymbolTable
 
-generateClassSymbolTable1 :: ClassSymbolTable
-generateClassSymbolTable1 = ClassSymbolTable "ClassName" ClassType
+generateModelSymbolTable1 :: ModelSymbolTable
+generateModelSymbolTable1 = ModelSymbolTable "ModelName" ClassType []
     [("x", "int")
     , ("y", "int")
     , ("z", "double")
     , ("obj", "Object")]
     [("method1", MethodSymbolTable "int" [("i", "int"), ("j", "int"), ("obj", "Object")])]
 
-generateClassSymbolTable2 :: ClassSymbolTable
-generateClassSymbolTable2 = ClassSymbolTable "ClassName" ClassType
+generateModelSymbolTable2 :: ModelSymbolTable
+generateModelSymbolTable2 = ModelSymbolTable "ModelName" ClassType []
     [("a", "int")
     , ("b", "int")
     , ("c", "double")
@@ -22,37 +22,37 @@ generateClassSymbolTable2 = ClassSymbolTable "ClassName" ClassType
     , ("method1", MethodSymbolTable "int" [("r", "int"), ("p", "int"), ("u", "Object")])]
 
 generateSymbolTable1 :: SymbolTable
-generateSymbolTable1 = SymbolTable [generateClassSymbolTable1]
+generateSymbolTable1 = SymbolTable [generateModelSymbolTable1]
 
 generateSymbolTable2 :: SymbolTable
-generateSymbolTable2 = SymbolTable [generateClassSymbolTable2]
+generateSymbolTable2 = SymbolTable [generateModelSymbolTable2]
 
 testSymbolTableExtractReturnType1 :: Test
 testSymbolTableExtractReturnType1 = do
     TestCase $ assertEqual "Extract return type"
         "int"
-        $ extractReturnType generateSymbolTable1 "ClassName" "method1"
+        $ extractReturnType generateSymbolTable1 "ModelName" "method1"
 
 testSymbolTableExtractReturnType2 :: Test
 testSymbolTableExtractReturnType2 = do
     TestCase $ assertEqual "Extract return type"
         "String"
-        $ extractReturnType generateSymbolTable2 "ClassName" "method2"
+        $ extractReturnType generateSymbolTable2 "ModelName" "method2"
 
 testSymbolTableExtractMethodArgs :: Test
 testSymbolTableExtractMethodArgs = do
     TestCase $ assertEqual "Extract method args"
         3 $
-        length (extractMethodArgs generateSymbolTable2 "ClassName" "method2")
+        length (extractMethodArgs generateSymbolTable2 "ModelName" "method2")
 
-testClassSymbolTableCombine :: Test
-testClassSymbolTableCombine = do
+testModelSymbolTableCombine :: Test
+testModelSymbolTableCombine = do
     TestCase $ assertEqual "Combine symbol tables"
         ""
         ""
 
-testClassSymbolTableCombineList :: Test
-testClassSymbolTableCombineList = do
+testModelSymbolTableCombineList :: Test
+testModelSymbolTableCombineList = do
     TestCase $ assertEqual "Combine list of symbol tables"
         ""
         ""
@@ -73,19 +73,19 @@ testSymbolTableMethodExists :: Test
 testSymbolTableMethodExists = do
     TestCase $ assertEqual "Method exists"
         True $
-        methodExists generateSymbolTable1 "ClassName" "method1"
+        methodExists generateSymbolTable1 "ModelName" "method1"
 
 testSymbolTableVariableExists :: Test
 testSymbolTableVariableExists = do
     TestCase $ assertEqual "Variable exists"
         True $
-        instanceVariableExists generateSymbolTable1 "ClassName" "x"
+        instanceVariableExists generateSymbolTable1 "ModelName" "x"
 
 testSymbolTableVariableType :: Test
 testSymbolTableVariableType = do
     TestCase $ assertEqual "Variable type"
         "double" $
-        case (instanceVariableType generateSymbolTable2 "ClassName" "c") of
+        case (instanceVariableType generateSymbolTable2 "ModelName" "c") of
             Just varType -> varType
             Nothing -> "Error"
 
@@ -94,12 +94,12 @@ testSymbolTableVariableExistsFail:: Test
 testSymbolTableVariableExistsFail = do
     TestCase $ assertEqual "Variable doesn't exist"
         False $
-        instanceVariableExists generateSymbolTable1 "ClassName" "unknownVarName"
+        instanceVariableExists generateSymbolTable1 "ModelName" "unknownVarName"
 
-testSymbolTableGetClassSymbolTable :: Test
-testSymbolTableGetClassSymbolTable = do
-    TestCase $ assertEqual "Get class symbol table from symbol table"
-        "ClassName" $
-        case getClassSymbolTable generateSymbolTable1 "ClassName" of
-            Just a -> className (a)
+testSymbolTableGetModelSymbolTable :: Test
+testSymbolTableGetModelSymbolTable = do
+    TestCase $ assertEqual "Get model symbol table from symbol table"
+        "ModelName" $
+        case getModelSymbolTable generateSymbolTable1 "ModelName" of
+            Just a -> modelName (a)
             Nothing -> ""

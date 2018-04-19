@@ -15,7 +15,9 @@ import Control.Monad
 import Control.Monad.Exception
 import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
+import Data.Scientific
 
+import AST.Data.Modifier
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -38,7 +40,6 @@ data CodeGenNode
     | AnnotationCodeGen  String
     | ArgumentCodeGen  CodeGenNode
     | ArgumentTypeCodeGen  String
-    | ArithExprCodeGen  CodeGenNode
     | ArrayAppendCodeGen  [CodeGenNode]
     | ArrayElementSelectCodeGen  String
     | ArrayValuesCodeGen  [String]
@@ -48,9 +49,8 @@ data CodeGenNode
     | BBinOpErrorCodeGen
     | BErrorCodeGen
     | BoolConstCodeGen  Bool
-    | BooleanExprCodeGen  CodeGenNode
     | CatchCodeGen  [CodeGenNode] [CodeGenNode]
-    | ClassCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | ClassCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [CodeGenNode] [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | ParameterCodeGen  CodeGenNode CodeGenNode
     | ClassVariableCodeGen  String String
     | ClosingParenthesisCodeGen
@@ -58,6 +58,7 @@ data CodeGenNode
     | DataCodeGen  String [CodeGenNode]
     | DataElementCodeGen  String String [String] [String]
     | DataInstanceCodeGen  CodeGenNode [CodeGenNode]
+    | DoubleConstantCodeGen Scientific
     | DivideCodeGen
     | ElseCodeGen  [CodeGenNode]
     | ElseIfCodeGen  CodeGenNode [CodeGenNode]
@@ -69,6 +70,7 @@ data CodeGenNode
     | GreaterCodeGen
     | IdentifierCodeGen  String
     | IfCodeGen  CodeGenNode [CodeGenNode]
+    | IfStatementCodeGen CodeGenNode (Maybe CodeGenNode) (Maybe CodeGenNode)
     | ImportCodeGen  [String]
     | LambdaCodeGen  String [CodeGenNode]
     | LessCodeGen
@@ -76,13 +78,13 @@ data CodeGenNode
     | IntConstCodeGen  Integer
     | MainFunctionCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode [CodeGenNode]
     | MethodCallCodeGen  String [CodeGenNode]
-    | MethodCodeGen  CodeGenNode (Maybe CodeGenNode) [CodeGenNode] CodeGenNode Bool [CodeGenNode]
+    | MethodCodeGen  CodeGenNode (Maybe CodeGenNode) [Modifier] [CodeGenNode] CodeGenNode Bool [CodeGenNode]
     | ModifierBlockCodeGen  [CodeGenNode]
     | MultiplyCodeGen
     | NegCodeGen  CodeGenNode
     | NewClassInstanceCodeGen  CodeGenNode [CodeGenNode]
     | NotCodeGen  CodeGenNode
-    | ObjectCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | ObjectCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [CodeGenNode] [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | ObjectMethodCallCodeGen  String String [CodeGenNode]
     | OpeningParenthesisCodeGen
     | OrCodeGen
@@ -104,7 +106,7 @@ data CodeGenNode
     | ThisCodeGen
     | ThisMethodCallCodeGen  String [CodeGenNode]
     | ThisVarCodeGen  CodeGenNode
-    | TraitCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [CodeGenNode] (Maybe String) [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
+    | TraitCodeGen  (Maybe CodeGenNode) String (Maybe CodeGenNode) [Modifier] [CodeGenNode] (Maybe String) [CodeGenNode] [String] [CodeGenNode] [CodeGenNode] [CodeGenNode] [CodeGenNode]
     | TryCodeGen  [CodeGenNode]
     | TypeCodeGen  CodeGenNode
     | TypeParameterCodeGen  CodeGenNode
@@ -119,7 +121,6 @@ instance CodeGen CodeGenNode where
     genCode (AnnotationCodeGen  name)  = return ()
     genCode (ArgumentCodeGen  b) = return ()
     genCode (ArgumentTypeCodeGen  b) = return ()
-    genCode (ArithExprCodeGen  aExpr) = return ()
     genCode (ArrayAppendCodeGen  arrays)  = return ()
     genCode (ArrayElementSelectCodeGen  i)  = return ()
     genCode (ArrayValuesCodeGen  exprs)  = return ()
@@ -127,15 +128,15 @@ instance CodeGen CodeGenNode where
     genCode (AssignArithCodeGen  mutable vType name value)  = return ()
     genCode (BBinaryCodeGen   bbinop bExpr1 bExpr2) = return ()
     genCode (BoolConstCodeGen   b) = return ()
-    genCode (BooleanExprCodeGen  expr)  = return ()
     genCode (CatchCodeGen  params exprs)  = return ()
-    genCode (ClassCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ClassCodeGen  package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (ClassVariableCodeGen  className varName)  = return ()
     genCode (ClosingParenthesisCodeGen ) = return ()
     genCode (ConstructorCodeGen  name argTypes args body)  = return ()
     genCode (DataCodeGen  name exprs)  = return ()
     genCode (DataElementCodeGen  superName name argTypes args)  = return ()
     genCode (DivideCodeGen )  = return ()
+    genCode (DoubleConstantCodeGen value) = return ()
     genCode (ElseCodeGen  statement)  = return ()
     genCode (ElseIfCodeGen  condition statement)  = return ()
     genCode (ForCodeGen  varName start end exprs)  = return ()
@@ -145,6 +146,7 @@ instance CodeGen CodeGenNode where
     genCode (GreaterCodeGen )  = return ()
     genCode (IdentifierCodeGen  name)  = return ()
     genCode (IfCodeGen  condition statement)  = return ()
+    genCode (IfStatementCodeGen ifBlock elseIfBlock elseBlock) = return ()
     genCode (ImportCodeGen  locs)  = return ()
     genCode (IntConstCodeGen  i)  = return ()
     genCode (LambdaCodeGen  varName exprs)  = return ()
@@ -152,13 +154,13 @@ instance CodeGen CodeGenNode where
     genCode (LessCodeGen )  = return ()
     genCode (MainFunctionCodeGen  name annotations params returnType body)  = return ()
     genCode (MethodCallCodeGen  methodName args) = return ()
-    genCode (MethodCodeGen  name annotations params returnType static body)  = return ()
+    genCode (MethodCodeGen name annotations modifiers params returnType static body)  = return ()
     genCode (ModifierBlockCodeGen  exprs)  = return ()
     genCode (MultiplyCodeGen )  = return ()
     genCode (NegCodeGen  aExpr)  = return ()
     genCode (NewClassInstanceCodeGen  className args)  = return ()
     genCode (NotCodeGen   n) = return ()
-    genCode (ObjectCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (ObjectCodeGen  package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (ObjectMethodCallCodeGen  objectName methodName args)  = return ()
     genCode (OrCodeGen) = return ()
     genCode (OpeningParenthesisCodeGen ) = return ()
@@ -180,7 +182,7 @@ instance CodeGen CodeGenNode where
     genCode (ThisCodeGen )  = return ()
     genCode (ThisMethodCallCodeGen  methodName args)  = return ()
     genCode (ThisVarCodeGen  varName)  = return ()
-    genCode (TraitCodeGen  package name typeParam params parent interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
+    genCode (TraitCodeGen  package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs bodyArray) = return ()
     genCode (TryCodeGen  exprs)  = return ()
     genCode (TypeCodeGen  b)  = return ()
     genCode (TypeParameterCodeGen  typeName)  = return ()

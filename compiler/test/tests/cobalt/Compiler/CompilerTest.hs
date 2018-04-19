@@ -34,11 +34,11 @@ exampleCompilerTest = do
 
     -- Check the file has been compiled correctly
     fileExists <- doesFileExist "cobalt_generated_classes/game/Alien.class"
-    assertBool "Check file has been generated" fileExists
 
     -- Delete the generated file
     removeFile tempFile
     removeDirectory tempDir
 
-    -- Return if there is any error
-    assertBool "Error Message" (True == True)
+    assertBool "Check file has been generated" fileExists
+
+

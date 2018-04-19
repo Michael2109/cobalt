@@ -69,7 +69,7 @@ To avoid deep nesting it is possible to use following shortened form:
 ```
 if Expression
   Statements
-else if Expression
+elif Expression
   Statements
 else
   Statements
@@ -215,6 +215,23 @@ Implement a trait
 ```
 class Example extends ParentClass with TraitName
 ```
+#### Modifiers
+Access modifiers are `public`, `protected` and `private` and are added before the class name.
+```
+public class ClassName
+```
+Abstract modifier allows for unimplemented methods. These methods must be overridden by a sub-class.
+```
+abstract class ClassName
+```
+Final modifier makes all methods final.
+```
+final class ClassName
+```
+Multiple modifiers can be added.
+```
+public abstract class ClassName
+```
 {nbsp} +
 
 ### Methods
@@ -234,6 +251,24 @@ add (a: Int, b: Int): Int
 Type inference
 ```
 add (a: Int, b: Int) = a + b
+```
+
+#### Modifiers
+Access modifiers are `public`, `protected` and `final` and are added before the method name.
+```
+public add (a: Int, b: Int) = a + b
+```
+Abstract modifier allows for unimplemented methods. These methods must be overridden by a sub-class.
+```
+abstract add (a: Int, b: Int)
+```
+Final modifier makes the method unable to be overridden.
+```
+final add (a: Int, b: Int) = a + b
+```
+Multiple modifiers can be added.
+```
+public abstract add (a: Int, b: Int) = a + b
 ```
 
 #### Nested methods

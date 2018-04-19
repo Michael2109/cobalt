@@ -12,7 +12,6 @@ import Parser.ArgumentTypeParserTest
 import Parser.ArithmeticParserTest
 import Parser.AssignParserTest
 import Parser.BooleanParserTest
-import Parser.ClassParserTest
 import Parser.ClassVariableParserTest
 import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
@@ -20,10 +19,12 @@ import Parser.IfElseStatementParserTest
 import Parser.ImportParserTest
 import Parser.MethodCallParserTest
 import Parser.MethodParserTest
+import Parser.Data.ModelTypeParserTest
+import Parser.Data.ModifierParserTest
+import Parser.ModelParserTest
 import Parser.ModifierBlockParserTest
 import Parser.NewClassInstanceParserTest
 import Parser.ObjectMethodCallParserTest
-import Parser.ObjectParserTest
 import Parser.PackageParserTest
 import Parser.ParameterizedTypeParserTest
 import Parser.ParameterParserTest
@@ -31,7 +32,6 @@ import Parser.ParenthesesParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
 import Parser.ThisVarParserTest
-import Parser.TraitParserTest
 import Parser.TypeParameterParserTest
 import Parser.ValueTypeParserTest
 
@@ -97,6 +97,10 @@ parserTestList = TestList
     , testAssignParserValWithParameterizedType
     , testAssignParserVarWithParameterizedType
 
+    , testAssignParserTwoVars
+    , testAssignParserThreeVars
+    , testAssignParserFourVars
+
     , testBooleanParserTrue
     , testBooleanParserFalse
     , testBooleanParserIdentifier
@@ -109,21 +113,45 @@ parserTestList = TestList
     , testBooleanParserGreaterThanEqualVar
     , testBooleanParserGreaterThanEqualInt
 
-    , testClassParser
-    , testClassParserTypeParameter
+    , testModelParserClass
+    , testModelParserTrait
+    , testModelParserObject
+    , testModelParserParamsEmpty
+    , testModelParserParamsSingle
+    , testModelParserParamsMultiple
+    , testModelParserTypeParameter
+    , testModelParserTypeParameterExtends
+    , testModelParserTypeParameterExtendsImplements
+    , testModelParserTypeParameterImplements
+    , testModelParserTypeParameterImplementsMultiple
+    , testModelParserExtends
+    , testModelParserParentArgsEmpty
+    , testModelParserParentArgsSingle
+    , testModelParserParentArgsMultiple
+    , testModelParserImplements
+    , testModelParserImplementsMultiple
+    , testModelParserExtendsImplements
+    , testModelParserExtendsImplementsMultiple
+    , testModelParserImports
+    , testModelParserImportsFail
+    , testModelParserModifierBlock
+    , testModelParserConstructorBody
+    , testModelParserMethods
 
-    , testClassParserTypeParameterExtends
-    , testClassParserTypeParameterExtendsImplements
-    , testClassParserTypeParameterImplements
-    , testClassParserTypeParameterImplementsMultiple
-    , testClassParserExtends
-    , testClassParserImplements
-    , testClassParserImplementsMultiple
-    , testClassParserExtendsImplements
-    , testClassParserExtendsImplementsMultiple
-    , testClassParserImports
-    , testClassParserImportsFail
-    , testClassParserModifierBlock
+    , testModelParserPublic
+    , testModelParserProtected
+    , testModelParserPrivate
+    , testModelParserPublicAbstract
+    , testModelParserPrivate
+    , testModelParserPrivateAbstract
+    , testModelParserAbstract
+    , testModelParserPublicFinal
+    , testModelParserProtectedFinal
+    , testModelParserPrivateFinal
+    , testModelParserFinal
+    , testModelParserReordered1
+    , testModelParserReordered2
+    , testModelParserReordered3
 
     , testClassVariableParser
 
@@ -148,6 +176,12 @@ parserTestList = TestList
     , testIfStmtParserAnd
     , testIfStmtParserOr
     , testIfStmtParserAndOr
+    , testIfStmtParserElif
+    , testIfStmtParserElse
+    , testIfStmtParserBlockIf
+    , testIfStmtParserBlockElif
+    , testIfStmtParserBlockElifElse
+    , testIfStmtParserBlockElse
 
     , testImportParserSingle
     , testImportParserEmptyFail
@@ -166,6 +200,30 @@ parserTestList = TestList
     , testMethodParserMissingParens
     , testMethodParserMissingName
     , testMethodParserMissingReturnType
+    , testMethodParserModifierPublic
+    , testMethodParserModifierProtected
+    , testMethodParserModifierPrivate
+    , testMethodParserModifierPublicAbstract
+    , testMethodParserModifierProtectedAbstract
+    , testMethodParserModifierPrivateAbstract
+    , testMethodParserModifierAbstract
+    , testMethodParserModifierPublicFinal
+    , testMethodParserModifierProtectedFinal
+    , testMethodParserModifierPrivateFinal
+    , testMethodParserModifierFinal
+    , testMethodParserModifierReordered1
+    , testMethodParserModifierReordered2
+    , testMethodParserModifierReordered3
+
+    , testAccessModifierParserPublic
+    , testAccessModifierParserProtected
+    , testAccessModifierParserPrivate
+    , testAbstractModifierParser
+    , testFinalModifierParser
+
+    , testModelTypeParserClass
+    , testModelTypeParserObject
+    , testModelTypeParserTrait
 
     , testModifierBlockParserPrivate
     , testModifierBlockParserProtected
@@ -184,19 +242,6 @@ parserTestList = TestList
     , testNewClassInstanceParserMissingNew
     , testNewClassInstanceParserMissingLeftParen
     , testNewClassInstanceParserMissingRightParen
-
-    , testObjectParserTypeParameterExtends
-    , testObjectParserTypeParameterExtendsImplements
-    , testObjectParserTypeParameterImplements
-    , testObjectParserTypeParameterImplementsMultiple
-    , testObjectParserExtends
-    , testObjectParserImplements
-    , testObjectParserImplementsMultiple
-    , testObjectParserExtendsImplements
-    , testObjectParserExtendsImplementsMultiple
-    , testObjectParserImports
-    , testObjectParserImportsFail
-    , testObjectParserModifierBlock
 
     , testObjectMethodCallParserThis
     , testObjectMethodCallParserObject
@@ -221,6 +266,7 @@ parserTestList = TestList
 
     , testReassignParserObject
     , testReassignParserArithmetic
+    , testReassignParserArithmeticTwoVars
     , testReassignParserClassVar
 
     , testStringLiteralSimple
@@ -259,19 +305,6 @@ parserTestList = TestList
     , testThisVarParserContainsDigit
     , testThisVarParserContainsUnderscore
     , testThisVarParserNotThisFail
-
-    , testTraitParserTypeParameterExtends
-    , testTraitParserTypeParameterExtendsImplements
-    , testTraitParserTypeParameterImplements
-    , testTraitParserTypeParameterImplementsMultiple
-    , testTraitParserExtends
-    , testTraitParserImplements
-    , testTraitParserImplementsMultiple
-    , testTraitParserExtendsImplements
-    , testTraitParserExtendsImplementsMultiple
-    , testTraitParserImports
-    , testTraitParserImportsFail
-    , testTraitParserModifierBlock
 
     , testTypeParameterParser
     , testTypeParameterParserMissingLeft
