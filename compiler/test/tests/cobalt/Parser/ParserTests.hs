@@ -50,10 +50,8 @@ parserTestList = TestList
       , testInteger
       , testLong
 
-    -- AExprParser
     --, testAExprParserVar
-    --, testAExprParserInt
-    --, testAExprParserNeg
+    , testAExprParserInt
 
     -- BExprParser
     --, testBExprParserTrue
@@ -71,7 +69,7 @@ parserTestList = TestList
     --, testRExprParserLessEqualInt
 
     -- ExprParser
-    --, testAnnotationParserUpper
+    , testAnnotationParser
     --, testAnnotationParserLower
 
     --, testArgumentParserIdentifier

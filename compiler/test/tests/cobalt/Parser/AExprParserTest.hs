@@ -3,36 +3,32 @@ module Parser.AExprParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-
+import AST.AST
 import Parser.ExprParser
 
-{-
+{--
 testAExprParserVar :: Test
 testAExprParserVar = do
     let code = "x"
     TestCase $ assertEqual code
-        (Identifier "x")
+        (Name "x")
         (case (parse (aExpr) "" code) of
-             Left  _ -> AError
+             Left  e -> error $ show e
              Right x -> x)
+--}
 
 testAExprParserInt :: Test
 testAExprParserInt = do
-    let code = "1000"
-    TestCase $ assertEqual code
-        (IntConst 1000)
-        (case (parse (aExpr) "" code) of
-             Left  _ -> AError
-             Right x -> x)
-
-testAExprParserNeg :: Test
-testAExprParserNeg = do
-    let code = "-x"
-    TestCase $ assertEqual code
-        (Neg (Identifier "x"))
-        (case (parse (aExpr) "" code) of
-             Left  _ -> AError
-             Right x -> x)
-
--- TODO write test for parenthesis
--}
+    let code1 = "1000"
+    let test1 = TestCase $ assertEqual code1
+                    (IntConst 1000)
+                    (case (parse (aExpr) "" code1) of
+                         Left  e -> error $ show e
+                         Right x -> x)
+    let code2 = "-1000"
+    let test2 = TestCase $ assertEqual code2
+                    (Neg (IntConst 1000))
+                    (case (parse (aExpr) "" code2) of
+                         Left  e -> error $ show e
+                         Right x -> x)
+    TestList [test1, test2]

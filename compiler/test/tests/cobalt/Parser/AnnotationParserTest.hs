@@ -3,25 +3,21 @@ module Parser.AnnotationParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-
+import AST.AST
 import Parser.ExprParser
 
-{-
-testAnnotationParserUpper :: Test
-testAnnotationParserUpper = do
-    let code = "@ANNOTATION"
-    TestCase $ assertEqual code
-        (Annotation "ANNOTATION")
-        (case (parse (annotationParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
-
-testAnnotationParserLower :: Test
-testAnnotationParserLower = do
-    let code = "@annotation"
-    TestCase $ assertEqual code
-        (Annotation "annotation")
-        (case (parse (annotationParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
--}
+testAnnotationParser :: Test
+testAnnotationParser = do
+    let code1 = "@ANNOTATION"
+    let test1 = TestCase $ assertEqual code1
+                    (Annotation $ Name "ANNOTATION")
+                    (case (parse (annotationParser) "" code1) of
+                         Left  e -> error $ show e
+                         Right x -> x)
+    let code2 = "@annotation"
+    let test2 = TestCase $ assertEqual code2
+                    (Annotation $ Name "annotation")
+                    (case (parse (annotationParser) "" code2) of
+                         Left  e -> error $ show e
+                         Right x -> x)
+    TestList [test1, test2]
