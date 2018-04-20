@@ -3,9 +3,19 @@ module Parser.IfElseStatementParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+import AST.AST
 import Parser.ExprParser
 
+testIfStmtParser :: Test
+testIfStmtParser = do
+    let code = "if(True)"
+    TestCase $ assertEqual code
+        (If (IfStatement (BoolConst True) (Block [])) Nothing Nothing)
+        (case (parse (ifStatementParser) "" code) of
+             Left  e -> error (show e)
+             Right x -> x)
+
+{-
 -- Individual if, elif, and else parser tests
 testIfStmtParserBooleanTrue :: Test
 testIfStmtParserBooleanTrue = do
@@ -170,4 +180,4 @@ testIfStmtParserBlockElse = do
                     (case (parse (expr') "" code) of
                          Left  _ -> Error
                          Right x -> x)
-    TestList[test1, test2]
+    TestList[test1, test2]-}

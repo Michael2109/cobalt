@@ -3,8 +3,9 @@ module Parser.TypeParameterParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
+{-
 
 testTypeParameterParser :: Test
 testTypeParameterParser = do
@@ -41,3 +42,4 @@ testTypeParameterParserMissingBoth = do
         (case (parse (typeParameterParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

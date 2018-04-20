@@ -1,10 +1,10 @@
-module Parser.Data.ModifierParserTest where
+module Parser.ModifierParserTest where
 
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Data.Modifier
-import Parser.Data.ModifierParser
+import AST.AST
+import Parser.ExprParser
 
 testAccessModifierParserPublic :: Test
 testAccessModifierParserPublic = do

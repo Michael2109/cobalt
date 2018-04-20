@@ -7,25 +7,19 @@ module SymbolTable.SymbolTable where
 import Data.List
 import Data.Maybe
 
+import AST.AST
+
 data SymbolTable = SymbolTable
     { modelSymbolTables :: [ModelSymbolTable] -- All class symbol tables for all classes to be compiled
     } deriving (Eq, Show)
 
 data ModelSymbolTable = ModelSymbolTable
-    { modelName       :: String -- class name
-    , modelType       :: ModelType
+    { stModelName       :: String -- class name
+    , stModelType       :: ModelType
     , imports         :: [ModelImport]
     , publicVariables :: [(String, String)] -- (variable name, variable type name) list of variable
     , methods         :: [(String, MethodSymbolTable)] -- (method name, method symbol) list of methods
     } deriving (Eq, Show)
-
--- Class, Trait, Object
-data ModelType
-    = ClassType
-    | TraitType
-    | ObjectType
-    | NoType
-        deriving (Eq, Show)
 
 data ModelImport = ModelImport [String]
     deriving (Eq, Show)
@@ -41,31 +35,31 @@ data CurrentState = CurrentState
     } deriving (Eq)
 
 extractReturnType :: SymbolTable -> String -> String -> String
-extractReturnType symbolTable modelName mName = do
+extractReturnType symbolTable stModelName mName = do
     let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (modelSymbolTable) )
     if null matchingMethods
-        then error ("No method found: " ++ modelName ++ "::" ++ mName)
+        then error ("No method found: " ++ stModelName ++ "::" ++ mName)
         else returnType $ matchingMethods!!0
   where
     modelSymbolTable =
-        case getModelSymbolTable symbolTable modelName of
+        case getModelSymbolTable symbolTable stModelName of
              Just a -> a
-             Nothing -> error ("No class found: " ++ modelName)
+             Nothing -> error ("No class found: " ++ stModelName)
 
 extractMethodArgs :: SymbolTable -> String -> String -> [(String, String)]
-extractMethodArgs symbolTable modelName mName = do
+extractMethodArgs symbolTable stModelName mName = do
     let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (modelSymbolTable) )
     if null matchingMethods
-        then error ("No method found: " ++ modelName ++ "::" ++ mName)
+        then error ("No method found: " ++ stModelName ++ "::" ++ mName)
         else methodArgs $ matchingMethods!!0
   where
-    modelSymbolTable = case getModelSymbolTable symbolTable modelName of
+    modelSymbolTable = case getModelSymbolTable symbolTable stModelName of
                            Just a -> a
-                           Nothing -> error ("No class found: " ++ modelName)
+                           Nothing -> error ("No class found: " ++ stModelName)
 
 methodExists :: SymbolTable -> String -> String -> Bool
-methodExists symbolTable modelName mName = do
-    case getModelSymbolTable symbolTable modelName of
+methodExists symbolTable stModelName mName = do
+    case getModelSymbolTable symbolTable stModelName of
         Just a -> do
             let matchingMethods = map snd $ filter (\x -> mName == (fst x)) (methods (a) )
             if null matchingMethods
@@ -74,14 +68,14 @@ methodExists symbolTable modelName mName = do
         Nothing -> False
 
 instanceVariableExists :: SymbolTable -> String -> String -> Bool
-instanceVariableExists symbolTable modelName varName = do
-    case getModelSymbolTable symbolTable modelName of
+instanceVariableExists symbolTable stModelName varName = do
+    case getModelSymbolTable symbolTable stModelName of
         Just a -> elem varName $ map fst $ publicVariables a
         Nothing -> False
 
 instanceVariableType :: SymbolTable -> String -> String -> Maybe(String)
-instanceVariableType symbolTable modelName varName = do
-    case getModelSymbolTable symbolTable modelName of
+instanceVariableType symbolTable stModelName varName = do
+    case getModelSymbolTable symbolTable stModelName of
         Just a -> do
             let matchingVars = filter (\var -> varName == fst var) $ publicVariables a
             if (length matchingVars > 0)
@@ -90,8 +84,8 @@ instanceVariableType symbolTable modelName varName = do
         Nothing -> Nothing
 
 methodParamExists :: SymbolTable -> String -> String -> String -> Bool
-methodParamExists symbolTable modelName methodName varName = do
-    case getModelSymbolTable symbolTable modelName of
+methodParamExists symbolTable stModelName methodName varName = do
+    case getModelSymbolTable symbolTable stModelName of
         Just a -> do
             let methodList = map (snd) (filter (\x -> fst x == (methodName)) (methods (a)))
             if null methodList
@@ -102,8 +96,8 @@ methodParamExists symbolTable modelName methodName varName = do
         Nothing -> False
 
 getModelSymbolTable :: SymbolTable -> String -> Maybe ModelSymbolTable
-getModelSymbolTable symbolTable symbolTableModelName = do
-    let matchingModels = filter (\x -> symbolTableModelName == (modelName x)) (modelSymbolTables symbolTable)
+getModelSymbolTable symbolTable symbolTablestModelName = do
+    let matchingModels = filter (\x -> symbolTablestModelName == (stModelName x)) (modelSymbolTables symbolTable)
     if null matchingModels
         then Nothing
         else Just $ matchingModels!!0
@@ -121,10 +115,10 @@ combineSymbolTableList list = SymbolTable []
   --else ClassSymbolTable "" [] []
 
 combineModelSymbolTable :: ModelSymbolTable -> ModelSymbolTable -> ModelSymbolTable
-combineModelSymbolTable a b = ModelSymbolTable (modelName a) (modelType a) (imports a ++ imports b) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
+combineModelSymbolTable a b = ModelSymbolTable (stModelName a) (stModelType a) (imports a ++ imports b) (publicVariables a ++ publicVariables b) (methods a ++ methods b)
 
 combineModelSymbolTableList :: [ModelSymbolTable] -> ModelSymbolTable
 combineModelSymbolTableList list = do
     if length list > 0
         then foldl1 (\x y -> combineModelSymbolTable x y) list
-        else ModelSymbolTable "" NoType [] [] []
+        else ModelSymbolTable "" UnknownModel [] [] []

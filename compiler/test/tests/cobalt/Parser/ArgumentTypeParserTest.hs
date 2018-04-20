@@ -3,9 +3,10 @@ module Parser.ArgumentTypeParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
 
+{-
 testArgumentTypeParser :: Test
 testArgumentTypeParser = do
     let code = "ClassName"
@@ -24,3 +25,4 @@ testArgumentTypeParserReservedWord = do
         (case (parse (argumentTypeParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

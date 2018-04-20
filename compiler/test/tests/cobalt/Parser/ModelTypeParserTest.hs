@@ -1,10 +1,10 @@
-module Parser.Data.ModelTypeParserTest where
+module Parser.ModelTypeParserTest where
 
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Data.ModelType
-import Parser.Data.ModelTypeParser
+import AST.AST
+import Parser.ExprParser
 
 testModelTypeParserClass :: Test
 testModelTypeParserClass = do

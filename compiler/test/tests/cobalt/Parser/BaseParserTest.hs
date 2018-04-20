@@ -6,6 +6,7 @@ import Text.Megaparsec
 
 import Parser.BaseParser
 
+
 -- Symbols
 testSymbolSingle :: Test
 testSymbolSingle = do

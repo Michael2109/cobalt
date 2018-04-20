@@ -3,8 +3,9 @@ module Parser.ModifierBlockParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
+{-
 
 testModifierBlockParserPrivate :: Test
 testModifierBlockParserPrivate = do
@@ -68,3 +69,4 @@ testModifierBlockParserPublicEmpty = do
         (case (parse (modifierBlockParser True) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

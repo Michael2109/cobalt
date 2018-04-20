@@ -3,8 +3,9 @@ module Parser.RExprParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
+{-
 
 testRExprParserGreaterVar :: Test
 testRExprParserGreaterVar = do
@@ -77,3 +78,4 @@ testRExprParserLessEqualInt = do
         (case (parse rExpr "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

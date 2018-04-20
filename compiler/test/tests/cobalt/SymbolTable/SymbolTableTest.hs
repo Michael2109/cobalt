@@ -2,10 +2,11 @@ module SymbolTable.SymbolTableTest where
 
 import Test.HUnit
 
+import AST.AST
 import SymbolTable.SymbolTable
 
 generateModelSymbolTable1 :: ModelSymbolTable
-generateModelSymbolTable1 = ModelSymbolTable "ModelName" ClassType []
+generateModelSymbolTable1 = ModelSymbolTable "ModelName" ClassModel []
     [("x", "int")
     , ("y", "int")
     , ("z", "double")
@@ -13,7 +14,7 @@ generateModelSymbolTable1 = ModelSymbolTable "ModelName" ClassType []
     [("method1", MethodSymbolTable "int" [("i", "int"), ("j", "int"), ("obj", "Object")])]
 
 generateModelSymbolTable2 :: ModelSymbolTable
-generateModelSymbolTable2 = ModelSymbolTable "ModelName" ClassType []
+generateModelSymbolTable2 = ModelSymbolTable "ModelName" ClassModel []
     [("a", "int")
     , ("b", "int")
     , ("c", "double")
@@ -101,5 +102,5 @@ testSymbolTableGetModelSymbolTable = do
     TestCase $ assertEqual "Get model symbol table from symbol table"
         "ModelName" $
         case getModelSymbolTable generateSymbolTable1 "ModelName" of
-            Just a -> modelName (a)
+            Just a -> stModelName (a)
             Nothing -> ""

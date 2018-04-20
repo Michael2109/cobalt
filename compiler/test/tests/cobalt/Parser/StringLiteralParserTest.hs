@@ -3,8 +3,9 @@ module Parser.StringLiteralParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
+{-
 
 testStringLiteralSimple :: Test
 testStringLiteralSimple = do
@@ -156,3 +157,4 @@ testStringLiteralUnfinishedDoubleLineFail = do
 --}
 
 {-- after resolving multiline literal semantics more tests for leading whitespace need to be added --}
+-}

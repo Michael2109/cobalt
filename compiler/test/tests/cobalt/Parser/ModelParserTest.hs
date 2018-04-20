@@ -3,9 +3,21 @@ module Parser.ModelParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
-import AST.Data.Modifier
+import AST.AST
+--
+--import AST.Data.Modifier
 import Parser.ExprParser
+
+testModelParserNew :: Test
+testModelParserNew = do
+    let code = unlines [ "class Test" ]
+    TestCase $ assertEqual code
+        (Model (Name "Test") [] [] Nothing [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> error "Didn't parse correctly"
+             Right x -> x)
+
+{--
 
 testModelParserClass :: Test
 testModelParserClass = do
@@ -373,3 +385,4 @@ testModelParserReordered3 = do
         (case (parse (modelParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+             --}

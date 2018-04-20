@@ -3,8 +3,8 @@ module Parser.ValueTypeParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
 import Parser.ExprParser
+{-
 
 testValueTypeParserOneCharacter :: Test
 testValueTypeParserOneCharacter = do
@@ -59,3 +59,4 @@ testValueTypeParserCapital = do
         (case (parse valueTypeParser "" code) of
              Left  _ -> Error
              Right x -> x)
+-}

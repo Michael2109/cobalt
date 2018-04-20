@@ -3,9 +3,10 @@ module Parser.AnnotationParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
 
+{-
 testAnnotationParserUpper :: Test
 testAnnotationParserUpper = do
     let code = "@ANNOTATION"
@@ -23,3 +24,4 @@ testAnnotationParserLower = do
         (case (parse (annotationParser) "" code) of
              Left  _ -> Error
              Right x -> x)
+-}
