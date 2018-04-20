@@ -21,102 +21,6 @@ import Parser.BaseParser
 import Parser.ParserType
 import SymbolTable.SymbolTable
 
-{--
-modelParser :: Parser Expr
-modelParser = try $ L.nonIndented scn p
-  where
-    p = do
-        package <- optional packageParser
-        imports <- many importParser
-        optional $ L.lineFold scn $ \sp' -> return ()
-        modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
-        modelType <- modelTypeParser
-        name <- identifier
-        typeParam <- optional typeParameterParser
-        paramsOpt <- optional $ parens $ sepBy parameterParser (symbol ",")
-        let params = case paramsOpt of
-                             Just ps -> ps
-                             Nothing -> []
-        extendsKeyword <- optional $ rword "extends"
-        parent <- optional $ identifier
-        parentArgsOpt <- optional $ parens $ sepBy argumentParser (symbol ",")
-        let parentArgs = case parentArgsOpt of
-                             Just ps -> ps
-                             Nothing -> []
-        implementsKeyword <- optional $ rword "implements"
-        interfaces <- sepBy identifier (symbol ",")
-        modifierBlocks <- many $ try $ modifierBlockParser False
-        constructorExprs <- many $ expr'
-        exprs <- many (methodParser name False <|> expr')
-
-        return $
-            case modelType of
-                ClassModel  -> (Class package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
-                ObjectModel -> (Object package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
-                TraitModel  -> (Trait package name typeParam modifiers params parent parentArgs interfaces imports modifierBlocks constructorExprs exprs)
-
-
-arrayElementSelect :: Parser Expr
-arrayElementSelect = do
-    symbol "!!"
-    elementNum <- word
-    return $ ArrayElementSelect elementNum
-
-arrayAppend :: Parser Expr
-arrayAppend = do
-    arrays <- sepBy1 (expr') (symbol "++")
-    return $ ArrayAppend arrays
-
-
-
-objectMethodCallParser :: Parser Expr
-objectMethodCallParser =
-    try $ do
-        objectName <- identifier
-        symbol "."
-        methodName <- identifier
-        args <- parens $ sepBy (argumentParser) (symbol ",")
-        return $ ObjectMethodCall objectName methodName args
-
-newClassInstanceParser :: Parser Expr
-newClassInstanceParser  = do
-    try (rword "new")
-    className <- nameParser
-    arguments <- parens $ sepBy (argumentParser) (symbol ",")
-    return $ (NewClassInstance className arguments)
-
-classVariableParser ::Parser Expr
-classVariableParser  =
-    try $ do
-        className <- identifier
-        symbol "."
-        varName <- identifier
-        return $ ClassVariable className varName
-
-whileParser :: Parser Expr
-whileParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "while"
-        e <- parens (booleanParser )
-        return (L.IndentMany Nothing (return . (While e)) (expr' ))
-
-forLoopParser :: Parser Expr
-forLoopParser  = try $ L.indentBlock scn p
-  where
-    p = do
-        rword "for"
-        symbol "("
-        varName <- identifier
-        symbol "<-"
-        start <- arithmeticParser
-        rword "to"
-        end <- arithmeticParser
-        symbol ")"
-        return (L.IndentMany Nothing (return . (For varName start end)) (expr' ))
---}
-
-
 abstractModifierParser :: Parser Modifier
 abstractModifierParser = Abstract <$ rword "abstract"
 
@@ -157,27 +61,28 @@ bExpr = makeExprParser bTerm bOperators
 
 aOperators :: [[Operator Parser AExpr]]
 aOperators =
-  [ [Prefix (Neg <$ symbol "-") ]
-  , [ InfixL (ABinary Multiply <$ symbol "*")
-    , InfixL (ABinary Divide   <$ symbol "/") ]
-  , [ InfixL (ABinary Add      <$ symbol "+")
-    , InfixL (ABinary Subtract <$ symbol "-") ]
-  ]
+    [ [Prefix (Neg <$ symbol "-") ]
+    , [ InfixL (ABinary Multiply <$ symbol "*")
+      , InfixL (ABinary Divide   <$ symbol "/") ]
+    , [ InfixL (ABinary Add      <$ symbol "+")
+      , InfixL (ABinary Subtract <$ symbol "-") ]
+    ]
 
 bOperators :: [[Operator Parser BExpr]]
 bOperators =
-  [ [Prefix (Not <$ rword "not") ]
-  , [InfixL (BBinary And <$ rword "and")
-    , InfixL (BBinary Or <$ rword "or") ]
-  ]
+    [ [Prefix (Not <$ rword "not") ]
+    , [InfixL (BBinary And <$ rword "and")
+      , InfixL (BBinary Or <$ rword "or") ]
+    ]
 
 aTerm :: Parser AExpr
-aTerm = parens aExpr
-  <|> Var      <$> identifier
-  <|> IntConst <$> integerParser
-  <|> IntConst <$> integerParser
-  <|> IntConst <$> integerParser
-  <|> IntConst <$> integerParser
+aTerm
+    =   parens aExpr
+    <|> Var      <$> identifier
+    <|> IntConst <$> integerParser
+    <|> IntConst <$> integerParser
+    <|> IntConst <$> integerParser
+    <|> IntConst <$> integerParser
 
 bTerm :: Parser BExpr
 bTerm =  parens bExpr
@@ -248,6 +153,20 @@ inlineExpressionParser = f <$> sepBy1 (statementParser) (symbol ";")
     -- if there's only one expr return it without using ‘Seq’
     f l = if length l == 1 then Block [head l] else Block l
 
+forLoopGeneratorParser :: Parser Stmt
+forLoopGeneratorParser  = try $ L.indentBlock scn p
+  where
+    p = do
+      rword "for"
+      symbol "("
+      varName <- identifierParser
+      symbol "<-"
+      start <- aTerm
+      rword "to"
+      end <- aTerm
+      symbol ")"
+      return (L.IndentMany Nothing (return . (For varName start end) . Block) statementParser)
+
 methodParser :: Parser Method
 methodParser = try $ L.indentBlock scn p
   where
@@ -268,18 +187,34 @@ methodCallParser =
         return $ MethodCall methodName (Block args)
 
 modelParser :: Parser Model
-modelParser = try $ L.nonIndented scn p
+modelParser = try $ L.indentBlock scn p
   where
     p = do
+        modifiers <- modifiersParser
         rword "class"
         name <- identifier
-        return $ Model (Name name) [] []
+        fieldsOpt <- optional $ parens $ sepBy fieldParser (symbol ",")
+        let fields = case fieldsOpt of
+                             Just fs -> fs
+                             Nothing -> []
+        extendsKeyword <- optional $ rword "extends"
+        parent <- optional typeRefParser
+        parentArgumentsOpt <- optional $ parens $ sepBy statementParser (symbol ",")
+        let parentArguments = case parentArgumentsOpt of
+                             Just fs -> fs
+                             Nothing -> []
+        implementsKeyword <- optional $ rword "implements"
+        interfaces <- sepBy typeRefParser (symbol ",")
+        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces)) methodParser)
 
 modelTypeParser :: Parser ModelType
 modelTypeParser
     =   ClassModel    <$ rword "class"
     <|> ObjectModel   <$ rword "object"
     <|> TraitModel    <$ rword "trait"
+
+modifiersParser :: Parser [Modifier]
+modifiersParser = many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
 
 nameParser :: Parser Name
 nameParser = do
@@ -293,6 +228,13 @@ nameSpaceParser = try $ L.nonIndented scn p
         try (rword "package")
         locations <- sepBy1 identifier (symbol ".")
         return $ (NameSpace locations)
+
+newClassInstanceParser :: Parser Stmt
+newClassInstanceParser  = do
+    try (rword "new")
+    className <- typeRefParser
+    arguments <- parens $ sepBy statementParser (symbol ",")
+    return $ (NewClassInstance className arguments)
 
 reassignParser :: Parser Stmt
 reassignParser = do
@@ -361,6 +303,14 @@ typeRefParser :: Parser Type
 typeRefParser = do
     name <- identifier
     return (TypeRef $ RefLocal (Name name))
+
+whileParser :: Parser Stmt
+whileParser  = try $ L.indentBlock scn p
+  where
+    p = do
+        rword "while"
+        condition <- parens bTerm
+        return (L.IndentMany Nothing (return . (While condition) . Block) statementParser)
 
 parser :: Parser Module
 parser = do

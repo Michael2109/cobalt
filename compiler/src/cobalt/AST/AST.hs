@@ -40,10 +40,13 @@ data Modifier
     | Final
     deriving (Eq, Show)
 
-
 data Model = Model
     { modelName :: Name
+    , modelModifiers :: [Modifier]
     , modelFields :: [Field]
+    , modelParent :: Maybe Type
+    , modelParentArguments :: [Stmt]
+    , modelInterfaces :: [Type]
     , modelMethods :: [Method]
     }
     deriving (Show, Eq)
@@ -104,8 +107,8 @@ data Expr
     deriving (Show, Eq)
 
 data Stmt
-    = For Expr
-    | While Expr
+    = For Stmt AExpr AExpr Expr
+    | While BExpr Expr
     | If Conditional (Maybe Conditional) (Maybe Conditional)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name Expr
@@ -114,6 +117,7 @@ data Stmt
     | Return Expr
     | Identifier Name
     | MethodCall Name Expr
+    | NewClassInstance Type [Stmt]
     | StringLiteral String
     deriving (Show, Eq)
 

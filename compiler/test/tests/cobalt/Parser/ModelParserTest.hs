@@ -12,7 +12,7 @@ testModelParserNew :: Test
 testModelParserNew = do
     let code = unlines [ "class Test" ]
     TestCase $ assertEqual code
-        (Model (Name "Test") [] [])
+        (Model (Name "Test") [] [] Nothing [] [] [])
         (case (parse (modelParser) "" code) of
              Left  _ -> error "Didn't parse correctly"
              Right x -> x)
