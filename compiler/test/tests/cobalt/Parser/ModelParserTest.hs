@@ -24,7 +24,7 @@ testModelParserInner = do
     TestCase $ assertEqual code
         (Model {modelName = Name "OuterClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelMethods = [ModelDef (Model {modelName = Name "InnerClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelMethods = []})]})
         (case (parse (modelParser) "" code) of
-             Left  _ -> error "Didn't parse correctly"
+             Left  e -> error (show e)
              Right x -> x)
 
 {--
