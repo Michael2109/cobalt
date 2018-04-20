@@ -13,8 +13,8 @@ testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do
     let code = "exampleMethod (): Int"
     TestCase $ assertEqual code
-        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
-        (case (parse methodParser "" code) of
+        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
+        (case (parse methodDefParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
 
@@ -22,8 +22,8 @@ testMethodParserMultipleParams :: Test
 testMethodParserMultipleParams = do
     let code = "exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
-        (case (parse methodParser "" code) of
+        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (case (parse methodDefParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
 
@@ -32,8 +32,8 @@ testMethodParserModifierPublic :: Test
 testMethodParserModifierPublic = do
     let code = "member exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
-        (case (parse (methodParser) "" code) of
+        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (case (parse (methodDefParser) "" code) of
              Left  e -> error (show e)
              Right x -> x)
 

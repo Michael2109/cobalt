@@ -103,7 +103,9 @@ relation = (symbol ">" *> pure Greater)
 
 expressionParser :: Parser Expr
 expressionParser
-    = Block <$> many statementParser
+    = modelDefParser
+    <|> methodDefParser
+    <|> Block <$> many statementParser
 
 fieldParser :: Parser Field
 fieldParser = do
@@ -172,12 +174,15 @@ methodParser = try $ L.indentBlock scn p
   where
     p = do
       annotations <- many annotationParser
-      modifiers <- many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+      modifiers <- modifiersParser
       name <- identifier
       fields <- parens $ sepBy fieldParser $ symbol ","
       symbol ":"
       returnType <- typeRefParser
       return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
+
+methodDefParser :: Parser Expr
+methodDefParser = MethodDef <$> methodParser
 
 methodCallParser :: Parser Stmt
 methodCallParser =
@@ -205,7 +210,10 @@ modelParser = try $ L.indentBlock scn p
                              Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy typeRefParser (symbol ",")
-        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces)) methodParser)
+        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces)) expressionParser)
+
+modelDefParser :: Parser Expr
+modelDefParser = ModelDef <$> modelParser
 
 modelTypeParser :: Parser ModelType
 modelTypeParser
@@ -248,13 +256,13 @@ reassignParser = do
 returnStatementParser :: Parser Stmt
 returnStatementParser = do
     rword "return"
-    name <- identifier
-    expression <- expressionParser
-    return $ Return expression
+    statement <- statementParser
+    return $ Return statement
 
 statementParser :: Parser Stmt
 statementParser = returnStatementParser
     <|> identifierParser
+
 
 stringLiteralParser :: Parser Stmt
 stringLiteralParser = do

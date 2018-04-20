@@ -8,11 +8,21 @@ import AST.AST
 --import AST.Data.Modifier
 import Parser.ExprParser
 
-testModelParserNew :: Test
-testModelParserNew = do
+testModelParser :: Test
+testModelParser = do
     let code = unlines [ "class Test" ]
     TestCase $ assertEqual code
         (Model (Name "Test") [] [] Nothing [] [] [])
+        (case (parse (modelParser) "" code) of
+             Left  _ -> error "Didn't parse correctly"
+             Right x -> x)
+
+testModelParserInner :: Test
+testModelParserInner = do
+    let code = unlines [ "class OuterClass"
+                       , "    class InnerClass"]
+    TestCase $ assertEqual code
+        (Model {modelName = Name "OuterClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelMethods = [ModelDef (Model {modelName = Name "InnerClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelMethods = []})]})
         (case (parse (modelParser) "" code) of
              Left  _ -> error "Didn't parse correctly"
              Right x -> x)

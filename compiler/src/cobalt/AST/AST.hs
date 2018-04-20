@@ -47,7 +47,7 @@ data Model = Model
     , modelParent :: Maybe Type
     , modelParentArguments :: [Stmt]
     , modelInterfaces :: [Type]
-    , modelMethods :: [Method]
+    , modelMethods :: [Expr]
     }
     deriving (Show, Eq)
 
@@ -102,7 +102,8 @@ data IntConstant = IntConstant Integer
 data Expr
     = Call Expr [Expr]
     | Ternary Expr Expr Expr
-    -- | ...
+    | ModelDef Model
+    | MethodDef Method
     | Block [Stmt]
     deriving (Show, Eq)
 
@@ -114,7 +115,7 @@ data Stmt
     | Assign Name Expr
     | Reassign Name Expr
     | BareExpr Expr
-    | Return Expr
+    | Return Stmt
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type [Stmt]

@@ -39,9 +39,7 @@ parserTestList :: Test
 parserTestList = TestList
     -- BaseParser
     [
-      testModelParserNew
-
-      ,testSymbolSingle
+        testSymbolSingle
       , testSymbolMultiple
       , testSymbolFail
       , testReservedWord
@@ -202,6 +200,8 @@ parserTestList = TestList
     --, testAbstractModifierParser
     --, testFinalModifierParser
 
+      , testModelParser
+      , testModelParserInner
     --, testModelParserClass
     --, testModelParserTrait
     --, testModelParserObject
