@@ -5,7 +5,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Pos
 import Data.List.NonEmpty
 
-import AST.Block
+
 import AST.AST
 import Parser.ExprParser
 

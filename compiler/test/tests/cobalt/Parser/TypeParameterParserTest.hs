@@ -3,7 +3,7 @@ module Parser.TypeParameterParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-import AST.Block
+
 import Parser.ExprParser
 {-
 
