@@ -332,7 +332,7 @@ tryBlockParser  = do
 tupleParser :: Parser Stmt
 tupleParser =
     try $ do
-        values <- sepBy identifierParser (symbol ",")
+        values <- parens $ sepBy identifierParser (symbol ",")
         return $ Tuple values
 
 typeParameterParser :: Parser [Type]

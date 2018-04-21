@@ -337,11 +337,11 @@ val y = new ClassName() // Determines that y is a ClassName instance
 ### Tuple
 Defining a tuple
 ```
-x, y
+(x, y)
 ```
 Returning a tuple with a method
 ```
-let example() = x, y
+let example() = (x, y)
 ```
 Multiple assignment
 ```
