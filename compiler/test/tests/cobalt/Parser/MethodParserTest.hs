@@ -11,7 +11,7 @@ import Parser.ExprParser
 
 testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do
-    let code = "exampleMethod (): Int"
+    let code = "let exampleMethod (): Int"
     TestCase $ assertEqual code
         (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
         (case (parse methodDefParser "" code) of
@@ -20,7 +20,7 @@ testMethodParserEmptyParams = do
 
 testMethodParserMultipleParams :: Test
 testMethodParserMultipleParams = do
-    let code = "exampleMethod (a: Int, b: Int): Int"
+    let code = "let exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
         (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
         (case (parse methodDefParser "" code) of
@@ -30,7 +30,7 @@ testMethodParserMultipleParams = do
 -- Modifiers
 testMethodParserModifierPublic :: Test
 testMethodParserModifierPublic = do
-    let code = "member exampleMethod (a: Int, b: Int): Int"
+    let code = "member let exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
         (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
         (case (parse (methodDefParser) "" code) of
