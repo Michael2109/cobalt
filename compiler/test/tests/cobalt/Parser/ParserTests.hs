@@ -122,12 +122,12 @@ parserTestList = TestList
 
     , testForLoopGeneratorParser
 
-    --, testIdentifierParserOneCharacter
+    , testIdentifierParserOneCharacter
     --, testIdentifierParserDigitFail
-    --, testIdentifierParserContainsUnderscore
-    --, testIdentifierParserContainsDigit
+    , testIdentifierParserContainsUnderscore
+    , testIdentifierParserContainsDigit
     --, testIdentifierParserStartsDigitFail
-    --, testIdentifierParserCapital
+    , testIdentifierParserCapital
 
     , testIfStmtParserBooleanTrue
     , testIfStmtParserBooleanFalse
