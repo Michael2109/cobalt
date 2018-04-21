@@ -44,14 +44,16 @@ assignParser = do
     let immutable = case mutableOpt of
                         Nothing -> True
                         Just _  -> False
-    varName <- identifier
+    varNames <- sepBy nameParser (symbol ",")
     varType <- optional $ do
         symbol ":"
         vType <- typeRefParser
         return vType
     symbol "="
     expression <- expressionParser
-    return $ Assign (Name varName) expression
+    if length varNames <= 1
+        then return $ Assign (varNames!!0) expression
+        else return $ AssignMultiple varNames expression
 
 aExpr :: Parser AExpr
 aExpr = makeExprParser aTerm aOperators

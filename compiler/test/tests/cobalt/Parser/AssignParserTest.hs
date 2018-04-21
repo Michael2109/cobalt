@@ -3,8 +3,26 @@ module Parser.AssignParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-
+import AST.AST
 import Parser.ExprParser
+
+testAssignParser :: Test
+testAssignParser = do
+    let code = "let x: Int = y"
+    TestCase $ assertEqual code
+        (Assign (Name "x") (Block [Identifier (Name "y")]))
+        (case (parse assignParser "" code) of
+             Left  e -> error $ show e
+             Right x -> x)
+
+testAssignParserMultiple :: Test
+testAssignParserMultiple = do
+    let code = "let x,y = z"
+    TestCase $ assertEqual code
+        (AssignMultiple [Name "x",Name "y"] (Block [Identifier (Name "z")]))
+        (case (parse assignParser "" code) of
+             Left  e -> error $ show e
+             Right x -> x)
 
 {-
 testAssignParserValWithType :: Test

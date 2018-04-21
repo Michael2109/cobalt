@@ -111,6 +111,7 @@ data Stmt
     | If Conditional (Maybe Conditional) (Maybe Conditional)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name Expr
+    | AssignMultiple [Name] Expr
     | Reassign Name Expr
     | BareExpr Expr
     | Return Stmt

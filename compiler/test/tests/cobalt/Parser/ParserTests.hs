@@ -91,6 +91,8 @@ parserTestList = TestList
     --, testArithmeticParserMultiply
     --, testArithmeticParserDivide
 
+    , testAssignParser
+    , testAssignParserMultiple
     --, testAssignParserValWithType
     --, testAssignParserValWithoutType
     --, testAssignParserWithoutVal
