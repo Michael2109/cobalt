@@ -16,9 +16,7 @@ import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 
 import AST.AST
---import AST.Block
---import AST.IRNode
---import AST.CodeGenNode
+import AST.CodeGen
 import Parser.ParserExecutor
 import JVM.ClassFile
 import JVM.Converter
@@ -58,7 +56,7 @@ generateModelSymbolTable ast = error "Needs reimplementing"
 
 compile :: [CommandLineArgument] -> FilePath -> [FilePath] -> String -> IO ()
 compile commandLineArguments classPath filePaths outputDir = do
-    {--
+
     classPathFilePaths <- traverseDir classPath ""
     let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
@@ -79,22 +77,18 @@ compile commandLineArguments classPath filePaths outputDir = do
     let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
 
     sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
-    --}
+
     return ()
 
 generateAST :: FilePath -> String -> ASTData
 generateAST inputFile code = do
-    {--
     let parseResult = parseTree (Split.splitOn "/" $ (takeDirectory inputFile)) code
     let symbolTable = SymbolTable [generateModelSymbolTable parseResult]
-
     let ast = case parseResult of
                   Left  e -> error $ show e
                   Right x -> x
 
     ASTData inputFile symbolTable ast
-    --}
-    error "Needs reimplementing"
 
 compileAST :: Module -> SymbolTable -> B.ByteString
-compileAST ast symbolTable = error "Needs reimplementing" -- encodeClass (generate [] (pack "Test") (genCode $ genCodeGenIR (genIR ast symbolTable (CurrentState "" ""))))
+compileAST ast symbolTable = encodeClass (generate [] (pack "Test") (genCode ast))

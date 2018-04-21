@@ -1,9 +1,6 @@
+package game
+
 class Alien(x: int, y: int) extends Sprite
-
-public
-  val bomb: Bomb = new Bomb(x, y)
-
-initAlien(x,y)
 
 exampleMethod (a: Int, b: Int): Int
 
