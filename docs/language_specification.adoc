@@ -678,21 +678,23 @@ Undefined
 
 ### Anonymous Functions
 Very similar to Scala - New syntax to be defined with similar concepts
-#### Successor function for integers
+
+#### Lambda
+Inline
 ```
-(x: int) => x + 1
+fun value -> value * 2
 ```
-#### Function with multiple parameters
+Do block
 ```
-(x: int, y: int) => "(" + x + ", " + y + ")"
+fun value -> do
+    # Do something
+    value * 2
 ```
-#### Function with no parameters
-```
-() => println("Hello World")
-```
+
+
 #### Defining a value as a function
 ```
-val example:int = (x: int) => x + 1
+let example:Int = fun (x: Int) -> x + 1
 ```
 {nbsp} +
 
