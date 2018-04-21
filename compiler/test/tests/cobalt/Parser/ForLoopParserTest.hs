@@ -3,18 +3,16 @@ module Parser.ForLoopParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-
+import AST.AST
 import Parser.ExprParser
 
-{-
-testForLoopParser :: Test
-testForLoopParser = do
+testForLoopGeneratorParser :: Test
+testForLoopGeneratorParser = do
     let code = unlines [ "for(i <- 0 to 10)"
-                       , "  println(i)"
+                       , "  i"
                        ]
     TestCase $ assertEqual code
-        (For "i" (IntConst 0) (IntConst 10) [Print $ Identifier "i"])
-        (case (parse (forLoopParser) "" code) of
-             Left  _ -> Error
+        (For (Identifier $ Name "i") (IntConst 0) (IntConst 10) (Block [Identifier $ Name "i"]))
+        (case (parse (forLoopGeneratorParser) "" code) of
+             Left  e -> error $ show e
              Right x -> x)
--}

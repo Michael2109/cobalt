@@ -112,21 +112,6 @@ parserTestList = TestList
     --, testBooleanParserGreaterThanEqualVar
     --, testBooleanParserGreaterThanEqualInt
 
-    --, testModelParserPublic
-    --, testModelParserProtected
-    --, testModelParserPrivate
-    --, testModelParserPublicAbstract
-    --, testModelParserPrivate
-    --, testModelParserPrivateAbstract
-    --, testModelParserAbstract
-    --, testModelParserPublicFinal
-    --, testModelParserProtectedFinal
-    --, testModelParserPrivateFinal
-    --, testModelParserFinal
-    --, testModelParserReordered1
-    --, testModelParserReordered2
-    --, testModelParserReordered3
-
     --, testClassVariableParser
 
     --, testClassVariableParser
@@ -135,7 +120,7 @@ parserTestList = TestList
     --, testClassVariableParserMissingVar
     --, testClassVariableParserMissingClassName
 
-    --, testForLoopParser
+    , testForLoopGeneratorParser
 
     --, testIdentifierParserOneCharacter
     --, testIdentifierParserDigitFail
@@ -224,6 +209,21 @@ parserTestList = TestList
     --, testModelParserModifierBlock
     --, testModelParserConstructorBody
     --, testModelParserMethods
+
+    --, testModelParserPublic
+    --, testModelParserProtected
+    --, testModelParserPrivate
+    --, testModelParserPublicAbstract
+    --, testModelParserPrivate
+    --, testModelParserPrivateAbstract
+    --, testModelParserAbstract
+    --, testModelParserPublicFinal
+    --, testModelParserProtectedFinal
+    --, testModelParserPrivateFinal
+    --, testModelParserFinal
+    --, testModelParserReordered1
+    --, testModelParserReordered2
+    --, testModelParserReordered3
 
     --, testModelTypeParserClass
     --, testModelTypeParserObject

@@ -117,6 +117,20 @@ fieldParser = do
 finalModifierParser :: Parser Modifier
 finalModifierParser = Final <$ rword "final"
 
+forLoopGeneratorParser :: Parser Stmt
+forLoopGeneratorParser  = try $ L.indentBlock scn p
+  where
+    p = do
+      rword "for"
+      symbol "("
+      varName <- identifierParser
+      symbol "<-"
+      start <- aTerm
+      rword "to"
+      end <- aTerm
+      symbol ")"
+      return (L.IndentMany Nothing (return . (For varName start end) . Block) statementParser)
+
 identifierParser :: Parser Stmt
 identifierParser = do
     name <- nameParser
@@ -155,19 +169,6 @@ inlineExpressionParser = f <$> sepBy1 (statementParser) (symbol ";")
     -- if there's only one expr return it without using ‘Seq’
     f l = if length l == 1 then Block [head l] else Block l
 
-forLoopGeneratorParser :: Parser Stmt
-forLoopGeneratorParser  = try $ L.indentBlock scn p
-  where
-    p = do
-      rword "for"
-      symbol "("
-      varName <- identifierParser
-      symbol "<-"
-      start <- aTerm
-      rword "to"
-      end <- aTerm
-      symbol ")"
-      return (L.IndentMany Nothing (return . (For varName start end) . Block) statementParser)
 
 methodParser :: Parser Method
 methodParser = try $ L.indentBlock scn p
