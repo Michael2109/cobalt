@@ -12,7 +12,7 @@ testModelParser :: Test
 testModelParser = do
     let code = unlines [ "class Test" ]
     TestCase $ assertEqual code
-        (Model (Name "Test") [] [] Nothing [] [] [])
+        (Model (Name "Test") [] [] Nothing [] [] (Block []))
         (case (parse (modelParser) "" code) of
              Left  _ -> error "Didn't parse correctly"
              Right x -> x)
@@ -22,7 +22,7 @@ testModelParserInner = do
     let code = unlines [ "class OuterClass"
                        , "    class InnerClass"]
     TestCase $ assertEqual code
-        (Model {modelName = Name "OuterClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelMethods = [ModelDef (Model {modelName = Name "InnerClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelMethods = []})]})
+        ( Model {modelName = Name "OuterClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = Block [ModelDef (Model {modelName = Name "InnerClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = Block []})]})
         (case (parse (modelParser) "" code) of
              Left  e -> error (show e)
              Right x -> x)

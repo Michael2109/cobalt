@@ -13,10 +13,12 @@ import Parser.ArithmeticParserTest
 import Parser.AssignParserTest
 import Parser.BooleanParserTest
 import Parser.ClassVariableParserTest
+import Parser.DoBlockParserTest
 import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
 import Parser.IfElseStatementParserTest
 import Parser.ImportParserTest
+import Parser.LambdaParserTest
 import Parser.MethodCallParserTest
 import Parser.MethodParserTest
 import Parser.ModelTypeParserTest
@@ -146,6 +148,8 @@ parserTestList = TestList
     --, testImportParserUnderscore
     --, testImportParserMultipleUnderscore
     --, testImportParserContainsDigit
+
+    , testLambdaParser
 
     --, testMethodCallParser
 

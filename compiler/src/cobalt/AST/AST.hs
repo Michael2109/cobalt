@@ -17,7 +17,7 @@ data Method = Method
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: Type
-    , methodBody :: [Expr]
+    , methodBody :: Expr
     }
     deriving (Show, Eq)
 
@@ -47,7 +47,7 @@ data Model = Model
     , modelParent :: Maybe Type
     , modelParentArguments :: [Stmt]
     , modelInterfaces :: [Type]
-    , modelMethods :: [Expr]
+    , modelBody :: Expr
     }
     deriving (Show, Eq)
 
@@ -102,8 +102,6 @@ data IntConstant = IntConstant Integer
 data Expr
     = Call Expr [Expr]
     | Ternary Expr Expr Expr
-    | ModelDef Model
-    | MethodDef Method
     | Block [Stmt]
     deriving (Show, Eq)
 
@@ -117,9 +115,12 @@ data Stmt
     | BareExpr Expr
     | Return Stmt
     | Identifier Name
+    | Lambda Stmt Expr
     | MethodCall Name Expr
     | NewClassInstance Type [Stmt]
     | StringLiteral String
+    | ModelDef Model
+    | MethodDef Method
     deriving (Show, Eq)
 
 data Conditional

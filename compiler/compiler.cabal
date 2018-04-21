@@ -179,11 +179,13 @@ test-suite compiler-test
       Parser.BooleanParserTest
       Parser.ClassVariableParserTest
       Parser.ConstructorParserTest
+      Parser.DoBlockParserTest
       Parser.ForLoopParserTest
       Parser.GlobalVariableParserTest
       Parser.IdentifierParserTest
       Parser.IfElseStatementParserTest
       Parser.ImportParserTest
+      Parser.LambdaParserTest
       Parser.MethodCallParserTest
       Parser.MethodParserTest
       Parser.ModelTypeParserTest

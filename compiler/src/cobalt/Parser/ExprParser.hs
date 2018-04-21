@@ -103,9 +103,7 @@ relation = (symbol ">" *> pure Greater)
 
 expressionParser :: Parser Expr
 expressionParser
-    = modelDefParser
-    <|> methodDefParser
-    <|> Block <$> many statementParser
+    = Block <$> many statementParser
 
 fieldParser :: Parser Field
 fieldParser = do
@@ -169,19 +167,41 @@ inlineExpressionParser = f <$> sepBy1 (statementParser) (symbol ";")
     -- if there's only one expr return it without using ‘Seq’
     f l = if length l == 1 then Block [head l] else Block l
 
+lambdaParser :: Parser Stmt
+lambdaParser = do
+    lambda <- choice [lambdaDoBlock, lambdaInline]
+    return lambda
+  where
+    lambdaInline = do
+        try $ do
+            rword "fun"
+            id <- identifierParser
+            statements <- some statementParser
+            return $ Lambda id (Block statements)
+    lambdaDoBlock = L.indentBlock scn p
+      where
+        p = do
+          try $ do
+              rword "fun"
+              id <- identifierParser
+              symbol "->"
+              rword "do"
+              return (L.IndentSome Nothing (return . (Lambda id) . Block) statementParser)
 
 methodParser :: Parser Method
-methodParser = try $ L.indentBlock scn p
+methodParser = L.indentBlock scn p
   where
     p = do
-      annotations <- many annotationParser
-      modifiers <- modifiersParser
-      rword "let"
+      (annotations, modifiers) <- try $ do
+          anns <- many annotationParser
+          mods <- modifiersParser
+          rword "let"
+          return (anns, mods)
       name <- identifier
       fields <- parens $ sepBy fieldParser $ symbol ","
       symbol ":"
       returnType <- typeRefParser
-      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType)) expressionParser)
+      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
 
 methodCallParser :: Parser Stmt
 methodCallParser =
@@ -190,15 +210,17 @@ methodCallParser =
         args <- parens $ sepBy statementParser (symbol ",")
         return $ MethodCall methodName (Block args)
 
-methodDefParser :: Parser Expr
+methodDefParser :: Parser Stmt
 methodDefParser = MethodDef <$> methodParser
 
 modelParser :: Parser Model
-modelParser = try $ L.indentBlock scn p
+modelParser = L.indentBlock scn p
   where
     p = do
-        modifiers <- modifiersParser
-        rword "class"
+        modifiers <- try $ do
+            mods <- modifiersParser
+            rword "class"
+            return mods
         name <- identifier
         fieldsOpt <- optional $ parens $ sepBy fieldParser (symbol ",")
         let fields = case fieldsOpt of
@@ -212,9 +234,9 @@ modelParser = try $ L.indentBlock scn p
                              Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy typeRefParser (symbol ",")
-        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces)) expressionParser)
+        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces) . Block) statementParser)
 
-modelDefParser :: Parser Expr
+modelDefParser :: Parser Stmt
 modelDefParser = ModelDef <$> modelParser
 
 modelTypeParser :: Parser ModelType
@@ -262,9 +284,10 @@ returnStatementParser = do
     return $ Return statement
 
 statementParser :: Parser Stmt
-statementParser = returnStatementParser
+statementParser = modelDefParser
+    <|> methodDefParser
+    <|> returnStatementParser
     <|> identifierParser
-
 
 stringLiteralParser :: Parser Stmt
 stringLiteralParser = do
