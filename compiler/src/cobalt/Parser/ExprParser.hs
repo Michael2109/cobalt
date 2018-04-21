@@ -181,7 +181,7 @@ methodParser = try $ L.indentBlock scn p
       fields <- parens $ sepBy fieldParser $ symbol ","
       symbol ":"
       returnType <- typeRefParser
-      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
+      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType)) expressionParser)
 
 methodCallParser :: Parser Stmt
 methodCallParser =
@@ -192,7 +192,6 @@ methodCallParser =
 
 methodDefParser :: Parser Expr
 methodDefParser = MethodDef <$> methodParser
-
 
 modelParser :: Parser Model
 modelParser = try $ L.indentBlock scn p
@@ -258,7 +257,7 @@ reassignParser = do
 
 returnStatementParser :: Parser Stmt
 returnStatementParser = do
-    rword "return"
+    try $ rword "return"
     statement <- statementParser
     return $ Return statement
 

@@ -151,6 +151,7 @@ parserTestList = TestList
 
     , testMethodParserEmptyParams
     , testMethodParserMultipleParams
+    , testMethodParserNestedMethod
     --, testMethodParserMissingNameError
     --, testMethodParserMissingParens
     --, testMethodParserMissingName

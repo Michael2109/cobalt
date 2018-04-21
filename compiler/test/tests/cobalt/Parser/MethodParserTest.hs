@@ -13,7 +13,7 @@ testMethodParserEmptyParams :: Test
 testMethodParserEmptyParams = do
     let code = "let exampleMethod (): Int"
     TestCase $ assertEqual code
-        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []})
+        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = []})
         (case (parse methodDefParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
@@ -22,7 +22,20 @@ testMethodParserMultipleParams :: Test
 testMethodParserMultipleParams = do
     let code = "let exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = []})
+        (case (parse methodDefParser "" code) of
+             Left  e -> error $ show e
+             Right x -> x)
+
+testMethodParserNestedMethod :: Test
+testMethodParserNestedMethod = do
+    let code = unlines [ "let outerMethod (): Int"
+                       , "    let innerMethod (): Int"
+                       , "        i"
+                       , "    j"
+                       ]
+    TestCase $ assertEqual code
+        (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = [Block [Identifier (Name "i")]]}),Block [Identifier (Name "j")]]}))
         (case (parse methodDefParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
@@ -32,7 +45,7 @@ testMethodParserModifierPublic :: Test
 testMethodParserModifierPublic = do
     let code = "member let exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = []})
         (case (parse (methodDefParser) "" code) of
              Left  e -> error (show e)
              Right x -> x)
