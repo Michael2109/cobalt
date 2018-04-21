@@ -169,24 +169,28 @@ inlineExpressionParser = f <$> sepBy1 (statementParser) (symbol ";")
 
 lambdaParser :: Parser Stmt
 lambdaParser = do
-    lambda <- choice [try lambdaDoBlock, try lambdaInline]
+    lambda <- choice [lambdaDoBlock, lambdaInline]
     return lambda
   where
     lambdaInline = do
-        rword "fun"
-        id <- identifierParser
+        id <- try $ do
+            rword "fun"
+            id <- identifierParser
+            symbol "->"
+            return id
         statements <- some statementParser
         return $ Lambda id (Block statements)
     lambdaDoBlock = L.indentBlock scn p
       where
         p = do
-          id <- try $ do
-              rword "fun"
-              id <- identifierParser
-              symbol "->"
-              rword "do"
-              return id
-          return (L.IndentSome Nothing (return . (Lambda id) . Block) statementParser)
+            id <- try $ do
+                rword "fun"
+                id <- identifierParser
+                symbol "->"
+                rword "do"
+                return id
+            return (L.IndentSome Nothing (return . (Lambda id) . Block) statementParser)
+
 
 methodParser :: Parser Method
 methodParser = L.indentBlock scn p
