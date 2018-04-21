@@ -119,6 +119,7 @@ data Stmt
     | MethodCall Name Expr
     | NewClassInstance Type [Stmt]
     | StringLiteral String
+    | Tuple [Stmt]
     | ModelDef Model
     | MethodDef Method
     deriving (Show, Eq)

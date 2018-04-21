@@ -34,6 +34,7 @@ import Parser.ParenthesesParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
 import Parser.ThisVarParserTest
+import Parser.TupleParserTest
 import Parser.TypeParameterParserTest
 import Parser.ValueTypeParserTest
 
@@ -307,7 +308,7 @@ parserTestList = TestList
     --, testThisVarParserContainsDigit
     --, testThisVarParserContainsUnderscore
     --, testThisVarParserNotThisFail
-
+    , testTupleParser
     --, testTypeParameterParser
     --, testTypeParameterParserMissingLeft
     --, testTypeParameterParserMissingRight

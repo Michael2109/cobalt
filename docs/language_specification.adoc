@@ -334,6 +334,21 @@ val y = new ClassName() // Determines that y is a ClassName instance
 ```
 {nbsp} +
 
+### Tuple
+Defining a tuple
+```
+x, y
+```
+Returning a tuple with a method
+```
+let example() = x, y
+```
+Multiple assignment
+```
+let example() = 10, 20
+let x, y = example() # x = 10, y = 20
+```
+
 ### Casting
 ```
 val dog: Animal = new Dog()
