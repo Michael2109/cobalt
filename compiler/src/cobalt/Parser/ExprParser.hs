@@ -39,21 +39,42 @@ annotationParser = do
 
 assignParser :: Parser Stmt
 assignParser = do
-    try (rword "let")
-    mutableOpt <- optional $ rword "mutable"
-    let immutable = case mutableOpt of
-                        Nothing -> True
-                        Just _  -> False
-    varNames <- sepBy nameParser (symbol ",")
-    varType <- optional $ do
-        symbol ":"
-        vType <- typeRefParser
-        return vType
-    symbol "="
-    expression <- expressionParser
-    if length varNames <= 1
-        then return $ Assign (varNames!!0) expression
-        else return $ AssignMultiple varNames expression
+    assign <- choice [assignDoBlock, assignInline]
+    return assign
+  where
+    assignInline = do
+        (immutable, varNames, varType) <- try $ do
+            start <- assignStart
+            return start
+        statements <- some statementParser
+        if length varNames <= 1
+            then return $ Assign (varNames!!0) (Block statements)
+            else return $ AssignMultiple varNames (Block statements)
+    assignDoBlock = L.indentBlock scn p
+      where
+        p = do
+            (immutable, varNames, varType) <- try $ do
+                start <- assignStart
+                rword "do"
+                return start
+            if length varNames <= 1
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0)) . Block) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames) . Block) statementParser
+    assignStart = do
+        start <- try $ do
+            rword "let"
+            mutableOpt <- optional $ rword "mutable"
+            let immutable = case mutableOpt of
+                                Nothing -> True
+                                Just _  -> False
+            varNames <- sepBy nameParser (symbol ",")
+            varType <- optional $ do
+                symbol ":"
+                vType <- typeRefParser
+                return vType
+            symbol "="
+            return (immutable, varNames, varType)
+        return start
 
 aExpr :: Parser AExpr
 aExpr = makeExprParser aTerm aOperators
@@ -175,24 +196,28 @@ lambdaParser = do
     return lambda
   where
     lambdaInline = do
-        id <- try $ do
-            rword "fun"
-            id <- identifierParser
-            symbol "->"
-            return id
+        (id, returnType) <- lambdaStart
         statements <- some statementParser
-        return $ Lambda id (Block statements)
+        return $ Lambda id returnType (Block statements)
     lambdaDoBlock = L.indentBlock scn p
       where
         p = do
-            id <- try $ do
-                rword "fun"
-                id <- identifierParser
-                symbol "->"
+            (id, returnType) <- try $ do
+                start <- lambdaStart
                 rword "do"
-                return id
-            return (L.IndentSome Nothing (return . (Lambda id) . Block) statementParser)
-
+                return start
+            return (L.IndentSome Nothing (return . (Lambda id returnType) . Block) statementParser)
+    lambdaStart = do
+        (id, returnType) <- try $ do
+            rword "fun"
+            optional $ symbol "("
+            id <- identifierParser
+            optional $ symbol ":"
+            returnType <- optional typeRefParser
+            optional $ symbol ")"
+            symbol "->"
+            return (id, returnType)
+        return (id, returnType)
 
 methodParser :: Parser Method
 methodParser = L.indentBlock scn p

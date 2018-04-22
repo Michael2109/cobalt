@@ -116,7 +116,7 @@ data Stmt
     | BareExpr Expr
     | Return Stmt
     | Identifier Name
-    | Lambda Stmt Expr
+    | Lambda Stmt (Maybe Type) Expr
     | MethodCall Name Expr
     | NewClassInstance Type [Stmt]
     | StringLiteral String

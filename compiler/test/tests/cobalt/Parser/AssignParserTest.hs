@@ -8,12 +8,23 @@ import Parser.ExprParser
 
 testAssignParser :: Test
 testAssignParser = do
-    let code = "let x: Int = y"
-    TestCase $ assertEqual code
-        (Assign (Name "x") (Block [Identifier (Name "y")]))
-        (case (parse assignParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeInline = "let x: Int = y"
+    let testInline = TestCase $ assertEqual codeInline
+                        (Assign (Name "x") (Block [Identifier (Name "y")]))
+                        (case (parse assignParser "" codeInline) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+
+    let codeDoBlock = unlines [ "let x: Int = do"
+                              , "    x"
+                              , "    y"
+                              ]
+    let testDoBlock = TestCase $ assertEqual codeDoBlock
+                        (Assign (Name "x") (Block [Identifier (Name "x"),Identifier (Name "y")]))
+                        (case (parse assignParser "" codeDoBlock) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+    TestList [testInline, testDoBlock]
 
 testAssignParserMultiple :: Test
 testAssignParserMultiple = do
