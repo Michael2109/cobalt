@@ -213,7 +213,7 @@ lambdaParser = do
             optional $ symbol "("
             id <- identifierParser
             optional $ symbol ":"
-            returnType <- optional typeRefParser
+            varType <- optional typeRefParser
             optional $ symbol ")"
             symbol "->"
             return (id, returnType)
