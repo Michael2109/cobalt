@@ -705,6 +705,14 @@ fun value -> do
     # Do something
     value * 2
 ```
+Multiple values
+```
+fun a b c -> # Do something
+```
+Multiple values with types
+```
+fun (a:Int) (b:String) (c:Long) -> # Do something
+```
 
 
 #### Defining a value as a function
