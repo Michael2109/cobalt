@@ -22,7 +22,7 @@ testMethodParserMultipleParams :: Test
 testMethodParserMultipleParams = do
     let code = "let exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []}))
         (case (parse methodDefParser "" code) of
              Left  e -> error $ show e
              Right x -> x)
@@ -45,7 +45,7 @@ testMethodParserModifierPublic :: Test
 testMethodParserModifierPublic = do
     let code = "member let exampleMethod (a: Int, b: Int): Int"
     TestCase $ assertEqual code
-        (MethodDef $ Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = TypeRef (RefLocal (Name "Int")), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")),methodBody = Block []})
+        (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = Block []}))
         (case (parse (methodDefParser) "" code) of
              Left  e -> error (show e)
              Right x -> x)

@@ -131,9 +131,11 @@ expressionParser
 fieldParser :: Parser Field
 fieldParser = do
     name <- identifier
-    symbol ":"
-    varType <- identifier
-    return $ Field (Name name) (TypeRef $ RefLocal $ Name varType) Nothing
+    varType <- optional $ do
+        symbol ":"
+        varType <- typeRefParser
+        return varType
+    return $ Field (Name name) varType Nothing
 
 finalModifierParser :: Parser Modifier
 finalModifierParser = Final <$ rword "final"
@@ -196,28 +198,24 @@ lambdaParser = do
     return lambda
   where
     lambdaInline = do
-        (id, returnType) <- lambdaStart
+        fields <- lambdaStart
         statements <- some statementParser
-        return $ Lambda id returnType (Block statements)
+        return $ Lambda fields (Block statements)
     lambdaDoBlock = L.indentBlock scn p
       where
         p = do
-            (id, returnType) <- try $ do
+            fields <- try $ do
                 start <- lambdaStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Lambda id returnType) . Block) statementParser)
+            return (L.IndentSome Nothing (return . (Lambda fields) . Block) statementParser)
     lambdaStart = do
-        (id, returnType) <- try $ do
+        fields <- try $ do
             rword "fun"
-            optional $ symbol "("
-            id <- identifierParser
-            optional $ symbol ":"
-            varType <- optional typeRefParser
-            optional $ symbol ")"
+            fields <- many $ choice [parens fieldParser, fieldParser]
             symbol "->"
-            return (id, returnType)
-        return (id, returnType)
+            return fields
+        return fields
 
 methodParser :: Parser Method
 methodParser = L.indentBlock scn p

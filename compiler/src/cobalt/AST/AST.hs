@@ -53,7 +53,7 @@ data Model = Model
 
 data Field = Field
     { fieldName :: Name
-    , fieldType :: Type
+    , fieldType :: Maybe Type
     , fieldInit :: Maybe Expr
     }
     deriving (Show, Eq)
@@ -116,7 +116,7 @@ data Stmt
     | BareExpr Expr
     | Return Stmt
     | Identifier Name
-    | Lambda Stmt (Maybe Type) Expr
+    | Lambda [Field] Expr
     | MethodCall Name Expr
     | NewClassInstance Type [Stmt]
     | StringLiteral String
