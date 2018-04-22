@@ -110,8 +110,8 @@ data Stmt
     | While BExpr Expr
     | If Conditional (Maybe Conditional) (Maybe Conditional)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name Expr
-    | AssignMultiple [Name] Expr
+    | Assign Name (Maybe Type) Expr
+    | AssignMultiple [Name] (Maybe Type) Expr
     | Reassign Name Expr
     | BareExpr Expr
     | Return Stmt

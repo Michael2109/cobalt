@@ -8,9 +8,16 @@ import Parser.ExprParser
 
 testAssignParser :: Test
 testAssignParser = do
+    let codeInlineNoType = "let x = y"
+    let testInlineNoType = TestCase $ assertEqual codeInlineNoType
+                        (Assign (Name "x") Nothing (Block [Identifier (Name "y")]))
+                        (case (parse assignParser "" codeInlineNoType) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+
     let codeInline = "let x: Int = y"
     let testInline = TestCase $ assertEqual codeInline
-                        (Assign (Name "x") (Block [Identifier (Name "y")]))
+                        (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) (Block [Identifier (Name "y")]))
                         (case (parse assignParser "" codeInline) of
                              Left  e -> error $ show e
                              Right x -> x)
@@ -20,20 +27,49 @@ testAssignParser = do
                               , "    y"
                               ]
     let testDoBlock = TestCase $ assertEqual codeDoBlock
-                        (Assign (Name "x") (Block [Identifier (Name "x"),Identifier (Name "y")]))
+                        (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) (Block [Identifier (Name "x"),Identifier (Name "y")]))
                         (case (parse assignParser "" codeDoBlock) of
                              Left  e -> error $ show e
                              Right x -> x)
-    TestList [testInline, testDoBlock]
+    TestList [testInlineNoType, testInline, testDoBlock]
 
 testAssignParserMultiple :: Test
 testAssignParserMultiple = do
-    let code = "let x,y = z"
-    TestCase $ assertEqual code
-        (AssignMultiple [Name "x",Name "y"] (Block [Identifier (Name "z")]))
-        (case (parse assignParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeInlineNoType = "let x,y = z"
+    let testInlineNoType = TestCase $ assertEqual codeInlineNoType
+                        (AssignMultiple [Name "x",Name "y"] Nothing (Block [Identifier (Name "z")]))
+                        (case (parse assignParser "" codeInlineNoType) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+
+    let codeInline = "let x,y: Int = z"
+    let testInline = TestCase $ assertEqual codeInline
+                        (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) (Block [Identifier (Name "z")]))
+                        (case (parse assignParser "" codeInline) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+
+    let codeDoBlockNoType = unlines [ "let x,y = do"
+                              , "    i"
+                              , "    j"
+                              ]
+    let testDoBlockNoType = TestCase $ assertEqual codeDoBlockNoType
+                        (AssignMultiple [Name "x",Name "y"] Nothing (Block [Identifier (Name "i"),Identifier (Name "j")]))
+                        (case (parse assignParser "" codeDoBlockNoType) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+
+    let codeDoBlock = unlines [ "let x,y: Int = do"
+                              , "    i"
+                              , "    j"
+                              ]
+    let testDoBlock = TestCase $ assertEqual codeDoBlock
+                        (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) (Block [Identifier (Name "i"),Identifier (Name "j")]))
+                        (case (parse assignParser "" codeDoBlock) of
+                             Left  e -> error $ show e
+                             Right x -> x)
+
+    TestList [testInlineNoType, testInline, testDoBlock, testDoBlockNoType]
 
 {-
 testAssignParserValWithType :: Test

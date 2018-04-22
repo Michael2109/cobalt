@@ -48,8 +48,8 @@ assignParser = do
             return start
         statements <- some statementParser
         if length varNames <= 1
-            then return $ Assign (varNames!!0) (Block statements)
-            else return $ AssignMultiple varNames (Block statements)
+            then return $ Assign (varNames!!0) varType (Block statements)
+            else return $ AssignMultiple varNames varType (Block statements)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -58,8 +58,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0)) . Block) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames) . Block) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . Block) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . Block) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
