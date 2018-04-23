@@ -8,7 +8,7 @@ import Parser.ExprParser
 
 testIfStmtParser :: Test
 testIfStmtParser = do
-    let codeTrue = unlines [ "if(True) then do"
+    let codeTrue = unlines [ "if(True) then"
                            , "    x"
                            ]
     let testTrue = TestCase $ assertEqual codeTrue
@@ -17,7 +17,7 @@ testIfStmtParser = do
                            Left  e -> error (show e)
                            Right x -> x)
 
-    let codeFalse = unlines [ "if(False) then do"
+    let codeFalse = unlines [ "if(False) then"
                             , "    x"
                             ]
     let testFalse = TestCase $ assertEqual codeFalse
@@ -27,9 +27,9 @@ testIfStmtParser = do
                            Right x -> x)
 
 
-    let codeElifTrue = unlines [ "if(True) then do"
+    let codeElifTrue = unlines [ "if(True) then"
                                , "  i"
-                               , "elif(True) then do"
+                               , "elif(True) then"
                                , "  j"
                                ]
     let testElifTrue = TestCase $ assertEqual codeElifTrue
@@ -38,9 +38,9 @@ testIfStmtParser = do
                                Left  e -> error (show e)
                                Right x -> x)
 
-    let codeElifFalse = unlines [ "if(False) then do"
+    let codeElifFalse = unlines [ "if(False) then"
                                 , "  i"
-                                , "elif(False) then do"
+                                , "elif(False) then"
                                 , "  j"
                                 ]
     let testElifFalse = TestCase $ assertEqual codeElifFalse
@@ -49,11 +49,11 @@ testIfStmtParser = do
                                 Left  e -> error (show e)
                                 Right x -> x)
 
-    let codeElifElse = unlines [ "if(True) then do"
+    let codeElifElse = unlines [ "if(True) then"
                                , "  i"
-                               , "elif(True) then do"
+                               , "elif(True) then"
                                , "  j"
-                               , "else do"
+                               , "else"
                                , "  k"
                                ]
     let testElifElse = TestCase $ assertEqual codeElifElse
@@ -62,9 +62,9 @@ testIfStmtParser = do
                                Left  e -> error (show e)
                                Right x -> x)
 
-    let codeElse = unlines [ "if(True) then do"
+    let codeElse = unlines [ "if(True) then"
                            , "  i"
-                           , "else do"
+                           , "else"
                            , "  k"
                            ]
     let testElse = TestCase $ assertEqual codeElse
@@ -91,6 +91,12 @@ testIfStmtParserInline = do
                            Left  e -> error (show e)
                            Right x -> x)
 
+    let codeSingleLine = "if(True) then x elif False then y else z"
+    let testSingleLine = TestCase $ assertEqual codeSingleLine
+                       (If (IfStatement (BoolConst True) (Block [Identifier (Name "x")])) Nothing Nothing)
+                       (case (parse (ifStatementParser) "" codeSingleLine) of
+                           Left  e -> error (show e)
+                           Right x -> x)
 
     let codeElifTrue = unlines [ "if(True) then i"
                                , "elif(True) then j"
@@ -110,6 +116,15 @@ testIfStmtParserInline = do
                                 Left  e -> error (show e)
                                 Right x -> x)
 
+    let codeElifFalseNoParens = unlines [ "if False then i"
+                                        , "elif False then j"
+                                        ]
+    let testElifFalseNoParens = TestCase $ assertEqual codeElifFalse
+                            (If (IfStatement (BoolConst False) (Block [Identifier (Name "i")])) (Just (ElifStatement (BoolConst False) (Block [Identifier (Name "j")]))) Nothing)
+                            (case (parse (ifStatementParser) "" codeElifFalse) of
+                                Left  e -> error (show e)
+                                Right x -> x)
+
     let codeElifElse = unlines [ "if(True) then i"
                                , "elif(True) then j"
                                , "else k"
@@ -121,7 +136,7 @@ testIfStmtParserInline = do
                                Right x -> x)
 
     let codeElse = unlines [ "if(True) then i"
-                           , "else then k"
+                           , "else k"
                            ]
     let testElse = TestCase $ assertEqual codeElse
                        (If (IfStatement (BoolConst True) (Block [Identifier (Name "i")])) Nothing (Just (ElseStatement (Block [Identifier (Name "k")]))))
@@ -129,4 +144,4 @@ testIfStmtParserInline = do
                            Left  e -> error (show e)
                            Right x -> x)
 
-    TestList [testTrue, testFalse, testElifTrue, testElifFalse, testElifElse, testElse]
+    TestList [testTrue, testFalse, testSingleLine, testElifTrue, testElifFalse, testElifFalseNoParens, testElifElse, testElse]
