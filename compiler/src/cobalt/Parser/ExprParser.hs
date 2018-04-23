@@ -212,7 +212,7 @@ lambdaParser = do
     lambdaStart = do
         fields <- try $ do
             rword "fun"
-            fields <- many $ choice [parens fieldParser, fieldParser]
+            fields <- choice [parens (sepBy fieldParser (symbol ",")), sepBy fieldParser (symbol ",")]
             symbol "->"
             return fields
         return fields

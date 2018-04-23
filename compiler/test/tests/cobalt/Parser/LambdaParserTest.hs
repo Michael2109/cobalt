@@ -23,16 +23,16 @@ testLambdaParser = do
                          Left  e -> error $ show e
                          Right x -> x)
 
-    let codeInlineMultiple = "fun x y z -> x"
+    let codeInlineMultiple = "fun (x,y,z) -> x"
     let testInlineMultiple = TestCase $ assertEqual codeInlineMultiple
-                    (Lambda [] (Block [Identifier $ Name "x"]))
+                    (Lambda [Field {fieldName = Name "x", fieldType = Nothing, fieldInit = Nothing},Field {fieldName = Name "y", fieldType = Nothing, fieldInit = Nothing},Field {fieldName = Name "z", fieldType = Nothing, fieldInit = Nothing}] (Block [Identifier (Name "x")]))
                     (case (parse (lambdaParser) "" codeInlineMultiple) of
                          Left  e -> error $ show e
                          Right x -> x)
 
-    let codeInlineTypeMultiple = "fun (x:Int) (y: Int) (z: Int) -> x"
+    let codeInlineTypeMultiple = "fun (x:Int, y:Int, z:Int) -> x"
     let testInlineTypeMultiple = TestCase $ assertEqual codeInlineTypeMultiple
-                    (Lambda [] (Block [Identifier (Name "x")]))
+                    (Lambda [Field {fieldName = Name "x", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "y", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "z", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}] (Block [Identifier (Name "x")]))
                     (case (parse (lambdaParser) "" codeInlineTypeMultiple) of
                          Left  e -> error $ show e
                          Right x -> x)
@@ -59,26 +59,26 @@ testLambdaParser = do
                          Left  e -> error $ show e
                          Right x -> x)
 
-    let codeDoBlockMultiple = unlines [ "fun x y z -> do"
+    let codeDoBlockMultiple = unlines [ "fun (x,y,z) -> do"
                               , "    x"
                               , "    y"
                               , ""
                               ]
     let testDoBlockMultiple = TestCase $ assertEqual codeDoBlockMultiple
-                    (Lambda [] (Block [Identifier (Name "x"),Identifier (Name "y")]))
+                    (Lambda [Field {fieldName = Name "x", fieldType = Nothing, fieldInit = Nothing},Field {fieldName = Name "y", fieldType = Nothing, fieldInit = Nothing},Field {fieldName = Name "z", fieldType = Nothing, fieldInit = Nothing}] (Block [Identifier (Name "x"),Identifier (Name "y")]))
                     (case (parse (lambdaParser) "" codeDoBlockMultiple) of
                          Left  e -> error $ show e
                          Right x -> x)
 
-    let codeDoBlockTypeMultiple = unlines [ "fun (x:Int) (y: Int) (z: Int) -> do"
+    let codeDoBlockTypeMultiple = unlines [ "fun (x:Int, y: Int, z: Int) -> do"
                               , "    x"
                               , "    y"
                               , ""
                               ]
     let testDoBlockTypeMultiple = TestCase $ assertEqual codeDoBlockTypeMultiple
-                    (Lambda [] (Block [Identifier (Name "x"),Identifier (Name "y")]))
+                    (Lambda [Field {fieldName = Name "x", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "y", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "z", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}] (Block [Identifier (Name "x"),Identifier (Name "y")]))
                     (case (parse (lambdaParser) "" codeDoBlockTypeMultiple) of
                          Left  e -> error $ show e
                          Right x -> x)
 
-    TestList [testInline, testInlineType, testDoBlock, testDoBlockType]
+    TestList [testInline, testInlineType, testDoBlock, testDoBlockType, testInlineMultiple, testInlineTypeMultiple, testDoBlockMultiple, testDoBlockTypeMultiple]
