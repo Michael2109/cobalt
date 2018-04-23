@@ -35,3 +35,32 @@ https://docs.haskellstack.org/en/stable/README/
 3. Run `stack build` 
 4. Run `stack exec compiler-exe` to execute the compiler. 
 5. Run `stack test` to execute all tests. 
+
+# Example Code
+```
+class ClassName 
+
+    # Define a value (Immutable)
+    let value: Int = 10
+    
+    # Define a variable (Mutable)
+    let mutable variable: Int = 20
+   
+    # Define a method
+    let method(): Int = 50 
+    
+    # Define a method with params (With block of code)
+    let methodParams(x: Int, y: Int): Int = do
+        if x > 20 then 100
+        elif x > 10 then 200
+        else 300
+        
+    # Function assigned to value
+    let multiplyBy2 = fun (x: Int) -> x * 2
+    
+    # Higher order function
+    let multiplyListBy2(list: List[Int]): List[Int] = list.map(multiplyBy2) 
+    
+    # Method with a function type as a parameter
+    let functionParam(list: List[Int], x: fun Int -> Int): List[Int] = list.map(x)
+```
