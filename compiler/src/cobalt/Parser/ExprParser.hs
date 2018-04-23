@@ -171,14 +171,14 @@ ifStatementParser  = do
     ifInline = do
         try $ do
             rword "if"
-            condition  <- parens bExpr
+            condition  <- choice [try $ parens bExpr, bExpr]
             rword "then"
             expression <- inlineExpressionParser
             return $ IfStatement condition expression
     elifInline = do
         try $ do
             rword "elif"
-            condition  <- parens bExpr
+            condition  <- choice [try $ parens bExpr, bExpr]
             rword "then"
             expression <- inlineExpressionParser
             return $ ElifStatement condition expression
@@ -192,14 +192,14 @@ ifStatementParser  = do
       where
         p = do
             rword "if"
-            condition  <- parens bExpr
+            condition  <- choice [try $ parens bExpr, bExpr]
             rword "then"
             return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
     elifDoBlock = try $ L.indentBlock scn p
       where
         p = do
             rword "elif"
-            condition  <- parens bExpr
+            condition  <- choice [try $ parens bExpr, bExpr]
             rword "then"
             return (L.IndentSome Nothing (return . (ElifStatement condition) . Block) statementParser)
     elseDoBlock = try $ L.indentBlock scn p

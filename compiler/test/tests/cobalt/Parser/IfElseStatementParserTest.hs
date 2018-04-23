@@ -93,7 +93,7 @@ testIfStmtParserInline = do
 
     let codeSingleLine = "if(True) then x elif False then y else z"
     let testSingleLine = TestCase $ assertEqual codeSingleLine
-                       (If (IfStatement (BoolConst True) (Block [Identifier (Name "x")])) Nothing Nothing)
+                       (If (IfStatement (BoolConst True) (Block [Identifier (Name "x")])) (Just (ElifStatement (BoolConst False) (Block [Identifier (Name "y")]))) (Just (ElseStatement (Block [Identifier (Name "z")]))))
                        (case (parse (ifStatementParser) "" codeSingleLine) of
                            Left  e -> error (show e)
                            Right x -> x)
@@ -119,9 +119,9 @@ testIfStmtParserInline = do
     let codeElifFalseNoParens = unlines [ "if False then i"
                                         , "elif False then j"
                                         ]
-    let testElifFalseNoParens = TestCase $ assertEqual codeElifFalse
+    let testElifFalseNoParens = TestCase $ assertEqual codeElifFalseNoParens
                             (If (IfStatement (BoolConst False) (Block [Identifier (Name "i")])) (Just (ElifStatement (BoolConst False) (Block [Identifier (Name "j")]))) Nothing)
-                            (case (parse (ifStatementParser) "" codeElifFalse) of
+                            (case (parse (ifStatementParser) "" codeElifFalseNoParens) of
                                 Left  e -> error (show e)
                                 Right x -> x)
 
@@ -144,4 +144,14 @@ testIfStmtParserInline = do
                            Left  e -> error (show e)
                            Right x -> x)
 
-    TestList [testTrue, testFalse, testSingleLine, testElifTrue, testElifFalse, testElifFalseNoParens, testElifElse, testElse]
+    let codeMultipleInline = unlines [ "if(True) then x; y; z"
+                                     , "elif(True) then i;j;k"
+                                     , "else l;m;n"
+                                     ]
+    let testMultipleInline = TestCase $ assertEqual codeMultipleInline
+                           (If (IfStatement (BoolConst True) (Block [Identifier (Name "x"),Identifier (Name "y"),Identifier (Name "z")])) (Just (ElifStatement (BoolConst True) (Block [Identifier (Name "i"),Identifier (Name "j"),Identifier (Name "k")]))) (Just (ElseStatement (Block [Identifier (Name "l"),Identifier (Name "m"),Identifier (Name "n")]))))
+                           (case (parse (ifStatementParser) "" codeMultipleInline) of
+                               Left  e -> error (show e)
+                               Right x -> x)
+
+    TestList [testTrue, testFalse, testSingleLine, testElifTrue, testElifFalse, testElifFalseNoParens, testElifElse, testElse, testMultipleInline]
