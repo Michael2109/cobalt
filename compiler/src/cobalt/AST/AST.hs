@@ -108,7 +108,7 @@ data Expr
 data Stmt
     = For Stmt AExpr AExpr Expr
     | While BExpr Expr
-    | If Conditional (Maybe Conditional) (Maybe Conditional)
+    | If Conditional (Maybe Conditional)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name (Maybe Type) Expr
     | AssignMultiple [Name] (Maybe Type) Expr
@@ -127,7 +127,6 @@ data Stmt
 
 data Conditional
     = IfStatement BExpr Expr
-    | ElifStatement BExpr Expr
     | ElseStatement Expr
     deriving (Show, Eq)
 
