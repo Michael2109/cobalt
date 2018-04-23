@@ -134,12 +134,8 @@ parserTestList = TestList
     --, testIdentifierParserStartsDigitFail
     , testIdentifierParserCapital
 
-    , testIfStmtParserBooleanTrue
-    , testIfStmtParserBooleanFalse
-    , testIfStmtParserElifTrue
-    , testIfStmtParserElifFalse
-    , testIfStmtParserElifElse
-    , testIfStmtParserElse
+    , testIfStmtParser
+    , testIfStmtParserInline
 
     --, testImportParserSingle
     --, testImportParserEmptyFail

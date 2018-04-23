@@ -161,22 +161,55 @@ identifierParser = do
 
 ifStatementParser :: Parser Stmt
 ifStatementParser  = do
-    ifSection   <- L.indentBlock scn ifP
-    elifSection <- optional $ L.indentBlock scn elifP
-    elseSection <- optional $ L.indentBlock scn elseP
+    ifSection   <- choice [ifDoBlock, ifInline]
+    elifSection <- optional $ choice [elifDoBlock, elifInline]
+    elseSection <- optional $ choice [elseDoBlock, elseInline]
     return $ If ifSection elifSection elseSection
   where
-    ifP = do
+    ifInline = do
       rword "if"
       condition  <- parens bExpr
-      return (L.IndentMany Nothing (return . (IfStatement condition) . Block) statementParser)
-    elifP = do
+      rword "then"
+      expression <- inlineExpressionParser
+      return $ IfStatement condition expression
+    elifInline = do
       rword "elif"
       condition  <- parens bExpr
-      return (L.IndentMany Nothing (return . (ElifStatement condition) . Block) statementParser)
-    elseP = do
+      rword "then"
+      expression <- inlineExpressionParser
+      return $ ElifStatement condition expression
+    elseInline = do
       rword "else"
-      return (L.IndentMany Nothing (return . (ElseStatement) . Block) statementParser)
+      expression <- inlineExpressionParser
+      return $ ElseStatement expression
+
+    ifDoBlock = L.indentBlock scn p
+      where
+        p = do
+          condition <- try $ do
+              rword "if"
+              condition  <- parens bExpr
+              rword "then"
+              rword "do"
+              return condition
+          return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
+    elifDoBlock = L.indentBlock scn p
+      where
+        p = do
+          condition <- try $ do
+              rword "elif"
+              condition  <- parens bExpr
+              rword "then"
+              rword "do"
+              return condition
+          return (L.IndentSome Nothing (return . (ElifStatement condition) . Block) statementParser)
+    elseDoBlock = L.indentBlock scn p
+      where
+        p = do
+          try $ do
+              rword "else"
+              rword "do"
+          return (L.IndentSome Nothing (return . (ElseStatement) . Block) statementParser)
 
 importParser :: Parser Import
 importParser = try $ L.nonIndented scn p
