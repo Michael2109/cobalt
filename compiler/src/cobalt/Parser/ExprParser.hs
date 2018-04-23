@@ -218,19 +218,34 @@ lambdaParser = do
         return fields
 
 methodParser :: Parser Method
-methodParser = L.indentBlock scn p
+methodParser = do
+    method <- choice [methodDoBlock, methodInline]
+    return method
   where
-    p = do
-      (annotations, modifiers) <- try $ do
+    methodInline = do
+        (annotations, modifiers, name, fields, returnType) <- methodStart
+        statements <- some statementParser
+        return $ Method name annotations fields modifiers returnType (Block statements)
+    methodDoBlock = L.indentBlock scn p
+      where
+        p = do
+            (annotations, modifiers, name, fields, returnType) <- try $ do
+                start <- methodStart
+                rword "do"
+                return start
+            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . Block) statementParser)
+    methodStart = do
+        (annotations, modifiers) <- try $ do
           anns <- many annotationParser
           mods <- modifiersParser
           rword "let"
           return (anns, mods)
-      name <- identifier
-      fields <- parens $ sepBy fieldParser $ symbol ","
-      symbol ":"
-      returnType <- typeRefParser
-      return (L.IndentMany Nothing (return . (Method (Name name) annotations fields modifiers returnType) . Block) statementParser)
+        name <- nameParser
+        fields <- parens $ sepBy fieldParser $ symbol ","
+        symbol ":"
+        returnType <- typeRefParser
+        symbol "="
+        return (annotations, modifiers, name, fields, returnType)
 
 methodCallParser :: Parser Stmt
 methodCallParser =
