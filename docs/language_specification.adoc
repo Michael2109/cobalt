@@ -238,19 +238,19 @@ public abstract class ClassName
 
 Inline
 ```
-add (a: Int, b: Int): Int = a + b
+let add (a: Int, b: Int): Int = a + b
 ```
 
 Multi-line
 ```
-add (a: Int, b: Int): Int
-  // Do something
-  a + b
+let add (a: Int, b: Int): Int = do
+    // Do something
+    a + b
 ```
 
 Type inference
 ```
-add (a: Int, b: Int) = a + b
+let add (a: Int, b: Int) = a + b
 ```
 
 #### Modifiers
