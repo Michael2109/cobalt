@@ -154,4 +154,26 @@ testIfStmtParserInline = do
                                Left  e -> error (show e)
                                Right x -> x)
 
+    let codeMultipleElifsFinishedWithElse = unlines [ "if(True) then x; y; z"
+                                                    , "elif(True) then i;j;k"
+                                                    , "elif(False) then f;"
+                                                    , "else l;m;n"
+                                                    ]
+
+
+    let testMultipleElifsWithoutElse = unlines [ "if(True) then x; y; z"
+                                               , "elif(True) then i;j;k"
+                                               , "elif(False) then f;"
+                                               ]
+
+
+    let testNestedWithoutElseNoParentheses = unlines [ "if(True) then"
+                                                     , "  if(False) then "
+                                                     , "    k"
+                                                     , "  if True then"
+                                                     , "    j"
+                                                     , "else"
+                                                     , "  m"
+                                                     ]
+
     TestList [testTrue, testFalse, testSingleLine, testElifTrue, testElifFalse, testElifFalseNoParens, testElifElse, testElse, testMultipleInline]
