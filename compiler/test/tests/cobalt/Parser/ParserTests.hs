@@ -135,7 +135,7 @@ parserTestList = TestList
     , testIdentifierParserCapital
 
     , testIfStmtParser
-    , testIfStmtParserInline
+    , testIfExpressionParser
 
     --, testImportParserSingle
     --, testImportParserEmptyFail

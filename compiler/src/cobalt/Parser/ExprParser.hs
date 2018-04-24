@@ -159,34 +159,45 @@ identifierParser = do
     name <- nameParser
     return $ Identifier name
 
-ifStatementParser :: Parser Stmt
-ifStatementParser  = do
-    ifSection   <- choice [ifDoBlock, ifInline]
-    optional $ L.lineFold scn $ \sp' -> return ()
-    elseSection <- optional $ choice [elseDoBlock, elseInline]
+ifExpressionParser :: Parser Stmt
+ifExpressionParser  = do
+    ifSection   <- ifInline
+    elseSection <- optional $ elseInline
     return $ If ifSection elseSection
   where
     ifInline = do
         try $ do
-            choice [try $ rword "if", try $ rword "elif"]
-            condition  <- choice [try $ parens bExpr, bExpr]
+            try $ rword "if"
+            condition  <- bExpr
             rword "then"
-            stmts <- inlineParser
-            innerIf <- optional ifStatementParser
-            case innerIf of
-                Nothing -> return $ IfStatement condition $ Block (stmts)
-                Just a  -> return $ IfStatement condition $ Block (stmts ++ [a])
+            expression <- statementParser
+            return $ IfExpression condition expression
     elseInline = do
         try $ do
             rword "else"
-            expression <- inlineParser
-            return $ ElseStatement $ Block expression
+            expression <- statementParser
+            return $ ElseExpression expression
 
+ifStatementParser :: Parser Stmt
+ifStatementParser  = do
+    ifSection   <- ifDoBlock
+    optional $ L.lineFold scn $ \sp' -> return ()
+    elseSection <- optional $ elseDoBlock
+    return $ If ifSection elseSection
+  where
     ifDoBlock = do
         try $ L.indentBlock scn p
           where
             p = do
-                choice [try $ rword "if", try $ rword "elif"]
+                try $ rword "if"
+                condition  <- choice [try $ parens bExpr, bExpr]
+                rword "then"
+                return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
+    elifDoBlock = do
+        try $ L.indentBlock scn p
+          where
+            p = do
+                try $ rword "if"
                 condition  <- choice [try $ parens bExpr, bExpr]
                 rword "then"
                 return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)

@@ -126,7 +126,9 @@ data Stmt
     deriving (Show, Eq)
 
 data Conditional
-    = IfStatement BExpr Expr
+    = IfExpression BExpr Stmt
+    | ElseExpression Stmt
+    | IfStatement BExpr Expr
     | ElseStatement Expr
     deriving (Show, Eq)
 
