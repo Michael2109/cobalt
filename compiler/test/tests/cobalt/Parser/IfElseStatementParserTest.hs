@@ -33,7 +33,7 @@ testIfStmtParser = do
                                , "  j"
                                ]
     let testElifTrue = TestCase $ assertEqual codeElifTrue
-                           (If (IfStatement (BoolConst False) (Block [Identifier (Name "x")])) Nothing)
+                           (If (IfStatement (BoolConst True) (Block [Identifier (Name "i")])) (Just (IfStatement (BoolConst True) (Block [Identifier (Name "j")]))))
                            (case (parse (ifStatementParser) "" codeElifTrue) of
                                Left  e -> error (show e)
                                Right x -> x)
@@ -44,7 +44,7 @@ testIfStmtParser = do
                                 , "  j"
                                 ]
     let testElifFalse = TestCase $ assertEqual codeElifFalse
-                            (If (IfStatement (BoolConst False) (Block [Identifier (Name "x")])) Nothing)
+                            (If (IfStatement (BoolConst False) (Block [Identifier (Name "i")])) (Just (IfStatement (BoolConst False) (Block [Identifier (Name "j")]))))
                             (case (parse (ifStatementParser) "" codeElifFalse) of
                                 Left  e -> error (show e)
                                 Right x -> x)
