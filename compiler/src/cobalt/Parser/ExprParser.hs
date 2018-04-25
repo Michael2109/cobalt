@@ -159,24 +159,62 @@ identifierParser = do
     name <- nameParser
     return $ Identifier name
 
+ifExpressionParser :: Parser Stmt
+ifExpressionParser  = do
+    ifSection   <- ifInline
+    elseSection <- optional $ elseInline
+    return $ If ifSection elseSection
+  where
+    ifInline = do
+        try $ do
+            try $ rword "if"
+            condition  <- bExpr
+            rword "then"
+            expression <- statementParser
+            return $ IfExpression condition expression
+    elseInline = do
+        try $ do
+            rword "else"
+            expression <- statementParser
+            return $ ElseExpression expression
+
 ifStatementParser :: Parser Stmt
 ifStatementParser  = do
-    ifSection   <- L.indentBlock scn ifP
-    elifSection <- optional $ L.indentBlock scn elifP
-    elseSection <- optional $ L.indentBlock scn elseP
-    return $ If ifSection elifSection elseSection
+    controlParser
   where
-    ifP = do
-      rword "if"
-      condition  <- parens bExpr
-      return (L.IndentMany Nothing (return . (IfStatement condition) . Block) statementParser)
-    elifP = do
-      rword "elif"
-      condition  <- parens bExpr
-      return (L.IndentMany Nothing (return . (ElifStatement condition) . Block) statementParser)
-    elseP = do
-      rword "else"
-      return (L.IndentMany Nothing (return . (ElseStatement) . Block) statementParser)
+    controlParser = do
+        ifSection <- ifParser
+        optional $ L.lineFold scn $ \sp' -> return ()
+        elseSection <- optional $ elseParser
+        return $ If ifSection elseSection
+    ifParser = do
+        try $ L.indentBlock scn p
+          where
+            p = do
+                rword "if"
+                condition <- bExpr
+                rword "then"
+                return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
+    elseParser = do
+        choice [elifP, elseP]
+      where
+        elifP = do
+            try $ L.indentBlock scn p
+              where
+                p = do
+                    rword "elif"
+                    condition  <- bExpr
+                    rword "then"
+
+                    -- Just need this to parse somehow and to pass this in to the constructor...
+                    --elseSection <- elseParser
+                    return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
+        elseP = do
+            try $ L.indentBlock scn p
+              where
+                p = do
+                    rword "else"
+                    return (L.IndentSome Nothing (return . ElseStatement . Block) statementParser)
 
 importParser :: Parser Import
 importParser = try $ L.nonIndented scn p
@@ -186,11 +224,8 @@ importParser = try $ L.nonIndented scn p
         locations <- sepBy1 identifier (symbol ".")
         return $ (Import locations)
 
-inlineExpressionParser :: Parser Expr
-inlineExpressionParser = f <$> sepBy1 (statementParser) (symbol ";")
-  where
-    -- if there's only one expr return it without using ‘Seq’
-    f l = if length l == 1 then Block [head l] else Block l
+inlineParser :: Parser [Stmt]
+inlineParser = sepBy statementParser (symbol ";")
 
 lambdaParser :: Parser Stmt
 lambdaParser = do

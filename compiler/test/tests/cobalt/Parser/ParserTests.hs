@@ -60,6 +60,7 @@ parserTestList = TestList
     --, testBExprParserTrue
     --, testBExprParserFalse
     --, testBExprParserFail
+    --, testBExprParenthesesConsumerParser
 
     -- RExprParser
     --, testRExprParserGreaterVar
@@ -134,12 +135,8 @@ parserTestList = TestList
     --, testIdentifierParserStartsDigitFail
     , testIdentifierParserCapital
 
-    , testIfStmtParserBooleanTrue
-    , testIfStmtParserBooleanFalse
-    , testIfStmtParserElifTrue
-    , testIfStmtParserElifFalse
-    , testIfStmtParserElifElse
-    , testIfStmtParserElse
+    , testIfStmtParser
+    , testIfExpressionParser
 
     --, testImportParserSingle
     --, testImportParserEmptyFail
