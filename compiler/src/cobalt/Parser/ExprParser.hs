@@ -367,6 +367,7 @@ statementParser :: Parser Stmt
 statementParser = modelDefParser
     <|> methodDefParser
     <|> returnStatementParser
+    <|> Block <$> some expressionParser
 
 stringLiteralParser :: Parser Stmt
 stringLiteralParser = do

@@ -122,7 +122,7 @@ data Stmt
     | StringLiteral String
     | ModelDef Model
     | MethodDef Method
-    | MultipleExpr [Expr]
+    | Block [Expr]
     deriving (Show, Eq)
 
 -- This needs a better name
