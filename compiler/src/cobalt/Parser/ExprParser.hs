@@ -48,8 +48,8 @@ assignParser = do
             return start
         statements <- some statementParser
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType (Block statements)
-            else return $ AssignMultiple varNames varType (Block statements)
+            then return $ Assign (varNames!!0) varType statements
+            else return $ AssignMultiple varNames varType statements
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -58,8 +58,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . Block) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . Block) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType)) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType)) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
@@ -126,7 +126,7 @@ relation = (symbol ">" *> pure Greater)
 
 expressionParser :: Parser Expr
 expressionParser
-    = Block <$> many statementParser
+    = identifierParser
 
 fieldParser :: Parser Field
 fieldParser = do
@@ -152,13 +152,14 @@ forLoopGeneratorParser  = try $ L.indentBlock scn p
       rword "to"
       end <- aTerm
       symbol ")"
-      return (L.IndentMany Nothing (return . (For varName start end) . Block) statementParser)
+      return (L.IndentMany Nothing (return . (For varName start end)) statementParser)
 
-identifierParser :: Parser Stmt
+identifierParser :: Parser Expr
 identifierParser = do
     name <- nameParser
     return $ Identifier name
 
+{-
 ifExpressionParser :: Parser Stmt
 ifExpressionParser  = do
     ifSection   <- ifInline
@@ -170,12 +171,12 @@ ifExpressionParser  = do
             try $ rword "if"
             condition  <- bExpr
             rword "then"
-            expression <- statementParser
+            expression <- expressionParser
             return $ IfExpression condition expression
     elseInline = do
         try $ do
             rword "else"
-            expression <- statementParser
+            expression <- expressionParser
             return $ ElseExpression expression
 
 ifStatementParser :: Parser Stmt
@@ -214,7 +215,7 @@ ifStatementParser  = do
               where
                 p = do
                     rword "else"
-                    return (L.IndentSome Nothing (return . ElseStatement . Block) statementParser)
+                    return (L.IndentSome Nothing (return . ElseStatement . Block) statementParser)-}
 
 importParser :: Parser Import
 importParser = try $ L.nonIndented scn p
@@ -235,7 +236,7 @@ lambdaParser = do
     lambdaInline = do
         fields <- lambdaStart
         statements <- some statementParser
-        return $ Lambda fields (Block statements)
+        return $ Lambda fields statements
     lambdaDoBlock = L.indentBlock scn p
       where
         p = do
@@ -243,7 +244,7 @@ lambdaParser = do
                 start <- lambdaStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Lambda fields) . Block) statementParser)
+            return (L.IndentSome Nothing (return . (Lambda fields)) statementParser)
     lambdaStart = do
         fields <- try $ do
             rword "fun"
@@ -260,7 +261,7 @@ methodParser = do
     methodInline = do
         (annotations, modifiers, name, fields, returnType) <- methodStart
         statements <- some statementParser
-        return $ Method name annotations fields modifiers returnType (Block statements)
+        return $ Method name annotations fields modifiers returnType statements
     methodDoBlock = L.indentBlock scn p
       where
         p = do
@@ -268,7 +269,7 @@ methodParser = do
                 start <- methodStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . Block) statementParser)
+            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType)) statementParser)
     methodStart = do
         (annotations, modifiers) <- try $ do
           anns <- many annotationParser
@@ -286,8 +287,8 @@ methodCallParser :: Parser Stmt
 methodCallParser =
     try $ do
         methodName <- nameParser
-        args <- parens $ sepBy statementParser (symbol ",")
-        return $ MethodCall methodName (Block args)
+        args <- parens $ sepBy expressionParser (symbol ",")
+        return $ MethodCall methodName args
 
 methodDefParser :: Parser Stmt
 methodDefParser = MethodDef <$> methodParser
@@ -313,7 +314,7 @@ modelParser = L.indentBlock scn p
                              Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy typeRefParser (symbol ",")
-        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces) . Block) statementParser)
+        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces)) statementParser)
 
 modelDefParser :: Parser Stmt
 modelDefParser = ModelDef <$> modelParser
@@ -366,7 +367,6 @@ statementParser :: Parser Stmt
 statementParser = modelDefParser
     <|> methodDefParser
     <|> returnStatementParser
-    <|> identifierParser
 
 stringLiteralParser :: Parser Stmt
 stringLiteralParser = do
@@ -395,16 +395,16 @@ tryBlockParser  = do
   where
     tryP = do
       rword "try"
-      return (L.IndentMany Nothing (return . (TryStatement) . Block) statementParser)
+      return (L.IndentMany Nothing (return . (TryStatement)) statementParser)
     catchP = do
       rword "catch"
       fields <- parens $ sepBy fieldParser $ symbol ","
-      return (L.IndentMany Nothing (return . (CatchStatement fields) . Block) statementParser)
+      return (L.IndentMany Nothing (return . (CatchStatement fields)) statementParser)
     finallyP = do
       rword "finally"
-      return (L.IndentMany Nothing (return . (FinallyStatement) . Block) statementParser)
+      return (L.IndentMany Nothing (return . (FinallyStatement)) statementParser)
 
-tupleParser :: Parser Stmt
+tupleParser :: Parser Expr
 tupleParser =
     try $ do
         values <- parens $ sepBy identifierParser (symbol ",")
@@ -428,7 +428,7 @@ whileParser  = try $ L.indentBlock scn p
     p = do
         rword "while"
         condition <- parens bTerm
-        return (L.IndentMany Nothing (return . (While condition) . Block) statementParser)
+        return (L.IndentMany Nothing (return . (While condition)) statementParser)
 
 parser :: Parser Module
 parser = do

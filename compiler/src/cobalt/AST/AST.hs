@@ -17,7 +17,7 @@ data Method = Method
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: Type
-    , methodBody :: Expr
+    , methodBody :: [Stmt]
     }
     deriving (Show, Eq)
 
@@ -47,7 +47,7 @@ data Model = Model
     , modelParent :: Maybe Type
     , modelParentArguments :: [Stmt]
     , modelInterfaces :: [Type]
-    , modelBody :: Expr
+    , modelBody :: [Stmt]
     }
     deriving (Show, Eq)
 
@@ -101,42 +101,35 @@ data IntConstant = IntConstant Integer
 
 data Expr
     = Call Expr [Expr]
+    | Identifier Name
     | Ternary Expr Expr Expr
-    | Block [Stmt]
+    | Tuple [Expr]
     deriving (Show, Eq)
 
 data Stmt
-    = For Stmt AExpr AExpr Expr
-    | While BExpr Expr
-    | If Conditional (Maybe Conditional)
+    = For Expr AExpr AExpr [Stmt]
+    | While BExpr [Stmt]
+    | If BExpr Stmt Stmt
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Expr
-    | AssignMultiple [Name] (Maybe Type) Expr
+    | Assign Name (Maybe Type) [Stmt]
+    | AssignMultiple [Name] (Maybe Type) [Stmt]
     | Reassign Name Expr
     | BareExpr Expr
     | Return Stmt
-    | Identifier Name
-    | Lambda [Field] Expr
-    | MethodCall Name Expr
+    | Lambda [Field] [Stmt]
+    | MethodCall Name [Expr]
     | NewClassInstance Type [Stmt]
     | StringLiteral String
-    | Tuple [Stmt]
     | ModelDef Model
     | MethodDef Method
-    deriving (Show, Eq)
-
-data Conditional
-    = IfExpression BExpr Stmt
-    | ElseExpression Stmt
-    | IfStatement BExpr Expr
-    | ElseStatement Expr
+    | MultipleExpr [Expr]
     deriving (Show, Eq)
 
 -- This needs a better name
 data ExceptionHandler
-    = TryStatement Expr
-    | CatchStatement [Field] Expr
-    | FinallyStatement Expr
+    = TryStatement [Stmt]
+    | CatchStatement [Field] [Stmt]
+    | FinallyStatement [Stmt]
     deriving (Show, Eq)
 
 data BExpr
