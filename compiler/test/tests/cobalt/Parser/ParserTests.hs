@@ -60,6 +60,7 @@ parserTestList = TestList
     --, testBExprParserTrue
     --, testBExprParserFalse
     --, testBExprParserFail
+    --, testBExprParenthesesConsumerParser
 
     -- RExprParser
     --, testRExprParserGreaterVar
