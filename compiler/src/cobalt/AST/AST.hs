@@ -109,7 +109,7 @@ data Expr
 data Stmt
     = For Expr AExpr AExpr Stmt
     | While BExpr [Stmt]
-    | If BExpr Stmt Stmt
+    | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name (Maybe Type) Stmt
     | AssignMultiple [Name] (Maybe Type) Stmt

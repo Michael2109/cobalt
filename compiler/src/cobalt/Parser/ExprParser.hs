@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 {-|
 Module      : ExprParser
 Description : Parses all expressions.
@@ -179,10 +181,10 @@ ifStatementParser  = do
     controlParser
   where
     controlParser = do
-        ifSection <- ifParser
+        (condition, ifBlockStmt) <- ifParser
         optional $ L.lineFold scn $ \sp' -> return ()
-        elseSection <- optional $ elseParser
-        return $ If ifSection elseSection
+        elseBlockStmt <- optional $ elseParser
+        return $ If condition ifBlockStmt elseBlockStmt
     ifParser = do
         try $ L.indentBlock scn p
           where
@@ -190,7 +192,7 @@ ifStatementParser  = do
                 rword "if"
                 condition <- bExpr
                 rword "then"
-                return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
+                return (L.IndentSome Nothing (return . (condition,) . BlockStmt) statementParser)
     elseParser = do
         choice [elifP, elseP]
       where
@@ -204,14 +206,14 @@ ifStatementParser  = do
 
                     -- Just need this to parse somehow and to pass this in to the constructor...
                     --elseSection <- elseParser
-                    return (L.IndentSome Nothing (return . (IfStatement condition) . Block) statementParser)
+                    return (L.IndentSome Nothing (return . (condition,) . BlockStmt) statementParser)
         elseP = do
             try $ L.indentBlock scn p
               where
                 p = do
                     rword "else"
-                    return (L.IndentSome Nothing (return . ElseStatement . Block) statementParser)-}
-
+                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)
+-}
 
 importParser :: Parser Import
 importParser = try $ L.nonIndented scn p
