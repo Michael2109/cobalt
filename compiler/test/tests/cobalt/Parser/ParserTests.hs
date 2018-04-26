@@ -33,6 +33,7 @@ import Parser.ParameterParserTest
 import Parser.ParenthesesParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
+import Parser.TernaryParserTest
 import Parser.ThisVarParserTest
 import Parser.TupleParserTest
 import Parser.TypeParameterParserTest
@@ -136,7 +137,6 @@ parserTestList = TestList
     , testIdentifierParserCapital
 
     , testIfStmtParser
-    , testIfExpressionParser
 
     --, testImportParserSingle
     --, testImportParserEmptyFail
@@ -223,6 +223,7 @@ parserTestList = TestList
     --, testModelParserReordered2
     --, testModelParserReordered3
 
+    , testTernaryParser
     --, testModelTypeParserClass
     --, testModelTypeParserObject
     --, testModelTypeParserTrait

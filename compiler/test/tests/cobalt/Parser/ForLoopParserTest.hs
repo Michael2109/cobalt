@@ -12,7 +12,7 @@ testForLoopGeneratorParser = do
                        , "  i"
                        ]
     TestCase $ assertEqual code
-        (For (Identifier $ Name "i") (IntConst 0) (IntConst 10) [Block [Identifier $ Name "i"]])
+        (For (Identifier (Name "i")) (IntConst 0) (IntConst 10) (BlockStmt [ExprAsStmt (Identifier (Name "i"))]))
         (case (parse (forLoopGeneratorParser) "" code) of
              Left  e -> error $ show e
              Right x -> x)

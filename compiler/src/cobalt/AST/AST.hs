@@ -17,7 +17,7 @@ data Method = Method
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: Type
-    , methodBody :: [Stmt]
+    , methodBody :: Stmt
     }
     deriving (Show, Eq)
 
@@ -102,27 +102,29 @@ data IntConstant = IntConstant Integer
 data Expr
     = Call Expr [Expr]
     | Identifier Name
-    | Ternary Expr Expr Expr
+    | Ternary BExpr Expr Expr
     | Tuple [Expr]
     deriving (Show, Eq)
 
 data Stmt
-    = For Expr AExpr AExpr [Stmt]
+    = For Expr AExpr AExpr Stmt
     | While BExpr [Stmt]
     | If BExpr Stmt Stmt
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) [Stmt]
-    | AssignMultiple [Name] (Maybe Type) [Stmt]
+    | Assign Name (Maybe Type) Stmt
+    | AssignMultiple [Name] (Maybe Type) Stmt
     | Reassign Name Expr
     | BareExpr Expr
     | Return Stmt
-    | Lambda [Field] [Stmt]
+    | Lambda [Field] Stmt
     | MethodCall Name [Expr]
     | NewClassInstance Type [Stmt]
     | StringLiteral String
     | ModelDef Model
     | MethodDef Method
-    | Block [Expr]
+    | ExprAsStmt Expr
+    | BlockExpr [Expr]
+    | BlockStmt [Stmt]
     deriving (Show, Eq)
 
 -- This needs a better name

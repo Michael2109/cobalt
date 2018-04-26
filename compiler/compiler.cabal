@@ -204,6 +204,7 @@ test-suite compiler-test
       Parser.RExprParserTest
       Parser.StringLiteralMultilineParserTest
       Parser.StringLiteralParserTest
+      Parser.TernaryParserTest
       Parser.ThisMethodCallParserTest
       Parser.ThisVarParserTest
       Parser.TupleParserTest

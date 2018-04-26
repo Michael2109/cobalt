@@ -106,29 +106,3 @@ testIfStmtParser = do
 
 
     TestList [{-testTrue, testFalse, testElifTrue, testElifFalse, testElifElse, testElse-}]
-
-testIfExpressionParser :: Test
-testIfExpressionParser = do
-{-
-    let codeIfExpression = "if(True) then i"
-    let testIfExpression = TestCase $ assertEqual codeIfExpression
-                           (If (IfExpression (BoolConst True) (Identifier (Name "i"))) Nothing)
-                           (case (parse (ifExpressionParser) "" codeIfExpression) of
-                               Left  e -> error (show e)
-                               Right x -> x)
-
-    let codeIfElseExpression = "if(True) then i else k"
-    let testIfElseExpression = TestCase $ assertEqual codeIfElseExpression
-                       (If (IfExpression (BoolConst True) (Identifier (Name "i"))) (Just (ElseExpression (Identifier (Name "k")))))
-                       (case (parse (ifExpressionParser) "" codeIfElseExpression) of
-                           Left  e -> error (show e)
-                           Right x -> x)
-
-    let codeIfElseExpressionNoParens = "if False then i else j"
-    let testIfElseExpressionNoParens = TestCase $ assertEqual codeIfElseExpressionNoParens
-                            (If (IfExpression (BoolConst False) (Identifier (Name "i"))) (Just (ElseExpression (Identifier (Name "j")))))
-                            (case (parse (ifExpressionParser) "" codeIfElseExpressionNoParens) of
-                                Left  e -> error (show e)
-                                Right x -> x)-}
-
-    TestList [{-testIfExpression, testIfElseExpression, testIfElseExpressionNoParens-}]
