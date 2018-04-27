@@ -181,7 +181,7 @@ ifStatementParser  = do
     controlParser
   where
     controlParser = do
-        (condition, ifBlockStmt) <- ifParser
+        ifStatement <- ifParser
         optional $ L.lineFold scn $ \sp' -> return ()
         elseBlockStmt <- optional $ elseParser
         return $ If condition ifBlockStmt elseBlockStmt
@@ -192,7 +192,7 @@ ifStatementParser  = do
                 rword "if"
                 condition <- bExpr
                 rword "then"
-                return (L.IndentSome Nothing (return . (condition,) . BlockStmt) statementParser)
+                return (L.IndentSome Nothing (return .  BlockStmt) statementParser)
     elseParser = do
         choice [elifP, elseP]
       where
@@ -206,14 +206,13 @@ ifStatementParser  = do
 
                     -- Just need this to parse somehow and to pass this in to the constructor...
                     --elseSection <- elseParser
-                    return (L.IndentSome Nothing (return . (condition,) . BlockStmt) statementParser)
+                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)
         elseP = do
             try $ L.indentBlock scn p
               where
                 p = do
                     rword "else"
-                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)
--}
+                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)-}
 
 importParser :: Parser Import
 importParser = try $ L.nonIndented scn p

@@ -104,6 +104,7 @@ data Expr
     | Identifier Name
     | Ternary BExpr Expr Expr
     | Tuple [Expr]
+    | BlockExpr [Expr]
     deriving (Show, Eq)
 
 data Stmt
@@ -114,7 +115,6 @@ data Stmt
     | Assign Name (Maybe Type) Stmt
     | AssignMultiple [Name] (Maybe Type) Stmt
     | Reassign Name Expr
-    | BareExpr Expr
     | Return Stmt
     | Lambda [Field] Stmt
     | MethodCall Name [Expr]
@@ -123,7 +123,6 @@ data Stmt
     | ModelDef Model
     | MethodDef Method
     | ExprAsStmt Expr
-    | BlockExpr [Expr]
     | BlockStmt [Stmt]
     deriving (Show, Eq)
 

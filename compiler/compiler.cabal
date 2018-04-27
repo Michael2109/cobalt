@@ -184,7 +184,7 @@ test-suite compiler-test
       Parser.ForLoopParserTest
       Parser.GlobalVariableParserTest
       Parser.IdentifierParserTest
-      Parser.IfElseStatementParserTest
+      Parser.IfStatementParserTest
       Parser.ImportParserTest
       Parser.LambdaParserTest
       Parser.MethodCallParserTest

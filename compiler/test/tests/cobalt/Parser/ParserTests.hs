@@ -16,7 +16,7 @@ import Parser.ClassVariableParserTest
 import Parser.DoBlockParserTest
 import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
-import Parser.IfElseStatementParserTest
+import Parser.IfStatementParserTest
 import Parser.ImportParserTest
 import Parser.LambdaParserTest
 import Parser.MethodCallParserTest
