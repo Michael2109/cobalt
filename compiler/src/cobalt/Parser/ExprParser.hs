@@ -48,10 +48,10 @@ assignParser = do
         (immutable, varNames, varType) <- try $ do
             start <- assignStart
             return start
-        statements <- some statementParser
+        expression <- expressionParser
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType (BlockStmt statements)
-            else return $ AssignMultiple varNames varType (BlockStmt statements)
+            then return $ Assign (varNames!!0) varType (ExprAssignment expression)
+            else return $ AssignMultiple varNames varType (ExprAssignment expression)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -60,8 +60,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . BlockStmt) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . BlockStmt) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . StmtAssignment . BlockStmt) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . StmtAssignment . BlockStmt) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
@@ -239,8 +239,8 @@ lambdaParser = do
   where
     lambdaInline = do
         fields <- lambdaStart
-        statements <- some statementParser
-        return $ Lambda fields (BlockStmt statements)
+        expression <- expressionParser
+        return $ Lambda fields $ ExprAssignment expression
     lambdaDoBlock = L.indentBlock scn p
       where
         p = do
@@ -248,7 +248,7 @@ lambdaParser = do
                 start <- lambdaStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Lambda fields) . BlockStmt) statementParser)
+            return (L.IndentSome Nothing (return . (Lambda fields) . StmtAssignment . BlockStmt) statementParser)
     lambdaStart = do
         fields <- try $ do
             rword "fun"
@@ -264,8 +264,8 @@ methodParser = do
   where
     methodInline = do
         (annotations, modifiers, name, fields, returnType) <- methodStart
-        statements <- some statementParser
-        return $ Method name annotations fields modifiers returnType (BlockStmt statements)
+        expression <- expressionParser
+        return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
     methodDoBlock = L.indentBlock scn p
       where
         p = do
@@ -273,7 +273,7 @@ methodParser = do
                 start <- methodStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . BlockStmt) statementParser)
+            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
     methodStart = do
         (annotations, modifiers) <- try $ do
           anns <- many annotationParser

@@ -10,14 +10,14 @@ testAssignParser :: Test
 testAssignParser = do
     let codeInlineNoType = "let x = y"
     let testInlineNoType = TestCase $ assertEqual codeInlineNoType
-                        (Assign (Name "x") Nothing (BlockStmt [ExprAsStmt (Identifier (Name "y"))]))
+                        (Assign (Name "x") Nothing (ExprAssignment $ (Identifier (Name "y"))))
                         (case (parse assignParser "" codeInlineNoType) of
                              Left  e -> error $ show e
                              Right x -> x)
 
     let codeInline = "let x: Int = y"
     let testInline = TestCase $ assertEqual codeInline
-                        (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) (BlockStmt [ExprAsStmt (Identifier (Name "y"))]))
+                        (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) (ExprAssignment $ (Identifier (Name "y"))))
                         (case (parse assignParser "" codeInline) of
                              Left  e -> error $ show e
                              Right x -> x)
@@ -27,7 +27,7 @@ testAssignParser = do
                               , "    y"
                               ]
     let testDoBlock = TestCase $ assertEqual codeDoBlock
-                        (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) (BlockStmt [ExprAsStmt (Identifier (Name "x")),ExprAsStmt (Identifier (Name "y"))]))
+                        (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) (StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "x")),ExprAsStmt (Identifier (Name "y"))]))
                         (case (parse assignParser "" codeDoBlock) of
                              Left  e -> error $ show e
                              Right x -> x)
@@ -37,14 +37,14 @@ testAssignParserMultiple :: Test
 testAssignParserMultiple = do
     let codeInlineNoType = "let x,y = z"
     let testInlineNoType = TestCase $ assertEqual codeInlineNoType
-                        (AssignMultiple [Name "x",Name "y"] Nothing (BlockStmt [ExprAsStmt (Identifier (Name "z"))]))
+                        (AssignMultiple [Name "x",Name "y"] Nothing (ExprAssignment (Identifier (Name "z"))))
                         (case (parse assignParser "" codeInlineNoType) of
                              Left  e -> error $ show e
                              Right x -> x)
 
     let codeInline = "let x,y: Int = z"
     let testInline = TestCase $ assertEqual codeInline
-                        (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) (BlockStmt [ExprAsStmt (Identifier (Name "z"))]))
+                        (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) (ExprAssignment (Identifier (Name "z"))))
                         (case (parse assignParser "" codeInline) of
                              Left  e -> error $ show e
                              Right x -> x)
@@ -54,7 +54,7 @@ testAssignParserMultiple = do
                               , "    j"
                               ]
     let testDoBlockNoType = TestCase $ assertEqual codeDoBlockNoType
-                        (AssignMultiple [Name "x",Name "y"] Nothing (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))]))
+                        (AssignMultiple [Name "x",Name "y"] Nothing (StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))]))
                         (case (parse assignParser "" codeDoBlockNoType) of
                              Left  e -> error $ show e
                              Right x -> x)
@@ -64,7 +64,7 @@ testAssignParserMultiple = do
                               , "    j"
                               ]
     let testDoBlock = TestCase $ assertEqual codeDoBlock
-                        (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))]))
+                        (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) (StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))]))
                         (case (parse assignParser "" codeDoBlock) of
                              Left  e -> error $ show e
                              Right x -> x)

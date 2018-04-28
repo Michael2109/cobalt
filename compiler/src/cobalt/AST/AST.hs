@@ -17,7 +17,7 @@ data Method = Method
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: Type
-    , methodBody :: Stmt
+    , methodBody :: Assignment
     }
     deriving (Show, Eq)
 
@@ -99,6 +99,11 @@ data QualName = QualName NameSpace Name
 
 data IntConstant = IntConstant Integer
 
+data Assignment
+    = ExprAssignment Expr
+    | StmtAssignment Stmt
+    deriving (Show, Eq)
+
 data Expr
     = Call Expr Expr
     | Identifier Name
@@ -112,11 +117,11 @@ data Stmt
     | While BExpr Stmt
     | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Stmt
-    | AssignMultiple [Name] (Maybe Type) Stmt
+    | Assign Name (Maybe Type) Assignment
+    | AssignMultiple [Name] (Maybe Type) Assignment
     | Reassign Name Expr
     | Return Stmt
-    | Lambda [Field] Stmt
+    | Lambda [Field] Assignment
     | MethodCall Name [Expr]
     | NewClassInstance Type Stmt
     | StringLiteral String
