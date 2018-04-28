@@ -318,7 +318,7 @@ modelParser = L.indentBlock scn p
                              Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy typeRefParser (symbol ",")
-        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces)) statementParser)
+        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces) . BlockStmt) statementParser)
 
 modelDefParser :: Parser Stmt
 modelDefParser = ModelDef <$> modelParser
@@ -350,7 +350,7 @@ newClassInstanceParser  = do
     try (rword "new")
     className <- typeRefParser
     arguments <- parens $ sepBy statementParser (symbol ",")
-    return $ (NewClassInstance className arguments)
+    return $ (NewClassInstance className (BlockStmt arguments))
 
 reassignParser :: Parser Stmt
 reassignParser = do
@@ -404,20 +404,20 @@ tryBlockParser  = do
   where
     tryP = do
       rword "try"
-      return (L.IndentMany Nothing (return . (TryStatement)) statementParser)
+      return (L.IndentMany Nothing (return . (TryStatement) . BlockStmt) statementParser)
     catchP = do
       rword "catch"
       fields <- parens $ sepBy fieldParser $ symbol ","
-      return (L.IndentMany Nothing (return . (CatchStatement fields)) statementParser)
+      return (L.IndentMany Nothing (return . (CatchStatement fields) . BlockStmt) statementParser)
     finallyP = do
       rword "finally"
-      return (L.IndentMany Nothing (return . (FinallyStatement)) statementParser)
+      return (L.IndentMany Nothing (return . (FinallyStatement) . BlockStmt) statementParser)
 
 tupleParser :: Parser Expr
 tupleParser =
     try $ do
         values <- parens $ sepBy identifierParser (symbol ",")
-        return $ Tuple values
+        return $ Tuple (BlockExpr values)
 
 typeParameterParser :: Parser [Type]
 typeParameterParser = do
@@ -437,7 +437,7 @@ whileParser  = try $ L.indentBlock scn p
     p = do
         rword "while"
         condition <- parens bTerm
-        return (L.IndentMany Nothing (return . (While condition)) statementParser)
+        return (L.IndentMany Nothing (return . (While condition) . BlockStmt) statementParser)
 
 parser :: Parser Module
 parser = do

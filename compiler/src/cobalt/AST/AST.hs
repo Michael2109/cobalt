@@ -47,7 +47,7 @@ data Model = Model
     , modelParent :: Maybe Type
     , modelParentArguments :: [Stmt]
     , modelInterfaces :: [Type]
-    , modelBody :: [Stmt]
+    , modelBody :: Stmt
     }
     deriving (Show, Eq)
 
@@ -100,16 +100,16 @@ data QualName = QualName NameSpace Name
 data IntConstant = IntConstant Integer
 
 data Expr
-    = Call Expr [Expr]
+    = Call Expr Expr
     | Identifier Name
     | Ternary BExpr Expr Expr
-    | Tuple [Expr]
+    | Tuple Expr
     | BlockExpr [Expr]
     deriving (Show, Eq)
 
 data Stmt
     = For Expr AExpr AExpr Stmt
-    | While BExpr [Stmt]
+    | While BExpr Stmt
     | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name (Maybe Type) Stmt
@@ -118,7 +118,7 @@ data Stmt
     | Return Stmt
     | Lambda [Field] Stmt
     | MethodCall Name [Expr]
-    | NewClassInstance Type [Stmt]
+    | NewClassInstance Type Stmt
     | StringLiteral String
     | ModelDef Model
     | MethodDef Method
@@ -128,9 +128,9 @@ data Stmt
 
 -- This needs a better name
 data ExceptionHandler
-    = TryStatement [Stmt]
-    | CatchStatement [Field] [Stmt]
-    | FinallyStatement [Stmt]
+    = TryStatement Stmt
+    | CatchStatement [Field] Stmt
+    | FinallyStatement Stmt
     deriving (Show, Eq)
 
 data BExpr
