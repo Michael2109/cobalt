@@ -34,7 +34,7 @@ testIfStmtParser = do
                                , "  j"
                                ]
     let testElifTrue = TestCase $ assertEqual codeElifTrue
-                           (If (BoolConst True) (BlockStmt []) Nothing)
+                           (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "i"))]) (Just (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "j"))]) Nothing)))
                            (case (parse (ifStatementParser) "" codeElifTrue) of
                                Left  e -> error (show e)
                                Right x -> x)
@@ -45,7 +45,7 @@ testIfStmtParser = do
                                 , "  j"
                                 ]
     let testElifFalse = TestCase $ assertEqual codeElifFalse
-                            (If (BoolConst True) (BlockStmt []) Nothing)
+                            (If (BoolConst False) (BlockStmt [ExprAsStmt (Identifier (Name "i"))]) (Just (If (BoolConst False) (BlockStmt [ExprAsStmt (Identifier (Name "j"))]) Nothing)))
                             (case (parse (ifStatementParser) "" codeElifFalse) of
                                 Left  e -> error (show e)
                                 Right x -> x)
@@ -58,7 +58,7 @@ testIfStmtParser = do
                                , "  k"
                                ]
     let testElifElse = TestCase $ assertEqual codeElifElse
-                           (If (BoolConst True) (BlockStmt []) Nothing)
+                           (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "i"))]) (Just (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "j"))]) (Just (BlockStmt [ExprAsStmt (Identifier (Name "k"))])))))
                            (case (parse (ifStatementParser) "" codeElifElse) of
                                Left  e -> error (show e)
                                Right x -> x)
@@ -69,7 +69,7 @@ testIfStmtParser = do
                            , "  k"
                            ]
     let testElse = TestCase $ assertEqual codeElse
-                       (If (BoolConst True) (BlockStmt []) Nothing)
+                       (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "i"))]) (Just (BlockStmt [ExprAsStmt (Identifier (Name "k"))])))
                        (case (parse (ifStatementParser) "" codeElse) of
                            Left  e -> error (show e)
                            Right x -> x)
@@ -83,24 +83,47 @@ testIfStmtParser = do
                                                     , "else"
                                                     , "    l"
                                                     ]
+    let testMultipleElifsFinishedWithElse = TestCase $ assertEqual codeMultipleElifsFinishedWithElse
+                       (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "x"))]) (Just (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "i"))]) (Just (If (BoolConst False) (BlockStmt [ExprAsStmt (Identifier (Name "f"))]) (Just (BlockStmt [ExprAsStmt (Identifier (Name "l"))])))))))
+                       (case (parse (ifStatementParser) "" codeMultipleElifsFinishedWithElse) of
+                           Left  e -> error (show e)
+                           Right x -> x)
 
 
-    let testMultipleElifsWithoutElse = unlines [ "if(True) then"
+    let codeMultipleElifsWithoutElse = unlines [ "if(True) then"
                                                , "    x"
                                                , "elif(True) then"
                                                , "    y"
                                                , "elif(False) then"
                                                , "    z"
                                                ]
+    let testMultipleElifsWithoutElse = TestCase $ assertEqual codeMultipleElifsWithoutElse
+                       (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "x"))]) (Just (If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "y"))]) (Just (If (BoolConst False) (BlockStmt [ExprAsStmt (Identifier (Name "z"))]) Nothing)))))
+                       (case (parse (ifStatementParser) "" codeMultipleElifsWithoutElse) of
+                           Left  e -> error (show e)
+                           Right x -> x)
 
-
-    let testNestedWithoutElseNoParentheses = unlines [ "if(True) then"
-                                                     , "    if(False) then "
+    let codeNestedWithoutElseNoParentheses = unlines [ "if (True) then"
+                                                     , "    if (False) then "
                                                      , "        k"
                                                      , "    if True then"
                                                      , "        j"
                                                      , "    else"
                                                      , "        m"
                                                      ]
+    let testNestedWithoutElseNoParentheses = TestCase $ assertEqual codeNestedWithoutElseNoParentheses
+                       (If (BoolConst True) (BlockStmt [If (BoolConst False) (BlockStmt [ExprAsStmt (Identifier (Name "k"))]) Nothing,If (BoolConst True) (BlockStmt [ExprAsStmt (Identifier (Name "j"))]) (Just (BlockStmt [ExprAsStmt (Identifier (Name "m"))]))]) Nothing)
+                       (case (parse (ifStatementParser) "" codeNestedWithoutElseNoParentheses) of
+                           Left  e -> error (show e)
+                           Right x -> x)
 
-    TestList [testTrue, testFalse, testElifTrue, testElifFalse, testElifElse, testElse]
+    TestList [ testTrue
+             , testFalse
+             , testElifTrue
+             , testElifFalse
+             , testElifElse
+             , testElse
+             , testMultipleElifsFinishedWithElse
+             , testMultipleElifsWithoutElse
+             , testNestedWithoutElseNoParentheses
+             ]

@@ -175,44 +175,51 @@ ternaryParser  = do
     elseExpression <- expressionParser
     return $ Ternary condition ifExpression elseExpression
 
-{-
+
 ifStatementParser :: Parser Stmt
 ifStatementParser  = do
-    controlParser
+    (condition, ifStatements) <- ifParser
+    elseSection <- elseParser
+    return $ If condition ifStatements elseSection
   where
+
     controlParser = do
-        ifStatement <- ifParser
-        optional $ L.lineFold scn $ \sp' -> return ()
-        elseBlockStmt <- optional $ elseParser
-        return $ If condition ifBlockStmt elseBlockStmt
+        condition <- bExpr
+        rword "then"
+        return condition
+
     ifParser = do
         try $ L.indentBlock scn p
           where
             p = do
                 rword "if"
-                condition <- bExpr
-                rword "then"
-                return (L.IndentSome Nothing (return .  BlockStmt) statementParser)
+                condition <- controlParser
+                return (L.IndentSome Nothing (return .  (condition, ) . BlockStmt) statementParser)
+
     elseParser = do
-        choice [elifP, elseP]
+        elifElse
       where
+        elifElse = do
+            elifBlock <- optional elifP
+            case elifBlock of
+                Just a -> do
+                    ee <- elifElse
+                    return (Just (If (fst a) (snd a) ee))
+                Nothing -> do
+                    optional elseP
         elifP = do
             try $ L.indentBlock scn p
               where
-                p = do
-                    rword "elif"
-                    condition  <- bExpr
-                    rword "then"
-
-                    -- Just need this to parse somehow and to pass this in to the constructor...
-                    --elseSection <- elseParser
-                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)
+                  p = do
+                      rword "elif"
+                      condition <- controlParser
+                      return (L.IndentSome Nothing (return . (condition, ) . BlockStmt) statementParser)
         elseP = do
             try $ L.indentBlock scn p
               where
                 p = do
                     rword "else"
-                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)-}
+                    return (L.IndentSome Nothing (return . BlockStmt) statementParser)
 
 importParser :: Parser Import
 importParser = try $ L.nonIndented scn p
@@ -364,6 +371,7 @@ statementParser :: Parser Stmt
 statementParser = modelDefParser
     <|> methodDefParser
     <|> returnStatementParser
+    <|> ifStatementParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt
