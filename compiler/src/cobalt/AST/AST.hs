@@ -122,8 +122,8 @@ data Stmt
     | Reassign Name Expr
     | Return Stmt
     | Lambda [Field] Assignment
-    | MethodCall Name [Expr]
-    | NewClassInstance Type Stmt
+    | MethodCall Name Expr
+    | NewClassInstance Type Expr
     | StringLiteral String
     | ModelDef Model
     | MethodDef Method

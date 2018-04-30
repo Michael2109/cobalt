@@ -266,7 +266,7 @@ methodCallParser =
     try $ do
         methodName <- nameParser
         args <- parens $ sepBy expressionParser (symbol ",")
-        return $ MethodCall methodName args
+        return $ MethodCall methodName (BlockExpr args)
 
 methodDefParser :: Parser Stmt
 methodDefParser = MethodDef <$> methodParser
@@ -323,8 +323,8 @@ newClassInstanceParser :: Parser Stmt
 newClassInstanceParser  = do
     try (rword "new")
     className <- typeRefParser
-    arguments <- parens $ sepBy statementParser (symbol ",")
-    return $ (NewClassInstance className (BlockStmt arguments))
+    arguments <- parens $ sepBy expressionParser (symbol ",")
+    return $ (NewClassInstance className (BlockExpr arguments))
 
 reassignParser :: Parser Stmt
 reassignParser = do
