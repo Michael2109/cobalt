@@ -30,7 +30,7 @@ testMethodParser = do
                               , "    j"
                               ]
     let testDoBlock = TestCase $ assertEqual codeDoBlock
-                          (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]}))
+                          (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])}))
                           (case (parse methodDefParser "" codeDoBlock) of
                               Left  e -> error $ show e
                               Right x -> x)

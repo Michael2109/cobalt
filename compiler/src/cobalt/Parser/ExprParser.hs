@@ -115,13 +115,6 @@ bTerm =  parens bExpr
   <|> (BoolConst False <$ rword "False")
   <|> rExpr
 
-doBlockParser :: Pos -> Parser Stmt
-doBlockParser indentation = L.indentBlock scn p
-  where
-    p = do
-        rword "do"
-        return $ L.IndentSome (Just indentation) (return . BlockStmt) statementParser
-
 expressionParser :: Parser Expr
 expressionParser
     = identifierParser
@@ -250,11 +243,14 @@ methodParser = do
         (annotations, modifiers, name, fields, returnType) <- methodStart
         expression <- expressionParser
         return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
-    methodDoBlock = try $ do
-        indentation <- L.indentLevel
-        (annotations, modifiers, name, fields, returnType) <- methodStart
-        doBlock <- doBlockParser indentation
-        return $ Method name annotations fields modifiers returnType $ StmtAssignment doBlock
+    methodDoBlock = L.indentBlock scn p
+      where
+        p = do
+            (annotations, modifiers, name, fields, returnType) <- try $ do
+                start <- methodStart
+                rword "do"
+                return start
+            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
     methodStart = do
         (annotations, modifiers) <- try $ do
           anns <- many annotationParser
