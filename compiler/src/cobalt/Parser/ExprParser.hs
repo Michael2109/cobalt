@@ -95,9 +95,6 @@ aTerm
     =   parens aExpr
     <|> Var      <$> identifier
     <|> IntConst <$> integerParser
-    <|> IntConst <$> integerParser
-    <|> IntConst <$> integerParser
-    <|> IntConst <$> integerParser
 
 bExpr :: Parser BExpr
 bExpr = makeExprParser bTerm bOperators
