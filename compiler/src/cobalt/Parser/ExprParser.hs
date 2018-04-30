@@ -33,11 +33,23 @@ accessModifierParser
     <|> Private   <$ rword "private"
     <|> PackageLocal <$ rword "local"
 
+aExpr :: Parser AExpr
+aExpr = makeExprParser aTerm aOperators
+
 annotationParser :: Parser Annotation
 annotationParser = do
     symbol "@"
     name <- identifier
     return $ Annotation $ Name name
+
+aOperators :: [[Operator Parser AExpr]]
+aOperators =
+    [ [Prefix (Neg <$ symbol "-") ]
+    , [ InfixL (ABinary Multiply <$ symbol "*")
+      , InfixL (ABinary Divide   <$ symbol "/") ]
+    , [ InfixL (ABinary Add      <$ symbol "+")
+      , InfixL (ABinary Subtract <$ symbol "-") ]
+    ]
 
 assignParser :: Parser Stmt
 assignParser = do
@@ -78,28 +90,6 @@ assignParser = do
             return (immutable, varNames, varType)
         return start
 
-aExpr :: Parser AExpr
-aExpr = makeExprParser aTerm aOperators
-
-bExpr :: Parser BExpr
-bExpr = makeExprParser bTerm bOperators
-
-aOperators :: [[Operator Parser AExpr]]
-aOperators =
-    [ [Prefix (Neg <$ symbol "-") ]
-    , [ InfixL (ABinary Multiply <$ symbol "*")
-      , InfixL (ABinary Divide   <$ symbol "/") ]
-    , [ InfixL (ABinary Add      <$ symbol "+")
-      , InfixL (ABinary Subtract <$ symbol "-") ]
-    ]
-
-bOperators :: [[Operator Parser BExpr]]
-bOperators =
-    [ [Prefix (Not <$ rword "not") ]
-    , [InfixL (BBinary And <$ rword "and")
-      , InfixL (BBinary Or <$ rword "or") ]
-    ]
-
 aTerm :: Parser AExpr
 aTerm
     =   parens aExpr
@@ -109,22 +99,28 @@ aTerm
     <|> IntConst <$> integerParser
     <|> IntConst <$> integerParser
 
+bExpr :: Parser BExpr
+bExpr = makeExprParser bTerm bOperators
+
+bOperators :: [[Operator Parser BExpr]]
+bOperators =
+    [ [Prefix (Not <$ rword "not") ]
+    , [InfixL (BBinary And <$ rword "and")
+      , InfixL (BBinary Or <$ rword "or") ]
+    ]
+
 bTerm :: Parser BExpr
 bTerm =  parens bExpr
   <|> (BoolConst True  <$ rword "True")
   <|> (BoolConst False <$ rword "False")
   <|> rExpr
 
-rExpr :: Parser BExpr
-rExpr = do
-  a1 <- aExpr
-  op <- relation
-  a2 <- aExpr
-  return (RBinary op a1 a2)
-
-relation :: Parser RBinOp
-relation = (symbol ">" *> pure Greater)
-  <|> (symbol "<" *> pure Less)
+doBlockParser :: Pos -> Parser Stmt
+doBlockParser indentation = L.indentBlock scn p
+  where
+    p = do
+        rword "do"
+        return $ L.IndentSome (Just indentation) (return . BlockStmt) statementParser
 
 expressionParser :: Parser Expr
 expressionParser
@@ -163,18 +159,6 @@ identifierParser :: Parser Expr
 identifierParser = do
     name <- nameParser
     return $ Identifier name
-
-
-ternaryParser :: Parser Expr
-ternaryParser  = do
-    try $ rword "if"
-    condition  <- bExpr
-    rword "then"
-    ifExpression <- expressionParser
-    rword "else"
-    elseExpression <- expressionParser
-    return $ Ternary condition ifExpression elseExpression
-
 
 ifStatementParser :: Parser Stmt
 ifStatementParser  = do
@@ -266,14 +250,12 @@ methodParser = do
         (annotations, modifiers, name, fields, returnType) <- methodStart
         expression <- expressionParser
         return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
-    methodDoBlock = L.indentBlock scn p
-      where
-        p = do
-            (annotations, modifiers, name, fields, returnType) <- try $ do
-                start <- methodStart
-                rword "do"
-                return start
-            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
+    methodDoBlock = try $ do
+        sc
+        indentation <- L.indentLevel
+        (annotations, modifiers, name, fields, returnType) <- methodStart
+        doBlock <- doBlockParser indentation
+        return $ Method name annotations fields modifiers returnType $ StmtAssignment doBlock
     methodStart = do
         (annotations, modifiers) <- try $ do
           anns <- many annotationParser
@@ -361,6 +343,17 @@ reassignParser = do
     value <- expressionParser
     return (Reassign name value)
 
+rExpr :: Parser BExpr
+rExpr = do
+  a1 <- aExpr
+  op <- relation
+  a2 <- aExpr
+  return (RBinary op a1 a2)
+
+relation :: Parser RBinOp
+relation = (symbol ">" *> pure Greater)
+  <|> (symbol "<" *> pure Less)
+
 returnStatementParser :: Parser Stmt
 returnStatementParser = do
     try $ rword "return"
@@ -391,6 +384,16 @@ stringLiteralMultilineParser = do
 
 superParser :: Parser SpecialRef
 superParser = Super <$ rword "super"
+
+ternaryParser :: Parser Expr
+ternaryParser  = do
+    try $ rword "if"
+    condition  <- bExpr
+    rword "then"
+    ifExpression <- expressionParser
+    rword "else"
+    elseExpression <- expressionParser
+    return $ Ternary condition ifExpression elseExpression
 
 thisParser :: Parser SpecialRef
 thisParser = This <$ rword "this"
