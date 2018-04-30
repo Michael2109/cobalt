@@ -251,7 +251,6 @@ methodParser = do
         expression <- expressionParser
         return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
     methodDoBlock = try $ do
-        sc
         indentation <- L.indentLevel
         (annotations, modifiers, name, fields, returnType) <- methodStart
         doBlock <- doBlockParser indentation

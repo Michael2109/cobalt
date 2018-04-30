@@ -152,28 +152,7 @@ parserTestList = TestList
     , testLambdaParser
 
     --, testMethodCallParser
-
-    , testMethodParserEmptyParams
-    , testMethodParserMultipleParams
-    , testMethodParserNestedMethod
-    --, testMethodParserMissingNameError
-    --, testMethodParserMissingParens
-    --, testMethodParserMissingName
-    --, testMethodParserMissingReturnType
-    , testMethodParserModifierPublic
-    --, testMethodParserModifierProtected
-    --, testMethodParserModifierPrivate
-    --, testMethodParserModifierPublicAbstract
-    --, testMethodParserModifierProtectedAbstract
-    --, testMethodParserModifierPrivateAbstract
-    --, testMethodParserModifierAbstract
-    --, testMethodParserModifierPublicFinal
-    --, testMethodParserModifierProtectedFinal
-    --, testMethodParserModifierPrivateFinal
-    --, testMethodParserModifierFinal
-    --, testMethodParserModifierReordered1
-    --, testMethodParserModifierReordered2
-    --, testMethodParserModifierReordered3
+    , testMethodParser
 
     --, testAccessModifierParserPublic
     --, testAccessModifierParserProtected

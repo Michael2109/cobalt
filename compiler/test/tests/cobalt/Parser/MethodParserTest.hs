@@ -9,46 +9,52 @@ import Data.List.NonEmpty
 import AST.AST
 import Parser.ExprParser
 
-testMethodParserEmptyParams :: Test
-testMethodParserEmptyParams = do
-    let code = "let exampleMethod (): Int = _"
-    TestCase $ assertEqual code
-        (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))}))
-        (case (parse methodDefParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+testMethodParser :: Test
+testMethodParser = do
+    let codeEmptyParams = "let exampleMethod (): Int = _"
+    let testEmptyParams = TestCase $ assertEqual codeEmptyParams
+                          (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))}))
+                          (case (parse methodDefParser "" codeEmptyParams) of
+                              Left  e -> error $ show e
+                              Right x -> x)
 
-testMethodParserMultipleParams :: Test
-testMethodParserMultipleParams = do
-    let code = "let exampleMethod (a: Int, b: Int): Int = _"
-    TestCase $ assertEqual code
-        (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))}))
-        (case (parse methodDefParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeMultipleParams = "let exampleMethod (a: Int, b: Int): Int = _"
+    let testMultipleParams = TestCase $ assertEqual codeMultipleParams
+                                (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))}))
+                                (case (parse methodDefParser "" codeMultipleParams) of
+                                     Left  e -> error $ show e
+                                     Right x -> x)
 
-testMethodParserNestedMethod :: Test
-testMethodParserNestedMethod = do
-    let code = unlines [ "let outerMethod (): Int = do"
+    let codeDoBlock = unlines [ "let outerMethod (): Int = do"
+                              , "    i"
+                              , "    j"
+                              ]
+    let testDoBlock = TestCase $ assertEqual codeDoBlock
+                          (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]}))
+                          (case (parse methodDefParser "" codeDoBlock) of
+                              Left  e -> error $ show e
+                              Right x -> x)
+
+    let codeNestedMethod = unlines [ "let outerMethod (): Int = do"
                        , "    let innerMethod (): Int = do"
                        , "        i"
                        , "    j"
                        ]
-    TestCase $ assertEqual code
-        (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]}))
-        (case (parse methodDefParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let testNestedMethod = TestCase $ assertEqual codeNestedMethod
+                               (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]}))
+                               (case (parse methodDefParser "" codeNestedMethod) of
+                                   Left  e -> error $ show e
+                                   Right x -> x)
 
--- Modifiers
-testMethodParserModifierPublic :: Test
-testMethodParserModifierPublic = do
-    let code = "member let exampleMethod (a: Int, b: Int): Int = _"
-    TestCase $ assertEqual code
-        (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))}))
-        (case (parse (methodDefParser) "" code) of
-             Left  e -> error (show e)
-             Right x -> x)
+    -- Modifiers
+    let codeModifierPublic = "member let exampleMethod (a: Int, b: Int): Int = _"
+    let testModifierPublic = TestCase $ assertEqual codeModifierPublic
+                                (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))}))
+                                (case (parse (methodDefParser) "" codeModifierPublic) of
+                                     Left  e -> error (show e)
+                                     Right x -> x)
+
+    TestList [testEmptyParams, testMultipleParams, testDoBlock, testNestedMethod, testModifierPublic]
 
 
 -- Test correctly produces error messages
