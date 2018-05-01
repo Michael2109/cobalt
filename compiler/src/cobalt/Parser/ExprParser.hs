@@ -60,7 +60,7 @@ assignParser = do
         (immutable, varNames, varType) <- try $ do
             start <- assignStart
             return start
-        expression <- expressionParser
+        expression <- nestedCallParser
         if length varNames <= 1
             then return $ Assign (varNames!!0) varType (ExprAssignment expression)
             else return $ AssignMultiple varNames varType (ExprAssignment expression)
@@ -114,10 +114,12 @@ bTerm =  parens bExpr
 
 expressionParser :: Parser Expr
 expressionParser
-    = identifierParser
+    =   newClassInstanceParser
+    <|> methodCallParser
+    <|> identifierParser
 
 expressionAsStatementParser :: Parser Stmt
-expressionAsStatementParser = ExprAsStmt <$> expressionParser
+expressionAsStatementParser = ExprAsStmt <$> nestedCallParser
 
 fieldParser :: Parser Field
 fieldParser = do
@@ -210,7 +212,7 @@ lambdaParser = do
   where
     lambdaInline = do
         fields <- lambdaStart
-        expression <- expressionParser
+        expression <- nestedCallParser
         return $ Lambda fields $ ExprAssignment expression
     lambdaDoBlock = L.indentBlock scn p
       where
@@ -235,7 +237,7 @@ methodParser = do
   where
     methodInline = do
         (annotations, modifiers, name, fields, returnType) <- methodStart
-        expression <- expressionParser
+        expression <- nestedCallParser
         return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
     methodDoBlock = L.indentBlock scn p
       where
@@ -258,11 +260,11 @@ methodParser = do
         symbol "="
         return (annotations, modifiers, name, fields, returnType)
 
-methodCallParser :: Parser Stmt
+methodCallParser :: Parser Expr
 methodCallParser =
     try $ do
         methodName <- nameParser
-        args <- parens $ sepBy expressionParser (symbol ",")
+        args <- parens $ sepBy nestedCallParser (symbol ",")
         return $ MethodCall methodName (BlockExpr args)
 
 methodDefParser :: Parser Stmt
@@ -316,11 +318,18 @@ nameSpaceParser = try $ L.nonIndented scn p
         locations <- sepBy1 identifier (symbol ".")
         return $ (NameSpace locations)
 
-newClassInstanceParser :: Parser Stmt
+nestedCallParser :: Parser Expr
+nestedCallParser = do
+    expressions <- sepBy1 expressionParser (symbol ".")
+    if length expressions == 1
+    then return $ expressions!!0
+    else return $ BlockExpr expressions
+
+newClassInstanceParser :: Parser Expr
 newClassInstanceParser  = do
     try (rword "new")
     className <- typeRefParser
-    arguments <- parens $ sepBy expressionParser (symbol ",")
+    arguments <- parens $ sepBy nestedCallParser (symbol ",")
     return $ (NewClassInstance className (BlockExpr arguments))
 
 reassignParser :: Parser Stmt
@@ -329,7 +338,7 @@ reassignParser = do
         id <- identifier
         symbol "<-"
         return (Name id)
-    value <- expressionParser
+    value <- nestedCallParser
     return (Reassign name value)
 
 rExpr :: Parser BExpr
@@ -379,9 +388,9 @@ ternaryParser  = do
     try $ rword "if"
     condition  <- bExpr
     rword "then"
-    ifExpression <- expressionParser
+    ifExpression <- nestedCallParser
     rword "else"
-    elseExpression <- expressionParser
+    elseExpression <- nestedCallParser
     return $ Ternary condition ifExpression elseExpression
 
 thisParser :: Parser SpecialRef

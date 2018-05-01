@@ -25,6 +25,7 @@ import Parser.ModelTypeParserTest
 import Parser.ModifierParserTest
 import Parser.ModelParserTest
 import Parser.ModifierBlockParserTest
+import Parser.NestedCallParserTest
 import Parser.NewClassInstanceParserTest
 import Parser.ObjectMethodCallParserTest
 import Parser.PackageParserTest
@@ -151,7 +152,8 @@ parserTestList = TestList
 
     , testLambdaParser
 
-    --, testMethodCallParser
+    , testMethodCallParser
+    , testMethodCallParserExpr
     , testMethodParser
 
     --, testAccessModifierParserPublic
@@ -213,6 +215,10 @@ parserTestList = TestList
     --, testModifierBlockParserPrivateEmpty
     --, testModifierBlockParserProtectedEmpty
     --, testModifierBlockParserPublicEmpty
+    , testNestedCallParser
+
+    , testNewClassInstanceParser
+    , testNewClassInstanceParserExpr
 
     --, testNewClassInstanceParserNoArgs
     --, testNewClassInstanceParserNoArgsUnderscore

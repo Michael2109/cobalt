@@ -105,11 +105,12 @@ data Assignment
     deriving (Show, Eq)
 
 data Expr
-    = Call Expr Expr
+    = BlockExpr [Expr]
     | Identifier Name
+    | MethodCall Name Expr
+    | NewClassInstance Type Expr
     | Ternary BExpr Expr Expr
     | Tuple Expr
-    | BlockExpr [Expr]
     deriving (Show, Eq)
 
 data Stmt
@@ -122,8 +123,6 @@ data Stmt
     | Reassign Name Expr
     | Return Stmt
     | Lambda [Field] Assignment
-    | MethodCall Name Expr
-    | NewClassInstance Type Expr
     | StringLiteral String
     | ModelDef Model
     | MethodDef Method
