@@ -106,6 +106,7 @@ data Assignment
 
 data Expr
     = BlockExpr [Expr]
+    | BExprContainer BExpr
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type Expr

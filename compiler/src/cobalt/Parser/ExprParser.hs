@@ -116,6 +116,7 @@ expressionParser :: Parser Expr
 expressionParser
     =   newClassInstanceParser
     <|> methodCallParser
+    <|> BExprContainer <$> bExpr
     <|> identifierParser
 
 expressionParser' :: Parser Expr
@@ -343,8 +344,10 @@ reassignParser = do
 
 rExpr :: Parser BExpr
 rExpr = do
-  a1 <- aExpr
-  op <- relation
+  (a1, op) <- try $ do
+      a1 <- aExpr
+      op <- relation
+      return (a1, op)
   a2 <- aExpr
   return (RBinary op a1 a2)
 

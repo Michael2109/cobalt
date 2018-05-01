@@ -31,7 +31,6 @@ import Parser.ObjectMethodCallParserTest
 import Parser.PackageParserTest
 import Parser.ParameterizedTypeParserTest
 import Parser.ParameterParserTest
-import Parser.ParenthesesParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
 import Parser.TernaryParserTest
@@ -55,9 +54,9 @@ parserTestList = TestList
       , testInteger
       , testLong
 
-    --, testAExprParserVar
     , testAExprParserInt
-
+    , testBExprParser
+    , testBExprParserExpr
     -- BExprParser
     --, testBExprParserTrue
     --, testBExprParserFalse
