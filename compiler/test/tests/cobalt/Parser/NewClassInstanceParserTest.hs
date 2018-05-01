@@ -3,97 +3,56 @@ module Parser.NewClassInstanceParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
-
+import AST.AST
 import Parser.ExprParser
 
-{-
-testNewClassInstanceParserNoArgs :: Test
-testNewClassInstanceParserNoArgs = do
-    let code = "new ClassName()"
-    TestCase $ assertEqual code
-        (NewClassInstance (Identifier "ClassName") [])
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+testNewClassInstanceParser :: Test
+testNewClassInstanceParser = do
+    let codeNoArguments = "new ClassName()"
+    let testNoArguments = TestCase $ assertEqual codeNoArguments
+                           (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr []))
+                           (case (parse newClassInstanceParser "" codeNoArguments) of
+                               Left  e -> error $ show e
+                               Right x -> x)
 
-testNewClassInstanceParserNoArgsUnderscore :: Test
-testNewClassInstanceParserNoArgsUnderscore = do
-    let code = "new Class_Name()"
-    TestCase $ assertEqual code
-        (NewClassInstance (Identifier "Class_Name") [])
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeSingleArgument = "new ClassName(a)"
+    let testSingleArgument = TestCase $ assertEqual codeSingleArgument
+                           (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a")]))
+                           (case (parse newClassInstanceParser "" codeSingleArgument) of
+                               Left  e -> error $ show e
+                               Right x -> x)
 
-testNewClassInstanceParserNoArgsLowerCase :: Test
-testNewClassInstanceParserNoArgsLowerCase = do
-    let code = "new className()"
-    TestCase $ assertEqual code
-        (NewClassInstance (Identifier "className") [])
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeMultipleArgument = "new ClassName(a, b, c)"
+    let testMultipleArgument = TestCase $ assertEqual codeMultipleArgument
+                           (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]))
+                           (case (parse newClassInstanceParser "" codeMultipleArgument) of
+                               Left  e -> error $ show e
+                               Right x -> x)
 
-testNewClassInstanceParserNewUpperCase :: Test
-testNewClassInstanceParserNewUpperCase = do
-    let code = "NEW className()"
-    TestCase $ assertEqual code
-        Error
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    TestList [testNoArguments, testSingleArgument, testMultipleArgument]
 
-testNewClassInstanceParserNoArgsNoParens :: Test
-testNewClassInstanceParserNoArgsNoParens = do
-    let code = "new ClassName"
-    TestCase $ assertEqual code
-        Error
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+testNewClassInstanceParserExpr :: Test
+testNewClassInstanceParserExpr = do
+    let codeNoArguments = "new ClassName()"
+    let testNoArguments = TestCase $ assertEqual codeNoArguments
+                           (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr []))
+                           (case (parse expressionParser' "" codeNoArguments) of
+                               Left  e -> error $ show e
+                               Right x -> x)
 
-testNewClassInstanceParserSingleArg :: Test
-testNewClassInstanceParserSingleArg = do
-    let code = "new ClassName(1000)"
-    TestCase $ assertEqual code
-        (NewClassInstance (Identifier "ClassName") [IntConst 1000])
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeSingleArgument = "new ClassName(a)"
+    let testSingleArgument = TestCase $ assertEqual codeSingleArgument
+                           (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a")]))
+                           (case (parse expressionParser' "" codeSingleArgument) of
+                               Left  e -> error $ show e
+                               Right x -> x)
 
-testNewClassInstanceParserMultiArgs :: Test
-testNewClassInstanceParserMultiArgs = do
-    let code = "new ClassName(1000, 10 new OtherClassName(varName, otherVarName)))"
-    TestCase $ assertEqual code
-        Error
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeMultipleArgument = "new ClassName(a, b, c)"
+    let testMultipleArgument = TestCase $ assertEqual codeMultipleArgument
+                           (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]))
+                           (case (parse expressionParser' "" codeMultipleArgument) of
+                               Left  e -> error $ show e
+                               Right x -> x)
 
-testNewClassInstanceParserMissingNew :: Test
-testNewClassInstanceParserMissingNew = do
-    let code = "ClassName()"
-    TestCase $ assertEqual code
-        Error
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    TestList [testNoArguments, testSingleArgument, testMultipleArgument]
 
-testNewClassInstanceParserMissingLeftParen :: Test
-testNewClassInstanceParserMissingLeftParen = do
-    let code = "new ClassName)"
-    TestCase $ assertEqual code
-        Error
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
-
-testNewClassInstanceParserMissingRightParen :: Test
-testNewClassInstanceParserMissingRightParen = do
-    let code = "new ClassName("
-    TestCase $ assertEqual code
-        Error
-        (case (parse newClassInstanceParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
--}

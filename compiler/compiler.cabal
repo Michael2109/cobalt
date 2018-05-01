@@ -181,6 +181,7 @@ test-suite compiler-test
       Parser.ClassVariableParserTest
       Parser.ConstructorParserTest
       Parser.DoBlockParserTest
+      Parser.ExpressionParserTest
       Parser.ForLoopParserTest
       Parser.GlobalVariableParserTest
       Parser.IdentifierParserTest

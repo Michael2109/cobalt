@@ -14,6 +14,7 @@ import Parser.AssignParserTest
 import Parser.BooleanParserTest
 import Parser.ClassVariableParserTest
 import Parser.DoBlockParserTest
+import Parser.ExpressionParserTest
 import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
 import Parser.IfStatementParserTest
@@ -127,6 +128,8 @@ parserTestList = TestList
     --, testClassVariableParserMissingVar
     --, testClassVariableParserMissingClassName
 
+    , testExpressionParserNested
+
     , testForLoopGeneratorParser
 
     , testIdentifierParserOneCharacter
@@ -151,7 +154,8 @@ parserTestList = TestList
 
     , testLambdaParser
 
-    --, testMethodCallParser
+    , testMethodCallParser
+    , testMethodCallParserExpr
     , testMethodParser
 
     --, testAccessModifierParserPublic
@@ -213,6 +217,9 @@ parserTestList = TestList
     --, testModifierBlockParserPrivateEmpty
     --, testModifierBlockParserProtectedEmpty
     --, testModifierBlockParserPublicEmpty
+
+    , testNewClassInstanceParser
+    , testNewClassInstanceParserExpr
 
     --, testNewClassInstanceParserNoArgs
     --, testNewClassInstanceParserNoArgsUnderscore
