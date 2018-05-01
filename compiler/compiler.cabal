@@ -201,7 +201,6 @@ test-suite compiler-test
       Parser.ParameterizedTypeParserTest
       Parser.ParameterParserTest
       Parser.ReassignParserTest
-      Parser.RExprParserTest
       Parser.StringLiteralMultilineParserTest
       Parser.StringLiteralParserTest
       Parser.TernaryParserTest

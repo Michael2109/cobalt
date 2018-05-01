@@ -352,7 +352,10 @@ rExpr = do
   return (RBinary op a1 a2)
 
 relation :: Parser RBinOp
-relation = (symbol ">" *> pure Greater)
+relation
+  =   (symbol ">=" *> pure GreaterEqual)
+  <|> (symbol "<=" *> pure LessEqual)
+  <|> (symbol ">" *> pure Greater)
   <|> (symbol "<" *> pure Less)
 
 returnStatementParser :: Parser Stmt

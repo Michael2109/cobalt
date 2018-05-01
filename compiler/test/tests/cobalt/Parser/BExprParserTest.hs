@@ -69,3 +69,76 @@ testBExprParserExpr = do
                            Right x -> x)
 
     TestList [testTrue, testFalse, testParens, testRExpr]
+
+
+testRExprParser :: Test
+testRExprParser = do
+    let codeGreaterThan = "x > 10"
+    let testGreaterThan = TestCase $ assertEqual codeGreaterThan
+                       (RBinary Greater (Var "x") (IntConst 10))
+                       (case (parse rExpr "" codeGreaterThan) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    let codeLessThan = "x < 10"
+    let testLessThan = TestCase $ assertEqual codeLessThan
+                       (RBinary Less (Var "x") (IntConst 10))
+                       (case (parse rExpr "" codeLessThan) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    let codeGreaterThanEqual = "x >= 10"
+    let testGreaterThanEqual = TestCase $ assertEqual codeGreaterThanEqual
+                       (RBinary GreaterEqual (Var "x") (IntConst 10))
+                       (case (parse rExpr "" codeGreaterThanEqual) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    let codeLessThanEqual = "x <= 10"
+    let testLessThanEqual = TestCase $ assertEqual codeLessThanEqual
+                       (RBinary LessEqual (Var "x") (IntConst 10))
+                       (case (parse rExpr "" codeLessThanEqual) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    TestList [ testGreaterThan
+             , testLessThan
+             , testGreaterThanEqual
+             , testLessThanEqual
+             ]
+
+testRExprParserExpr :: Test
+testRExprParserExpr = do
+    let codeGreaterThan = "x > 10"
+    let testGreaterThan = TestCase $ assertEqual codeGreaterThan
+                       (BExprContainer $ RBinary Greater (Var "x") (IntConst 10))
+                       (case (parse expressionParser' "" codeGreaterThan) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    let codeLessThan = "x < 10"
+    let testLessThan = TestCase $ assertEqual codeLessThan
+                       (BExprContainer $ RBinary Less (Var "x") (IntConst 10))
+                       (case (parse expressionParser' "" codeLessThan) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    let codeGreaterThanEqual = "x >= 10"
+    let testGreaterThanEqual = TestCase $ assertEqual codeGreaterThanEqual
+                       (BExprContainer $ (RBinary GreaterEqual (Var "x") (IntConst 10)))
+                       (case (parse expressionParser' "" codeGreaterThanEqual) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    let codeLessThanEqual = "x <= 10"
+    let testLessThanEqual = TestCase $ assertEqual codeLessThanEqual
+                       (BExprContainer $ RBinary LessEqual (Var "x") (IntConst 10))
+                       (case (parse expressionParser' "" codeLessThanEqual) of
+                           Left  e -> error $ show e
+                           Right x -> x)
+
+    TestList [ testGreaterThan
+             , testLessThan
+             , testGreaterThanEqual
+             , testLessThanEqual
+             ]

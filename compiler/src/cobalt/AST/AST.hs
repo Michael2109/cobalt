@@ -105,7 +105,8 @@ data Assignment
     deriving (Show, Eq)
 
 data Expr
-    = BlockExpr [Expr]
+    = AExprContainer AExpr
+    | BlockExpr [Expr]
     | BExprContainer BExpr
     | Identifier Name
     | MethodCall Name Expr
@@ -151,7 +152,9 @@ data BBinOp
     deriving (Show, Eq)
 
 data RBinOp
-    = Greater
+    = GreaterEqual
+    | Greater
+    | LessEqual
     | Less
     deriving (Show, Eq)
 
