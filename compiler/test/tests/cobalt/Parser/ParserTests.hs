@@ -8,7 +8,6 @@ import Parser.BExprParserTest
 import Parser.AnnotationParserTest
 import Parser.ArgumentParserTest
 import Parser.ArgumentTypeParserTest
-import Parser.ArithmeticParserTest
 import Parser.AssignParserTest
 import Parser.BooleanParserTest
 import Parser.ClassVariableParserTest
@@ -40,20 +39,21 @@ import Parser.ValueTypeParserTest
 
 parserTestList :: Test
 parserTestList = TestList
-    -- BaseParser
-    [
-        testSymbolSingle
-      , testSymbolMultiple
-      , testSymbolFail
-      , testReservedWord
-      , testIdentifier
-      , testIdentifierFail
-      , testFloat
-      , testDouble
-      , testInteger
-      , testLong
 
-    , testAExprParserInt
+    [ testSymbolSingle
+    , testSymbolMultiple
+    , testSymbolFail
+    , testReservedWord
+    , testIdentifier
+    , testIdentifierFail
+    , testFloat
+    , testDouble
+    , testInteger
+    , testLong
+
+    , testAExprParser
+
+    , testAExprParser
 
     , testBExprParser
     , testBExprParserExpr
@@ -63,7 +63,6 @@ parserTestList = TestList
 
     , testAnnotationParser
 
-
     , testAssignParser
     , testAssignParserMultiple
 
@@ -72,6 +71,7 @@ parserTestList = TestList
     , testForLoopGeneratorParser
 
     , testIdentifierParserOneCharacter
+
     , testIdentifierParserContainsUnderscore
 
     , testIdentifierParserContainsDigit

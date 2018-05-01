@@ -116,7 +116,7 @@ data Expr
     deriving (Show, Eq)
 
 data Stmt
-    = For Expr AExpr AExpr Stmt
+    = For Expr Expr Expr Stmt
     | While BExpr Stmt
     | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)

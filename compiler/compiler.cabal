@@ -173,7 +173,6 @@ test-suite compiler-test
       Parser.AnnotationParserTest
       Parser.ArgumentParserTest
       Parser.ArgumentTypeParserTest
-      Parser.ArithmeticParserTest
       Parser.ArrayAppendParserTest
       Parser.ArrayElementSelectParserTest
       Parser.AssignParserTest
