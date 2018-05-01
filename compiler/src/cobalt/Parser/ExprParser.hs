@@ -156,7 +156,6 @@ ifStatementParser  = do
     elseSection <- elseParser
     return $ If condition ifStatements elseSection
   where
-
     controlParser = do
         condition <- bExpr
         rword "then"
@@ -171,16 +170,14 @@ ifStatementParser  = do
                 return (L.IndentSome Nothing (return .  (condition, ) . BlockStmt) statementParser)
 
     elseParser = do
-        elifElse
+        elifBlock <- optional elifP
+        case elifBlock of
+            Just a -> do
+                ee <- elseParser
+                return (Just (If (fst a) (snd a) ee))
+            Nothing -> do
+                optional elseP
       where
-        elifElse = do
-            elifBlock <- optional elifP
-            case elifBlock of
-                Just a -> do
-                    ee <- elifElse
-                    return (Just (If (fst a) (snd a) ee))
-                Nothing -> do
-                    optional elseP
         elifP = do
             try $ L.indentBlock scn p
               where
