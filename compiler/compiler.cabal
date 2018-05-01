@@ -181,6 +181,7 @@ test-suite compiler-test
       Parser.ClassVariableParserTest
       Parser.ConstructorParserTest
       Parser.DoBlockParserTest
+      Parser.ExpressionParserTest
       Parser.ForLoopParserTest
       Parser.GlobalVariableParserTest
       Parser.IdentifierParserTest
@@ -194,7 +195,6 @@ test-suite compiler-test
       Parser.ModelParserTest
       Parser.ModifierBlockParserTest
       Parser.NewClassInstanceParserTest
-      Parser.NestedCallParserTest
       Parser.ObjectMethodCallParserTest
       Parser.PackageParserTest
       Parser.ParserTests

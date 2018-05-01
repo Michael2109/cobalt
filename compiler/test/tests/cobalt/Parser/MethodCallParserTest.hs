@@ -36,21 +36,21 @@ testMethodCallParserExpr = do
     let codeNoArguments = "methodCall()"
     let testNoArguments = TestCase $ assertEqual codeNoArguments
                         (MethodCall (Name "methodCall") (BlockExpr []))
-                        (case (parse (nestedCallParser) "" codeNoArguments) of
+                        (case (parse expressionParser' "" codeNoArguments) of
                              Left  e -> error $ show e
                              Right x -> x)
 
     let codeSingleArgument = "methodCall(a)"
     let testSingleArgument = TestCase $ assertEqual codeSingleArgument
                            (MethodCall (Name "methodCall") (BlockExpr [Identifier (Name "a")]))
-                           (case (parse (nestedCallParser) "" codeSingleArgument) of
+                           (case (parse expressionParser' "" codeSingleArgument) of
                                Left  e -> error $ show e
                                Right x -> x)
 
     let codeMultipleArgument = "methodCall(a, b, c)"
     let testMultipleArgument = TestCase $ assertEqual codeMultipleArgument
                            (MethodCall (Name "methodCall") (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]))
-                           (case (parse (nestedCallParser) "" codeMultipleArgument) of
+                           (case (parse expressionParser' "" codeMultipleArgument) of
                                Left  e -> error $ show e
                                Right x -> x)
 

@@ -36,21 +36,21 @@ testNewClassInstanceParserExpr = do
     let codeNoArguments = "new ClassName()"
     let testNoArguments = TestCase $ assertEqual codeNoArguments
                            (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr []))
-                           (case (parse nestedCallParser "" codeNoArguments) of
+                           (case (parse expressionParser' "" codeNoArguments) of
                                Left  e -> error $ show e
                                Right x -> x)
 
     let codeSingleArgument = "new ClassName(a)"
     let testSingleArgument = TestCase $ assertEqual codeSingleArgument
                            (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a")]))
-                           (case (parse nestedCallParser "" codeSingleArgument) of
+                           (case (parse expressionParser' "" codeSingleArgument) of
                                Left  e -> error $ show e
                                Right x -> x)
 
     let codeMultipleArgument = "new ClassName(a, b, c)"
     let testMultipleArgument = TestCase $ assertEqual codeMultipleArgument
                            (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]))
-                           (case (parse nestedCallParser "" codeMultipleArgument) of
+                           (case (parse expressionParser' "" codeMultipleArgument) of
                                Left  e -> error $ show e
                                Right x -> x)
 
