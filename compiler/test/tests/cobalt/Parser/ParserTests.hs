@@ -16,7 +16,7 @@ import Parser.ClassVariableParserTest
 import Parser.DoBlockParserTest
 import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
-import Parser.IfElseStatementParserTest
+import Parser.IfStatementParserTest
 import Parser.ImportParserTest
 import Parser.LambdaParserTest
 import Parser.MethodCallParserTest
@@ -33,6 +33,7 @@ import Parser.ParameterParserTest
 import Parser.ParenthesesParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
+import Parser.TernaryParserTest
 import Parser.ThisVarParserTest
 import Parser.TupleParserTest
 import Parser.TypeParameterParserTest
@@ -60,6 +61,7 @@ parserTestList = TestList
     --, testBExprParserTrue
     --, testBExprParserFalse
     --, testBExprParserFail
+    --, testBExprParenthesesConsumerParser
 
     -- RExprParser
     --, testRExprParserGreaterVar
@@ -134,12 +136,7 @@ parserTestList = TestList
     --, testIdentifierParserStartsDigitFail
     , testIdentifierParserCapital
 
-    , testIfStmtParserBooleanTrue
-    , testIfStmtParserBooleanFalse
-    , testIfStmtParserElifTrue
-    , testIfStmtParserElifFalse
-    , testIfStmtParserElifElse
-    , testIfStmtParserElse
+    , testIfStmtParser
 
     --, testImportParserSingle
     --, testImportParserEmptyFail
@@ -155,28 +152,7 @@ parserTestList = TestList
     , testLambdaParser
 
     --, testMethodCallParser
-
-    , testMethodParserEmptyParams
-    , testMethodParserMultipleParams
-    , testMethodParserNestedMethod
-    --, testMethodParserMissingNameError
-    --, testMethodParserMissingParens
-    --, testMethodParserMissingName
-    --, testMethodParserMissingReturnType
-    , testMethodParserModifierPublic
-    --, testMethodParserModifierProtected
-    --, testMethodParserModifierPrivate
-    --, testMethodParserModifierPublicAbstract
-    --, testMethodParserModifierProtectedAbstract
-    --, testMethodParserModifierPrivateAbstract
-    --, testMethodParserModifierAbstract
-    --, testMethodParserModifierPublicFinal
-    --, testMethodParserModifierProtectedFinal
-    --, testMethodParserModifierPrivateFinal
-    --, testMethodParserModifierFinal
-    --, testMethodParserModifierReordered1
-    --, testMethodParserModifierReordered2
-    --, testMethodParserModifierReordered3
+    , testMethodParser
 
     --, testAccessModifierParserPublic
     --, testAccessModifierParserProtected
@@ -226,6 +202,7 @@ parserTestList = TestList
     --, testModelParserReordered2
     --, testModelParserReordered3
 
+    , testTernaryParser
     --, testModelTypeParserClass
     --, testModelTypeParserObject
     --, testModelTypeParserTrait

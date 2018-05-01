@@ -17,7 +17,7 @@ data Method = Method
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: Type
-    , methodBody :: Expr
+    , methodBody :: Assignment
     }
     deriving (Show, Eq)
 
@@ -47,7 +47,7 @@ data Model = Model
     , modelParent :: Maybe Type
     , modelParentArguments :: [Stmt]
     , modelInterfaces :: [Type]
-    , modelBody :: Expr
+    , modelBody :: Stmt
     }
     deriving (Show, Eq)
 
@@ -99,43 +99,43 @@ data QualName = QualName NameSpace Name
 
 data IntConstant = IntConstant Integer
 
+data Assignment
+    = ExprAssignment Expr
+    | StmtAssignment Stmt
+    deriving (Show, Eq)
+
 data Expr
-    = Call Expr [Expr]
-    | Ternary Expr Expr Expr
-    | Block [Stmt]
+    = Call Expr Expr
+    | Identifier Name
+    | Ternary BExpr Expr Expr
+    | Tuple Expr
+    | BlockExpr [Expr]
     deriving (Show, Eq)
 
 data Stmt
-    = For Stmt AExpr AExpr Expr
-    | While BExpr Expr
-    | If Conditional (Maybe Conditional) (Maybe Conditional)
+    = For Expr AExpr AExpr Stmt
+    | While BExpr Stmt
+    | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Expr
-    | AssignMultiple [Name] (Maybe Type) Expr
+    | Assign Name (Maybe Type) Assignment
+    | AssignMultiple [Name] (Maybe Type) Assignment
     | Reassign Name Expr
-    | BareExpr Expr
     | Return Stmt
-    | Identifier Name
-    | Lambda [Field] Expr
+    | Lambda [Field] Assignment
     | MethodCall Name Expr
-    | NewClassInstance Type [Stmt]
+    | NewClassInstance Type Expr
     | StringLiteral String
-    | Tuple [Stmt]
     | ModelDef Model
     | MethodDef Method
-    deriving (Show, Eq)
-
-data Conditional
-    = IfStatement BExpr Expr
-    | ElifStatement BExpr Expr
-    | ElseStatement Expr
+    | ExprAsStmt Expr
+    | BlockStmt [Stmt]
     deriving (Show, Eq)
 
 -- This needs a better name
 data ExceptionHandler
-    = TryStatement Expr
-    | CatchStatement [Field] Expr
-    | FinallyStatement Expr
+    = TryStatement Stmt
+    | CatchStatement [Field] Stmt
+    | FinallyStatement Stmt
     deriving (Show, Eq)
 
 data BExpr

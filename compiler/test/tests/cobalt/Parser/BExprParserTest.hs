@@ -32,4 +32,14 @@ testBExprParserFail = do
         (Identifier "true")
         (case (parse (bExpr) "" code) of
              Left  _ -> BError
-             Right x -> x)-}
+             Right x -> x)
+
+testBExprParenthesesConsumerParser :: Test
+testBExprParenthesesConsumerParser = do
+    let code = "(((True)))"
+    TestCase $ assertEqual code
+        (BoolConst True)
+        (case (parse (bExpr) "" code) of
+             Left  _ -> BError
+             Right x -> x)
+-}

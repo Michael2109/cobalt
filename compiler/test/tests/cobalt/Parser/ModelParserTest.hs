@@ -12,7 +12,7 @@ testModelParser :: Test
 testModelParser = do
     let code = unlines [ "class Test" ]
     TestCase $ assertEqual code
-        (Model (Name "Test") [] [] Nothing [] [] (Block []))
+        (Model (Name "Test") [] [] Nothing [] [] (BlockStmt []))
         (case (parse (modelParser) "" code) of
              Left  _ -> error "Didn't parse correctly"
              Right x -> x)
@@ -22,7 +22,7 @@ testModelParserInner = do
     let code = unlines [ "class OuterClass"
                        , "    class InnerClass"]
     TestCase $ assertEqual code
-        ( Model {modelName = Name "OuterClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = Block [ModelDef (Model {modelName = Name "InnerClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = Block []})]})
+        ( Model {modelName = Name "OuterClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt [ModelDef (Model {modelName = Name "InnerClass", modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = (BlockStmt [])})]})
         (case (parse (modelParser) "" code) of
              Left  e -> error (show e)
              Right x -> x)
@@ -231,7 +231,7 @@ testModelParserModifierBlock = do
                        , "  let x: int = 5"
                        ]
     TestCase $ assertEqual code
-        (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] ["Interface"] [Import ["dir","sub_dir","ClassName"]] [ModifierBlock [Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5)]] [] [])
+        (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] ["Interface"] [Import ["dir","sub_dir","ClassName"]] [Modifier[Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5)]] [] [])
         (case (parse (modelParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -245,7 +245,7 @@ testModelParserConstructorBody = do
                        , "initAlien(10, 20)"
                        ]
     TestCase $ assertEqual code
-        (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] ["Interface"] [Import ["dir","sub_dir","ClassName"]] [ModifierBlock [Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5)]] [MethodCall "initAlien" [IntConst 10,IntConst 20]] [])
+        (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] ["Interface"] [Import ["dir","sub_dir","ClassName"]] [Modifier[Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5)]] [MethodCall "initAlien" [IntConst 10,IntConst 20]] [])
         (case (parse (modelParser) "" code) of
              Left  _ -> Error
              Right x -> x)
@@ -264,7 +264,7 @@ testModelParserMethods = do
                        , "act (direction: int): void"
                        ]
     TestCase $ assertEqual code
-        (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] ["Interface"] [Import ["dir","sub_dir","ClassName"]] [ModifierBlock [Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5)]] [MethodCall "initAlien" [IntConst 10,IntConst 20]] [Method (Identifier "exampleMethod") Nothing [] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [],Method (Identifier "initAlien") Nothing [] [Parameter (Identifier "int") (Identifier "x"),Parameter (Identifier "int") (Identifier "y")] (Identifier "void") False [Reassign (ThisVar (Identifier "x")) (Identifier "x"),Reassign (ThisVar (Identifier "y")) (Identifier "y")],Method (Identifier "act") Nothing [] [Parameter (Identifier "int") (Identifier "direction")] (Identifier "void") False []])
+        (Class Nothing "Test" Nothing [] [] (Just "ParentClass") [] ["Interface"] [Import ["dir","sub_dir","ClassName"]] [Modifier[Assign True (Just (Type (Identifier "int"))) (Identifier "x") (IntConst 5)]] [MethodCall "initAlien" [IntConst 10,IntConst 20]] [Method (Identifier "exampleMethod") Nothing [] [Parameter (Identifier "Int") (Identifier "a"),Parameter (Identifier "Int") (Identifier "b")] (Identifier "Int") False [],Method (Identifier "initAlien") Nothing [] [Parameter (Identifier "int") (Identifier "x"),Parameter (Identifier "int") (Identifier "y")] (Identifier "void") False [Reassign (ThisVar (Identifier "x")) (Identifier "x"),Reassign (ThisVar (Identifier "y")) (Identifier "y")],Method (Identifier "act") Nothing [] [Parameter (Identifier "int") (Identifier "direction")] (Identifier "void") False []])
         (case (parse (modelParser) "" code) of
              Left  _ -> Error
              Right x -> x)
