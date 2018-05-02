@@ -1,1 +1,0 @@
-module Parser.ArrayElementSelectParserTest where

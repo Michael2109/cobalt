@@ -3,17 +3,14 @@ module Parser.MethodCallParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
 testMethodCallParser :: Test
 testMethodCallParser = do
     let codeNoArguments = "methodCall()"
-    let testNoArguments = TestCase $ assertEqual codeNoArguments
-                           (MethodCall (Name "methodCall") (BlockExpr []))
-                           (case (parse (methodCallParser) "" codeNoArguments) of
-                               Left  e -> error $ show e
-                               Right x -> x)
+    let testNoArguments = testParseSuccess codeNoArguments (MethodCall (Name "methodCall") (BlockExpr [])) methodCallParser
 
     let codeSingleArgument = "methodCall(a)"
     let testSingleArgument = TestCase $ assertEqual codeSingleArgument
