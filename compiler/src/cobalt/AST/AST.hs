@@ -105,7 +105,9 @@ data Assignment
     deriving (Show, Eq)
 
 data Expr
-    = BlockExpr [Expr]
+    = AExprContainer AExpr
+    | BlockExpr [Expr]
+    | BExprContainer BExpr
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type Expr
@@ -114,7 +116,7 @@ data Expr
     deriving (Show, Eq)
 
 data Stmt
-    = For Expr AExpr AExpr Stmt
+    = For Expr Expr Expr Stmt
     | While BExpr Stmt
     | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
@@ -150,7 +152,9 @@ data BBinOp
     deriving (Show, Eq)
 
 data RBinOp
-    = Greater
+    = GreaterEqual
+    | Greater
+    | LessEqual
     | Less
     deriving (Show, Eq)
 

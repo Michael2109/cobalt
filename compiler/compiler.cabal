@@ -173,7 +173,6 @@ test-suite compiler-test
       Parser.AnnotationParserTest
       Parser.ArgumentParserTest
       Parser.ArgumentTypeParserTest
-      Parser.ArithmeticParserTest
       Parser.ArrayAppendParserTest
       Parser.ArrayElementSelectParserTest
       Parser.AssignParserTest
@@ -200,9 +199,7 @@ test-suite compiler-test
       Parser.ParserTests
       Parser.ParameterizedTypeParserTest
       Parser.ParameterParserTest
-      Parser.ParenthesesParserTest
       Parser.ReassignParserTest
-      Parser.RExprParserTest
       Parser.StringLiteralMultilineParserTest
       Parser.StringLiteralParserTest
       Parser.TernaryParserTest

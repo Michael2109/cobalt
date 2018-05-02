@@ -116,7 +116,9 @@ expressionParser :: Parser Expr
 expressionParser
     =   newClassInstanceParser
     <|> methodCallParser
+    <|> BExprContainer <$> bExpr
     <|> identifierParser
+    <|> AExprContainer <$> aExpr
 
 expressionParser' :: Parser Expr
 expressionParser' = do
@@ -148,9 +150,9 @@ forLoopGeneratorParser  = try $ L.indentBlock scn p
       symbol "("
       varName <- identifierParser
       symbol "<-"
-      start <- aTerm
+      start <- expressionParser'
       rword "to"
-      end <- aTerm
+      end <- expressionParser
       symbol ")"
       return (L.IndentMany Nothing (return . (For varName start end) . BlockStmt) statementParser)
 
@@ -326,7 +328,7 @@ nameSpaceParser = try $ L.nonIndented scn p
         return $ (NameSpace locations)
 
 newClassInstanceParser :: Parser Expr
-newClassInstanceParser  = do
+newClassInstanceParser = do
     try (rword "new")
     className <- typeRefParser
     arguments <- parens $ sepBy expressionParser' (symbol ",")
@@ -343,13 +345,18 @@ reassignParser = do
 
 rExpr :: Parser BExpr
 rExpr = do
-  a1 <- aExpr
-  op <- relation
+  (a1, op) <- try $ do
+      a1 <- aExpr
+      op <- relation
+      return (a1, op)
   a2 <- aExpr
   return (RBinary op a1 a2)
 
 relation :: Parser RBinOp
-relation = (symbol ">" *> pure Greater)
+relation
+  =   (symbol ">=" *> pure GreaterEqual)
+  <|> (symbol "<=" *> pure LessEqual)
+  <|> (symbol ">" *> pure Greater)
   <|> (symbol "<" *> pure Less)
 
 returnStatementParser :: Parser Stmt
