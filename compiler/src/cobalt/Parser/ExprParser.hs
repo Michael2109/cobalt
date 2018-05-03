@@ -28,7 +28,7 @@ abstractModifierParser = Abstract <$ rword "abstract"
 
 accessModifierParser :: Parser Modifier
 accessModifierParser
-    =   Public    <$ rword "member"
+    =   Public    <$ rword "public"
     <|> Protected <$ rword "protected"
     <|> Private   <$ rword "private"
     <|> PackageLocal <$ rword "local"
@@ -370,6 +370,7 @@ statementParser = modelDefParser
     <|> methodDefParser
     <|> returnStatementParser
     <|> ifStatementParser
+    <|> lambdaParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt

@@ -42,47 +42,23 @@ parserTestList = TestList
     , testDouble
     , testInteger
     , testLong
-
     , testAExprParser
-
     , testBExprParser
-
     , testAnnotationParser
-
     , testAssignParser
     , testAssignParserMultiple
-
     , testExpressionParserNested
-
     , testForLoopGeneratorParser
-
-    , testIdentifierParserOneCharacter
-
-    , testIdentifierParserContainsUnderscore
-
-    , testIdentifierParserContainsDigit
-
-    , testIdentifierParserCapital
-
+    , testIdentifierParser
     , testIfStmtParser
-
     , testLambdaParser
-
     , testMethodCallParser
-    , testMethodCallParserExpr
-
     , testMethodParser
-
     , testModelParser
-
-    , testModelParserInner
-
+    , testModifierParser
     , testNewClassInstanceParser
     , testNewClassInstanceParserExpr
-
     , testRExprParser
-
     , testTernaryParser
-
     , testTupleParser
     ]
