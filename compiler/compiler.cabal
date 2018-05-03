@@ -161,6 +161,7 @@ test-suite compiler-test
       zip,
       Glob,
       parsec >= 3 && <4,
+      pretty-error,
       compiler
   other-modules:
       AST.BlocksTest
@@ -202,6 +203,7 @@ test-suite compiler-test
       Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
+      TestUtil.CommandLineTestUtil
       TestUtil.ParserTestUtil
       TestUtil.TestUtil
       Util.CommandLineUtilTest
