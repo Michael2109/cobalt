@@ -35,7 +35,7 @@ testIdentifier = do
 testFloat :: Test
 testFloat = do
     let code = "100.50988678f"
-    let test = testParseSuccess code 100.50988678 doubleParser
+    let test = testParseSuccess code 100.50988678 floatParser
     TestList [test]
 
 testDouble :: Test
@@ -53,5 +53,5 @@ testInteger = do
 testLong :: Test
 testLong = do
     let code = "100l"
-    let test = testParseSuccess code 100 integerParser
+    let test = testParseSuccess code 100 longParser
     TestList [test]
