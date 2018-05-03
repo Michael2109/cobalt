@@ -2,7 +2,6 @@ module TestUtil.ParserTestUtil where
 
 import Test.HUnit
 import Text.Megaparsec
-import Text.Pretty.Simple
 import PrettyError
 import Data.Monoid
 
