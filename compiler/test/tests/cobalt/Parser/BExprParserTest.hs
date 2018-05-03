@@ -3,142 +3,62 @@ module Parser.BExprParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
 testBExprParser :: Test
 testBExprParser = do
     let codeTrue = "True"
-    let testTrue = TestCase $ assertEqual codeTrue
-                       (BoolConst True)
-                       (case (parse bExpr "" codeTrue) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testTrue = testParseSuccess codeTrue (BoolConst True) bExpr
+    let testTrueExpr = testParseSuccess codeTrue (BExprContainer $ BoolConst True) expressionParser'
 
     let codeFalse = "False"
-    let testFalse = TestCase $ assertEqual codeFalse
-                       (BoolConst False)
-                       (case (parse bExpr "" codeFalse) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testFalse = testParseSuccess codeFalse (BoolConst False) bExpr
+    let testFalseExpr = testParseSuccess codeFalse (BExprContainer $ BoolConst False) expressionParser'
 
     let codeParens = "(True)"
-    let testParens = TestCase $ assertEqual codeParens
-                       (BoolConst True)
-                       (case (parse bExpr "" codeParens) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testParens = testParseSuccess codeParens (BoolConst True) bExpr
+    let testParensExpr = testParseSuccess codeParens (BExprContainer $ BoolConst True) expressionParser'
 
     let codeRExpr = "x < 10"
-    let testRExpr = TestCase $ assertEqual codeRExpr
-                       (RBinary Less (Var "x") (IntConst 10))
-                       (case (parse bExpr "" codeRExpr) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testRExpr = testParseSuccess codeRExpr (RBinary Less (Var "x") (IntConst 10)) bExpr
+    let testRExprExpr = testParseSuccess codeRExpr (BExprContainer (RBinary Less (Var "x") (IntConst 10))) expressionParser'
 
-    TestList [testTrue, testFalse, testParens, testRExpr]
-
-testBExprParserExpr :: Test
-testBExprParserExpr = do
-    let codeTrue = "True"
-    let testTrue = TestCase $ assertEqual codeTrue
-                       (BExprContainer $ BoolConst True)
-                       (case (parse expressionParser' "" codeTrue) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    let codeFalse = "False"
-    let testFalse = TestCase $ assertEqual codeFalse
-                       (BExprContainer $ BoolConst False)
-                       (case (parse expressionParser' "" codeFalse) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    let codeParens = "(True)"
-    let testParens = TestCase $ assertEqual codeParens
-                       (BExprContainer $ BoolConst True)
-                       (case (parse expressionParser' "" codeParens) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    let codeRExpr = "x < 10"
-    let testRExpr = TestCase $ assertEqual codeRExpr
-                       (BExprContainer (RBinary Less (Var "x") (IntConst 10)))
-                       (case (parse expressionParser' "" codeRExpr) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    TestList [testTrue, testFalse, testParens, testRExpr]
-
+    TestList [ testTrue
+             , testTrueExpr
+             , testFalse
+             , testFalseExpr
+             , testParens
+             , testParensExpr
+             , testRExpr
+             , testRExprExpr
+             ]
 
 testRExprParser :: Test
 testRExprParser = do
     let codeGreaterThan = "x > 10"
-    let testGreaterThan = TestCase $ assertEqual codeGreaterThan
-                       (RBinary Greater (Var "x") (IntConst 10))
-                       (case (parse rExpr "" codeGreaterThan) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testGreaterThan = testParseSuccess codeGreaterThan (RBinary Greater (Var "x") (IntConst 10)) rExpr
+    let testGreaterThanExpr = testParseSuccess codeGreaterThan (BExprContainer $ RBinary Greater (Var "x") (IntConst 10)) expressionParser'
 
     let codeLessThan = "x < 10"
-    let testLessThan = TestCase $ assertEqual codeLessThan
-                       (RBinary Less (Var "x") (IntConst 10))
-                       (case (parse rExpr "" codeLessThan) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testLessThan = testParseSuccess codeLessThan (RBinary Less (Var "x") (IntConst 10)) rExpr
+    let testLessThanExpr = testParseSuccess codeLessThan (BExprContainer $ RBinary Less (Var "x") (IntConst 10)) expressionParser'
 
     let codeGreaterThanEqual = "x >= 10"
-    let testGreaterThanEqual = TestCase $ assertEqual codeGreaterThanEqual
-                       (RBinary GreaterEqual (Var "x") (IntConst 10))
-                       (case (parse rExpr "" codeGreaterThanEqual) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testGreaterThanEqual = testParseSuccess codeGreaterThanEqual (RBinary GreaterEqual (Var "x") (IntConst 10)) rExpr
+    let testGreaterThanEqualExpr = testParseSuccess codeGreaterThanEqual (BExprContainer $ (RBinary GreaterEqual (Var "x") (IntConst 10))) expressionParser'
 
     let codeLessThanEqual = "x <= 10"
-    let testLessThanEqual = TestCase $ assertEqual codeLessThanEqual
-                       (RBinary LessEqual (Var "x") (IntConst 10))
-                       (case (parse rExpr "" codeLessThanEqual) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testLessThanEqual = testParseSuccess codeLessThanEqual (RBinary LessEqual (Var "x") (IntConst 10)) rExpr
+    let testLessThanEqualExpr = testParseSuccess codeLessThanEqual (BExprContainer $ RBinary LessEqual (Var "x") (IntConst 10)) expressionParser'
 
     TestList [ testGreaterThan
+             , testGreaterThanExpr
              , testLessThan
+             , testLessThanExpr
              , testGreaterThanEqual
+             , testGreaterThanEqualExpr
              , testLessThanEqual
-             ]
-
-testRExprParserExpr :: Test
-testRExprParserExpr = do
-    let codeGreaterThan = "x > 10"
-    let testGreaterThan = TestCase $ assertEqual codeGreaterThan
-                       (BExprContainer $ RBinary Greater (Var "x") (IntConst 10))
-                       (case (parse expressionParser' "" codeGreaterThan) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    let codeLessThan = "x < 10"
-    let testLessThan = TestCase $ assertEqual codeLessThan
-                       (BExprContainer $ RBinary Less (Var "x") (IntConst 10))
-                       (case (parse expressionParser' "" codeLessThan) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    let codeGreaterThanEqual = "x >= 10"
-    let testGreaterThanEqual = TestCase $ assertEqual codeGreaterThanEqual
-                       (BExprContainer $ (RBinary GreaterEqual (Var "x") (IntConst 10)))
-                       (case (parse expressionParser' "" codeGreaterThanEqual) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    let codeLessThanEqual = "x <= 10"
-    let testLessThanEqual = TestCase $ assertEqual codeLessThanEqual
-                       (BExprContainer $ RBinary LessEqual (Var "x") (IntConst 10))
-                       (case (parse expressionParser' "" codeLessThanEqual) of
-                           Left  e -> error $ show e
-                           Right x -> x)
-
-    TestList [ testGreaterThan
-             , testLessThan
-             , testGreaterThanEqual
-             , testLessThanEqual
+             , testLessThanEqualExpr
              ]

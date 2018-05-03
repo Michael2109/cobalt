@@ -3,32 +3,22 @@ module Parser.ModelTypeParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
-testModelTypeParserClass :: Test
-testModelTypeParserClass = do
-    let code = "class"
-    TestCase $ assertEqual code
-        ClassModel
-        (case (parse modelTypeParser "" code) of
-             Left  _ -> error "Model type incorrectly parsed"
-             Right x -> x)
+testModelTypeParser :: Test
+testModelTypeParser = do
+    let codeClass = "class"
+    let testClass = testParseSuccess codeClass ClassModel modelTypeParser
 
-testModelTypeParserObject :: Test
-testModelTypeParserObject = do
-    let code = "object"
-    TestCase $ assertEqual code
-        ObjectModel
-        (case (parse modelTypeParser "" code) of
-             Left  _ -> error "Model type incorrectly parsed"
-             Right x -> x)
+    let codeObject = "object"
+    let testObject = testParseSuccess codeObject ObjectModel modelTypeParser
 
-testModelTypeParserTrait :: Test
-testModelTypeParserTrait = do
-    let code = "trait"
-    TestCase $ assertEqual code
-        TraitModel
-        (case (parse modelTypeParser "" code) of
-             Left  _ -> error "Model type incorrectly parsed"
-             Right x -> x)
+    let codeTrait = "trait"
+    let testTrait = testParseSuccess codeClass TraitModel modelTypeParser
+
+    TestList [ testClass
+             , testObject
+             , testTrait
+             ]

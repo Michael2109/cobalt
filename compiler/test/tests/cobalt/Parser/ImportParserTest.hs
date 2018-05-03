@@ -3,97 +3,34 @@ module Parser.ImportParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
-testImportParserSingle :: Test
-testImportParserSingle = do
+testImportParser :: Test
+testImportParser = do
     let code = "import x"
-    TestCase $ assertEqual code
-        (Import ["x"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
-{-
-testImportParserEmptyFail :: Test
-testImportParserEmptyFail = do
-    let code = "import "
-    TestCase $ assertEqual code
-        Error
-        (case (parse importParser "" code) of
-             Left  e -> e
-             Right x -> error $ show x)-}
+    let test = testParseSuccess code (Import ["x"]) importParser
 
-testImportParserTwo :: Test
-testImportParserTwo = do
-    let code = "import x.y"
-    TestCase $ assertEqual code
-        (Import ["x", "y"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeTwo = "import x.y"
+    let testTwo = testParseSuccess codeTwo (Import ["x", "y"]) importParser
 
-testImportParserMultiple :: Test
-testImportParserMultiple = do
-    let code = "import x.y.z.a.b.c"
-    TestCase $ assertEqual code
-        (Import ["x", "y", "z", "a", "b", "c"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeMultiple = "import x.y.z.a.b.c"
+    let testMultiple = testParseSuccess codeMultiple (Import ["x", "y", "z", "a", "b", "c"]) importParser
 
-{-
-testImportParserStartsDigitFail :: Test
-testImportParserStartsDigitFail = do
-    let code = "import 1abc"
-    TestCase $ assertEqual code
-        Error
-        (case (parse importParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
--}
+    let codeCapital = "import abc.xyz.Name"
+    let testCapital = testParseSuccess codeCapital (Import ["abc", "xyz", "Name"]) importParser
 
-{-testImportParserStartsDigitMultipleFail :: Test
-testImportParserStartsDigitMultipleFail = do
-    let code = "import abc.xyz.1mno"
-    TestCase $ assertEqual code
-        Error
-        (case (parse importParser "" code) of
-             Left  _ -> Error
-             Right x -> x)-}
+    let codeUnderscore = "import _abc.xy_z.Name_"
+    let testUnderscore = testParseSuccess codeUnderscore (Import ["_abc", "xy_z", "Name_"]) importParser
 
-testImportParserCapital :: Test
-testImportParserCapital = do
-    let code = "import abc.xyz.Name"
-    TestCase $ assertEqual code
-        (Import ["abc", "xyz", "Name"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeContainsDigits = "import a1b2c3.x1y2z3"
+    let testContainsDigits = testParseSuccess codeContainsDigits (Import ["a1b2c3", "x1y2z3"]) importParser
 
-testImportParserUnderscore :: Test
-testImportParserUnderscore = do
-    let code = "import abc.xy_z.Name"
-    TestCase $ assertEqual code
-        (Import ["abc", "xy_z", "Name"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
-
-testImportParserMultipleUnderscore :: Test
-testImportParserMultipleUnderscore = do
-    let code = "import dir.sub_dir.Class_Name"
-    TestCase $ assertEqual code
-        (Import ["dir", "sub_dir", "Class_Name"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
-
-testImportParserContainsDigit :: Test
-testImportParserContainsDigit = do
-    let code = "import abc.x1y2z3"
-    TestCase $ assertEqual code
-        (Import ["abc", "x1y2z3"])
-        (case (parse importParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    TestList [ test
+             , testTwo
+             , testMultiple
+             , testCapital
+             , testUnderscore
+             , testContainsDigits
+             ]
