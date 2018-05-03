@@ -31,4 +31,4 @@ instance CodeGen Module where
     genCode (Module header modules) = forM_ modules genCode
 
 instance CodeGen Model where
-    genCode (Model name modifiers fields parent parentArguments interfaces body) = return ()
+    genCode (Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = return ()

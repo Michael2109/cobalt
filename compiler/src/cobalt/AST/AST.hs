@@ -42,6 +42,7 @@ data Modifier
 
 data Model = Model
     { modelName :: Name
+    , modelType :: ModelType
     , modelModifiers :: [Modifier]
     , modelFields :: [Field]
     , modelParent :: Maybe Type

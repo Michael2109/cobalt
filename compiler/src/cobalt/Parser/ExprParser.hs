@@ -283,10 +283,10 @@ modelParser :: Parser Model
 modelParser = L.indentBlock scn p
   where
     p = do
-        modifiers <- try $ do
-            mods <- modifiersParser
-            rword "class"
-            return mods
+        (modifiers, modelType) <- try $ do
+            modifiers <- modifiersParser
+            modelType <- modelTypeParser
+            return (modifiers, modelType)
         name <- identifier
         fieldsOpt <- optional $ parens $ sepBy fieldParser (symbol ",")
         let fields = case fieldsOpt of
@@ -300,7 +300,7 @@ modelParser = L.indentBlock scn p
                              Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy typeRefParser (symbol ",")
-        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces) . BlockStmt) statementParser)
+        return (L.IndentMany Nothing (return . (Model (Name name) modelType modifiers fields parent parentArguments interfaces) . BlockStmt) statementParser)
 
 modelDefParser :: Parser Stmt
 modelDefParser = ModelDef <$> modelParser
