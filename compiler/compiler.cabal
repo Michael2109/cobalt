@@ -162,6 +162,7 @@ test-suite compiler-test
       Glob,
       parsec >= 3 && <4,
       pretty-error,
+      pretty-show,
       compiler
   other-modules:
       AST.BlocksTest
