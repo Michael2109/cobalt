@@ -1,1 +1,0 @@
-module Parser.GlobalVariableParserTest where
