@@ -203,6 +203,7 @@ test-suite compiler-test
       Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
+      TestUtil.CommandLineTestUtil
       TestUtil.ParserTestUtil
       TestUtil.TestUtil
       Util.CommandLineUtilTest
