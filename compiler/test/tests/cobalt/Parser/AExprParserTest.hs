@@ -6,53 +6,29 @@ import Text.Megaparsec
 import AST.AST
 import Parser.ExprParser
 
-
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
 testAExprParser :: Test
 testAExprParser = do
     let codeAdd = "x + 100"
-    let testAdd = TestCase $ assertEqual codeAdd
-                       (ABinary Add (Var "x") (IntConst 100))
-                       (case (parse aExpr "" codeAdd) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testAdd = testParseSuccess codeAdd (ABinary Add (Var "x") (IntConst 100)) aExpr
 
     let codeSubtract = "x - 100"
-    let testSubtract = TestCase $ assertEqual codeSubtract
-                       (ABinary Subtract (Var "x") (IntConst 100))
-                       (case (parse aExpr "" codeSubtract) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testSubtract = testParseSuccess codeSubtract (ABinary Subtract (Var "x") (IntConst 100)) aExpr
 
     let codeMultiply = "x * 100"
-    let testMultiply = TestCase $ assertEqual codeMultiply
-                       (ABinary Multiply (Var "x") (IntConst 100))
-                       (case (parse aExpr "" codeMultiply) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testMultiply = testParseSuccess codeMultiply (ABinary Multiply (Var "x") (IntConst 100)) aExpr
 
     let codeDivide = "x / 100"
-    let testDivide = TestCase $ assertEqual codeDivide
-                       (ABinary Divide (Var "x") (IntConst 100))
-                       (case (parse aExpr "" codeDivide) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testDivide = testParseSuccess codeDivide (ABinary Divide (Var "x") (IntConst 100)) aExpr
 
     let codeMixed = "x / 100 * y + 200 - z"
-    let testMixed = TestCase $ assertEqual codeMixed
-                       (ABinary Subtract (ABinary Add (ABinary Multiply (ABinary Divide (Var "x") (IntConst 100)) (Var "y")) (IntConst 200)) (Var "z"))
-                       (case (parse aExpr "" codeMixed) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testMixed = testParseSuccess codeMixed (ABinary Subtract (ABinary Add (ABinary Multiply (ABinary Divide (Var "x") (IntConst 100)) (Var "y")) (IntConst 200)) (Var "z")) aExpr
 
     let codeNegative = "- 100"
-    let testNegative = TestCase $ assertEqual codeNegative
-                       (Neg (IntConst 100))
-                       (case (parse aExpr "" codeNegative) of
-                           Left  e -> error $ show e
-                           Right x -> x)
+    let testNegative = testParseSuccess codeNegative (Neg (IntConst 100)) aExpr
 
     TestList [ testAdd
              , testSubtract

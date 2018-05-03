@@ -3,60 +3,34 @@ module Parser.IdentifierParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
-
-testIdentifierParserOneCharacter :: Test
-testIdentifierParserOneCharacter = do
+testIdentifierParser :: Test
+testIdentifierParser = do
     let code = "x"
-    TestCase $ assertEqual code
-        (Identifier $ Name "x")
-        (case (parse identifierParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let test = testParseSuccess code (Identifier $ Name "x") identifierParser
+    let testExpr = testParseSuccess code (Identifier $ Name "x") expressionParser'
 
-{-testIdentifierParserDigitFail :: Test
-testIdentifierParserDigitFail = do
-    let code = "1"
-    TestCase $ assertEqual code
-        Error
-        (case (parse identifierParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)-}
+    let codeContainsUnderscores = "_an_identifier"
+    let testContainsUnderscores = testParseSuccess codeContainsUnderscores (Identifier (Name "_an_identifier")) identifierParser
+    let testContainsUnderscoresExpr = testParseSuccess codeContainsUnderscores (Identifier (Name "_an_identifier")) expressionParser'
 
-testIdentifierParserContainsUnderscore :: Test
-testIdentifierParserContainsUnderscore = do
-    let code = "an_identifier"
-    TestCase $ assertEqual code
-        (Identifier $ Name "an_identifier")
-        (case (parse identifierParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeContainsDigits = "a1b2c3"
+    let testContainsDigits = testParseSuccess codeContainsDigits (Identifier $ Name "a1b2c3") identifierParser
+    let testContainsDigitsExpr = testParseSuccess codeContainsDigits (Identifier $ Name "a1b2c3") expressionParser'
 
-testIdentifierParserContainsDigit :: Test
-testIdentifierParserContainsDigit = do
-    let code = "a1b2c3"
-    TestCase $ assertEqual code
-        (Identifier $ Name "a1b2c3")
-        (case (parse identifierParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    let codeCapital = "ID"
+    let testCapital = testParseSuccess codeCapital (Identifier $ Name "ID") identifierParser
+    let testCapitalExpr = testParseSuccess codeCapital (Identifier $ Name "ID") expressionParser'
 
-{-testIdentifierParserStartsDigitFail :: Test
-testIdentifierParserStartsDigitFail = do
-    let code = "123abc"
-    TestCase $ assertEqual code
-        Error
-        (case (parse identifierParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)-}
-
-testIdentifierParserCapital :: Test
-testIdentifierParserCapital = do
-    let code = "ID"
-    TestCase $ assertEqual code
-        (Identifier $ Name "ID")
-        (case (parse identifierParser "" code) of
-             Left  e -> error $ show e
-             Right x -> x)
+    TestList [ test
+             , testExpr
+             , testContainsUnderscores
+             , testContainsUnderscoresExpr
+             , testContainsDigits
+             , testContainsDigitsExpr
+             , testCapital
+             , testCapitalExpr
+             ]

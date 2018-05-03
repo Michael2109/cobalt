@@ -84,15 +84,15 @@ lexeme = L.lexeme sc
 floatParser :: Parser Double
 floatParser = do
     try $ do
-        let value = lexeme L.float
+        value <- L.float
         symbol "f"
-        value
+        return value
 
 doubleParser :: Parser Scientific
 doubleParser = do
     try $ do
-        let value = lexeme L.scientific
-        value
+        value <- L.scientific
+        return value
 
 integerParser :: Parser Integer
 integerParser = lexeme L.decimal
@@ -100,9 +100,9 @@ integerParser = lexeme L.decimal
 longParser :: Parser Scientific
 longParser = do
     try $ do
-        let value = lexeme L.scientific
+        value <- L.scientific
         symbol "l"
-        value
+        return value
 
 parens :: Parser a -> Parser a
 parens = between (symbol "(") (symbol ")")

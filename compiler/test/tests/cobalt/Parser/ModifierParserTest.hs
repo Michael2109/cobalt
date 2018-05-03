@@ -3,50 +3,30 @@ module Parser.ModifierParserTest where
 import Test.HUnit
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import AST.AST
 import Parser.ExprParser
 
-testAccessModifierParserPublic :: Test
-testAccessModifierParserPublic = do
-    let code = "public"
-    TestCase $ assertEqual code
-        Public
-        (case (parse accessModifierParser "" code) of
-             Left  _ -> error "Access modifier incorrectly parsed"
-             Right x -> x)
+testModifierParser :: Test
+testModifierParser = do
+    let codePublic = "public"
+    let testPublic = testParseSuccess codePublic [Public] modifiersParser
 
-testAccessModifierParserProtected :: Test
-testAccessModifierParserProtected = do
-    let code = "protected"
-    TestCase $ assertEqual code
-        Protected
-        (case (parse accessModifierParser "" code) of
-             Left  _ -> error "Access modifier incorrectly parsed"
-             Right x -> x)
+    let codeProtected = "protected"
+    let testProtected = testParseSuccess codeProtected [Protected] modifiersParser
 
-testAccessModifierParserPrivate :: Test
-testAccessModifierParserPrivate = do
-    let code = "private"
-    TestCase $ assertEqual code
-        Private
-        (case (parse accessModifierParser "" code) of
-             Left  _ -> error "Access modifier incorrectly parsed"
-             Right x -> x)
+    let codePrivate = "private"
+    let testPrivate = testParseSuccess codePrivate [Private] modifiersParser
 
-testAbstractModifierParser :: Test
-testAbstractModifierParser = do
-    let code = "abstract"
-    TestCase $ assertEqual code
-        Abstract
-        (case (parse abstractModifierParser "" code) of
-             Left  _ -> error "Access modifier incorrectly parsed"
-             Right x -> x)
+    let codeAbstract = "abstract"
+    let testAbstract = testParseSuccess codeAbstract [Abstract] modifiersParser
 
-testFinalModifierParser :: Test
-testFinalModifierParser = do
-    let code = "final"
-    TestCase $ assertEqual code
-        Final
-        (case (parse finalModifierParser "" code) of
-             Left  _ -> error "Access modifier incorrectly parsed"
-             Right x -> x)
+    let codeFinal = "final"
+    let testFinal = testParseSuccess codeFinal [Final] modifiersParser
+
+    TestList [ testPublic
+             , testProtected
+             , testPrivate
+             , testAbstract
+             , testFinal
+             ]

@@ -161,6 +161,7 @@ test-suite compiler-test
       zip,
       Glob,
       parsec >= 3 && <4,
+      pretty-error,
       compiler
   other-modules:
       AST.BlocksTest
@@ -171,18 +172,11 @@ test-suite compiler-test
       Parser.AExprParserTest
       Parser.BExprParserTest
       Parser.AnnotationParserTest
-      Parser.ArgumentParserTest
-      Parser.ArgumentTypeParserTest
-      Parser.ArrayAppendParserTest
-      Parser.ArrayElementSelectParserTest
       Parser.AssignParserTest
-      Parser.BooleanParserTest
-      Parser.ClassVariableParserTest
       Parser.ConstructorParserTest
       Parser.DoBlockParserTest
       Parser.ExpressionParserTest
       Parser.ForLoopParserTest
-      Parser.GlobalVariableParserTest
       Parser.IdentifierParserTest
       Parser.IfStatementParserTest
       Parser.ImportParserTest
@@ -194,7 +188,6 @@ test-suite compiler-test
       Parser.ModelParserTest
       Parser.ModifierBlockParserTest
       Parser.NewClassInstanceParserTest
-      Parser.ObjectMethodCallParserTest
       Parser.PackageParserTest
       Parser.ParserTests
       Parser.ParameterizedTypeParserTest
@@ -210,6 +203,8 @@ test-suite compiler-test
       Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
+      TestUtil.CommandLineTestUtil
+      TestUtil.ParserTestUtil
       TestUtil.TestUtil
       Util.CommandLineUtilTest
       Util.IOUtilTest

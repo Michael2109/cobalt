@@ -4,99 +4,54 @@ import Test.HUnit
 
 import Text.Megaparsec
 
+import TestUtil.ParserTestUtil
 import Parser.BaseParser
 
+testSymbol :: Test
+testSymbol = do
+    let codeSingle = "%"
+    let testSingle = testParseSuccess codeSingle "%" (symbol "%")
 
--- Symbols
-testSymbolSingle :: Test
-testSymbolSingle = do
-    let code = "%"
-    TestCase $ assertEqual code
-        "%"
-        (case (parse (symbol "%") "" code) of
-             Left  _ -> "Error"
-             Right x -> x)
+    let codeMultiple = "#@$"
+    let testMultiple = testParseSuccess codeMultiple "#@$" (symbol "#@$")
 
-testSymbolMultiple :: Test
-testSymbolMultiple = do
-    let code = "#@$"
-    TestCase $ assertEqual code
-        "#@$"
-        (case (parse (symbol "#@$") "" code) of
-             Left  _ -> "Error"
-             Right x -> x)
+    TestList [ testSingle
+             , testMultiple
+             ]
 
-testSymbolFail :: Test
-testSymbolFail = do
-    let code = "^&*"
-    TestCase $ assertEqual code
-        "Error"
-        (case (parse (symbol "#@") "" code) of
-             Left  _ -> "Error"
-             Right x -> x)
-
--- Reserved word
 testReservedWord :: Test
 testReservedWord = do
     let code = "module"
-    TestCase $ assertEqual code
-        "module"
-        (case (parse (rword "module") "" code) of
-             Left  _ -> "Error"
-             Right x -> x)
+    let test = testParseSuccess code "module" (rword "module")
 
--- Identifier
+    TestList [test]
+
 testIdentifier :: Test
 testIdentifier = do
     let code = "identifier"
-    TestCase $ assertEqual code
-        "identifier"
-        (case (parse identifier "" code) of
-             Left  _ -> "Error"
-             Right x -> x)
+    let test = testParseSuccess code "identifier" identifier
+    TestList [test]
 
-testIdentifierFail :: Test
-testIdentifierFail = do
-    let code = "123identifier"
-    TestCase $ assertEqual code
-        "Error"
-        (case (parse identifier "" code) of
-             Left  _ -> "Error"
-             Right x -> x)
-
--- Numbers
 testFloat :: Test
 testFloat = do
     let code = "100.50988678f"
-    TestCase $ assertEqual code
-        (100.50988678)
-        (case (parse doubleParser "" code) of
-             Left  _ -> -1
-             Right x -> x)
+    let test = testParseSuccess code 100.50988678 floatParser
+    TestList [test]
 
 testDouble :: Test
 testDouble = do
-  let code = "100.50988678"
-  TestCase $ assertEqual code
-    (100.50988678)
-    (case (parse doubleParser "" code) of
-      Left  _ -> -1
-      Right x -> x)
+    let code = "100.50988678"
+    let test = testParseSuccess code 100.50988678 doubleParser
+    TestList [test]
 
 testInteger :: Test
 testInteger = do
     let code = "100"
-    TestCase $ assertEqual code
-        (100)
-        (case (parse integerParser "" code) of
-             Left  _ -> -1
-             Right x -> x)
+    let test = testParseSuccess code 100 integerParser
+    TestList [test]
 
 testLong :: Test
 testLong = do
     let code = "100l"
-    TestCase $ assertEqual code
-        (100)
-        (case (parse integerParser "" code) of
-             Left  _ -> -1
-             Right x -> x)
+    let test = testParseSuccess code 100 longParser
+    TestList [test]
