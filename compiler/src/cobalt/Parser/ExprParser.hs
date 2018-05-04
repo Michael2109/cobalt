@@ -93,8 +93,8 @@ assignParser = do
 aTerm :: Parser AExpr
 aTerm
     =   parens aExpr
-    <|> Var      <$> identifier
     <|> IntConst <$> integerParser
+    <|> ExprAsAExpr <$> allExpressionParser
 
 bExpr :: Parser BExpr
 bExpr = makeExprParser bTerm bOperators
@@ -108,17 +108,23 @@ bOperators =
 
 bTerm :: Parser BExpr
 bTerm =  parens bExpr
-  <|> (BoolConst True  <$ rword "True")
-  <|> (BoolConst False <$ rword "False")
-  <|> rExpr
+    <|> (BoolConst True  <$ rword "True")
+    <|> (BoolConst False <$ rword "False")
+    <|> rExpr
+
+allExpressionParser :: Parser Expr
+allExpressionParser
+    =   newClassInstanceParser
+    <|> methodCallParser
+    <|> identifierParser
 
 expressionParser :: Parser Expr
 expressionParser
     =   newClassInstanceParser
     <|> methodCallParser
-    <|> BExprContainer <$> bExpr
+    <|> BExprAsExpr <$> bExpr
+    <|> AExprAsExpr <$> aExpr
     <|> identifierParser
-    <|> AExprContainer <$> aExpr
 
 expressionParser' :: Parser Expr
 expressionParser' = do

@@ -105,9 +105,9 @@ data Assignment
     deriving (Show, Eq)
 
 data Expr
-    = AExprContainer AExpr
+    = AExprAsExpr AExpr
     | BlockExpr [Expr]
-    | BExprContainer BExpr
+    | BExprAsExpr BExpr
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type Expr
@@ -159,7 +159,7 @@ data RBinOp
     deriving (Show, Eq)
 
 data AExpr
-    = Var String
+    = ExprAsAExpr Expr
     | IntConst Integer
     | DoubleConst Scientific
     | FloatConst Float
