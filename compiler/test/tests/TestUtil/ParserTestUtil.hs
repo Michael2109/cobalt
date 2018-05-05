@@ -5,7 +5,7 @@ import Text.Megaparsec
 import Data.Monoid
 
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
 testParseSuccess code result parser = TestCase $ assertEqual code
     result

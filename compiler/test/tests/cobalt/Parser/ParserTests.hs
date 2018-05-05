@@ -42,8 +42,8 @@ parserTestList = TestList
     , testDouble
     , testInteger
     , testLong
-    , testAExprParser
-    , testBExprParser
+    , testAParser
+    , testBParser
     , testAnnotationParser
     , testAssignParser
     , testAssignParserMultiple
@@ -57,7 +57,7 @@ parserTestList = TestList
     , testModelParser
     , testModifierParser
     , testNewClassInstanceParser
-    , testRExprParser
+    , testRParser
     , testTernaryParser
     , testTupleParser
     ]

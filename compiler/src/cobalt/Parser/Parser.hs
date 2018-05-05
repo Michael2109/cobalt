@@ -5,7 +5,7 @@ Module      : ExprParser
 Description : Parses all expressions.
 The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
 -}
-module Parser.ExprParser where
+module Parser.Parser where
 
 import Control.Applicative (empty)
 import Control.Monad (void)

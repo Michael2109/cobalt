@@ -5,7 +5,7 @@ import Text.Megaparsec
 
 import TestUtil.ParserTestUtil
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
 testTernaryParser :: Test
 testTernaryParser = do

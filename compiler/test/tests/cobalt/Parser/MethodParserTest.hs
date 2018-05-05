@@ -7,7 +7,7 @@ import Data.List.NonEmpty
 
 import TestUtil.ParserTestUtil
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
 testMethodParser :: Test
 testMethodParser = do

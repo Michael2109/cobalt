@@ -91,7 +91,7 @@ library
       Java.META.Spec
       Java.META.Parser
       Parser.BaseParser
-      Parser.ExprParser
+      Parser.Parser
       Parser.ParserExecutor
       Parser.ParserType
       Util.CommandLineUtil

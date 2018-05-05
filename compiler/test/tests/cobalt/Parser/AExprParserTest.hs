@@ -4,14 +4,14 @@ import Test.HUnit
 import Text.Megaparsec
 
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
 import TestUtil.ParserTestUtil
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
-testAExprParser :: Test
-testAExprParser = do
+testAParser :: Test
+testAParser = do
     let codeAdd = "x + 100"
     let testAdd = testParseSuccess codeAdd (ABinary Add (Var "x") (IntConst 100)) aExpr
 

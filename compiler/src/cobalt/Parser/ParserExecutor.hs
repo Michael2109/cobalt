@@ -14,6 +14,6 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Expr
 import Text.Pretty.Simple (pShow)
 
-import Parser.ExprParser
+import Parser.Parser
 
 parseTree relativeDir input = parse (parser) "" input

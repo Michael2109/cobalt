@@ -5,7 +5,7 @@ import Test.HUnit
 import Text.Megaparsec
 
 
-import Parser.ExprParser
+import Parser.Parser
 {-
 
 testReassignParserObject :: Test

@@ -5,10 +5,10 @@ import Text.Megaparsec
 
 import TestUtil.ParserTestUtil
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
-testBExprParser :: Test
-testBExprParser = do
+testBParser :: Test
+testBParser = do
     let codeTrue = "True"
     let testTrue = testParseSuccess codeTrue (BoolConst True) bExpr
     let testTrueExpr = testParseSuccess codeTrue (BExprContainer $ BoolConst True) expressionParser'
@@ -35,8 +35,8 @@ testBExprParser = do
              , testRExprExpr
              ]
 
-testRExprParser :: Test
-testRExprParser = do
+testRParser :: Test
+testRParser = do
     let codeGreaterThan = "x > 10"
     let testGreaterThan = testParseSuccess codeGreaterThan (RBinary Greater (Var "x") (IntConst 10)) rExpr
     let testGreaterThanExpr = testParseSuccess codeGreaterThan (BExprContainer $ RBinary Greater (Var "x") (IntConst 10)) expressionParser'
