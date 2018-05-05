@@ -27,6 +27,9 @@ testAParser = do
     let codeMixed = "x / 100 * y + 200 - z"
     let testMixed = testParseSuccess codeMixed (ABinary Subtract (ABinary Add (ABinary Multiply (ABinary Divide (Var "x") (IntConst 100)) (Var "y")) (IntConst 200)) (Var "z")) aExpr
 
+    let codeParens = "x / 100 * (y + 200) - z"
+    let testParens = testParseSuccess codeParens (ABinary Subtract (ABinary Multiply (ABinary Divide (Var "x") (IntConst 100)) (ABinary Add (Var "y") (IntConst 200))) (Var "z")) aExpr
+
     let codeNegative = "- 100"
     let testNegative = testParseSuccess codeNegative (Neg (IntConst 100)) aExpr
 
@@ -35,5 +38,6 @@ testAParser = do
              , testMultiply
              , testDivide
              , testMixed
+             , testParens
              , testNegative
              ]
