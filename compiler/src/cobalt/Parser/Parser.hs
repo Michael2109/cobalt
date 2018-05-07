@@ -257,13 +257,13 @@ methodParser = do
                 return start
             return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
     methodStart = do
-        (annotations, modifiers) <- try $ do
-          anns <- many annotationParser
-          mods <- modifiersParser
+        (annotations, modifiers, name, fields) <- try $ do
+          annotations <- many annotationParser
+          modifiers <- modifiersParser
           rword "let"
-          return (anns, mods)
-        name <- nameParser
-        fields <- parens $ sepBy fieldParser $ symbol ","
+          name <- nameParser
+          fields <- parens $ sepBy fieldParser $ symbol ","
+          return (annotations, modifiers, name, fields)
         symbol ":"
         returnType <- typeRefParser
         symbol "="
@@ -329,10 +329,21 @@ nameSpaceParser = try $ L.nonIndented scn p
 
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser = do
-    try (rword "new")
-    className <- typeRefParser
-    arguments <- parens $ sepBy expressionParser' (symbol ",")
-    return $ (NewClassInstance className (BlockExpr arguments))
+    choice [newClassInstanceAnonymousClass, newClassInstance]
+  where
+    newClassInstance = do
+        (className, arguments) <- newClassInstanceStart
+        return $ (NewClassInstance className (BlockExpr arguments) Nothing)
+    newClassInstanceAnonymousClass = try $ L.indentBlock scn p
+      where
+        p = do
+            (className, arguments) <- newClassInstanceStart
+            return (L.IndentSome Nothing (return . (NewClassInstance className (BlockExpr arguments)) . Just . BlockStmt) statementParser)
+    newClassInstanceStart = do
+        try (rword "new")
+        className <- typeRefParser
+        arguments <- parens $ sepBy expressionParser' (symbol ",")
+        return (className, arguments)
 
 reassignParser :: Parser Stmt
 reassignParser = do
@@ -371,6 +382,7 @@ statementParser = modelDefParser
     <|> returnStatementParser
     <|> ifStatementParser
     <|> lambdaParser
+    <|> assignParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt

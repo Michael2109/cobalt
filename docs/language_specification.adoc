@@ -692,7 +692,12 @@ Undefined
 {nbsp} +
 
 ### Anonymous Functions
-Very similar to Scala - New syntax to be defined with similar concepts
+```
+new ClassName()
+    let x = 10
+    let y() = 50
+    let z() = 100
+```
 
 #### Lambda
 Inline
