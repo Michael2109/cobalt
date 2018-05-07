@@ -131,6 +131,11 @@ data Stmt
     | MethodDef Method
     | ExprAsStmt Expr
     | BlockStmt [Stmt]
+    | Match [Case]
+    deriving (Show, Eq)
+
+data Case
+    = Case Name Expr
     deriving (Show, Eq)
 
 -- This needs a better name

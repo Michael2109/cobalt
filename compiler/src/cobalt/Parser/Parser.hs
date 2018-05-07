@@ -112,6 +112,30 @@ bTerm =  parens bExpr
   <|> (BoolConst False <$ rword "False")
   <|> rExpr
 
+caseParser :: Parser Case
+caseParser = do
+    kase <- choice [caseDoBlock, caseInline]
+    return kase
+  where
+    caseInline = do
+        id <- caseStart
+        expression <- expressionParser'
+        return $ Case id $ ExprAssignment expression
+    caseDoBlock = L.indentBlock scn p
+      where
+        p = do
+            id <- try $ do
+                start <- caseStart
+                rword "do"
+                return start
+            return (L.IndentSome Nothing (return . (Case id) . StmtAssignment . BlockStmt) statementParser)
+    caseStart = do
+        id <- try $ do
+            identifier
+            symbol "->"
+            return id
+        return id
+
 expressionParser :: Parser Expr
 expressionParser
     =   newClassInstanceParser
@@ -238,6 +262,8 @@ lambdaParser = do
             symbol "->"
             return fields
         return fields
+
+-- TODO match parser
 
 methodParser :: Parser Method
 methodParser = do
