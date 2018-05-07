@@ -4,62 +4,30 @@ import Test.HUnit
 import Text.Megaparsec
 
 
+import TestUtil.ParserTestUtil
+import AST.AST
 import Parser.Parser
-{-
 
-testStringLiteralSimple :: Test
-testStringLiteralSimple = do
-    let code = "\"foo\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+testStringLiteralParser :: Test
+testStringLiteralParser = do
 
-testStringLiteralSimpleWhitespace :: Test
-testStringLiteralSimpleWhitespace = do
-    let code = "\"foo   bar\tbaz\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo   bar\tbaz")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralSimple = "\"foo\""
+    let testStringLiteralSimple = testParseSuccess codeStringLiteralSimple (StringLiteral "foo") stringLiteralParser
 
-testStringLiteralEscapeTab :: Test
-testStringLiteralEscapeTab = do
-    let code = "\"\\tfoo\""
-    TestCase $ assertEqual code
-        (StringLiteral "\tfoo")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralSimpleWhitespace = "\"foo   bar\tbaz\""
+    let testStringLiteralSimpleWhitespace = testParseSuccess codeStringLiteralSimpleWhitespace (StringLiteral "foo   bar\tbaz") stringLiteralParser
 
-testStringLiteralEmpty :: Test
-testStringLiteralEmpty = do
-    let code = "\"\""
-    TestCase $ assertEqual code
-        (StringLiteral "")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralEscapeTab = "\"\\tfoo\""
+    let testStringLiteralEscapeTab = testParseSuccess  codeStringLiteralEscapeTab (StringLiteral "\tfoo") stringLiteralParser
 
-testStringLiteralNewLine :: Test
-testStringLiteralNewLine = do
-    let code = "\"foo\\n\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo\n")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralEmpty = "\"\""
+    let testStringLiteralEmpty = testParseSuccess codeStringLiteralEmpty (StringLiteral "") stringLiteralParser
 
-testStringLiteralMultipleNewLine :: Test
-testStringLiteralMultipleNewLine = do
-    let code = "\"foo\\nbar\\nbaz\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo\nbar\nbaz")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralNewLine = "\"foo\\n\""
+    let testStringLiteralNewLine = testParseSuccess codeStringLiteralNewLine (StringLiteral "foo\n") stringLiteralParser
+
+    let codeStringLiteralMultipleNewLine = "\"foo\\nbar\\nbaz\""
+    let testStringLiteralMultipleNewLine = testParseSuccess codeStringLiteralMultipleNewLine (StringLiteral "foo\nbar\nbaz") stringLiteralParser
 
 {--
 testStringLiteralMultiLineSimple :: Test
@@ -82,42 +50,17 @@ testStringLiteralMultiLineMultiple :: Test
 testStringLiteralMultiLineMultiple  = do
   let code = "\'\'\'\nfoo\nb a r\nbaz\'\'\'"
 --}
-testStringLiteralUnescapedSingleQuote :: Test
-testStringLiteralUnescapedSingleQuote = do
-    let code = "\"foo\'\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo\'")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralUnescapedSingleQuote = "\"foo\'\""
+    let testStringLiteralUnescapedSingleQuote = testParseSuccess codeStringLiteralUnescapedSingleQuote (StringLiteral "foo\'") stringLiteralParser
 
-testStringLiteralEscapedSingleQuote :: Test
-testStringLiteralEscapedSingleQuote = do
-    let code = "\"foo\\\'\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo\'")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralEscapedSingleQuote  = "\"foo\\\'\""
+    let testStringLiteralEscapedSingleQuote = testParseSuccess codeStringLiteralEscapedSingleQuote (StringLiteral "foo\'") stringLiteralParser
 
-testStringLiteralEscapedDoubleQuote :: Test
-testStringLiteralEscapedDoubleQuote = do
-    let code = "\"foo\\\"ending\""
-    TestCase $ assertEqual code
-        (StringLiteral "foo\"ending")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralEscapedDoubleQuote = "\"foo\\\"ending\""
+    let testStringLiteralEscapedDoubleQuote = testParseSuccess codeStringLiteralEscapedDoubleQuote (StringLiteral "foo\"ending") stringLiteralParser
 
-
-testStringLiteralDoubleQuoteMultiple :: Test
-testStringLiteralDoubleQuoteMultiple = do
-    let code = "\"test:\\\"string inside string\\\" ending\""
-    TestCase $ assertEqual code
-        (StringLiteral "test:\"string inside string\" ending")
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralDoubleQuoteMultiple = "\"test:\\\"string inside string\\\" ending\""
+    let testStringLiteralDoubleQuoteMultiple = testParseSuccess codeStringLiteralDoubleQuoteMultiple (StringLiteral "test:\"string inside string\" ending") stringLiteralParser
 
 {--
 testStringLiteralUnfinishedMultilineFail :: Test
@@ -125,14 +68,8 @@ testStringLiteralUnfinishedMultilineFail = do
   let code = "\"\'\'\'\nfoo\n"
 --}
 
-testStringLiteralUnfinishedFail :: Test
-testStringLiteralUnfinishedFail = do
-    let code = "\"ufinishedstring\n"
-    TestCase $ assertEqual code
-        (Error)
-        (case (parse (stringLiteralParser) "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeStringLiteralUnfinishedFail = "\"ufinishedstring\n"
+    let testStringLiteralUnfinishedFail = testParseFailure codeStringLiteralUnfinishedFail stringLiteralParser
 
 {--
 testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail :: Test
@@ -157,4 +94,15 @@ testStringLiteralUnfinishedDoubleLineFail = do
 --}
 
 {-- after resolving multiline literal semantics more tests for leading whitespace need to be added --}
--}
+    TestList [ testStringLiteralSimple
+             , testStringLiteralSimpleWhitespace
+             , testStringLiteralEscapeTab
+             , testStringLiteralEmpty
+             , testStringLiteralNewLine
+             , testStringLiteralMultipleNewLine
+             , testStringLiteralUnescapedSingleQuote
+             , testStringLiteralEscapedSingleQuote
+             , testStringLiteralEscapedDoubleQuote
+             , testStringLiteralDoubleQuoteMultiple
+             , testStringLiteralUnfinishedFail
+             ]

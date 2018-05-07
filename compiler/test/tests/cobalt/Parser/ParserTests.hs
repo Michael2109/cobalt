@@ -58,6 +58,7 @@ parserTestList = TestList
     , testModifierParser
     , testNewClassInstanceParser
     , testRParser
+    , testStringLiteralParser
     , testTernaryParser
     , testTupleParser
     ]
