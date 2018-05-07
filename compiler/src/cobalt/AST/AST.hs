@@ -111,7 +111,7 @@ data Expr
     | BExprContainer BExpr
     | Identifier Name
     | MethodCall Name Expr
-    | NewClassInstance Type Expr
+    | NewClassInstance Type Expr (Maybe Stmt)
     | Ternary BExpr Expr Expr
     | Tuple Expr
     deriving (Show, Eq)
