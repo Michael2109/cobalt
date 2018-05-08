@@ -1,4 +1,7 @@
 {-# LANGUAGE TupleSections #-}
+{-# LANGUAGE BangPatterns       #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE RecordWildCards    #-}
 
 {-|
 Module      : Parser
