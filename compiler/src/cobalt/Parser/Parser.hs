@@ -1,9 +1,9 @@
 {-# LANGUAGE TupleSections #-}
 
 {-|
-Module      : ExprParser
+Module      : Parser
 Description : Parses all expressions.
-The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
+The highest level parser that uses functions in the BaseParser to generate the AST.
 -}
 module Parser.Parser where
 
@@ -30,7 +30,6 @@ accessModifierParser :: Parser Modifier
 accessModifierParser
     =   Public    <$ rword "public"
     <|> Protected <$ rword "protected"
-    <|> Private   <$ rword "private"
     <|> PackageLocal <$ rword "local"
 
 aExpr :: Parser AExpr
