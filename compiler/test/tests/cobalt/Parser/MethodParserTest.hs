@@ -78,4 +78,31 @@ testMethodParser = do
              , testModifierLocalStmt
              , testModifierMultiple
              , testModifierMultipleStmt
+             , testConstructorParser
              ]
+
+testConstructorParser :: Test
+testConstructorParser = do
+    let codeEmptyParams = "this () = _"
+    let testEmptyParams = testParseSuccess codeEmptyParams (MethodDef (Method {methodName = Name "<init>", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Init, methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
+
+    let codeMultipleParams = "this (a: Int, b: Int) = _"
+    let testMultipleParams = testParseSuccess codeMultipleParams (MethodDef (Method {methodName = Name "<init>", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = Init, methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
+
+    let codeDoBlock = unlines [ "this () = do"
+                              , "    i"
+                              , "    j"
+                              ]
+    let testDoBlock = testParseSuccess codeDoBlock (MethodDef (Method {methodName = Name "<init>", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Init, methodBody = StmtAssignment (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])})) methodDefParser
+
+    let codeNestedMethod = unlines [ "this () = do"
+                       , "    let innerMethod (): Int = do"
+                       , "        i"
+                       , "    j"
+                       ]
+    let testNestedMethod = testParseSuccess codeNestedMethod (MethodDef (Method {methodName = Name "<init>", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Init, methodBody = StmtAssignment (BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment (BlockStmt [ExprAsStmt (Identifier (Name "i"))])}),ExprAsStmt (Identifier (Name "j"))])})) methodDefParser
+
+    let codeModifierPublic = "public this (a: Int, b: Int) = _"
+    let testModifierPublic = testParseSuccess codeModifierPublic (MethodDef (Method {methodName = Name "<init>", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = Init, methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
+
+    TestList [testEmptyParams, testMultipleParams, testDoBlock, testNestedMethod, testModifierPublic]

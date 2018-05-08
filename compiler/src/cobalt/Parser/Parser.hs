@@ -247,14 +247,14 @@ methodParser = do
     return method
   where
     methodInline = do
-        (annotations, modifiers, name, fields, returnType) <- methodStart
+        (annotations, modifiers, name, fields, returnType) <- choice [constructorStart, methodStart]
         expression <- expressionParser'
         return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
     methodDoBlock = L.indentBlock scn p
       where
         p = do
             (annotations, modifiers, name, fields, returnType) <- try $ do
-                start <- methodStart
+                start <- choice [constructorStart, methodStart]
                 rword "do"
                 return start
             return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
@@ -270,6 +270,14 @@ methodParser = do
         returnType <- typeRefParser
         symbol "="
         return (annotations, modifiers, name, fields, returnType)
+    constructorStart = do
+        try $ do
+            annotations <- many annotationParser
+            modifiers <- modifiersParser
+            rword "this"
+            fields <- parens $ sepBy fieldParser $ symbol ","
+            symbol "="
+            return (annotations, modifiers, Name "<init>", fields, Init)
 
 methodCallParser :: Parser Expr
 methodCallParser =
