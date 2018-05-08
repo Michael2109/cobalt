@@ -255,14 +255,19 @@ let add (a: Int, b: Int) = a + b
 
 #### Modifiers
 Access modifiers are `public`, `protected` and `local` and are added before the method name. Scope automatically defaults to private unless specified otherwise. 
+
 Public
 * Accessible from outside of the package.
+
 Protected 
 * Accessible within the same package or in child classes.
+
 Local
 * Accessible within the same package.
+
 Default (Private)
 * Accessible within the same class.
+
 ```
 public let add (a: Int, b: Int) = a + b
 ```
