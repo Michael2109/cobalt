@@ -16,7 +16,7 @@ data Method = Method
     , methodAnns :: [Annotation]
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
-    , methodReturnType :: Type
+    , methodReturnType :: (Maybe Type)
     , methodBody :: Assignment
     }
     deriving (Show, Eq)
