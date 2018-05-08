@@ -16,4 +16,4 @@ import Text.Pretty.Simple (pShow)
 
 import Parser.Parser
 
-parseTree relativeDir input = parse (parser) "" input
+parseTree relativeDir input = runParser parser "" input
