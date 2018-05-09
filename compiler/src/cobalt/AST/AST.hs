@@ -16,7 +16,7 @@ data Method = Method
     , methodAnns :: [Annotation]
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
-    , methodReturnType :: Type
+    , methodReturnType :: (Maybe Type)
     , methodBody :: Assignment
     }
     deriving (Show, Eq)
@@ -60,7 +60,8 @@ data Field = Field
     deriving (Show, Eq)
 
 data Type
-    = TypeRef Ref
+    = Init
+    | TypeRef Ref
     | TypeApp Ref [Type] -- type application, aka Map<A,B> -> `TyApp (RefLocal "Map") [TyRef (RefLocal "A"), TyRef (RefLocal "B")]`
     | TypeRel TypeRel Type Type -- this allows things like <T extends Something> which would be `TyRel Extends (TyRef (RefLocal "T")) (TyRef (RefLocal "Something"))`
     deriving (Show, Eq)

@@ -263,13 +263,14 @@ methodParser = do
           annotations <- many annotationParser
           modifiers <- modifiersParser
           rword "let"
-          name <- nameParser
+          name <- choice [Name <$> rword "this", nameParser]
           fields <- parens $ sepBy fieldParser $ symbol ","
           return (annotations, modifiers, name, fields)
-        symbol ":"
-        returnType <- typeRefParser
+        returnType <- optional $ do
+            symbol ":"
+            typeRefParser
         symbol "="
-        return (annotations, modifiers, name, fields, returnType)
+        return (annotations, modifiers, name, fields, if name == Name "this" then Just Init else returnType)
 
 methodCallParser :: Parser Expr
 methodCallParser =

@@ -234,6 +234,15 @@ public abstract class ClassName
 ```
 {nbsp} +
 
+### Constructors
+```
+let this() = do
+     println ("Object created")
+
+let this(a: Int, b: Int) = do
+    println (a + b)
+```
+
 ### Methods
 
 Inline
