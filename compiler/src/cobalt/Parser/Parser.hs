@@ -390,8 +390,12 @@ statementBlockParser = BlockStmt <$> some statementParser
 
 stringLiteralParser :: Parser Stmt
 stringLiteralParser = do
-    value <- char '"' >> manyTill L.charLiteral (char '"')
+    value <- char '"' >> manyTill r (char '"')
     return $ StringLiteral value
+  where
+    r = label "valid char literal" $ do
+            notFollowedBy (char '\n')
+            L.charLiteral
 
 stringLiteralMultilineParser :: Parser Stmt
 stringLiteralMultilineParser = do

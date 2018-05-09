@@ -62,36 +62,17 @@ testStringLiteralMultiLineMultiple  = do
     let codeStringLiteralDoubleQuoteMultiple = "\"test:\\\"string inside string\\\" ending\""
     let testStringLiteralDoubleQuoteMultiple = testParseSuccess codeStringLiteralDoubleQuoteMultiple (StringLiteral "test:\"string inside string\" ending") stringLiteralParser
 
-{--
-testStringLiteralUnfinishedMultilineFail :: Test
-testStringLiteralUnfinishedMultilineFail = do
-  let code = "\"\'\'\'\nfoo\n"
---}
+    let codeStringLiteralUnfinishedMultilineFail = "\"\'\'\'\nfoo\n"
+    let testStringLiteralUnfinishedMultilineFail = testParseFailure codeStringLiteralUnfinishedMultilineFail stringLiteralParser
 
     let codeStringLiteralUnfinishedFail = "\"ufinishedstring\n"
     let testStringLiteralUnfinishedFail = testParseFailure codeStringLiteralUnfinishedFail stringLiteralParser
 
-{--
-testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail :: Test
-testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail = do
-    let code =  "\"first line \n \t\t\tsecond line\""
-    TestCase $ assertEqual code
-        (Error)
-        (case (parse (stringLiteral) "" code) of
-             Left  _ -> Error
-             Right x -> x)
---}
+    let codeStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail =  "\"first line \n \t\t\tsecond line\""
+    let testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail = testParseFailure codeStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail stringLiteralParser
 
-{--
-testStringLiteralUnfinishedDoubleLineFail :: Test
-testStringLiteralUnfinishedDoubleLineFail = do
-    let code = "\"first line \n second line\""
-    TestCase $ assertEqual code
-        (Error)
-        (case (parse (stringLiteral) "" code) of
-             Left  _ -> Error
-             Right x -> x)
---}
+    let codeStringLiteralUnfinishedDoubleLineFail = "\"first line \n second line\""
+    let testStringLiteralUnfinishedDoubleLineFail = testParseFailure codeStringLiteralUnfinishedDoubleLineFail stringLiteralParser
 
 {-- after resolving multiline literal semantics more tests for leading whitespace need to be added --}
     TestList [ testStringLiteralSimple
@@ -104,5 +85,8 @@ testStringLiteralUnfinishedDoubleLineFail = do
              , testStringLiteralEscapedSingleQuote
              , testStringLiteralEscapedDoubleQuote
              , testStringLiteralDoubleQuoteMultiple
+             , testStringLiteralUnfinishedMultilineFail
+             , testStringLiteralUnfinishedDoubleLineFail
+             , testStringLiteralUnfinishedDoubleLineLeadingWhitespaceFail
              , testStringLiteralUnfinishedFail
              ]
