@@ -216,7 +216,7 @@ Implement a trait
 class Example extends ParentClass with TraitName
 ```
 #### Modifiers
-Access modifiers are `public`, `protected` and `private` and are added before the class name.
+Access modifiers are `public`, `protected` and `local` and are added before the class name.
 ```
 public class ClassName
 ```
@@ -233,6 +233,15 @@ Multiple modifiers can be added.
 public abstract class ClassName
 ```
 {nbsp} +
+
+### Constructors
+```
+let this() = do
+     println ("Object created")
+
+let this(a: Int, b: Int) = do
+    println (a + b)
+```
 
 ### Methods
 
@@ -254,13 +263,32 @@ let add (a: Int, b: Int) = a + b
 ```
 
 #### Modifiers
-Access modifiers are `public`, `protected` and `final` and are added before the method name.
+Access modifiers are `public`, `protected` and `local` and are added before the method name. Scope automatically defaults to private unless specified otherwise. 
+
+Public
+* Accessible from outside of the package.
+
+Protected 
+* Accessible within the same package or in child classes.
+
+Local
+* Accessible within the same package.
+
+Default (Private)
+* Accessible within the same class.
+
 ```
-public add (a: Int, b: Int) = a + b
+public let add (a: Int, b: Int) = a + b
+```
+```
+protected let add (a: Int, b: Int) = a + b
+```
+```
+local let add (a: Int, b: Int) = a + b
 ```
 Abstract modifier allows for unimplemented methods. These methods must be overridden by a sub-class.
 ```
-abstract add (a: Int, b: Int)
+abstract let add (a: Int, b: Int)
 ```
 Final modifier makes the method unable to be overridden.
 ```
@@ -692,7 +720,12 @@ Undefined
 {nbsp} +
 
 ### Anonymous Functions
-Very similar to Scala - New syntax to be defined with similar concepts
+```
+new ClassName()
+    let x = 10
+    let y() = 50
+    let z() = 100
+```
 
 #### Lambda
 Inline

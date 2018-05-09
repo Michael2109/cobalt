@@ -16,7 +16,7 @@ data Method = Method
     , methodAnns :: [Annotation]
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
-    , methodReturnType :: Type
+    , methodReturnType :: (Maybe Type)
     , methodBody :: Assignment
     }
     deriving (Show, Eq)
@@ -42,6 +42,7 @@ data Modifier
 
 data Model = Model
     { modelName :: Name
+    , modelType :: ModelType
     , modelModifiers :: [Modifier]
     , modelFields :: [Field]
     , modelParent :: Maybe Type
@@ -59,7 +60,8 @@ data Field = Field
     deriving (Show, Eq)
 
 data Type
-    = TypeRef Ref
+    = Init
+    | TypeRef Ref
     | TypeApp Ref [Type] -- type application, aka Map<A,B> -> `TyApp (RefLocal "Map") [TyRef (RefLocal "A"), TyRef (RefLocal "B")]`
     | TypeRel TypeRel Type Type -- this allows things like <T extends Something> which would be `TyRel Extends (TyRef (RefLocal "T")) (TyRef (RefLocal "Something"))`
     deriving (Show, Eq)
@@ -110,7 +112,7 @@ data Expr
     | BExprAsExpr BExpr
     | Identifier Name
     | MethodCall Name Expr
-    | NewClassInstance Type Expr
+    | NewClassInstance Type Expr (Maybe Stmt)
     | Ternary BExpr Expr Expr
     | Tuple Expr
     deriving (Show, Eq)
@@ -120,9 +122,9 @@ data Stmt
     | While BExpr Stmt
     | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Assignment
-    | AssignMultiple [Name] (Maybe Type) Assignment
-    | Reassign Name Expr
+    | Assign Name (Maybe Type) Bool Assignment
+    | AssignMultiple [Name] (Maybe Type) Bool Assignment
+    | Reassign Name Assignment
     | Return Stmt
     | Lambda [Field] Assignment
     | StringLiteral String

@@ -5,7 +5,7 @@ import Text.Megaparsec
 
 import TestUtil.ParserTestUtil
 import AST.AST
-import Parser.ExprParser
+import Parser.Parser
 
 testModifierParser :: Test
 testModifierParser = do
@@ -15,8 +15,8 @@ testModifierParser = do
     let codeProtected = "protected"
     let testProtected = testParseSuccess codeProtected [Protected] modifiersParser
 
-    let codePrivate = "private"
-    let testPrivate = testParseSuccess codePrivate [Private] modifiersParser
+    let codeLocal = "local"
+    let testLocal = testParseSuccess codeLocal [PackageLocal] modifiersParser
 
     let codeAbstract = "abstract"
     let testAbstract = testParseSuccess codeAbstract [Abstract] modifiersParser
@@ -26,7 +26,7 @@ testModifierParser = do
 
     TestList [ testPublic
              , testProtected
-             , testPrivate
+             , testLocal
              , testAbstract
              , testFinal
              ]

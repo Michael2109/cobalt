@@ -1,11 +1,14 @@
 {-# LANGUAGE TupleSections #-}
+{-# LANGUAGE BangPatterns       #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE RecordWildCards    #-}
 
 {-|
-Module      : ExprParser
+Module      : Parser
 Description : Parses all expressions.
-The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
+The highest level parser that uses functions in the BaseParser to generate the AST.
 -}
-module Parser.ExprParser where
+module Parser.Parser where
 
 import Control.Applicative (empty)
 import Control.Monad (void)
@@ -30,7 +33,6 @@ accessModifierParser :: Parser Modifier
 accessModifierParser
     =   Public    <$ rword "public"
     <|> Protected <$ rword "protected"
-    <|> Private   <$ rword "private"
     <|> PackageLocal <$ rword "local"
 
 aExpr :: Parser AExpr
@@ -62,8 +64,8 @@ assignParser = do
             return start
         expression <- expressionParser'
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType (ExprAssignment expression)
-            else return $ AssignMultiple varNames varType (ExprAssignment expression)
+            then return $ Assign (varNames!!0) varType immutable (ExprAssignment expression)
+            else return $ AssignMultiple varNames varType immutable (ExprAssignment expression)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -72,8 +74,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . StmtAssignment . BlockStmt) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . StmtAssignment . BlockStmt) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType immutable) . StmtAssignment . BlockStmt) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType immutable) . StmtAssignment . BlockStmt) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
@@ -263,17 +265,18 @@ methodParser = do
                 return start
             return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
     methodStart = do
-        (annotations, modifiers) <- try $ do
-          anns <- many annotationParser
-          mods <- modifiersParser
+        (annotations, modifiers, name, fields) <- try $ do
+          annotations <- many annotationParser
+          modifiers <- modifiersParser
           rword "let"
-          return (anns, mods)
-        name <- nameParser
-        fields <- parens $ sepBy fieldParser $ symbol ","
-        symbol ":"
-        returnType <- typeRefParser
+          name <- choice [Name <$> rword "this", nameParser]
+          fields <- parens $ sepBy fieldParser $ symbol ","
+          return (annotations, modifiers, name, fields)
+        returnType <- optional $ do
+            symbol ":"
+            typeRefParser
         symbol "="
-        return (annotations, modifiers, name, fields, returnType)
+        return (annotations, modifiers, name, fields, if name == Name "this" then Just Init else returnType)
 
 methodCallParser :: Parser Expr
 methodCallParser =
@@ -289,10 +292,10 @@ modelParser :: Parser Model
 modelParser = L.indentBlock scn p
   where
     p = do
-        modifiers <- try $ do
-            mods <- modifiersParser
-            rword "class"
-            return mods
+        (modifiers, modelType) <- try $ do
+            modifiers <- modifiersParser
+            modelType <- modelTypeParser
+            return (modifiers, modelType)
         name <- identifier
         fieldsOpt <- optional $ parens $ sepBy fieldParser (symbol ",")
         let fields = case fieldsOpt of
@@ -306,7 +309,7 @@ modelParser = L.indentBlock scn p
                              Nothing -> []
         implementsKeyword <- optional $ rword "implements"
         interfaces <- sepBy typeRefParser (symbol ",")
-        return (L.IndentMany Nothing (return . (Model (Name name) modifiers fields parent parentArguments interfaces) . BlockStmt) statementParser)
+        return (L.IndentMany Nothing (return . (Model (Name name) modelType modifiers fields parent parentArguments interfaces) . BlockStmt) statementParser)
 
 modelDefParser :: Parser Stmt
 modelDefParser = ModelDef <$> modelParser
@@ -335,19 +338,30 @@ nameSpaceParser = try $ L.nonIndented scn p
 
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser = do
-    try (rword "new")
-    className <- typeRefParser
-    arguments <- parens $ sepBy expressionParser' (symbol ",")
-    return $ (NewClassInstance className (BlockExpr arguments))
+    choice [newClassInstanceAnonymousClass, newClassInstance]
+  where
+    newClassInstance = do
+        (className, arguments) <- newClassInstanceStart
+        return $ (NewClassInstance className (BlockExpr arguments) Nothing)
+    newClassInstanceAnonymousClass = try $ L.indentBlock scn p
+      where
+        p = do
+            (className, arguments) <- newClassInstanceStart
+            return (L.IndentSome Nothing (return . (NewClassInstance className (BlockExpr arguments)) . Just . BlockStmt) statementParser)
+    newClassInstanceStart = do
+        try (rword "new")
+        className <- typeRefParser
+        arguments <- parens $ sepBy expressionParser' (symbol ",")
+        return (className, arguments)
 
 reassignParser :: Parser Stmt
 reassignParser = do
     name <- try $ do
         id <- identifier
         symbol "<-"
-        return (Name id)
+        return $ Name id
     value <- expressionParser'
-    return (Reassign name value)
+    return $ Reassign name $ ExprAssignment value
 
 rExpr :: Parser BExpr
 rExpr = do
@@ -377,6 +391,8 @@ statementParser = modelDefParser
     <|> returnStatementParser
     <|> ifStatementParser
     <|> lambdaParser
+    <|> assignParser
+    <|> reassignParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt
