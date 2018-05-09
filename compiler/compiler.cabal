@@ -172,8 +172,6 @@ test-suite compiler-test
       Parser.BExprParserTest
       Parser.AnnotationParserTest
       Parser.AssignParserTest
-      Parser.ConstructorParserTest
-      Parser.DoBlockParserTest
       Parser.ExpressionParserTest
       Parser.ForLoopParserTest
       Parser.IdentifierParserTest
@@ -195,11 +193,8 @@ test-suite compiler-test
       Parser.StringLiteralMultilineParserTest
       Parser.StringLiteralParserTest
       Parser.TernaryParserTest
-      Parser.ThisMethodCallParserTest
-      Parser.ThisVarParserTest
       Parser.TupleParserTest
       Parser.TypeParameterParserTest
-      Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
       TestUtil.CommandLineTestUtil

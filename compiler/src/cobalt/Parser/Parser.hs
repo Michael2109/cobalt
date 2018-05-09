@@ -1,9 +1,12 @@
 {-# LANGUAGE TupleSections #-}
+{-# LANGUAGE BangPatterns       #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE RecordWildCards    #-}
 
 {-|
-Module      : ExprParser
+Module      : Parser
 Description : Parses all expressions.
-The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
+The highest level parser that uses functions in the BaseParser to generate the AST.
 -}
 module Parser.Parser where
 
@@ -30,7 +33,6 @@ accessModifierParser :: Parser Modifier
 accessModifierParser
     =   Public    <$ rword "public"
     <|> Protected <$ rword "protected"
-    <|> Private   <$ rword "private"
     <|> PackageLocal <$ rword "local"
 
 aExpr :: Parser AExpr
@@ -62,8 +64,8 @@ assignParser = do
             return start
         expression <- expressionParser'
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType (ExprAssignment expression)
-            else return $ AssignMultiple varNames varType (ExprAssignment expression)
+            then return $ Assign (varNames!!0) varType immutable (ExprAssignment expression)
+            else return $ AssignMultiple varNames varType immutable (ExprAssignment expression)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -72,8 +74,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . StmtAssignment . BlockStmt) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . StmtAssignment . BlockStmt) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType immutable) . StmtAssignment . BlockStmt) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType immutable) . StmtAssignment . BlockStmt) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
@@ -261,13 +263,14 @@ methodParser = do
           annotations <- many annotationParser
           modifiers <- modifiersParser
           rword "let"
-          name <- nameParser
+          name <- choice [Name <$> rword "this", nameParser]
           fields <- parens $ sepBy fieldParser $ symbol ","
           return (annotations, modifiers, name, fields)
-        symbol ":"
-        returnType <- typeRefParser
+        returnType <- optional $ do
+            symbol ":"
+            typeRefParser
         symbol "="
-        return (annotations, modifiers, name, fields, returnType)
+        return (annotations, modifiers, name, fields, if name == Name "this" then Just Init else returnType)
 
 methodCallParser :: Parser Expr
 methodCallParser =
@@ -350,9 +353,9 @@ reassignParser = do
     name <- try $ do
         id <- identifier
         symbol "<-"
-        return (Name id)
+        return $ Name id
     value <- expressionParser'
-    return (Reassign name value)
+    return $ Reassign name $ ExprAssignment value
 
 rExpr :: Parser BExpr
 rExpr = do
@@ -383,6 +386,7 @@ statementParser = modelDefParser
     <|> ifStatementParser
     <|> lambdaParser
     <|> assignParser
+    <|> reassignParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt
