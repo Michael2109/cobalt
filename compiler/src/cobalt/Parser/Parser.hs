@@ -121,6 +121,7 @@ expressionParser
     <|> BExprContainer <$> bExpr
     <|> identifierParser
     <|> AExprContainer <$> aExpr
+    <|> stringLiteralParser
 
 expressionParser' :: Parser Expr
 expressionParser' = do
@@ -392,12 +393,16 @@ statementParser = modelDefParser
 statementBlockParser :: Parser Stmt
 statementBlockParser = BlockStmt <$> some statementParser
 
-stringLiteralParser :: Parser Stmt
+stringLiteralParser :: Parser Expr
 stringLiteralParser = do
-    value <- char '"' >> manyTill L.charLiteral (char '"')
+    value <- char '"' >> manyTill r (char '"')
     return $ StringLiteral value
+  where
+    r = label "Unexpected end of line in single line string literal" $ do
+            notFollowedBy (char '\n')
+            L.charLiteral
 
-stringLiteralMultilineParser :: Parser Stmt
+stringLiteralMultilineParser :: Parser Expr
 stringLiteralMultilineParser = do
     symbol "```"
     contents <- many $ L.lineFold scn $ \sp' -> some L.charLiteral
