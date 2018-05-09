@@ -397,7 +397,7 @@ stringLiteralParser = do
     value <- char '"' >> manyTill r (char '"')
     return $ StringLiteral value
   where
-    r = label "valid char literal" $ do
+    r = label "Unexpected end of line in single line string literal" $ do
             notFollowedBy (char '\n')
             L.charLiteral
 
