@@ -55,6 +55,7 @@ parserTestList = TestList
     , testModifierParser
     , testNewClassInstanceParser
     , testRParser
+    , testReassignParser
     , testTernaryParser
     , testTupleParser
     ]
