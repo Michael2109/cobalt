@@ -113,6 +113,7 @@ data Expr
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type Expr (Maybe Stmt)
+    | StringLiteral String
     | Ternary BExpr Expr Expr
     | Tuple Expr
     deriving (Show, Eq)
@@ -127,7 +128,6 @@ data Stmt
     | Reassign Name Assignment
     | Return Stmt
     | Lambda [Field] Assignment
-    | StringLiteral String
     | ModelDef Model
     | MethodDef Method
     | ExprAsStmt Expr
