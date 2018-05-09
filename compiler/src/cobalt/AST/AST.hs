@@ -122,8 +122,8 @@ data Stmt
     | While BExpr Stmt
     | If BExpr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Assignment
-    | AssignMultiple [Name] (Maybe Type) Assignment
+    | Assign Name (Maybe Type) Bool Assignment
+    | AssignMultiple [Name] (Maybe Type) Bool Assignment
     | Reassign Name Expr
     | Return Stmt
     | Lambda [Field] Assignment

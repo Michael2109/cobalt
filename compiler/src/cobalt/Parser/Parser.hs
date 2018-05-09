@@ -64,8 +64,8 @@ assignParser = do
             return start
         expression <- expressionParser'
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType (ExprAssignment expression)
-            else return $ AssignMultiple varNames varType (ExprAssignment expression)
+            then return $ Assign (varNames!!0) varType immutable (ExprAssignment expression)
+            else return $ AssignMultiple varNames varType immutable (ExprAssignment expression)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -74,8 +74,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . StmtAssignment . BlockStmt) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . StmtAssignment . BlockStmt) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType immutable) . StmtAssignment . BlockStmt) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType immutable) . StmtAssignment . BlockStmt) statementParser
     assignStart = do
         start <- try $ do
             rword "let"

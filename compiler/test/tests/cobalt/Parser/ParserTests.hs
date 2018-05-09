@@ -2,12 +2,11 @@ module Parser.ParserTests where
 
 import Test.HUnit
 
-import Parser.BaseParserTest
 import Parser.AExprParserTest
+import Parser.BaseParserTest
 import Parser.BExprParserTest
 import Parser.AnnotationParserTest
 import Parser.AssignParserTest
-import Parser.DoBlockParserTest
 import Parser.ExpressionParserTest
 import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
@@ -27,10 +26,8 @@ import Parser.ParameterParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
 import Parser.TernaryParserTest
-import Parser.ThisVarParserTest
 import Parser.TupleParserTest
 import Parser.TypeParameterParserTest
-import Parser.ValueTypeParserTest
 
 parserTestList :: Test
 parserTestList = TestList
