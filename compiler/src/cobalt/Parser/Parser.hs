@@ -353,9 +353,9 @@ reassignParser = do
     name <- try $ do
         id <- identifier
         symbol "<-"
-        return (Name id)
+        return $ Name id
     value <- expressionParser'
-    return (Reassign name value)
+    return $ Reassign name $ ExprAssignment value
 
 rExpr :: Parser BExpr
 rExpr = do
@@ -386,6 +386,7 @@ statementParser = modelDefParser
     <|> ifStatementParser
     <|> lambdaParser
     <|> assignParser
+    <|> reassignParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt

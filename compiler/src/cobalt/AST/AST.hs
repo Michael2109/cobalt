@@ -124,7 +124,7 @@ data Stmt
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name (Maybe Type) Bool Assignment
     | AssignMultiple [Name] (Maybe Type) Bool Assignment
-    | Reassign Name Expr
+    | Reassign Name Assignment
     | Return Stmt
     | Lambda [Field] Assignment
     | StringLiteral String
