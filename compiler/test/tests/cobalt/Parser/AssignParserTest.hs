@@ -22,8 +22,8 @@ testAssignParser = do
     let testInlineStmt = testParseSuccess codeInline (Assign (Name "x") (Just (TypeRef (RefLocal (Name "Int")))) True (ExprAssignment $ (Identifier (Name "y")))) statementParser
 
     let codeInlineValue = "let x = 10"
-    let testInlineValue = testParseSuccess codeInlineValue (Assign (Name "x") Nothing True (ExprAssignment (AExprContainer (IntConst 10)))) assignParser
-    let testInlineValueStmt = testParseSuccess codeInlineValue (Assign (Name "x") Nothing True (ExprAssignment (AExprContainer (IntConst 10)))) statementParser
+    let testInlineValue = testParseSuccess codeInlineValue (Assign (Name "x") Nothing True (ExprAssignment (IntConst 10))) assignParser
+    let testInlineValueStmt = testParseSuccess codeInlineValue (Assign (Name "x") Nothing True (ExprAssignment (IntConst 10))) statementParser
 
     let codeDoBlock = unlines [ "let x: Int = do"
                               , "    x"

@@ -35,8 +35,9 @@ accessModifierParser
     <|> Protected <$ rword "protected"
     <|> PackageLocal <$ rword "local"
 
-aExpr :: Parser AExpr
-aExpr = makeExprParser aTerm aOperators
+expressionParser' :: Parser Expr
+expressionParser'
+    =   makeExprParser expressionParserNew' aOperators
 
 annotationParser :: Parser Annotation
 annotationParser = do
@@ -44,13 +45,24 @@ annotationParser = do
     name <- identifier
     return $ Annotation $ Name name
 
-aOperators :: [[Operator Parser AExpr]]
+aOperators :: [[Operator Parser Expr]]
 aOperators =
-    [ [Prefix (Neg <$ symbol "-") ]
-    , [ InfixL (ABinary Multiply <$ symbol "*")
-      , InfixL (ABinary Divide   <$ symbol "/") ]
-    , [ InfixL (ABinary Add      <$ symbol "+")
-      , InfixL (ABinary Subtract <$ symbol "-") ]
+    [   [ Prefix (Neg <$ symbol "-")
+        , Prefix (Not <$ rword  "not")
+        ]
+    ,   [ InfixL (ABinary Multiply <$ symbol "*")
+        , InfixL (ABinary Divide   <$ symbol "/")
+        ]
+    ,   [ InfixL (ABinary Add      <$ symbol "+")
+        , InfixL (ABinary Subtract <$ symbol "-")
+        ]
+    ,   [ InfixL (RBinary GreaterEqual <$ rword ">=")
+        , InfixL (RBinary LessEqual    <$ rword "<=")
+        , InfixL (RBinary Greater      <$ rword ">" )
+        , InfixL (RBinary Less         <$ rword "<" )
+        ]
+    ,   [ InfixL (BBinary And <$ rword "and")
+        , InfixL (BBinary Or  <$ rword "or") ]
     ]
 
 assignParser :: Parser Stmt
@@ -92,39 +104,19 @@ assignParser = do
             return (immutable, varNames, varType)
         return start
 
-aTerm :: Parser AExpr
-aTerm
-    =   parens aExpr
-    <|> Var      <$> identifier
-    <|> IntConst <$> integerParser
-
-bExpr :: Parser BExpr
-bExpr = makeExprParser bTerm bOperators
-
-bOperators :: [[Operator Parser BExpr]]
-bOperators =
-    [ [Prefix (Not <$ rword "not") ]
-    , [InfixL (BBinary And <$ rword "and")
-      , InfixL (BBinary Or <$ rword "or") ]
-    ]
-
-bTerm :: Parser BExpr
-bTerm =  parens bExpr
-  <|> (BoolConst True  <$ rword "True")
-  <|> (BoolConst False <$ rword "False")
-  <|> rExpr
-
 expressionParser :: Parser Expr
 expressionParser
-    =   newClassInstanceParser
+    =   parens expressionParser'
+    <|> newClassInstanceParser
     <|> methodCallParser
-    <|> BExprContainer <$> bExpr
+    <|> IntConst <$> integerParser
+    <|> (BoolConst True  <$ rword "True")
+    <|> (BoolConst False <$ rword "False")
     <|> identifierParser
-    <|> AExprContainer <$> aExpr
     <|> stringLiteralParser
 
-expressionParser' :: Parser Expr
-expressionParser' = do
+expressionParserNew' :: Parser Expr
+expressionParserNew' = do
     expressions <- sepBy1 expressionParser (symbol ".")
     if length expressions == 1
     then return $ expressions!!0
@@ -171,7 +163,7 @@ ifStatementParser  = do
     return $ If condition ifStatements elseSection
   where
     controlParser = do
-        condition <- bExpr
+        condition <- expressionParser'
         rword "then"
         return condition
 
@@ -358,15 +350,6 @@ reassignParser = do
     value <- expressionParser'
     return $ Reassign name $ ExprAssignment value
 
-rExpr :: Parser BExpr
-rExpr = do
-  (a1, op) <- try $ do
-      a1 <- aExpr
-      op <- relation
-      return (a1, op)
-  a2 <- aExpr
-  return (RBinary op a1 a2)
-
 relation :: Parser RBinOp
 relation
   =   (symbol ">=" *> pure GreaterEqual)
@@ -415,7 +398,7 @@ superParser = Super <$ rword "super"
 ternaryParser :: Parser Expr
 ternaryParser  = do
     try $ rword "if"
-    condition  <- bExpr
+    condition  <- expressionParser'
     rword "then"
     ifExpression <- expressionParser'
     rword "else"
@@ -466,7 +449,7 @@ whileParser  = try $ L.indentBlock scn p
   where
     p = do
         rword "while"
-        condition <- parens bTerm
+        condition <- parens expressionParser'
         return (L.IndentMany Nothing (return . (While condition) . BlockStmt) statementParser)
 
 parser :: Parser Module
