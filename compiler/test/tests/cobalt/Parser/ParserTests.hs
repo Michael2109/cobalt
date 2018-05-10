@@ -18,12 +18,10 @@ import Parser.MethodParserTest
 import Parser.ModifierParserTest
 import Parser.ModelParserTest
 import Parser.NewClassInstanceParserTest
-import Parser.ParameterParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
 import Parser.TernaryParserTest
 import Parser.TupleParserTest
-import Parser.TypeParameterParserTest
 
 parserTestList :: Test
 parserTestList = TestList

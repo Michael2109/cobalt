@@ -1,7 +1,6 @@
 module Parser.ModifierBlockParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
 
 
 import Parser.Parser

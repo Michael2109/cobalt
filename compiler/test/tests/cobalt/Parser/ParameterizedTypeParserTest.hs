@@ -1,7 +1,6 @@
 module Parser.ParameterizedTypeParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
 
 
 import Parser.Parser

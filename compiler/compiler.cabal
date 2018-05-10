@@ -189,13 +189,11 @@ test-suite compiler-test
       Parser.PackageParserTest
       Parser.ParserTests
       Parser.ParameterizedTypeParserTest
-      Parser.ParameterParserTest
       Parser.ReassignParserTest
       Parser.StringLiteralMultilineParserTest
       Parser.StringLiteralParserTest
       Parser.TernaryParserTest
       Parser.TupleParserTest
-      Parser.TypeParameterParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
       TestUtil.CommandLineTestUtil

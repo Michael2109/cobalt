@@ -1,7 +1,6 @@
 module Parser.ImportParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
 
 import TestUtil.ParserTestUtil
 import AST.AST

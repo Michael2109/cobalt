@@ -1,9 +1,6 @@
 module Parser.MethodParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
-import Text.Megaparsec.Pos
-import Data.List.NonEmpty
 
 import TestUtil.ParserTestUtil
 import AST.AST
@@ -12,72 +9,52 @@ import Parser.Parser
 testMethodParser :: Test
 testMethodParser = do
     let codeEmptyParams = "let exampleMethod (): Int = _"
-    let testEmptyParams = testParseSuccess codeEmptyParams (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testEmptyParamsStmt = testParseSuccess codeEmptyParams (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testEmptyParams = testParseSuccess codeEmptyParams (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeMultipleParams = "let exampleMethod (a: Int, b: Int): Int = _"
-    let testMultipleParams = testParseSuccess codeMultipleParams (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testMultipleParamsStmt = testParseSuccess codeMultipleParams (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testMultipleParams = testParseSuccess codeMultipleParams (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeDoBlock = unlines [ "let outerMethod (): Int = do"
                               , "    i"
                               , "    j"
                               ]
-    let testDoBlock = testParseSuccess codeDoBlock (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])})) methodDefParser
-    let testDoBlockStmt = testParseSuccess codeDoBlock (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])})) statementParser
+    let testDoBlock = testParseSuccess codeDoBlock (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])})) statementParser
 
     let codeNestedMethod = unlines [ "let outerMethod (): Int = do"
                        , "    let innerMethod (): Int = do"
                        , "        i"
                        , "    j"
                        ]
-    let testNestedMethod = testParseSuccess codeNestedMethod (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]})) methodDefParser
-    let testNestedMethodStmt = testParseSuccess codeNestedMethod (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]})) statementParser
+    let testNestedMethod = testParseSuccess codeNestedMethod (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = StmtAssignment $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]})) statementParser
 
     let codeModifierFinal = "final let exampleMethod (a: Int, b: Int): Int = _"
-    let testModifierFinal = testParseSuccess codeModifierFinal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testModifierFinalStmt = testParseSuccess codeModifierFinal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testModifierFinal = testParseSuccess codeModifierFinal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeModifierAbstract = "abstract let exampleMethod (a: Int, b: Int): Int = _"
-    let testModifierAbstract = testParseSuccess codeModifierAbstract (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Abstract], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testModifierAbstractStmt = testParseSuccess codeModifierAbstract (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Abstract], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testModifierAbstract = testParseSuccess codeModifierAbstract (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Abstract], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeModifierPublic = "public let exampleMethod (a: Int, b: Int): Int = _"
-    let testModifierPublic = testParseSuccess codeModifierPublic (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testModifierPublicStmt = testParseSuccess codeModifierPublic (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testModifierPublic = testParseSuccess codeModifierPublic (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Public], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeModifierProtected = "protected let exampleMethod (a: Int, b: Int): Int = _"
-    let testModifierProtected = testParseSuccess codeModifierProtected (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Protected], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testModifierProtectedStmt = testParseSuccess codeModifierProtected (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Protected], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testModifierProtected = testParseSuccess codeModifierProtected (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Protected], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeModifierLocal = "local let exampleMethod (a: Int, b: Int): Int = _"
-    let testModifierLocal = testParseSuccess codeModifierLocal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testModifierLocalStmt = testParseSuccess codeModifierLocal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testModifierLocal = testParseSuccess codeModifierLocal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     let codeModifierMultiple = "final abstract public protected local let exampleMethod (a: Int, b: Int): Int = _"
-    let testModifierMultiple = testParseSuccess codeModifierMultiple (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final, Abstract, Public, Protected, PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) methodDefParser
-    let testModifierMultipleStmt = testParseSuccess codeModifierMultiple (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final, Abstract, Public, Protected, PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
+    let testModifierMultiple = testParseSuccess codeModifierMultiple (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodParams = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final, Abstract, Public, Protected, PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = ExprAssignment (Identifier (Name "_"))})) statementParser
 
     TestList [ testEmptyParams
-             , testEmptyParamsStmt
              , testMultipleParams
-             , testMultipleParamsStmt
              , testDoBlock
-             , testDoBlockStmt
              , testNestedMethod
-             , testNestedMethodStmt
              , testModifierFinal
-             , testModifierFinalStmt
              , testModifierAbstract
-             , testModifierAbstractStmt
              , testModifierPublic
-             , testModifierPublicStmt
              , testModifierProtected
-             , testModifierProtectedStmt
              , testModifierLocal
-             , testModifierLocalStmt
              , testModifierMultiple
-             , testModifierMultipleStmt
              , testConstructorParser
              ]
 

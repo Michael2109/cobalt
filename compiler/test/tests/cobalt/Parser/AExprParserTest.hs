@@ -1,10 +1,6 @@
 module Parser.AExprParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
-
-import AST.AST
-import Parser.Parser
 
 import TestUtil.ParserTestUtil
 import AST.AST
