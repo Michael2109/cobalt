@@ -1,9 +1,6 @@
 module Parser.MethodParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
-import Text.Megaparsec.Pos
-import Data.List.NonEmpty
 
 import TestUtil.ParserTestUtil
 import AST.AST

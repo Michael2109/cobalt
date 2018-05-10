@@ -1,7 +1,6 @@
 module Parser.StringLiteralParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
 
 
 import TestUtil.ParserTestUtil

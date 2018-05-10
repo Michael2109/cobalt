@@ -2,10 +2,6 @@ module TestUtil.ParserTestUtil where
 
 import Test.HUnit
 import Text.Megaparsec
-import Data.Monoid
-
-import AST.AST
-import Parser.Parser
 
 testParseSuccess code result parser = TestCase $ assertEqual code
     result
@@ -16,7 +12,7 @@ testParseSuccess code result parser = TestCase $ assertEqual code
 testParseFailure code parser = TestCase $ assertEqual code
     TMPError
     (case (parse parser "" code) of
-        Left  e -> TMPError
+        Left  _ -> TMPError
         Right x -> TMPValue x)
 
 data TMPHelper a = TMPError

@@ -2,8 +2,6 @@ module Parser.BaseParserTest where
 
 import Test.HUnit
 
-import Text.Megaparsec
-
 import TestUtil.ParserTestUtil
 import Parser.BaseParser
 
@@ -21,37 +19,37 @@ testSymbol = do
 
 testReservedWord :: Test
 testReservedWord = do
-    let code = "module"
-    let test = testParseSuccess code "module" (rword "module")
+    let codeRWord = "module"
+    let testRWord  = testParseSuccess codeRWord  "module" (rword "module")
 
-    TestList [test]
+    TestList [testRWord]
 
 testIdentifier :: Test
 testIdentifier = do
-    let code = "identifier"
-    let test = testParseSuccess code "identifier" identifier
-    TestList [test]
+    let codeIdentifier = "identifier"
+    let testIdentifierConst = testParseSuccess codeIdentifier "identifier" identifier
+    TestList [testIdentifierConst]
 
 testFloat :: Test
 testFloat = do
-    let code = "100.50988678f"
-    let test = testParseSuccess code 100.50988678 floatParser
-    TestList [test]
+    let codeFloat = "100.50988678f"
+    let testFloatConst = testParseSuccess codeFloat 100.50988678 floatParser
+    TestList [testFloatConst]
 
 testDouble :: Test
 testDouble = do
-    let code = "100.50988678"
-    let test = testParseSuccess code 100.50988678 doubleParser
-    TestList [test]
+    let codeDouble = "100.50988678"
+    let testDoubleConst = testParseSuccess codeDouble 100.50988678 doubleParser
+    TestList [testDoubleConst]
 
 testInteger :: Test
 testInteger = do
-    let code = "100"
-    let test = testParseSuccess code 100 integerParser
-    TestList [test]
+    let codeInteger = "100"
+    let testIntegerConst = testParseSuccess codeInteger 100 integerParser
+    TestList [testIntegerConst]
 
 testLong :: Test
 testLong = do
-    let code = "100l"
-    let test = testParseSuccess code 100 longParser
-    TestList [test]
+    let codeLong = "100l"
+    let testLongConst = testParseSuccess codeLong 100 longParser
+    TestList [testLongConst]

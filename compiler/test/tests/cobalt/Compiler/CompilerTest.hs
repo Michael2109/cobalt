@@ -1,7 +1,7 @@
 module Compiler.CompilerTest where
 
 import Test.HUnit (Assertion, assertBool)
-import System.Directory (removeFile, removeDirectory, doesFileExist, doesDirectoryExist, createDirectory)
+import System.Directory (doesFileExist, doesDirectoryExist, createDirectory)
 import System.Environment (withArgs)
 import Control.Monad
 
@@ -11,7 +11,7 @@ exampleCompilerTest :: Assertion
 exampleCompilerTest = do
 
     -- Create string containing the code (If testing without a test .cobalt file)
-    let code = "class ModuleName"
+    -- let code = "class ModuleName"
 
     let generatedDir = "cobalt_generated_classes/"
     let generatedInnerDir = generatedDir ++ "game/"

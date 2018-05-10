@@ -1,8 +1,6 @@
 module Parser.PackageParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
-
 
 import Parser.Parser
 {-

@@ -1,7 +1,6 @@
 module Parser.ExpressionParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
 
 import TestUtil.ParserTestUtil
 import AST.AST
