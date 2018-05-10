@@ -9,8 +9,8 @@ import Parser.Parser
 testForLoopGeneratorParser :: Test
 testForLoopGeneratorParser = do
     let codeForLoop = unlines [ "for(i <- 0 to 10)"
-                       , "  i"
-                       ]
-    let testForLoop = testParseSuccess codeForLoop (For (Identifier (Name "i")) (IntConst 0) (IntConst 10) (BlockStmt [ExprAsStmt (Identifier (Name "i"))])) forLoopGeneratorParser
+                              , "  i"
+                              ]
+    let testForLoop = testParseSuccess codeForLoop (For (Identifier (Name "i")) (IntConst 0) (IntConst 10) (BlockStmt [ExprAsStmt (Identifier (Name "i"))])) statementParser
 
     TestList [testForLoop]

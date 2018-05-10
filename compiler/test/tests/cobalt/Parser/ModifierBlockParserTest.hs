@@ -1,9 +1,5 @@
 module Parser.ModifierBlockParserTest where
 
-import Test.HUnit
-
-
-import Parser.Parser
 {-
 
 testModifierBlockParserPrivate :: Test

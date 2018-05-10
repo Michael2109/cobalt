@@ -18,7 +18,7 @@ testModelParser = do
     let testImplements = testParseSuccess codeImplements (Model {modelName = Name "Test", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [TypeRef (RefLocal (Name "Interface"))], modelBody = BlockStmt []}) modelParser
 
     let codeExtendsImplements = "class Test extends Parent implements "
-    let testExtendsImplements = testParseSuccess codeExtendsImplements (Model (Name "Test") ClassModel [] [] Nothing [] [] (BlockStmt [])) modelParser
+    let testExtendsImplements = testParseSuccess codeExtendsImplements (Model {modelName = Name "Test", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Just (TypeRef (RefLocal (Name "Parent"))), modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt []}) modelParser
 
     let codeInner = unlines [ "class OuterClass"
                             , "    class InnerClass"]
@@ -27,5 +27,6 @@ testModelParser = do
     TestList [ testModel
              , testExtends
              , testImplements
+             , testExtendsImplements
              , testInner
              ]

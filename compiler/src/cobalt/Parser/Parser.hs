@@ -35,10 +35,6 @@ accessModifierParser
     <|> Protected <$ rword "protected"
     <|> PackageLocal <$ rword "local"
 
-expressionParser' :: Parser Expr
-expressionParser'
-    =   makeExprParser nestedExpressionParser operators
-
 annotationParser :: Parser Annotation
 annotationParser = do
     symbol "@"
@@ -86,14 +82,20 @@ assignParser = do
 
 expressionParser :: Parser Expr
 expressionParser
-    =   parens expressionParser'
+    = tupleParser
+    <|> parens expressionParser'
     <|> newClassInstanceParser
     <|> methodCallParser
+    <|> ternaryParser
     <|> IntConst <$> integerParser
     <|> (BoolConst True  <$ rword "True")
     <|> (BoolConst False <$ rword "False")
     <|> identifierParser
     <|> stringLiteralParser
+
+expressionParser' :: Parser Expr
+expressionParser'
+    =   makeExprParser nestedExpressionParser operators
 
 expressionAsStatementParser :: Parser Stmt
 expressionAsStatementParser = ExprAsStmt <$> expressionParser'
@@ -374,6 +376,7 @@ statementParser = modelDefParser
     <|> lambdaParser
     <|> assignParser
     <|> reassignParser
+    <|> forLoopGeneratorParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt

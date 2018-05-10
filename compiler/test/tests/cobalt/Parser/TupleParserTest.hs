@@ -9,7 +9,7 @@ import Parser.Parser
 
 testTupleParser :: Test
 testTupleParser = do
-    let code = "(x, y, z)"
-    let test = testParseSuccess code (Tuple (BlockExpr [Identifier (Name "x"),Identifier (Name "y"),Identifier (Name "z")])) tupleParser
+    let code1 = "(x, y, z)"
+    let test1 = testParseSuccess code1 (Tuple (BlockExpr [Identifier (Name "x"),Identifier (Name "y"),Identifier (Name "z")])) expressionParser'
 
-    TestList [test]
+    TestList [test1]

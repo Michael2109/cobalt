@@ -1,9 +1,5 @@
 module Parser.ParameterizedTypeParserTest where
 
-import Test.HUnit
-
-
-import Parser.Parser
 {-
 
 testParameterizedTypeParser :: Test
