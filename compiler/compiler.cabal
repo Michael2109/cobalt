@@ -169,6 +169,7 @@ test-suite compiler-test
       JVM.AssemblerTest
       Parser.BaseParserTest
       Parser.AExprParserTest
+      Parser.ArrayOpParserTest
       Parser.BExprParserTest
       Parser.AnnotationParserTest
       Parser.AssignParserTest
