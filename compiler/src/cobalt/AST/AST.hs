@@ -107,20 +107,28 @@ data Assignment
     deriving (Show, Eq)
 
 data Expr
-    = AExprAsExpr AExpr
-    | BlockExpr [Expr]
-    | BExprAsExpr BExpr
+    = BlockExpr [Expr]
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type Expr (Maybe Stmt)
-    | Ternary BExpr Expr Expr
+    | Ternary Expr Expr Expr
     | Tuple Expr
+    | BoolConst Bool
+    | Not Expr
+    | BBinary BBinOp Expr Expr
+    | RBinary RBinOp Expr Expr
+    | IntConst Integer
+    | DoubleConst Scientific
+    | FloatConst Float
+    | LongConst Integer
+    | Neg Expr
+    | ABinary ABinOp Expr Expr
     deriving (Show, Eq)
 
 data Stmt
     = For Expr Expr Expr Stmt
-    | While BExpr Stmt
-    | If BExpr Stmt (Maybe Stmt)
+    | While Expr Stmt
+    | If Expr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name (Maybe Type) Bool Assignment
     | AssignMultiple [Name] (Maybe Type) Bool Assignment
@@ -134,18 +142,10 @@ data Stmt
     | BlockStmt [Stmt]
     deriving (Show, Eq)
 
--- This needs a better name
 data ExceptionHandler
     = TryStatement Stmt
     | CatchStatement [Field] Stmt
     | FinallyStatement Stmt
-    deriving (Show, Eq)
-
-data BExpr
-    = BoolConst Bool
-    | Not BExpr
-    | BBinary BBinOp BExpr BExpr
-    | RBinary RBinOp AExpr AExpr
     deriving (Show, Eq)
 
 data BBinOp
@@ -158,16 +158,6 @@ data RBinOp
     | Greater
     | LessEqual
     | Less
-    deriving (Show, Eq)
-
-data AExpr
-    = ExprAsAExpr Expr
-    | IntConst Integer
-    | DoubleConst Scientific
-    | FloatConst Float
-    | LongConst Integer
-    | Neg AExpr
-    | ABinary ABinOp AExpr AExpr
     deriving (Show, Eq)
 
 data ABinOp
