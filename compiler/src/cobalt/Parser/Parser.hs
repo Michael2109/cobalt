@@ -65,16 +65,6 @@ aOperators =
         , InfixL (BBinary Or  <$ rword "or") ]
     ]
 
-
-
-
-bOperators :: [[Operator Parser Expr]]
-bOperators =
-    [ [Prefix (Not <$ rword "not") ]
-    , [InfixL (BBinary And <$ rword "and")
-      , InfixL (BBinary Or <$ rword "or") ]
-    ]
-
 assignParser :: Parser Stmt
 assignParser = do
     assign <- choice [assignDoBlock, assignInline]
@@ -123,6 +113,7 @@ expressionParser
     <|> (BoolConst True  <$ rword "True")
     <|> (BoolConst False <$ rword "False")
     <|> identifierParser
+    <|> stringLiteralParser
 
 expressionParserNew' :: Parser Expr
 expressionParserNew' = do
@@ -359,24 +350,6 @@ reassignParser = do
     value <- expressionParser'
     return $ Reassign name $ ExprAssignment value
 
-rOperators :: [[Operator Parser Expr]]
-rOperators =
-    [ [ InfixL (RBinary GreaterEqual <$ rword ">=")
-      , InfixL (RBinary LessEqual    <$ rword "<=")
-      , InfixL (RBinary Greater      <$ rword ">" )
-      , InfixL (RBinary Less         <$ rword "<" )
-      ]
-    ]
-{-
-rExpr :: Parser Expr
-rExpr = do
-  (a1, op) <- try $ do
-      a1 <- expressionParser'
-      op <- relation
-      return (a1, op)
-  a2 <- expressionParser'
-  return (RBinary op a1 a2)-}
-
 relation :: Parser RBinOp
 relation
   =   (symbol ">=" *> pure GreaterEqual)
@@ -403,12 +376,16 @@ statementParser = modelDefParser
 statementBlockParser :: Parser Stmt
 statementBlockParser = BlockStmt <$> some statementParser
 
-stringLiteralParser :: Parser Stmt
+stringLiteralParser :: Parser Expr
 stringLiteralParser = do
-    value <- char '"' >> manyTill L.charLiteral (char '"')
+    value <- char '"' >> manyTill r (char '"')
     return $ StringLiteral value
+  where
+    r = label "Unexpected end of line in single line string literal" $ do
+            notFollowedBy (char '\n')
+            L.charLiteral
 
-stringLiteralMultilineParser :: Parser Stmt
+stringLiteralMultilineParser :: Parser Expr
 stringLiteralMultilineParser = do
     symbol "```"
     contents <- many $ L.lineFold scn $ \sp' -> some L.charLiteral

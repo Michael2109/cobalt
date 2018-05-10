@@ -12,3 +12,13 @@ testParseSuccess code result parser = TestCase $ assertEqual code
     (case (parse parser "" code) of
         Left  e -> error $ "(" ++ code ++ ") - " ++ show e
         Right x -> x)
+
+testParseFailure code parser = TestCase $ assertEqual code
+    TMPError
+    (case (parse parser "" code) of
+        Left  e -> TMPError
+        Right x -> TMPValue x)
+
+data TMPHelper a = TMPError
+                | TMPValue a
+                deriving (Show, Eq)

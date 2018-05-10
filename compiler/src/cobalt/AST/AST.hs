@@ -111,6 +111,7 @@ data Expr
     | Identifier Name
     | MethodCall Name Expr
     | NewClassInstance Type Expr (Maybe Stmt)
+    | StringLiteral String
     | Ternary Expr Expr Expr
     | Tuple Expr
     | BoolConst Bool
@@ -135,7 +136,6 @@ data Stmt
     | Reassign Name Assignment
     | Return Stmt
     | Lambda [Field] Assignment
-    | StringLiteral String
     | ModelDef Model
     | MethodDef Method
     | ExprAsStmt Expr
