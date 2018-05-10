@@ -3,6 +3,7 @@ module Parser.ParserTests where
 import Test.HUnit
 
 import Parser.AExprParserTest
+import Parser.ArrayOpParserTest
 import Parser.BaseParserTest
 import Parser.BExprParserTest
 import Parser.AnnotationParserTest
@@ -25,7 +26,8 @@ import Parser.TupleParserTest
 parserTestList :: Test
 parserTestList = TestList
 
-    [ testSymbol
+    [ testArrayOpParser
+    , testSymbol
     , testReservedWord
     , testIdentifier
     , testFloat

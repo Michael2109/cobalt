@@ -124,6 +124,7 @@ data Expr
     | LongConst Integer
     | Neg Expr
     | ABinary ABinOp Expr Expr
+    | Array ArrayOp Expr Expr
     deriving (Show, Eq)
 
 data Stmt
@@ -151,6 +152,11 @@ data ExceptionHandler
 data BBinOp
     = And
     | Or
+    deriving (Show, Eq)
+
+
+data ArrayOp
+    = ArrayAppend
     deriving (Show, Eq)
 
 data RBinOp

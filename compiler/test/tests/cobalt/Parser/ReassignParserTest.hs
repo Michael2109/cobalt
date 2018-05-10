@@ -8,8 +8,8 @@ import Parser.Parser
 
 testReassignParser :: Test
 testReassignParser = do
-    let codeReassign = "x <- new ClassName(10)"
-    let testReassign = testParseSuccess codeReassign (Reassign (Name "x") (ExprAssignment (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [IntConst 10]) Nothing))) statementParser
+    let code1 = "x <- new ClassName(10)"
+    let test1 = testParseSuccess code1 (Reassign (Name "x") (ExprAssignment (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [IntConst 10]) Nothing))) statementParser
 
     let codeArithmetic = "varName <- 100 - y"
     let testArithmetic = testParseSuccess codeArithmetic (Reassign (Name "varName") (ExprAssignment (ABinary Subtract (IntConst 100) (Identifier $ Name "y")))) statementParser
@@ -20,7 +20,7 @@ testReassignParser = do
     let codeClassVar = "Var_Name <- ClassName.VarName"
     let testClassVar = testParseSuccess codeClassVar (Reassign (Name "Var_Name") (ExprAssignment (BlockExpr [Identifier (Name "ClassName"),Identifier (Name "VarName")]))) statementParser
 
-    TestList [ testReassign
+    TestList [ test1
              , testArithmetic
              , testArithmeticTwoVars
              , testClassVar

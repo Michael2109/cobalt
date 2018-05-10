@@ -37,33 +37,13 @@ accessModifierParser
 
 expressionParser' :: Parser Expr
 expressionParser'
-    =   makeExprParser expressionParserNew' aOperators
+    =   makeExprParser nestedExpressionParser operators
 
 annotationParser :: Parser Annotation
 annotationParser = do
     symbol "@"
     name <- identifier
     return $ Annotation $ Name name
-
-aOperators :: [[Operator Parser Expr]]
-aOperators =
-    [   [ Prefix (Neg <$ symbol "-")
-        , Prefix (Not <$ rword  "not")
-        ]
-    ,   [ InfixL (ABinary Multiply <$ symbol "*")
-        , InfixL (ABinary Divide   <$ symbol "/")
-        ]
-    ,   [ InfixL (ABinary Add      <$ symbol "+")
-        , InfixL (ABinary Subtract <$ symbol "-")
-        ]
-    ,   [ InfixL (RBinary GreaterEqual <$ rword ">=")
-        , InfixL (RBinary LessEqual    <$ rword "<=")
-        , InfixL (RBinary Greater      <$ rword ">" )
-        , InfixL (RBinary Less         <$ rword "<" )
-        ]
-    ,   [ InfixL (BBinary And <$ rword "and")
-        , InfixL (BBinary Or  <$ rword "or") ]
-    ]
 
 assignParser :: Parser Stmt
 assignParser = do
@@ -114,13 +94,6 @@ expressionParser
     <|> (BoolConst False <$ rword "False")
     <|> identifierParser
     <|> stringLiteralParser
-
-expressionParserNew' :: Parser Expr
-expressionParserNew' = do
-    expressions <- sepBy1 expressionParser (symbol ".")
-    if length expressions == 1
-    then return $ expressions!!0
-    else return $ BlockExpr expressions
 
 expressionAsStatementParser :: Parser Stmt
 expressionAsStatementParser = ExprAsStmt <$> expressionParser'
@@ -323,6 +296,13 @@ nameSpaceParser = try $ L.nonIndented scn p
         locations <- sepBy1 identifier (symbol ".")
         return $ (NameSpace locations)
 
+nestedExpressionParser :: Parser Expr
+nestedExpressionParser = do
+    expressions <- sepBy1 expressionParser (symbol ".")
+    if length expressions == 1
+    then return $ expressions!!0
+    else return $ BlockExpr expressions
+
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser = do
     choice [newClassInstanceAnonymousClass, newClassInstance]
@@ -340,6 +320,29 @@ newClassInstanceParser = do
         className <- typeRefParser
         arguments <- parens $ sepBy expressionParser' (symbol ",")
         return (className, arguments)
+
+operators :: [[Operator Parser Expr]]
+operators =
+    [   [ Prefix (Neg <$ symbol "-")
+        , Prefix (Not <$ rword  "not")
+        ]
+    ,   [ InfixL (Array ArrayAppend <$ rword "++")
+        ]
+    ,   [ InfixL (ABinary Multiply <$ symbol "*")
+        , InfixL (ABinary Divide   <$ symbol "/")
+        ]
+    ,   [ InfixL (ABinary Add      <$ symbol "+")
+        , InfixL (ABinary Subtract <$ symbol "-")
+        ]
+    ,   [ InfixL (RBinary GreaterEqual <$ rword ">=")
+        , InfixL (RBinary LessEqual    <$ rword "<=")
+        , InfixL (RBinary Greater      <$ rword ">" )
+        , InfixL (RBinary Less         <$ rword "<" )
+        ]
+    ,   [ InfixL (BBinary And <$ rword "and")
+        , InfixL (BBinary Or  <$ rword "or")
+        ]
+    ]
 
 reassignParser :: Parser Stmt
 reassignParser = do

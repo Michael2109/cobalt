@@ -8,8 +8,8 @@ import Parser.Parser
 
 testIdentifierParser :: Test
 testIdentifierParser = do
-    let codeIdentifier = "x"
-    let testIdentifier = testParseSuccess codeIdentifier (Identifier $ Name "x") expressionParser'
+    let code1 = "x"
+    let test1 = testParseSuccess code1 (Identifier $ Name "x") expressionParser'
 
     let codeContainsUnderscores = "_an_identifier"
     let testContainsUnderscores = testParseSuccess codeContainsUnderscores (Identifier (Name "_an_identifier")) expressionParser'
@@ -20,7 +20,7 @@ testIdentifierParser = do
     let codeCapital = "ID"
     let testCapital = testParseSuccess codeCapital (Identifier $ Name "ID") expressionParser'
 
-    TestList [ testIdentifier
+    TestList [ test1
              , testContainsUnderscores
              , testContainsDigits
              , testCapital
