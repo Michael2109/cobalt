@@ -435,7 +435,7 @@ tryBlockParser  = do
 tupleParser :: Parser Expr
 tupleParser =
     try $ do
-        values <- parens $ sepBy identifierParser (symbol ",")
+        values <- try $ parens $ sepBy1 identifierParser (symbol ",")
         return $ Tuple (BlockExpr values)
 
 typeParameterParser :: Parser [Type]

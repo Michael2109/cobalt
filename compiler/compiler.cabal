@@ -184,7 +184,6 @@ test-suite compiler-test
       Parser.ModelTypeParserTest
       Parser.ModifierParserTest
       Parser.ModelParserTest
-      Parser.ModifierBlockParserTest
       Parser.NameSpaceParserTest
       Parser.NewClassInstanceParserTest
       Parser.ParserTests
