@@ -21,12 +21,26 @@ testModelParser = do
     let testExtendsImplements = testParseSuccess codeExtendsImplements (Model {modelName = Name "Test", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Just (TypeRef (RefLocal (Name "Parent"))), modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt []}) modelParser
 
     let codeInner = unlines [ "class OuterClass"
-                            , "    class InnerClass"]
+                            , "    class InnerClass"
+                            ]
     let testInner = testParseSuccess codeInner (Model {modelName = Name "OuterClass", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt [ModelDef (Model {modelName = Name "InnerClass", modelType = ClassModel,  modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = (BlockStmt [])})]}) modelParser
+
+    let codeMethods = unlines [ "class OuterClass"
+                            , "    let x() = 10"
+                            , "    let y() = do"
+                            , "        let x() = do"
+                            , "            if True then"
+                            , "                10"
+                            , "            else"
+                            , "                20"
+                            ]
+    let testMethods = testParseSuccess codeMethods (Model {modelName = Name "OuterClass", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt [MethodDef (Method {methodName = Name "x", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Nothing, methodBody = ExprAssignment (IntConst 10)}),MethodDef (Method {methodName = Name "y", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Nothing, methodBody = StmtAssignment (BlockStmt [MethodDef (Method {methodName = Name "x", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Nothing, methodBody = StmtAssignment (BlockStmt [If (BoolConst True) (BlockStmt [ExprAsStmt (IntConst 10)]) (Just (BlockStmt [ExprAsStmt (IntConst 20)]))])})])})]}) modelParser
+
 
     TestList [ testModel
              , testExtends
              , testImplements
              , testExtendsImplements
              , testInner
+             , testMethods
              ]
