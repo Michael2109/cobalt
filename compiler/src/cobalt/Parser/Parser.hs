@@ -381,7 +381,7 @@ statementBlockParser = BlockStmt <$> some statementParser
 
 stringLiteralParser :: Parser Expr
 stringLiteralParser = do
-    value <- char '"' >> manyTill r (char '"')
+    value <- char '"' >> manyTill r (symbol "\"")
     return $ StringLiteral value
   where
     r = label "Unexpected end of line in single line string literal" $ do

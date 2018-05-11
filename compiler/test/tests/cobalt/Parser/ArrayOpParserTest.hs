@@ -14,7 +14,7 @@ testArrayOpParser = do
     let codeStringLiteral = "x ++ \"String Literal\""
     let testStringLiteral = testParseSuccess codeStringLiteral (Array ArrayAppend (Identifier (Name "x")) (StringLiteral "String Literal")) expressionParser'
 
-    let codeMultipleStringLiteral = "\"String Literal 1\"++ x"
+    let codeMultipleStringLiteral = "\"String Literal 1\" ++ x"
     let testMultipleStringLiteral = testParseSuccess codeMultipleStringLiteral (Array ArrayAppend (StringLiteral "String Literal 1")  (Identifier (Name "x"))) expressionParser'
 
     TestList [ testArrayOp
