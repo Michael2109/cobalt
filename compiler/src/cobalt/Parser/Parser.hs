@@ -82,9 +82,9 @@ assignParser = do
 
 expressionParser :: Parser Expr
 expressionParser
-    =   tupleParser
+    =   newClassInstanceParser
+    <|> tupleParser
     <|> parens expressionParser'
-    <|> newClassInstanceParser
     <|> methodCallParser
     <|> ternaryParser
     <|> IntConst <$> integerParser
@@ -437,9 +437,9 @@ tupleParser =
     try $ do
         lookAhead $ do
             symbol "("
-            identifierParser
+            expressionParser'
             symbol ","
-        values <- try $ parens $ sepBy1 identifierParser (symbol ",")
+        values <- try $ parens $ sepBy1 expressionParser (symbol ",")
         return $ Tuple (BlockExpr values)
 
 typeParameterParser :: Parser [Type]
