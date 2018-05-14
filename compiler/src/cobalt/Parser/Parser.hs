@@ -439,7 +439,7 @@ tupleParser =
             symbol "("
             expressionParser'
             symbol ","
-        values <- try $ parens $ sepBy1 expressionParser (symbol ",")
+        values <- try $ parens $ sepBy1 expressionParser' (symbol ",")
         return $ Tuple (BlockExpr values)
 
 typeParameterParser :: Parser [Type]

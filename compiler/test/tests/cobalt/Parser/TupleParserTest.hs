@@ -12,8 +12,8 @@ testTupleParser = do
     let codeMultiple = "(x, y, z)"
     let testMultiple = testParseSuccess codeMultiple (Tuple (BlockExpr [Identifier (Name "x"),Identifier (Name "y"),Identifier (Name "z")])) expressionParser'
 
-    let codeMultipleExpressions = "((1, \"String\"), y, 100, varName, new ClassName(a, b, c))"
-    let testMultipleExpressions = testParseSuccess codeMultipleExpressions (Tuple (BlockExpr [Tuple (BlockExpr [IntConst 1,StringLiteral "String"]),Identifier (Name "y"),IntConst 100,Identifier (Name "varName"),NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]) Nothing])) expressionParser'
+    let codeMultipleExpressions = "((1, \"String\"), y, 100, nested.varName, varName, new ClassName(a, b, c))"
+    let testMultipleExpressions = testParseSuccess codeMultipleExpressions (Tuple (BlockExpr [Tuple (BlockExpr [IntConst 1,StringLiteral "String"]),Identifier (Name "y"),IntConst 100,BlockExpr [Identifier (Name "nested"),Identifier (Name "varName")],Identifier (Name "varName"),NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]) Nothing])) expressionParser'
 
     let codeTupleEmpty = "()"
     let testTupleEmpty = testParseFailure codeTupleEmpty expressionParser'
