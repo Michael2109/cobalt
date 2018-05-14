@@ -15,8 +15,8 @@ testTupleParser = do
     let codeTupleEmpty = "()"
     let testTupleEmpty = testParseFailure codeTupleEmpty expressionParser'
 
-    -- let codeSingle = "(a)"
-    -- let testSingle = testParseFailure codeSingle expressionParser'
+    let codeSingle = "(a)"
+    let testSingle = testParseFailure codeSingle expressionParser'
 
     TestList [ testMultiple
              , testTupleEmpty
