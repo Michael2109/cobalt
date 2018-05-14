@@ -17,13 +17,13 @@ testBParser = do
     let codeParens = "(True)"
     let testParens = testParseSuccess codeParens (BoolConst True) expressionParser'
 
-    let codeRExpr = "x < 10"
-    let testRExpr = testParseSuccess codeRExpr (RBinary Less (Identifier (Name "x")) (IntConst 10)) expressionParser'
+    let codeR = "x < 10"
+    let testR = testParseSuccess codeR (RBinary Less (Identifier (Name "x")) (IntConst 10)) expressionParser'
 
     TestList [ testTrue
              , testFalse
              , testParens
-             , testRExpr
+             , testR
              ]
 
 testRParser :: Test

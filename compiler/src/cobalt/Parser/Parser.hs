@@ -35,10 +35,6 @@ accessModifierParser
     <|> Protected <$ rword "protected"
     <|> PackageLocal <$ rword "local"
 
-expressionParser' :: Parser Expr
-expressionParser'
-    =   makeExprParser nestedExpressionParser operators
-
 annotationParser :: Parser Annotation
 annotationParser = do
     symbol "@"
@@ -86,14 +82,20 @@ assignParser = do
 
 expressionParser :: Parser Expr
 expressionParser
-    =   parens expressionParser'
-    <|> newClassInstanceParser
+    =   newClassInstanceParser
+    <|> tupleParser
+    <|> parens expressionParser'
     <|> methodCallParser
+    <|> ternaryParser
     <|> IntConst <$> integerParser
     <|> (BoolConst True  <$ rword "True")
     <|> (BoolConst False <$ rword "False")
     <|> identifierParser
     <|> stringLiteralParser
+
+expressionParser' :: Parser Expr
+expressionParser'
+    =   makeExprParser nestedExpressionParser operators
 
 expressionAsStatementParser :: Parser Stmt
 expressionAsStatementParser = ExprAsStmt <$> expressionParser'
@@ -374,6 +376,7 @@ statementParser = modelDefParser
     <|> lambdaParser
     <|> assignParser
     <|> reassignParser
+    <|> forLoopGeneratorParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt
@@ -432,7 +435,11 @@ tryBlockParser  = do
 tupleParser :: Parser Expr
 tupleParser =
     try $ do
-        values <- parens $ sepBy identifierParser (symbol ",")
+        lookAhead $ do
+            symbol "("
+            expressionParser'
+            symbol ","
+        values <- try $ parens $ sepBy1 expressionParser' (symbol ",")
         return $ Tuple (BlockExpr values)
 
 typeParameterParser :: Parser [Type]

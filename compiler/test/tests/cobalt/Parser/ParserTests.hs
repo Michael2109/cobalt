@@ -17,6 +17,7 @@ import Parser.MethodCallParserTest
 import Parser.MethodParserTest
 import Parser.ModifierParserTest
 import Parser.ModelParserTest
+import Parser.NameSpaceParserTest
 import Parser.NewClassInstanceParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
@@ -48,6 +49,7 @@ parserTestList = TestList
     , testMethodParser
     , testModelParser
     , testModifierParser
+    , testNameSpaceParser
     , testNewClassInstanceParser
     , testRParser
     , testReassignParser
