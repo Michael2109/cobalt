@@ -20,7 +20,7 @@ exampleCompilerTest = do
     when (not $ generatedInnerDirExists) $ createDirectory generatedInnerDir
 
     -- Run the compiler with args
-    withArgs ["-d", generatedInnerDir, "-p", "test/resources/integration/", "Example.cobalt"] execute
+    --withArgs ["-d", generatedInnerDir, "-p", "test/resources/integration/", "Example.cobalt"] execute
 
     -- Check the file has been compiled correctly
     fileExists <- doesFileExist $ generatedInnerDir ++ "Example.class"
