@@ -51,6 +51,20 @@ greet otherPerson =
 ```
 {nbsp} +
 
+### Expressions
+
+#### Numbers
+```
+10    # Int
+20L   # Long
+30f   # Float
+40.0  # Double
+```
+
+#### Ternary
+```
+if x then 10 else 20
+```
 
 ### Statements
 
@@ -59,20 +73,20 @@ greet otherPerson =
 Conditional statements allow branching:
 ```
 if Expression
-  Statements
+    Statements
 else
-  Statements
+    Statements
 ```
 
 To avoid deep nesting it is possible to use following shortened form:
 
 ```
 if Expression
-  Statements
+    Statements
 elif Expression
-  Statements
+    Statements
 else
-  Statements
+    Statements
 ```
 
 Since statements in branches are indented, there is no ambiguity when deciding which `else` references which `if`.
