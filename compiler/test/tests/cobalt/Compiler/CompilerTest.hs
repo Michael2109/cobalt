@@ -10,11 +10,8 @@ import Compiler.CompilerExecutor
 exampleCompilerTest :: Assertion
 exampleCompilerTest = do
 
-    -- Create string containing the code (If testing without a test .cobalt file)
-    -- let code = "class ModuleName"
-
     let generatedDir = "cobalt_generated_classes/"
-    let generatedInnerDir = generatedDir ++ "game/"
+    let generatedInnerDir = generatedDir ++ "integration/"
 
     generatedDirExists <- doesDirectoryExist generatedDir
     generatedInnerDirExists <- doesDirectoryExist generatedInnerDir
@@ -23,9 +20,9 @@ exampleCompilerTest = do
     when (not $ generatedInnerDirExists) $ createDirectory generatedInnerDir
 
     -- Run the compiler with args
-    withArgs ["-d", generatedDir, "-p", "test/resources/cobalt_src/", "game/Alien.cobalt"] execute
+    withArgs ["-d", generatedInnerDir, "-p", "test/resources/integration/", "Example.cobalt"] execute
 
     -- Check the file has been compiled correctly
-    fileExists <- doesFileExist "cobalt_generated_classes/game/Alien.class"
+    fileExists <- doesFileExist $ generatedInnerDir ++ "Example.class"
 
-    assertBool "Check file has been generated" fileExists
+    assertBool "Class file isn't generated" fileExists
