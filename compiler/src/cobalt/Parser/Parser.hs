@@ -90,6 +90,7 @@ expressionParser
     <|> IntConst <$> integerParser
     <|> (BoolConst True  <$ rword "True")
     <|> (BoolConst False <$ rword "False")
+    <|> specialRefAsExprParser
     <|> identifierParser
     <|> stringLiteralParser
 
@@ -411,8 +412,10 @@ ternaryParser  = do
     elseExpression <- expressionParser'
     return $ Ternary condition ifExpression elseExpression
 
-thisParser :: Parser SpecialRef
-thisParser = This <$ rword "this"
+specialRefAsExprParser :: Parser Expr
+specialRefAsExprParser
+    =   SpecialRefAsExpr This <$ rword "this"
+    <|> SpecialRefAsExpr Super <$ rword "super"
 
 tryBlockParser :: Parser Stmt
 tryBlockParser  = do

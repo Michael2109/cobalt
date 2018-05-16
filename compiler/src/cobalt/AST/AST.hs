@@ -125,6 +125,7 @@ data Expr
     | Neg Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr
+    | SpecialRefAsExpr SpecialRef
     deriving (Show, Eq)
 
 data Stmt
