@@ -1,5 +1,0 @@
-object Main
-
-main : [String] -> void
-main args =
-  val frame: Frame = new Frame()

@@ -470,4 +470,5 @@ parser = do
     nameSpace <- nameSpaceParser
     imports <- many importParser
     models <- many modelParser
+    eof
     return $ Module (ModuleHeader nameSpace imports) models
