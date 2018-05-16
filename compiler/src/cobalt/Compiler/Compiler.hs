@@ -58,6 +58,7 @@ compile :: [CommandLineArgument] -> FilePath -> [FilePath] -> String -> IO ()
 compile commandLineArguments classPath filePaths outputDir = do
 
     classPathFilePaths <- traverseDir classPath ""
+
     let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
     classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
