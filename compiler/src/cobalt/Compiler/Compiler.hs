@@ -38,7 +38,6 @@ data GeneratedCode = GeneratedCode
     , code :: B.ByteString        -- The generated code
     } deriving (Show)
 
-
 extractASTFilePath :: ASTData -> FilePath
 extractASTFilePath (ASTData filePath _ _) = filePath
 
@@ -61,15 +60,12 @@ compile commandLineArguments classPath filePaths outputDir = do
 
     let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
-    print $ show filteredClassPathFilePaths
-
     classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
 
     let classPathAstDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
     let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
 
     let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
-
 
     let symbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
@@ -79,12 +75,9 @@ compile commandLineArguments classPath filePaths outputDir = do
     -- Print out the AST when in debug
     when (elem (DebugMode) commandLineArguments) $ pPrint astDatasToCompile
 
-    let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
+    let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (takeFileName $ dropExtensions (extractASTFilePath astData)) (extractASTExpr astData) symbolTable)) astDatasToCompile
 
-    sequence $ map (\compiledCode -> do
-            print (dropExtension (outputDir ++ (location compiledCode)) ++ ".class")
-            B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)
-        ) compiledCodes
+    sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
 
     return ()
 
@@ -98,5 +91,5 @@ generateAST inputFile code = do
 
     ASTData inputFile symbolTable ast
 
-compileAST :: Module -> SymbolTable -> B.ByteString
-compileAST ast symbolTable = encodeClass (generate [] (pack "Test") (genCode ast))
+compileAST :: String -> Module -> SymbolTable -> B.ByteString
+compileAST moduleName ast symbolTable = encodeClass (generate [] (pack moduleName) (genCode ast))

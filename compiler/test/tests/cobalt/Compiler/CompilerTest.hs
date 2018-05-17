@@ -1,11 +1,7 @@
 module Compiler.CompilerTest where
 
 import Test.HUnit (Assertion, assertBool)
-import System.Directory (doesFileExist, doesDirectoryExist, createDirectory)
-import System.Environment (withArgs)
-import Control.Monad
-
-import Compiler.CompilerExecutor
+import System.Directory (doesFileExist)
 
 exampleCompilerTest :: Assertion
 exampleCompilerTest = do
