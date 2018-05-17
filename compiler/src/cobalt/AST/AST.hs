@@ -142,11 +142,11 @@ data Stmt
     | MethodDef Method
     | ExprAsStmt Expr
     | BlockStmt [Stmt]
-    | Match [Case]
+    | Match Expr [Case]
     deriving (Show, Eq)
 
 data Case
-    = Case Name Expr
+    = Case Expr Assignment
     deriving (Show, Eq)
 
 data ExceptionHandler

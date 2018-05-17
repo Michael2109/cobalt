@@ -86,23 +86,23 @@ caseParser = do
     return kase
   where
     caseInline = do
-        id <- caseStart
+        start <- caseStart
         expression <- expressionParser'
-        return $ Case id $ ExprAssignment expression
+        return $ Case start $ ExprAssignment expression
     caseDoBlock = L.indentBlock scn p
       where
         p = do
-            id <- try $ do
+            start <- try $ do
                 start <- caseStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Case id) . StmtAssignment . BlockStmt) statementParser)
+            return (L.IndentSome Nothing (return . (Case start) . StmtAssignment . BlockStmt) statementParser)
     caseStart = do
-        id <- try $ do
-            identifier
+        try $ do
+            expression <- nestedExpressionParser
             symbol "->"
-            return id
-        return id
+            return expression
+
 
 expressionParser :: Parser Expr
 expressionParser
@@ -233,6 +233,15 @@ lambdaParser = do
             symbol "->"
             return fields
         return fields
+
+matchParser :: Parser Stmt
+matchParser = L.indentBlock scn p
+  where
+    p = do
+        rword "match"
+        expression <- expressionParser'
+        rword "with"
+        return (L.IndentSome Nothing (return . (Match expression)) caseParser)
 
 methodParser :: Parser Method
 methodParser = do
@@ -398,6 +407,7 @@ statementParser = modelDefParser
     <|> methodDefParser
     <|> returnStatementParser
     <|> ifStatementParser
+    <|> matchParser
     <|> lambdaParser
     <|> assignParser
     <|> reassignParser
