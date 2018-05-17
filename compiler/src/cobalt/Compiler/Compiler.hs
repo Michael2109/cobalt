@@ -61,12 +61,16 @@ compile commandLineArguments classPath filePaths outputDir = do
 
     let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
+    print $ show filteredClassPathFilePaths
+
     classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
 
     let classPathAstDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
     let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
 
     let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
+
+
     let symbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
     -- Filter out only the ASTs that have been selected
@@ -77,14 +81,17 @@ compile commandLineArguments classPath filePaths outputDir = do
 
     let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
 
-    sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
+    sequence $ map (\compiledCode -> do
+            print (dropExtension (outputDir ++ (location compiledCode)) ++ ".class")
+            B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)
+        ) compiledCodes
 
     return ()
 
 generateAST :: FilePath -> String -> ASTData
 generateAST inputFile code = do
     let parseResult = parseTree (Split.splitOn "/" $ (takeDirectory inputFile)) code
-    let symbolTable = SymbolTable [generateModelSymbolTable parseResult]
+    let symbolTable = SymbolTable []
     let ast = case parseResult of
                   Left  e -> error $ show e
                   Right x -> x

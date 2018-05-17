@@ -1,6 +1,6 @@
-package game
+package integration.inner
 
-class Example(x: int, y: int) extends Sprite
+class ExampleInner(x: int, y: int) extends Sprite
 
     let x = 10
 

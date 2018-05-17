@@ -13,12 +13,6 @@ exampleCompilerTest = do
     let generatedDir = "cobalt_generated_classes/"
     let generatedInnerDir = generatedDir ++ "integration/"
 
-    generatedDirExists <- doesDirectoryExist generatedDir
-    generatedInnerDirExists <- doesDirectoryExist generatedInnerDir
-
-    when (not $ generatedDirExists) $ createDirectory generatedDir
-    when (not $ generatedInnerDirExists) $ createDirectory generatedInnerDir
-
     -- Run the compiler with args
     --withArgs ["-d", generatedInnerDir, "-p", "test/resources/integration/", "Example.cobalt"] execute
 

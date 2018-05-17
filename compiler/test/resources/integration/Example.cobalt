@@ -1,4 +1,4 @@
-package game
+package integration
 
 class Example(x: int, y: int) extends Sprite
 
