@@ -2,45 +2,26 @@ module Parser.ReassignParserTest where
 
 import Test.HUnit
 
-import Text.Megaparsec
-
-
+import TestUtil.ParserTestUtil
+import AST.AST
 import Parser.Parser
-{-
 
-testReassignParserObject :: Test
-testReassignParserObject = do
-    let code = "x <- new ClassName(10)"
-    TestCase $ assertEqual code
-        (Reassign (Identifier "x") (NewClassInstance (Identifier "ClassName") [IntConst 10]))
-        (case (parse reassignParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+testReassignParser :: Test
+testReassignParser = do
+    let code1 = "x <- new ClassName(10)"
+    let test1 = testParseSuccess code1 (Reassign (Name "x") (ExprAssignment (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr [IntConst 10]) Nothing))) statementParser
 
-testReassignParserArithmetic :: Test
-testReassignParserArithmetic = do
-    let code = "varName <- 100 - y"
-    TestCase $ assertEqual code
-        (Reassign (Identifier "varName") (ABinary Subtract (IntConst 100) (Identifier "y")))
-        (case (parse reassignParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeArithmetic = "varName <- 100 - y"
+    let testArithmetic = testParseSuccess codeArithmetic (Reassign (Name "varName") (ExprAssignment (ABinary Subtract (IntConst 100) (Identifier $ Name "y")))) statementParser
 
-testReassignParserArithmeticTwoVars :: Test
-testReassignParserArithmeticTwoVars = do
-    let code = "x <- x + direction"
-    TestCase $ assertEqual code
-        (Reassign (Identifier "x") (ABinary Add (Identifier "x") (Identifier "direction")))
-        (case (parse reassignParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
+    let codeArithmeticTwoVars = "x <- x + direction"
+    let testArithmeticTwoVars = testParseSuccess codeArithmeticTwoVars (Reassign (Name "x") (ExprAssignment (ABinary Add (Identifier (Name "x")) (Identifier (Name "direction"))))) statementParser
 
-testReassignParserClassVar :: Test
-testReassignParserClassVar = do
-    let code = "Var_Name <- ClassName.VarName"
-    TestCase $ assertEqual code
-        (Reassign (Identifier "Var_Name") (ClassVariable "ClassName" "VarName"))
-        (case (parse reassignParser "" code) of
-             Left  _ -> Error
-             Right x -> x)
--}
+    let codeClassVar = "Var_Name <- ClassName.VarName"
+    let testClassVar = testParseSuccess codeClassVar (Reassign (Name "Var_Name") (ExprAssignment (BlockExpr [Identifier (Name "ClassName"),Identifier (Name "VarName")]))) statementParser
+
+    TestList [ test1
+             , testArithmetic
+             , testArithmeticTwoVars
+             , testClassVar
+             ]

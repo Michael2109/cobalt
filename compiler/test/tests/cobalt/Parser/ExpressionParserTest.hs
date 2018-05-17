@@ -1,7 +1,6 @@
 module Parser.ExpressionParserTest where
 
 import Test.HUnit
-import Text.Megaparsec
 
 import TestUtil.ParserTestUtil
 import AST.AST
@@ -30,6 +29,12 @@ testExpressionParserNested = do
     let codeMethodCallsIdentifiersMultipleArguments = "methodCall1(a, b, c).varName1"
     let testMethodCallsIdentifiersMultipleArguments = testParseSuccess codeMethodCallsIdentifiersMultipleArguments (BlockExpr [MethodCall (Name "methodCall1") (BlockExpr [Identifier (Name "a"),Identifier (Name "b"),Identifier (Name "c")]),Identifier (Name "varName1")]) expressionParser'
 
+    let codeThis = "this.varName2"
+    let testThis = testParseSuccess codeThis (BlockExpr [SpecialRefAsExpr This,Identifier (Name "varName2")]) expressionParser'
+
+    let codeSuper = "super.varName2"
+    let testSuper = testParseSuccess codeThis (BlockExpr [SpecialRefAsExpr This,Identifier (Name "varName2")]) expressionParser'
+
     TestList [ testMethodCalls
              , testMethodCallsSingleArgument
              , testMethodCallsMultipleArguments
@@ -37,4 +42,6 @@ testExpressionParserNested = do
              , testMethodCallsIdentifiers
              , testMethodCallsIdentifiersSingleArgument
              , testMethodCallsIdentifiersMultipleArguments
+             , testThis
+             , testSuper
              ]

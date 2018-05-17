@@ -16,7 +16,7 @@ data Method = Method
     , methodAnns :: [Annotation]
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
-    , methodReturnType :: Type
+    , methodReturnType :: (Maybe Type)
     , methodBody :: Assignment
     }
     deriving (Show, Eq)
@@ -60,7 +60,8 @@ data Field = Field
     deriving (Show, Eq)
 
 data Type
-    = TypeRef Ref
+    = Init
+    | TypeRef Ref
     | TypeApp Ref [Type] -- type application, aka Map<A,B> -> `TyApp (RefLocal "Map") [TyRef (RefLocal "A"), TyRef (RefLocal "B")]`
     | TypeRel TypeRel Type Type -- this allows things like <T extends Something> which would be `TyRel Extends (TyRef (RefLocal "T")) (TyRef (RefLocal "Something"))`
     deriving (Show, Eq)
@@ -106,27 +107,37 @@ data Assignment
     deriving (Show, Eq)
 
 data Expr
-    = AExprContainer AExpr
-    | BlockExpr [Expr]
-    | BExprContainer BExpr
+    = BlockExpr [Expr]
     | Identifier Name
     | MethodCall Name Expr
-    | NewClassInstance Type Expr
-    | Ternary BExpr Expr Expr
+    | NewClassInstance Type Expr (Maybe Stmt)
+    | StringLiteral String
+    | Ternary Expr Expr Expr
     | Tuple Expr
+    | BoolConst Bool
+    | Not Expr
+    | BBinary BBinOp Expr Expr
+    | RBinary RBinOp Expr Expr
+    | IntConst Integer
+    | DoubleConst Scientific
+    | FloatConst Float
+    | LongConst Integer
+    | Neg Expr
+    | ABinary ABinOp Expr Expr
+    | Array ArrayOp Expr Expr
+    | SpecialRefAsExpr SpecialRef
     deriving (Show, Eq)
 
 data Stmt
     = For Expr Expr Expr Stmt
-    | While BExpr Stmt
-    | If BExpr Stmt (Maybe Stmt)
+    | While Expr Stmt
+    | If Expr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Assignment
-    | AssignMultiple [Name] (Maybe Type) Assignment
-    | Reassign Name Expr
+    | Assign Name (Maybe Type) Bool Assignment
+    | AssignMultiple [Name] (Maybe Type) Bool Assignment
+    | Reassign Name Assignment
     | Return Stmt
     | Lambda [Field] Assignment
-    | StringLiteral String
     | ModelDef Model
     | MethodDef Method
     | ExprAsStmt Expr
@@ -138,18 +149,10 @@ data Case
     = Case Name Expr
     deriving (Show, Eq)
 
--- This needs a better name
 data ExceptionHandler
     = TryStatement Stmt
     | CatchStatement [Field] Stmt
     | FinallyStatement Stmt
-    deriving (Show, Eq)
-
-data BExpr
-    = BoolConst Bool
-    | Not BExpr
-    | BBinary BBinOp BExpr BExpr
-    | RBinary RBinOp AExpr AExpr
     deriving (Show, Eq)
 
 data BBinOp
@@ -157,21 +160,16 @@ data BBinOp
     | Or
     deriving (Show, Eq)
 
+
+data ArrayOp
+    = ArrayAppend
+    deriving (Show, Eq)
+
 data RBinOp
     = GreaterEqual
     | Greater
     | LessEqual
     | Less
-    deriving (Show, Eq)
-
-data AExpr
-    = Var String
-    | IntConst Integer
-    | DoubleConst Scientific
-    | FloatConst Float
-    | LongConst Integer
-    | Neg AExpr
-    | ABinary ABinOp AExpr AExpr
     deriving (Show, Eq)
 
 data ABinOp

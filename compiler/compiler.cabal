@@ -169,11 +169,10 @@ test-suite compiler-test
       JVM.AssemblerTest
       Parser.BaseParserTest
       Parser.AExprParserTest
+      Parser.ArrayOpParserTest
       Parser.BExprParserTest
       Parser.AnnotationParserTest
       Parser.AssignParserTest
-      Parser.ConstructorParserTest
-      Parser.DoBlockParserTest
       Parser.ExpressionParserTest
       Parser.ForLoopParserTest
       Parser.IdentifierParserTest
@@ -185,24 +184,19 @@ test-suite compiler-test
       Parser.ModelTypeParserTest
       Parser.ModifierParserTest
       Parser.ModelParserTest
-      Parser.ModifierBlockParserTest
+      Parser.NameSpaceParserTest
       Parser.NewClassInstanceParserTest
-      Parser.PackageParserTest
       Parser.ParserTests
       Parser.ParameterizedTypeParserTest
-      Parser.ParameterParserTest
       Parser.ReassignParserTest
       Parser.StringLiteralMultilineParserTest
       Parser.StringLiteralParserTest
       Parser.TernaryParserTest
-      Parser.ThisMethodCallParserTest
-      Parser.ThisVarParserTest
       Parser.TupleParserTest
-      Parser.TypeParameterParserTest
-      Parser.ValueTypeParserTest
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
       TestUtil.CommandLineTestUtil
+      TestUtil.CompilerTestUtil
       TestUtil.ParserTestUtil
       TestUtil.TestUtil
       Util.CommandLineUtilTest

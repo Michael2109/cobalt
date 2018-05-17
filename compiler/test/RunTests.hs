@@ -4,11 +4,13 @@ import System.Exit
 import IntegrationTests
 import Parser.ParserTests
 import SymbolTable.SymbolTableTests
+import TestUtil.CompilerTestUtil
 import Util.UtilTests
 
 main :: IO Counts
 main = do
 
+    compileDirectory "test/resources/" "cobalt_generated_classes/"
     integrationTestResults <- runTestTT $ integrationTestList
     parserTestResults <- runTestTT $ parserTestList
     symbolTableTestResults <- runTestTT $ symbolTableTestList

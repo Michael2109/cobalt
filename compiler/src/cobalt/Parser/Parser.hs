@@ -1,9 +1,12 @@
 {-# LANGUAGE TupleSections #-}
+{-# LANGUAGE BangPatterns       #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE RecordWildCards    #-}
 
 {-|
-Module      : ExprParser
+Module      : Parser
 Description : Parses all expressions.
-The highest level parser that uses functions in the BaseParser and ABExprParser to generate the AST.
+The highest level parser that uses functions in the BaseParser to generate the AST.
 -}
 module Parser.Parser where
 
@@ -30,26 +33,13 @@ accessModifierParser :: Parser Modifier
 accessModifierParser
     =   Public    <$ rword "public"
     <|> Protected <$ rword "protected"
-    <|> Private   <$ rword "private"
     <|> PackageLocal <$ rword "local"
-
-aExpr :: Parser AExpr
-aExpr = makeExprParser aTerm aOperators
 
 annotationParser :: Parser Annotation
 annotationParser = do
     symbol "@"
     name <- identifier
     return $ Annotation $ Name name
-
-aOperators :: [[Operator Parser AExpr]]
-aOperators =
-    [ [Prefix (Neg <$ symbol "-") ]
-    , [ InfixL (ABinary Multiply <$ symbol "*")
-      , InfixL (ABinary Divide   <$ symbol "/") ]
-    , [ InfixL (ABinary Add      <$ symbol "+")
-      , InfixL (ABinary Subtract <$ symbol "-") ]
-    ]
 
 assignParser :: Parser Stmt
 assignParser = do
@@ -62,8 +52,8 @@ assignParser = do
             return start
         expression <- expressionParser'
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType (ExprAssignment expression)
-            else return $ AssignMultiple varNames varType (ExprAssignment expression)
+            then return $ Assign (varNames!!0) varType immutable (ExprAssignment expression)
+            else return $ AssignMultiple varNames varType immutable (ExprAssignment expression)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -72,8 +62,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType) . StmtAssignment . BlockStmt) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType) . StmtAssignment . BlockStmt) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType immutable) . StmtAssignment . BlockStmt) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType immutable) . StmtAssignment . BlockStmt) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
@@ -89,28 +79,6 @@ assignParser = do
             symbol "="
             return (immutable, varNames, varType)
         return start
-
-aTerm :: Parser AExpr
-aTerm
-    =   parens aExpr
-    <|> Var      <$> identifier
-    <|> IntConst <$> integerParser
-
-bExpr :: Parser BExpr
-bExpr = makeExprParser bTerm bOperators
-
-bOperators :: [[Operator Parser BExpr]]
-bOperators =
-    [ [Prefix (Not <$ rword "not") ]
-    , [InfixL (BBinary And <$ rword "and")
-      , InfixL (BBinary Or <$ rword "or") ]
-    ]
-
-bTerm :: Parser BExpr
-bTerm =  parens bExpr
-  <|> (BoolConst True  <$ rword "True")
-  <|> (BoolConst False <$ rword "False")
-  <|> rExpr
 
 caseParser :: Parser Case
 caseParser = do
@@ -139,17 +107,20 @@ caseParser = do
 expressionParser :: Parser Expr
 expressionParser
     =   newClassInstanceParser
+    <|> tupleParser
+    <|> parens expressionParser'
     <|> methodCallParser
-    <|> BExprContainer <$> bExpr
+    <|> ternaryParser
+    <|> IntConst <$> integerParser
+    <|> (BoolConst True  <$ rword "True")
+    <|> (BoolConst False <$ rword "False")
+    <|> specialRefAsExprParser
     <|> identifierParser
-    <|> AExprContainer <$> aExpr
+    <|> stringLiteralParser
 
 expressionParser' :: Parser Expr
-expressionParser' = do
-    expressions <- sepBy1 expressionParser (symbol ".")
-    if length expressions == 1
-    then return $ expressions!!0
-    else return $ BlockExpr expressions
+expressionParser'
+    =   makeExprParser nestedExpressionParser operators
 
 expressionAsStatementParser :: Parser Stmt
 expressionAsStatementParser = ExprAsStmt <$> expressionParser'
@@ -192,7 +163,7 @@ ifStatementParser  = do
     return $ If condition ifStatements elseSection
   where
     controlParser = do
-        condition <- bExpr
+        condition <- expressionParser'
         rword "then"
         return condition
 
@@ -263,8 +234,6 @@ lambdaParser = do
             return fields
         return fields
 
--- TODO match parser
-
 methodParser :: Parser Method
 methodParser = do
     method <- choice [methodDoBlock, methodInline]
@@ -283,17 +252,18 @@ methodParser = do
                 return start
             return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
     methodStart = do
-        (annotations, modifiers) <- try $ do
-          anns <- many annotationParser
-          mods <- modifiersParser
+        (annotations, modifiers, name, fields) <- try $ do
+          annotations <- many annotationParser
+          modifiers <- modifiersParser
           rword "let"
-          return (anns, mods)
-        name <- nameParser
-        fields <- parens $ sepBy fieldParser $ symbol ","
-        symbol ":"
-        returnType <- typeRefParser
+          name <- choice [Name <$> rword "this", nameParser]
+          fields <- parens $ sepBy fieldParser $ symbol ","
+          return (annotations, modifiers, name, fields)
+        returnType <- optional $ do
+            symbol ":"
+            typeRefParser
         symbol "="
-        return (annotations, modifiers, name, fields, returnType)
+        return (annotations, modifiers, name, fields, if name == Name "this" then Just Init else returnType)
 
 methodCallParser :: Parser Expr
 methodCallParser =
@@ -353,30 +323,62 @@ nameSpaceParser = try $ L.nonIndented scn p
         locations <- sepBy1 identifier (symbol ".")
         return $ (NameSpace locations)
 
+nestedExpressionParser :: Parser Expr
+nestedExpressionParser = do
+    expressions <- sepBy1 expressionParser (symbol ".")
+    if length expressions == 1
+    then return $ expressions!!0
+    else return $ BlockExpr expressions
+
 newClassInstanceParser :: Parser Expr
 newClassInstanceParser = do
-    try (rword "new")
-    className <- typeRefParser
-    arguments <- parens $ sepBy expressionParser' (symbol ",")
-    return $ (NewClassInstance className (BlockExpr arguments))
+    choice [newClassInstanceAnonymousClass, newClassInstance]
+  where
+    newClassInstance = do
+        (className, arguments) <- newClassInstanceStart
+        return $ (NewClassInstance className (BlockExpr arguments) Nothing)
+    newClassInstanceAnonymousClass = try $ L.indentBlock scn p
+      where
+        p = do
+            (className, arguments) <- newClassInstanceStart
+            return (L.IndentSome Nothing (return . (NewClassInstance className (BlockExpr arguments)) . Just . BlockStmt) statementParser)
+    newClassInstanceStart = do
+        try (rword "new")
+        className <- typeRefParser
+        arguments <- parens $ sepBy expressionParser' (symbol ",")
+        return (className, arguments)
+
+operators :: [[Operator Parser Expr]]
+operators =
+    [   [ Prefix (Neg <$ symbol "-")
+        , Prefix (Not <$ rword  "not")
+        ]
+    ,   [ InfixL (Array ArrayAppend <$ rword "++")
+        ]
+    ,   [ InfixL (ABinary Multiply <$ symbol "*")
+        , InfixL (ABinary Divide   <$ symbol "/")
+        ]
+    ,   [ InfixL (ABinary Add      <$ symbol "+")
+        , InfixL (ABinary Subtract <$ symbol "-")
+        ]
+    ,   [ InfixL (RBinary GreaterEqual <$ rword ">=")
+        , InfixL (RBinary LessEqual    <$ rword "<=")
+        , InfixL (RBinary Greater      <$ rword ">" )
+        , InfixL (RBinary Less         <$ rword "<" )
+        ]
+    ,   [ InfixL (BBinary And <$ rword "and")
+        , InfixL (BBinary Or  <$ rword "or")
+        ]
+    ]
 
 reassignParser :: Parser Stmt
 reassignParser = do
     name <- try $ do
         id <- identifier
         symbol "<-"
-        return (Name id)
+        return $ Name id
     value <- expressionParser'
-    return (Reassign name value)
-
-rExpr :: Parser BExpr
-rExpr = do
-  (a1, op) <- try $ do
-      a1 <- aExpr
-      op <- relation
-      return (a1, op)
-  a2 <- aExpr
-  return (RBinary op a1 a2)
+    return $ Reassign name $ ExprAssignment value
 
 relation :: Parser RBinOp
 relation
@@ -397,17 +399,24 @@ statementParser = modelDefParser
     <|> returnStatementParser
     <|> ifStatementParser
     <|> lambdaParser
+    <|> assignParser
+    <|> reassignParser
+    <|> forLoopGeneratorParser
     <|> expressionAsStatementParser
 
 statementBlockParser :: Parser Stmt
 statementBlockParser = BlockStmt <$> some statementParser
 
-stringLiteralParser :: Parser Stmt
+stringLiteralParser :: Parser Expr
 stringLiteralParser = do
-    value <- char '"' >> manyTill L.charLiteral (char '"')
+    value <- char '"' >> manyTill r (symbol "\"")
     return $ StringLiteral value
+  where
+    r = label "Unexpected end of line in single line string literal" $ do
+            notFollowedBy (char '\n')
+            L.charLiteral
 
-stringLiteralMultilineParser :: Parser Stmt
+stringLiteralMultilineParser :: Parser Expr
 stringLiteralMultilineParser = do
     symbol "```"
     contents <- many $ L.lineFold scn $ \sp' -> some L.charLiteral
@@ -420,15 +429,17 @@ superParser = Super <$ rword "super"
 ternaryParser :: Parser Expr
 ternaryParser  = do
     try $ rword "if"
-    condition  <- bExpr
+    condition  <- expressionParser'
     rword "then"
     ifExpression <- expressionParser'
     rword "else"
     elseExpression <- expressionParser'
     return $ Ternary condition ifExpression elseExpression
 
-thisParser :: Parser SpecialRef
-thisParser = This <$ rword "this"
+specialRefAsExprParser :: Parser Expr
+specialRefAsExprParser
+    =   SpecialRefAsExpr This <$ rword "this"
+    <|> SpecialRefAsExpr Super <$ rword "super"
 
 tryBlockParser :: Parser Stmt
 tryBlockParser  = do
@@ -451,7 +462,11 @@ tryBlockParser  = do
 tupleParser :: Parser Expr
 tupleParser =
     try $ do
-        values <- parens $ sepBy identifierParser (symbol ",")
+        lookAhead $ do
+            symbol "("
+            expressionParser'
+            symbol ","
+        values <- try $ parens $ sepBy1 expressionParser' (symbol ",")
         return $ Tuple (BlockExpr values)
 
 typeParameterParser :: Parser [Type]
@@ -471,7 +486,7 @@ whileParser  = try $ L.indentBlock scn p
   where
     p = do
         rword "while"
-        condition <- parens bTerm
+        condition <- parens expressionParser'
         return (L.IndentMany Nothing (return . (While condition) . BlockStmt) statementParser)
 
 parser :: Parser Module
@@ -479,4 +494,5 @@ parser = do
     nameSpace <- nameSpaceParser
     imports <- many importParser
     models <- many modelParser
+    eof
     return $ Module (ModuleHeader nameSpace imports) models
