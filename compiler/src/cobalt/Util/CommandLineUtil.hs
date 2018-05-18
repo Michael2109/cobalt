@@ -13,6 +13,7 @@ data CommandLineArgument = ClassPath FilePath
                          | DebugMode
                          | GenerateDebugSymbols
                          | VerboseMode
+                         | SourceDir FilePath
                          deriving (Show, Eq)
 
 commandLineOptions :: [OptDescr CommandLineArgument]
@@ -24,6 +25,7 @@ commandLineOptions =
     , Option ['v','V'] ["verbose","verbose-mode"] (NoArg VerboseMode)                   "Output messages about what the compiler is doing"
     , Option ['g']     ["generate-debug"]         (NoArg GenerateDebugSymbols)          "Generate debugging information to resulting bytecode"
     , Option []        ["debug-mode"]             (NoArg DebugMode)                     "Run compiler in debug mode"
+    , Option ['s']     ["source-directory"]       (ReqArg SourceDir "<directory>")      "Compile whole directory instead of individual files"
     ]
 
 -- In fact, the options work correctly even if they are interleaved with source files.
