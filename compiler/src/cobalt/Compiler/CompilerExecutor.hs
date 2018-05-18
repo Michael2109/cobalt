@@ -48,6 +48,4 @@ execute = do
                 then do
                     _ <- raiseErrorsException ["no source files specified\n"]
                     return ()
-                else do
-                    cleanDir (endsWith ".class") classOutputDir
-                    compile options classPath filesToCompile classOutputDir
+                else compile options classPath filesToCompile classOutputDir

@@ -1,23 +1,13 @@
 module Compiler.CompilerTest where
 
 import Test.HUnit (Assertion, assertBool)
-import System.Directory (doesFileExist, doesDirectoryExist, createDirectory)
-import System.Environment (withArgs)
-import Control.Monad
-
-import Compiler.CompilerExecutor
+import System.Directory (doesFileExist)
 
 exampleCompilerTest :: Assertion
 exampleCompilerTest = do
 
     let generatedDir = "cobalt_generated_classes/"
     let generatedInnerDir = generatedDir ++ "integration/"
-
-    generatedDirExists <- doesDirectoryExist generatedDir
-    generatedInnerDirExists <- doesDirectoryExist generatedInnerDir
-
-    when (not $ generatedDirExists) $ createDirectory generatedDir
-    when (not $ generatedInnerDirExists) $ createDirectory generatedInnerDir
 
     -- Run the compiler with args
     --withArgs ["-d", generatedInnerDir, "-p", "test/resources/integration/", "Example.cobalt"] execute

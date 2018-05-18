@@ -38,7 +38,6 @@ data GeneratedCode = GeneratedCode
     , code :: B.ByteString        -- The generated code
     } deriving (Show)
 
-
 extractASTFilePath :: ASTData -> FilePath
 extractASTFilePath (ASTData filePath _ _) = filePath
 
@@ -58,6 +57,7 @@ compile :: [CommandLineArgument] -> FilePath -> [FilePath] -> String -> IO ()
 compile commandLineArguments classPath filePaths outputDir = do
 
     classPathFilePaths <- traverseDir classPath ""
+
     let filteredClassPathFilePaths = map (\filePath -> filePath) $ filter (\filePath -> ((takeFileName filePath /= ".")) && ((takeFileName filePath /= "..")) && (endsWith ".cobalt" filePath)) classPathFilePaths
 
     classPathFileDatas <- mapM (\filePath -> readFile $ (classPath ++ filePath)) filteredClassPathFilePaths
@@ -66,6 +66,7 @@ compile commandLineArguments classPath filePaths outputDir = do
     let classPathSymbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) classPathAstDatas
 
     let astDatas = zipWith (\filePath fileData -> generateAST filePath fileData) filteredClassPathFilePaths classPathFileDatas
+
     let symbolTable = SymbolTable $ concat $ map (\ sTable -> modelSymbolTables sTable) $ map (extractASTSymbolTable) astDatas
 
     -- Filter out only the ASTs that have been selected
@@ -74,7 +75,7 @@ compile commandLineArguments classPath filePaths outputDir = do
     -- Print out the AST when in debug
     when (elem (DebugMode) commandLineArguments) $ pPrint astDatasToCompile
 
-    let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (extractASTExpr astData) symbolTable)) astDatasToCompile
+    let compiledCodes = map (\ astData -> GeneratedCode (extractASTFilePath astData) (compileAST (takeFileName $ dropExtensions (extractASTFilePath astData)) (extractASTExpr astData) symbolTable)) astDatasToCompile
 
     sequence $ map (\compiledCode -> B.writeFile (dropExtension (outputDir ++ (location compiledCode)) ++ ".class") (code compiledCode)) compiledCodes
 
@@ -83,12 +84,12 @@ compile commandLineArguments classPath filePaths outputDir = do
 generateAST :: FilePath -> String -> ASTData
 generateAST inputFile code = do
     let parseResult = parseTree (Split.splitOn "/" $ (takeDirectory inputFile)) code
-    let symbolTable = SymbolTable [generateModelSymbolTable parseResult]
+    let symbolTable = SymbolTable []
     let ast = case parseResult of
                   Left  e -> error $ show e
                   Right x -> x
 
     ASTData inputFile symbolTable ast
 
-compileAST :: Module -> SymbolTable -> B.ByteString
-compileAST ast symbolTable = encodeClass (generate [] (pack "Test") (genCode ast))
+compileAST :: String -> Module -> SymbolTable -> B.ByteString
+compileAST moduleName ast symbolTable = encodeClass (generate [] (pack moduleName) (genCode ast))
