@@ -1,0 +1,10 @@
+package integration
+
+class Example(x: int, y: int) extends Sprite
+
+    let inlineMethod(a: Int, b: Int): Int = 1
+
+    let blockMethod(direction: int): void = do
+        1
+        2
+        3

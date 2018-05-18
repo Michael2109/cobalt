@@ -38,9 +38,25 @@ instance CodeGen AST.Method where
         newMethod [ACC_PUBLIC] (pack $ extractName methodName) [] ReturnsVoid (return ())
         return ()
 
+instance CodeGen AST.Assignment where
+    genCode (AST.ExprAssignment expression) = genCode expression
+    genCode (AST.StmtAssignment statement) = genCode statement
+
+instance CodeGen AST.Expr where
+    genCode (AST.BlockExpr expressions) = forM_ expressions genCode
+    genCode (AST.IntConst value)
+        | value == 0 = iconst_0
+        | value == 1 = iconst_1
+        | value == 2 = iconst_2
+        | value == 3 = iconst_3
+        | value == 4 = iconst_4
+        | value == 5 = iconst_5
+        | value >= -128 && value <= 127 = bipush $ fromIntegral value
+
 instance CodeGen AST.Stmt where
     genCode (AST.BlockStmt statements) = forM_ statements genCode
     genCode (AST.MethodDef method) = genCode method
+    genCode (AST.ExprAsStmt expression) = genCode expression
     genCode (_) = return ()
 
 extractName (AST.Name value) = value
