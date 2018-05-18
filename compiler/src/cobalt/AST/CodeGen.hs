@@ -13,7 +13,7 @@ import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 import Data.Traversable
 
-import AST.AST
+import qualified AST.AST as AST
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -27,8 +27,20 @@ import Util.GeneralUtil
 class CodeGen a where
     genCode :: Throws UnexpectedEndMethod e => a -> Generate e ()
 
-instance CodeGen Module where
-    genCode (Module header modules) = forM_ modules genCode
+instance CodeGen AST.Module where
+    genCode (AST.Module header modules) = forM_ modules genCode
 
-instance CodeGen Model where
-    genCode (Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = return ()
+instance CodeGen AST.Model where
+    genCode (AST.Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = genCode modelBody
+
+instance CodeGen AST.Method where
+    genCode (AST.Method methodName methodAnns methodParams methodModifiers methodReturnType methodBody) = do
+        newMethod [ACC_PUBLIC] (pack $ extractName methodName) [] ReturnsVoid (return ())
+        return ()
+
+instance CodeGen AST.Stmt where
+    genCode (AST.BlockStmt statements) = forM_ statements genCode
+    genCode (AST.MethodDef method) = genCode method
+    genCode (_) = return ()
+
+extractName (AST.Name value) = value
