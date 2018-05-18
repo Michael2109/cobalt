@@ -23,6 +23,13 @@ utilsTestList = TestList
     , testCommandLineOptionsMultipleShortSeparate
     , testCommandLineOptionsMultipleShortJoined
     , testCommandLineOptionsMultipleShortHybrid
+    , testCommandLineOptionsSourceDirectoryShortWithSpace
+    , testCommandLineOptionsSourceDirectoryShortNoSpace
+    , testCommandLineOptionsSourceDirectoryLongWithSpace
+    , testCommandLineOptionsSourceDirectoryLongEqualSign
+    , testCommandLineOptionsSourceDirectoryLongNoSpaceFail
+    , testCommandLineOptionsSourceDirectoryShortNoArgumentFail
+    , testCommandLineOptionsSourceDirectoryLongNoArgumentFail
     , testCommandLineOptionsDestinationDirectoryShortWithSpace
     , testCommandLineOptionsDestinationDirectoryShortNoSpace
     , testCommandLineOptionsDestinationDirectoryLongWithSpace
