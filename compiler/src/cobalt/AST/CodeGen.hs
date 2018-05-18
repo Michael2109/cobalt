@@ -35,7 +35,7 @@ instance CodeGen AST.Model where
 
 instance CodeGen AST.Method where
     genCode (AST.Method methodName methodAnns methodParams methodModifiers methodReturnType methodBody) = do
-        newMethod [ACC_PUBLIC] (pack $ extractName methodName) [] ReturnsVoid (return ())
+        newMethod [ACC_PUBLIC] (pack $ extractName methodName) [] ReturnsVoid (genCode methodBody)
         return ()
 
 instance CodeGen AST.Assignment where
@@ -52,6 +52,7 @@ instance CodeGen AST.Expr where
         | value == 4 = iconst_4
         | value == 5 = iconst_5
         | value >= -128 && value <= 127 = bipush $ fromIntegral value
+        | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
 
 instance CodeGen AST.Stmt where
     genCode (AST.BlockStmt statements) = forM_ statements genCode

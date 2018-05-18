@@ -8,3 +8,5 @@ class Example(x: int, y: int) extends Sprite
         1
         2
         3
+        32767
+
