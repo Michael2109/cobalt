@@ -1,5 +1,6 @@
 import Test.HUnit
 import System.Exit
+import System.Directory
 
 import IntegrationTests
 import Parser.ParserTests
@@ -10,7 +11,10 @@ import Util.UtilTests
 main :: IO Counts
 main = do
 
-    compileDirectory "test/resources/" "cobalt_generated_classes/" ""
+    let inputDir = "test/resources/"
+    let outputDir = "cobalt_generated_classes/"
+    removeDirectoryRecursive outputDir
+    compileDirectory inputDir outputDir ""
     integrationTestResults <- runTestTT $ integrationTestList
     parserTestResults <- runTestTT $ parserTestList
     symbolTableTestResults <- runTestTT $ symbolTableTestList
