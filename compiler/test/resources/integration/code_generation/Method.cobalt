@@ -2,24 +2,12 @@ package integration
 
 class Example(x: int, y: int) extends Sprite
 
-    let x = 10
+    let method (): Int = 1
 
-    let exampleMethod (a: Int, b: Int): Int = 1
+    protected let protectedMethod (): Int = 1
 
-    let initAlien (x: int, y: int): void = do
-        x <- x
-        y <- y
+    public let publicMethod (): Int = 1
 
-    let act (direction: int): void = do
-        x <- x + direction
+    final let publicAbstract () : Int = 1
 
-    class ExampleClass
-
-        let x = 10
-
-        let mutable mutVar = 100
-
-        let add(a: Int, b: Int) = do
-            mutVar <- 1000
-            a + b
-
+    let methodParams (a: Int, b: Int): Int = 1
