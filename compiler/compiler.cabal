@@ -13,8 +13,6 @@ bug-reports:    https://github.com/githubuser/haskell-project/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2018 Author name here
-license:        GPL-3
-license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
 

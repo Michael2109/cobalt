@@ -6,7 +6,7 @@ data Module = Module ModuleHeader [Model]
     deriving (Show)
 
 data ModuleHeader = ModuleHeader
-    { modName :: NameSpace
+    { modNameSpace :: NameSpace
     , modImports :: [Import]
     }
     deriving (Show, Eq)
