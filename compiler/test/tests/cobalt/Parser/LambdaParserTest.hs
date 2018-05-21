@@ -28,21 +28,21 @@ testLambdaParser = do
     let testDoBlock = testParseSuccess codeDoBlock (Lambda [Field {fieldName = Name "x", fieldType = Nothing, fieldInit = Nothing}] (DoBlock $ BlockStmt [ExprAsStmt (Identifier (Name "x")),ExprAsStmt (Identifier (Name "y"))])) statementParser
 
     let codeDoBlockType = unlines [ "fun (x:Int) -> do"
-                              , "    x"
-                              , "    y"
-                              ]
+                                  , "    x"
+                                  , "    y"
+                                  ]
     let testDoBlockType = testParseSuccess codeDoBlockType (Lambda [Field {fieldName = Name "x", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}] (DoBlock $ BlockStmt [ExprAsStmt (Identifier (Name "x")),ExprAsStmt (Identifier (Name "y"))])) statementParser
 
     let codeDoBlockMultiple = unlines [ "fun (x,y,z) -> do"
-                              , "    x"
-                              , "    y"
-                              ]
+                                      , "    x"
+                                      , "    y"
+                                      ]
     let testDoBlockMultiple = testParseSuccess codeDoBlockMultiple (Lambda [Field {fieldName = Name "x", fieldType = Nothing, fieldInit = Nothing},Field {fieldName = Name "y", fieldType = Nothing, fieldInit = Nothing},Field {fieldName = Name "z", fieldType = Nothing, fieldInit = Nothing}] (DoBlock $ BlockStmt [ExprAsStmt (Identifier (Name "x")),ExprAsStmt (Identifier (Name "y"))])) statementParser
 
     let codeDoBlockTypeMultiple = unlines [ "fun (x:Int, y: Int, z: Int) -> do"
-                              , "    x"
-                              , "    y"
-                              ]
+                                          , "    x"
+                                          , "    y"
+                                          ]
     let testDoBlockTypeMultiple = testParseSuccess codeDoBlockTypeMultiple (Lambda [Field {fieldName = Name "x", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "y", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "z", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}] (DoBlock $ BlockStmt [ExprAsStmt (Identifier (Name "x")),ExprAsStmt (Identifier (Name "y"))])) statementParser
 
     TestList [ testInline

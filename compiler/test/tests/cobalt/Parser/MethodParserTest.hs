@@ -21,10 +21,10 @@ testMethodParser = do
     let testDoBlock = testParseSuccess codeDoBlock (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = DoBlock (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])})) statementParser
 
     let codeNestedMethod = unlines [ "let outerMethod (): Int = do"
-                       , "    let innerMethod (): Int = do"
-                       , "        i"
-                       , "    j"
-                       ]
+                                   , "    let innerMethod (): Int = do"
+                                   , "        i"
+                                   , "    j"
+                                   ]
     let testNestedMethod = testParseSuccess codeNestedMethod (MethodDef (Method {methodName = Name "outerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = DoBlock $ BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = DoBlock $ BlockStmt [ExprAsStmt (Identifier (Name "i"))]}),ExprAsStmt (Identifier (Name "j"))]})) statementParser
 
     let codeModifierFinal = "final let exampleMethod (a: Int, b: Int): Int = _"
@@ -73,10 +73,10 @@ testConstructorParser = do
     let testDoBlock = testParseSuccess codeDoBlock (MethodDef (Method {methodName = Name "this", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just Init, methodBody = DoBlock (BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])})) methodDefParser
 
     let codeNestedMethod = unlines [ "let this () = do"
-                       , "    let innerMethod (): Int = do"
-                       , "        i"
-                       , "    j"
-                       ]
+                                   , "    let innerMethod (): Int = do"
+                                   , "        i"
+                                   , "    j"
+                                   ]
     let testNestedMethod = testParseSuccess codeNestedMethod (MethodDef (Method {methodName = Name "this", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just Init, methodBody = DoBlock (BlockStmt [MethodDef (Method {methodName = Name "innerMethod", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = DoBlock (BlockStmt [ExprAsStmt (Identifier (Name "i"))])}),ExprAsStmt (Identifier (Name "j"))])})) methodDefParser
 
     let codeModifierPublic = "public let this (a: Int, b: Int) = _"

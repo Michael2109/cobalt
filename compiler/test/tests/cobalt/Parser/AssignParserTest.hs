@@ -45,9 +45,9 @@ testAssignParserMultiple = do
     let testInline = testParseSuccess codeInline (AssignMultiple [Name "x",Name "y"] (Just (TypeRef (RefLocal (Name "Int")))) True (Inline (Identifier (Name "z")))) statementParser
 
     let codeDoBlockNoType = unlines [ "let x,y = do"
-                              , "    i"
-                              , "    j"
-                              ]
+                                    , "    i"
+                                    , "    j"
+                                    ]
     let testDoBlockNoType = testParseSuccess codeDoBlockNoType (AssignMultiple [Name "x",Name "y"] Nothing True (DoBlock $ BlockStmt [ExprAsStmt (Identifier (Name "i")),ExprAsStmt (Identifier (Name "j"))])) statementParser
 
     let codeDoBlock = unlines [ "let x,y: Int = do"
