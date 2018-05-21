@@ -17,7 +17,7 @@ data Method = Method
     , methodParams :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: (Maybe Type)
-    , methodBody :: Assignment
+    , methodBody :: Block
     }
     deriving (Show, Eq)
 
@@ -101,9 +101,9 @@ data QualName = QualName NameSpace Name
 
 data IntConstant = IntConstant Integer
 
-data Assignment
-    = ExprAssignment Expr
-    | StmtAssignment Stmt
+data Block
+    = Inline Expr
+    | DoBlock Stmt
     deriving (Show, Eq)
 
 data Expr
@@ -133,11 +133,11 @@ data Stmt
     | While Expr Stmt
     | If Expr Stmt (Maybe Stmt)
     | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
-    | Assign Name (Maybe Type) Bool Assignment
-    | AssignMultiple [Name] (Maybe Type) Bool Assignment
-    | Reassign Name Assignment
+    | Assign Name (Maybe Type) Bool Block
+    | AssignMultiple [Name] (Maybe Type) Bool Block
+    | Reassign Name Block
     | Return Stmt
-    | Lambda [Field] Assignment
+    | Lambda [Field] Block
     | ModelDef Model
     | MethodDef Method
     | ExprAsStmt Expr
@@ -146,7 +146,7 @@ data Stmt
     deriving (Show, Eq)
 
 data Case
-    = Case Expr Assignment
+    = Case Expr Block
     deriving (Show, Eq)
 
 data ExceptionHandler

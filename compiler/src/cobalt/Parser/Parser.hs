@@ -52,8 +52,8 @@ assignParser = do
             return start
         expression <- expressionParser'
         if length varNames <= 1
-            then return $ Assign (varNames!!0) varType immutable (ExprAssignment expression)
-            else return $ AssignMultiple varNames varType immutable (ExprAssignment expression)
+            then return $ Assign (varNames!!0) varType immutable (Inline expression)
+            else return $ AssignMultiple varNames varType immutable (Inline expression)
     assignDoBlock = L.indentBlock scn p
       where
         p = do
@@ -62,8 +62,8 @@ assignParser = do
                 rword "do"
                 return start
             if length varNames <= 1
-                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType immutable) . StmtAssignment . BlockStmt) statementParser
-                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType immutable) . StmtAssignment . BlockStmt) statementParser
+                then return $ L.IndentSome Nothing (return . (Assign (varNames!!0) varType immutable) . DoBlock . BlockStmt) statementParser
+                else return $ L.IndentSome Nothing (return . (AssignMultiple varNames varType immutable) . DoBlock . BlockStmt) statementParser
     assignStart = do
         start <- try $ do
             rword "let"
@@ -88,7 +88,7 @@ caseParser = do
     caseInline = do
         start <- caseStart
         expression <- expressionParser'
-        return $ Case start $ ExprAssignment expression
+        return $ Case start $ Inline expression
     caseDoBlock = L.indentBlock scn p
       where
         p = do
@@ -96,7 +96,7 @@ caseParser = do
                 start <- caseStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Case start) . StmtAssignment . BlockStmt) statementParser)
+            return (L.IndentSome Nothing (return . (Case start) . DoBlock . BlockStmt) statementParser)
     caseStart = do
         try $ do
             expression <- nestedExpressionParser
@@ -217,7 +217,7 @@ lambdaParser = do
     lambdaInline = do
         fields <- lambdaStart
         expression <- expressionParser'
-        return $ Lambda fields $ ExprAssignment expression
+        return $ Lambda fields $ Inline expression
     lambdaDoBlock = L.indentBlock scn p
       where
         p = do
@@ -225,7 +225,7 @@ lambdaParser = do
                 start <- lambdaStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Lambda fields) . StmtAssignment . BlockStmt) statementParser)
+            return (L.IndentSome Nothing (return . (Lambda fields) . DoBlock . BlockStmt) statementParser)
     lambdaStart = do
         fields <- try $ do
             rword "fun"
@@ -251,7 +251,7 @@ methodParser = do
     methodInline = do
         (annotations, modifiers, name, fields, returnType) <- methodStart
         expression <- expressionParser'
-        return $ Method name annotations fields modifiers returnType $ ExprAssignment expression
+        return $ Method name annotations fields modifiers returnType $ Inline expression
     methodDoBlock = L.indentBlock scn p
       where
         p = do
@@ -259,7 +259,7 @@ methodParser = do
                 start <- methodStart
                 rword "do"
                 return start
-            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . StmtAssignment . BlockStmt) statementParser)
+            return (L.IndentSome Nothing (return . (Method name annotations fields modifiers returnType) . DoBlock . BlockStmt) statementParser)
     methodStart = do
         (annotations, modifiers, name, fields) <- try $ do
           annotations <- many annotationParser
@@ -387,7 +387,7 @@ reassignParser = do
         symbol "<-"
         return $ Name id
     value <- expressionParser'
-    return $ Reassign name $ ExprAssignment value
+    return $ Reassign name $ Inline value
 
 relation :: Parser RBinOp
 relation
