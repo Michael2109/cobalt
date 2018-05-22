@@ -66,6 +66,9 @@ instance CodeGen AST.Expr where
         | otherwise = return ()
 
 instance CodeGen AST.Stmt where
+    genCode (AST.Assign name valType immutable assignment) = do
+        genCode assignment
+        istore_ (fromIntegral (ord '\n'))
     genCode (AST.BlockStmt statements) = forM_ statements genCode
     genCode (AST.MethodDef method) = genCode method
     genCode (AST.ExprAsStmt expression) = genCode expression
