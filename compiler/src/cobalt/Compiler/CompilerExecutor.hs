@@ -13,6 +13,25 @@ import Util.IOUtil
 import Util.GeneralUtil
 import SymbolTable.SymbolTable
 
+import System.Directory
+import System.FilePath.Posix
+import System.Environment (withArgs)
+
+
+allFilesIn dir = getDirectoryContents dir
+
+flattenDirectory :: FilePath -> IO ([FilePath])
+flattenDirectory dir= do
+    contents <- getDirectoryContents dir
+    flattened <- mapM recurse contents
+    return $ concat flattened
+  where recurse inputLoc = if (takeExtension inputLoc == ".cobalt")
+                           then return $ [dir ++ inputLoc]
+                           else
+                               if (takeExtension inputLoc == "" {-it needs to check if it is a directory, not just a extensionless file TODO-})
+                               then flattenDirectory dir
+                               else return $ []
+
 execute :: IO ()
 execute = do
     args <- getArgs
@@ -50,4 +69,7 @@ execute = do
                 then do
                     _ <- raiseErrorsException ["No source files specified\n"]
                     return ()
-                else compile options classPath filesToCompile classOutputDir
+                else do --construct the directory hierarchy here
+                    flattenedFiles <- mapM flattenDirectory dirsToCompile
+                    let files = filesToCompile ++ (concat flattenedFiles)
+                    compile options classPath files classOutputDir
