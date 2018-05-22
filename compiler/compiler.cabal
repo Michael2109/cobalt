@@ -177,6 +177,7 @@ test-suite compiler-test
       Parser.IfStatementParserTest
       Parser.ImportParserTest
       Parser.LambdaParserTest
+      Parser.MatchParserTest
       Parser.MethodCallParserTest
       Parser.MethodParserTest
       Parser.ModelTypeParserTest

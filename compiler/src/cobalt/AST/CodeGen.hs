@@ -48,9 +48,9 @@ instance CodeGen AST.Method where
         newMethod modifiers (pack $ extractName methodName) [] ReturnsVoid (genCode methodBody)
         return ()
 
-instance CodeGen AST.Assignment where
-    genCode (AST.ExprAssignment expression) = genCode expression
-    genCode (AST.StmtAssignment statement) = genCode statement
+instance CodeGen AST.Block where
+    genCode (AST.Inline expression) = genCode expression
+    genCode (AST.DoBlock statement) = genCode statement
 
 instance CodeGen AST.Expr where
     genCode (AST.BlockExpr expressions) = forM_ expressions genCode

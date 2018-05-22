@@ -69,6 +69,8 @@ rws =
     , "or"
     , "super"
     , "for"
+    , "match"
+    , "with"
     ]
 
 word :: Parser String
