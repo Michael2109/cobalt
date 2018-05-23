@@ -66,6 +66,7 @@ library
   exposed-modules:
       AST.AST
       AST.CodeGen
+      AST.IR
       Compiler.Compiler
       Compiler.CompilerExecutor
       JVM.Common

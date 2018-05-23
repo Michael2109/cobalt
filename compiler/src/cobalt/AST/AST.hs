@@ -2,14 +2,25 @@ module AST.AST where
 
 import Data.Scientific
 
+import AST.IR
+
+class AST2IR a where
+    astToIR :: a -> b
+
 data Module = Module ModuleHeader [Model]
     deriving (Show)
+
+instance AST2IR Module where
+    astToIR (Module header modules) = ModuleIR (astToIR header) $ map astToIR modules
 
 data ModuleHeader = ModuleHeader
     { modNameSpace :: NameSpace
     , modImports :: [Import]
     }
     deriving (Show, Eq)
+
+instance AST2IR ModuleHeader where
+    astToIR (ModuleHeader modNameSpace modImports) = ModuleHeaderIR (astToIR modNameSpace) $ map astToIR modImports
 
 data Method = Method
     { methodName :: Name
@@ -87,11 +98,17 @@ data TypeRel
 data NameSpace = NameSpace [String]
     deriving (Show, Eq)
 
+instance AST2IR NameSpace where
+    astToIR (NameSpace nameSpace) = NameSpaceIR nameSpace
+
 data Name = Name String
     deriving (Show, Eq)
 
 data Import = Import [String]
     deriving (Show, Eq)
+
+instance AST2IR Import where
+    astToIR (Import location) = ImportIR location
 
 data Annotation = Annotation Name
     deriving (Show, Eq)
