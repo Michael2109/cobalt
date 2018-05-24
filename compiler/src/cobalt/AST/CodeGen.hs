@@ -13,7 +13,7 @@ import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 import Data.Traversable
 
-import qualified AST.AST as AST
+import qualified AST.IR as IR
 import JVM.ClassFile
 import JVM.Converter
 import JVM.Assembler
@@ -27,20 +27,20 @@ import Util.GeneralUtil
 class CodeGen a where
     genCode :: Throws UnexpectedEndMethod e => a -> Generate e ()
 
-instance CodeGen AST.Module where
-    genCode (AST.Module header modules) = forM_ modules genCode
+instance CodeGen IR.ModuleIR where
+    genCode (IR.ModuleIR header modules) = forM_ modules genCode
 
-instance CodeGen AST.Model where
-    genCode (AST.Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = genCode modelBody
+instance CodeGen IR.ModelIR where
+    genCode (IR.ModelIR modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = genCode modelBody
 
-instance CodeGen AST.Method where
-    genCode (AST.Method methodName methodAnns methodParams methodModifiers methodReturnType methodBody) = do
+instance CodeGen IR.MethodIR where
+    genCode (IR.MethodIR methodName methodAnns methodParams methodModifiers methodReturnType methodBody) = do
 
         let convertModifier m = case m of
-                                        AST.Public        -> ACC_PUBLIC
-                                        AST.Protected     -> ACC_PROTECTED
-                                        AST.Abstract      -> ACC_ABSTRACT
-                                        AST.Final         -> ACC_FINAL
+                                        IR.PublicIR        -> ACC_PUBLIC
+                                        IR.ProtectedIR     -> ACC_PROTECTED
+                                        IR.AbstractIR      -> ACC_ABSTRACT
+                                        IR.FinalIR         -> ACC_FINAL
                                         (_)               -> ACC_PRIVATE
 
         let modifiers = map convertModifier methodModifiers
@@ -48,13 +48,13 @@ instance CodeGen AST.Method where
         newMethod modifiers (pack $ extractName methodName) [] ReturnsVoid (genCode methodBody)
         return ()
 
-instance CodeGen AST.Block where
-    genCode (AST.Inline expression) = genCode expression
-    genCode (AST.DoBlock statement) = genCode statement
+instance CodeGen IR.BlockIR where
+    genCode (IR.InlineIR expression) = genCode expression
+    genCode (IR.DoBlockIR statement) = genCode statement
 
-instance CodeGen AST.Expr where
-    genCode (AST.BlockExpr expressions) = forM_ expressions genCode
-    genCode (AST.IntConst value)
+instance CodeGen IR.ExprIR where
+    genCode (IR.BlockExprIR expressions) = forM_ expressions genCode
+    genCode (IR.IntConstIR value)
         | value == 0 = iconst_0
         | value == 1 = iconst_1
         | value == 2 = iconst_2
@@ -65,13 +65,13 @@ instance CodeGen AST.Expr where
         | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
         | otherwise = return ()
 
-instance CodeGen AST.Stmt where
-    genCode (AST.Assign name valType immutable assignment) = do
+instance CodeGen IR.StmtIR where
+    genCode (IR.AssignIR name valType immutable assignment) = do
         genCode assignment
         istore_ (fromIntegral (ord '\n'))
-    genCode (AST.BlockStmt statements) = forM_ statements genCode
-    genCode (AST.MethodDef method) = genCode method
-    genCode (AST.ExprAsStmt expression) = genCode expression
+    genCode (IR.BlockStmtIR statements) = forM_ statements genCode
+    genCode (IR.MethodDefIR method) = genCode method
+    genCode (IR.ExprAsStmtIR expression) = genCode expression
     genCode (_) = return ()
 
-extractName (AST.Name value) = value
+extractName (IR.NameIR value) = value
