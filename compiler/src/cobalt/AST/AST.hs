@@ -79,9 +79,9 @@ data Model = Model
 modelToModelIR :: Model -> ModelIR
 modelToModelIR (Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = do
     let parent = case modelParent of
-                     Just a  -> typeToTypeIR a
+                     Just a  -> Just $ typeToTypeIR a
                      Nothing -> Nothing
-    ModelIR (nameToNameIR modelName) (modelTypeToModelTypeIR modelType) (map modifierToModifierIR modelModifiers) (map fieldToFieldIR modelFields) (a) (map stmtToStmtIR modelParentArguments) (typeToTypeIR modelInterfaces) (stmtToStmtIR modelBody)
+    ModelIR (nameToNameIR modelName) (modelTypeToModelTypeIR modelType) (map modifierToModifierIR modelModifiers) (map fieldToFieldIR modelFields) (parent) (map stmtToStmtIR modelParentArguments) (map typeToTypeIR modelInterfaces) (stmtToStmtIR modelBody)
 
 data Field = Field
     { fieldName :: Name
@@ -98,7 +98,7 @@ fieldToFieldIR (Field fieldName fieldType fieldInit) = do
     let fieldInitIR = case fieldInit of
                      Just a  -> Just $ exprToExprIR a
                      Nothing -> Nothing
-    FieldIR (nameToNameIR fieldName) (fieldTypeIR) (fieldTypeIR)
+    FieldIR (nameToNameIR fieldName) (fieldTypeIR) (fieldInitIR)
 
 data Type
     = Init
@@ -203,6 +203,9 @@ data Expr
     | Array ArrayOp Expr Expr
     | SpecialRefAsExpr SpecialRef
     deriving (Show, Eq)
+
+exprToExprIR :: Expr -> ExprIR
+exprToExprIR (BlockExpr expressions) = BlockExprIR (map exprToExprIR expressions)
 
 data Stmt
     = For Expr Expr Expr Stmt

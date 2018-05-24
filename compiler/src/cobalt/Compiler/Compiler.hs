@@ -93,4 +93,4 @@ generateAST inputFile code = do
     ASTData inputFile symbolTable ast
 
 compileAST :: String -> Module -> SymbolTable -> B.ByteString
-compileAST moduleName ast symbolTable = encodeClass (generate [] (pack moduleName) (genCode $ astToIR ast))
+compileAST moduleName ast symbolTable = encodeClass (generate [] (pack moduleName) (genCode $ moduleToModuleIR ast))
