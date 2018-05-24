@@ -22,7 +22,7 @@ testNewClassInstanceParser = do
                                      , "    let x(): Int = 10"
                                      , "    let y(): Int = 20"
                                      ]
-    let testAnonymousClass = testParseSuccess codeAnonymousClass (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr []) (Just (BlockStmt [Assign (Name "valName") Nothing True (Inline (IntConst 100)),MethodDef (Method {methodName = Name "x", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just (TypeRef (RefLocal (Name "Int"))), methodBody = Inline (IntConst 10)}),MethodDef (Method {methodName = Name "y", methodAnns = [], methodParams = [], methodModifiers = [], methodReturnType = Just (TypeRef (RefLocal (Name "Int"))), methodBody = Inline (IntConst 20)})]))) expressionParser'
+    let testAnonymousClass = testParseSuccess codeAnonymousClass (NewClassInstance (TypeRef (RefLocal (Name "ClassName"))) (BlockExpr []) (Just (BlockStmt [Assign (Name "valName") Nothing True (Inline (IntConst 100)),MethodDef (Method {methodName = Name "x", methodAnns = [], methodFields = [], methodModifiers = [], methodReturnType = Just (TypeRef (RefLocal (Name "Int"))), methodBody = Inline (IntConst 10)}),MethodDef (Method {methodName = Name "y", methodAnns = [], methodFields = [], methodModifiers = [], methodReturnType = Just (TypeRef (RefLocal (Name "Int"))), methodBody = Inline (IntConst 20)})]))) expressionParser'
 
     TestList [ testNoArguments
              , testSingleArgument

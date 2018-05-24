@@ -451,24 +451,6 @@ specialRefAsExprParser
     =   SpecialRefAsExpr This <$ rword "this"
     <|> SpecialRefAsExpr Super <$ rword "super"
 
-tryBlockParser :: Parser Stmt
-tryBlockParser  = do
-    trySection   <- L.indentBlock scn tryP
-    catchSection <- optional $ L.indentBlock scn catchP
-    finallySection <- optional $ L.indentBlock scn finallyP
-    return $ TryBlock trySection catchSection finallySection
-  where
-    tryP = do
-      rword "try"
-      return (L.IndentMany Nothing (return . (TryStatement) . BlockStmt) statementParser)
-    catchP = do
-      rword "catch"
-      fields <- parens $ sepBy fieldParser $ symbol ","
-      return (L.IndentMany Nothing (return . (CatchStatement fields) . BlockStmt) statementParser)
-    finallyP = do
-      rword "finally"
-      return (L.IndentMany Nothing (return . (FinallyStatement) . BlockStmt) statementParser)
-
 tupleParser :: Parser Expr
 tupleParser =
     try $ do

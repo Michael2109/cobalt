@@ -22,15 +22,25 @@ moduleHeaderToModuleHeaderIR (ModuleHeader modNameSpace modImports) = ModuleHead
 data Method = Method
     { methodName :: Name
     , methodAnns :: [Annotation]
-    , methodParams :: [Field]
+    , methodFields :: [Field]
     , methodModifiers :: [Modifier]
     , methodReturnType :: (Maybe Type)
     , methodBody :: Block
     }
     deriving (Show, Eq)
 
+methodToMethodIR :: Method -> MethodIR
+methodToMethodIR (Method methodName methodAnns methodFields methodModifiers methodReturnType methodBody) = do
+    let methodReturnTypeIR = case methodReturnType of
+                                 Just a  -> Just $ typeToTypeIR a
+                                 Nothing -> Nothing
+    MethodIR (nameToNameIR methodName) (map annotationToAnnotationIR methodAnns) (map fieldToFieldIR methodFields) (map modifierToModifierIR methodModifiers) methodReturnTypeIR (blockToBlockIR methodBody)
+
 data Constant = Constant
     deriving (Show, Eq)
+
+constantToConstantIR :: Constant -> ConstantIR
+constantToConstantIR Constant = ConstantIR
 
 data ModelType
     = ClassModel
@@ -182,6 +192,10 @@ data Block
     | DoBlock Stmt
     deriving (Show, Eq)
 
+blockToBlockIR :: Block -> BlockIR
+blockToBlockIR (Inline expression) = InlineIR (exprToExprIR expression)
+blockToBlockIR (DoBlock statement) = DoBlockIR (stmtToStmtIR statement)
+
 data Expr
     = BlockExpr [Expr]
     | Identifier Name
@@ -206,12 +220,33 @@ data Expr
 
 exprToExprIR :: Expr -> ExprIR
 exprToExprIR (BlockExpr expressions) = BlockExprIR (map exprToExprIR expressions)
+exprToExprIR (Identifier name) = IdentifierIR (nameToNameIR name)
+exprToExprIR (MethodCall name expression) = MethodCallIR (nameToNameIR name) (exprToExprIR expression)
+exprToExprIR (NewClassInstance classType expression anonymousClassStmt) = do
+    let anonymousClassStmtIR = case anonymousClassStmt of
+                                   Just stmt -> Just $ stmtToStmtIR stmt
+                                   Nothing   -> Nothing
+    NewClassInstanceIR (typeToTypeIR classType) (exprToExprIR expression) anonymousClassStmtIR
+exprToExprIR (StringLiteral value) = StringLiteralIR value
+exprToExprIR (Ternary condition ifExpr elseExpr) = TernaryIR (exprToExprIR condition) (exprToExprIR ifExpr) (exprToExprIR elseExpr)
+exprToExprIR (Tuple expression) = TupleIR (exprToExprIR expression)
+exprToExprIR (BoolConst value) = BoolConstIR value
+exprToExprIR (Not expression) = NotIR (exprToExprIR expression)
+exprToExprIR (BBinary op expr1 expr2) = BBinaryIR (bBinOpToBBinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
+exprToExprIR (RBinary op expr1 expr2) = RBinaryIR (rBinOpToRBinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
+exprToExprIR (IntConst value) = IntConstIR value
+exprToExprIR (DoubleConst value) = DoubleConstIR value
+exprToExprIR (FloatConst value) = FloatConstIR value
+exprToExprIR (LongConst value) = LongConstIR value
+exprToExprIR (Neg expression) = NegIR (exprToExprIR expression)
+exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
+exprToExprIR (Array op expr1 expr2) = ArrayIR (arrayOpToArrayOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
+exprToExprIR (SpecialRefAsExpr specialRef) = SpecialRefAsExprIR (specialRefToSpecialRefIR specialRef)
 
 data Stmt
     = For Expr Expr Expr Stmt
     | While Expr Stmt
     | If Expr Stmt (Maybe Stmt)
-    | TryBlock ExceptionHandler (Maybe ExceptionHandler) (Maybe ExceptionHandler)
     | Assign Name (Maybe Type) Bool Block
     | AssignMultiple [Name] (Maybe Type) Bool Block
     | Reassign Name Block
@@ -226,26 +261,52 @@ data Stmt
 
 stmtToStmtIR :: Stmt -> StmtIR
 stmtToStmtIR (For e1 e2 e3 stmt) = ForIR (exprToExprIR e1) (exprToExprIR e2) (exprToExprIR e3) (stmtToStmtIR stmt)
+stmtToStmtIR (While expression statement) = WhileIR (exprToExprIR expression) (stmtToStmtIR statement)
+stmtToStmtIR (If expression statement elseStatement) = do
+    let elseStatementIR = case elseStatement of
+                              Just stmt -> Just $ stmtToStmtIR stmt
+                              Nothing   -> Nothing
+    IfIR (exprToExprIR expression) (stmtToStmtIR statement) elseStatementIR
+stmtToStmtIR (Assign name valType immutable block) = do
+    let valTypeIR = case valType of
+                              Just t  -> Just $ typeToTypeIR t
+                              Nothing -> Nothing
+    AssignIR (nameToNameIR name) valTypeIR immutable (blockToBlockIR block)
+stmtToStmtIR (AssignMultiple names valType immutable block) = do
+    let valTypeIR = case valType of
+                              Just t  -> Just $ typeToTypeIR t
+                              Nothing -> Nothing
+    AssignMultipleIR (map nameToNameIR names) valTypeIR immutable (blockToBlockIR block)
+stmtToStmtIR (Reassign name block) = ReassignIR (nameToNameIR name) (blockToBlockIR block)
+stmtToStmtIR (Return statement) = ReturnIR (stmtToStmtIR statement)
+stmtToStmtIR (ModelDef model) = ModelDefIR (modelToModelIR model)
+stmtToStmtIR (MethodDef method) = MethodDefIR (methodToMethodIR method)
+stmtToStmtIR (ExprAsStmt expression) = ExprAsStmtIR (exprToExprIR expression)
+stmtToStmtIR (BlockStmt statements) = BlockStmtIR (map stmtToStmtIR statements)
+stmtToStmtIR (Match expression cases) = MatchIR (exprToExprIR expression) (map caseToCaseIR cases)
 
 data Case
     = Case Expr Block
     deriving (Show, Eq)
 
-data ExceptionHandler
-    = TryStatement Stmt
-    | CatchStatement [Field] Stmt
-    | FinallyStatement Stmt
-    deriving (Show, Eq)
+caseToCaseIR :: Case -> CaseIR
+caseToCaseIR (Case expression block) = CaseIR (exprToExprIR expression) (blockToBlockIR block)
 
 data BBinOp
     = And
     | Or
     deriving (Show, Eq)
 
+bBinOpToBBinOpIR :: BBinOp -> BBinOpIR
+bBinOpToBBinOpIR And = AndIR
+bBinOpToBBinOpIR Or = OrIR
 
 data ArrayOp
     = ArrayAppend
     deriving (Show, Eq)
+
+arrayOpToArrayOpIR :: ArrayOp -> ArrayOpIR
+arrayOpToArrayOpIR ArrayAppend = ArrayAppendIR
 
 data RBinOp
     = GreaterEqual
@@ -254,9 +315,21 @@ data RBinOp
     | Less
     deriving (Show, Eq)
 
+rBinOpToRBinOpIR :: RBinOp -> RBinOpIR
+rBinOpToRBinOpIR GreaterEqual = GreaterEqualIR
+rBinOpToRBinOpIR Greater = GreaterIR
+rBinOpToRBinOpIR LessEqual = LessEqualIR
+rBinOpToRBinOpIR Less = LessIR
+
 data ABinOp
     = Add
     | Subtract
     | Multiply
     | Divide
     deriving (Show, Eq)
+
+aBinOpToABinOpIR :: ABinOp -> ABinOpIR
+aBinOpToABinOpIR Add = AddIR
+aBinOpToABinOpIR Subtract = SubtractIR
+aBinOpToABinOpIR Multiply = MultiplyIR
+aBinOpToABinOpIR Divide = DivideIR

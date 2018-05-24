@@ -51,18 +51,18 @@ library
       text-format-simple,
       scientific,
       temporary,
-       binary,
-       utf8-string,
-       array,
-       bytestring,
-       data-binary-ieee754,
-       binary-state,
-       control-monad-exception,
-       data-default >= 0.5.0,
-       MissingH,
-       zip,
-       Glob,
-       parsec >= 3 && <4
+      binary,
+      utf8-string,
+      array,
+      bytestring,
+      data-binary-ieee754,
+      binary-state,
+      control-monad-exception,
+      data-default >= 0.5.0,
+      MissingH,
+      zip,
+      Glob,
+      parsec >= 3 && <4
   exposed-modules:
       AST.AST
       AST.CodeGen
