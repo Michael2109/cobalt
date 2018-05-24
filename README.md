@@ -18,17 +18,6 @@ The syntax is similar to languages such as Haskell and Scala.
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
 
-# Getting Started
-
-#### Install IntelliJ IDE
-https://www.jetbrains.com/idea/download/#section=windows
-
-#### Install HaskForce IntelliJ plugin
-http://haskforce.com/
-
-#### Install Stack 
-https://docs.haskellstack.org/en/stable/README/
-
 #### Setting up
 1. Using CMD/terminal navigate to the `cobalt/compiler` directory 
 2. Run `stack build` 
