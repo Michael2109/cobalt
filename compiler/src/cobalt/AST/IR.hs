@@ -125,13 +125,14 @@ data ExprIR
     | ABinaryIR ABinOpIR ExprIR ExprIR
     | ArrayIR ArrayOpIR ExprIR ExprIR
     | SpecialRefAsExprIR SpecialRefIR
+    | Print ExprIR
+    | Println ExprIR
     deriving (Show, Eq)
 
 data StmtIR
     = ForIR ExprIR ExprIR ExprIR StmtIR
     | WhileIR ExprIR StmtIR
     | IfIR ExprIR StmtIR (Maybe StmtIR)
-    | TryBlockIR ExceptionHandlerIR (Maybe ExceptionHandlerIR) (Maybe ExceptionHandlerIR)
     | AssignIR NameIR (Maybe TypeIR) Bool BlockIR
     | AssignMultipleIR [NameIR] (Maybe TypeIR) Bool BlockIR
     | ReassignIR NameIR BlockIR
@@ -146,12 +147,6 @@ data StmtIR
 
 data CaseIR
     = CaseIR ExprIR BlockIR
-    deriving (Show, Eq)
-
-data ExceptionHandlerIR
-    = TryStatementIR StmtIR
-    | CatchStatementIR [FieldIR] StmtIR
-    | FinallyStatementIR StmtIR
     deriving (Show, Eq)
 
 data BBinOpIR

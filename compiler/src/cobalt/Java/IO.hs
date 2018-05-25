@@ -17,6 +17,9 @@ printStream = "java/io/PrintStream"
 printStreamClass ::  FieldType
 printStreamClass = ObjectType printStream
 
+print :: NameType (Method Direct)
+print = NameType "print" $ MethodSignature [Java.Lang.stringClass] ReturnsVoid
+
 println :: NameType (Method Direct)
 println = NameType "println" $ MethodSignature [Java.Lang.stringClass] ReturnsVoid
 

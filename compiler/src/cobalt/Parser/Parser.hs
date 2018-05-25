@@ -277,7 +277,7 @@ methodParser = do
 methodCallParser :: Parser Expr
 methodCallParser =
     try $ do
-        methodName <- nameParser
+        methodName <- choice [Name <$> rword "println", Name <$> rword "print", nameParser]
         args <- parens $ sepBy expressionParser' (symbol ",")
         return $ MethodCall methodName (BlockExpr args)
 

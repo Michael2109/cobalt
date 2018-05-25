@@ -54,6 +54,16 @@ instance CodeGen IR.BlockIR where
 
 instance CodeGen IR.ExprIR where
     genCode (IR.BlockExprIR expressions) = forM_ expressions genCode
+    genCode (IR.Print expression) = do
+        getStaticField Java.Lang.system Java.IO.out
+        genCode expression
+        invokeVirtual Java.IO.printStream Java.IO.print
+        return ()
+    genCode (IR.Println expression) = do
+        getStaticField Java.Lang.system Java.IO.out
+        genCode expression
+        invokeVirtual Java.IO.printStream Java.IO.println
+        return ()
     genCode (IR.IntConstIR value)
         | value == 0 = iconst_0
         | value == 1 = iconst_1

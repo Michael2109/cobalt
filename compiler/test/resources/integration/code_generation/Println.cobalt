@@ -1,0 +1,10 @@
+package integration
+
+class Example(x: int, y: int) extends Sprite
+
+    let main(direction: int): void = do
+        print (1)
+        print (1, 2, 3, 4, 5)
+        println (1)
+        println (1, 2, 3, 4, 5)
+

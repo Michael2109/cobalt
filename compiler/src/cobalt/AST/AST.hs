@@ -221,7 +221,12 @@ data Expr
 exprToExprIR :: Expr -> ExprIR
 exprToExprIR (BlockExpr expressions) = BlockExprIR (map exprToExprIR expressions)
 exprToExprIR (Identifier name) = IdentifierIR (nameToNameIR name)
-exprToExprIR (MethodCall name expression) = MethodCallIR (nameToNameIR name) (exprToExprIR expression)
+exprToExprIR (MethodCall name expression) = do
+    case extractName name of
+        "print"     -> Print (exprToExprIR expression)
+        "println"   -> Println (exprToExprIR expression)
+        _           -> MethodCallIR (nameToNameIR name) (exprToExprIR expression)
+
 exprToExprIR (NewClassInstance classType expression anonymousClassStmt) = do
     let anonymousClassStmtIR = case anonymousClassStmt of
                                    Just stmt -> Just $ stmtToStmtIR stmt
@@ -333,3 +338,7 @@ aBinOpToABinOpIR Add = AddIR
 aBinOpToABinOpIR Subtract = SubtractIR
 aBinOpToABinOpIR Multiply = MultiplyIR
 aBinOpToABinOpIR Divide = DivideIR
+
+-- Utils
+extractName :: Name -> String
+extractName (Name name) = name

@@ -30,7 +30,7 @@ assemblerTest = do
 
     B.writeFile (file ++ ".class") (encodeClass testClass)
     results <- executeBytecode "Test"
-    removeFile (file ++ ".class")
+    --removeFile (file ++ ".class")
 
     -- Return if there is any error
     assertBool "Incorrect output" (results == "Hello World\nArgument: 5\n")
