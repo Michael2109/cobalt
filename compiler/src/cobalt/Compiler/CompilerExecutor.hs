@@ -32,7 +32,7 @@ flattenDirectory dir= do
                            else do
                                isDirectory <- doesDirectoryExist (formattedDir ++ inputLoc)
                                if isDirectory
-                               then flattenDirectory formattedDir
+                               then flattenDirectory (formattedDir ++ inputLoc)
                                else return $ []
 
 execute :: IO ()
