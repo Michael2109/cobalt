@@ -125,8 +125,6 @@ data ExprIR
     | ABinaryIR ABinOpIR ExprIR ExprIR
     | ArrayIR ArrayOpIR ExprIR ExprIR
     | SpecialRefAsExprIR SpecialRefIR
-    | PrintIR ExprIR
-    | PrintlnIR ExprIR
     deriving (Show, Eq)
 
 data StmtIR
@@ -143,6 +141,8 @@ data StmtIR
     | ExprAsStmtIR ExprIR
     | BlockStmtIR [StmtIR]
     | MatchIR ExprIR [CaseIR]
+    | PrintIR ExprIR
+    | PrintlnIR ExprIR
     deriving (Show, Eq)
 
 data CaseIR

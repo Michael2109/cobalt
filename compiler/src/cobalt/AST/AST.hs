@@ -216,8 +216,6 @@ data Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr
     | SpecialRefAsExpr SpecialRef
-    | Print Expr
-    | Println Expr
     deriving (Show, Eq)
 
 exprToExprIR :: Expr -> ExprIR
@@ -244,8 +242,6 @@ exprToExprIR (Neg expression) = NegIR (exprToExprIR expression)
 exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (Array op expr1 expr2) = ArrayIR (arrayOpToArrayOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (SpecialRefAsExpr specialRef) = SpecialRefAsExprIR (specialRefToSpecialRefIR specialRef)
-exprToExprIR (Print expression) = PrintIR (exprToExprIR expression)
-exprToExprIR (Println expression) = PrintlnIR (exprToExprIR expression)
 
 data Stmt
     = For Expr Expr Expr Stmt
@@ -261,6 +257,8 @@ data Stmt
     | ExprAsStmt Expr
     | BlockStmt [Stmt]
     | Match Expr [Case]
+    | Print Expr
+    | Println Expr
     deriving (Show, Eq)
 
 stmtToStmtIR :: Stmt -> StmtIR
@@ -288,6 +286,8 @@ stmtToStmtIR (MethodDef method) = MethodDefIR (methodToMethodIR method)
 stmtToStmtIR (ExprAsStmt expression) = ExprAsStmtIR (exprToExprIR expression)
 stmtToStmtIR (BlockStmt statements) = BlockStmtIR (map stmtToStmtIR statements)
 stmtToStmtIR (Match expression cases) = MatchIR (exprToExprIR expression) (map caseToCaseIR cases)
+stmtToStmtIR (Print expression) = PrintIR (exprToExprIR expression)
+stmtToStmtIR (Println expression) = PrintlnIR (exprToExprIR expression)
 
 data Case
     = Case Expr Block

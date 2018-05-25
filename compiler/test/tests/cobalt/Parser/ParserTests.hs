@@ -20,6 +20,7 @@ import Parser.ModifierParserTest
 import Parser.ModelParserTest
 import Parser.NameSpaceParserTest
 import Parser.NewClassInstanceParserTest
+import Parser.PrintParserTest
 import Parser.ReassignParserTest
 import Parser.StringLiteralParserTest
 import Parser.TernaryParserTest
@@ -53,6 +54,7 @@ parserTestList = TestList
     , testModifierParser
     , testNameSpaceParser
     , testNewClassInstanceParser
+    , testPrintParser
     , testRParser
     , testReassignParser
     , testStringLiteralParser

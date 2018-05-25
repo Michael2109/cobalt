@@ -7,11 +7,10 @@ class ExampleInner(x: int, y: int) extends Sprite
     let exampleMethod (a: Int, b: Int): Int = 1
 
     let initAlien (x: int, y: int): void = do
-        x <- x
-        y <- y
+        let x = 10
 
     let act (direction: int): void = do
-        x <- x + direction
+        let x = 10
 
     class ExampleClass
 
@@ -20,6 +19,4 @@ class ExampleInner(x: int, y: int) extends Sprite
         let mutable mutVar = 100
 
         let add(a: Int, b: Int) = do
-            mutVar <- 1000
-            a + b
-
+            let mutable x = 10

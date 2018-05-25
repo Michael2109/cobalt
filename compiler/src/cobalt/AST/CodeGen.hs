@@ -63,7 +63,17 @@ instance CodeGen IR.ExprIR where
         | value == 5 = iconst_5
         | value >= -128 && value <= 127 = bipush $ fromIntegral value
         | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
-        | otherwise = return ()
+        | otherwise = error $ show otherwise
+    genCode (a) = error $ show a
+
+instance CodeGen IR.StmtIR where
+    genCode (IR.AssignIR name valType immutable assignment) = do
+        genCode assignment
+        istore_ (fromIntegral (ord '\n'))
+    genCode (IR.BlockStmtIR statements) = forM_ statements genCode
+    genCode (IR.MethodDefIR method) = genCode method
+    genCode (IR.ModelDefIR modelDef) = genCode modelDef
+    genCode (IR.ExprAsStmtIR expression) = genCode expression
     genCode (IR.PrintIR expression) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
@@ -74,14 +84,6 @@ instance CodeGen IR.ExprIR where
         genCode expression
         invokeVirtual Java.IO.printStream Java.IO.println
         return ()
-
-instance CodeGen IR.StmtIR where
-    genCode (IR.AssignIR name valType immutable assignment) = do
-        genCode assignment
-        istore_ (fromIntegral (ord '\n'))
-    genCode (IR.BlockStmtIR statements) = forM_ statements genCode
-    genCode (IR.MethodDefIR method) = genCode method
-    genCode (IR.ExprAsStmtIR expression) = genCode expression
-    genCode (_) = return ()
+    genCode (a) = error $ show a
 
 extractName (IR.NameIR value) = value
