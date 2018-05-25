@@ -56,6 +56,27 @@ testCommandLineOptionsMultipleShortJoined = testCommandLineSuccess ["-hvg"] ([He
 testCommandLineOptionsMultipleShortHybrid :: Test
 testCommandLineOptionsMultipleShortHybrid = testCommandLineSuccess ["-hv", "-g"] ([Help, VerboseMode, GenerateDebugSymbols],[])
 
+testCommandLineOptionsSourceDirectoryShortWithSpace :: Test
+testCommandLineOptionsSourceDirectoryShortWithSpace = testCommandLineSuccess ["-s", "DIR"] ([(SourceDir "DIR")],[])
+
+testCommandLineOptionsSourceDirectoryShortNoSpace :: Test
+testCommandLineOptionsSourceDirectoryShortNoSpace = testCommandLineSuccess ["-sDIR"] ([(SourceDir "DIR")],[])
+
+testCommandLineOptionsSourceDirectoryLongWithSpace :: Test
+testCommandLineOptionsSourceDirectoryLongWithSpace = testCommandLineSuccess ["--source-directory", "DIR"] ([(SourceDir "DIR")],[])
+
+testCommandLineOptionsSourceDirectoryLongEqualSign :: Test
+testCommandLineOptionsSourceDirectoryLongEqualSign = testCommandLineSuccess ["--source-directory=DIR"] ([(SourceDir "DIR")],[])
+
+testCommandLineOptionsSourceDirectoryLongNoSpaceFail :: Test
+testCommandLineOptionsSourceDirectoryLongNoSpaceFail = testCommandLineFailure ["--source-directoryDIR"]
+
+testCommandLineOptionsSourceDirectoryShortNoArgumentFail :: Test
+testCommandLineOptionsSourceDirectoryShortNoArgumentFail = testCommandLineFailure ["-s"]
+
+testCommandLineOptionsSourceDirectoryLongNoArgumentFail :: Test
+testCommandLineOptionsSourceDirectoryLongNoArgumentFail = testCommandLineFailure ["--source-directory"]
+
 testCommandLineOptionsDestinationDirectoryShortWithSpace :: Test
 testCommandLineOptionsDestinationDirectoryShortWithSpace = testCommandLineSuccess ["-d", "DIR"] ([(DestinationDir "DIR")],[])
 
