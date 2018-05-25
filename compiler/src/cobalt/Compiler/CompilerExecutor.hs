@@ -17,24 +17,6 @@ import System.Directory
 import System.FilePath.Posix
 import System.Environment (withArgs)
 
-
-allFilesIn dir = getDirectoryContents dir
-
-flattenDirectory :: FilePath -> IO ([FilePath])
-flattenDirectory dir= do
-    contents <- listDirectory formattedDir
-    flattened <- mapM recurse contents
-    return $ concat flattened
-  where
-      formattedDir = if last dir == '/' then dir else dir ++ "/" --sanity check for dir == "" TODO
-      recurse inputLoc = if (takeExtension inputLoc == ".cobalt")
-                           then return $ [formattedDir ++ inputLoc]
-                           else do
-                               isDirectory <- doesDirectoryExist (formattedDir ++ inputLoc)
-                               if isDirectory
-                               then flattenDirectory (formattedDir ++ inputLoc)
-                               else return $ []
-
 execute :: IO ()
 execute = do
     args <- getArgs

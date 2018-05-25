@@ -196,7 +196,6 @@ test-suite compiler-test
       SymbolTable.SymbolTableTest
       SymbolTable.SymbolTableTests
       TestUtil.CommandLineTestUtil
-      TestUtil.CompilerTestUtil
       TestUtil.ParserTestUtil
       TestUtil.TestUtil
       Util.CommandLineUtilTest

@@ -6,7 +6,6 @@ import Compiler.CompilerTest
 import IntegrationTests
 import Parser.ParserTests
 import SymbolTable.SymbolTableTests
-import TestUtil.CompilerTestUtil
 import Util.UtilTests
 
 main :: IO Counts

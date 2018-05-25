@@ -53,3 +53,18 @@ generateMissingDirectories inputDir outputDir = do
             generateMissingDirectories (inputDir ++ inputLoc ++ "/") (outputDir ++ inputLoc ++ "/")
         )
     return ()
+
+flattenDirectory :: FilePath -> IO ([FilePath])
+flattenDirectory dir= do
+    contents <- listDirectory formattedDir
+    flattened <- mapM recurse contents
+    return $ concat flattened
+  where --sanity check for empty dir sould not be needed as empty directory cant be passed as argument
+      formattedDir = if last dir == '/' then dir else dir ++ "/"
+      recurse inputLoc = if (takeExtension inputLoc == ".cobalt")
+                           then return $ [formattedDir ++ inputLoc]
+                           else do
+                               isDirectory <- doesDirectoryExist (formattedDir ++ inputLoc)
+                               if isDirectory
+                               then flattenDirectory (formattedDir ++ inputLoc)
+                               else return $ []
