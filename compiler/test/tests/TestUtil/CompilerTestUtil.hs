@@ -1,4 +1,4 @@
-module Util.CompilerTestUtil where
+module TestUtil.CompilerTestUtil where
 
 import System.Directory
 import System.FilePath.Posix
