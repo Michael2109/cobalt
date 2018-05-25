@@ -54,16 +54,6 @@ instance CodeGen IR.BlockIR where
 
 instance CodeGen IR.ExprIR where
     genCode (IR.BlockExprIR expressions) = forM_ expressions genCode
-    genCode (IR.Print expression) = do
-        getStaticField Java.Lang.system Java.IO.out
-        genCode expression
-        invokeVirtual Java.IO.printStream Java.IO.print
-        return ()
-    genCode (IR.Println expression) = do
-        getStaticField Java.Lang.system Java.IO.out
-        genCode expression
-        invokeVirtual Java.IO.printStream Java.IO.println
-        return ()
     genCode (IR.IntConstIR value)
         | value == 0 = iconst_0
         | value == 1 = iconst_1
@@ -74,6 +64,16 @@ instance CodeGen IR.ExprIR where
         | value >= -128 && value <= 127 = bipush $ fromIntegral value
         | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
         | otherwise = return ()
+    genCode (IR.PrintIR expression) = do
+        getStaticField Java.Lang.system Java.IO.out
+        genCode expression
+        invokeVirtual Java.IO.printStream Java.IO.print
+        return ()
+    genCode (IR.PrintlnIR expression) = do
+        getStaticField Java.Lang.system Java.IO.out
+        genCode expression
+        invokeVirtual Java.IO.printStream Java.IO.println
+        return ()
 
 instance CodeGen IR.StmtIR where
     genCode (IR.AssignIR name valType immutable assignment) = do

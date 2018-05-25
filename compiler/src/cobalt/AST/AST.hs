@@ -216,17 +216,14 @@ data Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr
     | SpecialRefAsExpr SpecialRef
+    | Print Expr
+    | Println Expr
     deriving (Show, Eq)
 
 exprToExprIR :: Expr -> ExprIR
 exprToExprIR (BlockExpr expressions) = BlockExprIR (map exprToExprIR expressions)
 exprToExprIR (Identifier name) = IdentifierIR (nameToNameIR name)
-exprToExprIR (MethodCall name expression) = do
-    case extractName name of
-        "print"     -> Print (exprToExprIR expression)
-        "println"   -> Println (exprToExprIR expression)
-        _           -> MethodCallIR (nameToNameIR name) (exprToExprIR expression)
-
+exprToExprIR (MethodCall name expression) = MethodCallIR (nameToNameIR name) (exprToExprIR expression)
 exprToExprIR (NewClassInstance classType expression anonymousClassStmt) = do
     let anonymousClassStmtIR = case anonymousClassStmt of
                                    Just stmt -> Just $ stmtToStmtIR stmt
@@ -247,6 +244,8 @@ exprToExprIR (Neg expression) = NegIR (exprToExprIR expression)
 exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (Array op expr1 expr2) = ArrayIR (arrayOpToArrayOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (SpecialRefAsExpr specialRef) = SpecialRefAsExprIR (specialRefToSpecialRefIR specialRef)
+exprToExprIR (Print expression) = PrintIR (exprToExprIR expression)
+exprToExprIR (Println expression) = PrintlnIR (exprToExprIR expression)
 
 data Stmt
     = For Expr Expr Expr Stmt

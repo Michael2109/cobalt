@@ -1,6 +1,7 @@
 import Test.HUnit
 import System.Exit
 import System.Directory
+import Control.Monad
 
 import IntegrationTests
 import Parser.ParserTests
@@ -13,7 +14,8 @@ main = do
 
     let inputDir = "test/resources/"
     let outputDir = "cobalt_generated_classes/"
-    removeDirectoryRecursive outputDir
+    outputDirExists <- doesDirectoryExist outputDir
+    when outputDirExists $ removeDirectoryRecursive outputDir
     compileDirectory inputDir outputDir ""
     integrationTestResults <- runTestTT $ integrationTestList
     parserTestResults <- runTestTT $ parserTestList

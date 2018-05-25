@@ -125,8 +125,8 @@ data ExprIR
     | ABinaryIR ABinOpIR ExprIR ExprIR
     | ArrayIR ArrayOpIR ExprIR ExprIR
     | SpecialRefAsExprIR SpecialRefIR
-    | Print ExprIR
-    | Println ExprIR
+    | PrintIR ExprIR
+    | PrintlnIR ExprIR
     deriving (Show, Eq)
 
 data StmtIR
