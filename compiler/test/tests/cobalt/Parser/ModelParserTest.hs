@@ -36,6 +36,16 @@ testModelParser = do
                               ]
     let testMethods = testParseSuccess codeMethods (Model {modelName = Name "OuterClass", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt [MethodDef (Method {methodName = Name "x", methodAnns = [], methodFields = [], methodModifiers = [], methodReturnType = Nothing, methodBody = Inline (IntConst 10)}),MethodDef (Method {methodName = Name "y", methodAnns = [], methodFields = [], methodModifiers = [], methodReturnType = Nothing, methodBody = DoBlock (BlockStmt [MethodDef (Method {methodName = Name "x", methodAnns = [], methodFields = [], methodModifiers = [], methodReturnType = Nothing, methodBody = DoBlock (BlockStmt [If (BoolConst True) (BlockStmt [ExprAsStmt (IntConst 10)]) (Just (BlockStmt [ExprAsStmt (IntConst 20)]))])})])})]}) modelParser
 
+    let codePureMethods = unlines [ "class OuterClass"
+                                  , "    pure let x() = 10"
+                                  , "    pure let y() = do"
+                                  , "        pure let x() = do"
+                                  , "            if True then"
+                                  , "                10"
+                                  , "            else"
+                                  , "                20"
+                                  ]
+    let testPureMethods = testParseSuccess codePureMethods (Model {modelName = Name "OuterClass", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt [MethodDef (Method {methodName = Name "x", methodAnns = [], methodFields = [], methodModifiers = [Pure], methodReturnType = Nothing, methodBody = Inline (IntConst 10)}),MethodDef (Method {methodName = Name "y", methodAnns = [], methodFields = [], methodModifiers = [Pure], methodReturnType = Nothing, methodBody = DoBlock (BlockStmt [MethodDef (Method {methodName = Name "x", methodAnns = [], methodFields = [], methodModifiers = [Pure], methodReturnType = Nothing, methodBody = DoBlock (BlockStmt [If (BoolConst True) (BlockStmt [ExprAsStmt (IntConst 10)]) (Just (BlockStmt [ExprAsStmt (IntConst 20)]))])})])})]}) modelParser
 
     TestList [ testModel
              , testExtends
@@ -43,4 +53,5 @@ testModelParser = do
              , testExtendsImplements
              , testInner
              , testMethods
+             , testPureMethods
              ]
