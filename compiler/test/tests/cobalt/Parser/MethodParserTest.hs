@@ -42,6 +42,9 @@ testMethodParser = do
     let codeModifierLocal = "local let exampleMethod (a: Int, b: Int): Int = _"
     let testModifierLocal = testParseSuccess codeModifierLocal (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodFields = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = Inline (Identifier (Name "_"))})) statementParser
 
+    let codeModifierPure = "pure let exampleMethod (a: Int, b: Int): Int = _"
+    let testModifierPure = testParseSuccess codeModifierPure (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodFields = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Pure], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = Inline (Identifier (Name "_"))})) statementParser
+
     let codeModifierMultiple = "final abstract public protected local let exampleMethod (a: Int, b: Int): Int = _"
     let testModifierMultiple = testParseSuccess codeModifierMultiple (MethodDef (Method {methodName = Name "exampleMethod", methodAnns = [], methodFields = [Field {fieldName = Name "a", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing},Field {fieldName = Name "b", fieldType = Just (TypeRef (RefLocal (Name "Int"))), fieldInit = Nothing}], methodModifiers = [Final, Abstract, Public, Protected, PackageLocal], methodReturnType = Just $ TypeRef (RefLocal (Name "Int")), methodBody = Inline (Identifier (Name "_"))})) statementParser
 
@@ -54,6 +57,7 @@ testMethodParser = do
              , testModifierPublic
              , testModifierProtected
              , testModifierLocal
+             , testModifierPure
              , testModifierMultiple
              , testConstructorParser
              ]

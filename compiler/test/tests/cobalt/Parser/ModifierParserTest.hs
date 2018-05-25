@@ -23,9 +23,13 @@ testModifierParser = do
     let codeFinal = "final"
     let testFinal = testParseSuccess codeFinal [Final] modifiersParser
 
+    let codePure = "pure"
+    let testPure = testParseSuccess codePure [Pure] modifiersParser
+
     TestList [ testPublic
              , testProtected
              , testLocal
              , testAbstract
              , testFinal
+             , testPure
              ]

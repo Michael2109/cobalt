@@ -317,7 +317,7 @@ modelTypeParser
     <|> TraitModel    <$ rword "trait"
 
 modifiersParser :: Parser [Modifier]
-modifiersParser = many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser]
+modifiersParser = many $ choice [accessModifierParser, abstractModifierParser, finalModifierParser, pureModifierParser]
 
 nameParser :: Parser Name
 nameParser = do
@@ -388,6 +388,9 @@ printParser =
         case printType of
             "print" -> return $ Print expr
             "println" -> return $ Println expr
+
+pureModifierParser :: Parser Modifier
+pureModifierParser = Pure <$ rword "pure"
 
 reassignParser :: Parser Stmt
 reassignParser = do
