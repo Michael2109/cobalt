@@ -13,6 +13,7 @@ import Parser.ForLoopParserTest
 import Parser.IdentifierParserTest
 import Parser.IfStatementParserTest
 import Parser.LambdaParserTest
+import Parser.MatchParserTest
 import Parser.MethodCallParserTest
 import Parser.MethodParserTest
 import Parser.ModifierParserTest
@@ -45,6 +46,7 @@ parserTestList = TestList
     , testIdentifierParser
     , testIfStmtParser
     , testLambdaParser
+    , testMatchParser
     , testMethodCallParser
     , testMethodParser
     , testModelParser

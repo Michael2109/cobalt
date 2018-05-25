@@ -16,6 +16,7 @@ import qualified Data.ByteString.Lazy as B
 import Data.ByteString.Lazy.Char8 (pack)
 
 import AST.AST
+import AST.IR
 import AST.CodeGen
 import Parser.ParserExecutor
 import JVM.ClassFile
@@ -92,4 +93,4 @@ generateAST inputFile code = do
     ASTData inputFile symbolTable ast
 
 compileAST :: String -> Module -> SymbolTable -> B.ByteString
-compileAST moduleName ast symbolTable = encodeClass (generate [] (pack moduleName) (genCode ast))
+compileAST moduleName ast symbolTable = encodeClass (generate [] (pack moduleName) (genCode $ moduleToModuleIR ast))

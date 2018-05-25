@@ -13,8 +13,6 @@ bug-reports:    https://github.com/githubuser/haskell-project/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2018 Author name here
-license:        GPL-3
-license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
 
@@ -53,21 +51,22 @@ library
       text-format-simple,
       scientific,
       temporary,
-       binary,
-       utf8-string,
-       array,
-       bytestring,
-       data-binary-ieee754,
-       binary-state,
-       control-monad-exception,
-       data-default >= 0.5.0,
-       MissingH,
-       zip,
-       Glob,
-       parsec >= 3 && <4
+      binary,
+      utf8-string,
+      array,
+      bytestring,
+      data-binary-ieee754,
+      binary-state,
+      control-monad-exception,
+      data-default >= 0.5.0,
+      MissingH,
+      zip,
+      Glob,
+      parsec >= 3 && <4
   exposed-modules:
       AST.AST
       AST.CodeGen
+      AST.IR
       Compiler.Compiler
       Compiler.CompilerExecutor
       JVM.Common
@@ -179,6 +178,7 @@ test-suite compiler-test
       Parser.IfStatementParserTest
       Parser.ImportParserTest
       Parser.LambdaParserTest
+      Parser.MatchParserTest
       Parser.MethodCallParserTest
       Parser.MethodParserTest
       Parser.ModelTypeParserTest

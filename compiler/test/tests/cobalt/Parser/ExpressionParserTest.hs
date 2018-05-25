@@ -33,7 +33,7 @@ testExpressionParserNested = do
     let testThis = testParseSuccess codeThis (BlockExpr [SpecialRefAsExpr This,Identifier (Name "varName2")]) expressionParser'
 
     let codeSuper = "super.varName2"
-    let testSuper = testParseSuccess codeThis (BlockExpr [SpecialRefAsExpr This,Identifier (Name "varName2")]) expressionParser'
+    let testSuper = testParseSuccess codeSuper (BlockExpr [SpecialRefAsExpr Super,Identifier (Name "varName2")]) expressionParser'
 
     TestList [ testMethodCalls
              , testMethodCallsSingleArgument
