@@ -11,7 +11,6 @@ The syntax is similar to languages such as Haskell and Scala.
 * Statically typed
 * Focusing on immutability
 * Can be used with other languages on the JVM
-* Non-nullable
 * High readability    
 
 # Project Contributions
