@@ -11,8 +11,8 @@ import Util.UtilTests
 
 main :: IO Counts
 main = do
-    removeDirectoryRecursive "cobalt_generated_classes/"
-    exampleCompilerTest
+    --removeDirectoryRecursive "cobalt_generated_classes/"
+    --exampleCompilerTest
     integrationTestResults <- runTestTT $ integrationTestList
     parserTestResults <- runTestTT $ parserTestList
     symbolTableTestResults <- runTestTT $ symbolTableTestList

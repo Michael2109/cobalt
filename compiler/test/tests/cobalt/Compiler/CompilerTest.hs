@@ -11,10 +11,9 @@ exampleCompilerTest = do
 
     let generatedDir = "cobalt_generated_classes/"
     let generatedInnerDir = generatedDir ++ "integration/"
-    a <- getCurrentDirectory
     -- Run the compiler with args
     --withArgs ["-d", generatedInnerDir, "-p", "test/resources/integration/", "Example.cobalt"] execute
-    withArgs ["-d", generatedInnerDir, "-p", "test/resources/", "-s", a] execute
+    withArgs ["-d", generatedInnerDir, "-p", "test/resources/", "-s", "test/resources/"] execute
 
     -- Check the file has been compiled correctly
     fileExists <- doesFileExist $ generatedInnerDir ++ "Example.class"
