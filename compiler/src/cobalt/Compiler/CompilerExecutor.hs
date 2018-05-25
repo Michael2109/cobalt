@@ -22,14 +22,17 @@ allFilesIn dir = getDirectoryContents dir
 
 flattenDirectory :: FilePath -> IO ([FilePath])
 flattenDirectory dir= do
-    contents <- getDirectoryContents dir
+    contents <- listDirectory formattedDir
     flattened <- mapM recurse contents
     return $ concat flattened
-  where recurse inputLoc = if (takeExtension inputLoc == ".cobalt")
-                           then return $ [dir ++ inputLoc]
-                           else
-                               if (takeExtension inputLoc == "" {-it needs to check if it is a directory, not just a extensionless file TODO-})
-                               then flattenDirectory dir
+  where
+      formattedDir = if last dir == '/' then dir else dir ++ "/" --sanity check for dir == "" TODO
+      recurse inputLoc = if (takeExtension inputLoc == ".cobalt")
+                           then return $ [formattedDir ++ inputLoc]
+                           else do
+                               isDirectory <- doesDirectoryExist (formattedDir ++ inputLoc)
+                               if isDirectory
+                               then flattenDirectory formattedDir
                                else return $ []
 
 execute :: IO ()
