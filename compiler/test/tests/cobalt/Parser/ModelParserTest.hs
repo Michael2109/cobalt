@@ -25,6 +25,9 @@ testModelParser = do
                             ]
     let testInner = testParseSuccess codeInner (Model {modelName = Name "OuterClass", modelType = ClassModel, modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt [ModelDef (Model {modelName = Name "InnerClass", modelType = ClassModel,  modelModifiers = [], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = (BlockStmt [])})]}) modelParser
 
+    let codePureModel = "pure class Test"
+    let testPureModel = testParseSuccess codePureModel (Model {modelName = Name "Test", modelType = ClassModel, modelModifiers = [Pure], modelFields = [], modelParent = Nothing, modelParentArguments = [], modelInterfaces = [], modelBody = BlockStmt []}) modelParser
+
     let codeMethods = unlines [ "class OuterClass"
                               , "    let x() = 10"
                               , "    let y() = do"
@@ -42,5 +45,6 @@ testModelParser = do
              , testImplements
              , testExtendsImplements
              , testInner
+             , testPureModel
              , testMethods
              ]

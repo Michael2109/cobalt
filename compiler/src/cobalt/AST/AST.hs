@@ -63,6 +63,7 @@ data Modifier
     | PackageLocal
     | Abstract
     | Final
+    | Pure
     deriving (Eq, Show)
 
 modifierToModifierIR :: Modifier -> ModifierIR
@@ -73,6 +74,7 @@ modifierToModifierIR modifier = case modifier of
                                     PackageLocal -> PackageLocalIR
                                     Abstract     -> AbstractIR
                                     Final        -> FinalIR
+                                    Pure         -> PureIR
 
 data Model = Model
     { modelName :: Name
