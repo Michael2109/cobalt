@@ -216,6 +216,8 @@ data Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr
     | SpecialRefAsExpr SpecialRef
+    | Print Expr
+    | Println Expr
     deriving (Show, Eq)
 
 exprToExprIR :: Expr -> ExprIR
@@ -242,6 +244,8 @@ exprToExprIR (Neg expression) = NegIR (exprToExprIR expression)
 exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (Array op expr1 expr2) = ArrayIR (arrayOpToArrayOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (SpecialRefAsExpr specialRef) = SpecialRefAsExprIR (specialRefToSpecialRefIR specialRef)
+exprToExprIR (Print expression) = PrintIR (exprToExprIR expression)
+exprToExprIR (Println expression) = PrintlnIR (exprToExprIR expression)
 
 data Stmt
     = For Expr Expr Expr Stmt
@@ -333,3 +337,7 @@ aBinOpToABinOpIR Add = AddIR
 aBinOpToABinOpIR Subtract = SubtractIR
 aBinOpToABinOpIR Multiply = MultiplyIR
 aBinOpToABinOpIR Divide = DivideIR
+
+-- Utils
+extractName :: Name -> String
+extractName (Name name) = name

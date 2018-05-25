@@ -1,17 +1,22 @@
 import Test.HUnit
 import System.Exit
 import System.Directory
+import Control.Monad
 
-import Compiler.CompilerTest
 import IntegrationTests
 import Parser.ParserTests
 import SymbolTable.SymbolTableTests
+import TestUtil.CompilerTestUtil
 import Util.UtilTests
 
 main :: IO Counts
 main = do
-    --removeDirectoryRecursive "cobalt_generated_classes/"
-    --exampleCompilerTest
+
+    let inputDir = "test/resources/"
+    let outputDir = "cobalt_generated_classes/"
+    outputDirExists <- doesDirectoryExist outputDir
+    when outputDirExists $ removeDirectoryRecursive outputDir
+    compileDirectory inputDir outputDir ""
     integrationTestResults <- runTestTT $ integrationTestList
     parserTestResults <- runTestTT $ parserTestList
     symbolTableTestResults <- runTestTT $ symbolTableTestList

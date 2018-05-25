@@ -64,6 +64,16 @@ instance CodeGen IR.ExprIR where
         | value >= -128 && value <= 127 = bipush $ fromIntegral value
         | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
         | otherwise = return ()
+    genCode (IR.PrintIR expression) = do
+        getStaticField Java.Lang.system Java.IO.out
+        genCode expression
+        invokeVirtual Java.IO.printStream Java.IO.print
+        return ()
+    genCode (IR.PrintlnIR expression) = do
+        getStaticField Java.Lang.system Java.IO.out
+        genCode expression
+        invokeVirtual Java.IO.printStream Java.IO.println
+        return ()
 
 instance CodeGen IR.StmtIR where
     genCode (IR.AssignIR name valType immutable assignment) = do

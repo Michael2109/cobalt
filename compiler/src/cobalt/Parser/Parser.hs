@@ -109,6 +109,7 @@ expressionParser
     =   newClassInstanceParser
     <|> tupleParser
     <|> parens expressionParser'
+    <|> printParser
     <|> methodCallParser
     <|> ternaryParser
     <|> IntConst <$> integerParser
@@ -379,6 +380,15 @@ operators =
         , InfixL (BBinary Or  <$ rword "or")
         ]
     ]
+
+printParser :: Parser Expr
+printParser =
+    try $ do
+        printType <- choice [rword "println", rword "print"]
+        args <- parens $ sepBy expressionParser' (symbol ",")
+        case printType of
+            "print" -> return $ Print (BlockExpr args)
+            "println" -> return $ Println (BlockExpr args)
 
 reassignParser :: Parser Stmt
 reassignParser = do
