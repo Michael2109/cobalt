@@ -111,6 +111,8 @@ expressionParser
     <|> parens expressionParser'
     <|> methodCallParser
     <|> ternaryParser
+    <|> LongConst <$> longParser
+    <|> FloatConst <$> floatParser
     <|> IntConst <$> integerParser
     <|> (BoolConst True  <$ rword "True")
     <|> (BoolConst False <$ rword "False")
@@ -386,7 +388,7 @@ printParser =
         printType <- choice [rword "println", rword "print"]
         expr <- parens $ expressionParser'
         case printType of
-            "print" -> return $ Print expr
+            "print"   -> return $ Print expr
             "println" -> return $ Println expr
 
 pureModifierParser :: Parser Modifier

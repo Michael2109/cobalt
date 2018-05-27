@@ -120,8 +120,8 @@ data ExprIR
     | RBinaryIR RBinOpIR ExprIR ExprIR
     | IntConstIR Integer
     | DoubleConstIR Scientific
-    | FloatConstIR Float
-    | LongConstIR Integer
+    | FloatConstIR Double
+    | LongConstIR Scientific
     | NegIR ExprIR
     | ABinaryIR ABinOpIR ExprIR ExprIR
     | ArrayIR ArrayOpIR ExprIR ExprIR

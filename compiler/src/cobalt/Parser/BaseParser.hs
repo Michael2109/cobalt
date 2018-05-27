@@ -89,7 +89,7 @@ floatParser :: Parser Double
 floatParser = do
     try $ do
         value <- L.float
-        symbol "f"
+        (symbol "f" <|> symbol "F")
         return value
 
 doubleParser :: Parser Scientific
@@ -105,7 +105,7 @@ longParser :: Parser Scientific
 longParser = do
     try $ do
         value <- L.scientific
-        symbol "l"
+        (symbol "l" <|> symbol "L")
         return value
 
 parens :: Parser a -> Parser a

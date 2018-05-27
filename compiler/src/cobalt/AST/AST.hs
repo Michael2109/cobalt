@@ -212,8 +212,8 @@ data Expr
     | RBinary RBinOp Expr Expr
     | IntConst Integer
     | DoubleConst Scientific
-    | FloatConst Float
-    | LongConst Integer
+    | FloatConst Double
+    | LongConst Scientific
     | Neg Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr

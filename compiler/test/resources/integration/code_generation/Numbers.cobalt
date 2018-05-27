@@ -1,15 +1,7 @@
-package integration
+package integration.code_generation
 
-class Example(x: int, y: int) extends Sprite
+class Example()
 
-    let inlineMethod(a: Int, b: Int): Int = 1
-
-    let blockMethod(direction: int): void = do
-        let x = 1
-        2
-        3
-        32767
-
-    let main(): void = do
+    let main(direction: int): void = do
+        print (1)
         println (1)
-
