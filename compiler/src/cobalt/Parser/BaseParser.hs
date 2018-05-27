@@ -48,6 +48,7 @@ rws =
     , "private"
     , "this"
     , "mutable"
+    , "pure"
     , "new"
     , "package"
     , "println"

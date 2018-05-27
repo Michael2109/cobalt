@@ -38,6 +38,7 @@ data ModifierIR
     | PackageLocalIR
     | AbstractIR
     | FinalIR
+    | PureIR
     deriving (Eq, Show)
 
 data ModelIR = ModelIR
