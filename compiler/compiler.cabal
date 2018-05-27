@@ -164,6 +164,7 @@ test-suite compiler-test
   other-modules:
       AST.BlocksTest
       Compiler.CompilerTest
+      Compiler.PrintCompileTest
       IntegrationTests
       JVM.AssemblerTest
       Parser.BaseParserTest

@@ -31,21 +31,33 @@ instance CodeGen IR.ModuleIR where
     genCode (IR.ModuleIR header modules) = forM_ modules genCode
 
 instance CodeGen IR.ModelIR where
-    genCode (IR.ModelIR modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = genCode modelBody
+    genCode (IR.ModelIR modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = do
+        newMethod [ACC_PUBLIC] (pack "<init>") [] ReturnsVoid $ do
+            setStackSize 1
+            aload_ I0
+            invokeSpecial Java.Lang.object Java.Lang.objectInit
+            i0 RETURN
+        genCode modelBody
 
 instance CodeGen IR.MethodIR where
     genCode (IR.MethodIR methodName methodAnns methodParams methodModifiers methodReturnType methodBody) = do
 
-        let convertModifier m = case m of
-                                        IR.PublicIR        -> ACC_PUBLIC
-                                        IR.ProtectedIR     -> ACC_PROTECTED
-                                        IR.AbstractIR      -> ACC_ABSTRACT
-                                        IR.FinalIR         -> ACC_FINAL
-                                        (_)               -> ACC_PRIVATE
+        -- Temporary. Allows us to write tests with a main method to execute by just naming the method main.
+        let name = extractName methodName
+        if name == "main"
+        then do
+            newMethod [ACC_PUBLIC, ACC_STATIC] (pack "main") [arrayOf Java.Lang.stringClass] ReturnsVoid (genCode methodBody >> i0 RETURN)
+        else do
+            let convertModifier m = case m of
+                                            IR.PublicIR        -> ACC_PUBLIC
+                                            IR.ProtectedIR     -> ACC_PROTECTED
+                                            IR.AbstractIR      -> ACC_ABSTRACT
+                                            IR.FinalIR         -> ACC_FINAL
+                                            (_)               -> ACC_PRIVATE
 
-        let modifiers = map convertModifier methodModifiers
+            let modifiers = map convertModifier methodModifiers
 
-        newMethod modifiers (pack $ extractName methodName) [] ReturnsVoid (genCode methodBody)
+            newMethod modifiers (pack $ extractName methodName) [] ReturnsVoid (genCode methodBody >> i0 RETURN)
         return ()
 
 instance CodeGen IR.BlockIR where
@@ -77,12 +89,12 @@ instance CodeGen IR.StmtIR where
     genCode (IR.PrintIR expression) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
-        invokeVirtual Java.IO.printStream Java.IO.print
+        invokeVirtual Java.IO.printStream (Java.IO.print $ MethodSignature [IntType] ReturnsVoid)
         return ()
     genCode (IR.PrintlnIR expression) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
-        invokeVirtual Java.IO.printStream Java.IO.println
+        invokeVirtual Java.IO.printStream (Java.IO.println $ MethodSignature [IntType] ReturnsVoid)
         return ()
     genCode (a) = error $ show a
 

@@ -8,15 +8,14 @@ import Parser.ParserTests
 import SymbolTable.SymbolTableTests
 import TestUtil.CompilerTestUtil
 import Util.UtilTests
+import TestUtil.TestUtil
 
 main :: IO Counts
 main = do
+    outputDirExists <- doesDirectoryExist outputDirectory
+    when outputDirExists $ removeDirectoryRecursive outputDirectory
+    compileDirectory inputDirectory outputDirectory ""
 
-    let inputDir = "test/resources/"
-    let outputDir = "cobalt_generated_classes/"
-    outputDirExists <- doesDirectoryExist outputDir
-    when outputDirExists $ removeDirectoryRecursive outputDir
-    compileDirectory inputDir outputDir ""
     integrationTestResults <- runTestTT $ integrationTestList
     parserTestResults <- runTestTT $ parserTestList
     symbolTableTestResults <- runTestTT $ symbolTableTestList

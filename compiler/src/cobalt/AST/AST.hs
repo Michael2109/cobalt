@@ -338,6 +338,18 @@ aBinOpToABinOpIR Subtract = SubtractIR
 aBinOpToABinOpIR Multiply = MultiplyIR
 aBinOpToABinOpIR Divide = DivideIR
 
+-- Restructures the AST
+restructureModule (Module header models) = Module header (map restructureModel models)
+restructureModel (Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody) = Model modelName modelType modelModifiers modelFields modelParent modelParentArguments modelInterfaces modelBody
+
+restructureStmt (MethodDef method) = MethodDef method
+
 -- Utils
 extractName :: Name -> String
 extractName (Name name) = name
+
+extractModuleHeader (Module header _) = header
+
+extractModuleHeaderNameSpace (ModuleHeader nameSpace _) = nameSpace
+
+extractNameSpaceValue (NameSpace nameSpace) = nameSpace

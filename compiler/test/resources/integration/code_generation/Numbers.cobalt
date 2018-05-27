@@ -10,3 +10,6 @@ class Example(x: int, y: int) extends Sprite
         3
         32767
 
+    let main(): void = do
+        println (1)
+

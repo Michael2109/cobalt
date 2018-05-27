@@ -20,13 +20,13 @@ import qualified Java.IO
 assemblerTest :: Assertion
 assemblerTest = do
 
-    generatedDirExists <- doesDirectoryExist generatedDirectory
+    generatedDirExists <- doesDirectoryExist outputDirectory
 
-    when (not $ generatedDirExists) $ createDirectory generatedDirectory
+    when (not $ generatedDirExists) $ createDirectory outputDirectory
 
     let testClass = generate [] "Test" test
 
-    let file = (generatedDirectory ++ "Test")
+    let file = (outputDirectory ++ "Test")
 
     B.writeFile (file ++ ".class") (encodeClass testClass)
     results <- executeBytecode "Test"
@@ -57,7 +57,7 @@ test = do
 
         getStaticField Java.Lang.system Java.IO.out
         loadString "Hello World"
-        invokeVirtual Java.IO.printStream Java.IO.println
+        invokeVirtual Java.IO.printStream (Java.IO.println $ MethodSignature [Java.Lang.stringClass] ReturnsVoid)
         getStaticField Java.Lang.system Java.IO.out
         loadString "Argument: %d\n"
         iconst_1
@@ -67,7 +67,7 @@ test = do
         iload_ I0
         invokeStatic Java.Lang.integer Java.Lang.valueOfInteger
         aastore
-        invokeVirtual Java.IO.printStream Java.IO.printf
+        invokeVirtual Java.IO.printStream (Java.IO.printf $ MethodSignature [Java.Lang.stringClass, Array Nothing Java.Lang.objectClass] (Returns Java.IO.printStreamClass))
         -- Call Hello.hello()
         --invokeStatic "Hello" helloJava
         pop

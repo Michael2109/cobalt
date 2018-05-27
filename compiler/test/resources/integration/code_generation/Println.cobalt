@@ -1,8 +1,9 @@
-package integration
+package integration.code_generation
 
 class Example(x: int, y: int) extends Sprite
 
     let main(direction: int): void = do
         print (1)
         println (1)
+
 
