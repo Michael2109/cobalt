@@ -8,4 +8,4 @@ testPrintCompile :: Assertion
 testPrintCompile = do
     results <- executeBytecode "integration/code_generation/Println"
 
-    assertBool "Class file isn't generated" (results == unlines [ "11" ])
+    assertBool "Print statement check failed" (results == unlines [ "11" ])
