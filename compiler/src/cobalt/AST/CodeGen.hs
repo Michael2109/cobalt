@@ -94,25 +94,20 @@ instance CodeGen IR.StmtIR where
     genCode (IR.MethodDefIR method) = genCode method
     genCode (IR.ModelDefIR modelDef) = genCode modelDef
     genCode (IR.ExprAsStmtIR expression) = genCode expression
-    genCode (IR.PrintIR expression) = do
+    genCode (IR.PrintIR expression expressionType) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
-        invokeVirtual Java.IO.printStream (Java.IO.print $ MethodSignature [getExpressionType expression] ReturnsVoid)
+        invokeVirtual Java.IO.printStream (Java.IO.print $ MethodSignature [expressionType] ReturnsVoid)
         return ()
-    genCode (IR.PrintlnIR expression) = do
+    genCode (IR.PrintlnIR expression expressionType) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
-        invokeVirtual Java.IO.printStream (Java.IO.println $ MethodSignature [getExpressionType expression] ReturnsVoid)
+        invokeVirtual Java.IO.printStream (Java.IO.println $ MethodSignature [expressionType] ReturnsVoid)
         return ()
     genCode (a) = error $ show a
 
 extractName (IR.NameIR value) = value
 
-getExpressionType (IR.StringLiteralIR _) = Java.Lang.stringClass
-getExpressionType (IR.IntConstIR _) = IntType
-getExpressionType (IR.LongConstIR _) = LongInt
-getExpressionType (IR.FloatConstIR _) = FloatType
-getExpressionType (IR.DoubleConstIR _) = DoubleType
 
 genIntConst value
     | value == 0 = iconst_0

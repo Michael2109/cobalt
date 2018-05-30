@@ -3,6 +3,8 @@ module AST.AST where
 import Data.Scientific
 
 import AST.IR
+import qualified JVM.ClassFile
+import qualified Java.Lang
 
 data Module = Module ModuleHeader [Model]
     deriving (Show)
@@ -274,7 +276,7 @@ stmtToStmtIR (If expression statement elseStatement) = do
 stmtToStmtIR (Assign name valType immutable block) = do
     let valTypeIR = case valType of
                               Just t  -> Just $ typeToTypeIR t
-                              Nothing -> Nothing
+                              Nothing ->Nothing
     AssignIR (nameToNameIR name) valTypeIR immutable (blockToBlockIR block)
 stmtToStmtIR (AssignMultiple names valType immutable block) = do
     let valTypeIR = case valType of
@@ -288,8 +290,8 @@ stmtToStmtIR (MethodDef method) = MethodDefIR (methodToMethodIR method)
 stmtToStmtIR (ExprAsStmt expression) = ExprAsStmtIR (exprToExprIR expression)
 stmtToStmtIR (BlockStmt statements) = BlockStmtIR (map stmtToStmtIR statements)
 stmtToStmtIR (Match expression cases) = MatchIR (exprToExprIR expression) (map caseToCaseIR cases)
-stmtToStmtIR (Print expression) = PrintIR (exprToExprIR expression)
-stmtToStmtIR (Println expression) = PrintlnIR (exprToExprIR expression)
+stmtToStmtIR (Print expression) = PrintIR (exprToExprIR expression) (getExpressionType expression)
+stmtToStmtIR (Println expression) = PrintlnIR (exprToExprIR expression) (getExpressionType expression)
 
 data Case
     = Case Expr Block
@@ -347,7 +349,6 @@ restructureModel (Model modelName modelType modelModifiers modelFields modelPare
 restructureStmt (MethodDef method) = MethodDef method
 
 -- Utils
-extractName :: Name -> String
 extractName (Name name) = name
 
 extractModuleHeader (Module header _) = header
@@ -355,3 +356,9 @@ extractModuleHeader (Module header _) = header
 extractModuleHeaderNameSpace (ModuleHeader nameSpace _) = nameSpace
 
 extractNameSpaceValue (NameSpace nameSpace) = nameSpace
+
+getExpressionType (StringLiteral _) = Java.Lang.stringClass
+getExpressionType (IntConst _) = JVM.ClassFile.IntType
+getExpressionType (LongConst _) = JVM.ClassFile.LongInt
+getExpressionType (FloatConst _) = JVM.ClassFile.FloatType
+getExpressionType (DoubleConst _) = JVM.ClassFile.DoubleType
