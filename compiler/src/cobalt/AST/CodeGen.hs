@@ -84,6 +84,7 @@ instance CodeGen IR.ExprIR where
 {-    genCode (IR.DoubleConstIR value) = do
         let doubleValue = toRealFloat value
         genDoubleConst doubleValue-}
+    genCode (IR.BoolConstIR value) = if value then iconst_1 else iconst_0
     genCode (a) = error $ show a
 
 instance CodeGen IR.StmtIR where
@@ -94,6 +95,12 @@ instance CodeGen IR.StmtIR where
     genCode (IR.MethodDefIR method) = genCode method
     genCode (IR.ModelDefIR modelDef) = genCode modelDef
     genCode (IR.ExprAsStmtIR expression) = genCode expression
+    genCode (IR.IfIR condition ifStmt elseStmt) = do
+        genCode condition
+        genCode ifStmt
+        case elseStmt of
+            Just s -> genCode s
+            Nothing -> return ()
     genCode (IR.PrintIR expression) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
