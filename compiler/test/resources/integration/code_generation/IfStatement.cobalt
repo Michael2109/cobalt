@@ -1,0 +1,9 @@
+package integration.code_generation
+
+class IfStatement()
+
+    let main(direction: int): void = do
+        if (True) then
+            println (1)
+        else
+            println (2)
