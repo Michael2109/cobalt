@@ -121,8 +121,23 @@ genIntConst value
     | otherwise = error $ show otherwise
 
 instance CodeGen IR.ABinOpIR where
-    genCode (IR.AddIR expressionType)       = iadd
-    genCode (IR.SubtractIR expressionType)  = isub
-    genCode (IR.MultiplyIR expressionType)  = imul
-    genCode (IR.DivideIR expressionType)    = idiv
-
+    genCode (IR.AddIR expressionType)       = case expressionType of
+                                                  JVM.ClassFile.IntType    -> iadd
+                                                  JVM.ClassFile.LongInt    -> ladd
+                                                  JVM.ClassFile.FloatType  -> dadd
+                                                  JVM.ClassFile.DoubleType -> fadd
+    genCode (IR.SubtractIR expressionType)  = case expressionType of
+                                                  JVM.ClassFile.IntType    -> isub
+                                                  JVM.ClassFile.LongInt    -> lsub
+                                                  JVM.ClassFile.FloatType  -> dsub
+                                                  JVM.ClassFile.DoubleType -> fsub
+    genCode (IR.MultiplyIR expressionType)  = case expressionType of
+                                                  JVM.ClassFile.IntType    -> imul
+                                                  JVM.ClassFile.LongInt    -> lmul
+                                                  JVM.ClassFile.FloatType  -> dmul
+                                                  JVM.ClassFile.DoubleType -> fmul
+    genCode (IR.DivideIR expressionType)    = case expressionType of
+                                                  JVM.ClassFile.IntType    -> idiv
+                                                  JVM.ClassFile.LongInt    -> ldiv
+                                                  JVM.ClassFile.FloatType  -> ddiv
+                                                  JVM.ClassFile.DoubleType -> fdiv

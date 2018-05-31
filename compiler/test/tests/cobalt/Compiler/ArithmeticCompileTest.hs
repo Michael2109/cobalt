@@ -8,4 +8,11 @@ testCompileArithmetic :: Assertion
 testCompileArithmetic = do
     results <- executeBytecode "integration/code_generation/Arithmetic"
 
-    assertEqual "Arithmetic check failed" (unlines [ "2" ]) results
+    let expectedResult = unlines [ "8"
+                                 , "1"
+                                 , "40"
+                                 , "1"
+                                 , "2"
+                                 , "-2"
+                                 ]
+    assertEqual "Arithmetic check failed" expectedResult results
