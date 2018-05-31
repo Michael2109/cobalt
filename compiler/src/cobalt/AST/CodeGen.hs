@@ -68,23 +68,17 @@ instance CodeGen IR.BlockIR where
 instance CodeGen IR.ExprIR where
     genCode (IR.BlockExprIR expressions) = forM_ expressions genCode
     genCode (IR.IntConstIR value) = genIntConst value
-{-
-    genCode (IR.LongConstIR value) = do
-        let intValue = case toBoundedInteger value of
-                           Just (Int i)  -> i
-                           Nothing -> error "Long value cannot be floating point precision"
-        genLongConst intValue
--}
     genCode (IR.FloatConstIR value)
         | value == 0 = fconst_0
         | value == 1 = fconst_1
         | value == 2 = fconst_2
         | value >= -32768 && value <= 32767 = i8 LDC1 (CFloat $ double2Float value)
         | otherwise = error $ show otherwise
-{-    genCode (IR.DoubleConstIR value) = do
-        let doubleValue = toRealFloat value
-        genDoubleConst doubleValue-}
     genCode (IR.BoolConstIR value) = if value then iconst_1 else iconst_0
+    genCode (IR.ABinaryIR op expr1 expr2) = do
+        genCode expr1
+        genCode expr2
+        genCode op
     genCode (a) = error $ show a
 
 instance CodeGen IR.StmtIR where
@@ -101,25 +95,19 @@ instance CodeGen IR.StmtIR where
         case elseStmt of
             Just s -> genCode s
             Nothing -> return ()
-    genCode (IR.PrintIR expression) = do
+    genCode (IR.PrintIR expression expressionType) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
-        invokeVirtual Java.IO.printStream (Java.IO.print $ MethodSignature [getExpressionType expression] ReturnsVoid)
+        invokeVirtual Java.IO.printStream (Java.IO.print $ MethodSignature [expressionType] ReturnsVoid)
         return ()
-    genCode (IR.PrintlnIR expression) = do
+    genCode (IR.PrintlnIR expression expressionType) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
-        invokeVirtual Java.IO.printStream (Java.IO.println $ MethodSignature [getExpressionType expression] ReturnsVoid)
+        invokeVirtual Java.IO.printStream (Java.IO.println $ MethodSignature [expressionType] ReturnsVoid)
         return ()
     genCode (a) = error $ show a
 
 extractName (IR.NameIR value) = value
-
-getExpressionType (IR.StringLiteralIR _) = Java.Lang.stringClass
-getExpressionType (IR.IntConstIR _) = IntType
-getExpressionType (IR.LongConstIR _) = LongInt
-getExpressionType (IR.FloatConstIR _) = FloatType
-getExpressionType (IR.DoubleConstIR _) = DoubleType
 
 genIntConst value
     | value == 0 = iconst_0
@@ -132,18 +120,9 @@ genIntConst value
     | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
     | otherwise = error $ show otherwise
 
-{-
-genLongConst value
-    | value == 0 = lconst_0
-    | value == 1 = lconst_1
-    | value >= -128 && value <= 127 = bipush $ fromIntegral value
-    | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
-    | otherwise = error $ show otherwise
+instance CodeGen IR.ABinOpIR where
+    genCode (IR.AddIR expressionType)       = iadd
+    genCode (IR.SubtractIR expressionType)  = isub
+    genCode (IR.MultiplyIR expressionType)  = imul
+    genCode (IR.DivideIR expressionType)    = idiv
 
-genDoubleConst value
-    | value == 0 = lconst_0
-    | value == 1 = lconst_1
-    | value >= -128 && value <= 127 = bipush $ fromIntegral value
-    | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
-    | otherwise = error $ show otherwise
--}

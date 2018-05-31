@@ -1,7 +1,6 @@
 package integration.code_generation
 
-class Numbers()
+class Arithmetic()
 
     let main(): void = do
-        print (1)
-        println (1)
+        println (1 * 2 / 3 + 4 - 2)
