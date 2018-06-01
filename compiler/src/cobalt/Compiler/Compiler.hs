@@ -17,7 +17,7 @@ import Data.ByteString.Lazy.Char8 (pack)
 
 import AST.AST
 import AST.IR
-import AST.CodeGen
+import CodeGen.CodeGen
 import Parser.ParserExecutor
 import JVM.ClassFile
 import JVM.Converter

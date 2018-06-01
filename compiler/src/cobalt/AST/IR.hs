@@ -2,7 +2,7 @@ module AST.IR where
 
 import Data.Scientific
 
-import JVM.ClassFile
+import qualified JVM.ClassFile
 
 data ModuleIR = ModuleIR ModuleHeaderIR [ModelIR]
     deriving (Show)
@@ -121,9 +121,9 @@ data ExprIR
     | BBinaryIR BBinOpIR ExprIR ExprIR
     | RBinaryIR RBinOpIR ExprIR ExprIR
     | IntConstIR Integer
-    | DoubleConstIR Scientific
+    | DoubleConstIR Double
     | FloatConstIR Double
-    | LongConstIR Scientific
+    | LongConstIR Integer
     | NegIR ExprIR
     | ABinaryIR ABinOpIR ExprIR ExprIR
     | ArrayIR ArrayOpIR ExprIR ExprIR
@@ -144,8 +144,8 @@ data StmtIR
     | ExprAsStmtIR ExprIR
     | BlockStmtIR [StmtIR]
     | MatchIR ExprIR [CaseIR]
-    | PrintIR ExprIR FieldType
-    | PrintlnIR ExprIR FieldType
+    | PrintIR ExprIR JVM.ClassFile.FieldType
+    | PrintlnIR ExprIR JVM.ClassFile.FieldType
     deriving (Show, Eq)
 
 data CaseIR
@@ -170,9 +170,8 @@ data RBinOpIR
     deriving (Show, Eq)
 
 data ABinOpIR
-    = AddIR
-    | SubtractIR
-    | MultiplyIR
-    | DivideIR
+    = AddIR JVM.ClassFile.FieldType
+    | SubtractIR JVM.ClassFile.FieldType
+    | MultiplyIR JVM.ClassFile.FieldType
+    | DivideIR JVM.ClassFile.FieldType
     deriving (Show, Eq)
-

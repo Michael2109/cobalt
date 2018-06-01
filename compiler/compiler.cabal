@@ -65,8 +65,9 @@ library
       parsec >= 3 && <4
   exposed-modules:
       AST.AST
-      AST.CodeGen
       AST.IR
+      CodeGen.CodeGen
+      CodeGen.Number.NumberCodeGen
       Compiler.Compiler
       Compiler.CompilerExecutor
       JVM.Common

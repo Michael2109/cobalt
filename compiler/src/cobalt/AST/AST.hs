@@ -213,9 +213,9 @@ data Expr
     | BBinary BBinOp Expr Expr
     | RBinary RBinOp Expr Expr
     | IntConst Integer
-    | DoubleConst Scientific
+    | DoubleConst Double
     | FloatConst Double
-    | LongConst Scientific
+    | LongConst Integer
     | Neg Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr

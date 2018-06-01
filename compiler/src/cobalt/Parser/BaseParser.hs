@@ -92,19 +92,19 @@ floatParser = do
         (symbol "f" <|> symbol "F")
         return value
 
-doubleParser :: Parser Scientific
+doubleParser :: Parser Double
 doubleParser = do
     try $ do
-        value <- L.scientific
+        value <- L.float
         return value
 
 integerParser :: Parser Integer
 integerParser = lexeme L.decimal
 
-longParser :: Parser Scientific
+longParser :: Parser Integer
 longParser = do
     try $ do
-        value <- L.scientific
+        value <- L.decimal
         (symbol "l" <|> symbol "L")
         return value
 
