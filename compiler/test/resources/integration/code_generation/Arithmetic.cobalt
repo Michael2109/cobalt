@@ -1,0 +1,23 @@
+package integration.code_generation
+
+class Arithmetic()
+
+    let main(): void = do
+
+        # Add
+        println (1 + 2 + 5)
+
+        # Subtract
+        println (10 - 2 - 7)
+
+        # Multiply
+        println (2 * 4 * 5)
+
+        # Divide
+        println (10 / 5 / 2)
+
+        # Combination
+        println (1 * 2 / 3 + 4 - 2)
+
+        # Parenthesis
+        println (1 * 2 / (3 + 4) - 2)

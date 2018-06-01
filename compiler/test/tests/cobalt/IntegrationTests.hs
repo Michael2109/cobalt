@@ -4,6 +4,7 @@ import Test.HUnit
 
 import Compiler.CompilerTest
 import Compiler.NumbersCompileTest
+import Compiler.ArithmeticCompileTest
 import Compiler.PrintCompileTest
 import JVM.AssemblerTest
 
@@ -12,5 +13,6 @@ integrationTestList = do
     TestList [ "An example integration test" ~: exampleCompilerTest
              , "Print compile test"          ~: testCompilePrint
              , "Numbers compile test"        ~: testCompileNumbers
+             , "Arithmetic compile test"     ~: testCompileArithmetic
              , "Assembler Test"              ~: assemblerTest
              ]

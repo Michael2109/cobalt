@@ -3,6 +3,8 @@ module AST.AST where
 import Data.Scientific
 
 import AST.IR
+import qualified  Java.Lang
+import qualified JVM.ClassFile
 
 data Module = Module ModuleHeader [Model]
     deriving (Show)
@@ -241,7 +243,7 @@ exprToExprIR (DoubleConst value) = DoubleConstIR value
 exprToExprIR (FloatConst value) = FloatConstIR value
 exprToExprIR (LongConst value) = LongConstIR value
 exprToExprIR (Neg expression) = NegIR (exprToExprIR expression)
-exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
+exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op  (getExpressionType expr1)) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (Array op expr1 expr2) = ArrayIR (arrayOpToArrayOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (SpecialRefAsExpr specialRef) = SpecialRefAsExprIR (specialRefToSpecialRefIR specialRef)
 
@@ -288,8 +290,8 @@ stmtToStmtIR (MethodDef method) = MethodDefIR (methodToMethodIR method)
 stmtToStmtIR (ExprAsStmt expression) = ExprAsStmtIR (exprToExprIR expression)
 stmtToStmtIR (BlockStmt statements) = BlockStmtIR (map stmtToStmtIR statements)
 stmtToStmtIR (Match expression cases) = MatchIR (exprToExprIR expression) (map caseToCaseIR cases)
-stmtToStmtIR (Print expression) = PrintIR (exprToExprIR expression)
-stmtToStmtIR (Println expression) = PrintlnIR (exprToExprIR expression)
+stmtToStmtIR (Print expression) = PrintIR (exprToExprIR expression) (getExpressionType expression)
+stmtToStmtIR (Println expression) = PrintlnIR (exprToExprIR expression) (getExpressionType expression)
 
 data Case
     = Case Expr Block
@@ -334,11 +336,11 @@ data ABinOp
     | Divide
     deriving (Show, Eq)
 
-aBinOpToABinOpIR :: ABinOp -> ABinOpIR
-aBinOpToABinOpIR Add = AddIR
-aBinOpToABinOpIR Subtract = SubtractIR
-aBinOpToABinOpIR Multiply = MultiplyIR
-aBinOpToABinOpIR Divide = DivideIR
+aBinOpToABinOpIR :: ABinOp -> JVM.ClassFile.FieldType -> ABinOpIR
+aBinOpToABinOpIR Add expressionType = AddIR expressionType
+aBinOpToABinOpIR Subtract expressionType = SubtractIR expressionType
+aBinOpToABinOpIR Multiply expressionType = MultiplyIR expressionType
+aBinOpToABinOpIR Divide expressionType = DivideIR expressionType
 
 -- Restructures the AST
 restructureModule (Module header models) = Module header (map restructureModel models)
@@ -355,3 +357,11 @@ extractModuleHeader (Module header _) = header
 extractModuleHeaderNameSpace (ModuleHeader nameSpace _) = nameSpace
 
 extractNameSpaceValue (NameSpace nameSpace) = nameSpace
+
+getExpressionType (StringLiteral _)         = Java.Lang.stringClass
+getExpressionType (IntConst _)              = JVM.ClassFile.IntType
+getExpressionType (LongConst _)             = JVM.ClassFile.LongInt
+getExpressionType (FloatConst _)            = JVM.ClassFile.FloatType
+getExpressionType (DoubleConst _)           = JVM.ClassFile.DoubleType
+getExpressionType (ABinary op expr1 expr2)  = getExpressionType expr1
+getExpressionType (e)                       = error $ show e
