@@ -3,5 +3,9 @@ package integration.code_generation
 class Numbers()
 
     let main(): void = do
-        print (1)
-        println (1)
+        println (2147483646)
+        println (9223372036854775806l)
+        println (5.0f)
+        println (10.4)
+
+

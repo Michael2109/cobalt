@@ -113,6 +113,7 @@ expressionParser
     <|> ternaryParser
     <|> LongConst <$> longParser
     <|> FloatConst <$> floatParser
+    <|> DoubleConst <$> doubleParser
     <|> IntConst <$> integerParser
     <|> (BoolConst True  <$ rword "True")
     <|> (BoolConst False <$ rword "False")

@@ -73,6 +73,7 @@ instance CodeGen IR.ExprIR where
     genCode (IR.FloatConstIR value) = floatToBytecode value
     genCode (IR.DoubleConstIR value) = doubleToBytecode value
     genCode (IR.BoolConstIR value) = if value then iconst_1 else iconst_0
+    genCode (IR.StringLiteralIR value) = loadString value
     genCode (IR.ABinaryIR op expr1 expr2) = do
         genCode expr1
         genCode expr2

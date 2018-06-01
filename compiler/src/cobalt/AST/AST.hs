@@ -213,9 +213,9 @@ data Expr
     | BBinary BBinOp Expr Expr
     | RBinary RBinOp Expr Expr
     | IntConst Integer
-    | DoubleConst Scientific
+    | DoubleConst Double
     | FloatConst Double
-    | LongConst Scientific
+    | LongConst Integer
     | Neg Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr
@@ -243,7 +243,7 @@ exprToExprIR (DoubleConst value) = DoubleConstIR value
 exprToExprIR (FloatConst value) = FloatConstIR value
 exprToExprIR (LongConst value) = LongConstIR value
 exprToExprIR (Neg expression) = NegIR (exprToExprIR expression)
-exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
+exprToExprIR (ABinary op expr1 expr2) = ABinaryIR (aBinOpToABinOpIR op  (getExpressionType expr1)) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (Array op expr1 expr2) = ArrayIR (arrayOpToArrayOpIR op) (exprToExprIR expr1) (exprToExprIR expr2)
 exprToExprIR (SpecialRefAsExpr specialRef) = SpecialRefAsExprIR (specialRefToSpecialRefIR specialRef)
 
