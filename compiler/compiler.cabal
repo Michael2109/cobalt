@@ -163,6 +163,7 @@ test-suite compiler-test
       compiler
   other-modules:
       AST.BlocksTest
+      Compiler.ArithmeticCompileTest
       Compiler.CompilerTest
       Compiler.NumbersCompileTest
       Compiler.PrintCompileTest
