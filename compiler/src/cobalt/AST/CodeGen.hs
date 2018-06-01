@@ -81,9 +81,13 @@ instance CodeGen IR.ExprIR where
         | value == 2 = fconst_2
         | value >= -32768 && value <= 32767 = i8 LDC1 (CFloat $ double2Float value)
         | otherwise = error $ show otherwise
+<<<<<<< Updated upstream
 {-    genCode (IR.DoubleConstIR value) = do
         let doubleValue = toRealFloat value
         genDoubleConst doubleValue-}
+=======
+    genCode (IR.StringLiteralIR value) = loadString value
+>>>>>>> Stashed changes
     genCode (IR.BoolConstIR value) = if value then iconst_1 else iconst_0
     genCode (a) = error $ show a
 

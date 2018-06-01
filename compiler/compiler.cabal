@@ -166,6 +166,7 @@ test-suite compiler-test
       Compiler.CompilerTest
       Compiler.NumbersCompileTest
       Compiler.PrintCompileTest
+      Compiler.StringLiteralsCompileTest
       IntegrationTests
       JVM.AssemblerTest
       Parser.BaseParserTest
