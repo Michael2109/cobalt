@@ -1,0 +1,8 @@
+package integration.code_generation
+
+class StringLiterals()
+
+    let main(): void = do
+
+        println ("String")
+        println ("String with whitespace")

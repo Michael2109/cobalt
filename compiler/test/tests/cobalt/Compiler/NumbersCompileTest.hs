@@ -1,6 +1,6 @@
 module Compiler.NumbersCompileTest where
 
-import Test.HUnit (Assertion, assertBool)
+import Test.HUnit (Assertion, assertEqual)
 
 import TestUtil.TestUtil
 
@@ -8,4 +8,4 @@ testCompileNumbers :: Assertion
 testCompileNumbers = do
     results <- executeBytecode "integration/code_generation/Numbers"
 
-    assertBool "Print statement check failed" (results == unlines [ "11" ])
+    assertEqual "Numbers check failed" (unlines [ "11" ]) results

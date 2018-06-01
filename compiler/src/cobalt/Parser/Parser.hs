@@ -416,6 +416,11 @@ returnStatementParser = do
     statement <- statementParser
     return $ Return statement
 
+specialRefAsExprParser :: Parser Expr
+specialRefAsExprParser
+    =   SpecialRefAsExpr This <$ rword "this"
+    <|> SpecialRefAsExpr Super <$ rword "super"
+
 statementParser :: Parser Stmt
 statementParser = modelDefParser
     <|> methodDefParser
@@ -460,11 +465,6 @@ ternaryParser  = do
     rword "else"
     elseExpression <- expressionParser'
     return $ Ternary condition ifExpression elseExpression
-
-specialRefAsExprParser :: Parser Expr
-specialRefAsExprParser
-    =   SpecialRefAsExpr This <$ rword "this"
-    <|> SpecialRefAsExpr Super <$ rword "super"
 
 tupleParser :: Parser Expr
 tupleParser =

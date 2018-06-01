@@ -213,9 +213,9 @@ data Expr
     | BBinary BBinOp Expr Expr
     | RBinary RBinOp Expr Expr
     | IntConst Integer
-    | DoubleConst Double
+    | DoubleConst Scientific
     | FloatConst Double
-    | LongConst Integer
+    | LongConst Scientific
     | Neg Expr
     | ABinary ABinOp Expr Expr
     | Array ArrayOp Expr Expr
@@ -276,7 +276,7 @@ stmtToStmtIR (If expression statement elseStatement) = do
 stmtToStmtIR (Assign name valType immutable block) = do
     let valTypeIR = case valType of
                               Just t  -> Just $ typeToTypeIR t
-                              Nothing ->Nothing
+                              Nothing -> Nothing
     AssignIR (nameToNameIR name) valTypeIR immutable (blockToBlockIR block)
 stmtToStmtIR (AssignMultiple names valType immutable block) = do
     let valTypeIR = case valType of
@@ -336,11 +336,11 @@ data ABinOp
     | Divide
     deriving (Show, Eq)
 
-aBinOpToABinOpIR :: ABinOp -> ABinOpIR
-aBinOpToABinOpIR Add = AddIR
-aBinOpToABinOpIR Subtract = SubtractIR
-aBinOpToABinOpIR Multiply = MultiplyIR
-aBinOpToABinOpIR Divide = DivideIR
+aBinOpToABinOpIR :: ABinOp -> JVM.ClassFile.FieldType -> ABinOpIR
+aBinOpToABinOpIR Add expressionType = AddIR expressionType
+aBinOpToABinOpIR Subtract expressionType = SubtractIR expressionType
+aBinOpToABinOpIR Multiply expressionType = MultiplyIR expressionType
+aBinOpToABinOpIR Divide expressionType = DivideIR expressionType
 
 -- Restructures the AST
 restructureModule (Module header models) = Module header (map restructureModel models)
@@ -349,6 +349,7 @@ restructureModel (Model modelName modelType modelModifiers modelFields modelPare
 restructureStmt (MethodDef method) = MethodDef method
 
 -- Utils
+extractName :: Name -> String
 extractName (Name name) = name
 
 extractModuleHeader (Module header _) = header
@@ -357,8 +358,10 @@ extractModuleHeaderNameSpace (ModuleHeader nameSpace _) = nameSpace
 
 extractNameSpaceValue (NameSpace nameSpace) = nameSpace
 
-getExpressionType (StringLiteral _) = Java.Lang.stringClass
-getExpressionType (IntConst _) = JVM.ClassFile.IntType
-getExpressionType (LongConst _) = JVM.ClassFile.LongInt
-getExpressionType (FloatConst _) = JVM.ClassFile.FloatType
-getExpressionType (DoubleConst _) = JVM.ClassFile.DoubleType
+getExpressionType (StringLiteral _)         = Java.Lang.stringClass
+getExpressionType (IntConst _)              = JVM.ClassFile.IntType
+getExpressionType (LongConst _)             = JVM.ClassFile.LongInt
+getExpressionType (FloatConst _)            = JVM.ClassFile.FloatType
+getExpressionType (DoubleConst _)           = JVM.ClassFile.DoubleType
+getExpressionType (ABinary op expr1 expr2)  = getExpressionType expr1
+getExpressionType (e)                       = error $ show e
