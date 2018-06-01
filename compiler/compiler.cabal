@@ -190,6 +190,7 @@ test-suite compiler-test
       Parser.ModelParserTest
       Parser.NameSpaceParserTest
       Parser.NewClassInstanceParserTest
+      Parser.NumberParserTest
       Parser.ParserTests
       Parser.PrintParserTest
       Parser.ParameterizedTypeParserTest
