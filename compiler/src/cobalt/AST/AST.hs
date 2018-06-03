@@ -33,9 +33,7 @@ data Method = Method
 
 methodToMethodIR :: Method -> MethodIR
 methodToMethodIR (Method methodName methodAnns methodFields methodModifiers methodReturnType methodBody) = do
-    let methodReturnTypeIR = case methodReturnType of
-                                 Just a  -> Just $ typeToTypeIR a
-                                 Nothing -> Nothing
+    let methodReturnTypeIR = getReturnSignature "void"
     MethodIR (nameToNameIR methodName) (map annotationToAnnotationIR methodAnns) (map fieldToFieldIR methodFields) (map modifierToModifierIR methodModifiers) methodReturnTypeIR (blockToBlockIR methodBody)
 
 data Constant = Constant
@@ -136,7 +134,7 @@ data Ref
 
 refToRefIR :: Ref -> RefIR
 refToRefIR (RefSpecial specialRef) = RefSpecialIR (specialRefToSpecialRefIR specialRef)
-refToRefIR (RefLocal name) = RefLocalIR (nameToNameIR name)
+refToRefIR (RefLocal name) = RefLocalIR $ getFieldType $ extractName $ name
 refToRefIR (RefQual qualName) = RefQualIR (qualNameToQualNameIR qualName)
 
 data SpecialRef
@@ -365,3 +363,17 @@ getExpressionType (FloatConst _)            = JVM.ClassFile.FloatType
 getExpressionType (DoubleConst _)           = JVM.ClassFile.DoubleType
 getExpressionType (ABinary op expr1 expr2)  = getExpressionType expr1
 getExpressionType (e)                       = error $ show e
+
+getReturnSignature :: String -> JVM.ClassFile.ReturnSignature
+getReturnSignature "void" = JVM.ClassFile.ReturnsVoid
+getReturnSignature name = JVM.ClassFile.Returns $ getFieldType name
+
+getFieldType :: String -> JVM.ClassFile.FieldType
+getFieldType "Byte"     = JVM.ClassFile.SignedByte
+getFieldType "Char"     = JVM.ClassFile.CharByte
+getFieldType "Int"      = JVM.ClassFile.IntType
+getFieldType "Long"     = JVM.ClassFile.LongInt
+getFieldType "Float"    = JVM.ClassFile.FloatType
+getFieldType "Double"   = JVM.ClassFile.DoubleType
+getFieldType "Bool"     = JVM.ClassFile.BoolType
+getFieldType name       = JVM.ClassFile.ObjectType name

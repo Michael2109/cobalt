@@ -48,7 +48,7 @@ instance CodeGen IR.MethodIR where
         let name = extractName methodName
         if name == "main"
         then do
-            newMethod [ACC_PUBLIC, ACC_STATIC] (pack "main") [arrayOf Java.Lang.stringClass] ReturnsVoid (genCode methodBody >> i0 RETURN)
+            newMethod [ACC_PUBLIC, ACC_STATIC] (pack "main") [arrayOf Java.Lang.stringClass] methodReturnType (genCode methodBody >> i0 RETURN)
         else do
             let convertModifier m = case m of
                                             IR.PublicIR        -> ACC_PUBLIC

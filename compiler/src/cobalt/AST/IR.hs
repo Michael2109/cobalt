@@ -18,7 +18,7 @@ data MethodIR = MethodIR
     , methodAnns :: [AnnotationIR]
     , methodParams :: [FieldIR]
     , methodModifiers :: [ModifierIR]
-    , methodReturnType :: (Maybe TypeIR)
+    , methodReturnType :: JVM.ClassFile.ReturnSignature
     , methodBody :: BlockIR
     }
     deriving (Show, Eq)
@@ -71,7 +71,7 @@ data TypeIR
 
 data RefIR
     = RefSpecialIR SpecialRefIR
-    | RefLocalIR NameIR
+    | RefLocalIR JVM.ClassFile.FieldType
     | RefQualIR QualNameIR
     deriving (Show, Eq)
 
