@@ -17,8 +17,6 @@ intToBytecode value
 longToBytecode value
     | value == 0 = lconst_0
     | value == 1 = lconst_1
-    | value >= -128 && value <= 127 = bipush $ fromIntegral value
-    | value >= -32768 && value <= 32767 = sipush $ fromIntegral value
     | otherwise = ldc2w $ CLong $ fromIntegral value
 
 floatToBytecode value

@@ -112,20 +112,20 @@ instance CodeGen IR.ABinOpIR where
     genCode (IR.AddIR expressionType)       = case expressionType of
                                                   JVM.ClassFile.IntType    -> iadd
                                                   JVM.ClassFile.LongInt    -> ladd
-                                                  JVM.ClassFile.FloatType  -> dadd
-                                                  JVM.ClassFile.DoubleType -> fadd
+                                                  JVM.ClassFile.FloatType  -> fadd
+                                                  JVM.ClassFile.DoubleType -> dadd
     genCode (IR.SubtractIR expressionType)  = case expressionType of
                                                   JVM.ClassFile.IntType    -> isub
                                                   JVM.ClassFile.LongInt    -> lsub
-                                                  JVM.ClassFile.FloatType  -> dsub
-                                                  JVM.ClassFile.DoubleType -> fsub
+                                                  JVM.ClassFile.FloatType  -> fsub
+                                                  JVM.ClassFile.DoubleType -> dsub
     genCode (IR.MultiplyIR expressionType)  = case expressionType of
                                                   JVM.ClassFile.IntType    -> imul
                                                   JVM.ClassFile.LongInt    -> lmul
-                                                  JVM.ClassFile.FloatType  -> dmul
-                                                  JVM.ClassFile.DoubleType -> fmul
+                                                  JVM.ClassFile.FloatType  -> fmul
+                                                  JVM.ClassFile.DoubleType -> dmul
     genCode (IR.DivideIR expressionType)    = case expressionType of
                                                   JVM.ClassFile.IntType    -> idiv
                                                   JVM.ClassFile.LongInt    -> ldiv
-                                                  JVM.ClassFile.FloatType  -> ddiv
-                                                  JVM.ClassFile.DoubleType -> fdiv
+                                                  JVM.ClassFile.FloatType  -> fdiv
+                                                  JVM.ClassFile.DoubleType -> ddiv

@@ -96,6 +96,7 @@ doubleParser :: Parser Double
 doubleParser = do
     try $ do
         value <- L.float
+        scn
         return value
 
 integerParser :: Parser Integer

@@ -29,6 +29,9 @@ testAParser = do
     let codeNegative = "- 100"
     let testNegative = testParseSuccess codeNegative (Neg (IntConst 100)) expressionParser'
 
+    let codeAddDouble = "1.0 + 2.0"
+    let testAddDouble = testParseSuccess codeAddDouble (ABinary Add (DoubleConst 1.0) (DoubleConst 2.0)) expressionParser'
+
     TestList [ testAdd
              , testSubtract
              , testMultiply
@@ -36,4 +39,5 @@ testAParser = do
              , testMixed
              , testParens
              , testNegative
+             , testAddDouble
              ]
