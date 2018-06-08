@@ -74,10 +74,10 @@ instance CodeGen IR.ExprIR where
     genCode (IR.DoubleConstIR value) = doubleToBytecode value
     genCode (IR.BoolConstIR value) = if value then iconst_1 else iconst_0
     genCode (IR.StringLiteralIR value) = loadString value
-    genCode (IR.ABinaryIR op expr1 expr2) = do
-        genCode expr1
-        genCode expr2
-        genCode op
+    genCode (IR.ABinaryIR op expr1 expr2) = genCode expr1 >> genCode expr2 >> genCode op
+    genCode (IR.MethodCallIR name expr) = do
+        aload_ I0
+        invokeVirtual (pack "ModuleName") $ NameType (pack $ extractName name) $ MethodSignature [] ReturnsVoid
     genCode (a) = error $ show a
 
 instance CodeGen IR.StmtIR where

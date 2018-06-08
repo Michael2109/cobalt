@@ -1,6 +1,6 @@
 package integration
 
-class Example(x: int, y: int) extends Sprite
+class Method()
 
     let method (): Int = 1
 
