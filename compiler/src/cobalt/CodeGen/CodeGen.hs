@@ -90,10 +90,17 @@ instance CodeGen IR.StmtIR where
     genCode (IR.ExprAsStmtIR expression) = genCode expression
     genCode (IR.IfIR condition ifStmt elseStmt) = do
         genCode condition
+        i0 $ IF_ICMP C_EQ $ fromIntegral (ord '\n')
+        let label = fromIntegral (ord '\n')
+        i0 $ GOTO label
         genCode ifStmt
+        i0 $ GOTO label
         case elseStmt of
-            Just s -> genCode s
+            Just s -> do
+                i0 $ JSR label
+                genCode s
             Nothing -> return ()
+        i0 $ JSR label
     genCode (IR.PrintIR expression expressionType) = do
         getStaticField Java.Lang.system Java.IO.out
         genCode expression
