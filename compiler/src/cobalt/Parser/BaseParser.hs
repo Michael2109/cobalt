@@ -88,9 +88,9 @@ lexeme = L.lexeme sc
 floatParser :: Parser Double
 floatParser = do
     try $ do
-        value <- L.float
+        value <- L.scientific
         (symbol "f" <|> symbol "F")
-        return value
+        return $  toRealFloat value
 
 doubleParser :: Parser Double
 doubleParser = do
