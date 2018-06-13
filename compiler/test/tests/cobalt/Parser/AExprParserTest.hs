@@ -32,6 +32,15 @@ testAParser = do
     let codeAddDouble = "1.0 + 2.0"
     let testAddDouble = testParseSuccess codeAddDouble (ABinary Add (DoubleConst 1.0) (DoubleConst 2.0)) expressionParser'
 
+    let codeAddDoubleInt = "1.0 + 2"
+    let testAddDoubleInt = testParseSuccess codeAddDoubleInt (ABinary Add (DoubleConst 1.0) (IntConst 2)) expressionParser'
+
+    let codeAddFloatFloat = "1.8f + 2f"
+    let testAddFloatFloat = testParseSuccess codeAddFloatFloat (ABinary Add (FloatConst 1.8) (FloatConst 2.0)) expressionParser'
+
+    let codeAddFloatFloatCapital = "1.8F + 2F"
+    let testAddFloatFloatCapital = testParseSuccess codeAddFloatFloatCapital (ABinary Add (FloatConst 1.8) (FloatConst 2.0)) expressionParser'
+
     TestList [ testAdd
              , testSubtract
              , testMultiply
@@ -40,4 +49,7 @@ testAParser = do
              , testParens
              , testNegative
              , testAddDouble
+             , testAddDoubleInt
+             , testAddFloatFloat
+             , testAddFloatFloatCapital
              ]
