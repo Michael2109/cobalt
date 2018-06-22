@@ -1,0 +1,7 @@
+package x.y.z
+class ClassName
+  let x(): Int = do
+    if(0) then do
+      1
+    else do
+      2

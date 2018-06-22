@@ -1,9 +1,0 @@
-package integration.code_generation
-
-class Println(x: int, y: int) extends Sprite
-
-    let main(direction: int): void = do
-        print (1)
-        println (1)
-
-

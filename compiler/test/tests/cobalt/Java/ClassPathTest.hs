@@ -1,1 +1,0 @@
-module Java.ClassPathTest where
