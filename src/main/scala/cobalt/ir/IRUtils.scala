@@ -16,6 +16,24 @@ object IRUtils {
     }
   }
 
+  def getStoreOperator(statement: StatementIR): Int ={
+    statement match {
+      case inline: InlineIR => getStoreOperator(inline.expression)
+      case doBlock: DoBlockIR => getStoreOperator(doBlock.statement)
+      case blockStmt: BlockStmtIR => getStoreOperator(blockStmt.statements.head)
+    }
+  }
+
+  def getStoreOperator(expression: ExpressionIR): Int ={
+    expression match {
+      case aBinaryIR: ABinaryIR => getStoreOperator(aBinaryIR.expression1)
+      case _: IntConstIR => Opcodes.ISTORE
+      case _: LongConstIR => Opcodes.LSTORE
+      case _: FloatConstIR => Opcodes.FSTORE
+      case _: DoubleConstIR => Opcodes.DSTORE
+    }
+  }
+
   def getArithmeticOperator(aBinary: ABinaryIR): Int = {
     aBinary.expression1 match {
       case innerABinary: ABinaryIR => {
