@@ -59,10 +59,10 @@ object IR {
   case class ABinaryIR(op: ABinOpIR, expression1: ExpressionIR, expression2: ExpressionIR) extends ExpressionIR
   case class BBinaryIR(op: BBinOpIR, expression1: ExpressionIR, expression2: ExpressionIR) extends ExpressionIR
   case class RBinaryIR(op: RBinOpIR, expression1: ExpressionIR, expression2: ExpressionIR) extends ExpressionIR
-  case class IntConstIR(value: Int) extends ExpressionIR
-  case class DoubleConstIR(value: Double) extends ExpressionIR
-  case class FloatConstIR(value: Float) extends ExpressionIR
-  case class LongConstIR(value: Long) extends ExpressionIR
+  case class IntConstIR(value: BigInt) extends ExpressionIR
+  case class LongConstIR(value: BigInt) extends ExpressionIR
+  case class FloatConstIR(value: BigDecimal) extends ExpressionIR
+  case class DoubleConstIR(value: BigDecimal) extends ExpressionIR
   case class NegIR(expression: ExpressionIR) extends ExpressionIR
 
   case class ArrayIR() extends ExpressionIR

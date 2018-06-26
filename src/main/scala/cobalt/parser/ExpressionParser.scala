@@ -7,28 +7,32 @@ import cobalt.ast.{AST}
 
 object ExpressionParser {
 
-  val annotationParser: P[Annotation] = P("@" ~ nameParser).map(Annotation)
+  def annotationParser: P[Annotation] = P("@" ~ nameParser).map(Annotation)
 
-  val identifierParser: P[AST.Identifier] = LexicalParser.identifier.map(x => Identifier(Name(x)))
-  val nameParser: P[Name] = LexicalParser.identifier.map(x => Name(x))
-  val numberParser: P[IntConst] = P( LexicalParser.floatnumber | LexicalParser.longinteger | LexicalParser.integer | LexicalParser.imagnumber ).map(x => IntConst(x.toInt))
-  val stringLiteral: P[StringLiteral] = LexicalParser.stringliteral.map(x => StringLiteral(x))
+  val expressionParser: P[Expression] = {
+    def parensParser: P[Expression] = P( "(" ~ (expressionParser) ~ ")" )
+    def termParser: P[Expression] = P(Chain(allExpressionsParser, multiply | divide ))
+    def arith_exprParser: P[Expression] = P(Chain(termParser, add | subtract))
+    def rExprParser: P[Expression] = P(Chain(arith_exprParser, LtE | Lt | GtE | Gt))
 
-  val expressionParser: P[Expression] = P(Chain(rExprParser, and | or))
-  private val rExprParser: P[Expression] = P(Chain(arith_exprParser, LtE | Lt | GtE | Gt))
-  private val arith_exprParser: P[Expression] = P(Chain(termParser, add | subtract))
-  private val termParser: P[Expression] = P(Chain(allExpressionsParser, multiply | divide ))
-  private val parensParser: P[Expression] = P( "(" ~ (expressionParser) ~ ")" )
+    def allExpressionsParser = ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
+    P(Chain(rExprParser, and | or))
+  }
 
-  private val allExpressionsParser = ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
+  def identifierParser: P[AST.Identifier] = LexicalParser.identifier.map(x => Identifier(Name(x)))
 
   def finalModifierParser: P[AST.Final.type] = P("final").map(x => Final)
 
   def methodCallParser: P[MethodCall] = P(nameParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => MethodCall(x._1, BlockExpr(x._2)))
 
+  def nameParser: P[Name] = LexicalParser.identifier.map(x => Name(x))
+
   def newClassInstanceParser: P[NewClassInstance] = P("new" ~ typeRefParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
 
-  // if true then 1 else 2
+  def numberParser: P[Expression] = P(LexicalParser.floatnumber).map(FloatConst) | P(LexicalParser.longinteger).map(LongConst) | P(LexicalParser.pointfloat).map(DoubleConst) | P(LexicalParser.integer).map(IntConst)
+
+  def stringLiteral: P[StringLiteral] = LexicalParser.stringliteral.map(x => StringLiteral(x))
+
   def ternaryParser: P[Ternary] = P(LexicalParser.kw("if") ~ expressionParser ~ "then" ~ expressionParser ~ "else" ~ expressionParser).map(x => Ternary(x._1, x._2, x._3))
 
   def typeRefParser: P[Type] = nameParser.map(x => TypeRef(RefLocal(x)))

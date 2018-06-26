@@ -1,5 +1,9 @@
 package cobalt.parser.expression
 
+import cobalt.ast.AST.{DoubleConst, FloatConst, IntConst, LongConst}
+import cobalt.ir.IR.IntConstIR
+import cobalt.parser.ExpressionParser
+import cobalt.utils.TestUtil
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{FunSpec, Matchers}
@@ -11,22 +15,24 @@ class NumberParserTest extends FunSpec with Matchers
   {
     it("Should parse integers")
     {
-      // TestUtil.parse("let exampleMethod (): Int = do\n if true 1 else 2", StatementParser.stmt) shouldBe Name(identifier("true"),Load)
+      TestUtil.parse("100", ExpressionParser.expressionParser) shouldBe IntConst(100)
     }
 
     it("Should parse longs")
     {
-      // TestUtil.parse("let exampleMethod (): Int = do\n if true 1 else 2", StatementParser.stmt) shouldBe Name(identifier("true"),Load)
+      TestUtil.parse("100l", ExpressionParser.expressionParser) shouldBe LongConst(100)
+      TestUtil.parse("100L", ExpressionParser.expressionParser) shouldBe LongConst(100)
     }
 
     it("Should parse floats")
     {
-      // TestUtil.parse("let exampleMethod (): Int = do\n if true 1 else 2", StatementParser.stmt) shouldBe Name(identifier("true"),Load)
+      TestUtil.parse("123.123f", ExpressionParser.expressionParser) shouldBe FloatConst(123.123f)
+      TestUtil.parse("123.123F", ExpressionParser.expressionParser) shouldBe FloatConst(123.123f)
     }
 
     it("Should parse doubles")
     {
-     // TestUtil.parse("let exampleMethod (): Int = do\n if true 1 else 2", StatementParser.stmt) shouldBe Name(identifier("true"),Load)
+      TestUtil.parse("123.123", ExpressionParser.expressionParser) shouldBe DoubleConst(123.123)
     }
   }
 }

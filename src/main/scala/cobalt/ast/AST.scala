@@ -136,10 +136,10 @@ object AST {
   case class ABinary(op: ABinOp, expression1: Expression, expression2: Expression) extends Expression
   case class BBinary(op: BBinOp, expression1: Expression, expression2: Expression) extends Expression
   case class RBinary(op: RBinOp, expression1: Expression, expression2: Expression) extends Expression
-  case class IntConst(value: Int) extends Expression
-  case class DoubleConst(value: Double) extends Expression
-  case class FloatConst(value: Float) extends Expression
-  case class LongConst(value: Long) extends Expression
+  case class IntConst(value: BigInt) extends Expression
+  case class LongConst(value: BigInt) extends Expression
+  case class DoubleConst(value: BigDecimal) extends Expression
+  case class FloatConst(value: BigDecimal) extends Expression
   case class Neg(expression: Expression) extends Expression
 
   def expressionToExpressionIR(expression: Expression): ExpressionIR = expression match

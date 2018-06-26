@@ -54,7 +54,10 @@ object CodeGen {
           0
         })
       case blockStmt: BlockExprIR => blockStmt.expressions.foreach(x => genCode(mv, x))
-      case intConst: IntConstIR => intConstCodeGen(mv, intConst)
+      case intConst: IntConstIR => mv.visitIntInsn(Opcodes.BIPUSH, intConst.value.toInt)
+      case longConst: LongConstIR => mv.visitLdcInsn(Opcodes.BIPUSH, longConst.value.toLong)
+      case floatConst: FloatConstIR => mv.visitLdcInsn(Opcodes.BIPUSH, floatConst.value)
+      case doubleConst: DoubleConstIR => mv.visitLdcInsn(Opcodes.BIPUSH, doubleConst.value)
     }
   }
 
@@ -87,10 +90,6 @@ object CodeGen {
       case doBlock: DoBlockIR => genCode(mv, doBlock.statement)
       case inline: InlineIR => genCode(mv, inline.expression)
     }
-  }
-
-  def intConstCodeGen(mv: MethodVisitor, intConst: IntConstIR): Unit = {
-    mv.visitIntInsn(Opcodes.BIPUSH, intConst.value)
   }
 
   @throws[Exception]
