@@ -1,8 +1,9 @@
 package x.y.z
 class ClassName
   let x(): Int = do
-    if(0) then do
-      1
+    if(1) then do
+      let y = 1 + 2 * (3 - 4) / 5
+    elif 0 then do
+      let q = 3
     else do
-      2
-    let y:Int = 100
+      let z = 2

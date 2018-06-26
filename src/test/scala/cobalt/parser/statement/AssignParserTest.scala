@@ -33,10 +33,10 @@ class AssignParserTest extends FunSpec with Matchers
     {
       val code =
         """let x = do
-          |  x
-          |  y
+          |  1
+          |  2
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.statementParser) shouldBe Assign(Name("x"),None,true,DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(Identifier(Name("x"))), ExprAsStmt(Identifier(Name("y")))))))
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe Assign(Name("x"),None,true,DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)), ExprAsStmt(IntConst(2))))))
     }
   }
 

@@ -16,13 +16,13 @@ class Statements(indent: Int) {
   val spaces = P((LexicalParser.nonewlinewscomment.? ~~ "\n").repX(1))
   val space_indents = P( spaces.repX ~~ " ".repX(indent) )
 
-  val assignParser: P[Assign] = P(LexicalParser.kw("let") ~ ("mutable").!.? ~ ExpressionParser.nameParser ~ (":" ~ ExpressionParser.typeRefParser).? ~ "=" ~ blockParser).map(x => Assign(x._2, x._3, x._1.isEmpty, x._4))
+  val assignParser: P[Assign] = P(LexicalParser.kw("let") ~ ("mutable").!.? ~ ExpressionParser.nameParser ~ (":" ~ ExpressionParser.typeRefParser).? ~ P(LexicalParser.kw("=")) ~ blockParser).map(x => Assign(x._2, x._3, x._1.isEmpty, x._4))
 
   val blockParser: P[Block] = P(doBlock | ExpressionParser.expressionParser.map(Inline))
 
-  val doBlock: P[Block] = P(LexicalParser.kw("do") ~~ indentedBlock.rep).map(x => DoBlock(BlockStmt(x)))
+  val doBlock: P[Block] = P(LexicalParser.kw("do") ~~ indentedBlock).map(x => DoBlock(x))
 
-  val exprAsStmt: P[Statement] = ExpressionParser.expressionParser.map(ExprAsStmt)
+  val exprAsStmt: P[Statement] = P(ExpressionParser.expressionParser).map(ExprAsStmt)
 
   val ifStatementParser: P[If] = {
     def ifParser: P[(Expression, Statement)] = P(LexicalParser.kw("if") ~ ExpressionParser.expressionParser ~ P(LexicalParser.kw("then")) ~ blockParser).map(x => (x._1, x._2))

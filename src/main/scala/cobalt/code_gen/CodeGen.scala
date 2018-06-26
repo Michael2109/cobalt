@@ -5,13 +5,11 @@ import cobalt.ir.IR._
 import scala.tools.asm._
 import scala.tools.asm.Opcodes;
 
-object CodeGen
-{
+object CodeGen {
 
   val version = 49
 
-  def genCode(module: ModuleIR): Array[Byte] =
-  {
+  def genCode(module: ModuleIR): Array[Byte] = {
     val cw = new ClassWriter(0)
 
     module.models.foreach(x => genCode(cw, x))
@@ -19,12 +17,9 @@ object CodeGen
     cw.toByteArray
   }
 
-  def genCode(cw: ClassWriter, statement: StatementIR): Unit =
-  {
-    statement match
-    {
-      case classModel: ClassModelIR =>
-      {
+  def genCode(cw: ClassWriter, statement: StatementIR): Unit = {
+    statement match {
+      case classModel: ClassModelIR => {
         cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.name.value, null, "java/lang/Object", null)
         val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null)
         mv.visitVarInsn(Opcodes.ALOAD, 0)
@@ -34,8 +29,7 @@ object CodeGen
         mv.visitEnd()
         genCode(cw, classModel.body)
       }
-      case method: MethodIR =>
-      {
+      case method: MethodIR => {
         val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, method.name.value, "()V", null, null)
         genCode(mv, method.body)
         mv.visitInsn(Opcodes.RETURN)
@@ -44,57 +38,67 @@ object CodeGen
     }
   }
 
-  def genCode(mv: MethodVisitor, expression: ExpressionIR): Unit =
-  {
-    expression match
-    {
-      case boolConst: BoolConstIR => mv.visitIincInsn(Opcodes.BIPUSH, 1)
+  def genCode(mv: MethodVisitor, expression: ExpressionIR): Unit = {
+    expression match {
+      case aBinary: ABinaryIR => {
+        genCode(mv, aBinary.expression1)
+        genCode(mv, aBinary.expression2)
+        val instruction = aBinary.op match {
+          case AddIR => Opcodes.IADD
+          case SubtractIR => Opcodes.ISUB
+          case MultiplyIR => Opcodes.IMUL
+          case DivideIR => Opcodes.IDIV
+        }
+        mv.visitInsn(instruction)
+      }
+      case boolConst: BoolConstIR => mv.visitIntInsn(Opcodes.BIPUSH,
+        if (boolConst.value.equals(true)) {
+          1
+        } else {
+          0
+        })
       case blockStmt: BlockExprIR => blockStmt.expressions.foreach(x => genCode(mv, x))
       case intConst: IntConstIR => intConstCodeGen(mv, intConst)
     }
   }
 
-  def genCode(mv: MethodVisitor, statement: StatementIR): Unit =
-  {
-    statement match
-    {
+  def genCode(mv: MethodVisitor, statement: StatementIR): Unit = {
+    statement match {
       case assign: AssignIR => {
         genCode(mv, assign.block)
         mv.visitVarInsn(Opcodes.ISTORE, (math.random() * 100).asInstanceOf[Int])
       }
       case blockStmt: BlockStmtIR => blockStmt.statements.foreach(x => genCode(mv, x))
+      case doBlock: DoBlockIR => genCode(mv, doBlock.asInstanceOf[BlockIR])
       case exprAsStmt: ExprAsStmtIR => genCode(mv, exprAsStmt.expression)
       case ifStmt: IfIR => {
         val trueLabel = new Label
         val endLabel = new Label
         genCode(mv, ifStmt.condition)
         mv.visitJumpInsn(Opcodes.IFEQ, trueLabel)
-        genCode(mv, ifStmt.elseBlock.getOrElse(BlockStmtIR(Seq())))
+        genCode(mv, ifStmt.ifBlock)
         mv.visitJumpInsn(Opcodes.GOTO, endLabel)
         mv.visitLabel(trueLabel)
-        genCode(mv, ifStmt.ifBlock.asInstanceOf[BlockIR])
+        genCode(mv, ifStmt.elseBlock.getOrElse(BlockStmtIR(Seq())))
         mv.visitLabel(endLabel)
       }
+      case inline: InlineIR => genCode(mv, inline.asInstanceOf[BlockIR])
     }
   }
 
-  def genCode(mv: MethodVisitor, block: BlockIR): Unit =
-  {
-    block match
-    {
+  def genCode(mv: MethodVisitor, block: BlockIR): Unit = {
+    block match {
       case doBlock: DoBlockIR => genCode(mv, doBlock.statement)
       case inline: InlineIR => genCode(mv, inline.expression)
     }
   }
 
-  def intConstCodeGen(mv: MethodVisitor, intConst: IntConstIR): Unit =
-  {
+  def intConstCodeGen(mv: MethodVisitor, intConst: IntConstIR): Unit = {
     mv.visitIntInsn(Opcodes.BIPUSH, intConst.value)
   }
 
   @throws[Exception]
-  def dump: Array[Byte] =
-  {
+  def dump: Array[Byte] = {
     val cw = new ClassWriter(0)
     var mv: MethodVisitor = null
 
