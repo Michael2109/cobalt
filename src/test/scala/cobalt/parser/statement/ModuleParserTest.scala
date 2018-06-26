@@ -18,9 +18,6 @@ class ModuleParserTest extends FunSpec with Matchers
     {
       val code ="package x.y.z\nclass ClassName\n  let x(): Int = 1\n"
 
-
-      import scala.reflect.runtime.universe.{Literal, Constant}
-      println(Literal(Constant(code)))
       TestUtil.parse(code, StatementParser.moduleParser) shouldBe Module(ModuleHeader(NameSpace(ArrayBuffer(Name("x"), Name("y"), Name("z"))),ArrayBuffer()),ArrayBuffer(ClassModel(Name("ClassName"),List(),List(),None,List(),List(),Method(Name("x"),List(),ArrayBuffer(),List(),Some(TypeRef(RefLocal(Name("Int")))),Inline(IntConst(1))))))
     }
   }

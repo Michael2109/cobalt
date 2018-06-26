@@ -4,6 +4,6 @@ class ClassName
     if(1) then do
       let y = 1 + 2 * (3 - 4) / 5
     elif 0 then do
-      let q = 3
+      let q = 3.4 * 2.1 * 5.3
     else do
       let z = 2

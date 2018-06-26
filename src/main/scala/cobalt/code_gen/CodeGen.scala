@@ -1,6 +1,7 @@
 package cobalt.code_gen
 
 import cobalt.ir.IR._
+import cobalt.ir.IRUtils
 
 import scala.tools.asm._
 import scala.tools.asm.Opcodes;
@@ -43,12 +44,7 @@ object CodeGen {
       case aBinary: ABinaryIR => {
         genCode(mv, aBinary.expression1)
         genCode(mv, aBinary.expression2)
-        val instruction = aBinary.op match {
-          case AddIR => Opcodes.IADD
-          case SubtractIR => Opcodes.ISUB
-          case MultiplyIR => Opcodes.IMUL
-          case DivideIR => Opcodes.IDIV
-        }
+        val instruction = IRUtils.getArithmeticOperator(aBinary)
         mv.visitInsn(instruction)
       }
       case boolConst: BoolConstIR => mv.visitIntInsn(Opcodes.BIPUSH,

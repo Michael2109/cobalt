@@ -22,8 +22,6 @@ object Compiler {
 
     // Parse them
     val asts = cobaltFiles.map(cobaltFile => {
-      import scala.reflect.runtime.universe._
-      println(Literal(Constant(cobaltFile.replace("\r", ""))))
       StatementParser.moduleParser.parse(cobaltFile.replace("\r", ""))
     })
 
@@ -32,12 +30,8 @@ object Compiler {
       case Parsed.Failure(a, b, c) => throw new Exception("Failed compiling: " + a + " : " + b + " : " + c)
     })
 
-    println(modules.mkString("\n\n\n"))
-
     // Process AST
     val moduleIRs: List[ModuleIR] = modules.map(AST.moduleToModuleIR)
-
-    println(moduleIRs.mkString("\n\n\n"))
 
     // Generate code
     val moduleBytecodes: List[Array[Byte]] = moduleIRs.map(CodeGen.genCode)
