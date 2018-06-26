@@ -7,7 +7,7 @@ import cobalt.ast.{AST}
 
 object ExpressionParser {
 
-  val annotationParser: P[Annotation] = nameParser.map(Annotation)
+  val annotationParser: P[Annotation] = P("@" ~ nameParser).map(Annotation)
 
   val identifierParser: P[AST.Identifier] = LexicalParser.identifier.map(x => Identifier(Name(x)))
   val nameParser: P[Name] = LexicalParser.identifier.map(x => Name(x))
@@ -28,6 +28,7 @@ object ExpressionParser {
 
   def newClassInstanceParser: P[NewClassInstance] = P("new" ~ typeRefParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
 
+  // if true then 1 else 2
   def ternaryParser: P[Ternary] = P(LexicalParser.kw("if") ~ expressionParser ~ "then" ~ expressionParser ~ "else" ~ expressionParser).map(x => Ternary(x._1, x._2, x._3))
 
   def typeRefParser: P[Type] = nameParser.map(x => TypeRef(RefLocal(x)))

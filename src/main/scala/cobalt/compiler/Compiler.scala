@@ -1,6 +1,6 @@
 package cobalt.compiler
 
-import java.io.{BufferedOutputStream, File, FileOutputStream, PrintWriter}
+import java.io.{BufferedOutputStream, File, FileOutputStream}
 import java.nio.file.{Path, Paths}
 
 import cobalt.ast.AST
@@ -11,13 +11,10 @@ import cobalt.parser.StatementParser
 import fastparse.core.Parsed
 
 import scala.io.Source
-import scala.tools.fusesource_embedded.jansi.AnsiConsole
 
-class Compiler(commandLineOptions: Map[CommandLineOption, Any], classPath: Path, pathsToCompile: List[Path], outputDir: Path) {
+object Compiler {
 
-  // Read in the files to be compiled
-
-  def compile()= {
+  def compile(commandLineOptions: Map[CommandLineOption, Any], classPath: Path, pathsToCompile: List[Path], outputDir: Path)= {
 
     val absolutePathsToCompile: List[Path] = pathsToCompile.map(path => Paths.get(classPath.toString, path.toString))
 
@@ -35,8 +32,12 @@ class Compiler(commandLineOptions: Map[CommandLineOption, Any], classPath: Path,
       case Parsed.Failure(a, b, c) => throw new Exception("Failed compiling: " + a + " : " + b + " : " + c)
     })
 
+    println(modules.mkString("\n\n\n"))
+
     // Process AST
     val moduleIRs: List[ModuleIR] = modules.map(AST.moduleToModuleIR)
+
+    println(moduleIRs.mkString("\n\n\n"))
 
     // Generate code
     val moduleBytecodes: List[Array[Byte]] = moduleIRs.map(CodeGen.genCode)

@@ -14,9 +14,9 @@ class ReassignParserTest extends FunSpec with Matchers
 {
   describe("Reassign parser")
   {
-    it("Should parse reassignment an inline statement")
+    it("Should parse reassignment an inline statementParser")
     {
-      TestUtil.parse("x <- 2", StatementParser.statement) shouldBe Reassign(Name("x"),Inline(IntConst(2)))
+      TestUtil.parse("x <- 2", StatementParser.statementParser) shouldBe Reassign(Name("x"),Inline(IntConst(2)))
     }
 
     it("Should parse reassignment with a do block")
@@ -27,7 +27,7 @@ class ReassignParserTest extends FunSpec with Matchers
           |  2
           |  3
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.statement) shouldBe Reassign(Name("x"),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)), ExprAsStmt(IntConst(2)), ExprAsStmt(IntConst(3))))))
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe Reassign(Name("x"),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)), ExprAsStmt(IntConst(2)), ExprAsStmt(IntConst(3))))))
     }
   }
 }

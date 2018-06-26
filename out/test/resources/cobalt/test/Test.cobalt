@@ -5,3 +5,4 @@ class ClassName
       1
     else do
       2
+    let y:Int = 100

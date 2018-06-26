@@ -16,17 +16,17 @@ class AssignParserTest extends FunSpec with Matchers
   {
     it("Should parse assignment")
     {
-      TestUtil.parse("let x = 10", StatementParser.statement) shouldBe Assign(Name("x"),None,true,Inline(IntConst(10)))
+      TestUtil.parse("let x = 10", StatementParser.statementParser) shouldBe Assign(Name("x"),None,true,Inline(IntConst(10)))
     }
 
     it("Should parse mutable assignment")
     {
-      TestUtil.parse("let mutable x = 10", StatementParser.statement) shouldBe Assign(Name("x"),None,false,Inline(IntConst(10)))
+      TestUtil.parse("let mutable x = 10", StatementParser.statementParser) shouldBe Assign(Name("x"),None,false,Inline(IntConst(10)))
     }
 
     it("Should parse with type defined")
     {
-      TestUtil.parse("let x: Int = 10", StatementParser.statement) shouldBe Assign(Name("x"),Some(TypeRef(RefLocal(Name("Int")))),true,Inline(IntConst(10)))
+      TestUtil.parse("let x: Int = 10", StatementParser.statementParser) shouldBe Assign(Name("x"),Some(TypeRef(RefLocal(Name("Int")))),true,Inline(IntConst(10)))
     }
 
     it("Should parse with a do block")
@@ -36,7 +36,7 @@ class AssignParserTest extends FunSpec with Matchers
           |  x
           |  y
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.statement) shouldBe Assign(Name("x"),None,true,DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(Identifier(Name("x"))), ExprAsStmt(Identifier(Name("y")))))))
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe Assign(Name("x"),None,true,DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(Identifier(Name("x"))), ExprAsStmt(Identifier(Name("y")))))))
     }
   }
 

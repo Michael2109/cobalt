@@ -175,7 +175,7 @@ object AST {
     case neg: Neg => NegIR(expressionToExpressionIR(neg))
   }
 
-  case class Array() extends Expression
+  case class ArrayValue() extends Expression
   case class SpecialRefAsExpr() extends Expression
 
   trait Statement

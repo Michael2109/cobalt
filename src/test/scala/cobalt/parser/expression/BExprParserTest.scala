@@ -10,7 +10,7 @@ import org.scalatest.{FunSpec, Matchers}
 @RunWith(classOf[JUnitRunner])
 class BExprParserTest extends FunSpec with Matchers
 {
-  describe("Boolean statement parsers")
+  describe("Boolean statementParser parsers")
   {
     it("Should parse boolean constant `true`")
     {
@@ -22,7 +22,7 @@ class BExprParserTest extends FunSpec with Matchers
     }
   }
 
-  describe("Relational statement parsers")
+  describe("Relational statementParser parsers")
   {
     it("Should parse `less than`")
     {

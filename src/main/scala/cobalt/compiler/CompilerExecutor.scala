@@ -28,7 +28,7 @@ object CompilerExecutor {
     val options = nextOption(Map(), args.toList)
     println("Compiler Options: " + options)
 
-    new Compiler(options, Paths.get(options.get(ClassPath).get), List[Path](Paths.get(options.get(FilePath).get)), Paths.get(options.get(DestinationPath).get)).compile()
+    Compiler.compile(options, Paths.get(options.get(ClassPath).get), List[Path](Paths.get(options.get(FilePath).get)), Paths.get(options.get(DestinationPath).get))
   }
 }
 
