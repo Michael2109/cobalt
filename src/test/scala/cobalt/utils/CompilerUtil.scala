@@ -4,6 +4,7 @@ import java.io.File
 import java.nio.file.Path
 
 import cobalt.compiler.CompilerExecutor
+import sys.process._
 
 object CompilerUtil {
 
@@ -18,5 +19,9 @@ object CompilerUtil {
     for(file <- allFiles){
       CompilerExecutor.main(Array("-cp", classPath.toString, "-d", outputDir.toString, classPath.relativize(file.toPath).toString));
     }
+  }
+
+  def executeJava(classPath: String, fileName: String): Unit ={
+    ("java -cp " + classPath + " " + fileName) !
   }
 }

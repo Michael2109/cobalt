@@ -1,6 +1,6 @@
 package test
 
-class ClassName
+class Test
   let x(): Int = do
     if true then do
       let y = 1 + 2 * (3 - 4) / 5
