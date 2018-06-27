@@ -2,8 +2,6 @@ package cobalt.ir
 
 object IR {
 
-  case class ModuleIR(header: ModuleHeaderIR, models: Seq[StatementIR])
-
   case class ModuleHeaderIR(nameSpace: NameSpaceIR, imports: Seq[ImportIR])
 
   case class ImportIR(loc: Seq[NameIR])
@@ -73,9 +71,9 @@ object IR {
   case class DoBlockIR(statement: StatementIR) extends BlockIR
 
   trait StatementIR
-  case class ClassModelIR(name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
-  case class ObjectModelIR(name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
-  case class TraitModelIR(name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
+  case class ClassModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
+  case class ObjectModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
+  case class TraitModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
   case class MethodIR(name: NameIR, annotations: Seq[AnnotationIR], fields: Seq[FieldIR], modifiers: Seq[ModifierIR], returnType: Option[TypeIR], body: BlockIR) extends StatementIR
   case class ForIR() extends StatementIR
   case class WhileIR() extends StatementIR

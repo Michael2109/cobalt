@@ -6,7 +6,7 @@ import java.nio.file.{Path, Paths}
 import cobalt.ast.AST
 import cobalt.ast.AST.Module
 import cobalt.code_gen.CodeGen
-import cobalt.ir.IR.ModuleIR
+import cobalt.ir.IR.{ClassModelIR, StatementIR}
 import cobalt.parser.StatementParser
 import fastparse.core.Parsed
 
@@ -25,16 +25,16 @@ object Compiler {
       StatementParser.moduleParser.parse(cobaltFile.replace("\r", ""))
     })
 
-    val modules: List[Module] = asts.map(ast => ast match {
+    val modules: Seq[Module] = asts.map(ast => ast match {
       case Parsed.Success(value, _) => value
       case Parsed.Failure(a, b, c) => throw new Exception("Failed compiling: " + a + " : " + b + " : " + c)
     })
 
     // Process AST
-    val moduleIRs: List[ModuleIR] = modules.map(AST.moduleToModuleIR)
+    val modelIRs: Seq[StatementIR] = modules.map(AST.moduleToModelsIR).flatten
 
     // Generate code
-    val moduleBytecodes: List[Array[Byte]] = moduleIRs.map(CodeGen.genCode)
+    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(model => CodeGen.genModelCode(model))
 
     // Save to destination directory
 

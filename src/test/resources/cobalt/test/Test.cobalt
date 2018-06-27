@@ -1,4 +1,4 @@
-package x.y.z
+package test
 
 class ClassName
   let x(): Int = do

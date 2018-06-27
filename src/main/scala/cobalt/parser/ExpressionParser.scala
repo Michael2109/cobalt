@@ -29,7 +29,7 @@ object ExpressionParser {
 
   def newClassInstanceParser: P[NewClassInstance] = P("new" ~ typeRefParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
 
-  def numberParser: P[Expression] = P(LexicalParser.floatnumber).map(FloatConst) | P(LexicalParser.longinteger).map(LongConst) | P(LexicalParser.pointfloat).map(DoubleConst) | P(LexicalParser.integer).map(IntConst)
+  def numberParser: P[Expression] = P(LexicalParser.floatnumber ~ P("F" | "f")).map(FloatConst) | P(LexicalParser.longinteger).map(LongConst) | P(LexicalParser.floatnumber).map(DoubleConst) | P(LexicalParser.integer).map(IntConst)
 
   def stringLiteral: P[StringLiteral] = LexicalParser.stringliteral.map(x => StringLiteral(x))
 

@@ -26,8 +26,8 @@ class NumberParserTest extends FunSpec with Matchers
 
     it("Should parse floats")
     {
-      TestUtil.parse("123.123f", ExpressionParser.expressionParser) shouldBe FloatConst(123.123f)
-      TestUtil.parse("123.123F", ExpressionParser.expressionParser) shouldBe FloatConst(123.123f)
+      TestUtil.parse("123.123f", ExpressionParser.expressionParser) shouldBe FloatConst(123.123)
+      TestUtil.parse("123.123F", ExpressionParser.expressionParser) shouldBe FloatConst(123.123)
     }
 
     it("Should parse doubles")

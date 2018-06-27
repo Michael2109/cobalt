@@ -10,18 +10,11 @@ object CodeGen {
 
   val version = 49
 
-  def genCode(module: ModuleIR): Array[Byte] = {
-    val cw = new ClassWriter(0)
-
-    module.models.foreach(x => genCode(cw, x))
-    cw.visitEnd()
-    cw.toByteArray
-  }
-
-  def genCode(cw: ClassWriter, statement: StatementIR): Unit = {
-    statement match {
+  def genModelCode(model: StatementIR): Array[Byte] = {
+    model match {
       case classModel: ClassModelIR => {
-        cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.name.value, null, "java/lang/Object", null)
+        val cw = new ClassWriter(0)
+        cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.moduleHeaderIR.nameSpace.nameSpace.map(_.value).mkString(".") + "." + classModel.name.value, null, "java/lang/Object", null)
         val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null)
         mv.visitVarInsn(Opcodes.ALOAD, 0)
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
@@ -29,7 +22,14 @@ object CodeGen {
         mv.visitMaxs(1, 1)
         mv.visitEnd()
         genCode(cw, classModel.body)
+        cw.visitEnd()
+        cw.toByteArray
       }
+    }
+  }
+
+  def genCode(cw: ClassWriter, statement: StatementIR): Unit = {
+    statement match {
       case method: MethodIR => {
         val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, method.name.value, "()V", null, null)
         genCode(mv, method.body)
@@ -55,9 +55,9 @@ object CodeGen {
         })
       case blockStmt: BlockExprIR => blockStmt.expressions.foreach(x => genCode(mv, x))
       case intConst: IntConstIR => mv.visitIntInsn(Opcodes.BIPUSH, intConst.value.toInt)
-      case longConst: LongConstIR => mv.visitLdcInsn(Opcodes.BIPUSH, longConst.value.toLong)
-      case floatConst: FloatConstIR => mv.visitLdcInsn(Opcodes.BIPUSH, floatConst.value)
-      case doubleConst: DoubleConstIR => mv.visitLdcInsn(Opcodes.BIPUSH, doubleConst.value)
+      case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
+      case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)
+      case doubleConst: DoubleConstIR => mv.visitLdcInsn(doubleConst.value.toDouble)
     }
   }
 

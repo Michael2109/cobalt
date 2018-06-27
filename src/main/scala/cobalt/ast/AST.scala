@@ -6,7 +6,15 @@ object AST {
 
   case class Module(header: ModuleHeader, models: Seq[Statement])
 
-  def moduleToModuleIR(module: Module) = ModuleIR(moduleHeaderToModuleHeaderIR(module.header), module.models.map(statementToStatementIR))
+  def moduleToModelsIR(module: Module): Seq[StatementIR] = module.models.map(model => modelToModelIR(moduleHeaderToModuleHeaderIR(module.header), model))
+
+  def modelToModelIR(moduleHeaderIR: ModuleHeaderIR, modelDef: Statement): StatementIR ={
+    modelDef match {
+      case classModel: ClassModel => ClassModelIR(moduleHeaderIR, nameToNameIR(classModel.name), classModel.modifiers.map(modifierToModifierIR), classModel.fields.map(fieldToFieldIR), None, classModel.parentArguments.map(expressionToExpressionIR), classModel.interfaces.map(typeToTypeIR), statementToStatementIR(classModel.body))
+      case objectModel: ObjectModel => ObjectModelIR(moduleHeaderIR, nameToNameIR(objectModel.name), objectModel.modifiers.map(modifierToModifierIR), objectModel.fields.map(fieldToFieldIR), None, objectModel.parentArguments.map(expressionToExpressionIR), objectModel.interfaces.map(typeToTypeIR), statementToStatementIR(objectModel.body))
+      case traitModel: TraitModel => TraitModelIR(moduleHeaderIR, nameToNameIR(traitModel.name), traitModel.modifiers.map(modifierToModifierIR), traitModel.fields.map(fieldToFieldIR), None, traitModel.parentArguments.map(expressionToExpressionIR), traitModel.interfaces.map(typeToTypeIR), statementToStatementIR(traitModel.body))
+    }
+  }
 
   case class ModuleHeader(nameSpace: NameSpace, imports: Seq[Import])
 
@@ -191,7 +199,6 @@ object AST {
   case class Reassign(name: Name, block: Block) extends Statement
   case class Return() extends Statement
   case class Lambda() extends Statement
-  case class ModelDef() extends Statement
   case class ExprAsStmt(expression: Expression) extends Statement
   case class BlockStmt(statements: Seq[Statement]) extends Statement
   case class Match() extends Statement
@@ -202,9 +209,6 @@ object AST {
   {
     case assign: Assign => AssignIR(nameToNameIR(assign.name), None, assign.immutable, blockToBlockIR(assign.block))
     case blockStmt: BlockStmt => BlockStmtIR(blockStmt.statements.map(statementToStatementIR))
-    case classModel: ClassModel => ClassModelIR(nameToNameIR(classModel.name), classModel.modifiers.map(modifierToModifierIR), classModel.fields.map(fieldToFieldIR), None, classModel.parentArguments.map(expressionToExpressionIR), classModel.interfaces.map(typeToTypeIR), statementToStatementIR(classModel.body))
-    case objectModel: ObjectModel => ObjectModelIR(nameToNameIR(objectModel.name), objectModel.modifiers.map(modifierToModifierIR), objectModel.fields.map(fieldToFieldIR), None, objectModel.parentArguments.map(expressionToExpressionIR), objectModel.interfaces.map(typeToTypeIR), statementToStatementIR(objectModel.body))
-    case traitModel: TraitModel => TraitModelIR(nameToNameIR(traitModel.name), traitModel.modifiers.map(modifierToModifierIR), traitModel.fields.map(fieldToFieldIR), None, traitModel.parentArguments.map(expressionToExpressionIR), traitModel.interfaces.map(typeToTypeIR), statementToStatementIR(traitModel.body))
     case method: Method => {
       if(method.returnType.isDefined)
       {
@@ -251,7 +255,6 @@ object AST {
     case reassign: Reassign => ReassignIR(nameToNameIR(reassign.name), blockToBlockIR(reassign.block))
     case r: Return => ReturnIR()
     case _: Lambda => LambdaIR()
-    case _: ModelDef => ModelDefIR()
     case exprAsStmt: ExprAsStmt => ExprAsStmtIR(expressionToExpressionIR(exprAsStmt.expression))
     case blockStmt: BlockStmt => BlockStmtIR(blockStmt.statements.map(statementToStatementIR))
     case _: Match => MatchIR()
