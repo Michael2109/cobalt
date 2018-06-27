@@ -1,7 +1,7 @@
 package test
 
 class Test
-  let x(): Int = do
+  let main(args: Int): void = do
     if true then do
       let y = 1 + 2 * (3 - 4) / 5
     elif false then do

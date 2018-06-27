@@ -31,7 +31,7 @@ object CodeGen {
   def genCode(cw: ClassWriter, statement: StatementIR): Unit = {
     statement match {
       case method: MethodIR => {
-        val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, method.name.value, "()V", null, null)
+        val mv = cw.visitMethod(method.modifiers.map(IRUtils.modifierToModifierOp).foldLeft(0)(_+_), method.name.value, String.format("(%s)V", method.fieldTypes), null, null)
         genCode(mv, method.body)
         mv.visitInsn(Opcodes.RETURN)
         mv.visitEnd()

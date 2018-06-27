@@ -42,6 +42,7 @@ object IR {
   case object AbstractIR extends ModifierIR
   case object FinalIR extends ModifierIR
   case object PureIR extends ModifierIR
+  case object StaticIR extends ModifierIR
 
   // TODO Update args
   trait ExpressionIR
@@ -74,7 +75,7 @@ object IR {
   case class ClassModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
   case class ObjectModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
   case class TraitModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
-  case class MethodIR(name: NameIR, annotations: Seq[AnnotationIR], fields: Seq[FieldIR], modifiers: Seq[ModifierIR], returnType: Option[TypeIR], body: BlockIR) extends StatementIR
+  case class MethodIR(name: NameIR, annotations: Seq[AnnotationIR], fields: Seq[FieldIR], fieldTypes: String, modifiers: Seq[ModifierIR], returnType: Option[TypeIR], body: BlockIR) extends StatementIR
   case class ForIR() extends StatementIR
   case class WhileIR() extends StatementIR
   case class IfIR(condition: ExpressionIR, ifBlock: StatementIR, elseBlock: Option[StatementIR]) extends StatementIR

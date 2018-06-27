@@ -1,6 +1,7 @@
 package cobalt.ast
 
 import cobalt.ir.IR._
+import cobalt.ir.IRUtils
 
 object AST {
 
@@ -210,13 +211,21 @@ object AST {
     case assign: Assign => AssignIR(nameToNameIR(assign.name), None, assign.immutable, blockToBlockIR(assign.block))
     case blockStmt: BlockStmt => BlockStmtIR(blockStmt.statements.map(statementToStatementIR))
     case method: Method => {
-      if(method.returnType.isDefined)
-      {
-        MethodIR(nameToNameIR(method.name), method.annotations.map(annotationToAnnotationIR), method.fields.map(fieldToFieldIR), method.modifiers.map(modifierToModifierIR), Some(typeToTypeIR(method.returnType.get)), blockToBlockIR(method.body))
+
+      val fieldTypes = method.fields.map(f => f.`type` match {
+        case typeRef: TypeRef => typeRef.ref match {
+          case refLocal: RefLocal => IRUtils.getExpressionType(refLocal.name.value)
+        }
+      }).mkString
+
+      if(method.name.value.equals("main")){
+        MethodIR(nameToNameIR(method.name), method.annotations.map(annotationToAnnotationIR), Seq(), "[Ljava/lang/String;", method.modifiers.map(modifierToModifierIR) ++ Seq(StaticIR), Some(typeToTypeIR(method.returnType.get)), blockToBlockIR(method.body))
       }
-      else
-      {
-        MethodIR(nameToNameIR(method.name), method.annotations.map(annotationToAnnotationIR), method.fields.map(fieldToFieldIR), method.modifiers.map(modifierToModifierIR), None, blockToBlockIR(method.body))
+      else if(method.returnType.isDefined) {
+        MethodIR(nameToNameIR(method.name), method.annotations.map(annotationToAnnotationIR), Seq(), fieldTypes,  method.modifiers.map(modifierToModifierIR), Some(typeToTypeIR(method.returnType.get)), blockToBlockIR(method.body))
+      }
+      else {
+        MethodIR(nameToNameIR(method.name), method.annotations.map(annotationToAnnotationIR), Seq(), fieldTypes, method.modifiers.map(modifierToModifierIR), None, blockToBlockIR(method.body))
       }
     }
     case f: For => ForIR()

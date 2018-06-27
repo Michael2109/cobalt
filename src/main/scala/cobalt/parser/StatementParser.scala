@@ -38,7 +38,7 @@ class Statements(indent: Int) {
 
   val fieldParser: P[Field] = P(ExpressionParser.nameParser ~ ":" ~ ExpressionParser.typeRefParser).map(x => Field(x._1, x._2, None))
 
-  val methodParser: P[Statement] = P(LexicalParser.kw("let") ~ ExpressionParser.nameParser ~ "(" ~ fieldParser.rep(sep = ",") ~ ")" ~ (":" ~ ExpressionParser.typeRefParser).? ~ "=" ~ blockParser).map(x => Method(x._1, Seq(), x._2, Seq(), x._3, x._4))
+  val methodParser: P[Statement] = P(LexicalParser.kw("let") ~ ExpressionParser.nameParser ~ "(" ~ fieldParser.rep(sep = ",") ~ ")" ~ (":" ~ ExpressionParser.typeRefParser).? ~ "=" ~ blockParser).map(x => Method(x._1, Seq(), x._2, Seq(Public), x._3, x._4))
 
   val modelParser: P[Statement] = P(LexicalParser.kw("class") ~ ExpressionParser.nameParser ~ indentedBlock).map(x => ClassModel(x._1, Seq(), Seq(), None, Seq(), Seq(), x._2))
 

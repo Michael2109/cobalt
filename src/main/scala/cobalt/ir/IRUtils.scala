@@ -7,12 +7,12 @@ import scala.tools.asm.Opcodes
 
 object IRUtils {
 
-  def getExpressionType(expression: Expression): String ={
-    expression match {
-      case _: IntConst => "I"
-      case _: LongConst => "L"
-      case _: FloatConst => "F"
-      case _: DoubleConst => "D"
+  def getExpressionType(value: String): String ={
+    value match {
+      case "Int" => "I"
+      case "Long" => "L"
+      case "Float" => "F"
+      case "Double" => "D"
     }
   }
 
@@ -71,6 +71,15 @@ object IRUtils {
           case DivideIR => Opcodes.DDIV
         }
       }
+    }
+  }
+
+  def modifierToModifierOp(modifierIR: ModifierIR): Int ={
+    modifierIR match {
+      case publicIR: PublicIR.type => Opcodes.ACC_PUBLIC
+      case privateIR: PrivateIR.type => Opcodes.ACC_PRIVATE
+      case protectedIR: ProtectedIR.type => Opcodes.ACC_PROTECTED
+      case staticIR: StaticIR.type  => Opcodes.ACC_STATIC
     }
   }
 
