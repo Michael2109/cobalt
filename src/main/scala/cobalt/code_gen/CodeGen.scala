@@ -1,10 +1,13 @@
 package cobalt.code_gen
 
+import java.io.PrintWriter
+
 import cobalt.ir.IR._
 import cobalt.ir.IRUtils
 
 import scala.tools.asm._
-import scala.tools.asm.Opcodes;
+import scala.tools.asm.Opcodes
+import scala.tools.asm.util.CheckClassAdapter;
 
 object CodeGen {
 
@@ -13,17 +16,21 @@ object CodeGen {
   def genModelCode(model: StatementIR): Array[Byte] = {
     model match {
       case classModel: ClassModelIR => {
-        val cw = new ClassWriter(0)
-        cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.moduleHeaderIR.nameSpace.nameSpace.map(_.value).mkString(".") + "." + classModel.name.value, null, "java/lang/Object", null)
+        val cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES)
+        cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.moduleHeaderIR.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + classModel.name.value, null, "java/lang/Object", null)
         val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null)
         mv.visitVarInsn(Opcodes.ALOAD, 0)
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
         mv.visitInsn(Opcodes.RETURN)
-        mv.visitMaxs(1, 1)
-        mv.visitEnd()
         genCode(cw, classModel.body)
         cw.visitEnd()
+
+        val pw = new PrintWriter(System.out)
+        CheckClassAdapter.verify(new ClassReader(cw.toByteArray), true, pw)
+
         cw.toByteArray
+
+
       }
     }
   }

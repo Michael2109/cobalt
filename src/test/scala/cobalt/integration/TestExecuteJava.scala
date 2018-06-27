@@ -9,7 +9,7 @@ class TestExecuteJava extends IntegrationSetup with Matchers {
 
   describe("Execute a Java class") {
     it("Should execute a Java class") {
-      CompilerUtil.executeJava("cobalt_generated", "test.Test")
+      CompilerUtil.executeJava("cobalt_generated", "test/Test")
     }
   }
 

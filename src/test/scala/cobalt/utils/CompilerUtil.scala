@@ -22,6 +22,7 @@ object CompilerUtil {
   }
 
   def executeJava(classPath: String, fileName: String): Unit ={
+    println(("java -cp " + classPath + " " + fileName) )
     ("java -cp " + classPath + " " + fileName) !
   }
 }
