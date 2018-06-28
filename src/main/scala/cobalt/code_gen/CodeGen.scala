@@ -18,10 +18,12 @@ object CodeGen {
       case classModel: ClassModelIR => {
         val cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES)
         cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.moduleHeaderIR.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + classModel.name.value, null, "java/lang/Object", null)
-        val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null)
-        mv.visitVarInsn(Opcodes.ALOAD, 0)
-        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
-        mv.visitInsn(Opcodes.RETURN)
+        val constructor = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null)
+        constructor.visitVarInsn(Opcodes.ALOAD, 0)
+        constructor.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+        constructor.visitInsn(Opcodes.RETURN)
+        constructor.visitMaxs(0, 0)
+        constructor.visitEnd()
         genCode(cw, classModel.body)
         cw.visitEnd()
 
@@ -41,6 +43,7 @@ object CodeGen {
         val mv = cw.visitMethod(method.modifiers.map(IRUtils.modifierToModifierOp).foldLeft(0)(_+_), method.name.value, String.format("(%s)V", method.fieldTypes), null, null)
         genCode(mv, method.body)
         mv.visitInsn(Opcodes.RETURN)
+        mv.visitMaxs(0, 0)
         mv.visitEnd()
       }
     }
@@ -65,6 +68,11 @@ object CodeGen {
       case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
       case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)
       case doubleConst: DoubleConstIR => mv.visitLdcInsn(doubleConst.value.toDouble)
+      case methodCall: MethodCallIR => {
+        mv.visitFieldInsn(methodCall.fieldOpcode, methodCall.fieldOwner, methodCall.fieldName, methodCall.fieldDesc)
+        genCode(mv, methodCall.args)
+        mv.visitMethodInsn(methodCall.methodOpcode, methodCall.methodOwner, methodCall.methodName, methodCall.methodDesc)
+      }
     }
   }
 

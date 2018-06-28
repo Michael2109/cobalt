@@ -33,6 +33,8 @@ object Compiler {
     // Process AST
     val modelIRs: Seq[StatementIR] = modules.map(AST.moduleToModelsIR).flatten
 
+    println(modelIRs)
+
     // Generate code
     val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(model => CodeGen.genModelCode(model))
 

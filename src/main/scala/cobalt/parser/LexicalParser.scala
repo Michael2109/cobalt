@@ -25,7 +25,7 @@ object LexicalParser {
     "and", "del", "from", "not", "while",
     "as", "elif", "global", "or", "with",
     "assert", "else", "if", "pass", "yield",
-    "break", "except", "import", "print", "println",
+    "break", "except", "import",
     "class", "exec", "in", "raise",
     "continue", "finally", "is", "return",
     "for", "lambda", "try", "mutable",

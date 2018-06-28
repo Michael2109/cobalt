@@ -15,7 +15,7 @@ object ExpressionParser {
     def arith_exprParser: P[Expression] = P(Chain(termParser, add | subtract))
     def rExprParser: P[Expression] = P(Chain(arith_exprParser, LtE | Lt | GtE | Gt))
 
-    def allExpressionsParser = ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
+    def allExpressionsParser = methodCallParser | ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
     P(Chain(rExprParser, and | or))
   }
 

@@ -7,12 +7,21 @@ import scala.tools.asm.Opcodes
 
 object IRUtils {
 
-  def getExpressionType(value: String): String ={
+  def typeToBytecodeType(value: String): String ={
     value match {
       case "Int" => "I"
       case "Long" => "L"
       case "Float" => "F"
       case "Double" => "D"
+    }
+  }
+
+  def getExpressionType(expression: ExpressionIR): String ={
+    expression match {
+      case aBinaryIR: ABinaryIR => getExpressionType(aBinaryIR.expression1)
+      case blockExprIR: BlockExprIR => getExpressionType(blockExprIR.expressions.head)
+      case _: IdentifierIR => "I"
+      case _: IntConstIR => "I"
     }
   }
 

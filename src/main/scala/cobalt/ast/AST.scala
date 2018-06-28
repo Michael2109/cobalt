@@ -3,6 +3,8 @@ package cobalt.ast
 import cobalt.ir.IR._
 import cobalt.ir.IRUtils
 
+import scala.tools.asm.Opcodes
+
 object AST {
 
   case class Module(header: ModuleHeader, models: Seq[Statement])
@@ -163,10 +165,13 @@ object AST {
     }
     case methodCall: MethodCall => {
       methodCall.name.value match {
-        case "print" | "println" => MethodCallIR(nameToNameIR(methodCall.name), expressionToExpressionIR(methodCall.expression))
-        case _ => MethodCallIR(nameToNameIR(methodCall.name), expressionToExpressionIR(methodCall.expression))
+        case "print" | "println" => {
+          val expressionIR = expressionToExpressionIR(methodCall.expression)
+          MethodCallIR(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;",
+            expressionIR,
+            Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", String.format("(%s)V", IRUtils.getExpressionType(expressionIR)))
+        }
       }
-
     }
     case newClassInstance: NewClassInstance => NewClassInstanceIR(typeToTypeIR(newClassInstance.`type`), expressionToExpressionIR(newClassInstance.expression), None)
     case stringLiteral: StringLiteral => StringLiteralIR(stringLiteral.value)
@@ -203,8 +208,6 @@ object AST {
   case class ExprAsStmt(expression: Expression) extends Statement
   case class BlockStmt(statements: Seq[Statement]) extends Statement
   case class Match() extends Statement
-  case class Print() extends Statement
-  case class Println() extends Statement
 
   def statementToStatementIR(statement: Statement): StatementIR = statement match
   {
@@ -214,7 +217,7 @@ object AST {
 
       val fieldTypes = method.fields.map(f => f.`type` match {
         case typeRef: TypeRef => typeRef.ref match {
-          case refLocal: RefLocal => IRUtils.getExpressionType(refLocal.name.value)
+          case refLocal: RefLocal => IRUtils.typeToBytecodeType(refLocal.name.value)
         }
       }).mkString
 
@@ -267,8 +270,6 @@ object AST {
     case exprAsStmt: ExprAsStmt => ExprAsStmtIR(expressionToExpressionIR(exprAsStmt.expression))
     case blockStmt: BlockStmt => BlockStmtIR(blockStmt.statements.map(statementToStatementIR))
     case _: Match => MatchIR()
-    case _: Print => PrintIR()
-    case _: Println => PrintlnIR()
     case inline: Inline => InlineIR(expressionToExpressionIR(inline.expression))
     case doBlock: DoBlock => DoBlockIR(statementToStatementIR(doBlock.statement))
   }

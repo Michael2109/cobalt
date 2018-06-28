@@ -56,5 +56,15 @@ class MethodParserTest extends FunSpec with Matchers
         """.stripMargin.replace("\r", "")
       TestUtil.parse(code, StatementParser.statementParser) shouldBe Method(Name("method"),List(),ArrayBuffer(),List(),Some(TypeRef(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(If(Identifier(Name("true")),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1))))),Some(Inline(IntConst(2)))), Assign(Name("y"),None,true,Inline(IntConst(10)))))))
     }
+
+    it("Should parse method definitions with method calls")
+    {
+      val code =
+        """let method(): Int = do
+          |  let y = 1
+          |  println(y)
+        """.stripMargin.replace("\r", "")
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe Method(Name("method"),List(),ArrayBuffer(),List(Public),Some(TypeRef(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(Assign(Name("y"),None,true,Inline(IntConst(1))), ExprAsStmt(MethodCall(Name("println"),BlockExpr(ArrayBuffer(Identifier(Name("y"))))))))))
+    }
   }
 }

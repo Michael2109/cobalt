@@ -1,5 +1,7 @@
 package cobalt.ir
 
+import cobalt.code_gen.CodeGen.genCode
+
 object IR {
 
   case class ModuleHeaderIR(nameSpace: NameSpaceIR, imports: Seq[ImportIR])
@@ -44,11 +46,10 @@ object IR {
   case object PureIR extends ModifierIR
   case object StaticIR extends ModifierIR
 
-  // TODO Update args
   trait ExpressionIR
   case class BlockExprIR(expressions: Seq[ExpressionIR]) extends ExpressionIR
   case class IdentifierIR(name: NameIR) extends ExpressionIR
-  case class MethodCallIR(name: NameIR, expression: ExpressionIR) extends ExpressionIR
+  case class MethodCallIR(fieldOpcode: Int, fieldOwner: String, fieldName: String, fieldDesc: String, args: ExpressionIR, methodOpcode: Int, methodOwner: String, methodName: String, methodDesc: String) extends ExpressionIR
   case class NewClassInstanceIR(`type`: TypeIR, expression: ExpressionIR, anonymousClass: Option[StatementIR]) extends ExpressionIR
   case class StringLiteralIR(value: String) extends ExpressionIR
   case class TernaryIR() extends ExpressionIR
@@ -88,8 +89,6 @@ object IR {
   case class ExprAsStmtIR(expression: ExpressionIR) extends StatementIR
   case class BlockStmtIR(statements: Seq[StatementIR]) extends StatementIR
   case class MatchIR() extends StatementIR
-  case class PrintIR() extends StatementIR
-  case class PrintlnIR() extends StatementIR
 
   case class CaseIR(expression: ExpressionIR, block: BlockIR)
 
