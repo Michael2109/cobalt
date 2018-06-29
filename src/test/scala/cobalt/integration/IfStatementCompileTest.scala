@@ -1,0 +1,16 @@
+package cobalt.integration
+
+import cobalt.utils.CompilerUtil
+import org.scalatest.Matchers
+
+class IfStatementCompileTest extends IntegrationSetup with Matchers {
+
+  describe("If Statement compile test") {
+    it("Should compile if statements") {
+
+      val output: Array[String] = CompilerUtil.executeJava("cobalt_generated", "integration/IfStatementTest")
+      output(0) shouldBe "6"
+    }
+  }
+
+}

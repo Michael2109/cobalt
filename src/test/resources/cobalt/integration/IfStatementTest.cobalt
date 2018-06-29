@@ -1,0 +1,8 @@
+package integration
+
+class IfStatementTest
+
+  let main(args: Int): void = do
+
+    # Add
+    println(1 + 2 + 3)
