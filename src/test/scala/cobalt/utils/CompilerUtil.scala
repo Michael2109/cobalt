@@ -21,8 +21,8 @@ object CompilerUtil {
     }
   }
 
-  def executeJava(classPath: String, fileName: String): Unit ={
-    println(("java -cp " + classPath + " " + fileName) )
-    ("java -cp " + classPath + " " + fileName) !
+  def executeJava(classPath: String, fileName: String): Array[String] ={
+    val result: String = (("java -cp " + classPath + " " + fileName) !!)
+    result.split("\r\n")
   }
 }

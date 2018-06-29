@@ -4,5 +4,17 @@ class Test
 
   let main(args: Int): void = do
 
-    let y: Int = 1
-    println(1 * 2 - 3)
+    # Add
+    println(1 + 2 + 3)
+
+    # Subtract
+    println(1 - 2)
+
+    # Multiply
+    println(1 * 2 * 3)
+
+    # Divide
+    println(100 / 10)
+
+    # Mixed
+    println(1 * (10 / 5) + 2 - 1)

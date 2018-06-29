@@ -7,7 +7,7 @@ import scala.tools.asm.Opcodes
 
 object IRUtils {
 
-  def typeToBytecodeType(value: String): String ={
+  def typeToBytecodeType(value: String): String = {
     value match {
       case "Int" => "I"
       case "Long" => "L"
@@ -16,7 +16,7 @@ object IRUtils {
     }
   }
 
-  def getExpressionType(expression: ExpressionIR): String ={
+  def getExpressionType(expression: ExpressionIR): String = {
     expression match {
       case aBinaryIR: ABinaryIR => getExpressionType(aBinaryIR.expression1)
       case blockExprIR: BlockExprIR => getExpressionType(blockExprIR.expressions.head)
@@ -25,7 +25,7 @@ object IRUtils {
     }
   }
 
-  def getStoreOperator(statement: StatementIR): Int ={
+  def getStoreOperator(statement: StatementIR): Int = {
     statement match {
       case inline: InlineIR => getStoreOperator(inline.expression)
       case doBlock: DoBlockIR => getStoreOperator(doBlock.statement)
@@ -33,7 +33,7 @@ object IRUtils {
     }
   }
 
-  def getStoreOperator(expression: ExpressionIR): Int ={
+  def getStoreOperator(expression: ExpressionIR): Int = {
     expression match {
       case aBinaryIR: ABinaryIR => getStoreOperator(aBinaryIR.expression1)
       case _: IntConstIR => Opcodes.ISTORE
@@ -43,13 +43,15 @@ object IRUtils {
     }
   }
 
-  def getArithmeticOperator(aBinary: ABinaryIR): Int = {
-    aBinary.expression1 match {
+
+  def getArithmeticOperator(op: OperatorIR, expression1: ExpressionIR, expression2: ExpressionIR): Int = {
+
+    expression1 match {
       case innerABinary: ABinaryIR => {
-        getArithmeticOperator(innerABinary)
+        getArithmeticOperator(op, innerABinary.expression1, innerABinary.expression2)
       }
       case _: IntConstIR => {
-        aBinary.op match {
+        op match {
           case AddIR => Opcodes.IADD
           case SubtractIR => Opcodes.ISUB
           case MultiplyIR => Opcodes.IMUL
@@ -57,7 +59,7 @@ object IRUtils {
         }
       }
       case _: LongConstIR => {
-        aBinary.op match {
+        op match {
           case AddIR => Opcodes.LADD
           case SubtractIR => Opcodes.LSUB
           case MultiplyIR => Opcodes.LMUL
@@ -65,7 +67,7 @@ object IRUtils {
         }
       }
       case _: FloatConstIR => {
-        aBinary.op match {
+        op match {
           case AddIR => Opcodes.FADD
           case SubtractIR => Opcodes.FSUB
           case MultiplyIR => Opcodes.FMUL
@@ -73,7 +75,7 @@ object IRUtils {
         }
       }
       case _: DoubleConstIR => {
-        aBinary.op match {
+        op match {
           case AddIR => Opcodes.DADD
           case SubtractIR => Opcodes.DSUB
           case MultiplyIR => Opcodes.DMUL
@@ -83,12 +85,12 @@ object IRUtils {
     }
   }
 
-  def modifierToModifierOp(modifierIR: ModifierIR): Int ={
+  def modifierToModifierOp(modifierIR: ModifierIR): Int = {
     modifierIR match {
       case publicIR: PublicIR.type => Opcodes.ACC_PUBLIC
       case privateIR: PrivateIR.type => Opcodes.ACC_PRIVATE
       case protectedIR: ProtectedIR.type => Opcodes.ACC_PROTECTED
-      case staticIR: StaticIR.type  => Opcodes.ACC_STATIC
+      case staticIR: StaticIR.type => Opcodes.ACC_STATIC
     }
   }
 

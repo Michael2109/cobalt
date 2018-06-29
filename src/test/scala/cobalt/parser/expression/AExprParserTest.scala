@@ -44,7 +44,7 @@ class AExprParserTest extends FunSpec with Matchers
     {
       TestUtil.parse("1 / 100 * 3 + 200 - 4", ExpressionParser.expressionParser) shouldBe ABinary(Subtract,ABinary(Add,ABinary(Multiply,ABinary(Divide,IntConst(1),IntConst(100)),IntConst(3)),IntConst(200)),IntConst(4))
     }
-    it("Should parse parentheses")
+    it("Should parse parentheses - 1")
     {
       TestUtil.parse("1 / 100 * (2 + 200) - 3", ExpressionParser.expressionParser) shouldBe ABinary(Subtract,ABinary(Multiply,ABinary(Divide,IntConst(1),IntConst(100)),ABinary(Add,IntConst(2),IntConst(200))),IntConst(3))
     }

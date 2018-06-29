@@ -1,6 +1,6 @@
-package test
+package integration
 
-class Test
+class NumberTest
 
   let main(args: Int): void = do
 

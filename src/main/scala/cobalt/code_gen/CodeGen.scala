@@ -54,7 +54,7 @@ object CodeGen {
       case aBinary: ABinaryIR => {
         genCode(mv, aBinary.expression1)
         genCode(mv, aBinary.expression2)
-        val instruction = IRUtils.getArithmeticOperator(aBinary)
+        val instruction = IRUtils.getArithmeticOperator(aBinary.op, aBinary.expression1, aBinary.expression2)
         mv.visitInsn(instruction)
       }
       case boolConst: BoolConstIR => mv.visitIntInsn(Opcodes.BIPUSH,
