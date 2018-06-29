@@ -73,6 +73,7 @@ object CodeGen {
         genCode(mv, methodCall.args)
         mv.visitMethodInsn(methodCall.methodOpcode, methodCall.methodOwner, methodCall.methodName, methodCall.methodDesc)
       }
+      case stringLiteral: StringLiteralIR => mv.visitLdcInsn(stringLiteral.value)
     }
   }
 

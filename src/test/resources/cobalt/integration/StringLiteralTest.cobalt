@@ -1,0 +1,8 @@
+package integration
+
+class NumberTest
+
+  let main(args: Int): void = do
+
+    # String
+    println("This is some text")

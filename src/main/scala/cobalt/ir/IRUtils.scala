@@ -13,6 +13,7 @@ object IRUtils {
       case "Long" => "L"
       case "Float" => "F"
       case "Double" => "D"
+      case "String" => "Ljava/lang/String;"
     }
   }
 
@@ -22,6 +23,7 @@ object IRUtils {
       case blockExprIR: BlockExprIR => getExpressionType(blockExprIR.expressions.head)
       case _: IdentifierIR => "I"
       case _: IntConstIR => "I"
+      case _: StringLiteralIR => "Ljava/lang/String;"
     }
   }
 
@@ -87,10 +89,10 @@ object IRUtils {
 
   def modifierToModifierOp(modifierIR: ModifierIR): Int = {
     modifierIR match {
-      case publicIR: PublicIR.type => Opcodes.ACC_PUBLIC
-      case privateIR: PrivateIR.type => Opcodes.ACC_PRIVATE
-      case protectedIR: ProtectedIR.type => Opcodes.ACC_PROTECTED
-      case staticIR: StaticIR.type => Opcodes.ACC_STATIC
+      case _: PublicIR.type => Opcodes.ACC_PUBLIC
+      case _: PrivateIR.type => Opcodes.ACC_PRIVATE
+      case _: ProtectedIR.type => Opcodes.ACC_PROTECTED
+      case _: StaticIR.type => Opcodes.ACC_STATIC
     }
   }
 
