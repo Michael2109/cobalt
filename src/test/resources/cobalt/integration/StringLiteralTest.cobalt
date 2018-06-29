@@ -1,6 +1,6 @@
 package integration
 
-class NumberTest
+class StringLiteralTest
 
   let main(args: Int): void = do
 
