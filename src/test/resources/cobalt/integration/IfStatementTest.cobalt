@@ -3,6 +3,18 @@ package integration
 class IfStatementTest
 
   let main(args: Int): void = do
+    if true then do
+      println(1)
+    else do
+      println(2)
 
-    # Add
-    println(1 + 2 + 3)
+    if false then do
+      println(1)
+    elif true then do
+      println(2)
+
+    if false then do
+      println(1)
+    else do
+      println(2)
+

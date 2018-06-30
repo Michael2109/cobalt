@@ -9,7 +9,9 @@ class IfStatementCompileTest extends IntegrationSetup with Matchers {
     it("Should compile if statements") {
 
       val output: Array[String] = CompilerUtil.executeJava("cobalt_generated", "integration/IfStatementTest")
-      output(0) shouldBe "6"
+      output(0) shouldBe "1"
+      output(1) shouldBe "2"
+      output(2) shouldBe "2"
     }
   }
 
