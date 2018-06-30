@@ -17,12 +17,6 @@ The syntax is similar to languages such as Haskell and Scala.
 To contribute to the Cobalt project, please send us a pull request from your fork of this repository!  
 The project is in the alpha stages please get in contact to discuss any large changes and/or features you think would be interesting to include!
 
-#### Setting up
-1. Using CMD/terminal navigate to the `cobalt/compiler` directory 
-2. Run `stack build` 
-3. Run `stack exec compiler-exe` to execute the compiler. 
-4. Run `stack test` to execute all tests. 
-
 # Example Code
 ```
 class ClassName 
