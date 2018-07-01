@@ -1,8 +1,26 @@
-package cobalt.ir
+/*
+ * Cobalt Programming Language Compiler
+ * Copyright (C) 2017 Michael Haywood
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import cobalt.code_gen.CodeGen.genCode
+package cobalt.ast
 
 object IR {
+
+  case class ModuleIR(moduleHeaderIR: ModuleHeaderIR, models: Seq[StatementIR])
 
   case class ModuleHeaderIR(nameSpace: NameSpaceIR, imports: Seq[ImportIR])
 
@@ -72,15 +90,17 @@ object IR {
   case class InlineIR(expression: ExpressionIR) extends BlockIR
   case class DoBlockIR(statement: StatementIR) extends BlockIR
 
+  trait ModelIR extends StatementIR
+  case class ClassModelIR(var moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends ModelIR
+  case class ObjectModelIR(var moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends ModelIR
+  case class TraitModelIR(var moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends ModelIR
+
   trait StatementIR
-  case class ClassModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
-  case class ObjectModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
-  case class TraitModelIR(moduleHeaderIR: ModuleHeaderIR, name: NameIR, modifiers: Seq[ModifierIR], fields: Seq[FieldIR], parent: Option[TypeIR], parentArguments: Seq[ExpressionIR], interfaces: Seq[TypeIR], body: StatementIR) extends StatementIR
   case class MethodIR(name: NameIR, annotations: Seq[AnnotationIR], fields: Seq[FieldIR], fieldTypes: String, modifiers: Seq[ModifierIR], returnType: Option[TypeIR], body: BlockIR) extends StatementIR
   case class ForIR() extends StatementIR
   case class WhileIR() extends StatementIR
   case class IfIR(condition: ExpressionIR, ifBlock: StatementIR, elseBlock: Option[StatementIR]) extends StatementIR
-  case class AssignIR(id: Int, `type`: Option[TypeIR], immutable: Boolean, block: BlockIR) extends StatementIR
+  case class AssignIR(var id: Int, `type`: Option[TypeIR], immutable: Boolean, block: BlockIR) extends StatementIR
   case class AssignMultipleIR(name: Seq[NameIR], `type`: Option[TypeIR], immutable: Boolean, block: BlockIR) extends StatementIR
   case class ReassignIR(name: NameIR, block: BlockIR) extends StatementIR
   case class ReturnIR() extends StatementIR

@@ -17,6 +17,7 @@ object CompilerUtil {
     val allFiles = recursiveListFiles(classPath.resolve(currentDir).toFile).filter(!_.isDirectory)
 
     for(file <- allFiles){
+      println("Compiling: " + file.getAbsolutePath)
       CompilerExecutor.main(Array("-cp", classPath.toString, "-d", outputDir.toString, classPath.relativize(file.toPath).toString));
     }
   }

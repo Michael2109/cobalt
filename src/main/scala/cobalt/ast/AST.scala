@@ -1,7 +1,6 @@
 package cobalt.ast
 
-import cobalt.ir.IR._
-import cobalt.ir.IRUtils
+import IR._
 
 import scala.tools.asm.Opcodes
 
@@ -9,15 +8,7 @@ object AST {
 
   case class Module(header: ModuleHeader, models: Seq[Statement])
 
-  def moduleToModelsIR(module: Module): Seq[StatementIR] = module.models.map(model => modelToModelIR(moduleHeaderToModuleHeaderIR(module.header), model))
-
-  def modelToModelIR(moduleHeaderIR: ModuleHeaderIR, modelDef: Statement): StatementIR = {
-    modelDef match {
-      case classModel: ClassModel => ClassModelIR(moduleHeaderIR, nameToNameIR(classModel.name), classModel.modifiers.map(modifierToModifierIR), classModel.fields.map(fieldToFieldIR), None, classModel.parentArguments.map(expressionToExpressionIR), classModel.interfaces.map(typeToTypeIR), statementToStatementIR(classModel.body))
-      case objectModel: ObjectModel => ObjectModelIR(moduleHeaderIR, nameToNameIR(objectModel.name), objectModel.modifiers.map(modifierToModifierIR), objectModel.fields.map(fieldToFieldIR), None, objectModel.parentArguments.map(expressionToExpressionIR), objectModel.interfaces.map(typeToTypeIR), statementToStatementIR(objectModel.body))
-      case traitModel: TraitModel => TraitModelIR(moduleHeaderIR, nameToNameIR(traitModel.name), traitModel.modifiers.map(modifierToModifierIR), traitModel.fields.map(fieldToFieldIR), None, traitModel.parentArguments.map(expressionToExpressionIR), traitModel.interfaces.map(typeToTypeIR), statementToStatementIR(traitModel.body))
-    }
-  }
+  def moduleToModuleIR(module: Module) = ModuleIR(moduleHeaderToModuleHeaderIR(module.header), module.models.map(statementToStatementIR))
 
   case class ModuleHeader(nameSpace: NameSpace, imports: Seq[Import])
 
@@ -253,27 +244,20 @@ object AST {
   case class Match() extends Statement
 
   def statementToStatementIR(statement: Statement): StatementIR = statement match {
-    case blockStmt: BlockStmt => {
-      var varId = 0;
-      BlockStmtIR(blockStmt.statements.map(x => x match {
-        case assign: Assign => {
-          val assignIR = {
-            if (assign.`type`.isDefined) {
-              AssignIR(varId, Some(typeToTypeIR(assign.`type`.get)), true, blockToBlockIR(assign.block))
-            }
-            else {
-              AssignIR(varId, None, true, blockToBlockIR(assign.block))
-            }
-          }
-          varId = varId + 1
-          assignIR
+    case assign: Assign => {
+      val assignIR = {
+        if (assign.`type`.isDefined) {
+          AssignIR((math.random() * 100).asInstanceOf[Int], Some(typeToTypeIR(assign.`type`.get)), assign.immutable, blockToBlockIR(assign.block))
         }
-        case a => statementToStatementIR(a)
-      }))
+        else {
+          AssignIR((math.random() * 100).asInstanceOf[Int], None, assign.immutable, blockToBlockIR(assign.block))
+        }
+      }
+      assignIR
     }
+    case blockStmt: BlockStmt => BlockStmtIR(blockStmt.statements.map(statementToStatementIR))
 
     case method: Method => {
-
       val fieldTypes = method.fields.map(f => f.`type` match {
         case typeRef: TypeRef => typeRef.ref match {
           case refLocal: RefLocal => IRUtils.typeToBytecodeType(refLocal.name.value)
@@ -290,6 +274,12 @@ object AST {
         MethodIR(nameToNameIR(method.name), method.annotations.map(annotationToAnnotationIR), Seq(), fieldTypes, method.modifiers.map(modifierToModifierIR), None, blockToBlockIR(method.body))
       }
     }
+
+    case classModel: ClassModel => ClassModelIR(null, nameToNameIR(classModel.name), classModel.modifiers.map(modifierToModifierIR), classModel.fields.map(fieldToFieldIR), None, classModel.parentArguments.map(expressionToExpressionIR), classModel.interfaces.map(typeToTypeIR), statementToStatementIR(classModel.body))
+    case objectModel: ObjectModel => ObjectModelIR(null, nameToNameIR(objectModel.name), objectModel.modifiers.map(modifierToModifierIR), objectModel.fields.map(fieldToFieldIR), None, objectModel.parentArguments.map(expressionToExpressionIR), objectModel.interfaces.map(typeToTypeIR), statementToStatementIR(objectModel.body))
+    case traitModel: TraitModel => TraitModelIR(null, nameToNameIR(traitModel.name), traitModel.modifiers.map(modifierToModifierIR), traitModel.fields.map(fieldToFieldIR), None, traitModel.parentArguments.map(expressionToExpressionIR), traitModel.interfaces.map(typeToTypeIR), statementToStatementIR(traitModel.body))
+
+
     case f: For => ForIR()
     case w: While => WhileIR()
     case ifStatement: If => {

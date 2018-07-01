@@ -2,7 +2,7 @@ package cobalt.ir
 
 import cobalt.ast.AST
 import cobalt.ast.AST.{Expression, Identifier, IntConst, Name}
-import cobalt.ir.IR.BoolConstIR
+import cobalt.ast.IR.BoolConstIR
 import cobalt.parser.ExpressionParser
 import cobalt.utils.TestUtil
 import org.junit.runner.RunWith

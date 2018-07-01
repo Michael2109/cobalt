@@ -3,10 +3,10 @@ package cobalt.compiler
 import java.io.{BufferedOutputStream, File, FileOutputStream}
 import java.nio.file.{Path, Paths}
 
-import cobalt.ast.AST
+import cobalt.ast.{AST, IRProcessor}
 import cobalt.ast.AST.Module
 import cobalt.code_gen.CodeGen
-import cobalt.ir.IR.{ClassModelIR, StatementIR}
+import cobalt.ast.IR.{ClassModelIR, ModelIR, ModuleIR, StatementIR}
 import cobalt.parser.StatementParser
 import fastparse.core.Parsed
 
@@ -31,12 +31,12 @@ object Compiler {
     })
 
     // Process AST
-    val modelIRs: Seq[StatementIR] = modules.map(AST.moduleToModelsIR).flatten
+    val modelIRs: Seq[ModelIR] = modules.map(x => IRProcessor.restructureIR(AST.moduleToModuleIR(x))).head
 
     println(modelIRs)
 
     // Generate code
-    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(model => CodeGen.genModelCode(model))
+    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(CodeGen.genModelCode)
 
     // Save to destination directory
 

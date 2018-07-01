@@ -5,4 +5,3 @@ class Test
   let main(args: Int): void = do
 
     let x = 1
-    let y = 2

@@ -1,7 +1,7 @@
 package cobalt.parser.expression
 
 import cobalt.ast.AST.{DoubleConst, FloatConst, IntConst, LongConst}
-import cobalt.ir.IR.IntConstIR
+import cobalt.ast.IR.IntConstIR
 import cobalt.parser.ExpressionParser
 import cobalt.utils.TestUtil
 import org.junit.runner.RunWith

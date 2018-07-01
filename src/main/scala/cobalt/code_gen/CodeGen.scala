@@ -2,8 +2,8 @@ package cobalt.code_gen
 
 import java.io.PrintWriter
 
-import cobalt.ir.IR._
-import cobalt.ir.IRUtils
+import cobalt.ast.IR._
+import cobalt.ast.IRUtils
 
 import scala.tools.asm._
 import scala.tools.asm.Opcodes
