@@ -80,7 +80,7 @@ object IR {
   case class ForIR() extends StatementIR
   case class WhileIR() extends StatementIR
   case class IfIR(condition: ExpressionIR, ifBlock: StatementIR, elseBlock: Option[StatementIR]) extends StatementIR
-  case class AssignIR(name: NameIR, `type`: Option[TypeIR], immutable: Boolean, block: BlockIR) extends StatementIR
+  case class AssignIR(id: Int, `type`: Option[TypeIR], immutable: Boolean, block: BlockIR) extends StatementIR
   case class AssignMultipleIR(name: Seq[NameIR], `type`: Option[TypeIR], immutable: Boolean, block: BlockIR) extends StatementIR
   case class ReassignIR(name: NameIR, block: BlockIR) extends StatementIR
   case class ReturnIR() extends StatementIR

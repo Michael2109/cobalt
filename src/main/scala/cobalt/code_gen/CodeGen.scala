@@ -81,7 +81,7 @@ object CodeGen {
     statement match {
       case assign: AssignIR => {
         genCode(mv, assign.block)
-        mv.visitVarInsn(IRUtils.getStoreOperator(assign.block), (math.random() * 100).asInstanceOf[Int])
+        mv.visitVarInsn(IRUtils.getStoreOperator(assign.block), assign.id)
       }
       case blockStmt: BlockStmtIR => blockStmt.statements.foreach(x => genCode(mv, x))
       case doBlock: DoBlockIR => genCode(mv, doBlock.asInstanceOf[BlockIR])
