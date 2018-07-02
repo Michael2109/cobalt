@@ -5,7 +5,7 @@ import org.scalatest.Matchers
 
 class NumberCompileTest extends IntegrationSetup with Matchers {
 
-  describe("Number compile test") {
+/*  describe("Number compile test") {
     it("Should compile numbers") {
 
       val output: Array[String] = CompilerUtil.executeJava("cobalt_generated", "integration/NumberTest")
@@ -15,6 +15,6 @@ class NumberCompileTest extends IntegrationSetup with Matchers {
       output(3) shouldBe "10"
       output(4) shouldBe "3"
     }
-  }
+  }*/
 
 }

@@ -5,6 +5,7 @@ import org.scalatest.Matchers
 
 class IfStatementCompileTest extends IntegrationSetup with Matchers {
 
+/*
   describe("If Statement compile test") {
     it("Should compile if statements") {
 
@@ -14,5 +15,6 @@ class IfStatementCompileTest extends IntegrationSetup with Matchers {
       output(2) shouldBe "2"
     }
   }
+*/
 
 }

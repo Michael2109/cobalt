@@ -6,7 +6,7 @@ import scala.tools.asm.Opcodes
 
 object AST {
 
-  case class Module(header: ModuleHeader, models: Seq[Statement])
+  case class Module(header: ModuleHeader, models: Seq[Model])
 
   def moduleToModuleIR(module: Module) = ModuleIR(moduleHeaderToModuleHeaderIR(module.header), module.models.map(statementToStatementIR))
 
@@ -211,13 +211,15 @@ object AST {
 
   case class SpecialRefAsExpr() extends Expression
 
+  trait Model extends Statement
+
   trait Statement
 
-  case class ClassModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Statement
+  case class ClassModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Model
 
-  case class ObjectModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Statement
+  case class ObjectModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Model
 
-  case class TraitModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Statement
+  case class TraitModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Model
 
   case class Method(name: Name, annotations: Seq[Annotation], fields: Seq[Field], modifiers: Seq[Modifier], returnType: Option[Type], body: Block) extends Statement
 

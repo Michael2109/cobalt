@@ -15,6 +15,6 @@ import org.scalatest.{BeforeAndAfterAll, FunSpec, FunSuite}
 class IntegrationSetup extends FunSpec with BeforeAndAfterAll {
 
   override def beforeAll() {
-    compileDirectory(Paths.get("src\\test\\resources\\cobalt"), Paths.get("cobalt_generated"), Paths.get(""))
+    //compileDirectory(Paths.get("src\\test\\resources\\cobalt"), Paths.get("cobalt_generated"), Paths.get(""))
   }
 }

@@ -5,6 +5,7 @@ import org.scalatest.Matchers
 
 class StringLiteralCompileTest extends IntegrationSetup with Matchers {
 
+/*
   describe("String Literal compile test") {
     it("Should compile string literals") {
 
@@ -12,5 +13,6 @@ class StringLiteralCompileTest extends IntegrationSetup with Matchers {
       output(0) shouldBe "This is some text"
     }
   }
+*/
 
 }

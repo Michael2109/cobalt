@@ -29,7 +29,7 @@ object Compiler {
       case Parsed.Success(value, _) => value
       case Parsed.Failure(a, b, c) => throw new Exception("Failed compiling: " + a + " : " + b + " : " + c)
     })
-
+/*
     // Process AST
     val modelIRs: Seq[ModelIR] = modules.map(x => IRProcessor.restructureIR(AST.moduleToModuleIR(x))).head
 
@@ -50,7 +50,7 @@ object Compiler {
     val bos = new BufferedOutputStream(new FileOutputStream(outputDir.resolve(pathsToCompile(0)).toString.replaceFirst("[.][^.]+$", "") + ".class"))
 
     bos.write(moduleBytecodes(0))
-    bos.close()
+    bos.close()*/
 
   }
 }
