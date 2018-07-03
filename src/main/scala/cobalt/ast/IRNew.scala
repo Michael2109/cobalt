@@ -10,7 +10,7 @@ object AST2IR {
   def astToIR(module: Module): Seq[ModelIR] = {
     module.models.map(model => model match {
       case classModel: ClassModel => {
-        val classModelIR = ClassModelIR(classModel.name.value, ListBuffer())
+        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.mkString("/"), classModel.name.value, ListBuffer())
         convertToIR(classModel.body, classModelIR)
         classModelIR
       }
@@ -30,7 +30,9 @@ object AST2IR {
 
   def convertToIR(expression: Expression, method: MethodIR): Unit ={
     expression match {
+      case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method))
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
+      case methodCall: MethodCall => convertToIR(methodCall.expression, method)
     }
   }
 
@@ -38,6 +40,8 @@ object AST2IR {
     statement match {
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, method))
       case inline: Inline => convertToIR(inline.expression, method)
+      case doBlock: DoBlock => convertToIR(doBlock.statement, method)
+      case exprAsStmt: ExprAsStmt => convertToIR(exprAsStmt.expression, method)
     }
   }
 }
@@ -45,7 +49,7 @@ object AST2IR {
 object IRNew {
 
   trait ModelIR
-  case class ClassModelIR(name: String, methods: ListBuffer[MethodIR]) extends  ModelIR
+  case class ClassModelIR(nameSpace: String, name: String, methods: ListBuffer[MethodIR]) extends  ModelIR
 
   case class MethodIR(name: String, fields: List[(String, String)], body: ListBuffer[StatementIR])
 
@@ -57,6 +61,7 @@ object IRNew {
 
   trait ExpressionIR
   case class IntConstIR(value: BigInt) extends ExpressionIR
+  case class MethodCallIR(fieldOpcode: Int, fieldOwner: String, fieldName: String, fieldDesc: String, args: ExpressionIR, methodOpcode: Int, methodOwner: String, methodName: String, methodDesc: String) extends ExpressionIR
 
   trait StatementIR
   case class ExprAsStmtIR(expressionIR: ExpressionIR) extends StatementIR

@@ -7,12 +7,12 @@ import org.scalatest.{FunSpec, Matchers}
 
 class ModuleCompileTest extends IntegrationSetup with Matchers {
 
-/*
+
   describe("Module compile test") {
     it("Should compile a module") {
 
     }
   }
-*/
+
 
 }

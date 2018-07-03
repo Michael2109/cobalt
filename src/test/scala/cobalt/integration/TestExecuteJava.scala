@@ -1,16 +1,16 @@
 package cobalt.integration
 
-import java.io.File
+import java.nio.file.Paths
 
 import cobalt.utils.CompilerUtil
 import org.scalatest.Matchers
 
 class TestExecuteJava extends IntegrationSetup with Matchers {
 
-/*  describe("Execute a Java class") {
+  describe("Execute a Java class") {
     it("Should execute a Java class") {
-      CompilerUtil.executeJava("cobalt_generated", "test/Test")
+      CompilerUtil.executeJava(Paths.get("test/Test"))
     }
-  }*/
+  }
 
 }

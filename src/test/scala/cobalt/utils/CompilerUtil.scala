@@ -1,9 +1,10 @@
 package cobalt.utils
 
 import java.io.File
-import java.nio.file.Path
+import java.nio.file.{Path, Paths}
 
 import cobalt.compiler.CompilerExecutor
+
 import sys.process._
 
 object CompilerUtil {
@@ -17,13 +18,20 @@ object CompilerUtil {
     val allFiles = recursiveListFiles(classPath.resolve(currentDir).toFile).filter(!_.isDirectory)
 
     for(file <- allFiles){
-      println("Compiling: " + file.getAbsolutePath)
       CompilerExecutor.main(Array("-cp", classPath.toString, "-d", outputDir.toString, classPath.relativize(file.toPath).toString));
     }
   }
 
-  def executeJava(classPath: String, fileName: String): Array[String] ={
-    val result: String = (("java -cp " + classPath + " " + fileName) !!)
+  def compileFile(classPath: Path, outputDir: Path, filePath: Path): Unit ={
+    outputDir.resolve(filePath).toFile.mkdirs
+    CompilerExecutor.main(Array("-cp", classPath.toString, "-d", outputDir.toString, filePath.toString + ".cobalt"))
+  }
+
+  //compileDirectory(Paths.get("src\\test\\resources\\cobalt"), Paths.get("cobalt_generated"), Paths.get(""))
+
+  def executeJava(fileName: Path): Array[String] ={
+    compileFile(Paths.get("src/test/resources/cobalt"), Paths.get("cobalt_generated"), fileName)
+    val result: String = (("java -cp " + Paths.get("cobalt_generated").toString + " " + fileName) !!)
     result.split("\r\n")
   }
 }

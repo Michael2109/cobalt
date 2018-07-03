@@ -3,10 +3,10 @@ package cobalt.compiler
 import java.io.{BufferedOutputStream, File, FileOutputStream}
 import java.nio.file.{Path, Paths}
 
-import cobalt.ast.{AST, IRProcessor}
+import cobalt.ast.AST2IR
 import cobalt.ast.AST.Module
-import cobalt.code_gen.CodeGen
-import cobalt.ast.IR.{ClassModelIR, ModelIR, ModuleIR, StatementIR}
+import cobalt.ast.IRNew.ModelIR
+import cobalt.code_gen.{CodeGen, CodeGenNew}
 import cobalt.parser.StatementParser
 import fastparse.core.Parsed
 
@@ -29,14 +29,14 @@ object Compiler {
       case Parsed.Success(value, _) => value
       case Parsed.Failure(a, b, c) => throw new Exception("Failed compiling: " + a + " : " + b + " : " + c)
     })
-/*
+
     // Process AST
-    val modelIRs: Seq[ModelIR] = modules.map(x => IRProcessor.restructureIR(AST.moduleToModuleIR(x))).head
+    val modelIRs: Seq[ModelIR] = modules.map(x => AST2IR.astToIR(x)).head
 
     println(modelIRs)
 
     // Generate code
-    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(CodeGen.genModelCode)
+    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(CodeGenNew.genModelCode)
 
     // Save to destination directory
 
@@ -50,7 +50,7 @@ object Compiler {
     val bos = new BufferedOutputStream(new FileOutputStream(outputDir.resolve(pathsToCompile(0)).toString.replaceFirst("[.][^.]+$", "") + ".class"))
 
     bos.write(moduleBytecodes(0))
-    bos.close()*/
+    bos.close()
 
   }
 }
