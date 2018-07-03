@@ -30,20 +30,17 @@ object CodeGenNew {
         CheckClassAdapter.verify(new ClassReader(cw.toByteArray), true, pw)
 
         cw.toByteArray
-
-
       }
     }
   }
 
   def genCode(cw: ClassWriter, method: MethodIR): Unit = {
 
-      val mv = cw.visitMethod(Opcodes.ACC_PUBLIC, method.name, String.format("(%s)V", method.fields.map(x => IRUtils.typeToBytecodeType(x._2))), null, null)
+      val mv = cw.visitMethod(method.modifiers.foldLeft(0)(_|_), method.name, String.format("(%s)V", method.fields.map(_._2).mkString), null, null)
       method.body.foreach(x => genCode(mv, x))
       mv.visitInsn(Opcodes.RETURN)
       mv.visitMaxs(0, 0)
       mv.visitEnd()
-
   }
 
   def genCode(mv: MethodVisitor, expression: ExpressionIR): Unit = {

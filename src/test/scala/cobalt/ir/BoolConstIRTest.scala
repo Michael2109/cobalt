@@ -18,13 +18,11 @@ class AExprParserTest extends FunSpec with Matchers{
       {
         val expression = TestUtil.parse("true", ExpressionParser.expressionParser)
         expression shouldBe Identifier(Name("true"))
-        AST.expressionToExpressionIR(expression.asInstanceOf[Expression]) shouldBe BoolConstIR(true)
       }
       it("Should convert `false`")
       {
         val expression = TestUtil.parse("false", ExpressionParser.expressionParser)
         expression shouldBe Identifier(Name("false"))
-        AST.expressionToExpressionIR(expression.asInstanceOf[Expression]) shouldBe BoolConstIR(false)
       }
     }
 }

@@ -31,6 +31,7 @@ object CompilerUtil {
 
   def executeJava(fileName: Path): Array[String] ={
     compileFile(Paths.get("src/test/resources/cobalt"), Paths.get("cobalt_generated"), fileName)
+    println((("java -cp " + Paths.get("cobalt_generated").toString + " " + fileName) ))
     val result: String = (("java -cp " + Paths.get("cobalt_generated").toString + " " + fileName) !!)
     result.split("\r\n")
   }

@@ -40,14 +40,20 @@ object Compiler {
 
     // Save to destination directory
 
-    val parent = new File(outputDir.resolve(pathsToCompile(0)).getParent.toString)
-    parent.mkdirs()
+
+    val generatedFilePath = outputDir.resolve(pathsToCompile(0))
+
+    generatedFilePath.getParent.toFile.mkdirs()
+
+    val filePath = generatedFilePath.toString.replaceFirst("[.][^.]+$", "") + ".class"
+
+    println(filePath)
 
     // Create class file
-    val file = new File(outputDir.resolve(pathsToCompile(0)).toString.replaceFirst("[.][^.]+$", "") + ".class")
+    val file = new File(filePath)
     file.createNewFile()
 
-    val bos = new BufferedOutputStream(new FileOutputStream(outputDir.resolve(pathsToCompile(0)).toString.replaceFirst("[.][^.]+$", "") + ".class"))
+    val bos = new BufferedOutputStream(new FileOutputStream(filePath))
 
     bos.write(moduleBytecodes(0))
     bos.close()

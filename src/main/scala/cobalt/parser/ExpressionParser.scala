@@ -35,7 +35,7 @@ object ExpressionParser {
 
   def ternaryParser: P[Ternary] = P(LexicalParser.kw("if") ~ expressionParser ~ "then" ~ expressionParser ~ "else" ~ expressionParser).map(x => Ternary(x._1, x._2, x._3))
 
-  def typeRefParser: P[Type] = nameParser.map(x => TypeRef(RefLocal(x)))
+  def typeRefParser: P[Type] = nameParser.map(x => Type(x))
 
   private def Chain(p: P[Expression], op: P[AST.Operator]) = P(p ~ (op ~ p).rep).map {
     case (lhs, chunks) =>
