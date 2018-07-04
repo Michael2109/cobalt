@@ -18,7 +18,8 @@
 
 package cobalt.ast
 
-import cobalt.ast.IR._
+import cobalt.ast.AST._
+import cobalt.ast.IRNew._
 
 import scala.tools.asm.Opcodes
 
@@ -34,84 +35,72 @@ object IRUtils {
     }
   }
 
-  def getExpressionType(expression: ExpressionIR): String = {
+  def getExpressionType(expression: Expression): TypeIR = {
     expression match {
-      case aBinaryIR: ABinaryIR => getExpressionType(aBinaryIR.expression1)
-      case blockExprIR: BlockExprIR => getExpressionType(blockExprIR.expressions.head)
-      case _: IdentifierIR => "I"
-      case _: IntConstIR => "I"
-      case _: StringLiteralIR => "Ljava/lang/String;"
+      case aBinary: ABinary => getExpressionType(aBinary.expression1)
+      case blockExpr: BlockExpr => blockExpr.expressions.map(getExpressionType).head
+      case _: IntObject => ObjectIR("Ljava/lang/Object;")
+      case _: IntConst => IntIR()
     }
   }
 
-  def getStoreOperator(statement: StatementIR): Int = {
+  def getStoreOperator(statement: Statement): Int = {
     statement match {
-      case inline: InlineIR => getStoreOperator(inline.expression)
-      case doBlock: DoBlockIR => getStoreOperator(doBlock.statement)
-      case blockStmt: BlockStmtIR => getStoreOperator(blockStmt.statements.head)
+      case inline: Inline => getStoreOperator(inline.expression)
+      case doBlock: DoBlock => getStoreOperator(doBlock.statement)
+      case blockStmt: BlockStmt => getStoreOperator(blockStmt.statements.head)
     }
   }
 
-  def getStoreOperator(expression: ExpressionIR): Int = {
+  def getStoreOperator(expression: Expression): Int = {
     expression match {
-      case aBinaryIR: ABinaryIR => getStoreOperator(aBinaryIR.expression1)
+      case aBinaryIR: ABinary => getStoreOperator(aBinaryIR.expression1)
       case _: IntConstIR => Opcodes.ISTORE
-      case _: LongConstIR => Opcodes.LSTORE
-      case _: FloatConstIR => Opcodes.FSTORE
-      case _: DoubleConstIR => Opcodes.DSTORE
+      case _: LongConst => Opcodes.LSTORE
+      case _: FloatConst => Opcodes.FSTORE
+      case _: DoubleConst => Opcodes.DSTORE
     }
   }
 
 
-  def getArithmeticOperator(op: OperatorIR, expression1: ExpressionIR, expression2: ExpressionIR): Int = {
+  def getArithmeticOperator(op: Operator, expression1: Expression, expression2: Expression): Int = {
 
     expression1 match {
-      case innerABinary: ABinaryIR => {
+      case innerABinary: ABinary => {
         getArithmeticOperator(op, innerABinary.expression1, innerABinary.expression2)
       }
       case _: IntConstIR => {
         op match {
-          case AddIR => Opcodes.IADD
-          case SubtractIR => Opcodes.ISUB
-          case MultiplyIR => Opcodes.IMUL
-          case DivideIR => Opcodes.IDIV
+          case Add => Opcodes.IADD
+          case Subtract => Opcodes.ISUB
+          case Multiply => Opcodes.IMUL
+          case Divide => Opcodes.IDIV
         }
       }
-      case _: LongConstIR => {
+      case _: LongConst => {
         op match {
-          case AddIR => Opcodes.LADD
-          case SubtractIR => Opcodes.LSUB
-          case MultiplyIR => Opcodes.LMUL
-          case DivideIR => Opcodes.LDIV
+          case Add => Opcodes.LADD
+          case Subtract => Opcodes.LSUB
+          case Multiply => Opcodes.LMUL
+          case Divide => Opcodes.LDIV
         }
       }
-      case _: FloatConstIR => {
+      case _: FloatConst => {
         op match {
-          case AddIR => Opcodes.FADD
-          case SubtractIR => Opcodes.FSUB
-          case MultiplyIR => Opcodes.FMUL
-          case DivideIR => Opcodes.FDIV
+          case Add => Opcodes.FADD
+          case Subtract => Opcodes.FSUB
+          case Multiply => Opcodes.FMUL
+          case Divide => Opcodes.FDIV
         }
       }
-      case _: DoubleConstIR => {
+      case _: DoubleConst => {
         op match {
-          case AddIR => Opcodes.DADD
-          case SubtractIR => Opcodes.DSUB
-          case MultiplyIR => Opcodes.DMUL
-          case DivideIR => Opcodes.DDIV
+          case Add => Opcodes.DADD
+          case Subtract => Opcodes.DSUB
+          case Multiply => Opcodes.DMUL
+          case Divide => Opcodes.DDIV
         }
       }
     }
   }
-
-  def modifierToModifierOp(modifierIR: ModifierIR): Int = {
-    modifierIR match {
-      case _: PublicIR.type => Opcodes.ACC_PUBLIC
-      case _: PrivateIR.type => Opcodes.ACC_PRIVATE
-      case _: ProtectedIR.type => Opcodes.ACC_PROTECTED
-      case _: StaticIR.type => Opcodes.ACC_STATIC
-    }
-  }
-
-
 }

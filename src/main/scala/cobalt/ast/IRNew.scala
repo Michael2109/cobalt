@@ -52,11 +52,50 @@ object AST2IR {
     }
   }
 
+  def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR): Unit ={
+    `type` match {
+      case _: IntIR => operator match {
+        case Add => method.body += IAdd
+        case Subtract => method.body += ISub
+        case Multiply => method.body += IMul
+        case Divide => method.body += IDiv
+      }
+      case _: LongIR => operator match {
+        case Add => method.body += LAdd
+      }
+      case _: ObjectIR => operator match {
+        case Add =>
+        case Subtract =>
+        case Multiply =>
+        case Divide =>
+      }
+    }
+  }
+
   def convertToIR(expression: Expression, method: MethodIR): Unit ={
     expression match {
+      case aBinary: ABinary => {
+        convertToIR(aBinary.expression1, method)
+        convertToIR(aBinary.expression2, method)
+        convertToIR(aBinary.op, IRUtils.getExpressionType(aBinary.expression1),method)
+      }
       case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method))
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
-      case methodCall: MethodCall => convertToIR(methodCall.expression, method)
+      case intObject: IntObject => {
+        method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
+        method.body += VisitInst(Opcodes.DUP)
+        convertToIR(intObject.value, method)
+        method.body += VisitMethodInst(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+      }
+      case methodCall: MethodCall => {
+        methodCall.name.value match {
+          case "print" | "println" => {
+            method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
+            convertToIR(boxPrimitive(methodCall.expression), method)
+            method.body += VisitMethodInst(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
+          }
+        }
+      }
     }
   }
 
@@ -95,6 +134,12 @@ object AST2IR {
 
     }
   }
+
+  def boxPrimitive(expression: Expression): Expression ={
+    IRUtils.getExpressionType(expression) match {
+      case _: IntIR => IntObject(expression)
+    }
+  }
 }
 
 object IRNew {
@@ -102,31 +147,41 @@ object IRNew {
   trait ModelIR
 
   case class ClassModelIR(nameSpace: String, name: String, methods: ListBuffer[MethodIR]) extends ModelIR
-
   case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], body: ListBuffer[StatementIR])
 
-  case class Assign(id: Int, immutable: Boolean, block: BlockIR)
 
   trait BlockIR extends StatementIR
-
   case class InlineIR(expression: ExpressionIR) extends BlockIR
-
   case class DoBlockIR(statement: StatementIR) extends BlockIR
 
 
   trait ExpressionIR
-
+  case class Assign(id: Int, immutable: Boolean, block: BlockIR) extends ExpressionIR
   case class IntConstIR(value: BigInt) extends ExpressionIR
 
-  case class MethodCallIR(fieldOpcode: Int, fieldOwner: String, fieldName: String, fieldDesc: String, args: ExpressionIR, methodOpcode: Int, methodOwner: String, methodName: String, methodDesc: String) extends ExpressionIR
-
   trait StatementIR
-
   case class ExprAsStmtIR(expressionIR: ExpressionIR) extends StatementIR
-
   case class IfIR(condition: ExpressionIR, isStmt: StatementIR, elseStmt: StatementIR)
-
   case class LabelIR() extends StatementIR
+
+  trait TypeIR
+  case class IntIR() extends TypeIR
+  case class LongIR() extends TypeIR
+  case class FloatIR() extends TypeIR
+  case class DoubleIR() extends TypeIR
+  case class ObjectIR(name: String) extends TypeIR
+
+  trait ArithmeticOperatorIR extends StatementIR
+  case object IAdd extends ArithmeticOperatorIR
+  case object ISub extends ArithmeticOperatorIR
+  case object IMul extends ArithmeticOperatorIR
+  case object IDiv extends ArithmeticOperatorIR
+  case object LAdd extends ArithmeticOperatorIR
+
+  case class VisitTypeInst(opcode: Int, name: String) extends StatementIR
+  case class VisitInst(opcode: Int) extends StatementIR
+  case class VisitFieldInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
+  case class VisitMethodInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
 }
 
 object Test {

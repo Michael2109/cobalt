@@ -43,17 +43,13 @@ object Compiler {
 
     val generatedFilePath = outputDir.resolve(pathsToCompile(0))
 
-    generatedFilePath.getParent.toFile.mkdirs()
-
-    val filePath = generatedFilePath.toString.replaceFirst("[.][^.]+$", "") + ".class"
-
-    println(filePath)
+    val filePath = Paths.get(generatedFilePath.toString.replaceFirst("[.][^.]+$", "") + ".class")
 
     // Create class file
-    val file = new File(filePath)
+    val file = filePath.toFile
     file.createNewFile()
 
-    val bos = new BufferedOutputStream(new FileOutputStream(filePath))
+    val bos = new BufferedOutputStream(new FileOutputStream(filePath.toFile))
 
     bos.write(moduleBytecodes(0))
     bos.close()

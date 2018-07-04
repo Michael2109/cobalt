@@ -2,7 +2,6 @@ package cobalt.ir
 
 import cobalt.ast.AST
 import cobalt.ast.AST.{Method, _}
-import cobalt.ast.IR.BoolConstIR
 import cobalt.parser.{ExpressionParser, StatementParser}
 import cobalt.utils.TestUtil
 import org.junit.runner.RunWith

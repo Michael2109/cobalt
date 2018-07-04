@@ -1,7 +1,5 @@
 package cobalt.ast
 
-import IR._
-
 import scala.tools.asm.Opcodes
 
 object AST {
@@ -73,6 +71,7 @@ object AST {
   case class BBinary(op: BBinOp, expression1: Expression, expression2: Expression) extends Expression
   case class RBinary(op: RBinOp, expression1: Expression, expression2: Expression) extends Expression
   case class IntConst(value: BigInt) extends Expression
+  case class IntObject(value: Expression) extends Expression
   case class LongConst(value: BigInt) extends Expression
   case class DoubleConst(value: BigDecimal) extends Expression
   case class FloatConst(value: BigDecimal) extends Expression
@@ -83,66 +82,39 @@ object AST {
   trait Model extends Statement
 
   trait Statement
-
   case class ClassModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Model
-
   case class ObjectModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Model
-
   case class TraitModel(name: Name, modifiers: Seq[Modifier], fields: Seq[Field], parent: Option[Type], parentArguments: Seq[Expression], interfaces: Seq[Type], body: Statement) extends Model
-
   case class Method(name: Name, annotations: Seq[Annotation], fields: Seq[Field], modifiers: Seq[Modifier], returnType: Option[Type], body: Block) extends Statement
-
   case class For() extends Statement
-
   case class While() extends Statement
-
   case class If(condition: Expression, ifBlock: Statement, elseBlock: Option[Statement]) extends Statement
-
   case class Assign(name: Name, `type`: Option[Type], immutable: Boolean, block: Block) extends Statement
-
   case class AssignMultiple(name: Seq[Name], `type`: Option[Type], immutable: Boolean, block: Block) extends Statement
-
   case class Reassign(name: Name, block: Block) extends Statement
-
   case class Return() extends Statement
-
   case class Lambda() extends Statement
-
   case class ExprAsStmt(expression: Expression) extends Statement
-
   case class BlockStmt(statements: Seq[Statement]) extends Statement
-
   case class Match() extends Statement
-
   case class Case(expression: Expression, block: Block)
 
   trait Operator
 
   trait ABinOp extends Operator
-
   case object Add extends ABinOp
-
   case object Subtract extends ABinOp
-
   case object Multiply extends ABinOp
-
   case object Divide extends ABinOp
 
   trait BBinOp extends Operator
-
   case object And extends BBinOp
-
   case object Or extends BBinOp
 
   trait RBinOp extends Operator
-
   case object GreaterEqual extends RBinOp
-
   case object Greater extends RBinOp
-
   case object LessEqual extends RBinOp
-
   case object Less extends RBinOp
-
   case object Equal extends RBinOp
 }

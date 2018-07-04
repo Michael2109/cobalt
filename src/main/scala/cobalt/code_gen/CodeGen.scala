@@ -1,8 +1,6 @@
 package cobalt.code_gen
 
 import java.io.PrintWriter
-
-import cobalt.ast.IR._
 import cobalt.ast.IRUtils
 
 import scala.tools.asm._
@@ -10,7 +8,7 @@ import scala.tools.asm.Opcodes
 import scala.tools.asm.util.CheckClassAdapter;
 
 object CodeGen {
-
+/*
   val version = 49
 
   def genModelCode(model: StatementIR): Array[Byte] = {
@@ -132,5 +130,5 @@ object CodeGen {
 
     cw.visitEnd()
     cw.toByteArray
-  }
+  }*/
 }

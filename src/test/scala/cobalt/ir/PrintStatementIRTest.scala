@@ -2,7 +2,6 @@ package cobalt.ir
 
 import cobalt.ast.AST
 import cobalt.ast.AST.{BlockExpr, Identifier, MethodCall, Name}
-import cobalt.ast.IR._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{FunSpec, Matchers}

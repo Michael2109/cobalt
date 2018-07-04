@@ -62,11 +62,6 @@ object CodeGenNew {
       /*case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
       case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)
       case doubleConst: DoubleConstIR => mv.visitLdcInsn(doubleConst.value.toDouble)*/
-      case methodCall: MethodCallIR => {
-        mv.visitFieldInsn(methodCall.fieldOpcode, methodCall.fieldOwner, methodCall.fieldName, methodCall.fieldDesc)
-        genCode(mv, methodCall.args)
-        mv.visitMethodInsn(methodCall.methodOpcode, methodCall.methodOwner, methodCall.methodName, methodCall.methodDesc)
-      }
       /*case stringLiteral: StringLiteralIR => mv.visitLdcInsn(stringLiteral.value)*/
     }
   }
@@ -91,7 +86,15 @@ object CodeGenNew {
         genCode(mv, ifStmt.elseBlock.getOrElse(BlockStmtIR(Seq())))
         mv.visitLabel(endLabel)
       }*/
+      case IAdd => mv.visitInsn(Opcodes.IADD)
+      case ISub => mv.visitInsn(Opcodes.ISUB)
+      case IMul => mv.visitInsn(Opcodes.IMUL)
+      case IDiv => mv.visitInsn(Opcodes.IDIV)
       case inline: InlineIR => genCode(mv, inline.asInstanceOf[BlockIR])
+      case visitFieldInst: VisitFieldInst => mv.visitFieldInsn(visitFieldInst.opcode, visitFieldInst.owner, visitFieldInst.name, visitFieldInst.description)
+      case visitMethodInst: VisitMethodInst => mv.visitMethodInsn(visitMethodInst.opcode, visitMethodInst.owner, visitMethodInst.name, visitMethodInst.description, false)
+      case visitTypeInst: VisitTypeInst => mv.visitTypeInsn(visitTypeInst.opcode, visitTypeInst.name)
+      case visitInst: VisitInst => mv.visitInsn(visitInst.opcode)
     }
   }
 
