@@ -21,6 +21,7 @@ object AST2IR {
 
   def convertToIR(statement: Statement, model: ClassModelIR): Unit = {
     statement match {
+      //case assign: Assign => model.localVariables += LocalVariableIR(model.getNextVarId(), ListBuffer(), )
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, model))
       case method: Method => {
         val methodIR = MethodIR(method.name.value, mutable.SortedSet[Int](), ListBuffer(), ListBuffer())
@@ -166,7 +167,16 @@ object IRNew {
 
   trait ModelIR
 
-  case class ClassModelIR(nameSpace: String, name: String, methods: ListBuffer[MethodIR]) extends ModelIR
+  case class ClassModelIR(nameSpace: String, name: String, localVariables: ListBuffer[LocalVariableIR], methods: ListBuffer[MethodIR]) extends ModelIR {
+    private var nextVarId = 0
+    def getNextVarId(): Int ={
+      val id = nextVarId
+      nextVarId += 1
+      return id
+    }
+  }
+
+  case class LocalVariableIR(id: Int, modifiers: mutable.SortedSet[Int], body: ListBuffer[StatementIR])
   case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], body: ListBuffer[StatementIR]){
 
     private var nextVarId = 0
