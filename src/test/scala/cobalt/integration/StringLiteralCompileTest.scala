@@ -3,9 +3,9 @@ package cobalt.integration
 import java.nio.file.Paths
 
 import cobalt.utils.CompilerUtil
-import org.scalatest.Matchers
+import org.scalatest.{FunSpec, Matchers}
 
-class StringLiteralCompileTest extends IntegrationSetup with Matchers {
+class StringLiteralCompileTest extends FunSpec with Matchers {
 
   describe("String Literal compile test") {
     it("Should compile string literals") {

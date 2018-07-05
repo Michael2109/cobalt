@@ -3,7 +3,6 @@ package cobalt.code_gen
 import java.io.PrintWriter
 
 import cobalt.ast.IRNew._
-import cobalt.ast.IRUtils
 
 import scala.tools.asm.{Opcodes, _}
 import scala.tools.asm.util.CheckClassAdapter;
@@ -37,13 +36,13 @@ object CodeGenNew {
   def genCode(cw: ClassWriter, method: MethodIR): Unit = {
 
       val mv = cw.visitMethod(method.modifiers.foldLeft(0)(_|_), method.name, String.format("(%s)V", method.fields.map(_._2).mkString), null, null)
-      method.body.foreach(x => genCode(mv, x))
+      method.body.foreach(x => genCode(mv, x, method))
       mv.visitInsn(Opcodes.RETURN)
       mv.visitMaxs(0, 0)
       mv.visitEnd()
   }
 
-  def genCode(mv: MethodVisitor, expression: ExpressionIR): Unit = {
+  def genCode(mv: MethodVisitor, expression: ExpressionIR, method: MethodIR): Unit = {
     expression match {
      /* case aBinary: ABinaryIR => {
         genCode(mv, aBinary.expression1)
@@ -62,19 +61,19 @@ object CodeGenNew {
       /*case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
       case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)
       case doubleConst: DoubleConstIR => mv.visitLdcInsn(doubleConst.value.toDouble)*/
-      /*case stringLiteral: StringLiteralIR => mv.visitLdcInsn(stringLiteral.value)*/
+      case stringLiteral: StringLiteralIR => mv.visitLdcInsn(stringLiteral.value)
     }
   }
 
-  def genCode(mv: MethodVisitor, statement: StatementIR): Unit = {
+  def genCode(mv: MethodVisitor, statement: StatementIR, method: MethodIR): Unit = {
     statement match {
       /*case assign: AssignIR => {
         genCode(mv, assign.block)
         mv.visitVarInsn(IRUtils.getStoreOperator(assign.block), assign.id)
       }*/
       /*case blockStmt: BlockStmtIR => blockStmt.statements.foreach(x => genCode(mv, x))*/
-      case doBlock: DoBlockIR => genCode(mv, doBlock.asInstanceOf[BlockIR])
-      case exprAsStmt: ExprAsStmtIR => genCode(mv, exprAsStmt.expressionIR)
+      case doBlock: DoBlockIR => genCode(mv, doBlock.asInstanceOf[BlockIR], method)
+      case exprAsStmt: ExprAsStmtIR => genCode(mv, exprAsStmt.expressionIR, method)
       /*case ifStmt: IfIR => {
         val trueLabel = new Label
         val endLabel = new Label
@@ -87,21 +86,25 @@ object CodeGenNew {
         mv.visitLabel(endLabel)
       }*/
       case IAdd => mv.visitInsn(Opcodes.IADD)
+      case iStore: IStore => mv.visitVarInsn(Opcodes.ISTORE, iStore.id);
       case ISub => mv.visitInsn(Opcodes.ISUB)
       case IMul => mv.visitInsn(Opcodes.IMUL)
       case IDiv => mv.visitInsn(Opcodes.IDIV)
-      case inline: InlineIR => genCode(mv, inline.asInstanceOf[BlockIR])
+      case inline: InlineIR => genCode(mv, inline.asInstanceOf[BlockIR], method)
       case visitFieldInst: VisitFieldInst => mv.visitFieldInsn(visitFieldInst.opcode, visitFieldInst.owner, visitFieldInst.name, visitFieldInst.description)
+      case visitJumpInsn: VisitJumpInst => mv.visitJumpInsn(visitJumpInsn.opcode, method.labels.get(visitJumpInsn.labelId).get)
       case visitMethodInst: VisitMethodInst => mv.visitMethodInsn(visitMethodInst.opcode, visitMethodInst.owner, visitMethodInst.name, visitMethodInst.description, false)
       case visitTypeInst: VisitTypeInst => mv.visitTypeInsn(visitTypeInst.opcode, visitTypeInst.name)
       case visitInst: VisitInst => mv.visitInsn(visitInst.opcode)
+      case _: LabelIR =>
+      case visitLabel: VisitLabelIR => mv.visitLabel(method.labels.get(visitLabel.id).get)
     }
   }
 
-  def genCode(mv: MethodVisitor, block: BlockIR): Unit = {
+  def genCode(mv: MethodVisitor, block: BlockIR, method: MethodIR): Unit = {
     block match {
-      case doBlock: DoBlockIR => genCode(mv, doBlock.statement)
-      case inline: InlineIR => genCode(mv, inline.expression)
+      case doBlock: DoBlockIR => genCode(mv, doBlock.statement, method)
+      case inline: InlineIR => genCode(mv, inline.expression, method)
     }
   }
 }

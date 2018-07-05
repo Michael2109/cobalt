@@ -39,8 +39,9 @@ object IRUtils {
     expression match {
       case aBinary: ABinary => getExpressionType(aBinary.expression1)
       case blockExpr: BlockExpr => blockExpr.expressions.map(getExpressionType).head
-      case _: IntObject => ObjectIR("Ljava/lang/Object;")
-      case _: IntConst => IntIR()
+      case _: IntObject => ObjectType("Ljava/lang/Object;")
+      case _: IntConst => IntType()
+      case _: StringLiteral => StringLiteralType()
     }
   }
 

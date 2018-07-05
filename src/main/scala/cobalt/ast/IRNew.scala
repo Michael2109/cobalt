@@ -5,7 +5,7 @@ import cobalt.ast.IRNew._
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
-import scala.tools.asm.Opcodes
+import scala.tools.asm.{Label, Opcodes}
 
 object AST2IR {
 
@@ -54,16 +54,16 @@ object AST2IR {
 
   def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR): Unit ={
     `type` match {
-      case _: IntIR => operator match {
+      case _: IntType => operator match {
         case Add => method.body += IAdd
         case Subtract => method.body += ISub
         case Multiply => method.body += IMul
         case Divide => method.body += IDiv
       }
-      case _: LongIR => operator match {
+      case _: LongType => operator match {
         case Add => method.body += LAdd
       }
-      case _: ObjectIR => operator match {
+      case _: ObjectType => operator match {
         case Add =>
         case Subtract =>
         case Multiply =>
@@ -80,6 +80,13 @@ object AST2IR {
         convertToIR(aBinary.op, IRUtils.getExpressionType(aBinary.expression1),method)
       }
       case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method))
+      case identifier: Identifier => {
+        identifier.name.value match {
+          case "true" => convertToIR(IntConst(1), method)
+          case "false" => convertToIR(IntConst(0), method)
+          case _ => IdentifierIR(identifier.name.value)
+        }
+      }
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
       case intObject: IntObject => {
         method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
@@ -96,27 +103,43 @@ object AST2IR {
           }
         }
       }
+      case stringLiteral: StringLiteral => {
+        method.body += ExprAsStmtIR(StringLiteralIR(stringLiteral.value))
+      }
     }
   }
 
   def convertToIR(statement: Statement, method: MethodIR): Unit ={
     statement match {
+      case assign: Assign => {
+        convertToIR(assign.block, method)
+        method.body += IStore(method.getNextVarId())
+      }
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, method))
       case inline: Inline => convertToIR(inline.expression, method)
       case doBlock: DoBlock => convertToIR(doBlock.statement, method)
       case exprAsStmt: ExprAsStmt => convertToIR(exprAsStmt.expression, method)
       case ifStmt: If => {
-       /* val trueLabel = new LabelIR
-        val endLabel = new LabelIR
+
         convertToIR(ifStmt.condition, method)
-        method.labels += trueLabel
-        method.labels += endLabel
+        val trueLabel = method.createLabel()
+        val endLabel = method.createLabel()
+
+        method.body += VisitJumpInst(Opcodes.IFEQ, trueLabel)
+
         convertToIR(ifStmt.ifBlock, method)
-        ifStmt.elseBlock match {
-          case Some(elseBlock) => convertToIR(elseBlock, method)
-          case _ =>
-        }*/
-        /*    case ifStmt: IfIR => {
+
+        method.body += VisitJumpInst(Opcodes.GOTO, endLabel)
+
+        method.visitLabel(trueLabel)
+
+        if(ifStmt.elseBlock.isDefined) {
+          convertToIR(ifStmt.elseBlock.get, method)
+        }
+
+        method.visitLabel(endLabel)
+
+        /*
         val trueLabel = new Label
         val endLabel = new Label
         genCode(mv, ifStmt.condition)
@@ -128,16 +151,13 @@ object AST2IR {
         mv.visitLabel(endLabel)
       }*/
       }
-
-
-
-
     }
   }
 
   def boxPrimitive(expression: Expression): Expression ={
     IRUtils.getExpressionType(expression) match {
-      case _: IntIR => IntObject(expression)
+      case _: IntType => IntObject(expression)
+      case _: StringLiteralType => expression
     }
   }
 }
@@ -147,7 +167,27 @@ object IRNew {
   trait ModelIR
 
   case class ClassModelIR(nameSpace: String, name: String, methods: ListBuffer[MethodIR]) extends ModelIR
-  case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], body: ListBuffer[StatementIR])
+  case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], body: ListBuffer[StatementIR]){
+
+    private var nextVarId = 0
+    def getNextVarId(): Int ={
+      val id = nextVarId
+      nextVarId += 1
+      return id
+    }
+
+    val labels: mutable.SortedMap[Int, Label] = mutable.SortedMap[Int, Label]()
+    def createLabel(): Int = {
+      labels.put(labels.size, new Label)
+      val id = labels.size - 1
+      // body += LabelIR(id)
+      id
+    }
+
+    def visitLabel(id: Int): Unit ={
+      body += VisitLabelIR(id)
+    }
+  }
 
 
   trait BlockIR extends StatementIR
@@ -156,20 +196,24 @@ object IRNew {
 
 
   trait ExpressionIR
-  case class Assign(id: Int, immutable: Boolean, block: BlockIR) extends ExpressionIR
+  case class AssignIR(id: Int, immutable: Boolean, block: BlockIR) extends ExpressionIR
+  case class IdentifierIR(id: String) extends ExpressionIR
   case class IntConstIR(value: BigInt) extends ExpressionIR
+  case class StringLiteralIR(value: String) extends ExpressionIR
 
   trait StatementIR
   case class ExprAsStmtIR(expressionIR: ExpressionIR) extends StatementIR
   case class IfIR(condition: ExpressionIR, isStmt: StatementIR, elseStmt: StatementIR)
-  case class LabelIR() extends StatementIR
+  case class LabelIR(id: Int) extends StatementIR
+  case class VisitLabelIR(id: Int) extends StatementIR
 
   trait TypeIR
-  case class IntIR() extends TypeIR
-  case class LongIR() extends TypeIR
-  case class FloatIR() extends TypeIR
-  case class DoubleIR() extends TypeIR
-  case class ObjectIR(name: String) extends TypeIR
+  case class IntType() extends TypeIR
+  case class LongType() extends TypeIR
+  case class FloatType() extends TypeIR
+  case class DoubleType() extends TypeIR
+  case class StringLiteralType() extends TypeIR
+  case class ObjectType(name: String) extends TypeIR
 
   trait ArithmeticOperatorIR extends StatementIR
   case object IAdd extends ArithmeticOperatorIR
@@ -178,22 +222,12 @@ object IRNew {
   case object IDiv extends ArithmeticOperatorIR
   case object LAdd extends ArithmeticOperatorIR
 
+  trait StoreOperators extends StatementIR
+  case class IStore(id: Int) extends StoreOperators
+
   case class VisitTypeInst(opcode: Int, name: String) extends StatementIR
   case class VisitInst(opcode: Int) extends StatementIR
   case class VisitFieldInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
+  case class VisitJumpInst(opcode: Int, labelId: Int) extends StatementIR
   case class VisitMethodInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
-}
-
-object Test {
-  def main(args: Array[String]): Unit = {
-    convertAST2IR()
-  }
-
-  def convertAST2IR(): Unit = {
-    val module =  Module(ModuleHeader(NameSpace(ArrayBuffer(Name("x"), Name("y"), Name("z"))),ArrayBuffer()),ArrayBuffer(ClassModel(Name("ClassName"),List(),List(),None,List(),List(),Method(Name("x"),List(),ArrayBuffer(),List(Public),Some(Type(Name("Int"))),Inline(IntConst(1))))))
-    val result = AST2IR.astToIR(module)
-
-    println(result)
-  }
-
 }

@@ -3,9 +3,9 @@ package cobalt.integration
 import java.nio.file.Paths
 
 import cobalt.utils.CompilerUtil
-import org.scalatest.Matchers
+import org.scalatest.{FunSpec, Matchers}
 
-class NumberCompileTest extends IntegrationSetup with Matchers {
+class NumberCompileTest extends FunSpec with Matchers {
 
   describe("Number compile test") {
     it("Should compile numbers") {

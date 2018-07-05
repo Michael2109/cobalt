@@ -3,9 +3,9 @@ package cobalt.integration
 import java.nio.file.Paths
 
 import cobalt.utils.CompilerUtil
-import org.scalatest.Matchers
+import org.scalatest.{FunSpec, Matchers}
 
-class IfStatementCompileTest extends IntegrationSetup with Matchers {
+class IfStatementCompileTest extends FunSpec with Matchers {
 
   describe("If Statement compile test") {
     it("Should compile if statements") {
