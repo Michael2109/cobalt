@@ -3,6 +3,7 @@ package cobalt.code_gen
 import java.io.PrintWriter
 
 import cobalt.ast.IRNew._
+import org.codehaus.janino.Java.LocalVariable
 
 import scala.tools.asm.{Opcodes, _}
 import scala.tools.asm.util.CheckClassAdapter;
@@ -16,28 +17,24 @@ object CodeGenNew {
       case classModel: ClassModelIR => {
         val cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES)
         cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.nameSpace + "/" + classModel.name, null, "java/lang/Object", null)
-        val constructor = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null)
-        constructor.visitVarInsn(Opcodes.ALOAD, 0)
-        constructor.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
-        constructor.visitInsn(Opcodes.RETURN)
-        constructor.visitMaxs(0, 0)
-        constructor.visitEnd()
+        classModel.localVariables.foreach(v => genCode(cw, v))
         classModel.methods.foreach(m => genCode(cw, m))
         cw.visitEnd()
 
         val pw = new PrintWriter(System.out)
         CheckClassAdapter.verify(new ClassReader(cw.toByteArray), true, pw)
-
         cw.toByteArray
       }
     }
   }
 
-  def genCode(cw: ClassWriter, method: MethodIR): Unit = {
+  def genCode(cw: ClassWriter, localVariable: VisitField): Unit ={
+    cw.visitField(localVariable.id, localVariable.name, localVariable.`type`, localVariable.signature, localVariable.value)
+  }
 
+  def genCode(cw: ClassWriter, method: MethodIR): Unit = {
       val mv = cw.visitMethod(method.modifiers.foldLeft(0)(_|_), method.name, String.format("(%s)V", method.fields.map(_._2).mkString), null, null)
       method.body.foreach(x => genCode(mv, x, method))
-      mv.visitInsn(Opcodes.RETURN)
       mv.visitMaxs(0, 0)
       mv.visitEnd()
   }
@@ -93,11 +90,12 @@ object CodeGenNew {
       case inline: InlineIR => genCode(mv, inline.asInstanceOf[BlockIR], method)
       case visitFieldInst: VisitFieldInst => mv.visitFieldInsn(visitFieldInst.opcode, visitFieldInst.owner, visitFieldInst.name, visitFieldInst.description)
       case visitJumpInsn: VisitJumpInst => mv.visitJumpInsn(visitJumpInsn.opcode, method.labels.get(visitJumpInsn.labelId).get)
-      case visitMethodInst: VisitMethodInst => mv.visitMethodInsn(visitMethodInst.opcode, visitMethodInst.owner, visitMethodInst.name, visitMethodInst.description, false)
+      case visitMethodInst: VisitMethodInsn => mv.visitMethodInsn(visitMethodInst.opcode, visitMethodInst.owner, visitMethodInst.name, visitMethodInst.description, false)
       case visitTypeInst: VisitTypeInst => mv.visitTypeInsn(visitTypeInst.opcode, visitTypeInst.name)
-      case visitInst: VisitInst => mv.visitInsn(visitInst.opcode)
+      case visitInst: VisitInsn => mv.visitInsn(visitInst.opcode)
       case _: LabelIR =>
       case visitLabel: VisitLabelIR => mv.visitLabel(method.labels.get(visitLabel.id).get)
+      case visitVarInsn: VisitVarInsn => mv.visitVarInsn(visitVarInsn.opcode, visitVarInsn.id)
     }
   }
 

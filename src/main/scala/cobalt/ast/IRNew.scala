@@ -12,19 +12,43 @@ object AST2IR {
   def astToIR(module: Module): Seq[ModelIR] = {
     module.models.map(model => model match {
       case classModel: ClassModel => {
-        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.map(_.value).mkString("/"), classModel.name.value, ListBuffer())
+        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.map(_.value).mkString("/"), classModel.name.value, ListBuffer[VisitField](), ListBuffer[MethodIR]())
         convertToIR(classModel.body, classModelIR)
+        addConstructor(classModelIR)
         classModelIR
       }
     })
   }
 
+  def addConstructor(model: ClassModelIR): Unit ={
+    if(!constructorExists()){
+      val methodIR = MethodIR("<init>", mutable.SortedSet[Int](Opcodes.ACC_PUBLIC), ListBuffer(), "V", ListBuffer())
+
+      methodIR.body += VisitVarInsn(Opcodes.ALOAD, 0)
+      methodIR.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+      methodIR.body += VisitInsn(Opcodes.RETURN)
+
+      model.methods += methodIR
+    }
+  }
+
+  def constructorExists(): Boolean ={
+    return false
+  }
+
   def convertToIR(statement: Statement, model: ClassModelIR): Unit = {
     statement match {
-      //case assign: Assign => model.localVariables += LocalVariableIR(model.getNextVarId(), ListBuffer(), )
+      case assign: Assign => {
+        model.localVariables += VisitField(model.getNextVarId(), assign.name.value, "I", null, null)
+        val methodIR = MethodIR(assign.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
+        convertToIR(assign.block, methodIR)
+        methodIR.body += VisitInsn(Opcodes.RETURN)
+
+        model.methods += methodIR
+      }
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, model))
       case method: Method => {
-        val methodIR = MethodIR(method.name.value, mutable.SortedSet[Int](), ListBuffer(), ListBuffer())
+        val methodIR = MethodIR(method.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
 
 
         methodIR.modifiers += Opcodes.ACC_PUBLIC
@@ -48,6 +72,8 @@ object AST2IR {
           })
         }
         convertToIR(method.body, methodIR)
+        methodIR.body += VisitInsn(Opcodes.RETURN)
+
         model.methods += methodIR
       }
     }
@@ -91,16 +117,16 @@ object AST2IR {
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
       case intObject: IntObject => {
         method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
-        method.body += VisitInst(Opcodes.DUP)
+        method.body += VisitInsn(Opcodes.DUP)
         convertToIR(intObject.value, method)
-        method.body += VisitMethodInst(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
       }
       case methodCall: MethodCall => {
         methodCall.name.value match {
           case "print" | "println" => {
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
             convertToIR(boxPrimitive(methodCall.expression), method)
-            method.body += VisitMethodInst(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
+            method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
           }
         }
       }
@@ -167,7 +193,7 @@ object IRNew {
 
   trait ModelIR
 
-  case class ClassModelIR(nameSpace: String, name: String, localVariables: ListBuffer[LocalVariableIR], methods: ListBuffer[MethodIR]) extends ModelIR {
+  case class ClassModelIR(nameSpace: String, name: String, localVariables: ListBuffer[VisitField], methods: ListBuffer[MethodIR]) extends ModelIR {
     private var nextVarId = 0
     def getNextVarId(): Int ={
       val id = nextVarId
@@ -176,8 +202,7 @@ object IRNew {
     }
   }
 
-  case class LocalVariableIR(id: Int, modifiers: mutable.SortedSet[Int], body: ListBuffer[StatementIR])
-  case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], body: ListBuffer[StatementIR]){
+  case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], returnType: String, body: ListBuffer[StatementIR]){
 
     private var nextVarId = 0
     def getNextVarId(): Int ={
@@ -190,7 +215,6 @@ object IRNew {
     def createLabel(): Int = {
       labels.put(labels.size, new Label)
       val id = labels.size - 1
-      // body += LabelIR(id)
       id
     }
 
@@ -235,9 +259,11 @@ object IRNew {
   trait StoreOperators extends StatementIR
   case class IStore(id: Int) extends StoreOperators
 
+  case class VisitField(id: Int, name: String, `type`: String, signature: String, value: Object)
   case class VisitTypeInst(opcode: Int, name: String) extends StatementIR
-  case class VisitInst(opcode: Int) extends StatementIR
+  case class VisitInsn(opcode: Int) extends StatementIR
   case class VisitFieldInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
   case class VisitJumpInst(opcode: Int, labelId: Int) extends StatementIR
-  case class VisitMethodInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
+  case class VisitMethodInsn(opcode: Int, owner: String, name: String, description: String) extends StatementIR
+  case class VisitVarInsn(opcode: Int, id: Int) extends StatementIR
 }

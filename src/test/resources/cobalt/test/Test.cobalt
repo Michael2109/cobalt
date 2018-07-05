@@ -2,6 +2,8 @@ package test
 
 class Test
 
+  let x = 1
+
   let main(args: Int): void = do
 
     let x = 1

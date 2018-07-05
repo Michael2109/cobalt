@@ -40,7 +40,7 @@ class Statements(indent: Int) {
 
   val methodParser: P[Statement] = P(LexicalParser.kw("let") ~ ExpressionParser.nameParser ~ "(" ~ fieldParser.rep(sep = ",") ~ ")" ~ (":" ~ ExpressionParser.typeRefParser).? ~ "=" ~ blockParser).map(x => Method(x._1, Seq(), x._2, Seq(Public), x._3, x._4))
 
-  val modelParser: P[Model] = P(LexicalParser.kw("class") ~ ExpressionParser.nameParser ~ indentedBlock).map(x => ClassModel(x._1, Seq(), Seq(), None, Seq(), Seq(), x._2))
+  val modelParser: P[Model] = P(LexicalParser.kw("class") ~ ExpressionParser.nameParser ~~ indentedBlock).map(x => ClassModel(x._1, Seq(), Seq(), None, Seq(), Seq(), x._2))
 
   val moduleParser: P[Module] = P(nameSpaceParser ~ importParser.rep ~ modelParser.rep).map(x => Module(ModuleHeader(x._1, x._2), x._3))
 
