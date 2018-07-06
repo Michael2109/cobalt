@@ -6,7 +6,7 @@ import java.nio.file.{Path, Paths}
 import cobalt.ast.AST2IR
 import cobalt.ast.AST.Module
 import cobalt.ast.IRNew.ModelIR
-import cobalt.code_gen.{CodeGen, CodeGenNew}
+import cobalt.code_gen.CodeGen
 import cobalt.parser.StatementParser
 import fastparse.core.Parsed
 
@@ -36,7 +36,7 @@ object Compiler {
     println(modelIRs)
 
     // Generate code
-    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(CodeGenNew.genModelCode)
+    val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(CodeGen.genModelCode)
 
     // Save to destination directory
 

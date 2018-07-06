@@ -12,34 +12,24 @@ object AST {
 
   case class Field(name: Name, `type`: Type, init: Option[Type])
 
-  case class Type(name: Name)
+  case class Type(ref: Ref)
 
   trait Ref
-
   case class RefSpecial(specialRef: SpecialRef) extends Ref
-
   case class RefLocal(name: Name) extends Ref
-
   case class RefQual(qualName: QualName) extends Ref
 
   trait SpecialRef
-
   case class Super() extends SpecialRef
-
   case class This() extends SpecialRef
 
   trait TypeRel
-
   case class Inherits() extends TypeRel
-
   case class Extends() extends TypeRel
-
   case class Equals() extends TypeRel
 
   case class NameSpace(nameSpace: Seq[Name])
-
   case class Name(value: String)
-
   case class QualName(nameSpace: NameSpace, name: Name)
 
   case class Annotation(name: Name)

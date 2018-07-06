@@ -14,7 +14,7 @@ class ModelParserTest extends FunSpec with Matchers
 {
   describe("Model parser")
   {
-    it("Should parse models with no fields")
+    it("Should parse a model with no fields")
     {
       val code =
         """class Test
@@ -22,7 +22,34 @@ class ModelParserTest extends FunSpec with Matchers
           |  let exampleMethod(): Int = do
           |    1
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.statementParser) shouldBe ClassModel(Name("Test"),List(),List(),None,List(),List(),BlockStmt(ArrayBuffer(Assign(Name("x"),None,true,Inline(IntConst(10))), Method(Name("exampleMethod"),List(),ArrayBuffer(),List(Public),Some(Type(Name("Int"))),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)))))))))
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe ClassModel(Name("Test"),List(),List(),None,List(),List(),BlockStmt(ArrayBuffer(Assign(Name("x"),None,true,Inline(IntConst(10))), Method(Name("exampleMethod"),List(),ArrayBuffer(),List(Public),Some(Type(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)))))))))
+    }
+
+    it("Should parse a model that extends a parent")
+    {
+      val code =
+        """class Test extends ParentClass
+          |  let exampleMethod(): Int = 1
+        """.stripMargin.replace("\r", "")
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe ClassModel(Name("Test"),List(),List(),None,List(),List(),BlockStmt(ArrayBuffer(Assign(Name("x"),None,true,Inline(IntConst(10))), Method(Name("exampleMethod"),List(),ArrayBuffer(),List(Public),Some(Type(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)))))))))
+    }
+
+    it("Should parse a model that extends a parent and implements a trait")
+    {
+      val code =
+        """class Test extends ParentClass with Trait
+          |  let exampleMethod(): Int = 1
+        """.stripMargin.replace("\r", "")
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe ClassModel(Name("Test"),List(),List(),None,List(),List(),BlockStmt(ArrayBuffer(Assign(Name("x"),None,true,Inline(IntConst(10))), Method(Name("exampleMethod"),List(),ArrayBuffer(),List(Public),Some(Type(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)))))))))
+    }
+
+    it("Should parse a model that extends a parent and implements multiple traits")
+    {
+      val code =
+        """class Test extends ParentClass with Trait1 with Trait2 with Trait3
+          |  let exampleMethod(): Int = 1
+        """.stripMargin.replace("\r", "")
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe ClassModel(Name("Test"),List(),List(),None,List(),List(),BlockStmt(ArrayBuffer(Assign(Name("x"),None,true,Inline(IntConst(10))), Method(Name("exampleMethod"),List(),ArrayBuffer(),List(Public),Some(Type(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)))))))))
     }
   }
 }

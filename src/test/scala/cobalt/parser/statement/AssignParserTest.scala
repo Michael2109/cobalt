@@ -26,7 +26,7 @@ class AssignParserTest extends FunSpec with Matchers
 
     it("Should parse with type defined")
     {
-      TestUtil.parse("let x: Int = 10", StatementParser.statementParser) shouldBe Assign(Name("x"),Some(Type(Name("Int"))),true,Inline(IntConst(10)))
+      TestUtil.parse("let x: Int = 10", StatementParser.statementParser) shouldBe Assign(Name("x"),Some(Type(RefLocal(Name("Int")))),true,Inline(IntConst(10)))
     }
 
     it("Should parse with a do block")

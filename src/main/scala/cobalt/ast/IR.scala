@@ -12,7 +12,19 @@ object AST2IR {
   def astToIR(module: Module): Seq[ModelIR] = {
     module.models.map(model => model match {
       case classModel: ClassModel => {
-        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.map(_.value).mkString("/"), classModel.name.value, ListBuffer[VisitField](), ListBuffer[MethodIR]())
+
+        val parent: String = classModel.parent match {
+          case Some(value) => value.ref match {
+            case RefLocal(name) => name.value
+            case RefQual(qualName) => {
+              println(qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value)
+              qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
+            }
+          }
+          case None => "java/lang/Object"
+        }
+
+        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.map(_.value).mkString("/"), classModel.name.value, parent, ListBuffer[String](), ListBuffer[VisitField](), ListBuffer[MethodIR]())
         convertToIR(classModel.body, classModelIR)
         addConstructor(classModelIR)
         classModelIR
@@ -68,7 +80,11 @@ object AST2IR {
           methodIR.fields += (("args", "[Ljava/lang/String;"))
         } else {
           method.fields.foreach(f => {
-            (methodIR.fields += ((f.name.value, IRUtils.typeToBytecodeType(f.`type`.name.value))))
+            val t = f.`type`.ref match {
+              case RefLocal(name) => name.value
+              case RefQual(qualName) => qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
+            }
+            (methodIR.fields += ((f.name.value, IRUtils.typeToBytecodeType(t))))
           })
         }
         convertToIR(method.body, methodIR)
@@ -193,7 +209,7 @@ object IRNew {
 
   trait ModelIR
 
-  case class ClassModelIR(nameSpace: String, name: String, localVariables: ListBuffer[VisitField], methods: ListBuffer[MethodIR]) extends ModelIR {
+  case class ClassModelIR(nameSpace: String, name: String, parent: String, traits: ListBuffer[String], localVariables: ListBuffer[VisitField], methods: ListBuffer[MethodIR]) extends ModelIR {
     private var nextVarId = 0
     def getNextVarId(): Int ={
       val id = nextVarId

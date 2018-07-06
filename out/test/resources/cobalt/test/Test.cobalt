@@ -1,6 +1,6 @@
 package test
 
-class Test
+class Test extends javax.swing.JPanel
 
   let x = 1
 
