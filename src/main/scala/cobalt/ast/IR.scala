@@ -13,31 +13,33 @@ object AST2IR {
     module.models.map(model => model match {
       case classModel: ClassModel => {
 
-        val parent: String = classModel.parent match {
+        val imports: Map[String, String] = module.header.imports.map(i => i.loc.last.value -> i.loc.map(_.value).mkString("/")).toMap[String, String]
+
+        val superClass: String = classModel.parent match {
           case Some(value) => value.ref match {
-            case RefLocal(name) => name.value
-            case RefQual(qualName) => {
-              println(qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value)
-              qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
-            }
+            case RefLocal(name) => imports.get(name.value).get
+            case RefQual(qualName) => qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
           }
           case None => "java/lang/Object"
         }
 
-        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.map(_.value).mkString("/"), classModel.name.value, parent, ListBuffer[String](), ListBuffer[VisitField](), ListBuffer[MethodIR]())
+        val classModelIR = ClassModelIR(module.header.nameSpace.nameSpace.map(_.value).mkString("/"), classModel.name.value, superClass)
+
+        classModelIR.externalStatements += Visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER, module.header.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + classModel.name.value, null, superClass, null)
+
         convertToIR(classModel.body, classModelIR)
-        addConstructor(classModelIR)
+        addConstructor(classModelIR, superClass)
         classModelIR
       }
     })
   }
 
-  def addConstructor(model: ClassModelIR): Unit ={
+  def addConstructor(model: ClassModelIR, superClass: String): Unit ={
     if(!constructorExists()){
       val methodIR = MethodIR("<init>", mutable.SortedSet[Int](Opcodes.ACC_PUBLIC), ListBuffer(), "V", ListBuffer())
 
       methodIR.body += VisitVarInsn(Opcodes.ALOAD, 0)
-      methodIR.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+      methodIR.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, superClass, "<init>", "()V")
       methodIR.body += VisitInsn(Opcodes.RETURN)
 
       model.methods += methodIR
@@ -51,7 +53,7 @@ object AST2IR {
   def convertToIR(statement: Statement, model: ClassModelIR): Unit = {
     statement match {
       case assign: Assign => {
-        model.localVariables += VisitField(model.getNextVarId(), assign.name.value, "I", null, null)
+        model.externalStatements += VisitField(model.getNextVarId(), assign.name.value, "I", null, null)
         val methodIR = MethodIR(assign.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
         convertToIR(assign.block, methodIR)
         methodIR.body += VisitInsn(Opcodes.RETURN)
@@ -209,7 +211,13 @@ object IRNew {
 
   trait ModelIR
 
-  case class ClassModelIR(nameSpace: String, name: String, parent: String, traits: ListBuffer[String], localVariables: ListBuffer[VisitField], methods: ListBuffer[MethodIR]) extends ModelIR {
+  case class ClassModelIR(nameSpace: String, name: String, parent: String) extends ModelIR {
+
+    val traits: ListBuffer[String] = ListBuffer[String]()
+    val externalStatements: ListBuffer[StatementIR] = ListBuffer[StatementIR]()
+    val methods: ListBuffer[MethodIR] = ListBuffer[MethodIR]()
+    val imports: mutable.SortedMap[String, String] = mutable.SortedMap[String, String]()
+
     private var nextVarId = 0
     def getNextVarId(): Int ={
       val id = nextVarId
@@ -275,7 +283,8 @@ object IRNew {
   trait StoreOperators extends StatementIR
   case class IStore(id: Int) extends StoreOperators
 
-  case class VisitField(id: Int, name: String, `type`: String, signature: String, value: Object)
+  case class Visit(version: Int, access: Int, name: String, signature: String, superName: String, interfaces: Array[String]) extends StatementIR
+  case class VisitField(id: Int, name: String, `type`: String, signature: String, value: Object) extends StatementIR
   case class VisitTypeInst(opcode: Int, name: String) extends StatementIR
   case class VisitInsn(opcode: Int) extends StatementIR
   case class VisitFieldInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR

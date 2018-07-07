@@ -33,14 +33,10 @@ object Compiler {
     // Process AST
     val modelIRs: Seq[ModelIR] = modules.map(x => AST2IR.astToIR(x)).head
 
-    println(modelIRs)
-
     // Generate code
     val moduleBytecodes: Seq[Array[Byte]] = modelIRs.map(CodeGen.genModelCode)
 
     // Save to destination directory
-
-
     val generatedFilePath = outputDir.resolve(pathsToCompile(0))
 
     val filePath = Paths.get(generatedFilePath.toString.replaceFirst("[.][^.]+$", "") + ".class")
@@ -53,6 +49,5 @@ object Compiler {
 
     bos.write(moduleBytecodes(0))
     bos.close()
-
   }
 }

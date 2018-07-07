@@ -17,7 +17,7 @@ object CodeGen {
       case classModel: ClassModelIR => {
         val cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES)
         cw.visit(version, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classModel.nameSpace + "/" + classModel.name, null, classModel.parent, null)
-        classModel.localVariables.foreach(v => genCode(cw, v))
+        classModel.externalStatements.foreach(v => genCode(cw, v))
         classModel.methods.foreach(m => genCode(cw, m))
         cw.visitEnd()
 
@@ -28,8 +28,11 @@ object CodeGen {
     }
   }
 
-  def genCode(cw: ClassWriter, localVariable: VisitField): Unit ={
-    cw.visitField(localVariable.id, localVariable.name, localVariable.`type`, localVariable.signature, localVariable.value)
+  def genCode(cw: ClassWriter, statementIR: StatementIR): Unit ={
+    statementIR match {
+      case visit: Visit => cw.visit(visit.version, visit.access, visit.name, visit.signature, visit.superName, visit.interfaces)
+      case visitField: VisitField => cw.visitField(visitField.id, visitField.name, visitField.`type`, visitField.signature, visitField.value)
+    }
   }
 
   def genCode(cw: ClassWriter, method: MethodIR): Unit = {
