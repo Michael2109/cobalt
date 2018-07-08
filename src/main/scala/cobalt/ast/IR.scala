@@ -82,7 +82,7 @@ object AST2IR {
               case RefLocal(name) => name.value
               case RefQual(qualName) => qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
             }
-            (methodIR.fields += ((f.name.value, IRUtils.typeToBytecodeType(t))))
+            (methodIR.fields += ((f.name.value, IRUtils.typeToBytecodeType(IRUtils.typeStringToTypeIR(t)))))
           })
         }
         val methodSymbolTable: SymbolTable = new MethodEntry(methodIR.name, "")

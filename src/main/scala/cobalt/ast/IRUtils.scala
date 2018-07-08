@@ -8,13 +8,17 @@ import scala.tools.asm.Opcodes
 
 object IRUtils {
 
-  def typeToBytecodeType(value: String): String = {
-    value match {
-      case "Int" => "I"
-      case "Long" => "L"
-      case "Float" => "F"
-      case "Double" => "D"
-      case "String" => "Ljava/lang/String;"
+  def typeStringToTypeIR(t: String): TypeIR = {
+    t match {
+      case "Int" => IntType()
+      case "String" => StringLiteralType()
+    }
+  }
+
+  def typeToBytecodeType(typeIR: TypeIR): String = {
+    typeIR match {
+      case _: IntType => "I"
+      case _: StringLiteralType => "Ljava/lang/String;"
     }
   }
 
