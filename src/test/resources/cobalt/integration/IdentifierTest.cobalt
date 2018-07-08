@@ -1,0 +1,8 @@
+package integration
+
+class IdentifierTest
+
+  let main(args: Int): void = do
+    let x = 10
+    println(x)
+

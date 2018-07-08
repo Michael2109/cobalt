@@ -1,25 +1,8 @@
-/*
- * Cobalt Programming Language Compiler
- * Copyright (C) 2017 Michael Haywood
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package cobalt.ast
 
 import cobalt.ast.AST._
 import cobalt.ast.IRNew._
+import cobalt.symbol_table.{SymbolTable, ValueEntry}
 
 import scala.tools.asm.Opcodes
 
@@ -35,13 +18,24 @@ object IRUtils {
     }
   }
 
-  def getExpressionType(expression: Expression): TypeIR = {
+  def getExpressionType(expression: Expression, symbolTable: SymbolTable): TypeIR = {
     expression match {
-      case aBinary: ABinary => getExpressionType(aBinary.expression1)
-      case blockExpr: BlockExpr => blockExpr.expressions.map(getExpressionType).head
+      case aBinary: ABinary => getExpressionType(aBinary.expression1, symbolTable)
+      case blockExpr: BlockExpr => blockExpr.expressions.map(e => getExpressionType(e, symbolTable)).head
+      case identifier: Identifier => ObjectType(symbolTable.get(identifier.name.value) match {
+        case v: ValueEntry => v.name
+      })
       case _: IntObject => ObjectType("Ljava/lang/Object;")
       case _: IntConst => IntType()
       case _: StringLiteral => StringLiteralType()
+    }
+  }
+
+  def getStatementType(statement: Statement, symbolTable: SymbolTable): TypeIR = {
+    statement match {
+      case assign: Assign => getStatementType(assign.block, symbolTable)
+      case doBlock: DoBlock => getStatementType(doBlock.statement, symbolTable)
+      case inline: Inline => getExpressionType(inline.expression, symbolTable)
     }
   }
 
@@ -60,6 +54,18 @@ object IRUtils {
       case _: LongConst => Opcodes.LSTORE
       case _: FloatConst => Opcodes.FSTORE
       case _: DoubleConst => Opcodes.DSTORE
+    }
+  }
+
+  def getStoreOperator(t: TypeIR): Int = {
+    t match {
+      case intType: IntType => Opcodes.ISTORE
+    }
+  }
+
+  def getLoadOperator(t: TypeIR): Int = {
+    t match {
+      case intType: IntType => Opcodes.ILOAD
     }
   }
 

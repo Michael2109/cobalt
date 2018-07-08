@@ -3,6 +3,7 @@ package cobalt.code_gen
 import java.io.PrintWriter
 
 import cobalt.ast.IRNew._
+import cobalt.ast.IRUtils
 import org.codehaus.janino.Java.LocalVariable
 
 import scala.tools.asm.{Opcodes, _}
@@ -57,6 +58,7 @@ object CodeGen {
           0
         })
       case blockStmt: BlockExprIR => blockStmt.expressions.foreach(x => genCode(mv, x))*/
+      case identifier: IdentifierIR => mv.visitIntInsn(IRUtils.getLoadOperator(identifier.`type`), identifier.id)
       case intConst: IntConstIR => mv.visitIntInsn(Opcodes.BIPUSH, intConst.value.toInt)
       /*case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
       case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)

@@ -2,6 +2,7 @@ package cobalt.ast
 
 import cobalt.ast.AST._
 import cobalt.ast.IRNew._
+import cobalt.symbol_table.{ClassEntry, MethodEntry, SymbolTable, ValueEntry}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -27,7 +28,8 @@ object AST2IR {
 
         classModelIR.externalStatements += Visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER, module.header.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + classModel.name.value, null, superClass, null)
 
-        convertToIR(classModel.body, classModelIR)
+        val classSymbolTable = new ClassEntry("")
+        convertToIR(classModel.body, classModelIR, classSymbolTable)
         addConstructor(classModelIR, superClass)
         classModelIR
       }
@@ -50,20 +52,22 @@ object AST2IR {
     return false
   }
 
-  def convertToIR(statement: Statement, model: ClassModelIR): Unit = {
+  def convertToIR(statement: Statement, model: ClassModelIR, symbolTable: SymbolTable): Unit = {
     statement match {
       case assign: Assign => {
-        model.externalStatements += VisitField(model.getNextVarId(), assign.name.value, "I", null, null)
+        val name = assign.name.value
+        val id = model.getNextVarId()
+        model.externalStatements += VisitField(id, name, "I", null, null)
         val methodIR = MethodIR(assign.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
-        convertToIR(assign.block, methodIR)
+        symbolTable.entries += new ValueEntry(name, id, IRUtils.getStatementType(assign.block, symbolTable))
+        convertToIR(assign.block, methodIR, symbolTable)
         methodIR.body += VisitInsn(Opcodes.RETURN)
 
         model.methods += methodIR
       }
-      case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, model))
+      case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, model, symbolTable))
       case method: Method => {
         val methodIR = MethodIR(method.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
-
 
         methodIR.modifiers += Opcodes.ACC_PUBLIC
 
@@ -89,7 +93,9 @@ object AST2IR {
             (methodIR.fields += ((f.name.value, IRUtils.typeToBytecodeType(t))))
           })
         }
-        convertToIR(method.body, methodIR)
+        val methodSymbolTable: SymbolTable = new MethodEntry(methodIR.name, "")
+
+        convertToIR(method.body, methodIR, methodSymbolTable)
         methodIR.body += VisitInsn(Opcodes.RETURN)
 
         model.methods += methodIR
@@ -97,7 +103,7 @@ object AST2IR {
     }
   }
 
-  def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR): Unit ={
+  def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR, symbolTable: SymbolTable): Unit ={
     `type` match {
       case _: IntType => operator match {
         case Add => method.body += IAdd
@@ -117,33 +123,40 @@ object AST2IR {
     }
   }
 
-  def convertToIR(expression: Expression, method: MethodIR): Unit ={
+  def convertToIR(expression: Expression, method: MethodIR, symbolTable: SymbolTable): Unit ={
     expression match {
       case aBinary: ABinary => {
-        convertToIR(aBinary.expression1, method)
-        convertToIR(aBinary.expression2, method)
-        convertToIR(aBinary.op, IRUtils.getExpressionType(aBinary.expression1),method)
+        convertToIR(aBinary.expression1, method, symbolTable)
+        convertToIR(aBinary.expression2, method, symbolTable)
+        convertToIR(aBinary.op, IRUtils.getExpressionType(aBinary.expression1, symbolTable),method, symbolTable)
       }
-      case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method))
+      case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method, symbolTable))
       case identifier: Identifier => {
-        identifier.name.value match {
-          case "true" => convertToIR(IntConst(1), method)
-          case "false" => convertToIR(IntConst(0), method)
-          case _ => IdentifierIR(identifier.name.value)
+        val id = identifier.name.value match {
+          case "true" => convertToIR(IntConst(1), method, symbolTable)
+          case "false" => convertToIR(IntConst(0), method, symbolTable)
+          case _ => {
+            method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
+            method.body += VisitInsn(Opcodes.DUP)
+            method.body += ExprAsStmtIR(IdentifierIR(symbolTable.get(identifier.name.value) match {
+              case v: ValueEntry => v.id
+            }, IntType()))
+            method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+          }
         }
       }
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
       case intObject: IntObject => {
         method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
         method.body += VisitInsn(Opcodes.DUP)
-        convertToIR(intObject.value, method)
+        convertToIR(intObject.value, method, symbolTable)
         method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
       }
       case methodCall: MethodCall => {
         methodCall.name.value match {
           case "print" | "println" => {
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
-            convertToIR(boxPrimitive(methodCall.expression), method)
+            convertToIR(boxPrimitive(methodCall.expression, symbolTable), method, symbolTable)
             method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
           }
         }
@@ -154,32 +167,34 @@ object AST2IR {
     }
   }
 
-  def convertToIR(statement: Statement, method: MethodIR): Unit ={
+  def convertToIR(statement: Statement, method: MethodIR, symbolTable: SymbolTable): Unit ={
     statement match {
       case assign: Assign => {
-        convertToIR(assign.block, method)
-        method.body += IStore(method.getNextVarId())
+        val id = method.getNextVarId()
+        symbolTable.entries += new ValueEntry(assign.name.value, id, IRUtils.getStatementType(statement, symbolTable))
+        convertToIR(assign.block, method, symbolTable)
+        method.body += IStore(id)
       }
-      case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, method))
-      case inline: Inline => convertToIR(inline.expression, method)
-      case doBlock: DoBlock => convertToIR(doBlock.statement, method)
-      case exprAsStmt: ExprAsStmt => convertToIR(exprAsStmt.expression, method)
+      case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, method, symbolTable))
+      case inline: Inline => convertToIR(inline.expression, method, symbolTable)
+      case doBlock: DoBlock => convertToIR(doBlock.statement, method, symbolTable)
+      case exprAsStmt: ExprAsStmt => convertToIR(exprAsStmt.expression, method, symbolTable)
       case ifStmt: If => {
 
-        convertToIR(ifStmt.condition, method)
+        convertToIR(ifStmt.condition, method, symbolTable)
         val trueLabel = method.createLabel()
         val endLabel = method.createLabel()
 
         method.body += VisitJumpInst(Opcodes.IFEQ, trueLabel)
 
-        convertToIR(ifStmt.ifBlock, method)
+        convertToIR(ifStmt.ifBlock, method, symbolTable)
 
         method.body += VisitJumpInst(Opcodes.GOTO, endLabel)
 
         method.visitLabel(trueLabel)
 
         if(ifStmt.elseBlock.isDefined) {
-          convertToIR(ifStmt.elseBlock.get, method)
+          convertToIR(ifStmt.elseBlock.get, method, symbolTable)
         }
 
         method.visitLabel(endLabel)
@@ -199,10 +214,11 @@ object AST2IR {
     }
   }
 
-  def boxPrimitive(expression: Expression): Expression ={
-    IRUtils.getExpressionType(expression) match {
+  def boxPrimitive(expression: Expression, symbolTable: SymbolTable): Expression ={
+    IRUtils.getExpressionType(expression, symbolTable) match {
       case _: IntType => IntObject(expression)
       case _: StringLiteralType => expression
+      case _: ObjectType => expression
     }
   }
 }
@@ -255,7 +271,7 @@ object IRNew {
 
   trait ExpressionIR
   case class AssignIR(id: Int, immutable: Boolean, block: BlockIR) extends ExpressionIR
-  case class IdentifierIR(id: String) extends ExpressionIR
+  case class IdentifierIR(id: Int, `type`: TypeIR) extends ExpressionIR
   case class IntConstIR(value: BigInt) extends ExpressionIR
   case class StringLiteralIR(value: String) extends ExpressionIR
 
