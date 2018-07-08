@@ -59,7 +59,7 @@ object AST2IR {
         val id = model.getNextVarId()
         model.externalStatements += VisitField(id, name, "I", null, null)
         val methodIR = MethodIR(assign.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
-        symbolTable.entries += new ValueEntry(name, id, IRUtils.getStatementType(assign.block, symbolTable))
+        symbolTable.entries += new ValueEntry(name, id, IRUtils.inferType(assign.block, symbolTable))
         convertToIR(assign.block, methodIR, symbolTable)
         methodIR.body += VisitInsn(Opcodes.RETURN)
 
@@ -71,15 +71,7 @@ object AST2IR {
 
         methodIR.modifiers += Opcodes.ACC_PUBLIC
 
-        methodIR.modifiers ++ method.modifiers.map(m => {
-          m match {
-            case _: Public.type => Opcodes.ACC_PUBLIC
-            case _: Protected.type => Opcodes.ACC_PROTECTED
-            case _: Private.type => Opcodes.ACC_PRIVATE
-            case _: Abstract.type => Opcodes.ACC_ABSTRACT
-            case _: Final.type => Opcodes.ACC_FINAL
-          }
-        })
+        methodIR.modifiers ++ method.modifiers.map(IRUtils.modifierToOpcode)
 
         if(methodIR.name.equals("main")){
           methodIR.modifiers += Opcodes.ACC_STATIC
@@ -128,7 +120,7 @@ object AST2IR {
       case aBinary: ABinary => {
         convertToIR(aBinary.expression1, method, symbolTable)
         convertToIR(aBinary.expression2, method, symbolTable)
-        convertToIR(aBinary.op, IRUtils.getExpressionType(aBinary.expression1, symbolTable),method, symbolTable)
+        convertToIR(aBinary.op, IRUtils.inferType(aBinary.expression1, symbolTable),method, symbolTable)
       }
       case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method, symbolTable))
       case identifier: Identifier => {
@@ -171,7 +163,7 @@ object AST2IR {
     statement match {
       case assign: Assign => {
         val id = method.getNextVarId()
-        symbolTable.entries += new ValueEntry(assign.name.value, id, IRUtils.getStatementType(statement, symbolTable))
+        symbolTable.entries += new ValueEntry(assign.name.value, id, IRUtils.inferType(statement, symbolTable))
         convertToIR(assign.block, method, symbolTable)
         method.body += IStore(id)
       }
@@ -215,7 +207,7 @@ object AST2IR {
   }
 
   def boxPrimitive(expression: Expression, symbolTable: SymbolTable): Expression ={
-    IRUtils.getExpressionType(expression, symbolTable) match {
+    IRUtils.inferType(expression, symbolTable) match {
       case _: IntType => IntObject(expression)
       case _: StringLiteralType => expression
       case _: ObjectType => expression

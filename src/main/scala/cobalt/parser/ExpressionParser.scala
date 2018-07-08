@@ -7,6 +7,8 @@ import cobalt.ast.{AST}
 
 object ExpressionParser {
 
+  def accessModifier: P[Modifier] = P(LexicalParser.kw("protected")).map(_ => Protected()) | P(LexicalParser.kw("private")).map(_ => Private()) | P(LexicalParser.kw("local")).map(_ => PackageLocal())
+
   def annotationParser: P[Annotation] = P("@" ~ nameParser).map(Annotation)
 
   val expressionParser: P[Expression] = {
@@ -25,6 +27,8 @@ object ExpressionParser {
 
   def methodCallParser: P[MethodCall] = P(nameParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => MethodCall(x._1, BlockExpr(x._2)))
 
+  def modifiers: P[Seq[Modifier]] = P(accessModifier | typeModifier).rep
+
   def nameParser: P[Name] = LexicalParser.identifier.map(x => Name(x))
 
   def newClassInstanceParser: P[NewClassInstance] = P("new" ~ typeRefParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
@@ -34,6 +38,8 @@ object ExpressionParser {
   def stringLiteral: P[StringLiteral] = LexicalParser.stringliteral.map(x => StringLiteral(x))
 
   def ternaryParser: P[Ternary] = P(LexicalParser.kw("if") ~ expressionParser ~ "then" ~ expressionParser ~ "else" ~ expressionParser).map(x => Ternary(x._1, x._2, x._3))
+
+  def typeModifier: P[Modifier] = P(LexicalParser.kw("mutable")).map(_ => Final()) | P(LexicalParser.kw("abstract")).map(_ => Abstract()) | P(LexicalParser.kw("pure")).map(_ => Pure())
 
   def typeRefParser: P[Type] = refParser.map(Type)
 

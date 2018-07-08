@@ -18,10 +18,10 @@ object IRUtils {
     }
   }
 
-  def getExpressionType(expression: Expression, symbolTable: SymbolTable): TypeIR = {
+  def inferType(expression: Expression, symbolTable: SymbolTable): TypeIR = {
     expression match {
-      case aBinary: ABinary => getExpressionType(aBinary.expression1, symbolTable)
-      case blockExpr: BlockExpr => blockExpr.expressions.map(e => getExpressionType(e, symbolTable)).head
+      case aBinary: ABinary => inferType(aBinary.expression1, symbolTable)
+      case blockExpr: BlockExpr => blockExpr.expressions.map(e => inferType(e, symbolTable)).head
       case identifier: Identifier => ObjectType(symbolTable.get(identifier.name.value) match {
         case v: ValueEntry => v.name
       })
@@ -31,11 +31,11 @@ object IRUtils {
     }
   }
 
-  def getStatementType(statement: Statement, symbolTable: SymbolTable): TypeIR = {
+  def inferType(statement: Statement, symbolTable: SymbolTable): TypeIR = {
     statement match {
-      case assign: Assign => getStatementType(assign.block, symbolTable)
-      case doBlock: DoBlock => getStatementType(doBlock.statement, symbolTable)
-      case inline: Inline => getExpressionType(inline.expression, symbolTable)
+      case assign: Assign => inferType(assign.block, symbolTable)
+      case doBlock: DoBlock => inferType(doBlock.statement, symbolTable)
+      case inline: Inline => inferType(inline.expression, symbolTable)
     }
   }
 
@@ -108,6 +108,16 @@ object IRUtils {
           case Divide => Opcodes.DDIV
         }
       }
+    }
+  }
+
+  def modifierToOpcode(modifier: Modifier): Int = {
+    modifier match {
+      case _: Public => Opcodes.ACC_PUBLIC
+      case _: Protected => Opcodes.ACC_PROTECTED
+      case _: Private => Opcodes.ACC_PRIVATE
+      case _: Abstract => Opcodes.ACC_ABSTRACT
+      case _: Final => Opcodes.ACC_FINAL
     }
   }
 }

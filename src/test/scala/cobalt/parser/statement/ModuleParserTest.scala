@@ -17,7 +17,7 @@ class ModuleParserTest extends FunSpec with Matchers
     it("Should parse modules")
     {
       val code ="package x.y.z\nclass ClassName\n  let x(): Int = 1\n"
-      TestUtil.parse(code, StatementParser.moduleParser) shouldBe Module(ModuleHeader(NameSpace(ArrayBuffer(Name("x"), Name("y"), Name("z"))),ArrayBuffer()),ArrayBuffer(ClassModel(Name("ClassName"),List(),List(),None,List(),ArrayBuffer(),BlockStmt(ArrayBuffer(Method(Name("x"),List(),ArrayBuffer(),List(Public),Some(Type(RefLocal(Name("Int")))),Inline(IntConst(1))))))))
+      TestUtil.parse(code, StatementParser.moduleParser) shouldBe Module(ModuleHeader(NameSpace(ArrayBuffer(Name("x"), Name("y"), Name("z"))),ArrayBuffer()),ArrayBuffer(ClassModel(Name("ClassName"),List(),List(),None,List(),ArrayBuffer(),BlockStmt(ArrayBuffer(Method(Name("x"),List(),ArrayBuffer(),List(Public()),Some(Type(RefLocal(Name("Int")))),Inline(IntConst(1))))))))
     }
   }
 }
