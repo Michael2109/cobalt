@@ -4,6 +4,7 @@ import cobalt.ast.AST._
 import cobalt.ast.IRNew._
 import cobalt.symbol_table.{SymbolTable, ValueEntry}
 
+import scala.collection.mutable
 import scala.tools.asm.Opcodes
 
 object IRUtils {
@@ -22,24 +23,31 @@ object IRUtils {
     }
   }
 
-  def inferType(expression: Expression, symbolTable: SymbolTable): TypeIR = {
+  def inferType(expression: Expression, symbolTable: SymbolTable, imports: Map[String, String]): TypeIR = {
     expression match {
-      case aBinary: ABinary => inferType(aBinary.expression1, symbolTable)
-      case blockExpr: BlockExpr => blockExpr.expressions.map(e => inferType(e, symbolTable)).head
+      case aBinary: ABinary => inferType(aBinary.expression1, symbolTable, imports)
+      case blockExpr: BlockExpr => blockExpr.expressions.map(e => inferType(e, symbolTable, imports)).head
       case identifier: Identifier => ObjectType(symbolTable.get(identifier.name.value) match {
         case v: ValueEntry => v.name
       })
       case _: IntObject => ObjectType("Ljava/lang/Object;")
       case _: IntConst => IntType()
+      case newClassInstance: NewClassInstance => {
+        val superClass: String = newClassInstance.`type`.ref match {
+          case RefLocal(name) => imports.get(name.value).getOrElse(name.value)
+          case RefQual(qualName) => qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
+        }
+        ObjectType(superClass)
+      }
       case _: StringLiteral => StringLiteralType()
     }
   }
 
-  def inferType(statement: Statement, symbolTable: SymbolTable): TypeIR = {
+  def inferType(statement: Statement, symbolTable: SymbolTable, imports: Map[String, String]): TypeIR = {
     statement match {
-      case assign: Assign => inferType(assign.block, symbolTable)
-      case doBlock: DoBlock => inferType(doBlock.statement, symbolTable)
-      case inline: Inline => inferType(inline.expression, symbolTable)
+      case assign: Assign => inferType(assign.block, symbolTable, imports)
+      case doBlock: DoBlock => inferType(doBlock.statement, symbolTable, imports)
+      case inline: Inline => inferType(inline.expression, symbolTable, imports)
     }
   }
 

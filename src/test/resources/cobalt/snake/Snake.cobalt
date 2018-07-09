@@ -1,0 +1,17 @@
+package snake
+
+import java.awt.EventQueue
+import javax.swing.JFrame
+
+class Snake extends JFrame
+
+  let x = 10
+
+  let this() = do
+    initUI()
+
+  private let initUI() = do
+    add(new Board())
+
+  let main(args: Int): void = do
+    let x = 10

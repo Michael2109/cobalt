@@ -3,7 +3,8 @@ package cobalt.parser
 import fastparse.noApi._
 import WsApi._
 import cobalt.ast.AST._
-import cobalt.ast.{AST}
+import cobalt.ast.AST
+import cobalt.parser.ExpressionParser.newClassInstanceParser
 
 object ExpressionParser {
 
@@ -17,7 +18,7 @@ object ExpressionParser {
     def arith_exprParser: P[Expression] = P(Chain(termParser, add | subtract))
     def rExprParser: P[Expression] = P(Chain(arith_exprParser, LtE | Lt | GtE | Gt))
 
-    def allExpressionsParser = methodCallParser | ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
+    def allExpressionsParser = methodCallParser | newClassInstanceParser | ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
     P(Chain(rExprParser, and | or))
   }
 
@@ -31,7 +32,7 @@ object ExpressionParser {
 
   def nameParser: P[Name] = LexicalParser.identifier.map(x => Name(x))
 
-  def newClassInstanceParser: P[NewClassInstance] = P("new" ~ typeRefParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
+  def newClassInstanceParser: P[NewClassInstance] = P(LexicalParser.kw("new") ~ typeRefParser ~ LexicalParser.kw("(") ~ expressionParser.rep(sep = ",") ~ LexicalParser.kw(")")).map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
 
   def numberParser: P[Expression] = P(LexicalParser.floatnumber ~ P("F" | "f")).map(FloatConst) | P(LexicalParser.longinteger).map(LongConst) | P(LexicalParser.floatnumber).map(DoubleConst) | P(LexicalParser.integer).map(IntConst)
 

@@ -1,6 +1,6 @@
 package cobalt.parser.expression
 
-import cobalt.ast.AST.{BlockExpr, Identifier, MethodCall, Name}
+import cobalt.ast.AST._
 import cobalt.parser.ExpressionParser
 import cobalt.utils.TestUtil
 import org.junit.runner.RunWith
@@ -26,6 +26,11 @@ class MethodCallParserTest extends FunSpec with Matchers
     it("Should parse method calls - Multiple arguments")
     {
       TestUtil.parse("methodCall(a, b, c)", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),BlockExpr(ArrayBuffer(Identifier(Name("a")), Identifier(Name("b")), Identifier(Name("c")))))
+    }
+
+    it("Should parse method calls - New class instance")
+    {
+      TestUtil.parse("methodCall(new ClassName())", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),BlockExpr(ArrayBuffer(NewClassInstance(Type(RefLocal(Name("ClassName"))),BlockExpr(ArrayBuffer()),None))))
     }
   }
 }

@@ -1,13 +1,13 @@
-package cobalt.integration
+package cobalt.integration.snake
 
 import java.nio.file.Paths
 
 import cobalt.utils.CompilerUtil
 
-object Test {
+object Snake {
 
   def main(args: Array[String]): Unit = {
-    CompilerUtil.executeJava(Paths.get("test/Test"))
+    CompilerUtil.executeJava(Paths.get("snake/Snake"))
   }
 
 }
