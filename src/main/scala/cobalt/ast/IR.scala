@@ -65,17 +65,36 @@ object AST2IR {
       case assign: Assign => {
         val name = assign.name.value
         val id = model.getNextVarId()
-        model.externalStatements += VisitField(id, name, "I", null, null)
-        val methodIR = MethodIR(assign.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
-        symbolTable.entries += new ValueEntry(name, id, IRUtils.inferType(assign.block, symbolTable, imports))
+        val typeIR = IRUtils.typeStringToTypeIR(assign.`type`.get.ref match {
+          case refLocal: RefLocal => refLocal.name.value
+          case refQual: RefQual => refQual.qualName.name.value
+        })
+        val bytecodeType: String = IRUtils.typeToBytecodeType(typeIR)
+
+        model.externalStatements += VisitField(id, name, bytecodeType, null, null)
+        val methodIR = MethodIR(assign.name.value, mutable.SortedSet[Int](), ListBuffer(), bytecodeType, ListBuffer())
+        symbolTable.entries += new ValueEntry(name, id, typeIR)
+
         convertToIR(assign.block, methodIR, symbolTable, imports)
+
+
+        // TODO Use this - method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+
+
         methodIR.body += VisitInsn(Opcodes.RETURN)
 
         model.methods += methodIR
       }
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, model, symbolTable, imports))
       case method: Method => {
-        val methodIR = MethodIR(method.name.value, mutable.SortedSet[Int](), ListBuffer(), "V", ListBuffer())
+
+        val typeIR = IRUtils.typeStringToTypeIR(method.returnType.get.ref match {
+          case refLocal: RefLocal => refLocal.name.value
+          case refQual: RefQual => refQual.qualName.name.value
+        })
+        val bytecodeType: String = IRUtils.typeToBytecodeType(typeIR)
+
+        val methodIR = MethodIR(method.name.value, mutable.SortedSet[Int](), ListBuffer(), bytecodeType, ListBuffer())
 
         methodIR.modifiers += Opcodes.ACC_PUBLIC
 
@@ -140,8 +159,9 @@ object AST2IR {
             method.body += VisitInsn(Opcodes.DUP)
             method.body += ExprAsStmtIR(IdentifierIR(symbolTable.get(identifier.name.value) match {
               case v: ValueEntry => v.id
-            }, IntType()))
-            method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+            }, symbolTable.get(identifier.name.value) match {
+              case v: ValueEntry => v.`type`
+            }))
           }
         }
       }
@@ -156,7 +176,7 @@ object AST2IR {
         methodCall.name.value match {
           case "print" | "println" => {
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
-            convertToIR(boxPrimitive(methodCall.expression, symbolTable, imports), method, symbolTable, imports)
+            convertToIR(methodCall.expression, method, symbolTable, imports)
             method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
           }
           case _ => 
@@ -173,9 +193,16 @@ object AST2IR {
     statement match {
       case assign: Assign => {
         val id = method.getNextVarId()
-        symbolTable.entries += new ValueEntry(assign.name.value, id, IRUtils.inferType(statement, symbolTable, imports))
+
+        val typeIR = IRUtils.typeStringToTypeIR(assign.`type`.get.ref match {
+          case refLocal: RefLocal => refLocal.name.value
+          case refQual: RefQual => refQual.qualName.name.value
+        })
+        val bytecodeType: String = IRUtils.typeToBytecodeType(typeIR)
+
+        symbolTable.entries += new ValueEntry(assign.name.value, id, typeIR)
         convertToIR(assign.block, method, symbolTable, imports)
-        method.body += IStore(id)
+        method.body += IRUtils.getStoreOperator(typeIR, id)
       }
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, method, symbolTable, imports))
       case inline: Inline => convertToIR(inline.expression, method, symbolTable, imports)
@@ -200,27 +227,7 @@ object AST2IR {
         }
 
         method.visitLabel(endLabel)
-
-        /*
-        val trueLabel = new Label
-        val endLabel = new Label
-        genCode(mv, ifStmt.condition)
-        mv.visitJumpInsn(Opcodes.IFEQ, trueLabel)
-        genCode(mv, ifStmt.ifBlock)
-        mv.visitJumpInsn(Opcodes.GOTO, endLabel)
-        mv.visitLabel(trueLabel)
-        genCode(mv, ifStmt.elseBlock.getOrElse(BlockStmtIR(Seq())))
-        mv.visitLabel(endLabel)
-      }*/
       }
-    }
-  }
-
-  def boxPrimitive(expression: Expression, symbolTable: SymbolTable, imports: Map[String, String]): Expression ={
-    IRUtils.inferType(expression, symbolTable, imports) match {
-      case _: IntType => IntObject(expression)
-      case _: StringLiteralType => expression
-      case _: ObjectType => expression
     }
   }
 }
@@ -290,6 +297,7 @@ object IRNew {
   case class DoubleType() extends TypeIR
   case class StringLiteralType() extends TypeIR
   case class ObjectType(name: String) extends TypeIR
+  case class UnitType() extends TypeIR
 
   trait ArithmeticOperatorIR extends StatementIR
   case object IAdd extends ArithmeticOperatorIR
@@ -299,6 +307,7 @@ object IRNew {
   case object LAdd extends ArithmeticOperatorIR
 
   trait StoreOperators extends StatementIR
+  case class AStore(id: Int) extends StoreOperators
   case class IStore(id: Int) extends StoreOperators
 
   case class Visit(version: Int, access: Int, name: String, signature: String, superName: String, interfaces: Array[String]) extends StatementIR

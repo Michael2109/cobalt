@@ -4,7 +4,6 @@ import cobalt.ast.AST._
 import cobalt.ast.IRNew._
 import cobalt.symbol_table.{SymbolTable, ValueEntry}
 
-import scala.collection.mutable
 import scala.tools.asm.Opcodes
 
 object IRUtils {
@@ -13,6 +12,7 @@ object IRUtils {
     t match {
       case "Int" => IntType()
       case "String" => StringLiteralType()
+      case "Unit" => UnitType()
     }
   }
 
@@ -20,6 +20,7 @@ object IRUtils {
     typeIR match {
       case _: IntType => "I"
       case _: StringLiteralType => "Ljava/lang/String;"
+      case _: UnitType => "V"
     }
   }
 
@@ -43,14 +44,6 @@ object IRUtils {
     }
   }
 
-  def inferType(statement: Statement, symbolTable: SymbolTable, imports: Map[String, String]): TypeIR = {
-    statement match {
-      case assign: Assign => inferType(assign.block, symbolTable, imports)
-      case doBlock: DoBlock => inferType(doBlock.statement, symbolTable, imports)
-      case inline: Inline => inferType(inline.expression, symbolTable, imports)
-    }
-  }
-
   def getStoreOperator(statement: Statement): Int = {
     statement match {
       case inline: Inline => getStoreOperator(inline.expression)
@@ -69,9 +62,10 @@ object IRUtils {
     }
   }
 
-  def getStoreOperator(t: TypeIR): Int = {
+  def getStoreOperator(t: TypeIR, id: Int): StoreOperators = {
     t match {
-      case intType: IntType => Opcodes.ISTORE
+      case intType: IntType => IStore(id)
+      case stringLiteralType: StringLiteralType => AStore(id);
     }
   }
 

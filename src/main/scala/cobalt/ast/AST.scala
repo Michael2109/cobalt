@@ -61,7 +61,7 @@ object AST {
   case class BBinary(op: BBinOp, expression1: Expression, expression2: Expression) extends Expression
   case class RBinary(op: RBinOp, expression1: Expression, expression2: Expression) extends Expression
   case class IntConst(value: BigInt) extends Expression
-  case class IntObject(value: Expression) extends Expression
+  case class IntObject(value: Statement) extends Expression
   case class LongConst(value: BigInt) extends Expression
   case class DoubleConst(value: BigDecimal) extends Expression
   case class FloatConst(value: BigDecimal) extends Expression

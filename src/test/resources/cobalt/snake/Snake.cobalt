@@ -5,13 +5,13 @@ import javax.swing.JFrame
 
 class Snake extends JFrame
 
-  let x = 10
+  let x: Int = 10
 
-  let this() = do
+  let this(): Unit = do
     initUI()
 
-  private let initUI() = do
+  private let initUI(): Unit = do
     add(new Board())
 
-  let main(args: Int): void = do
-    let x = 10
+  let main(args: Int): Unit = do
+    let x: Int = 10

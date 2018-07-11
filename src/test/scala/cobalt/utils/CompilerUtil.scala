@@ -22,6 +22,10 @@ object CompilerUtil {
     }
   }
 
+  def deleteFile(classPath: Path, outputDir: Path, filePath: Path): Unit ={
+    outputDir.resolve(filePath).toFile.delete()
+  }
+
   def compileFile(classPath: Path, outputDir: Path, filePath: Path): Unit ={
     outputDir.resolve(filePath).getParent.toFile.mkdirs
     CompilerExecutor.main(Array("-cp", classPath.toString, "-d", outputDir.toString, filePath.toString + ".cobalt"))
@@ -30,6 +34,7 @@ object CompilerUtil {
   //compileDirectory(Paths.get("src\\test\\resources\\cobalt"), Paths.get("cobalt_generated"), Paths.get(""))
 
   def executeJava(fileName: Path): Array[String] ={
+    compileFile(Paths.get("src/test/resources/cobalt"), Paths.get("cobalt_generated"), fileName)
     compileFile(Paths.get("src/test/resources/cobalt"), Paths.get("cobalt_generated"), fileName)
 
     val result: String = (("java -cp " + Paths.get("cobalt_generated").toString + " " + fileName.toString.replace("\\", ".")) !!)

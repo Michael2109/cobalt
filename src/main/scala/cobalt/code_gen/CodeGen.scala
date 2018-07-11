@@ -73,6 +73,7 @@ object CodeGen {
         genCode(mv, assign.block)
         mv.visitVarInsn(IRUtils.getStoreOperator(assign.block), assign.id)
       }*/
+      case aStore: AStore => mv.visitVarInsn(Opcodes.ASTORE, aStore.id);
       /*case blockStmt: BlockStmtIR => blockStmt.statements.foreach(x => genCode(mv, x))*/
       case doBlock: DoBlockIR => genCode(mv, doBlock.asInstanceOf[BlockIR], method)
       case exprAsStmt: ExprAsStmtIR => genCode(mv, exprAsStmt.expressionIR, method)

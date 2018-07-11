@@ -2,7 +2,7 @@ package integration
 
 class NumberTest
 
-  let main(args: Int): void = do
+  let main(args: Int): Unit = do
 
     # Add
     println(1 + 2 + 3)

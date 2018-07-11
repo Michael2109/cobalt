@@ -1,8 +1,11 @@
 package integration
 
-class IdentifierTest
+class AssignmentTest
 
   let main(args: Int): Unit = do
     let x: Int = 10
+    let s: String = "String literal"
+
     println(x)
+    println(s)
 
