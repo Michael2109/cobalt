@@ -12,7 +12,7 @@ class Statements(indent: Int) {
   val space = P(CharIn(" \n"))
   val NEWLINE: P0 = P("\n" | "\r\n" | End)
   val ENDMARKER: P0 = P(End)
-  val indents = P("\n" ~~ " ".repX(indent))
+  val indents = P(NEWLINE ~~ " ".repX(indent))
   val spaces = P((LexicalParser.nonewlinewscomment.? ~~ "\n").repX(1))
   val space_indents = P( spaces.repX ~~ " ".repX(indent) )
 
