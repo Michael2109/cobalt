@@ -72,6 +72,7 @@ object IRUtils {
   def getLoadOperator(t: TypeIR): Int = {
     t match {
       case intType: IntType => Opcodes.ILOAD
+      case _ => Opcodes.ALOAD
     }
   }
 

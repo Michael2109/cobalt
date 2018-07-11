@@ -77,10 +77,6 @@ object AST2IR {
 
         convertToIR(assign.block, methodIR, symbolTable, imports)
 
-
-        // TODO Use this - method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
-
-
         methodIR.body += VisitInsn(Opcodes.RETURN)
 
         model.methods += methodIR
@@ -151,27 +147,34 @@ object AST2IR {
       }
       case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method, symbolTable, imports))
       case identifier: Identifier => {
-        val id = identifier.name.value match {
+        identifier.name.value match {
           case "true" => convertToIR(IntConst(1), method, symbolTable, imports)
           case "false" => convertToIR(IntConst(0), method, symbolTable, imports)
           case _ => {
-            method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
-            method.body += VisitInsn(Opcodes.DUP)
-            method.body += ExprAsStmtIR(IdentifierIR(symbolTable.get(identifier.name.value) match {
-              case v: ValueEntry => v.id
-            }, symbolTable.get(identifier.name.value) match {
-              case v: ValueEntry => v.`type`
-            }))
+
+            val (id, typeIR) = symbolTable.get(identifier.name.value) match {
+              case v: ValueEntry => (v.id, v.`type`)
+            }
+
+            typeIR match {
+              case _: IntType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Integer")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
+              case _ =>
+            }
+            method.body += ExprAsStmtIR(IdentifierIR(id, typeIR))
+
+            typeIR match {
+              case _: IntType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+              }
+              case _ =>
+            }
           }
         }
       }
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
-      case intObject: IntObject => {
-        method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
-        method.body += VisitInsn(Opcodes.DUP)
-        convertToIR(intObject.value, method, symbolTable, imports)
-        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
-      }
       case methodCall: MethodCall => {
         methodCall.name.value match {
           case "print" | "println" => {
