@@ -3,8 +3,11 @@ package cobalt.integration
 import java.nio.file.Paths
 
 import cobalt.utils.CompilerUtil
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 import org.scalatest.{FunSpec, Matchers}
 
+@RunWith(classOf[JUnitRunner])
 class IfStatementCompileTest extends FunSpec with Matchers {
 
   describe("If Statement compile test") {

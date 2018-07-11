@@ -10,7 +10,7 @@ object StatementParser extends Statements(0)
 class Statements(indent: Int) {
 
   val space = P(CharIn(" \n"))
-  val NEWLINE: P0 = P("\n" | End)
+  val NEWLINE: P0 = P("\n" | "\r\n" | End)
   val ENDMARKER: P0 = P(End)
   val indents = P("\n" ~~ " ".repX(indent))
   val spaces = P((LexicalParser.nonewlinewscomment.? ~~ "\n").repX(1))
@@ -19,6 +19,8 @@ class Statements(indent: Int) {
   val assignParser: P[Assign] = P(LexicalParser.kw("let") ~ ("mutable").!.? ~ ExpressionParser.nameParser ~ (":" ~ ExpressionParser.typeRefParser).? ~ P(LexicalParser.kw("=")) ~ blockParser).map(x => Assign(x._2, x._3, x._1.isEmpty, x._4))
 
   val blockParser: P[Block] = P(doBlock | ExpressionParser.expressionParser.map(Inline))
+
+  val commentParser: P[_] = P(LexicalParser.comment)
 
   val doBlock: P[Block] = P(LexicalParser.kw("do") ~~ indentedBlock).map(x => DoBlock(x))
 
@@ -48,7 +50,7 @@ class Statements(indent: Int) {
 
   val reassignParser: P[Reassign] = P(ExpressionParser.nameParser ~ "<-" ~ blockParser).map(x => Reassign(x._1, x._2))
 
-  val statementParser: P[Statement] = P(modelParser | ifStatementParser | methodParser | assignParser | reassignParser | exprAsStmt)
+  val statementParser: P[Statement] = P(!commentParser ~ (modelParser | ifStatementParser | methodParser | assignParser | reassignParser | exprAsStmt))
 
   val indentedBlock: P[Statement] = {
     val deeper: P[Int] = {

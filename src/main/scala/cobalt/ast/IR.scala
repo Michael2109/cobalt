@@ -178,8 +178,26 @@ object AST2IR {
       case methodCall: MethodCall => {
         methodCall.name.value match {
           case "print" | "println" => {
+            val typeIR = IRUtils.inferType(methodCall.expression, symbolTable, imports)
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
+
+            typeIR match {
+              case _: IntType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Integer")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
+              case _ =>
+            }
+
             convertToIR(methodCall.expression, method, symbolTable, imports)
+
+            typeIR match {
+              case _: IntType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+              }
+              case _ =>
+            }
+
             method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
           }
           case _ => 
