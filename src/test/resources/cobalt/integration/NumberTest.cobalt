@@ -6,15 +6,30 @@ class NumberTest
 
     # Add
     println(1 + 2 + 3)
+    println(1l + 2l + 3l)
+    println(1.1f + 2.2f + 3.3f)
+    println(1.1 + 2.2 + 3.3)
 
     # Subtract
     println(1 - 2)
+    println(1l - 2l)
+    println(1.1f - 2.2f)
+    println(1.1 - 2.2)
 
     # Multiply
     println(1 * 2 * 3)
+    println(1l * 2l * 3l)
+    println(1.1f * 2.2f * 3.3f)
+    println(1.1 * 2.2 * 3.3)
 
     # Divide
     println(100 / 10)
+    println(100l / 10l)
+    println(100.1f / 10.1f)
+    println(100.1 / 10.1)
 
     # Mixed
     println(1 * (10 / 5) + 2 - 1)
+    println(1l * (10l / 5l) + 2l - 1l)
+    println(1.1f * (10.1f / 5.5f) + 2.2f - 1.1f)
+    println(1.1 * (10.1 / 5.5) + 2.2 - 1.1)

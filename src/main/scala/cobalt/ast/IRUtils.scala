@@ -11,6 +11,7 @@ object IRUtils {
   def typeStringToTypeIR(t: String): TypeIR = {
     t match {
       case "Int" => IntType()
+      case "Long" => LongType()
       case "String" => StringLiteralType()
       case "Unit" => UnitType()
     }
@@ -19,6 +20,7 @@ object IRUtils {
   def typeToBytecodeType(typeIR: TypeIR): String = {
     typeIR match {
       case _: IntType => "I"
+      case _: LongType => "J"
       case _: StringLiteralType => "Ljava/lang/String;"
       case _: UnitType => "V"
     }
@@ -28,11 +30,14 @@ object IRUtils {
     expression match {
       case aBinary: ABinary => inferType(aBinary.expression1, symbolTable, imports)
       case blockExpr: BlockExpr => blockExpr.expressions.map(e => inferType(e, symbolTable, imports)).head
+      case _: DoubleConst => DoubleType()
+      case _: FloatConst => FloatType()
       case identifier: Identifier => ObjectType(symbolTable.get(identifier.name.value) match {
         case v: ValueEntry => v.name
       })
       case _: IntObject => ObjectType("Ljava/lang/Object;")
       case _: IntConst => IntType()
+      case _: LongConst => LongType()
       case newClassInstance: NewClassInstance => {
         val superClass: String = newClassInstance.`type`.ref match {
           case RefLocal(name) => imports.get(name.value).getOrElse(name.value)
@@ -65,6 +70,7 @@ object IRUtils {
   def getStoreOperator(t: TypeIR, id: Int): StoreOperators = {
     t match {
       case intType: IntType => IStore(id)
+      case longType: LongType => LStore(id)
       case stringLiteralType: StringLiteralType => AStore(id);
     }
   }
@@ -72,6 +78,7 @@ object IRUtils {
   def getLoadOperator(t: TypeIR): Int = {
     t match {
       case intType: IntType => Opcodes.ILOAD
+      case longType: LongType => Opcodes.LLOAD
       case _ => Opcodes.ALOAD
     }
   }
@@ -91,7 +98,7 @@ object IRUtils {
           case Divide => Opcodes.IDIV
         }
       }
-      case _: LongConst => {
+      case _: LongConstIR => {
         op match {
           case Add => Opcodes.LADD
           case Subtract => Opcodes.LSUB
@@ -99,7 +106,7 @@ object IRUtils {
           case Divide => Opcodes.LDIV
         }
       }
-      case _: FloatConst => {
+      case _: FloatConstIR => {
         op match {
           case Add => Opcodes.FADD
           case Subtract => Opcodes.FSUB
@@ -107,7 +114,7 @@ object IRUtils {
           case Divide => Opcodes.FDIV
         }
       }
-      case _: DoubleConst => {
+      case _: DoubleConstIR => {
         op match {
           case Add => Opcodes.DADD
           case Subtract => Opcodes.DSUB

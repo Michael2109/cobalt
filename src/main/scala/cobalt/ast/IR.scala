@@ -120,6 +120,18 @@ object AST2IR {
 
   def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR, symbolTable: SymbolTable): Unit ={
     `type` match {
+      case _: DoubleType => operator match {
+        case Add => method.body += DAdd
+        case Subtract => method.body += DSub
+        case Multiply => method.body += DMul
+        case Divide => method.body += DDiv
+      }
+      case _: FloatType => operator match {
+        case Add => method.body += FAdd
+        case Subtract => method.body += FSub
+        case Multiply => method.body += FMul
+        case Divide => method.body += FDiv
+      }
       case _: IntType => operator match {
         case Add => method.body += IAdd
         case Subtract => method.body += ISub
@@ -128,6 +140,9 @@ object AST2IR {
       }
       case _: LongType => operator match {
         case Add => method.body += LAdd
+        case Subtract => method.body += LSub
+        case Multiply => method.body += LMul
+        case Divide => method.body += LDiv
       }
       case _: ObjectType => operator match {
         case Add =>
@@ -146,6 +161,8 @@ object AST2IR {
         convertToIR(aBinary.op, IRUtils.inferType(aBinary.expression1, symbolTable, imports),method, symbolTable)
       }
       case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method, symbolTable, imports))
+      case doubleConst: DoubleConst => method.body += ExprAsStmtIR(DoubleConstIR(doubleConst.value))
+      case floatConst: FloatConst => method.body += ExprAsStmtIR(FloatConstIR(floatConst.value))
       case identifier: Identifier => {
         identifier.name.value match {
           case "true" => convertToIR(IntConst(1), method, symbolTable, imports)
@@ -157,8 +174,20 @@ object AST2IR {
             }
 
             typeIR match {
+              case _: DoubleType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Double")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
+              case _: FloatType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Float")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
               case _: IntType => {
                 method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Integer")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
+              case _: LongType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Long")
                 method.body += VisitInsn (Opcodes.DUP)
               }
               case _ =>
@@ -166,8 +195,17 @@ object AST2IR {
             method.body += ExprAsStmtIR(IdentifierIR(id, typeIR))
 
             typeIR match {
+              case _: DoubleType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(D)V")
+              }
+              case _: FloatType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(F)V")
+              }
               case _: IntType => {
                 method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+              }
+              case _: LongType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Long", "<init>", "(J)V")
               }
               case _ =>
             }
@@ -175,6 +213,7 @@ object AST2IR {
         }
       }
       case intCont: IntConst => method.body += ExprAsStmtIR(IntConstIR(intCont.value))
+      case longConst: LongConst => method.body += ExprAsStmtIR(LongConstIR(longConst.value))
       case methodCall: MethodCall => {
         methodCall.name.value match {
           case "print" | "println" => {
@@ -182,8 +221,20 @@ object AST2IR {
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
 
             typeIR match {
+              case _: DoubleType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Double")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
+              case _: FloatType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Float")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
               case _: IntType => {
                 method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Integer")
+                method.body += VisitInsn (Opcodes.DUP)
+              }
+              case _: LongType => {
+                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Long")
                 method.body += VisitInsn (Opcodes.DUP)
               }
               case _ =>
@@ -192,8 +243,17 @@ object AST2IR {
             convertToIR(methodCall.expression, method, symbolTable, imports)
 
             typeIR match {
+              case _: DoubleType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Double", "<init>", "(D)V")
+              }
+              case _: FloatType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Float", "<init>", "(F)V")
+              }
               case _: IntType => {
                 method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+              }
+              case _: LongType => {
+                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Long", "<init>", "(J)V")
               }
               case _ =>
             }
@@ -301,8 +361,11 @@ object IRNew {
 
   trait ExpressionIR
   case class AssignIR(id: Int, immutable: Boolean, block: BlockIR) extends ExpressionIR
+  case class DoubleConstIR(value: BigDecimal) extends ExpressionIR
+  case class FloatConstIR(value: BigDecimal) extends ExpressionIR
   case class IdentifierIR(id: Int, `type`: TypeIR) extends ExpressionIR
   case class IntConstIR(value: BigInt) extends ExpressionIR
+  case class LongConstIR(value: BigInt) extends ExpressionIR
   case class StringLiteralIR(value: String) extends ExpressionIR
 
   trait StatementIR
@@ -321,15 +384,29 @@ object IRNew {
   case class UnitType() extends TypeIR
 
   trait ArithmeticOperatorIR extends StatementIR
+  case object DAdd extends ArithmeticOperatorIR
+  case object DSub extends ArithmeticOperatorIR
+  case object DMul extends ArithmeticOperatorIR
+  case object DDiv extends ArithmeticOperatorIR
+  case object FAdd extends ArithmeticOperatorIR
+  case object FSub extends ArithmeticOperatorIR
+  case object FMul extends ArithmeticOperatorIR
+  case object FDiv extends ArithmeticOperatorIR
   case object IAdd extends ArithmeticOperatorIR
   case object ISub extends ArithmeticOperatorIR
   case object IMul extends ArithmeticOperatorIR
   case object IDiv extends ArithmeticOperatorIR
   case object LAdd extends ArithmeticOperatorIR
+  case object LSub extends ArithmeticOperatorIR
+  case object LMul extends ArithmeticOperatorIR
+  case object LDiv extends ArithmeticOperatorIR
 
   trait StoreOperators extends StatementIR
   case class AStore(id: Int) extends StoreOperators
+  case class DStore(id: Int) extends StoreOperators
+  case class FStore(id: Int) extends StoreOperators
   case class IStore(id: Int) extends StoreOperators
+  case class LStore(id: Int) extends StoreOperators
 
   case class Visit(version: Int, access: Int, name: String, signature: String, superName: String, interfaces: Array[String]) extends StatementIR
   case class VisitField(id: Int, name: String, `type`: String, signature: String, value: Object) extends StatementIR

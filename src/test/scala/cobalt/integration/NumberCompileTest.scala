@@ -14,11 +14,33 @@ class NumberCompileTest extends FunSpec with Matchers {
     it("Should compile numbers") {
 
       val output: Array[String] = CompilerUtil.executeJava(Paths.get("integration/NumberTest"))
-      output(0) shouldBe "6"
-      output(1) shouldBe "-1"
-      output(2) shouldBe "6"
-      output(3) shouldBe "10"
-      output(4) shouldBe "3"
+
+      val expectedResults = Array(
+        "6",
+        "6",
+        "6.6000004",
+        "6.6",
+        "-1",
+        "-1",
+        "-1.1",
+        "-1.1",
+        "6",
+        "6",
+        "7.986",
+        "7.986000000000001",
+        "10",
+        "10",
+        "9.910891",
+        "9.91089108910891",
+        "3",
+        "3",
+        "3.1200004",
+        "3.1200000000000006"
+      )
+
+      for(i <- 0 until expectedResults.length){
+        output(i) shouldBe expectedResults(i)
+      }
     }
   }
 

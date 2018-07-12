@@ -59,7 +59,10 @@ object CodeGen {
         })
       case blockStmt: BlockExprIR => blockStmt.expressions.foreach(x => genCode(mv, x))*/
       case identifier: IdentifierIR => mv.visitIntInsn(IRUtils.getLoadOperator(identifier.`type`), identifier.id)
+      case doubleConst: DoubleConstIR => mv.visitLdcInsn(doubleConst.value.toDouble)
+      case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)
       case intConst: IntConstIR => mv.visitIntInsn(Opcodes.BIPUSH, intConst.value.toInt)
+      case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
       /*case longConst: LongConstIR => mv.visitLdcInsn(longConst.value.toLong)
       case floatConst: FloatConstIR => mv.visitLdcInsn(floatConst.value.toFloat)
       case doubleConst: DoubleConstIR => mv.visitLdcInsn(doubleConst.value.toDouble)*/
@@ -88,15 +91,33 @@ object CodeGen {
         genCode(mv, ifStmt.elseBlock.getOrElse(BlockStmtIR(Seq())))
         mv.visitLabel(endLabel)
       }*/
+      case DAdd => mv.visitInsn(Opcodes.DADD)
+      case dStore: DStore => mv.visitVarInsn(Opcodes.DSTORE, dStore.id);
+      case DSub => mv.visitInsn(Opcodes.DSUB)
+      case DMul => mv.visitInsn(Opcodes.DMUL)
+      case DDiv => mv.visitInsn(Opcodes.DDIV)
+      case FAdd => mv.visitInsn(Opcodes.FADD)
+      case fStore: FStore => mv.visitVarInsn(Opcodes.FSTORE, fStore.id);
+      case FSub => mv.visitInsn(Opcodes.FSUB)
+      case FMul => mv.visitInsn(Opcodes.FMUL)
+      case FDiv => mv.visitInsn(Opcodes.FDIV)
       case IAdd => mv.visitInsn(Opcodes.IADD)
       case iStore: IStore => mv.visitVarInsn(Opcodes.ISTORE, iStore.id);
       case ISub => mv.visitInsn(Opcodes.ISUB)
       case IMul => mv.visitInsn(Opcodes.IMUL)
       case IDiv => mv.visitInsn(Opcodes.IDIV)
+      case LAdd => mv.visitInsn(Opcodes.LADD)
+      case lStore: LStore => mv.visitVarInsn(Opcodes.LSTORE, lStore.id);
+      case LSub => mv.visitInsn(Opcodes.LSUB)
+      case LMul => mv.visitInsn(Opcodes.LMUL)
+      case LDiv => mv.visitInsn(Opcodes.LDIV)
       case inline: InlineIR => genCode(mv, inline.asInstanceOf[BlockIR], method)
       case visitFieldInst: VisitFieldInst => mv.visitFieldInsn(visitFieldInst.opcode, visitFieldInst.owner, visitFieldInst.name, visitFieldInst.description)
       case visitJumpInsn: VisitJumpInst => mv.visitJumpInsn(visitJumpInsn.opcode, method.labels.get(visitJumpInsn.labelId).get)
-      case visitMethodInst: VisitMethodInsn => mv.visitMethodInsn(visitMethodInst.opcode, visitMethodInst.owner, visitMethodInst.name, visitMethodInst.description, false)
+      case visitMethodInst: VisitMethodInsn => {
+        println(visitMethodInst)
+        mv.visitMethodInsn(visitMethodInst.opcode, visitMethodInst.owner, visitMethodInst.name, visitMethodInst.description, false)
+      }
       case visitTypeInst: VisitTypeInst => mv.visitTypeInsn(visitTypeInst.opcode, visitTypeInst.name)
       case visitInst: VisitInsn => mv.visitInsn(visitInst.opcode)
       case _: LabelIR =>
