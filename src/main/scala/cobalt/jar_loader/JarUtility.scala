@@ -9,12 +9,11 @@ import scala.collection.mutable.ListBuffer
 
 object JarUtility {
 
-
   val JavaHome = Paths.get(System.getenv().get("JAVA_HOME"))
 
   def main(args: Array[String]): Unit = {
 
-    println(findJar(JavaHome.toFile, "java.lang.Double.class"))
+    println(findJar(JavaHome.toFile, "java/lang/Double.class"))
 
   }
 
@@ -25,19 +24,18 @@ object JarUtility {
         return pathname.getName().endsWith(".jar") || pathname.isDirectory()
       }
     }
-    val files: Array[File] = start.listFiles(filter)
 
     var path: Path = null
 
-    for (i <- 0 until files.length) {
+    for (f <- start.listFiles(filter)) {
       if(path == null) {
-        if (files(i).isDirectory()) {
-          val foundPath = findJar(files(i), className)
+        if (f.isDirectory()) {
+          val foundPath = findJar(f, className)
           if (foundPath != null) {
             path = foundPath
           }
         } else {
-          val foundPath = searchJar(files(i), className)
+          val foundPath = searchJar(f, className)
           if (foundPath != null) {
             path = foundPath
           }
@@ -50,12 +48,15 @@ object JarUtility {
 
   private def searchJar(f: File, className: String): Path ={
 
-    println("Searching: " + f.getPath())
     val jar = new JarFile(f)
     var e: ZipEntry = jar.getEntry(className)
     if (e == null) {
       e = jar.getJarEntry(className)
-      f.toPath
+      if(e != null) {
+        f.toPath
+      }else{
+        null
+      }
     } else {
       f.toPath
     }
