@@ -260,7 +260,12 @@ object AST2IR {
 
             method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
           }
-          case _ => 
+          case _ => {
+            // Get the type of the method call
+            val typeIR = IRUtils.inferType(methodCall.expression, symbolTable, imports)
+
+            println("Type ::: " + typeIR)
+          }
         }
       }
       case newClassInstance: NewClassInstance =>

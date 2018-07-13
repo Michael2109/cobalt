@@ -19,7 +19,13 @@ object ExpressionParser {
     def rExprParser: P[Expression] = P(Chain(arith_exprParser, LtE | Lt | GtE | Gt))
 
     def allExpressionsParser = methodCallParser | newClassInstanceParser | ternaryParser | numberParser | identifierParser | stringLiteral | parensParser
-    P(Chain(rExprParser, and | or))
+    P(Chain(rExprParser, and | or)).rep(sep = ".").map(expressions => {
+      expressions.length match {
+        case 0 => BlockExpr(Seq())
+        case 1 => expressions.head
+        case _ => NestedExpr(expressions)
+      }
+    })
   }
 
   def identifierParser: P[AST.Identifier] = LexicalParser.identifier.map(x => Identifier(Name(x)))

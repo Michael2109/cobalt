@@ -49,6 +49,7 @@ object AST {
 
   trait Expression
   case class BlockExpr(expressions: Seq[Expression]) extends Expression
+  case class NestedExpr(expressions: Seq[Expression]) extends Expression
   case class Identifier(name: Name) extends Expression
   case class MethodCall(name: Name, expression: Expression) extends Expression
   case class NewClassInstance(`type`: Type, expression: Expression, anonymousClass: Option[Statement]) extends Expression
