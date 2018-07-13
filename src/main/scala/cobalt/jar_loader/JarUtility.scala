@@ -14,7 +14,7 @@ object JarUtility {
 
   def main(args: Array[String]): Unit = {
 
-    println(findJar(JavaHome.toFile, "java/lang/Double.class"))
+    println(findJar(JavaHome.toFile, "java.lang.Double.class"))
 
   }
 
@@ -25,13 +25,27 @@ object JarUtility {
         return pathname.getName().endsWith(".jar") || pathname.isDirectory()
       }
     }
-    for (f: File <- start.listFiles(filter)) {
-      if (f.isDirectory()) {
-        return findJar(f, className)
-      } else {
-        return searchJar(f, className)
+    val files: Array[File] = start.listFiles(filter)
+
+    var path: Path = null
+
+    for (i <- 0 until files.length) {
+      if(path == null) {
+        if (files(i).isDirectory()) {
+          val foundPath = findJar(files(i), className)
+          if (foundPath != null) {
+            path = foundPath
+          }
+        } else {
+          val foundPath = searchJar(files(i), className)
+          if (foundPath != null) {
+            path = foundPath
+          }
+        }
       }
     }
+
+    return path
   }
 
   private def searchJar(f: File, className: String): Path ={
