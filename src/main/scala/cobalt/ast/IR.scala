@@ -2,6 +2,7 @@ package cobalt.ast
 
 import cobalt.ast.AST._
 import cobalt.ast.IRNew._
+import cobalt.jar_loader.JarUtility
 import cobalt.symbol_table.{ClassEntry, MethodEntry, SymbolTable, ValueEntry}
 
 import scala.collection.mutable
@@ -25,8 +26,7 @@ object AST2IR {
         }
 
         val interfaces: Array[String] = classModel.interfaces.map(i => {
-          i.ref match
-          {
+          i.ref match {
             case refLocal: RefLocal => imports(refLocal.name.value)
             case refQual: RefQual => refQual.qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + refQual.qualName.name.value
           }
@@ -44,8 +44,8 @@ object AST2IR {
     })
   }
 
-  def addConstructor(model: ClassModelIR, superClass: String): Unit ={
-    if(!constructorExists()){
+  def addConstructor(model: ClassModelIR, superClass: String): Unit = {
+    if (!constructorExists()) {
       val methodIR = MethodIR("<init>", mutable.SortedSet[Int](Opcodes.ACC_PUBLIC), ListBuffer(), "V", ListBuffer())
 
       methodIR.body += VisitVarInsn(Opcodes.ALOAD, 0)
@@ -56,7 +56,7 @@ object AST2IR {
     }
   }
 
-  def constructorExists(): Boolean ={
+  def constructorExists(): Boolean = {
     return false
   }
 
@@ -96,7 +96,7 @@ object AST2IR {
 
         methodIR.modifiers ++ method.modifiers.map(IRUtils.modifierToOpcode)
 
-        if(methodIR.name.equals("main")){
+        if (methodIR.name.equals("main")) {
           methodIR.modifiers += Opcodes.ACC_STATIC
           methodIR.fields += (("args", "[Ljava/lang/String;"))
         } else {
@@ -118,7 +118,7 @@ object AST2IR {
     }
   }
 
-  def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR, symbolTable: SymbolTable): Unit ={
+  def convertToIR(operator: Operator, `type`: TypeIR, method: MethodIR, symbolTable: SymbolTable): Unit = {
     `type` match {
       case _: DoubleType => operator match {
         case Add => method.body += DAdd
@@ -153,12 +153,12 @@ object AST2IR {
     }
   }
 
-  def convertToIR(expression: Expression, method: MethodIR, symbolTable: SymbolTable, imports: Map[String, String]): Unit ={
+  def convertToIR(expression: Expression, method: MethodIR, symbolTable: SymbolTable, imports: Map[String, String]): Unit = {
     expression match {
       case aBinary: ABinary => {
         convertToIR(aBinary.expression1, method, symbolTable, imports)
         convertToIR(aBinary.expression2, method, symbolTable, imports)
-        convertToIR(aBinary.op, IRUtils.inferType(aBinary.expression1, symbolTable, imports),method, symbolTable)
+        convertToIR(aBinary.op, IRUtils.inferType(aBinary.expression1, symbolTable, imports), method, symbolTable)
       }
       case blockExpr: BlockExpr => blockExpr.expressions.foreach(e => convertToIR(e, method, symbolTable, imports))
       case doubleConst: DoubleConst => method.body += ExprAsStmtIR(DoubleConstIR(doubleConst.value))
@@ -175,20 +175,20 @@ object AST2IR {
 
             typeIR match {
               case _: DoubleType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Double")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Double")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _: FloatType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Float")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Float")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _: IntType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Integer")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _: LongType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Long")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Long")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _ =>
             }
@@ -222,20 +222,20 @@ object AST2IR {
 
             typeIR match {
               case _: DoubleType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Double")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Double")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _: FloatType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Float")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Float")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _: IntType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Integer")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _: LongType => {
-                method.body += VisitTypeInst (Opcodes.NEW, "java/lang/Long")
-                method.body += VisitInsn (Opcodes.DUP)
+                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Long")
+                method.body += VisitInsn(Opcodes.DUP)
               }
               case _ =>
             }
@@ -268,6 +268,40 @@ object AST2IR {
           }
         }
       }
+      case nestedExpression: NestedExpr => {
+
+        var currentType: TypeIR = null
+
+        // Loop through all method calls and variables
+        nestedExpression.expressions.foreach(e => {
+          e match {
+            case methodCall: MethodCall => {
+              println(JarUtility.getBytecodeClass(currentType.classLoc))
+              val argumentTypes: List[String] = List()/*methodCall.expression match {
+
+                case blockExpr: BlockExpr => {
+                  blockExpr.expressions.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).toList
+                }
+              }*/
+
+              val signature = JarUtility.getBytecodeClass(currentType.classLoc).getMethod(methodCall.name.value, argumentTypes).getSignature()
+
+              method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, currentType.classLoc, methodCall.name.value, signature)
+            }
+            case value: Identifier => {
+
+              currentType = symbolTable.get(value match {
+                case methodCall: MethodCall => methodCall.name.value
+                case identifier: Identifier => identifier.name.value
+              }) match {
+                case valueEntry: ValueEntry => valueEntry.`type`
+              }
+
+              convertToIR(value, method, symbolTable, imports)
+            }
+          }
+        })
+      }
       case newClassInstance: NewClassInstance =>
       case stringLiteral: StringLiteral => {
         method.body += ExprAsStmtIR(StringLiteralIR(stringLiteral.value))
@@ -275,7 +309,7 @@ object AST2IR {
     }
   }
 
-  def convertToIR(statement: Statement, method: MethodIR, symbolTable: SymbolTable, imports: Map[String, String]): Unit ={
+  def convertToIR(statement: Statement, method: MethodIR, symbolTable: SymbolTable, imports: Map[String, String]): Unit = {
     statement match {
       case assign: Assign => {
         val id = method.getNextVarId()
@@ -308,7 +342,7 @@ object AST2IR {
 
         method.visitLabel(trueLabel)
 
-        if(ifStmt.elseBlock.isDefined) {
+        if (ifStmt.elseBlock.isDefined) {
           convertToIR(ifStmt.elseBlock.get, method, symbolTable, imports)
         }
 
@@ -330,95 +364,163 @@ object IRNew {
     val imports: Map[String, String] = Map[String, String]()
 
     private var nextVarId = 0
-    def getNextVarId(): Int ={
+
+    def getNextVarId(): Int = {
       val id = nextVarId
       nextVarId += 1
       return id
     }
   }
 
-  case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], returnType: String, body: ListBuffer[StatementIR]){
+  case class MethodIR(name: String, modifiers: mutable.SortedSet[Int], fields: ListBuffer[(String, String)], returnType: String, body: ListBuffer[StatementIR]) {
 
     private var nextVarId = 0
-    def getNextVarId(): Int ={
+
+    def getNextVarId(): Int = {
       val id = nextVarId
       nextVarId += 1
       return id
     }
 
     val labels: mutable.SortedMap[Int, Label] = mutable.SortedMap[Int, Label]()
+
     def createLabel(): Int = {
       labels.put(labels.size, new Label)
       val id = labels.size - 1
       id
     }
 
-    def visitLabel(id: Int): Unit ={
+    def visitLabel(id: Int): Unit = {
       body += VisitLabelIR(id)
     }
   }
 
 
   trait BlockIR extends StatementIR
+
   case class InlineIR(expression: ExpressionIR) extends BlockIR
+
   case class DoBlockIR(statement: StatementIR) extends BlockIR
 
 
   trait ExpressionIR
+
   case class AssignIR(id: Int, immutable: Boolean, block: BlockIR) extends ExpressionIR
+
   case class DoubleConstIR(value: BigDecimal) extends ExpressionIR
+
   case class FloatConstIR(value: BigDecimal) extends ExpressionIR
+
   case class IdentifierIR(id: Int, `type`: TypeIR) extends ExpressionIR
+
   case class IntConstIR(value: BigInt) extends ExpressionIR
+
   case class LongConstIR(value: BigInt) extends ExpressionIR
+
   case class StringLiteralIR(value: String) extends ExpressionIR
 
   trait StatementIR
+
   case class ExprAsStmtIR(expressionIR: ExpressionIR) extends StatementIR
+
   case class IfIR(condition: ExpressionIR, isStmt: StatementIR, elseStmt: StatementIR)
+
   case class LabelIR(id: Int) extends StatementIR
+
   case class VisitLabelIR(id: Int) extends StatementIR
 
-  trait TypeIR
-  case class IntType() extends TypeIR
-  case class LongType() extends TypeIR
-  case class FloatType() extends TypeIR
-  case class DoubleType() extends TypeIR
-  case class StringLiteralType() extends TypeIR
-  case class ObjectType(name: String) extends TypeIR
-  case class UnitType() extends TypeIR
+  trait TypeIR {
+    val classLoc: String
+  }
+
+  case class IntType() extends TypeIR {
+    override val classLoc: String = "java/lang/Integer"
+  }
+
+  case class LongType() extends TypeIR {
+    override val classLoc: String = "java/lang/Long"
+  }
+
+  case class FloatType() extends TypeIR {
+    override val classLoc: String = "java/lang/Float"
+  }
+
+  case class DoubleType() extends TypeIR {
+    override val classLoc: String = "java/lang/Double"
+  }
+
+  case class StringLiteralType() extends TypeIR {
+    override val classLoc: String = "java/lang/String"
+  }
+
+  case class ObjectType(name: String) extends TypeIR {
+    override val classLoc: String = name
+  }
+
+  case class UnitType() extends TypeIR {
+    override val classLoc: String = null
+  }
 
   trait ArithmeticOperatorIR extends StatementIR
+
   case object DAdd extends ArithmeticOperatorIR
+
   case object DSub extends ArithmeticOperatorIR
+
   case object DMul extends ArithmeticOperatorIR
+
   case object DDiv extends ArithmeticOperatorIR
+
   case object FAdd extends ArithmeticOperatorIR
+
   case object FSub extends ArithmeticOperatorIR
+
   case object FMul extends ArithmeticOperatorIR
+
   case object FDiv extends ArithmeticOperatorIR
+
   case object IAdd extends ArithmeticOperatorIR
+
   case object ISub extends ArithmeticOperatorIR
+
   case object IMul extends ArithmeticOperatorIR
+
   case object IDiv extends ArithmeticOperatorIR
+
   case object LAdd extends ArithmeticOperatorIR
+
   case object LSub extends ArithmeticOperatorIR
+
   case object LMul extends ArithmeticOperatorIR
+
   case object LDiv extends ArithmeticOperatorIR
 
   trait StoreOperators extends StatementIR
+
   case class AStore(id: Int) extends StoreOperators
+
   case class DStore(id: Int) extends StoreOperators
+
   case class FStore(id: Int) extends StoreOperators
+
   case class IStore(id: Int) extends StoreOperators
+
   case class LStore(id: Int) extends StoreOperators
 
   case class Visit(version: Int, access: Int, name: String, signature: String, superName: String, interfaces: Array[String]) extends StatementIR
+
   case class VisitField(id: Int, name: String, `type`: String, signature: String, value: Object) extends StatementIR
+
   case class VisitTypeInst(opcode: Int, name: String) extends StatementIR
+
   case class VisitInsn(opcode: Int) extends StatementIR
+
   case class VisitFieldInst(opcode: Int, owner: String, name: String, description: String) extends StatementIR
+
   case class VisitJumpInst(opcode: Int, labelId: Int) extends StatementIR
+
   case class VisitMethodInsn(opcode: Int, owner: String, name: String, description: String) extends StatementIR
+
   case class VisitVarInsn(opcode: Int, id: Int) extends StatementIR
+
 }

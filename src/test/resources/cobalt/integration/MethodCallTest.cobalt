@@ -5,5 +5,5 @@ class MethodCallTest
   let main(args: Int): Unit = do
 
     let x: Int = 10
-    x.toString()
+    println(x.toString())
 

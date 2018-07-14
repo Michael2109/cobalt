@@ -17,7 +17,7 @@ object JarUtility {
   val JavaHome = Paths.get(System.getenv().get("JAVA_HOME"))
 
   def main(args: Array[String]): Unit = {
-    println(getBytecodeClass("java.lang.Double").getMethod("toString").getMethodSignature())
+    println(getBytecodeClass("java.lang.Double").getMethod("toString", List()).getSignature())
   }
 
   def getBytecodeClass(classPath: String): BytecodeClass ={
