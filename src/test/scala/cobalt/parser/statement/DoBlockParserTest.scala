@@ -22,7 +22,7 @@ class DoBlockParserTest extends FunSpec with Matchers
           |  y
           |  z
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.doBlock) shouldBe DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(Identifier(Name("x"))), ExprAsStmt(Identifier(Name("y"))), ExprAsStmt(Identifier(Name("z"))))))
+      TestUtil.parse(code, StatementParser.doBlock) shouldBe DoBlock(ArrayBuffer(ExprAsStmt(Identifier(Name("x"))), ExprAsStmt(Identifier(Name("y"))), ExprAsStmt(Identifier(Name("z")))))
     }
   }
 }

@@ -89,7 +89,9 @@ object IRUtils {
   def getStoreOperator(statement: Statement): Int = {
     statement match {
       case inline: Inline => getStoreOperator(inline.expression)
-      case doBlock: DoBlock => getStoreOperator(doBlock.statement)
+      case doBlock: DoBlock => {
+        getStoreOperator(doBlock.statement.head)
+      }
       case blockStmt: BlockStmt => getStoreOperator(blockStmt.statements.head)
     }
   }

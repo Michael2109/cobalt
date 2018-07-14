@@ -37,7 +37,10 @@ object AST2IR {
         classModelIR.externalStatements += Visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER, module.header.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + classModel.name.value, null, superClass, interfaces)
 
         val classSymbolTable: SymbolTable = new ClassEntry("")
-        convertToIR(classModel.body, classModelIR, classSymbolTable, imports)
+        classModel.body.foreach(s =>{
+          convertToIR(s, classModelIR, classSymbolTable, imports)
+        })
+
         addConstructor(classModelIR, superClass)
         classModelIR
       }
@@ -320,6 +323,7 @@ object AST2IR {
         method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, className, "<init>", "()V")
 
       }
+      case stringLiteral: StringLiteral => method.body += ExprAsStmtIR(StringLiteralIR(stringLiteral.value))
     }
   }
 
@@ -339,7 +343,11 @@ object AST2IR {
       }
       case blockStmt: BlockStmt => blockStmt.statements.foreach(s => convertToIR(s, method, symbolTable, imports))
       case inline: Inline => convertToIR(inline.expression, method, symbolTable, imports)
-      case doBlock: DoBlock => convertToIR(doBlock.statement, method, symbolTable, imports)
+      case doBlock: DoBlock => {
+        doBlock.statement.foreach(s =>{
+          convertToIR(s, method, symbolTable, imports)
+        })
+      }
       case exprAsStmt: ExprAsStmt => convertToIR(exprAsStmt.expression, method, symbolTable, imports)
       case ifStmt: If => {
 

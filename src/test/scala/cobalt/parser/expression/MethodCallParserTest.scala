@@ -17,7 +17,7 @@ class MethodCallParserTest extends FunSpec with Matchers
   {
     it("Should parse method calls - No arguments")
     {
-      TestUtil.parse("println()", ExpressionParser.expressionParser) shouldBe MethodCall(Name("println"),ArrayBuffer())
+      TestUtil.parse("println()", ExpressionParser.expressionParser) shouldBe MethodCall(Name("println"),ArrayBuffer(BlockExpr(List())))
     }
     it("Should parse method calls - Single argument")
     {
@@ -30,7 +30,7 @@ class MethodCallParserTest extends FunSpec with Matchers
 
     it("Should parse method calls - New class instance")
     {
-      TestUtil.parse("methodCall(new ClassName())", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),ArrayBuffer(NewClassInstance(Type(RefLocal(Name("ClassName"))),ArrayBuffer(),None)))
+      TestUtil.parse("methodCall(new ClassName())", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),ArrayBuffer(NewClassInstance(Type(RefLocal(Name("ClassName"))),ArrayBuffer(BlockExpr(List())),None)))
     }
   }
 }

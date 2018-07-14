@@ -52,7 +52,7 @@ class Statements(indent: Int) {
 
   val statementParser: P[Statement] = P(!commentParser ~ (modelParser | ifStatementParser | methodParser | assignParser | reassignParser | exprAsStmt))
 
-  val indentedBlock: P[Statement] = {
+  val indentedBlock: P[Seq[Statement]] ={
     val deeper: P[Int] = {
       val commentLine = P("\n" ~~ LexicalParser.nonewlinewscomment.?.map(_ => 0)).map((_, Some("")))
       val endLine = P("\n" ~~ (" " | "\t").repX(indent + 1).!.map(_.length) ~~ LexicalParser.comment.!.?)
@@ -60,9 +60,9 @@ class Statements(indent: Int) {
         _.collectFirst { case (s, None) => s }
       }.filter(_.isDefined).map(_.get)
     }
-    val indented: P[Statement] = P(deeper.flatMap { nextIndent =>
-      new Statements(nextIndent).statementParser.repX(1, spaces.repX(1) ~~ (" " * nextIndent | "\t" * nextIndent)).map(x => BlockStmt(x))
+    val indented: P[Seq[Statement]] = P(deeper.flatMap { nextIndent =>
+      new Statements(nextIndent).statementParser.repX(1, spaces.repX(1) ~~ (" " * nextIndent | "\t" * nextIndent)).map(x => x)
     })
-    indented | (" ".rep ~ statementParser)
+    (indented | (" ".rep ~ statementParser.rep(min = 1, max = 1)))
   }
 }

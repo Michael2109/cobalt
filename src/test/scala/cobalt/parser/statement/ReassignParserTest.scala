@@ -27,7 +27,7 @@ class ReassignParserTest extends FunSpec with Matchers
           |  2
           |  3
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.statementParser) shouldBe Reassign(Name("x"),DoBlock(BlockStmt(ArrayBuffer(ExprAsStmt(IntConst(1)), ExprAsStmt(IntConst(2)), ExprAsStmt(IntConst(3))))))
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe Reassign(Name("x"),DoBlock(ArrayBuffer(ExprAsStmt(IntConst(1)), ExprAsStmt(IntConst(2)), ExprAsStmt(IntConst(3)))))
     }
   }
 }
