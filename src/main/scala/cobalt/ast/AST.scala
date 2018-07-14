@@ -51,8 +51,8 @@ object AST {
   case class BlockExpr(expressions: Seq[Expression]) extends Expression
   case class NestedExpr(expressions: Seq[Expression]) extends Expression
   case class Identifier(name: Name) extends Expression
-  case class MethodCall(name: Name, expression: Expression) extends Expression
-  case class NewClassInstance(`type`: Type, expression: Expression, anonymousClass: Option[Statement]) extends Expression
+  case class MethodCall(name: Name, expression: Seq[Expression]) extends Expression
+  case class NewClassInstance(`type`: Type, expression: Seq[Expression], anonymousClass: Option[Statement]) extends Expression
   case class StringLiteral(value: String) extends Expression
   case class Ternary(condition: Expression, ifExpr: Expression, elseExpr: Expression) extends Expression
   case class Tuple() extends Expression

@@ -16,7 +16,7 @@ class NewClassInstanceParserTest extends FunSpec with Matchers
   {
     it("Should parse new class instances")
     {
-      TestUtil.parse("new ClassName()", ExpressionParser.expressionParser) shouldBe NewClassInstance(Type(RefLocal(Name("ClassName"))),BlockExpr(ArrayBuffer()),None)
+      TestUtil.parse("new ClassName()", ExpressionParser.expressionParser) shouldBe NewClassInstance(Type(RefLocal(Name("ClassName"))),ArrayBuffer(),None)
     }
   }
 }

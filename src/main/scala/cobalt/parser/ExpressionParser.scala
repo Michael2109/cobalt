@@ -32,13 +32,13 @@ object ExpressionParser {
 
   def finalModifierParser: P[AST.Final.type] = P("final").map(x => Final)
 
-  def methodCallParser: P[MethodCall] = P(nameParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => MethodCall(x._1, BlockExpr(x._2)))
+  def methodCallParser: P[MethodCall] = P(nameParser ~ "(" ~ expressionParser.rep(sep = ",") ~ ")").map(x => MethodCall(x._1, x._2))
 
   def modifiers: P[Seq[Modifier]] = P(accessModifier | typeModifier).rep
 
   def nameParser: P[Name] = LexicalParser.identifier.map(x => Name(x))
 
-  def newClassInstanceParser: P[NewClassInstance] = P(LexicalParser.kw("new") ~ typeRefParser ~ LexicalParser.kw("(") ~ expressionParser.rep(sep = ",") ~ LexicalParser.kw(")")).map(x => NewClassInstance(x._1, BlockExpr(x._2), None))
+  def newClassInstanceParser: P[NewClassInstance] = P(LexicalParser.kw("new") ~ typeRefParser ~ LexicalParser.kw("(") ~ expressionParser.rep(sep = ",") ~ LexicalParser.kw(")")).map(x => NewClassInstance(x._1, x._2, None))
 
   def numberParser: P[Expression] = P(LexicalParser.floatnumber ~ P("F" | "f")).map(FloatConst) | P(LexicalParser.longinteger).map(LongConst) | P(LexicalParser.floatnumber).map(DoubleConst) | P(LexicalParser.integer).map(IntConst)
 

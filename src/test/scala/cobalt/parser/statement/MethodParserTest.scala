@@ -64,7 +64,7 @@ class MethodParserTest extends FunSpec with Matchers
           |  let y = 1
           |  println(y)
         """.stripMargin.replace("\r", "")
-      TestUtil.parse(code, StatementParser.statementParser) shouldBe Method(Name("method"),List(),ArrayBuffer(),List(),Some(Type(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(Assign(Name("y"),None,true,Inline(IntConst(1))), ExprAsStmt(MethodCall(Name("println"),BlockExpr(ArrayBuffer(Identifier(Name("y"))))))))))
+      TestUtil.parse(code, StatementParser.statementParser) shouldBe Method(Name("method"),List(),ArrayBuffer(),List(),Some(Type(RefLocal(Name("Int")))),DoBlock(BlockStmt(ArrayBuffer(Assign(Name("y"),None,true,Inline(IntConst(1))), ExprAsStmt(MethodCall(Name("println"),ArrayBuffer(Identifier(Name("y")))))))))
     }
 
     it("Should parse method definitions with modifiers")

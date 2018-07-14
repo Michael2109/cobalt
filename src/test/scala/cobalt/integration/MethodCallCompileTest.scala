@@ -16,7 +16,7 @@ class MethodCallCompileTest extends FunSpec with Matchers {
       val output: Array[String] = CompilerUtil.executeJava(Paths.get("integration/MethodCallTest"))
 
       val expectedResults = Array(
-
+        "10"
       )
 
       for(i <- 0 until expectedResults.length){

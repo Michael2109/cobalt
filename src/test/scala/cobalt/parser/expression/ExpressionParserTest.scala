@@ -14,7 +14,7 @@ class ExpressionParserTest extends FunSpec with Matchers
 {
   describe("Nested expression call parser test") {
     it("Should parse nested expression calls") {
-      TestUtil.parse("x.toString()", ExpressionParser.expressionParser) shouldBe NestedExpr(ArrayBuffer(Identifier(Name("x")), MethodCall(Name("toString"),BlockExpr(ArrayBuffer(BlockExpr(ArrayBuffer()))))))
+      TestUtil.parse("x.toString()", ExpressionParser.expressionParser) shouldBe NestedExpr(ArrayBuffer(Identifier(Name("x")), MethodCall(Name("toString"),ArrayBuffer(BlockExpr(ArrayBuffer())))))
     }
   }
 

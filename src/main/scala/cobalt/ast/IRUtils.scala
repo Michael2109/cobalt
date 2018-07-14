@@ -1,7 +1,9 @@
 package cobalt.ast
 
 import cobalt.ast.AST._
+import cobalt.ast.AST2IR.convertToIR
 import cobalt.ast.IRNew._
+import cobalt.jar_loader.JarUtility
 import cobalt.symbol_table.{SymbolTable, ValueEntry}
 
 import scala.tools.asm.Opcodes
@@ -14,6 +16,7 @@ object IRUtils {
       case "Long" => LongType()
       case "String" => StringLiteralType()
       case "Unit" => UnitType()
+      case className => ObjectType(className)
     }
   }
 
@@ -23,6 +26,7 @@ object IRUtils {
       case _: LongType => "J"
       case _: StringLiteralType => "Ljava/lang/String;"
       case _: UnitType => "V"
+      case objectType: ObjectType => "L" + objectType.name + ";"
     }
   }
 
@@ -38,6 +42,39 @@ object IRUtils {
       case _: IntObject => ObjectType("Ljava/lang/Object;")
       case _: IntConst => IntType()
       case _: LongConst => LongType()
+      case nestedExpression: NestedExpr => {
+
+        var currentType: TypeIR = null
+
+        // Loop through all method calls and variables
+        nestedExpression.expressions.foreach(e => {
+          e match {
+            case methodCall: MethodCall => {
+              println(JarUtility.getBytecodeClass(currentType.classLoc))
+              val argumentTypes: List[String] = List()/*methodCall.expression match {
+
+                case blockExpr: BlockExpr => {
+                  blockExpr.expressions.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).toList
+                }
+              }*/
+
+              val signature = JarUtility.getBytecodeClass(currentType.classLoc).getMethod(methodCall.name.value, argumentTypes).getSignature()
+              currentType = ObjectType(currentType.classLoc)
+            }
+            case value: Identifier => {
+
+              currentType = symbolTable.get(value match {
+                case methodCall: MethodCall => methodCall.name.value
+                case identifier: Identifier => identifier.name.value
+              }) match {
+                case valueEntry: ValueEntry => valueEntry.`type`
+              }
+
+            }
+          }
+        })
+        currentType
+      }
       case newClassInstance: NewClassInstance => {
         val superClass: String = newClassInstance.`type`.ref match {
           case RefLocal(name) => imports.get(name.value).getOrElse(name.value)
@@ -69,9 +106,10 @@ object IRUtils {
 
   def getStoreOperator(t: TypeIR, id: Int): StoreOperators = {
     t match {
-      case intType: IntType => IStore(id)
-      case longType: LongType => LStore(id)
-      case stringLiteralType: StringLiteralType => AStore(id);
+      case _: IntType => IStore(id)
+      case _: LongType => LStore(id)
+      case _: StringLiteralType => AStore(id);
+      case _: ObjectType => AStore(id)
     }
   }
 

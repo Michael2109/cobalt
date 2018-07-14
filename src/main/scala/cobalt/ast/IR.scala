@@ -217,7 +217,7 @@ object AST2IR {
       case methodCall: MethodCall => {
         methodCall.name.value match {
           case "print" | "println" => {
-            val typeIR = IRUtils.inferType(methodCall.expression, symbolTable, imports)
+            val typeIR = IRUtils.inferType(methodCall.expression.head, symbolTable, imports)
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
 
             typeIR match {
@@ -240,7 +240,9 @@ object AST2IR {
               case _ =>
             }
 
-            convertToIR(methodCall.expression, method, symbolTable, imports)
+            methodCall.expression.foreach(e => {
+              convertToIR(e, method, symbolTable, imports)
+            })
 
             typeIR match {
               case _: DoubleType => {
@@ -262,7 +264,7 @@ object AST2IR {
           }
           case _ => {
             // Get the type of the method call
-            val typeIR = IRUtils.inferType(methodCall.expression, symbolTable, imports)
+            val typeIR = IRUtils.inferType(methodCall.expression.head, symbolTable, imports)
 
             println("Type ::: " + typeIR)
           }
@@ -277,7 +279,7 @@ object AST2IR {
           e match {
             case methodCall: MethodCall => {
               println(JarUtility.getBytecodeClass(currentType.classLoc))
-              val argumentTypes: List[String] = List()/*methodCall.expression match {
+              val argumentTypes: List[String] = List() /*methodCall.expression match {
 
                 case blockExpr: BlockExpr => {
                   blockExpr.expressions.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).toList
@@ -302,9 +304,21 @@ object AST2IR {
           }
         })
       }
-      case newClassInstance: NewClassInstance =>
-      case stringLiteral: StringLiteral => {
-        method.body += ExprAsStmtIR(StringLiteralIR(stringLiteral.value))
+      case newClassInstance: NewClassInstance => {
+        val className = newClassInstance.`type`.ref match {
+          case RefLocal(name) => imports.get(name.value).get
+          case RefQual(qualName) => qualName.nameSpace.nameSpace.map(_.value).mkString("/") + "/" + qualName.name.value
+        }
+
+        method.body += VisitTypeInst(Opcodes.NEW, className)
+        method.body += VisitInsn(Opcodes.DUP)
+
+        newClassInstance.expression.foreach(e => {
+          convertToIR(e, method, symbolTable, imports)
+        })
+
+        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, className, "<init>", "()V")
+
       }
     }
   }
@@ -318,7 +332,6 @@ object AST2IR {
           case refLocal: RefLocal => refLocal.name.value
           case refQual: RefQual => refQual.qualName.name.value
         })
-        val bytecodeType: String = IRUtils.typeToBytecodeType(typeIR)
 
         symbolTable.entries += new ValueEntry(assign.name.value, id, typeIR)
         convertToIR(assign.block, method, symbolTable, imports)

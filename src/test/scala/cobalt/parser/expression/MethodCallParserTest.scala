@@ -17,20 +17,20 @@ class MethodCallParserTest extends FunSpec with Matchers
   {
     it("Should parse method calls - No arguments")
     {
-      TestUtil.parse("println()", ExpressionParser.expressionParser) shouldBe MethodCall(Name("println"),BlockExpr(ArrayBuffer()))
+      TestUtil.parse("println()", ExpressionParser.expressionParser) shouldBe MethodCall(Name("println"),ArrayBuffer())
     }
     it("Should parse method calls - Single argument")
     {
-      TestUtil.parse("methodCall(a)", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),BlockExpr(ArrayBuffer(Identifier(Name("a")))))
+      TestUtil.parse("methodCall(a)", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"), ArrayBuffer(Identifier(Name("a"))))
     }
     it("Should parse method calls - Multiple arguments")
     {
-      TestUtil.parse("methodCall(a, b, c)", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),BlockExpr(ArrayBuffer(Identifier(Name("a")), Identifier(Name("b")), Identifier(Name("c")))))
+      TestUtil.parse("methodCall(a, b, c)", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),ArrayBuffer(Identifier(Name("a")), Identifier(Name("b")), Identifier(Name("c"))))
     }
 
     it("Should parse method calls - New class instance")
     {
-      TestUtil.parse("methodCall(new ClassName())", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),BlockExpr(ArrayBuffer(NewClassInstance(Type(RefLocal(Name("ClassName"))),BlockExpr(ArrayBuffer()),None))))
+      TestUtil.parse("methodCall(new ClassName())", ExpressionParser.expressionParser) shouldBe MethodCall(Name("methodCall"),ArrayBuffer(NewClassInstance(Type(RefLocal(Name("ClassName"))),ArrayBuffer(),None)))
     }
   }
 }
