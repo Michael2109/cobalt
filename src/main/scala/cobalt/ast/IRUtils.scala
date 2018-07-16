@@ -27,13 +27,20 @@ object IRUtils {
       case _: StringLiteralType => "Ljava/lang/String;"
       case _: UnitType => "V"
       case objectType: ObjectType => "L" + objectType.name + ";"
+      case _: UnknownType => ""
     }
   }
 
   def inferType(expression: Expression, symbolTable: SymbolTable, imports: Map[String, String]): TypeIR = {
     expression match {
       case aBinary: ABinary => inferType(aBinary.expression1, symbolTable, imports)
-      case blockExpr: BlockExpr => blockExpr.expressions.map(e => inferType(e, symbolTable, imports)).head
+      case blockExpr: BlockExpr => {
+        val types = blockExpr.expressions.map(e => inferType(e, symbolTable, imports))
+        types.length match {
+          case 0 => UnknownType()
+          case _ => types.head
+        }
+      }
       case _: DoubleConst => DoubleType()
       case _: FloatConst => FloatType()
       case identifier: Identifier => ObjectType(symbolTable.get(identifier.name.value) match {
@@ -47,33 +54,26 @@ object IRUtils {
         var currentType: TypeIR = null
 
         // Loop through all method calls and variables
-        nestedExpression.expressions.foreach(e => {
-          e match {
-            case methodCall: MethodCall => {
-              println(JarUtility.getBytecodeClass(currentType.classLoc))
-              val argumentTypes: List[String] = List()/*methodCall.expression match {
+        nestedExpression.expressions.foreach {
+          case methodCall: MethodCall => {
 
-                case blockExpr: BlockExpr => {
-                  blockExpr.expressions.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).toList
-                }
-              }*/
+            // Get the method argument types and convert to bytecode types
+            val argumentTypes = methodCall.expression.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).toList
 
-              val signature = JarUtility.getBytecodeClass(currentType.classLoc).getMethod(methodCall.name.value, argumentTypes).getSignature()
-              currentType = ObjectType(currentType.classLoc)
-            }
-            case value: Identifier => {
+            //val signature = JarUtility.getBytecodeClass(currentType.classLoc).getMethod(methodCall.name.value, argumentTypes).getSignature()
+          }
+          case value: Identifier => {
 
-              currentType = symbolTable.get(value match {
-                case methodCall: MethodCall => methodCall.name.value
-                case identifier: Identifier => identifier.name.value
-              }) match {
-                case valueEntry: ValueEntry => valueEntry.`type`
-              }
-
+            currentType = symbolTable.get(value match {
+              case methodCall: MethodCall => methodCall.name.value
+              case identifier: Identifier => identifier.name.value
+            }) match {
+              case valueEntry: ValueEntry => valueEntry.`type`
             }
           }
-        })
-        currentType
+        }
+
+        ObjectType(currentType.classLoc)
       }
       case newClassInstance: NewClassInstance => {
         val superClass: String = newClassInstance.`type`.ref match {

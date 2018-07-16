@@ -176,42 +176,12 @@ object AST2IR {
               case v: ValueEntry => (v.id, v.`type`)
             }
 
-            typeIR match {
-              case _: DoubleType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Double")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _: FloatType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Float")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _: IntType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _: LongType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Long")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _ =>
-            }
+
+            boxExpressionStart(typeIR, method)
+
             method.body += ExprAsStmtIR(IdentifierIR(id, typeIR))
 
-            typeIR match {
-              case _: DoubleType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(D)V")
-              }
-              case _: FloatType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(F)V")
-              }
-              case _: IntType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
-              }
-              case _: LongType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Long", "<init>", "(J)V")
-              }
-              case _ =>
-            }
+            boxExpressionEnd(typeIR, method)
           }
         }
       }
@@ -223,53 +193,15 @@ object AST2IR {
             val typeIR = IRUtils.inferType(methodCall.expression.head, symbolTable, imports)
             method.body += VisitFieldInst(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
 
-            typeIR match {
-              case _: DoubleType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Double")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _: FloatType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Float")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _: IntType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _: LongType => {
-                method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Long")
-                method.body += VisitInsn(Opcodes.DUP)
-              }
-              case _ =>
-            }
-
-            methodCall.expression.foreach(e => {
-              convertToIR(e, method, symbolTable, imports)
-            })
-
-            typeIR match {
-              case _: DoubleType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Double", "<init>", "(D)V")
-              }
-              case _: FloatType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Float", "<init>", "(F)V")
-              }
-              case _: IntType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
-              }
-              case _: LongType => {
-                method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Long", "<init>", "(J)V")
-              }
-              case _ =>
-            }
+            boxExpressionStart(typeIR, method)
+            methodCall.expression.foreach(e => convertToIR(e, method, symbolTable, imports))
+            boxExpressionEnd(typeIR, method)
 
             method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V")
           }
           case _ => {
             // Get the type of the method call
             val typeIR = IRUtils.inferType(methodCall.expression.head, symbolTable, imports)
-
-            println("Type ::: " + typeIR)
           }
         }
       }
@@ -281,14 +213,12 @@ object AST2IR {
         nestedExpression.expressions.foreach(e => {
           e match {
             case methodCall: MethodCall => {
+
+              // Get the method argument types and convert to bytecode types
+              val argumentTypes = methodCall.expression.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).filter(!_.isEmpty).toList
+
               println(JarUtility.getBytecodeClass(currentType.classLoc))
-              val argumentTypes: List[String] = List() /*methodCall.expression match {
-
-                case blockExpr: BlockExpr => {
-                  blockExpr.expressions.map(e => IRUtils.typeToBytecodeType(IRUtils.inferType(e, symbolTable, imports))).toList
-                }
-              }*/
-
+              println(currentType.classLoc + " : " + argumentTypes)
               val signature = JarUtility.getBytecodeClass(currentType.classLoc).getMethod(methodCall.name.value, argumentTypes).getSignature()
 
               method.body += VisitMethodInsn(Opcodes.INVOKEVIRTUAL, currentType.classLoc, methodCall.name.value, signature)
@@ -369,6 +299,46 @@ object AST2IR {
 
         method.visitLabel(endLabel)
       }
+    }
+  }
+
+  def boxExpressionStart(typeIR: TypeIR, method: MethodIR): Unit ={
+    typeIR match {
+      case _: DoubleType => {
+        method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Double")
+        method.body += VisitInsn(Opcodes.DUP)
+      }
+      case _: FloatType => {
+        method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Float")
+        method.body += VisitInsn(Opcodes.DUP)
+      }
+      case _: IntType => {
+        method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Integer")
+        method.body += VisitInsn(Opcodes.DUP)
+      }
+      case _: LongType => {
+        method.body += VisitTypeInst(Opcodes.NEW, "java/lang/Long")
+        method.body += VisitInsn(Opcodes.DUP)
+      }
+      case _ =>
+    }
+  }
+
+  def boxExpressionEnd(typeIR: TypeIR, method: MethodIR): Unit ={
+    typeIR match {
+      case _: DoubleType => {
+        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Double", "<init>", "(D)V")
+      }
+      case _: FloatType => {
+        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Float", "<init>", "(F)V")
+      }
+      case _: IntType => {
+        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Integer", "<init>", "(I)V")
+      }
+      case _: LongType => {
+        method.body += VisitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Long", "<init>", "(J)V")
+      }
+      case _ =>
     }
   }
 }
@@ -479,6 +449,10 @@ object IRNew {
   }
 
   case class UnitType() extends TypeIR {
+    override val classLoc: String = null
+  }
+
+  case class UnknownType() extends TypeIR {
     override val classLoc: String = null
   }
 
