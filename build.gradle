@@ -1,8 +1,8 @@
 group 'group_id'
 version '1.0-SNAPSHOT'
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.13'
+wrapper {
+    gradleVersion = '5.6.4'
 }
 
 apply plugin: 'java'
@@ -99,14 +99,17 @@ scaladoc {
     destinationDir = reporting.file("../../vendors/docs")
 }
 
-task scalaTest(dependsOn: testClasses) << {
-    description = 'Runs Scalatest suite'
-    ant.taskdef(name: 'scalatest',
-            classname: 'org.scalatest.tools.ScalaTestAntTask',
-            classpath: sourceSets.test.runtimeClasspath.asPath
-    )
-    ant.scalatest(runpath: sourceSets.test.output.classesDir,
-            haltonfailure: 'true', fork: 'false') {
-        reporter(type: 'stdout')
+task scalaTest {
+    doLast {
+        description = 'Runs Scalatest suite'
+        ant.taskdef(name: 'scalatest',
+                classname: 'org.scalatest.tools.ScalaTestAntTask',
+                classpath: sourceSets.test.runtimeClasspath.asPath
+        )
+        ant.scalatest(runpath: sourceSets.test.output.classesDir,
+                haltonfailure: 'true', fork: 'false') {
+            reporter(type: 'stdout')
+        }
     }
+
 }
